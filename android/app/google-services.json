@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "82059326903",
+    "firebase_url": "https://forutona.firebaseio.com",
+    "project_id": "forutona",
+    "storage_bucket": "forutona.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82059326903:android:bad174a5072f2f56daa432",
+        "android_client_info": {
+          "package_name": "co.kr.forutonafront"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "82059326903-i1bdml643mjfr7l1chj99i86dud8g54b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.kr.forutonafront",
+            "certificate_hash": "d681bd280cffca15e6861811d21fad11fc29819d"
+          }
+        },
+        {
+          "client_id": "82059326903-av6eq75cs2lmdgrjnhh4h42rg3kcakrt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "82059326903-av6eq75cs2lmdgrjnhh4h42rg3kcakrt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
