@@ -11,21 +11,22 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+3
+version: 1.0.0+5
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^0.2.5
-  firebase_analytics: ^1.0.4
-
+  firebase_core: ^0.2.5 # add dependency for Firebase Core
+  firebase_analytics: ^1.0.4 # add dependency for Google Analytics for Firebase
+  flutter_naver_login: ^1.0.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-
+module:
+  androidX: true // Add this line.
 dev_dependencies:
   flutter_test:
     sdk: flutter
