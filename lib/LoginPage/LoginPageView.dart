@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPageView extends StatefulWidget {
   LoginPageView({Key key}) : super(key: key);
@@ -123,6 +128,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                 child: Text("KaKao 로그인", style: TextStyle(fontSize: 25)),
                 onPressed: () async {
                   FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
+
                   if (await kakaoSignIn.isLoggedIn) {
                     print("로그인 되어있음");
                   } else {
@@ -138,6 +144,32 @@ class _LoginPageViewState extends State<LoginPageView> {
                         // TODO: Handle this case.
                         break;
                     }
+                  }
+                },
+              ),
+            ),
+            Container(
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0)),
+                child: Text("FaceBook 로그인", style: TextStyle(fontSize: 25)),
+                onPressed: () async {
+                  final facebookLogin = FacebookLogin();
+                  //'user_gender','user_age_range','user_birthday' 구글로 부터 App 인증 필요 권한
+                  final result = await facebookLogin.logIn(['email']);
+
+                  switch (result.status) {
+                    case FacebookLoginStatus.loggedIn:
+                      //추후에 App FaceBook 에 인증후에 허가권 얻은후 'user_gender','user_age_range','user_birthday' 정보 얻기
+                      final graphResponse = await http.get(
+                          'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${result.accessToken.token}');
+                      final profile = jsonDecode(graphResponse.body);
+                      print(profile.toString());
+                      break;
+                    case FacebookLoginStatus.cancelledByUser:
+                      break;
+                    case FacebookLoginStatus.error:
+                      break;
                   }
                 },
               ),
