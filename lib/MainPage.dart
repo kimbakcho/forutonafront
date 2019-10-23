@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
 import 'LoginPage/LoginPageView.dart';
-import 'TestView.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);

@@ -19,8 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^0.2.5 # add dependency for Firebase Core
-  firebase_analytics: ^1.0.4 # add dependency for Google Analytics for Firebase
+  firebase_core: ^0.4.0 # add dependency for Firebase Core
+  firebase_analytics: ^5.0.2 # add dependency for Google Analytics for Firebase
   flutter_naver_login: ^1.0.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
