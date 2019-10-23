@@ -85,10 +85,11 @@ class _MainPageState extends State<MainPage> {
                 ),
                 onPressed: () async {
                   if (await FlutterKakaoLogin().isLoggedIn) {
-                    FlutterKakaoLogin().logOut();
+                    // await FlutterKakaoLogin().unlink();
+                    await FlutterKakaoLogin().logOut();
                   }
                   if (await FacebookLogin().isLoggedIn) {
-                    FacebookLogin().logOut();
+                    await FacebookLogin().logOut();
                   }
                 },
               ),
