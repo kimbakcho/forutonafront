@@ -16,6 +16,11 @@ class LoginPageView extends StatefulWidget {
 class _LoginPageViewState extends State<LoginPageView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,20 @@ class _LoginPageViewState extends State<LoginPageView> {
                   "Log-in",
                   style: TextStyle(fontSize: 25),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  var reslut = await _auth.signInWithEmailAndPassword(
+                      email: emailController.text,
+                      password: passController.text);
+                  if (reslut.user.isEmailVerified) {
+                    print("인증됨");
+                  } else {
+                    print("인증안됨");
+                  }
+
+                  // await reslut.user.sendEmailVerification().catchError((error) {
+                  //   print("bhkimreeor " + error);
+                  // });
+                },
               ),
             ),
             Container(
@@ -80,7 +98,15 @@ class _LoginPageViewState extends State<LoginPageView> {
                   style: TextStyle(
                       decoration: TextDecoration.underline, color: Colors.blue),
                 ),
-                onTap: () {},
+                onTap: () async {
+                  var reslut = await _auth.createUserWithEmailAndPassword(
+                      email: emailController.text,
+                      password: passController.text);
+
+                  await reslut.user.sendEmailVerification().catchError((error) {
+                    print("bhkimreeor " + error);
+                  });
+                },
               ),
             ),
             Container(
