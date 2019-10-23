@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.kr.forutonafront">
+    package="com.example.forutonafront">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -19,6 +19,7 @@
          <meta-data
             android:name="com.naver.sdk.clientName"
             android:value="@string/client_name" />        
+     
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -38,5 +39,19 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />               
+        <activity
+            android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>        
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>    
 </manifest>

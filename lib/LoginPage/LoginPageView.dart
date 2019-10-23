@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 
 class LoginPageView extends StatefulWidget {
   LoginPageView({Key key}) : super(key: key);
@@ -105,11 +106,6 @@ class _LoginPageViewState extends State<LoginPageView> {
                   style: TextStyle(fontSize: 25),
                 ),
                 onPressed: () async {
-                  if (await FlutterNaverLogin.isLoggedIn) {
-                    print('login');
-                  } else {
-                    print('no login');
-                  }
                   NaverLoginResult res1 = await FlutterNaverLogin.logIn();
                   print(res1.account.id);
                   print(res1.account.age);
@@ -117,6 +113,32 @@ class _LoginPageViewState extends State<LoginPageView> {
                       await FlutterNaverLogin.currentAccessToken;
                   print(res2.accessToken);
                   print(res2.expiresAt);
+                },
+              ),
+            ),
+            Container(
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0)),
+                child: Text("KaKao 로그인", style: TextStyle(fontSize: 25)),
+                onPressed: () async {
+                  FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
+                  if (await kakaoSignIn.isLoggedIn) {
+                    print("로그인 되어있음");
+                  } else {
+                    final KakaoLoginResult result = await kakaoSignIn.logIn();
+                    switch (result.status) {
+                      case KakaoLoginStatus.loggedIn:
+                        print(result.account.userID);
+                        break;
+                      case KakaoLoginStatus.loggedOut:
+                        // TODO: Handle this case.
+                        break;
+                      case KakaoLoginStatus.error:
+                        // TODO: Handle this case.
+                        break;
+                    }
+                  }
                 },
               ),
             )
