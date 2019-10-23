@@ -4,6 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
 import 'LoginPage/LoginPageView.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:flutter_kakao_login/flutter_kakao_login.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -80,7 +83,14 @@ class _MainPageState extends State<MainPage> {
                   "Join",
                   style: TextStyle(fontSize: 15),
                 ),
-                onPressed: () => {},
+                onPressed: () async {
+                  if (await FlutterKakaoLogin().isLoggedIn) {
+                    FlutterKakaoLogin().logOut();
+                  }
+                  if (await FacebookLogin().isLoggedIn) {
+                    FacebookLogin().logOut();
+                  }
+                },
               ),
             )
           ],
