@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/LoginPage/Component/SignInItem.dart';
+import 'package:forutonafront/LoginPage/ForutonaAgreeView.dart';
+
+import 'PrivateAgreeView.dart';
+import 'SignIn2View.dart';
 
 class SignInView extends StatefulWidget {
   SignInView({Key key}) : super(key: key);
@@ -8,6 +13,8 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
+  Signitem signitem = Signitem();
+  bool _allCheckvalue = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,8 +31,161 @@ class _SignInViewState extends State<SignInView> {
         ),
       ),
       body: Container(
+        margin: EdgeInsets.fromLTRB(
+            20, MediaQuery.of(context).size.height * 0.1, 20, 20),
         child: ListView(
-          children: <Widget>[],
+          children: <Widget>[
+            Container(child: Text("환영합니다!. \n포루투나 회원이 되기 위해서는 약관 동의가 필요해요!")),
+            Container(height: 20),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text("전체 동의"),
+                ),
+                Checkbox(
+                  value: _allCheckvalue,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _allCheckvalue = value;
+                      signitem.forutonaAgree = value;
+                      signitem.privateaAgree = value;
+                      signitem.positionaAgree = value;
+                      signitem.marketingAgree = value;
+                    });
+                  },
+                )
+              ],
+            ),
+            Divider(
+              thickness: 3,
+              indent: 5,
+              endIndent: 5,
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                    child: Container(
+                  child: GestureDetector(
+                    child: Text("포루투나 이용약관 동의",
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                        )),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ForutonaAgreeView();
+                      }));
+                    },
+                  ),
+                )),
+                Checkbox(
+                  value: signitem.forutonaAgree,
+                  onChanged: (bool value) {
+                    setState(() {
+                      signitem.forutonaAgree = value;
+                    });
+                  },
+                )
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                    child: Container(
+                  child: GestureDetector(
+                    child: Text("개인 정보 수집이용 동의",
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                        )),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return PrivateAgreeView();
+                      }));
+                    },
+                  ),
+                )),
+                Checkbox(
+                  value: signitem.privateaAgree,
+                  onChanged: (bool value) {
+                    setState(() {
+                      signitem.privateaAgree = value;
+                    });
+                  },
+                )
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                    child: Container(
+                  child: GestureDetector(
+                    child: Text("위치정보 활용 동의",
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                        )),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return PrivateAgreeView();
+                      }));
+                    },
+                  ),
+                )),
+                Checkbox(
+                  value: signitem.positionaAgree,
+                  onChanged: (bool value) {
+                    setState(() {
+                      signitem.positionaAgree = value;
+                    });
+                  },
+                )
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                    child: Container(
+                  child: GestureDetector(
+                    child: Text(
+                      "마케팅 정보 메일 SMS 수신 동의(선택)",
+                    ),
+                    onTap: () {},
+                  ),
+                )),
+                Checkbox(
+                  value: signitem.marketingAgree,
+                  onChanged: (bool value) {
+                    setState(() {
+                      signitem.marketingAgree = value;
+                    });
+                  },
+                )
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.only(right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(
+                    width: 80,
+                    child: RaisedButton(
+                      child: Text('다음'),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return SignIn2View(
+                            signitem: signitem,
+                          );
+                        }));
+                      },
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

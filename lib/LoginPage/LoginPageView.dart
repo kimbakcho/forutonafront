@@ -7,6 +7,8 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'SignIn1View.dart';
+
 class LoginPageView extends StatefulWidget {
   LoginPageView({Key key}) : super(key: key);
 
@@ -17,7 +19,6 @@ class _LoginPageViewState extends State<LoginPageView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  bool _obscureText = true;
   @override
   void initState() {
     super.initState();
@@ -101,12 +102,9 @@ class _LoginPageViewState extends State<LoginPageView> {
                       decoration: TextDecoration.underline, color: Colors.blue),
                 ),
                 onTap: () async {
-                  var reslut = await _auth.createUserWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passController.text);
-                  await reslut.user.sendEmailVerification().catchError((error) {
-                    print("bhkimreeor " + error);
-                  });
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return SignInView();
+                  }));
                 },
               ),
             ),

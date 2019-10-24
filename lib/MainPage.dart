@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
 import 'LoginPage/LoginPageView.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
+
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
@@ -18,7 +18,6 @@ class _MainPageState extends State<MainPage> {
   HomeNaviInter naviitme;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     naviitme = HomeNaviInter();
   }

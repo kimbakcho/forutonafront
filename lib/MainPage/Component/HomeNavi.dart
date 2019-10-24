@@ -20,7 +20,6 @@ class _HomeNaviState extends State<HomeNavi>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     animationController = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
