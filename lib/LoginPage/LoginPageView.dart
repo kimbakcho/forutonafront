@@ -17,6 +17,7 @@ class _LoginPageViewState extends State<LoginPageView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _obscureText = true;
   @override
   void initState() {
     super.initState();
@@ -42,7 +43,7 @@ class _LoginPageViewState extends State<LoginPageView> {
             20, MediaQuery.of(context).size.height * 0.1, 20, 10),
         child: ListView(
           children: <Widget>[
-            TextField(
+            TextFormField(
               controller: emailController,
               decoration: InputDecoration(
                   hintText: 'ID(Email)',
@@ -52,7 +53,8 @@ class _LoginPageViewState extends State<LoginPageView> {
             Container(
               height: 10,
             ),
-            TextField(
+            TextFormField(
+              obscureText: true,
               controller: passController,
               decoration: InputDecoration(
                   hintText: 'password',
@@ -102,7 +104,6 @@ class _LoginPageViewState extends State<LoginPageView> {
                   var reslut = await _auth.createUserWithEmailAndPassword(
                       email: emailController.text,
                       password: passController.text);
-
                   await reslut.user.sendEmailVerification().catchError((error) {
                     print("bhkimreeor " + error);
                   });
