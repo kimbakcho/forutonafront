@@ -28,8 +28,8 @@ class UserInfo {
   static Future<int> insertUserInfo(
     UserInfo item,
   ) async {
-    var posturl =
-        Uri.http(Preference.baseBackEndUrl, "/api/v1/Auth/InsertUserInfo");
+    var posturl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Auth/InsertUserInfo");
     FirebaseAuth _auth = FirebaseAuth.instance;
     if (item.password != null && item.password.length >= 6) {
       AuthResult reslut = await _auth.createUserWithEmailAndPassword(
@@ -44,8 +44,8 @@ class UserInfo {
       });
       return int.tryParse(response.body);
     } else {
-      var posturl =
-          Uri.http(Preference.baseBackEndUrl, "/api/v1/Auth/SnsLoginFireBase");
+      var posturl = Preference.httpurlbase(
+          Preference.baseBackEndUrl, "/api/v1/Auth/SnsLoginFireBase");
       var response = await http.post(posturl,
           body: jsonEncode(item.toJson()),
           headers: {HttpHeaders.contentTypeHeader: "application/json"});
@@ -59,8 +59,8 @@ class UserInfo {
   }
 
   static Future<String> getCustomToken(UserInfo item) async {
-    var posturl =
-        Uri.http(Preference.baseBackEndUrl, "/api/v1/Auth/SnsLoginFireBase");
+    var posturl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Auth/SnsLoginFireBase");
     var response = await http.post(posturl,
         body: jsonEncode(item.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});

@@ -129,6 +129,7 @@ class _SignIn2ViewState extends State<SignIn2View> {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return SignIn3View(
+                                loginpage: "Email",
                                 userinfo: this.widget.userinfo,
                               );
                             }));

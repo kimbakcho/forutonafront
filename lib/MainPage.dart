@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
@@ -127,15 +128,19 @@ class _MainPageState extends State<MainPage> {
                       if (await FacebookLogin().isLoggedIn) {
                         await FacebookLogin().logOut();
                       }
-                      // try {
-                      //   bool value = await FlutterNaverLogin.isLoggedIn;
-                      //   if (value) {
-                      //     // await FlutterNaverLogin.logOut();
-                      //   }
-                      //   print(value);
-                      // } catch (ex) {
-                      //   print(ex.toString());
-                      // }
+
+                      try {
+                        bool value = await FlutterNaverLogin.isLoggedIn;
+                        if (value) {
+                           NaverAccessToken token = await FlutterNaverLogin.currentAccessToken;
+                           String token1 = token.accessToken;
+                           
+                          // await FlutterNaverLogin.logOut();
+                        }
+                        print(value);
+                      } catch (ex) {
+                        print(ex.toString());
+                      }
                     },
                   ),
                 )

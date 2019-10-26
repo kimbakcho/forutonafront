@@ -202,8 +202,10 @@ class _LoginPageViewState extends State<LoginPageView> {
                       var queryParameters = {
                         'Uid': userinfo.uid,
                       };
-                      var uri = Uri.http(Preference.baseBackEndUrl,
-                          '/api/v1/Auth/GetUid', queryParameters);
+                      var uri = Preference.httpurloption(
+                          Preference.baseBackEndUrl,
+                          '/api/v1/Auth/GetUid',
+                          queryParameters);
                       var response = await http.get(uri);
                       String getuid = response.body;
 
