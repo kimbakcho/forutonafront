@@ -115,7 +115,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                       style: TextStyle(fontSize: 25),
                     ),
                     onPressed: () async {
-                      AuthResult reslut = await _auth
+                      await _auth
                           .signInWithEmailAndPassword(
                               email: emailController.text,
                               password: passController.text)
@@ -140,7 +140,6 @@ class _LoginPageViewState extends State<LoginPageView> {
                           Scaffold.of(context).showSnackBar(snackBar);
                           return;
                         }
-                        ;
                       });
 
                       Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -199,7 +198,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                     onPressed: () async {
                       var userinfo = new forutona.UserInfo();
 
-                      var reslut = await snsLogins("Naver", userinfo);
+                      await snsLogins("Naver", userinfo);
                       var queryParameters = {
                         'Uid': userinfo.uid,
                       };
@@ -210,9 +209,8 @@ class _LoginPageViewState extends State<LoginPageView> {
 
                       if (userinfo.uid == getuid) {
                         String customtoken =
-                            await forutona.UserInfo.GetCustomToken(userinfo);
-                        await _auth.signInWithCustomToken(
-                            token: customtoken);
+                            await forutona.UserInfo.getCustomToken(userinfo);
+                        await _auth.signInWithCustomToken(token: customtoken);
                         Navigator.popUntil(context, ModalRoute.withName('/'));
                       } else {
                         Navigator.push(context,

@@ -52,15 +52,13 @@ class UserInfo {
       if (response.body.length == 0) {
         return 0;
       } else {
-        AuthResult result =
-            await _auth.signInWithCustomToken(token: response.body);
+        await _auth.signInWithCustomToken(token: response.body);
         return 1;
       }
     }
-    return 0;
   }
 
-  static Future<String> GetCustomToken(UserInfo item) async {
+  static Future<String> getCustomToken(UserInfo item) async {
     var posturl =
         Uri.http(Preference.baseBackEndUrl, "/api/v1/Auth/SnsLoginFireBase");
     var response = await http.post(posturl,

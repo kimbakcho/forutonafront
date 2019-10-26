@@ -9,7 +9,6 @@ import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -83,7 +82,6 @@ class _MainPageState extends State<MainPage> {
                         } else {
                           Scaffold.of(context).openDrawer();
                         }
-                        ;
                       },
                     );
                   }),

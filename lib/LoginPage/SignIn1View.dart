@@ -193,11 +193,9 @@ class _SignInViewState extends State<SignInView> {
                               if (loginpage == "Email") {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  if (loginpage == "Email") {
-                                    return SignIn2View(
-                                      userinfo: userInfo,
-                                    );
-                                  }
+                                  return SignIn2View(
+                                    userinfo: userInfo,
+                                  );
                                 }));
                               } else {
                                 Navigator.push(context,
@@ -208,7 +206,6 @@ class _SignInViewState extends State<SignInView> {
                                   );
                                 }));
                               }
-                              ;
                             } else {
                               final snackBar = SnackBar(
                                 content: Text("필수 항목이 체크 되지 않았습니다"),
