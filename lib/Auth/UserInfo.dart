@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:forutonafront/Preference.dart';
-import 'package:http/http.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +12,7 @@ part 'UserInfo.g.dart';
 class UserInfo {
   String uid;
   String nickname = "";
-  String profilepicktureurl = "12315";
+  String profilepicktureurl = "";
   int sex = 1;
   String agedate = "";
   String email = "";
@@ -22,14 +21,18 @@ class UserInfo {
   int positionagree = 0;
   int martketingagree = 0;
   String password = "";
+  String snsservice = "";
+  String snstoken = "";
   UserInfo();
 
-  static Future<String> insertUserInfo(UserInfo item) async {
+  static Future<int> insertUserInfo(
+    UserInfo item,
+  ) async {
     var posturl =
-        Uri.http(Preference.baseBackEndUrl, "/api/v1/Auth/UpdateUser");
+        Uri.http(Preference.baseBackEndUrl, "/api/v1/Auth/InsertUserInfo");
     FirebaseAuth _auth = FirebaseAuth.instance;
-    if (item.password != null) {
-      AuthResult reslut = await _auth.signInWithEmailAndPassword(
+    if (item.password != null && item.password.length >= 6) {
+      AuthResult reslut = await _auth.createUserWithEmailAndPassword(
           email: item.email, password: item.password);
       item.uid = reslut.user.uid;
       IdTokenResult token = await reslut.user.getIdToken();
@@ -39,10 +42,31 @@ class UserInfo {
         HttpHeaders.authorizationHeader: "Bearer " + token.token,
         HttpHeaders.contentTypeHeader: "application/json"
       });
-      print(response.body);
-      return response.body;
+      return int.tryParse(response.body);
+    } else {
+      var posturl =
+          Uri.http(Preference.baseBackEndUrl, "/api/v1/Auth/SnsLoginFireBase");
+      var response = await http.post(posturl,
+          body: jsonEncode(item.toJson()),
+          headers: {HttpHeaders.contentTypeHeader: "application/json"});
+      if (response.body.length == 0) {
+        return 0;
+      } else {
+        AuthResult result =
+            await _auth.signInWithCustomToken(token: response.body);
+        return 1;
+      }
     }
-    return "";
+    return 0;
+  }
+
+  static Future<String> GetCustomToken(UserInfo item) async {
+    var posturl =
+        Uri.http(Preference.baseBackEndUrl, "/api/v1/Auth/SnsLoginFireBase");
+    var response = await http.post(posturl,
+        body: jsonEncode(item.toJson()),
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    return response.body;
   }
 
   factory UserInfo.fromJson(Map<String, dynamic> json) =>

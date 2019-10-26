@@ -18,7 +18,9 @@ UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
     ..privateagree = json['privateagree'] as int
     ..positionagree = json['positionagree'] as int
     ..martketingagree = json['martketingagree'] as int
-    ..password = json['password'] as String;
+    ..password = json['password'] as String
+    ..snsservice = json['snsservice'] as String
+    ..snstoken = json['snstoken'] as String;
 }
 
 Map<String, dynamic> _$UserInfoToJson(UserInfo instance) => <String, dynamic>{
@@ -32,5 +34,7 @@ Map<String, dynamic> _$UserInfoToJson(UserInfo instance) => <String, dynamic>{
       'privateagree': instance.privateagree,
       'positionagree': instance.positionagree,
       'martketingagree': instance.martketingagree,
-      'password': instance.password
+      'password': instance.password,
+      'snsservice': instance.snsservice,
+      'snstoken': instance.snstoken
     };

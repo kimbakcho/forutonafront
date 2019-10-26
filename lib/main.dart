@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:forutonafront/LoginPage/SignIn1View.dart';
 
 import 'MainPage.dart';
 
@@ -17,6 +18,11 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        initialRoute: '/',
+        routes: {
+          // When navigating to the "/" route, build the FirstScreen widget.
+          // When navigating to the "/second" route, build the SecondScreen widget.
+        },
         supportedLocales: [const Locale('en'), const Locale('ko')],
         theme: ThemeData(
             // This is the theme of your application.
