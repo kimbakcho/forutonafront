@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/LoginPage/Component/SignInItem.dart';
+import 'package:forutonafront/Auth/UserInfo.dart';
+
 import 'package:forutonafront/LoginPage/ForutonaAgreeView.dart';
 
 import 'PrivateAgreeView.dart';
@@ -13,7 +14,7 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  Signitem signitem = Signitem();
+  UserInfo signitem = UserInfo();
   bool _allCheckvalue = false;
   @override
   Widget build(BuildContext context) {
@@ -47,10 +48,10 @@ class _SignInViewState extends State<SignInView> {
                   onChanged: (bool value) {
                     setState(() {
                       _allCheckvalue = value;
-                      signitem.forutonaAgree = value;
-                      signitem.privateaAgree = value;
-                      signitem.positionaAgree = value;
-                      signitem.marketingAgree = value;
+                      signitem.forutonaagree = value ? 1 : 0;
+                      signitem.privateagree = value ? 1 : 0;
+                      signitem.positionagree = value ? 1 : 0;
+                      signitem.martketingagree = value ? 1 : 0;
                     });
                   },
                 )
@@ -79,10 +80,10 @@ class _SignInViewState extends State<SignInView> {
                   ),
                 )),
                 Checkbox(
-                  value: signitem.forutonaAgree,
+                  value: signitem.forutonaagree==1? true:false,
                   onChanged: (bool value) {
                     setState(() {
-                      signitem.forutonaAgree = value;
+                      signitem.forutonaagree = value ? 1 : 0;
                     });
                   },
                 )
@@ -106,10 +107,10 @@ class _SignInViewState extends State<SignInView> {
                   ),
                 )),
                 Checkbox(
-                  value: signitem.privateaAgree,
+                  value: signitem.privateagree ==1? true:false,
                   onChanged: (bool value) {
                     setState(() {
-                      signitem.privateaAgree = value;
+                      signitem.privateagree = value ? 1 : 0;
                     });
                   },
                 )
@@ -133,10 +134,10 @@ class _SignInViewState extends State<SignInView> {
                   ),
                 )),
                 Checkbox(
-                  value: signitem.positionaAgree,
+                  value: signitem.positionagree ==1? true:false,
                   onChanged: (bool value) {
                     setState(() {
-                      signitem.positionaAgree = value;
+                      signitem.positionagree = value ? 1 : 0;
                     });
                   },
                 )
@@ -154,10 +155,10 @@ class _SignInViewState extends State<SignInView> {
                   ),
                 )),
                 Checkbox(
-                  value: signitem.marketingAgree,
+                  value: signitem.martketingagree ==1? true:false,
                   onChanged: (bool value) {
                     setState(() {
-                      signitem.marketingAgree = value;
+                      signitem.martketingagree = value ? 1 : 0;
                     });
                   },
                 )

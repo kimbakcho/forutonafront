@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 
-class DropDownPicker extends StatefulWidget {
-  DropDownPicker({Key key, this.value, this.items, this.onchange})
-      : super(key: key);
+class DropDwonPickerItem {
   List<int> items;
-  int value;
   Function onchange;
+  int value;
+  DropDwonPickerItem({this.items, this.onchange, this.value});
+}
+
+class DropDownPicker extends StatefulWidget {
+  final DropDwonPickerItem items;
+  DropDownPicker({Key key, this.items}) : super(key: key);
+
   @override
-  _DropDownPickerState createState() => _DropDownPickerState();
+  _DropDownPickerState createState() {
+    return _DropDownPickerState(items);
+  }
 }
 
 class _DropDownPickerState extends State<DropDownPicker> {
+  DropDwonPickerItem items;
+  _DropDownPickerState(this.items);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,17 +31,17 @@ class _DropDownPickerState extends State<DropDownPicker> {
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<int>(
-              value: this.widget.value,
+              value: items.value,
               icon: Icon(Icons.arrow_downward),
               iconSize: 24,
               elevation: 16,
               onChanged: (int newValue) {
                 setState(() {
-                  this.widget.value = newValue;
-                  this.widget.onchange(newValue);
+                  items.value = newValue;
+                  items.onchange(newValue);
                 });
               },
-              items: this.widget.items.map<DropdownMenuItem<int>>((int value) {
+              items: items.items.map<DropdownMenuItem<int>>((int value) {
                 return DropdownMenuItem<int>(
                   value: value,
                   child: Text(value.toString()),

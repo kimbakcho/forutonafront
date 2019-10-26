@@ -1,26 +1,28 @@
 import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/LoginPage/Component/SignInItem.dart';
+import 'package:forutonafront/Auth/UserInfo.dart';
+import 'package:intl/intl.dart';
 
 import 'Component/DropDownPicker.dart';
 
 class SignIn3View extends StatefulWidget {
   SignIn3View({Key key, @required this.signitem}) : super(key: key);
-  final Signitem signitem;
+  final UserInfo signitem;
   @override
   _SignIn3ViewState createState() => _SignIn3ViewState();
 }
 
 class _SignIn3ViewState extends State<SignIn3View> {
   TextEditingController nickNameController = TextEditingController();
-  DateTime yearpickervalue = DateTime.now();
-  int yeardownvalue = DateTime.now().year;
-  int monthdownvalue = 1;
-  int daydownvalue = 1;
+
   List<int> yearslist = List<int>();
   List<int> monthlist = List<int>();
   List<int> daylist = List<int>();
   var dateUtility = new DateUtil();
+  DropDwonPickerItem yearitem;
+  DropDwonPickerItem monthitem;
+  DropDwonPickerItem dayitem;
+
   @override
   void initState() {
     super.initState();
@@ -30,7 +32,41 @@ class _SignIn3ViewState extends State<SignIn3View> {
     for (var i = 1; i <= 12; i++) {
       monthlist.add(i);
     }
-    daylist = _makedaylist(yeardownvalue, monthdownvalue);
+    daylist = _makedaylist(DateTime.now().year, 1);
+
+    yearitem = DropDwonPickerItem(
+        items: yearslist,
+        value: DateTime.now().year,
+        onchange: (value) {
+          this.widget.signitem.agedate = DateFormat("yyyy-MM-dd")
+              .format(DateTime.utc(value, monthitem.value, dayitem.value));
+          setState(() {
+            dayitem.value = 1;
+            dayitem.items = _makedaylist(value, monthitem.value);
+          });
+        });
+    monthitem = DropDwonPickerItem(
+        items: monthlist,
+        value: 1,
+        onchange: (value) {
+          this.widget.signitem.agedate = DateFormat("yyyy-MM-dd")
+              .format(DateTime.utc(yearitem.value, value, dayitem.value));
+          setState(() {
+            dayitem.value = 1;
+            dayitem.items = _makedaylist(yearitem.value, monthitem.value);
+          });
+        });
+    dayitem = DropDwonPickerItem(
+        value: 1,
+        items: daylist,
+        onchange: (value) {
+          this.widget.signitem.agedate = DateFormat("yyyy-MM-dd")
+              .format(DateTime.utc(yearitem.value, monthitem.value, value));
+        });
+
+    this.widget.signitem.agedate = this.widget.signitem.agedate =
+        DateFormat("yyyy-MM-dd").format(
+            DateTime.utc(yearitem.value, monthitem.value, dayitem.value));
   }
 
   List<int> _makedaylist(yeardownvalue, monthdownvalue) {
@@ -69,9 +105,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
                     child: ListView(
                   children: <Widget>[
                     GestureDetector(
-                        onTap: () {
-                          print("123");
-                        },
+                        onTap: () {},
                         child: Container(
                           //width: 100.0,
                           height: MediaQuery.of(context).size.height * 0.15,
@@ -92,7 +126,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10.0)))),
                       onChanged: (String value) {
-                        this.widget.signitem.emailID = value;
+                        this.widget.signitem.nickname = value;
                       },
                     ),
                     Container(height: 20),
@@ -102,16 +136,8 @@ class _SignIn3ViewState extends State<SignIn3View> {
                         Container(
                           width: 100,
                           child: DropDownPicker(
-                              value: yeardownvalue,
-                              items: yearslist,
-                              onchange: (value) {
-                                yeardownvalue = value;
-                                setState(() {
-                                  daydownvalue = 1;
-                                  daylist = _makedaylist(
-                                      yeardownvalue, monthdownvalue);
-                                });
-                              }),
+                            items: yearitem,
+                          ),
                         ),
                         Container(
                           width: 20,
@@ -119,16 +145,8 @@ class _SignIn3ViewState extends State<SignIn3View> {
                         Container(
                           width: 100,
                           child: DropDownPicker(
-                              value: monthdownvalue,
-                              items: monthlist,
-                              onchange: (value) {
-                                monthdownvalue = value;
-                                setState(() {
-                                  daydownvalue = 1;
-                                  daylist = _makedaylist(
-                                      yeardownvalue, monthdownvalue);
-                                });
-                              }),
+                            items: monthitem,
+                          ),
                         ),
                         Container(
                           width: 20,
@@ -136,11 +154,8 @@ class _SignIn3ViewState extends State<SignIn3View> {
                         Container(
                           width: 100,
                           child: DropDownPicker(
-                              value: daydownvalue,
-                              items: daylist,
-                              onchange: (value) {
-                                daydownvalue = value;
-                              }),
+                            items: dayitem,
+                          ),
                         )
                       ],
                     ),
@@ -152,7 +167,9 @@ class _SignIn3ViewState extends State<SignIn3View> {
                         Expanded(
                             child: RaisedButton(
                           child: Text('남성'),
-                          onPressed: () {},
+                          onPressed: () {
+                            this.widget.signitem.sex = 1;
+                          },
                         )),
                         Container(
                           width: 5,
@@ -160,7 +177,9 @@ class _SignIn3ViewState extends State<SignIn3View> {
                         Expanded(
                           child: RaisedButton(
                             child: Text('여성'),
-                            onPressed: () {},
+                            onPressed: () {
+                              this.widget.signitem.sex = 1;
+                            },
                           ),
                         ),
                       ],
@@ -171,7 +190,11 @@ class _SignIn3ViewState extends State<SignIn3View> {
                   width: MediaQuery.of(context).size.width,
                   child: RaisedButton(
                     child: Text('Complete'),
-                    onPressed: () {},
+                    onPressed: () async {
+                      var result =
+                          await UserInfo.insertUserInfo(this.widget.signitem);
+                      print(result);
+                    },
                   ),
                 )
               ],

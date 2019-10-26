@@ -163,10 +163,8 @@ class _LoginPageViewState extends State<LoginPageView> {
                         print(result.account.userID);
                         break;
                       case KakaoLoginStatus.loggedOut:
-                        // TODO: Handle this case.
                         break;
                       case KakaoLoginStatus.error:
-                        // TODO: Handle this case.
                         break;
                     }
                   }

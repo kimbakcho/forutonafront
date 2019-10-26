@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/LoginPage/Component/SignInItem.dart';
+import 'package:forutonafront/Auth/UserInfo.dart';
 
 import 'SignIn3View.dart';
 
 class SignIn2View extends StatefulWidget {
   SignIn2View({Key key, @required this.signitem}) : super(key: key);
-  final Signitem signitem;
+  final UserInfo signitem;
 
   @override
   _SignIn2ViewState createState() => _SignIn2ViewState();
@@ -43,7 +43,7 @@ class _SignIn2ViewState extends State<SignIn2View> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)))),
               onChanged: (String value) {
-                this.widget.signitem.emailID = value;
+                this.widget.signitem.email = value;
               },
             ),
             Container(
@@ -57,7 +57,7 @@ class _SignIn2ViewState extends State<SignIn2View> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)))),
               onChanged: (String value) {
-                this.widget.signitem.passWord = value;
+                this.widget.signitem.password = value;
               },
             ),
             Container(
