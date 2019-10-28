@@ -1,15 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
 import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'Component/SnsLoginDataLogic.dart';
 import 'SignIn1View.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
 
 class LoginPageView extends StatefulWidget {
   LoginPageView({Key key}) : super(key: key);
@@ -25,39 +23,6 @@ class _LoginPageViewState extends State<LoginPageView> {
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<bool> snsLogins(String loginpage, forutona.UserInfo userInfo) async {
-    if (loginpage == "Naver") {
-      NaverLoginResult res1 = await FlutterNaverLogin.logIn();
-      var res2 = await FlutterNaverLogin.currentAccessToken;
-      if (res2.accessToken != null) {
-        userInfo.snsservice = "Naver";
-        userInfo.snstoken = res2.accessToken;
-        userInfo.uid = "Naver" + res1.account.id;
-        userInfo.email = res1.account.email;
-        if (res1.account.gender == 'F') {
-          userInfo.sex = 2;
-        } else if (res1.account.gender == 'M') {
-          userInfo.sex = 1;
-        } else {
-          userInfo.sex = 0;
-        }
-        List<String> ages = res1.account.age.split("-");
-        int tempage = int.parse(ages[0]);
-        int year = DateTime.now().year - tempage;
-        List<String> birthday = res1.account.birthday.split("-");
-        DateTime agedate =
-            DateTime.utc(year, int.parse(birthday[0]), int.parse(birthday[1]));
-        userInfo.agedate = DateFormat("yyyy-MM-dd").format(agedate);
-        userInfo.nickname = res1.account.nickname;
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
   }
 
   @override
@@ -197,8 +162,8 @@ class _LoginPageViewState extends State<LoginPageView> {
                     ),
                     onPressed: () async {
                       var userinfo = new forutona.UserInfo();
-
-                      await snsLogins("Naver", userinfo);
+                      await SnsLoginDataLogic.snsLogins(
+                          SnsLoginDataLogic.naver, userinfo);
                       var queryParameters = {
                         'Uid': userinfo.uid,
                       };
@@ -219,7 +184,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                             MaterialPageRoute(builder: (context) {
                           return SignInView(
                             userinfo: userinfo,
-                            loginpage: "Naver",
+                            loginpage: SnsLoginDataLogic.naver,
                           );
                         }));
                       }
@@ -232,23 +197,9 @@ class _LoginPageViewState extends State<LoginPageView> {
                         borderRadius: BorderRadius.circular(18.0)),
                     child: Text("KaKao 로그인", style: TextStyle(fontSize: 25)),
                     onPressed: () async {
-                      FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
-
-                      if (await kakaoSignIn.isLoggedIn) {
-                        print("로그인 되어있음");
-                      } else {
-                        final KakaoLoginResult result =
-                            await kakaoSignIn.logIn();
-                        switch (result.status) {
-                          case KakaoLoginStatus.loggedIn:
-                            print(result.account.userID);
-                            break;
-                          case KakaoLoginStatus.loggedOut:
-                            break;
-                          case KakaoLoginStatus.error:
-                            break;
-                        }
-                      }
+                      var userinfo = new forutona.UserInfo();
+                      await SnsLoginDataLogic.snsLogins(
+                          SnsLoginDataLogic.kakao, userinfo);
                     },
                   ),
                 ),

@@ -205,9 +205,11 @@ packages:
   flutter_kakao_login:
     dependency: "direct main"
     description:
-      name: flutter_kakao_login
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: eb74a6f7edff6a75b7ad6112bf7d809b610215aa
+      url: "https://github.com/kimbakcho/flutter_kakao_login"
+    source: git
     version: "0.5.0"
   flutter_localizations:
     dependency: "direct main"
