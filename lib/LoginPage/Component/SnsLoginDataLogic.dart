@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
 import 'package:http/http.dart' as http;
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class SnsLoginDataLogic {
   static String naver = "Naver";
@@ -83,6 +84,45 @@ class SnsLoginDataLogic {
         }
       }
       return false;
+    } else if (loginpage == SnsLoginDataLogic.facebook) {
+      final facebookLogin = FacebookLogin();
+
+      if (await facebookLogin.isLoggedIn) {
+        FacebookAccessToken token = await facebookLogin.currentAccessToken;
+        final graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${token.token}');
+        final profile = jsonDecode(graphResponse.body);
+        userInfo.uid = profile["id"];
+        userInfo.email = profile["email"];
+        userInfo.nickname = profile["name"];
+        userInfo.profilepicktureurl = profile["picture"]["data"]["url"];
+        userInfo.snsservice = SnsLoginDataLogic.facebook;
+        userInfo.snstoken = token.token;
+        return true;
+      } else {
+        final result = await facebookLogin.logIn(['email']);
+        switch (result.status) {
+          case FacebookLoginStatus.loggedIn:
+            //추후에 App FaceBook 에 인증후에 허가권 얻은후 'user_gender','user_age_range','user_birthday' 정보 얻기
+            final graphResponse = await http.get(
+                'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${result.accessToken.token}');
+            final profile = jsonDecode(graphResponse.body);
+            userInfo.uid = profile["id"];
+            userInfo.email = profile["email"];
+            userInfo.nickname = profile["name"];
+            userInfo.profilepicktureurl = profile["picture"]["data"]["url"];
+            userInfo.snsservice = SnsLoginDataLogic.facebook;
+            userInfo.snstoken = result.accessToken.token;
+            return true;
+            break;
+          case FacebookLoginStatus.cancelledByUser:
+            return false;
+            break;
+          case FacebookLoginStatus.error:
+            return false;
+            break;
+        }
+      }
     } else {
       return false;
     }

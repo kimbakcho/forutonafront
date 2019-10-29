@@ -71,6 +71,11 @@ class _SignIn3ViewState extends State<SignIn3View> {
       } else {
         sexarray = [false, true];
       }
+    } else if (loginpage == SnsLoginDataLogic.facebook) {
+      nickNameController.text = userinfo.nickname;
+      inityear = DateTime.now().year;
+      initmonth = 1;
+      initday = 1;
     }
     yearitem = DropDwonPickerItem(
         items: yearslist,
