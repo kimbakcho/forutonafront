@@ -41,6 +41,7 @@ class UserInfo {
           await http.post(posturl, body: jsonEncode(item.toJson()), headers: {
         HttpHeaders.authorizationHeader: "Bearer " + token.token,
         HttpHeaders.contentTypeHeader: "application/json"
+        //클레임 토큰 업데이트 시켜 줘야함. 아래 코드 작성 필요
       });
       return int.tryParse(response.body);
     } else {

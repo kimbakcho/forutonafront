@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 import 'SignIn3View.dart';
 
 class SignIn2View extends StatefulWidget {
@@ -129,7 +130,7 @@ class _SignIn2ViewState extends State<SignIn2View> {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return SignIn3View(
-                                loginpage: "Email",
+                                loginpage: SnsLoginDataLogic.email,
                                 userinfo: this.widget.userinfo,
                               );
                             }));

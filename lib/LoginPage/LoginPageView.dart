@@ -162,8 +162,11 @@ class _LoginPageViewState extends State<LoginPageView> {
                     ),
                     onPressed: () async {
                       var userinfo = new forutona.UserInfo();
-                      await SnsLoginDataLogic.snsLogins(
+                      bool loginresult = await SnsLoginDataLogic.snsLogins(
                           SnsLoginDataLogic.naver, userinfo);
+                      if (!loginresult) {
+                        return;
+                      }
                       var queryParameters = {
                         'Uid': userinfo.uid,
                       };
@@ -198,8 +201,35 @@ class _LoginPageViewState extends State<LoginPageView> {
                     child: Text("KaKao 로그인", style: TextStyle(fontSize: 25)),
                     onPressed: () async {
                       var userinfo = new forutona.UserInfo();
-                      await SnsLoginDataLogic.snsLogins(
+                      bool loginresult = await SnsLoginDataLogic.snsLogins(
                           SnsLoginDataLogic.kakao, userinfo);
+                      if (!loginresult) {
+                        return;
+                      }
+                      var queryParameters = {
+                        'Uid': userinfo.uid,
+                      };
+                      var uri = Preference.httpurloption(
+                          Preference.baseBackEndUrl,
+                          '/api/v1/Auth/GetUid',
+                          queryParameters);
+                      var response = await http.get(uri);
+                      String getuid = response.body;
+
+                      if (userinfo.uid == getuid) {
+                        String customtoken =
+                            await forutona.UserInfo.getCustomToken(userinfo);
+                        await _auth.signInWithCustomToken(token: customtoken);
+                        Navigator.popUntil(context, ModalRoute.withName('/'));
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return SignInView(
+                            userinfo: userinfo,
+                            loginpage: SnsLoginDataLogic.kakao,
+                          );
+                        }));
+                      }
                     },
                   ),
                 ),

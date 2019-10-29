@@ -1,6 +1,7 @@
 import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
+import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 import 'package:intl/intl.dart';
 import 'Component/DropDownPicker.dart';
 
@@ -31,8 +32,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
   DropDwonPickerItem yearitem;
   DropDwonPickerItem monthitem;
   DropDwonPickerItem dayitem;
-  bool isman = false;
-  bool iswoman = false;
+  List<bool> sexarray = [true, false];
   int inityear;
   int initmonth;
   int initday;
@@ -46,23 +46,31 @@ class _SignIn3ViewState extends State<SignIn3View> {
       monthlist.add(i);
     }
     daylist = _makedaylist(DateTime.now().year, 1);
-    if (loginpage == "Email") {
+    if (loginpage == SnsLoginDataLogic.email) {
       inityear = DateTime.now().year;
       initmonth = 1;
       initday = 1;
-    } else if (loginpage == "Naver") {
+    } else if (loginpage == SnsLoginDataLogic.naver) {
       List<String> dateitem = userinfo.agedate.split("-");
       inityear = int.tryParse(dateitem[0]);
       initmonth = int.tryParse(dateitem[1]);
       initday = int.tryParse(dateitem[2]);
-      if (userinfo.sex == 1) {
-        isman = true;
-        iswoman = false;
-      } else if (userinfo.sex == 2) {
-        iswoman = true;
-        isman = false;
-      }
       nickNameController.text = userinfo.nickname;
+      if (userinfo.sex == 0) {
+        sexarray = [true, false];
+      } else {
+        sexarray = [false, true];
+      }
+    } else if (loginpage == SnsLoginDataLogic.kakao) {
+      inityear = DateTime.now().year;
+      initmonth = 1;
+      initday = 1;
+      nickNameController.text = userinfo.nickname;
+      if (userinfo.sex == 0) {
+        sexarray = [true, false];
+      } else {
+        sexarray = [false, true];
+      }
     }
     yearitem = DropDwonPickerItem(
         items: yearslist,
@@ -192,59 +200,41 @@ class _SignIn3ViewState extends State<SignIn3View> {
                 Container(
                   height: 20,
                 ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                Container(
+                    alignment: Alignment(0.0, 0.0),
+                    child: ToggleButtons(
+                      selectedColor: Colors.white,
+                      fillColor: Colors.blue,
+                      selectedBorderColor: Colors.cyan,
                       children: <Widget>[
-                        Checkbox(
-                          value: isman,
-                          onChanged: (value) {
-                            if (value) {
-                              isman = value;
-                              iswoman = false;
-                              setState(() {
-                                userinfo.sex = 1;
-                              });
-                            } else {
-                              setState(() {
-                                isman = value;
-                              });
-                            }
-                          },
+                        Container(
+                          width: 100,
+                          child: Center(
+                            child: Text("남"),
+                          ),
                         ),
-                        Text("남성")
-                      ],
-                    )),
-                    Container(
-                      width: 5,
-                    ),
-                    Expanded(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Checkbox(
-                          value: iswoman,
-                          onChanged: (value) {
-                            if (value) {
-                              setState(() {
-                                iswoman = value;
-                                isman = false;
-                                userinfo.sex = 2;
-                              });
-                            } else {
-                              setState(() {
-                                iswoman = value;
-                              });
-                            }
-                          },
+                        Container(
+                          width: 100,
+                          child: Center(
+                            child: Text("여"),
+                          ),
                         ),
-                        Text("여성")
                       ],
+                      onPressed: (int index) {
+                        setState(() {
+                          if (index == 0) {
+                            sexarray[0] = true;
+                            sexarray[1] = false;
+                            userinfo.sex = 0;
+                          } else if (index == 1) {
+                            sexarray[0] = false;
+                            sexarray[1] = true;
+                            userinfo.sex = 1;
+                          }
+                        });
+                      },
+                      isSelected: sexarray,
                     )),
-                  ],
-                ),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.only(
@@ -255,14 +245,6 @@ class _SignIn3ViewState extends State<SignIn3View> {
                       if (userinfo.nickname.trim().length == 0) {
                         final snackBar = SnackBar(
                           content: Text("닉네임이 없습니다."),
-                          duration: Duration(milliseconds: 1000),
-                        );
-                        Scaffold.of(context).showSnackBar(snackBar);
-                        return;
-                      }
-                      if (!isman && !iswoman) {
-                        final snackBar = SnackBar(
-                          content: Text("성별이 선택되지 않았습니다."),
                           duration: Duration(milliseconds: 1000),
                         );
                         Scaffold.of(context).showSnackBar(snackBar);

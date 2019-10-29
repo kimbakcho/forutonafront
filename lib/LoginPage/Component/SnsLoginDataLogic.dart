@@ -13,7 +13,7 @@ class SnsLoginDataLogic {
   static String naver = "Naver";
   static String kakao = "Kakao";
   static String facebook = "Facebook";
-  static String email = "Facebook";
+  static String email = "Email";
   static Future<bool> snsLogins(
       String loginpage, forutona.UserInfo userInfo) async {
     if (loginpage == SnsLoginDataLogic.naver) {
@@ -26,9 +26,9 @@ class SnsLoginDataLogic {
         userInfo.email = res1.account.email;
         userInfo.profilepicktureurl = res1.account.profileImage;
         if (res1.account.gender == 'F') {
-          userInfo.sex = 2;
-        } else if (res1.account.gender == 'M') {
           userInfo.sex = 1;
+        } else if (res1.account.gender == 'M') {
+          userInfo.sex = 0;
         } else {
           userInfo.sex = 0;
         }
@@ -49,14 +49,30 @@ class SnsLoginDataLogic {
       KakaoAccessToken accessToken;
       KakaoLoginResult result;
       if (await kakaoSignIn.isLoggedIn) {
-        accessToken = await kakaoSignIn.currentAccessToken;
+        result = await kakaoSignIn.getUserMe();
+        userInfo.uid = SnsLoginDataLogic.kakao + result.account.userID;
+        userInfo.email = result.account.userEmail;
+        userInfo.profilepicktureurl = result.account.userProfileImagePath;
+        userInfo.nickname = result.account.userNickname;
+        userInfo.sex = 0;
+        userInfo.snsservice = SnsLoginDataLogic.kakao;
+        KakaoAccessToken token = await kakaoSignIn.currentAccessToken;
+        userInfo.snstoken = token.token;
+        return true;
       } else {
         result = await kakaoSignIn.logIn();
-        result = await kakaoSignIn.getUserMe();
-
         switch (result.status) {
           case KakaoLoginStatus.loggedIn:
-            accessToken = await kakaoSignIn.currentAccessToken;
+            result = await kakaoSignIn.getUserMe();
+            userInfo.uid = SnsLoginDataLogic.kakao + result.account.userID;
+            userInfo.email = result.account.userEmail;
+            userInfo.profilepicktureurl = result.account.userProfileImagePath;
+            userInfo.nickname = result.account.userNickname;
+            userInfo.sex = 0;
+            userInfo.snsservice = SnsLoginDataLogic.kakao;
+            KakaoAccessToken token = await kakaoSignIn.currentAccessToken;
+            userInfo.snstoken = token.token;
+            return true;
             break;
           case KakaoLoginStatus.loggedOut:
             return false;
@@ -66,16 +82,6 @@ class SnsLoginDataLogic {
             break;
         }
       }
-      var url = Preference.httpurlbase(
-          Preference.baseBackEndUrl, "/api/v1/Auth/KakaoUserInfo");
-      Response response = await http.post(url, headers: {
-        HttpHeaders.authorizationHeader: "Bearer " + accessToken.token,
-        HttpHeaders.contentTypeHeader: "application/json"
-      });
-      forutona.UserInfo userinfo =
-          forutona.UserInfo.fromJson(jsonDecode(response.body));
-      userinfo.snsservice = 'kakao';
-
       return false;
     } else {
       return false;
