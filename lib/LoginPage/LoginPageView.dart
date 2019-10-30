@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
-import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
+import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -126,7 +123,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                     onTap: () async {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        var userinfo = new forutona.UserInfo();
+                        var userinfo = new UserInfoMain();
                         return SignInView(
                             userinfo: userinfo, loginpage: "Email");
                       }));
@@ -161,7 +158,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                       style: TextStyle(fontSize: 25),
                     ),
                     onPressed: () async {
-                      var userinfo = new forutona.UserInfo();
+                      var userinfo = new UserInfoMain();
                       bool loginresult = await SnsLoginDataLogic.snsLogins(
                           SnsLoginDataLogic.naver, userinfo);
                       if (!loginresult) {
@@ -179,7 +176,7 @@ class _LoginPageViewState extends State<LoginPageView> {
 
                       if (userinfo.uid == getuid) {
                         String customtoken =
-                            await forutona.UserInfo.getCustomToken(userinfo);
+                            await UserInfoMain.getCustomToken(userinfo);
                         await _auth.signInWithCustomToken(token: customtoken);
                         Navigator.popUntil(context, ModalRoute.withName('/'));
                       } else {
@@ -200,7 +197,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                         borderRadius: BorderRadius.circular(18.0)),
                     child: Text("KaKao 로그인", style: TextStyle(fontSize: 25)),
                     onPressed: () async {
-                      var userinfo = new forutona.UserInfo();
+                      var userinfo = new UserInfoMain();
                       bool loginresult = await SnsLoginDataLogic.snsLogins(
                           SnsLoginDataLogic.kakao, userinfo);
                       if (!loginresult) {
@@ -218,7 +215,7 @@ class _LoginPageViewState extends State<LoginPageView> {
 
                       if (userinfo.uid == getuid) {
                         String customtoken =
-                            await forutona.UserInfo.getCustomToken(userinfo);
+                            await UserInfoMain.getCustomToken(userinfo);
                         await _auth.signInWithCustomToken(token: customtoken);
                         Navigator.popUntil(context, ModalRoute.withName('/'));
                       } else {
@@ -239,7 +236,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                         borderRadius: BorderRadius.circular(18.0)),
                     child: Text("FaceBook 로그인", style: TextStyle(fontSize: 25)),
                     onPressed: () async {
-                      var userinfo = new forutona.UserInfo();
+                      var userinfo = new UserInfoMain();
                       bool loginresult = await SnsLoginDataLogic.snsLogins(
                           SnsLoginDataLogic.facebook, userinfo);
                       if (!loginresult) {
@@ -256,7 +253,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                       String getuid = response.body;
                       if (userinfo.uid == getuid) {
                         String customtoken =
-                            await forutona.UserInfo.getCustomToken(userinfo);
+                            await UserInfoMain.getCustomToken(userinfo);
                         await _auth.signInWithCustomToken(token: customtoken);
                         Navigator.popUntil(context, ModalRoute.withName('/'));
                       } else {

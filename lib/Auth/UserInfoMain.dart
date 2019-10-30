@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:forutonafront/Preference.dart';
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 
-part 'UserInfo.g.dart';
+part 'UserInfoMain.g.dart';
 
 @JsonSerializable()
-class UserInfo {
+class UserInfoMain {
   String uid;
   String nickname = "";
   String profilepicktureurl = "";
@@ -23,10 +25,10 @@ class UserInfo {
   String password = "";
   String snsservice = "";
   String snstoken = "";
-  UserInfo();
+  UserInfoMain();
 
   static Future<int> insertUserInfo(
-    UserInfo item,
+    UserInfoMain item,
   ) async {
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Auth/InsertUserInfo");
@@ -59,7 +61,7 @@ class UserInfo {
     }
   }
 
-  static Future<String> getCustomToken(UserInfo item) async {
+  static Future<String> getCustomToken(UserInfoMain item) async {
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Auth/SnsLoginFireBase");
     var response = await http.post(posturl,
@@ -68,7 +70,25 @@ class UserInfo {
     return response.body;
   }
 
-  factory UserInfo.fromJson(Map<String, dynamic> json) =>
-      _$UserInfoFromJson(json);
-  Map<String, dynamic> toJson() => _$UserInfoToJson(this);
+  factory UserInfoMain.fromJson(Map<String, dynamic> json) =>
+      _$UserInfoMainFromJson(json);
+  Map<String, dynamic> toJson() => _$UserInfoMainToJson(this);
+
+  static Future<String> uploadWithGetProfileimage() async {
+    var uploadurl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, '/api/v1/Auth/UploadProfileImage');
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var request = new http.MultipartRequest("POST", uploadurl);
+    http.MultipartFile multipartFile =
+        await http.MultipartFile.fromPath('ProfileImage', image.path);
+    request.files.add(multipartFile);
+    StreamedResponse streamresponse = await request.send();
+    Response response = await Response.fromStream(streamresponse);
+    if (response.statusCode == 200) {
+      var revlink = response.body;
+      return revlink;
+    } else {
+      return "";
+    }
+  }
 }

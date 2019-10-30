@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
@@ -10,6 +12,8 @@ import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'Preference.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -29,7 +33,6 @@ class _MainPageState extends State<MainPage> {
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
-        print("로그아웃");
         setState(() {});
       } else {
         print(firebaseUser.uid);
@@ -132,9 +135,10 @@ class _MainPageState extends State<MainPage> {
                       try {
                         bool value = await FlutterNaverLogin.isLoggedIn;
                         if (value) {
-                           NaverAccessToken token = await FlutterNaverLogin.currentAccessToken;
-                           String token1 = token.accessToken;
-                           
+                          NaverAccessToken token =
+                              await FlutterNaverLogin.currentAccessToken;
+                          String token1 = token.accessToken;
+
                           // await FlutterNaverLogin.logOut();
                         }
                         print(value);
@@ -212,6 +216,8 @@ class _MainPageState extends State<MainPage> {
               ),
             ],
           ),
-        ));
+        ),
+        body: Container(
+            child: RaisedButton(child: Text("tset"), onPressed: () async {})));
   }
 }

@@ -6,7 +6,7 @@ import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
-import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
+import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
@@ -15,8 +15,7 @@ class SnsLoginDataLogic {
   static String kakao = "Kakao";
   static String facebook = "Facebook";
   static String email = "Email";
-  static Future<bool> snsLogins(
-      String loginpage, forutona.UserInfo userInfo) async {
+  static Future<bool> snsLogins(String loginpage, UserInfoMain userInfo) async {
     if (loginpage == SnsLoginDataLogic.naver) {
       NaverLoginResult res1 = await FlutterNaverLogin.logIn();
       var res2 = await FlutterNaverLogin.currentAccessToken;

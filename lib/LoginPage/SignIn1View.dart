@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
+import 'package:forutonafront/Auth/UserInfoMain.dart';
 
 import 'package:forutonafront/LoginPage/ForutonaAgreeView.dart';
 
@@ -10,7 +9,7 @@ import 'SignIn3View.dart';
 
 class SignInView extends StatefulWidget {
   final String loginpage;
-  final forutona.UserInfo userinfo;
+  final UserInfoMain userinfo;
   SignInView({Key key, this.loginpage, this.userinfo}) : super(key: key);
 
   @override
@@ -21,7 +20,7 @@ class SignInView extends StatefulWidget {
 
 class _SignInViewState extends State<SignInView> {
   String loginpage;
-  forutona.UserInfo userInfo;
+  UserInfoMain userInfo;
   _SignInViewState(this.loginpage, this.userInfo);
 
   bool _allCheckvalue = false;

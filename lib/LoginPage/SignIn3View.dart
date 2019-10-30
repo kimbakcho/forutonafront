@@ -1,13 +1,14 @@
 import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
+import 'package:forutonafront/Auth/UserInfoMain.dart';
+
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 import 'package:intl/intl.dart';
 import 'Component/DropDownPicker.dart';
 
 class SignIn3View extends StatefulWidget {
   SignIn3View({Key key, this.userinfo, this.loginpage}) : super(key: key);
-  final forutona.UserInfo userinfo;
+  final UserInfoMain userinfo;
   final String loginpage;
   @override
   _SignIn3ViewState createState() {
@@ -16,7 +17,7 @@ class SignIn3View extends StatefulWidget {
 }
 
 class _SignIn3ViewState extends State<SignIn3View> {
-  forutona.UserInfo userinfo;
+  UserInfoMain userinfo;
   String loginpage;
   _SignIn3ViewState({
     this.loginpage,
@@ -36,6 +37,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
   int inityear;
   int initmonth;
   int initday;
+
   @override
   void initState() {
     super.initState();
@@ -145,22 +147,38 @@ class _SignIn3ViewState extends State<SignIn3View> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.fromLTRB(
-                20, MediaQuery.of(context).size.height * 0.15, 20, 20),
+                20, MediaQuery.of(context).size.height * 0.1, 20, 20),
             child: ListView(
               children: <Widget>[
-                GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      //width: 100.0,
-                      height: MediaQuery.of(context).size.height * 0.15,
-                      decoration: new BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                          shape: BoxShape.circle),
-                      child: new Center(
-                          child: new Icon(Icons.add_photo_alternate,
-                              size: MediaQuery.of(context).size.height * 0.07)),
-                    )),
-                Container(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                        onTap: () async {
+                          String profileimagelink =
+                              await UserInfoMain.uploadWithGetProfileimage();
+                          setState(() {
+                            userinfo.profilepicktureurl = profileimagelink;
+                          });
+                        },
+                        child: Container(
+                          width: 150.0,
+                          height: 150.0,
+                          decoration: new BoxDecoration(
+                              image: DecorationImage(
+                                  image:
+                                      NetworkImage(userinfo.profilepicktureurl),
+                                  fit: BoxFit.cover),
+                              border: Border.all(color: Colors.black),
+                              shape: BoxShape.circle),
+                          child: new Center(
+                              child: new Icon(Icons.add_photo_alternate,
+                                  size: MediaQuery.of(context).size.height *
+                                      0.07)),
+                        ))
+                  ],
+                ),
+                Container(height: 30),
                 TextFormField(
                   controller: nickNameController,
                   decoration: InputDecoration(
@@ -255,8 +273,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
                         Scaffold.of(context).showSnackBar(snackBar);
                         return;
                       }
-                      int result =
-                          await forutona.UserInfo.insertUserInfo(userinfo);
+                      int result = await UserInfoMain.insertUserInfo(userinfo);
                       if (result == 0) {
                         final snackBar = SnackBar(
                           content: Text("전산에 오류가 생겼습니다."),

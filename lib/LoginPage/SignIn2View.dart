@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Auth/UserInfo.dart' as forutona;
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 import 'SignIn3View.dart';
 
 class SignIn2View extends StatefulWidget {
   SignIn2View({Key key, @required this.userinfo}) : super(key: key);
-  final forutona.UserInfo userinfo;
+  final UserInfoMain userinfo;
 
   @override
   _SignIn2ViewState createState() => _SignIn2ViewState();

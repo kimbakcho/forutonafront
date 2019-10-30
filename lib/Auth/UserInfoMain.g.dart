@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'UserInfo.dart';
+part of 'UserInfoMain.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
-  return UserInfo()
+UserInfoMain _$UserInfoMainFromJson(Map<String, dynamic> json) {
+  return UserInfoMain()
     ..uid = json['uid'] as String
     ..nickname = json['nickname'] as String
     ..profilepicktureurl = json['profilepicktureurl'] as String
@@ -23,7 +23,8 @@ UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
     ..snstoken = json['snstoken'] as String;
 }
 
-Map<String, dynamic> _$UserInfoToJson(UserInfo instance) => <String, dynamic>{
+Map<String, dynamic> _$UserInfoMainToJson(UserInfoMain instance) =>
+    <String, dynamic>{
       'uid': instance.uid,
       'nickname': instance.nickname,
       'profilepicktureurl': instance.profilepicktureurl,
