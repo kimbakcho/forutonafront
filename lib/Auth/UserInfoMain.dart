@@ -77,7 +77,9 @@ class UserInfoMain {
   static Future<String> uploadWithGetProfileimage() async {
     var uploadurl = Preference.httpurlbase(
         Preference.baseBackEndUrl, '/api/v1/Auth/UploadProfileImage');
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, maxHeight: 100, maxWidth: 100);
+        
     var request = new http.MultipartRequest("POST", uploadurl);
     http.MultipartFile multipartFile =
         await http.MultipartFile.fromPath('ProfileImage', image.path);

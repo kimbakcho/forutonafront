@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:forutonafront/Auth/UserInfoMain.dart';
+import 'package:forutonafront/globals.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -33,6 +35,8 @@ class _MainPageState extends State<MainPage> {
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
+        print("test");
+
         setState(() {});
       } else {
         print(firebaseUser.uid);
@@ -49,7 +53,7 @@ class _MainPageState extends State<MainPage> {
       );
     } else {
       return Text(
-        "로그인됨",
+        "Log on",
         style: TextStyle(fontSize: 15),
       );
     }
@@ -218,6 +222,10 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         body: Container(
-            child: RaisedButton(child: Text("tset"), onPressed: () async {})));
+            child: RaisedButton(
+                child: Text("tset"),
+                onPressed: () async {
+                  UserInfoMain.uploadWithGetProfileimage();
+                })));
   }
 }
