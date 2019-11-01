@@ -34,6 +34,7 @@ class _MainPageState extends State<MainPage> {
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) async {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
+        GolobalStateContainer.of(context).state.userInfoMain = null;
         setState(() {});
       } else {
         GolobalStateContainer.of(context).state.userInfoMain =
