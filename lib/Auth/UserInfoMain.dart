@@ -79,7 +79,7 @@ class UserInfoMain {
         Preference.baseBackEndUrl, '/api/v1/Auth/UploadProfileImage');
     var image = await ImagePicker.pickImage(
         source: ImageSource.gallery, maxHeight: 100, maxWidth: 100);
-        
+
     var request = new http.MultipartRequest("POST", uploadurl);
     http.MultipartFile multipartFile =
         await http.MultipartFile.fromPath('ProfileImage', image.path);
@@ -92,5 +92,18 @@ class UserInfoMain {
     } else {
       return "";
     }
+  }
+
+  static Future<UserInfoMain> getUserInfoMain(FirebaseUser firebaseUser) async {
+    IdTokenResult token = await firebaseUser.getIdToken();
+
+    var geturl = Preference.httpurloption(Preference.baseBackEndUrl,
+        "/api/v1/Auth/GetUserInfoMain", {"uid": firebaseUser.uid});
+    Response response = await http.get(geturl, headers: {
+      HttpHeaders.authorizationHeader: "Bearer " + token.token,
+    });
+    UserInfoMain userinfomain =
+        UserInfoMain.fromJson(jsonDecode(response.body));
+    return userinfomain;
   }
 }

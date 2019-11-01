@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
+
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/globals.dart';
-import 'package:http/http.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
@@ -14,8 +12,8 @@ import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as http;
-import 'Preference.dart';
+
+import 'MainpageDarwer.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -27,19 +25,21 @@ class _MainPageState extends State<MainPage> {
   HomeNaviInter naviitme;
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser currentuser;
+
   @override
   void initState() {
     super.initState();
     naviitme = HomeNaviInter();
 
-    FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) {
+    FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) async {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
         print("test");
-
         setState(() {});
       } else {
-        print(firebaseUser.uid);
+        GolobalStateContainer.of(context).state.userInfoMain =
+            await UserInfoMain.getUserInfoMain(firebaseUser);
+        print(GolobalStateContainer.of(context).state.userInfoMain.uid);
         setState(() {});
       }
     });
@@ -52,12 +52,42 @@ class _MainPageState extends State<MainPage> {
         style: TextStyle(fontSize: 15),
       );
     } else {
-      return Text(
-        "Log on",
-        style: TextStyle(fontSize: 15),
-      );
+      return Container(
+          child: CircleAvatar(
+        backgroundImage: NetworkImage(GolobalStateContainer.of(context)
+            .state
+            .userInfoMain
+            .profilepicktureurl),
+      ));
     }
   }
+
+  // loginButton1() {
+  //   return FutureBuilder(
+  //       future: this.login_fetchData(),
+  //       builder: (context, snapshot) {
+  //         switch (snapshot.connectionState) {
+  //           case ConnectionState.none:
+
+  //           case ConnectionState.waiting:
+
+  //           case ConnectionState.active:
+  //             return CircularProgressIndicator();
+  //             break;
+  //           case ConnectionState.done:
+
+  //             return Container();
+  //             break;
+  //         }
+  //       });
+  // }
+
+  // login_fetchData() async {
+  //   return this._memoizer.runOnce(() async {
+  //     FirebaseUser currentuser = await _auth.currentUser();
+  //     return currentuser;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -135,92 +165,12 @@ class _MainPageState extends State<MainPage> {
                       if (await FacebookLogin().isLoggedIn) {
                         await FacebookLogin().logOut();
                       }
-
-                      try {
-                        bool value = await FlutterNaverLogin.isLoggedIn;
-                        if (value) {
-                          NaverAccessToken token =
-                              await FlutterNaverLogin.currentAccessToken;
-                          String token1 = token.accessToken;
-
-                          // await FlutterNaverLogin.logOut();
-                        }
-                        print(value);
-                      } catch (ex) {
-                        print(ex.toString());
-                      }
                     },
                   ),
                 )
               ],
             )),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  child: DrawerHeader(
-                    child: Center(child: Text('여기에 사진')),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                  )),
-              Container(
-                height: 30,
-                child: FlatButton(
-                  child: Container(
-                    alignment: Alignment(-1, 0),
-                    child: Text("프로필 수정"),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              Divider(
-                color: Colors.black,
-              ),
-              Container(
-                height: 30,
-                child: FlatButton(
-                  child: Container(
-                    alignment: Alignment(-1, 0),
-                    child: Text("포인트 상세내역"),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              Divider(
-                color: Colors.black,
-              ),
-              Container(
-                height: 30,
-                child: FlatButton(
-                  child: Container(
-                    alignment: Alignment(-1, 0),
-                    child: Text("설정"),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              Divider(
-                color: Colors.black,
-              ),
-              Container(
-                height: 30,
-                child: FlatButton(
-                  child: Container(
-                    alignment: Alignment(-1, 0),
-                    child: Text("고객센터"),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              Divider(
-                color: Colors.black,
-              ),
-            ],
-          ),
-        ),
+        drawer: MainpageDarwer(),
         body: Container(
             child: RaisedButton(
                 child: Text("tset"),
