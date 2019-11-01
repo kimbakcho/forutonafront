@@ -51,13 +51,16 @@ class SnsLoginDataLogic {
       if (await kakaoSignIn.isLoggedIn) {
         result = await kakaoSignIn.getUserMe();
         userInfo.uid = SnsLoginDataLogic.kakao + result.account.userID;
+        print(userInfo.uid);
         userInfo.email = result.account.userEmail;
         userInfo.profilepicktureurl = result.account.userProfileImagePath;
         userInfo.nickname = result.account.userNickname;
         userInfo.sex = 0;
         userInfo.snsservice = SnsLoginDataLogic.kakao;
         KakaoAccessToken token = await kakaoSignIn.currentAccessToken;
+
         userInfo.snstoken = token.token;
+        print(userInfo.snstoken);
         return true;
       } else {
         result = await kakaoSignIn.logIn();
@@ -78,10 +81,12 @@ class SnsLoginDataLogic {
             return false;
             break;
           case KakaoLoginStatus.error:
+            print(result.errorMessage);
             return false;
             break;
         }
       }
+      print("koko3");
       return false;
     } else if (loginpage == SnsLoginDataLogic.facebook) {
       final facebookLogin = FacebookLogin();
@@ -91,7 +96,7 @@ class SnsLoginDataLogic {
         final graphResponse = await http.get(
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${token.token}');
         final profile = jsonDecode(graphResponse.body);
-        userInfo.uid = profile["id"];
+        userInfo.uid = SnsLoginDataLogic.facebook + profile["id"];
         userInfo.email = profile["email"];
         userInfo.nickname = profile["name"];
         userInfo.profilepicktureurl = profile["picture"]["data"]["url"];
@@ -106,7 +111,7 @@ class SnsLoginDataLogic {
             final graphResponse = await http.get(
                 'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${result.accessToken.token}');
             final profile = jsonDecode(graphResponse.body);
-            userInfo.uid = profile["id"];
+            userInfo.uid = SnsLoginDataLogic.facebook + profile["id"];
             userInfo.email = profile["email"];
             userInfo.nickname = profile["name"];
             userInfo.profilepicktureurl = profile["picture"]["data"]["url"];
