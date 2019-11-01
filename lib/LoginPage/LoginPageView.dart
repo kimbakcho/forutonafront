@@ -217,6 +217,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                         String customtoken =
                             await UserInfoMain.getCustomToken(userinfo);
                         await _auth.signInWithCustomToken(token: customtoken);
+
                         Navigator.popUntil(context, ModalRoute.withName('/'));
                       } else {
                         Navigator.push(context,

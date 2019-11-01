@@ -34,7 +34,6 @@ class _MainPageState extends State<MainPage> {
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) async {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
-        print("test");
         setState(() {});
       } else {
         GolobalStateContainer.of(context).state.userInfoMain =
@@ -46,7 +45,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget loginButton() {
-    if (currentuser == null) {
+    if (GolobalStateContainer.of(context).state.userInfoMain == null) {
       return Text(
         "Log in",
         style: TextStyle(fontSize: 15),

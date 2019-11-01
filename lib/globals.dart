@@ -42,7 +42,7 @@ class _InheritedStateContainer extends InheritedWidget {
     @required Widget child,
   }) : super(key: key, child: child);
   @override
-  bool updateShouldNotify(_InheritedStateContainer old) => true;
+  bool updateShouldNotify(_InheritedStateContainer old) => false;
 }
 
 class GlobalState {
