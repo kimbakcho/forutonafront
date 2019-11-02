@@ -186,7 +186,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0)))),
-                  onChanged: (String value) {
+                  onSaved: (String value) {
                     userinfo.nickname = value;
                   },
                 ),

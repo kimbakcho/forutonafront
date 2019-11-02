@@ -1,9 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
-import 'package:forutonafront/Preference.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
@@ -46,7 +42,6 @@ class SnsLoginDataLogic {
       }
     } else if (loginpage == SnsLoginDataLogic.kakao) {
       FlutterKakaoLogin kakaoSignIn = FlutterKakaoLogin();
-      KakaoAccessToken accessToken;
       KakaoLoginResult result;
       if (await kakaoSignIn.isLoggedIn) {
         result = await kakaoSignIn.getUserMe();
@@ -86,7 +81,6 @@ class SnsLoginDataLogic {
             break;
         }
       }
-      print("koko3");
       return false;
     } else if (loginpage == SnsLoginDataLogic.facebook) {
       final facebookLogin = FacebookLogin();
@@ -130,5 +124,6 @@ class SnsLoginDataLogic {
     } else {
       return false;
     }
+    return false;
   }
 }

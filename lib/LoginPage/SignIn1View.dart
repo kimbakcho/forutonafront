@@ -70,9 +70,7 @@ class _SignInViewState extends State<SignInView> {
                   ],
                 ),
                 Divider(
-                  thickness: 3,
                   indent: 5,
-                  endIndent: 5,
                 ),
                 Row(
                   children: <Widget>[

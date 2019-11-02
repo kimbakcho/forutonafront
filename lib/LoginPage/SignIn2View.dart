@@ -48,7 +48,7 @@ class _SignIn2ViewState extends State<SignIn2View> {
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0)))),
-                  onChanged: (String value) {
+                  onSaved: (String value) {
                     this.widget.userinfo.email = value;
                   },
                 ),
@@ -63,7 +63,7 @@ class _SignIn2ViewState extends State<SignIn2View> {
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0)))),
-                  onChanged: (String value) {
+                  onSaved: (String value) {
                     this.widget.userinfo.password = value;
                   },
                 ),

@@ -146,9 +146,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                 Container(
                   height: 30,
                 ),
-                Divider(
-                  thickness: 3,
-                ),
+                Divider(),
                 Container(
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(

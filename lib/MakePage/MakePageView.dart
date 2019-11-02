@@ -13,7 +13,6 @@ class _MakePageViewState extends State<MakePageView> {
   List<String> litems = [];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

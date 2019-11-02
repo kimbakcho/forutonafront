@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -16,7 +15,7 @@ import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'MainpageDarwer.dart';
 
 class MainPage extends StatefulWidget {
@@ -34,56 +33,51 @@ class _MainPageState extends State<MainPage> {
   MakePageView makePageView = MakePageView();
   HomePageView homePageView = HomePageView();
   PlayPageView playPageView = PlayPageView();
+  SwiperCustomPagination pagenation = SwiperCustomPagination(
+      builder: (BuildContext context, SwiperPluginConfig config) {
+    return new Container();
+  });
+  SwiperController swipercontroller = SwiperController();
 
-  int _swipecurrent = 1;
-  CarouselSlider currentCarouselSlider;
+  Swiper swiper;
+
   @override
   void initState() {
     super.initState();
     naviitme = HomeNaviInter();
-
+    mainSwipeList.add(makePageView);
+    mainSwipeList.add(homePageView);
+    mainSwipeList.add(playPageView);
+    swiper = new Swiper(
+      itemBuilder: (BuildContext context, int index) {
+        return mainSwipeList[index];
+      },
+      index: 1,
+      itemCount: mainSwipeList.length,
+      pagination: pagenation,
+      controller: swipercontroller,
+      onIndexChanged: (index) {
+        if (index == 0) {
+          homenavi.setPosition(HomeNaviInter.makeMode);
+        } else if (index == 1) {
+          homenavi.setPosition(HomeNaviInter.homeMode);
+        } else if (index == 2) {
+          homenavi.setPosition(HomeNaviInter.palyMode);
+        }
+      },
+    );
     homenavi = HomeNavi(
       parentitem: naviitme,
       onclickbutton: (String btnmode) => {
         if (btnmode == HomeNaviInter.makeMode)
-          {
-            currentCarouselSlider.animateToPage(-1,
-                duration: Duration(milliseconds: 300), curve: Curves.linear)
-          }
+          {swipercontroller.move(0)}
         else if (btnmode == HomeNaviInter.homeMode)
-          {
-            currentCarouselSlider.animateToPage(0,
-                duration: Duration(milliseconds: 300), curve: Curves.linear)
-          }
+          {swipercontroller.move(1)}
         else if (btnmode == HomeNaviInter.palyMode)
-          {
-            currentCarouselSlider.animateToPage(1,
-                duration: Duration(milliseconds: 300), curve: Curves.linear)
-          }
+          {swipercontroller.move(2)}
       },
     );
 
-    Future.delayed(Duration.zero, () {
-      currentCarouselSlider = CarouselSlider(
-        height: MediaQuery.of(context).size.height,
-        viewportFraction: 1.0,
-        initialPage: 1,
-        items: mainSwipeList,
-        onPageChanged: (index) {
-          setState(() {
-            if (index == 0) {
-              homenavi.setPosition(HomeNaviInter.makeMode);
-            } else if (index == 1) {
-              homenavi.setPosition(HomeNaviInter.homeMode);
-            } else if (index == 2) {
-              homenavi.setPosition(HomeNaviInter.palyMode);
-            }
-
-            _swipecurrent = index;
-          });
-        },
-      );
-    });
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) async {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
@@ -96,9 +90,6 @@ class _MainPageState extends State<MainPage> {
         setState(() {});
       }
     });
-    mainSwipeList.add(makePageView);
-    mainSwipeList.add(homePageView);
-    mainSwipeList.add(playPageView);
   }
 
   Widget loginButton() {
@@ -196,8 +187,9 @@ class _MainPageState extends State<MainPage> {
             )),
         drawer: MainpageDarwer(),
         body: Container(
-            padding: EdgeInsets.all(0),
-            margin: EdgeInsets.all(0),
-            child: currentCarouselSlider));
+          padding: EdgeInsets.all(0),
+          margin: EdgeInsets.all(0),
+          child: swiper,
+        ));
   }
 }

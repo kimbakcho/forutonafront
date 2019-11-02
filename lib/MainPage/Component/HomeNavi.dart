@@ -5,7 +5,7 @@ import 'HomeNaviInter.dart';
 class HomeNavi extends StatefulWidget {
   HomeNavi({Key key, this.parentitem, this.onclickbutton}) : super(key: key);
   final HomeNaviInter parentitem;
-  _HomeNaviState widget = _HomeNaviState();
+  final _HomeNaviState widget = _HomeNaviState();
   final Function onclickbutton;
   void setPosition(String btnmode) {
     widget.setPosition(btnmode);

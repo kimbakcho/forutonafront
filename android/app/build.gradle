@@ -50,6 +50,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+                
     }
 
     signingConfigs {
@@ -70,7 +71,9 @@ android {
             // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
+
 
 flutter {
     source '../..'

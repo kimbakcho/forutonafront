@@ -20,7 +20,6 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
