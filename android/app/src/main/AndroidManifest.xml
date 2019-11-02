@@ -70,7 +70,11 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU"/>
+
+
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>    
 </manifest>

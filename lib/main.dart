@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'MainPage.dart';
 import 'globals.dart';
+import 'package:google_map_location_picker/generated/i18n.dart'
+    as location_picker;
 
 void main() => runApp(new GolobalStateContainer(child: MyApp()));
 
@@ -14,6 +16,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         localizationsDelegates: [
           // ... app-specific localization delegate[s] here
+          location_picker.S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,

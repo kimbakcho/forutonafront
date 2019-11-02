@@ -1,7 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:forutonafront/Auth/UserInfoMain.dart';
+import 'package:forutonafront/HomePage/HomePageView.dart';
+import 'package:forutonafront/MakePage/MakePageView.dart';
+import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
 
 import 'MainPage/Component/HomeNavi.dart';
@@ -25,12 +29,61 @@ class _MainPageState extends State<MainPage> {
   HomeNaviInter naviitme;
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser currentuser;
+  HomeNavi homenavi;
+  List<Widget> mainSwipeList = List<Widget>();
+  MakePageView makePageView = MakePageView();
+  HomePageView homePageView = HomePageView();
+  PlayPageView playPageView = PlayPageView();
 
+  int _swipecurrent = 1;
+  CarouselSlider currentCarouselSlider;
   @override
   void initState() {
     super.initState();
     naviitme = HomeNaviInter();
 
+    homenavi = HomeNavi(
+      parentitem: naviitme,
+      onclickbutton: (String btnmode) => {
+        if (btnmode == HomeNaviInter.makeMode)
+          {
+            currentCarouselSlider.animateToPage(-1,
+                duration: Duration(milliseconds: 300), curve: Curves.linear)
+          }
+        else if (btnmode == HomeNaviInter.homeMode)
+          {
+            currentCarouselSlider.animateToPage(0,
+                duration: Duration(milliseconds: 300), curve: Curves.linear)
+          }
+        else if (btnmode == HomeNaviInter.palyMode)
+          {
+            currentCarouselSlider.animateToPage(1,
+                duration: Duration(milliseconds: 300), curve: Curves.linear)
+          }
+      },
+    );
+
+    Future.delayed(Duration.zero, () {
+      currentCarouselSlider = CarouselSlider(
+        height: MediaQuery.of(context).size.height,
+        viewportFraction: 1.0,
+        initialPage: 1,
+        items: mainSwipeList,
+        onPageChanged: (index) {
+          setState(() {
+            if (index == 0) {
+              homenavi.setPosition(HomeNaviInter.makeMode);
+            } else if (index == 1) {
+              homenavi.setPosition(HomeNaviInter.homeMode);
+            } else if (index == 2) {
+              homenavi.setPosition(HomeNaviInter.palyMode);
+            }
+
+            _swipecurrent = index;
+          });
+        },
+      );
+    });
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) async {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
@@ -43,6 +96,9 @@ class _MainPageState extends State<MainPage> {
         setState(() {});
       }
     });
+    mainSwipeList.add(makePageView);
+    mainSwipeList.add(homePageView);
+    mainSwipeList.add(playPageView);
   }
 
   Widget loginButton() {
@@ -61,33 +117,6 @@ class _MainPageState extends State<MainPage> {
       ));
     }
   }
-
-  // loginButton1() {
-  //   return FutureBuilder(
-  //       future: this.login_fetchData(),
-  //       builder: (context, snapshot) {
-  //         switch (snapshot.connectionState) {
-  //           case ConnectionState.none:
-
-  //           case ConnectionState.waiting:
-
-  //           case ConnectionState.active:
-  //             return CircularProgressIndicator();
-  //             break;
-  //           case ConnectionState.done:
-
-  //             return Container();
-  //             break;
-  //         }
-  //       });
-  // }
-
-  // login_fetchData() async {
-  //   return this._memoizer.runOnce(() async {
-  //     FirebaseUser currentuser = await _auth.currentUser();
-  //     return currentuser;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,12 +161,7 @@ class _MainPageState extends State<MainPage> {
                       color: Colors.black54,
                       width: 1.0,
                     )),
-                    child: Center(
-                      child: HomeNavi(
-                        parentitem: naviitme,
-                        onclickbutton: () => {},
-                      ),
-                    ),
+                    child: Center(child: homenavi),
                   ),
                 ),
                 Container(
@@ -172,10 +196,8 @@ class _MainPageState extends State<MainPage> {
             )),
         drawer: MainpageDarwer(),
         body: Container(
-            child: RaisedButton(
-                child: Text("tset"),
-                onPressed: () async {
-                  UserInfoMain.uploadWithGetProfileimage();
-                })));
+            padding: EdgeInsets.all(0),
+            margin: EdgeInsets.all(0),
+            child: currentCarouselSlider));
   }
 }

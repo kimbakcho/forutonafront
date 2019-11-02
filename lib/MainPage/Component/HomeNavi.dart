@@ -5,9 +5,15 @@ import 'HomeNaviInter.dart';
 class HomeNavi extends StatefulWidget {
   HomeNavi({Key key, this.parentitem, this.onclickbutton}) : super(key: key);
   final HomeNaviInter parentitem;
+  _HomeNaviState widget = _HomeNaviState();
   final Function onclickbutton;
+  void setPosition(String btnmode) {
+    widget.setPosition(btnmode);
+  }
 
-  _HomeNaviState createState() => _HomeNaviState();
+  _HomeNaviState createState() {
+    return widget;
+  }
 }
 
 class _HomeNaviState extends State<HomeNavi>
@@ -30,6 +36,25 @@ class _HomeNaviState extends State<HomeNavi>
             setState(() {});
           });
     animationController.forward();
+  }
+
+  void setPosition(String btnmode) {
+    if (btnmode == HomeNaviInter.makeMode) {
+      this.widget.parentitem.btnmode = HomeNaviInter.makeMode;
+      animationsetting(HomeNaviInter.makeMode);
+      animationController.reset();
+      animationController.forward();
+    } else if (btnmode == HomeNaviInter.homeMode) {
+      this.widget.parentitem.btnmode = HomeNaviInter.homeMode;
+      animationsetting(HomeNaviInter.homeMode);
+      animationController.reset();
+      animationController.forward();
+    } else if (btnmode == HomeNaviInter.palyMode) {
+      this.widget.parentitem.btnmode = HomeNaviInter.palyMode;
+      animationsetting(HomeNaviInter.palyMode);
+      animationController.reset();
+      animationController.forward();
+    }
   }
 
   void animationsetting(String mode) {
@@ -70,6 +95,7 @@ class _HomeNaviState extends State<HomeNavi>
                 animationsetting(HomeNaviInter.makeMode);
                 animationController.reset();
                 animationController.forward();
+                this.widget.onclickbutton(HomeNaviInter.makeMode);
               },
             ),
           ),
@@ -89,6 +115,7 @@ class _HomeNaviState extends State<HomeNavi>
                 animationsetting(HomeNaviInter.homeMode);
                 animationController.reset();
                 animationController.forward();
+                this.widget.onclickbutton(HomeNaviInter.homeMode);
               },
             ),
           ),
@@ -108,6 +135,7 @@ class _HomeNaviState extends State<HomeNavi>
                 animationsetting(HomeNaviInter.palyMode);
                 animationController.reset();
                 animationController.forward();
+                this.widget.onclickbutton(HomeNaviInter.palyMode);
               },
             ),
           ),
