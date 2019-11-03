@@ -24,8 +24,8 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
     zoom: 16.0,
   );
 
-  bool _isMapCreated = false;
-  bool _isMoving = false;
+  // bool _isMapCreated = false;
+  // bool _isMoving = false;
   bool _compassEnabled = true;
   bool _mapToolbarEnabled = true;
   CameraTargetBounds _cameraTargetBounds = CameraTargetBounds.unbounded;
@@ -39,13 +39,11 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   bool _myLocationEnabled = true;
   bool _myLocationButtonEnabled = true;
   GoogleMapController _controller;
-  bool _nightMode = false;
   String error;
-  bool _permission = false;
-  CameraPosition _currentCameraPosition;
+  // CameraPosition _currentCameraPosition;
 
-  Position _lastKnownPosition;
-  Position _currentPosition;
+  // Position _lastKnownPosition;
+  // Position _currentPosition;
   Geolocator searchgeolocator = Geolocator();
   Set<Marker> markers = Set<Marker>();
   Marker selectMarker;
@@ -60,9 +58,8 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(
-      data.buffer.asUint8List()
-    );
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
         .buffer
@@ -75,9 +72,8 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   }
 
   geolocationinit() async {
-    Map<PermissionGroup, PermissionStatus> permissions =
-        await PermissionHandler().requestPermissions(
-            [PermissionGroup.location, PermissionGroup.locationAlways]);
+    await PermissionHandler().requestPermissions(
+        [PermissionGroup.location, PermissionGroup.locationAlways]);
 
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager = true;
     GeolocationStatus geolocationStatus =
@@ -85,8 +81,8 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
 
     if ((geolocationStatus.value == 2) || (geolocationStatus.value == 3)) {
       setState(() {
-        _lastKnownPosition = null;
-        _currentPosition = null;
+        // _lastKnownPosition = null;
+        // _currentPosition = null;
       });
       _initLastKnownLocation();
       _initCurrentLocation();
@@ -98,14 +94,14 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   void onMapCreated(GoogleMapController controller) async {
     setState(() {
       _controller = controller;
-      _isMapCreated = true;
+      // _isMapCreated = true;
     });
   }
 
   void _updateCameraPosition(CameraPosition position) {
     setState(() {
-      LatLng value = _currentCameraPosition.target;
-      _currentCameraPosition = position;
+      // LatLng value = _currentCameraPosition.target;
+      // _currentCameraPosition = position;
     });
   }
 
@@ -117,6 +113,9 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
         ..forceAndroidLocationManager = !true;
       position = await geolocator.getLastKnownPosition(
           desiredAccuracy: LocationAccuracy.best);
+      _kInitialPosition = CameraPosition(
+          target: LatLng(position.latitude, position.longitude), zoom: 16);
+      _controller.moveCamera(CameraUpdate.newCameraPosition(_kInitialPosition));
     } on PlatformException {
       position = null;
     }
@@ -128,7 +127,7 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
       return;
     }
     setState(() {
-      _lastKnownPosition = position;
+      // _lastKnownPosition = position;
     });
   }
 
@@ -141,15 +140,16 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
         if (mounted) {
           setState(() {
             _controller.moveCamera(CameraUpdate.newCameraPosition(
-                CameraPosition(
+                _kInitialPosition = CameraPosition(
                     target: LatLng(position.latitude, position.longitude),
                     zoom: 16)));
+
             selectMarker = Marker(
                 markerId: MarkerId("selectMarter"),
                 position: LatLng(position.latitude, position.longitude),
                 icon: BitmapDescriptor.fromBytes(_selectmarkerIcon));
             markers.add(selectMarker);
-            _currentPosition = position;
+            // _currentPosition = position;
           });
         }
       }).catchError((e) {
@@ -225,7 +225,9 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
         child: Container(
           width: MediaQuery.of(context).size.width * 0.15,
           child: RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             child: Icon(Icons.close),
           ),
         ),
