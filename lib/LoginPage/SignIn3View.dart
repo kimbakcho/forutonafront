@@ -1,5 +1,6 @@
 import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
@@ -19,6 +20,7 @@ class SignIn3View extends StatefulWidget {
 class _SignIn3ViewState extends State<SignIn3View> {
   UserInfoMain userinfo;
   String loginpage;
+  var _signIn3ViewscaffoldKey = new GlobalKey<ScaffoldState>();
   _SignIn3ViewState({
     this.loginpage,
     this.userinfo,
@@ -30,9 +32,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
   List<int> monthlist = List<int>();
   List<int> daylist = List<int>();
   var dateUtility = new DateUtil();
-  DropDwonPickerItem yearitem;
-  DropDwonPickerItem monthitem;
-  DropDwonPickerItem dayitem;
+
   List<bool> sexarray = [true, false];
   int inityear;
   int initmonth;
@@ -79,38 +79,8 @@ class _SignIn3ViewState extends State<SignIn3View> {
       initmonth = 1;
       initday = 1;
     }
-    yearitem = DropDwonPickerItem(
-        items: yearslist,
-        value: inityear,
-        onchange: (value) {
-          userinfo.agedate = DateFormat("yyyy-MM-dd")
-              .format(DateTime.utc(value, monthitem.value, dayitem.value));
-          setState(() {
-            dayitem.value = 1;
-            dayitem.items = _makedaylist(value, monthitem.value);
-          });
-        });
-    monthitem = DropDwonPickerItem(
-        items: monthlist,
-        value: initmonth,
-        onchange: (value) {
-          userinfo.agedate = DateFormat("yyyy-MM-dd")
-              .format(DateTime.utc(yearitem.value, value, dayitem.value));
-          setState(() {
-            dayitem.value = 1;
-            dayitem.items = _makedaylist(yearitem.value, monthitem.value);
-          });
-        });
-    dayitem = DropDwonPickerItem(
-        value: initday,
-        items: daylist,
-        onchange: (value) {
-          userinfo.agedate = DateFormat("yyyy-MM-dd")
-              .format(DateTime.utc(yearitem.value, monthitem.value, value));
-        });
-
-    userinfo.agedate = DateFormat("yyyy-MM-dd")
-        .format(DateTime.utc(yearitem.value, monthitem.value, dayitem.value));
+    userinfo.agedate =
+        DateFormat("yyyy-MM-dd").format(DateTime(inityear, initmonth, initday));
   }
 
   List<int> _makedaylist(yeardownvalue, monthdownvalue) {
@@ -126,6 +96,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _signIn3ViewscaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           titleSpacing: 0,
@@ -141,6 +112,41 @@ class _SignIn3ViewState extends State<SignIn3View> {
               },
             ),
           ),
+          actions: <Widget>[
+            Container(
+              margin: EdgeInsets.all(10),
+              child: RaisedButton(
+                child: Text('완료'),
+                onPressed: () async {
+                  if (userinfo.nickname.trim().length == 0) {
+                    final snackBar = SnackBar(
+                      content: Text("닉네임이 없습니다."),
+                      duration: Duration(milliseconds: 1000),
+                    );
+                    Scaffold.of(context).showSnackBar(snackBar);
+                    return;
+                  }
+                  int result = await UserInfoMain.insertUserInfo(userinfo);
+                  if (result == 0) {
+                    final snackBar = SnackBar(
+                      content: Text("전산에 오류가 생겼습니다."),
+                      duration: Duration(milliseconds: 1000),
+                    );
+                    Scaffold.of(context).showSnackBar(snackBar);
+                    return;
+                  } else if (result == 1) {
+                    final snackBar = SnackBar(
+                      content: Text("축하 힙니다."),
+                      duration: Duration(milliseconds: 1000),
+                    );
+                    Scaffold.of(context).showSnackBar(snackBar);
+                    await Future.delayed(Duration(seconds: 1));
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                  }
+                },
+              ),
+            )
+          ],
         ),
         body: new Builder(builder: (context) {
           return Container(
@@ -192,40 +198,13 @@ class _SignIn3ViewState extends State<SignIn3View> {
                 ),
                 Container(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      width: 100,
-                      child: DropDownPicker(
-                        items: yearitem,
-                      ),
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      alignment: Alignment(0, 0),
+                      child: Text("성별"),
                     ),
-                    Container(
-                      width: 20,
-                    ),
-                    Container(
-                      width: 100,
-                      child: DropDownPicker(
-                        items: monthitem,
-                      ),
-                    ),
-                    Container(
-                      width: 20,
-                    ),
-                    Container(
-                      width: 100,
-                      child: DropDownPicker(
-                        items: dayitem,
-                      ),
-                    )
-                  ],
-                ),
-                Container(
-                  height: 20,
-                ),
-                Container(
-                    alignment: Alignment(0.0, 0.0),
-                    child: ToggleButtons(
+                    ToggleButtons(
                       selectedColor: Colors.white,
                       fillColor: Colors.blue,
                       selectedBorderColor: Colors.cyan,
@@ -257,42 +236,85 @@ class _SignIn3ViewState extends State<SignIn3View> {
                         });
                       },
                       isSelected: sexarray,
-                    )),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.05),
-                  child: RaisedButton(
-                    child: Text('Complete'),
-                    onPressed: () async {
-                      if (userinfo.nickname.trim().length == 0) {
-                        final snackBar = SnackBar(
-                          content: Text("닉네임이 없습니다."),
-                          duration: Duration(milliseconds: 1000),
-                        );
-                        Scaffold.of(context).showSnackBar(snackBar);
-                        return;
-                      }
-                      int result = await UserInfoMain.insertUserInfo(userinfo);
-                      if (result == 0) {
-                        final snackBar = SnackBar(
-                          content: Text("전산에 오류가 생겼습니다."),
-                          duration: Duration(milliseconds: 1000),
-                        );
-                        Scaffold.of(context).showSnackBar(snackBar);
-                        return;
-                      } else if (result == 1) {
-                        final snackBar = SnackBar(
-                          content: Text("축하 힙니다."),
-                          duration: Duration(milliseconds: 1000),
-                        );
-                        Scaffold.of(context).showSnackBar(snackBar);
-                        await Future.delayed(Duration(seconds: 1));
-                        Navigator.popUntil(context, ModalRoute.withName('/'));
-                      }
-                    },
-                  ),
+                    )
+                  ],
+                ),
+                Container(height: 20),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      alignment: Alignment(0, 0),
+                      child: Text("생일"),
+                    ),
+                    // Container(
+                    //   width: 100,
+                    //   child: DropDownPicker(
+                    //     items: yearitem,
+                    //   ),
+                    // ),
+                    Container(
+                      child: RaisedButton(
+                        onPressed: () {
+                          DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              minTime:
+                                  DateTime(DateTime.now().year - 100, 1, 1),
+                              maxTime: DateTime(DateTime.now().year, 12, 31),
+                              theme: DatePickerTheme(
+                                  backgroundColor: Colors.blue,
+                                  itemStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                  doneStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16)), onChanged: (date) {
+                            print('change $date in time zone ' +
+                                date.timeZoneOffset.inHours.toString());
+                          }, onConfirm: (date) {
+                            setState(() {
+                              userinfo.agedate =
+                                  DateFormat("yyyy-MM-dd").format(date);
+                            });
+                          },
+                              currentTime:
+                                  DateTime(inityear, initmonth, initday),
+                              locale: LocaleType.ko);
+                        },
+                        child: Text(userinfo.agedate),
+                      ),
+                    )
+                  ],
                 )
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     Container(
+                //       width: 100,
+                //       child: DropDownPicker(
+                //         items: yearitem,
+                //       ),
+                //     ),
+                //     Container(
+                //       width: 20,
+                //     ),
+                //     Container(
+                //       width: 100,
+                //       child: DropDownPicker(
+                //         items: monthitem,
+                //       ),
+                //     ),
+                //     Container(
+                //       width: 20,
+                //     ),
+                //     Container(
+                //       width: 100,
+                //       child: DropDownPicker(
+                //         items: dayitem,
+                //       ),
+                //     )
+                //   ],
+                // ),
               ],
             ),
           );

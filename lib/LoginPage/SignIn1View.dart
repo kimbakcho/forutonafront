@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 
 import 'package:forutonafront/LoginPage/ForutonaAgreeView.dart';
+import 'package:forutonafront/LoginPage/PhoneAuthView.dart';
 
 import 'PrivateAgreeView.dart';
 import 'SignIn2View.dart';
@@ -64,6 +65,7 @@ class _SignInViewState extends State<SignInView> {
                           userInfo.privateagree = value ? 1 : 0;
                           userInfo.positionagree = value ? 1 : 0;
                           userInfo.martketingagree = value ? 1 : 0;
+                          userInfo.agelimitagree = value ? 1 : 0;
                         });
                       },
                     )
@@ -174,6 +176,27 @@ class _SignInViewState extends State<SignInView> {
                     )
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Container(
+                      child: GestureDetector(
+                        child: Text(
+                          "만 14세 이상입니다.",
+                        ),
+                        onTap: () {},
+                      ),
+                    )),
+                    Checkbox(
+                      value: userInfo.agelimitagree == 1 ? true : false,
+                      onChanged: (bool value) {
+                        setState(() {
+                          userInfo.agelimitagree = value ? 1 : 0;
+                        });
+                      },
+                    )
+                  ],
+                ),
                 Container(
                   margin: EdgeInsets.only(right: 15),
                   child: Row(
@@ -186,13 +209,12 @@ class _SignInViewState extends State<SignInView> {
                           onPressed: () async {
                             if (userInfo.forutonaagree == 1 &&
                                 userInfo.privateagree == 1 &&
-                                userInfo.positionagree == 1) {
+                                userInfo.positionagree == 1 &&
+                                userInfo.agelimitagree == 1) {
                               if (loginpage == "Email") {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return SignIn2View(
-                                    userinfo: userInfo,
-                                  );
+                                  return PhoneAuthView(userinfo: userInfo);
                                 }));
                               } else {
                                 Navigator.push(context,

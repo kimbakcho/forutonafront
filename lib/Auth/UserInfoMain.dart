@@ -22,6 +22,7 @@ class UserInfoMain {
   int privateagree = 0;
   int positionagree = 0;
   int martketingagree = 0;
+  int agelimitagree = 0;
   String password = "";
   String snsservice = "";
   String snstoken = "";
@@ -78,7 +79,7 @@ class UserInfoMain {
     var uploadurl = Preference.httpurlbase(
         Preference.baseBackEndUrl, '/api/v1/Auth/UploadProfileImage');
     var image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxHeight: 100, maxWidth: 100);
+        source: ImageSource.gallery, maxHeight: 150, maxWidth: 150);
 
     var request = new http.MultipartRequest("POST", uploadurl);
     http.MultipartFile multipartFile =
@@ -94,6 +95,15 @@ class UserInfoMain {
     }
   }
 
+  static void requestAuthPhoneNumber(String uuid, String phonenumber) async {
+    var requesturl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Auth/requestAuthPhoneNumber");
+    Response response = await http.post(requesturl,
+        body: jsonEncode(
+            {"uuid": uuid, "phonenumber": phonenumber, "authnumber": ''}),
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+  }
+
   static Future<UserInfoMain> getUserInfoMain(FirebaseUser firebaseUser) async {
     IdTokenResult token = await firebaseUser.getIdToken();
 
@@ -105,5 +115,22 @@ class UserInfoMain {
     UserInfoMain userinfomain =
         UserInfoMain.fromJson(jsonDecode(response.body));
     return userinfomain;
+  }
+
+  static String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
+  }
+
+  static String validatePassword(String value) {
+    if (value.length < 8) {
+      return "short password";
+    }
+    return null;
   }
 }
