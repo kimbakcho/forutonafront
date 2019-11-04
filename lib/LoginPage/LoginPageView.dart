@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
+import 'package:forutonafront/LoginPage/PassWordFindView.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -142,7 +143,12 @@ class _LoginPageViewState extends State<LoginPageView> {
                         style: TextStyle(
                             decoration: TextDecoration.underline,
                             color: Colors.blue)),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return PassWordFindView();
+                      }));
+                    },
                   ),
                 ),
                 Container(
@@ -183,8 +189,8 @@ class _LoginPageViewState extends State<LoginPageView> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return SignInView(
-                            userinfo: userinfo,
                             loginpage: SnsLoginDataLogic.naver,
+                            userinfo: userinfo,
                           );
                         }));
                       }

@@ -156,4 +156,14 @@ class UserInfoMain {
     }
     return null;
   }
+
+  static Future<UserInfoMain> getUsePasswordFindPhoneInfoByemail(
+      String email) async {
+    var params = {"email": email};
+    var requesturl = Preference.httpurloption(Preference.baseBackEndUrl,
+        "/api/v1/Auth/getUsePasswordFindPhoneInfoByemail", params);
+    var response = await http.get(requesturl);
+    UserInfoMain userinfo = UserInfoMain.fromJson(jsonDecode(response.body));
+    return userinfo;
+  }
 }
