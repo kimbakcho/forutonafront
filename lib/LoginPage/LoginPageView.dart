@@ -16,7 +16,7 @@ class _LoginPageViewState extends State<LoginPageView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  var _loginPageViewStateScaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -25,6 +25,7 @@ class _LoginPageViewState extends State<LoginPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _loginPageViewStateScaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           titleSpacing: 0,
@@ -77,11 +78,11 @@ class _LoginPageViewState extends State<LoginPageView> {
                       style: TextStyle(fontSize: 25),
                     ),
                     onPressed: () async {
-                      await _auth
-                          .signInWithEmailAndPassword(
-                              email: emailController.text,
-                              password: passController.text)
-                          .catchError((value) {
+                      try {
+                        await _auth.signInWithEmailAndPassword(
+                            email: emailController.text,
+                            password: passController.text);
+                      } catch (value) {
                         print(value);
                         if (value.toString().indexOf("ERROR_WRONG_PASSWORD") >=
                             0) {
@@ -89,7 +90,8 @@ class _LoginPageViewState extends State<LoginPageView> {
                             content: Text("PassWord가 잘못 되었습니다."),
                             duration: Duration(milliseconds: 1000),
                           );
-                          Scaffold.of(context).showSnackBar(snackBar);
+                          _loginPageViewStateScaffoldKey.currentState
+                              .showSnackBar(snackBar);
                           return;
                         } else if (value
                                 .toString()
@@ -99,11 +101,11 @@ class _LoginPageViewState extends State<LoginPageView> {
                             content: Text("User를 찾을수 없습니다."),
                             duration: Duration(milliseconds: 1000),
                           );
-                          Scaffold.of(context).showSnackBar(snackBar);
+                          _loginPageViewStateScaffoldKey.currentState
+                              .showSnackBar(snackBar);
                           return;
                         }
-                      });
-
+                      }
                       Navigator.popUntil(context, ModalRoute.withName('/'));
                     },
                   ),

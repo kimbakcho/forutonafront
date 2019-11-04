@@ -21,7 +21,9 @@ UserInfoMain _$UserInfoMainFromJson(Map<String, dynamic> json) {
     ..agelimitagree = json['agelimitagree'] as int
     ..password = json['password'] as String
     ..snsservice = json['snsservice'] as String
-    ..snstoken = json['snstoken'] as String;
+    ..snstoken = json['snstoken'] as String
+    ..phoneauthcheckcode = json['phoneauthcheckcode'] as String
+    ..phonenumber = json['phonenumber'] as String;
 }
 
 Map<String, dynamic> _$UserInfoMainToJson(UserInfoMain instance) =>
@@ -39,5 +41,7 @@ Map<String, dynamic> _$UserInfoMainToJson(UserInfoMain instance) =>
       'agelimitagree': instance.agelimitagree,
       'password': instance.password,
       'snsservice': instance.snsservice,
-      'snstoken': instance.snstoken
+      'snstoken': instance.snstoken,
+      'phoneauthcheckcode': instance.phoneauthcheckcode,
+      'phonenumber': instance.phonenumber
     };

@@ -32,7 +32,6 @@ class _SignIn3ViewState extends State<SignIn3View> {
   List<int> monthlist = List<int>();
   List<int> daylist = List<int>();
   var dateUtility = new DateUtil();
-
   List<bool> sexarray = [true, false];
   int inityear;
   int initmonth;
@@ -123,7 +122,7 @@ class _SignIn3ViewState extends State<SignIn3View> {
                       content: Text("닉네임이 없습니다."),
                       duration: Duration(milliseconds: 1000),
                     );
-                    Scaffold.of(context).showSnackBar(snackBar);
+                    _signIn3ViewscaffoldKey.currentState.showSnackBar(snackBar);
                     return;
                   }
                   int result = await UserInfoMain.insertUserInfo(userinfo);
@@ -132,14 +131,14 @@ class _SignIn3ViewState extends State<SignIn3View> {
                       content: Text("전산에 오류가 생겼습니다."),
                       duration: Duration(milliseconds: 1000),
                     );
-                    Scaffold.of(context).showSnackBar(snackBar);
+                    _signIn3ViewscaffoldKey.currentState.showSnackBar(snackBar);
                     return;
                   } else if (result == 1) {
                     final snackBar = SnackBar(
                       content: Text("축하 힙니다."),
                       duration: Duration(milliseconds: 1000),
                     );
-                    Scaffold.of(context).showSnackBar(snackBar);
+                    _signIn3ViewscaffoldKey.currentState.showSnackBar(snackBar);
                     await Future.delayed(Duration(seconds: 1));
                     Navigator.popUntil(context, ModalRoute.withName('/'));
                   }

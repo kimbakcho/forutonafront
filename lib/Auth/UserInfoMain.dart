@@ -26,6 +26,8 @@ class UserInfoMain {
   String password = "";
   String snsservice = "";
   String snstoken = "";
+  String phoneauthcheckcode = "";
+  String phonenumber = "";
   UserInfoMain();
 
   static Future<int> insertUserInfo(
@@ -35,10 +37,17 @@ class UserInfoMain {
         Preference.baseBackEndUrl, "/api/v1/Auth/InsertUserInfo");
     FirebaseAuth _auth = FirebaseAuth.instance;
     if (item.password != null && item.password.length >= 6) {
-      AuthResult reslut = await _auth.createUserWithEmailAndPassword(
-          email: item.email, password: item.password);
-      item.uid = reslut.user.uid;
-      IdTokenResult token = await reslut.user.getIdToken();
+      IdTokenResult token;
+      try {
+        AuthResult reslut = await _auth.createUserWithEmailAndPassword(
+            email: item.email, password: item.password);
+        item.uid = reslut.user.uid;
+        token = await reslut.user.getIdToken();
+      } catch (ex) {
+        AuthResult reslut = await _auth.signInWithEmailAndPassword(
+            email: item.email, password: item.password);
+        token = await reslut.user.getIdToken();
+      }
 
       var response =
           await http.post(posturl, body: jsonEncode(item.toJson()), headers: {
@@ -102,6 +111,20 @@ class UserInfoMain {
         body: jsonEncode(
             {"uuid": uuid, "phonenumber": phonenumber, "authnumber": ''}),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
+  }
+
+  static Future<String> requestAuthVerificationPhoneNumber(
+      String uuid, String phonenumber, String authnumber) async {
+    var requesturl = Preference.httpurlbase(Preference.baseBackEndUrl,
+        "/api/v1/Auth/requestAuthVerificationPhoneNumber");
+    Response response = await http.post(requesturl,
+        body: jsonEncode({
+          "uuid": uuid,
+          "phonenumber": phonenumber,
+          "authnumber": authnumber
+        }),
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    return response.body;
   }
 
   static Future<UserInfoMain> getUserInfoMain(FirebaseUser firebaseUser) async {
