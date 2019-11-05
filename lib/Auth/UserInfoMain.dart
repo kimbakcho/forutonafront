@@ -166,4 +166,13 @@ class UserInfoMain {
     UserInfoMain userinfo = UserInfoMain.fromJson(jsonDecode(response.body));
     return userinfo;
   }
+
+  static Future<int> passwrodChangefromphone(UserInfoMain userinfo) async {
+    var url = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Auth/passwrodChangefromphone");
+    var response = await http.post(url,
+        body: jsonEncode(userinfo.toJson()),
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    return int.tryParse(response.body);
+  }
 }

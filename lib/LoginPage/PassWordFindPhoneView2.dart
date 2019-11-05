@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
+import 'package:forutonafront/LoginPage/PassWordFindPhoneView3.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:uuid/uuid.dart';
 import 'SignIn2View.dart';
@@ -20,6 +21,7 @@ class PassWordFindPhoneView2 extends StatefulWidget {
 
 class _PassWordFindPhoneView2State extends State<PassWordFindPhoneView2> {
   _PassWordFindPhoneView2State(this.userinfo);
+  var _passWordFindPhoneView2State = GlobalKey<ScaffoldState>();
   UserInfoMain userinfo;
   String phoneNumber;
   String phoneIsoCode;
@@ -45,7 +47,11 @@ class _PassWordFindPhoneView2State extends State<PassWordFindPhoneView2> {
   }
 
   void onSmsReceived(String message) {
-    setState(() {});
+    setState(() {
+      int find = message.indexOf(':');
+      String code = message.substring(find + 1, find + 7);
+      phoneauthnumbercontroller.text = code;
+    });
   }
 
   void onTimeout() {
@@ -84,6 +90,7 @@ class _PassWordFindPhoneView2State extends State<PassWordFindPhoneView2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _passWordFindPhoneView2State,
       appBar: AppBar(
         title: Text("인증"),
       ),
@@ -142,8 +149,19 @@ class _PassWordFindPhoneView2State extends State<PassWordFindPhoneView2> {
                           userinfo.phonenumber,
                           phoneauthnumbercontroller.text);
                   if (userinfo.phoneauthcheckcode != 'false') {
-                    print("맞음");
-                  };
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return PassWordFindPhoneView3(userinfo: userinfo);
+                    }));
+                  } else {
+                    SnackBar snackbar = SnackBar(
+                      content: Text("인증번호가 틀렸습니다."),
+                      duration: Duration(seconds: 1),
+                    );
+                    _passWordFindPhoneView2State.currentState
+                        .showSnackBar(snackbar);
+                  }
+                  ;
                 },
               ),
             )

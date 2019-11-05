@@ -2,7 +2,7 @@ import 'dart:core';
 
 class Preference {
   //testDebug
-  static String baseBackEndUrl = "175.195.52.58:8443";
+  static String baseBackEndUrl = "175.195.52.183:8443";
   static Uri httpurlbase(String authority, String unencodedPath) {
     return Uri.http(authority, unencodedPath);
   }
