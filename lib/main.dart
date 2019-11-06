@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:forutonafront/MakePage/GoogleMapsMakeView.dart';
 import 'MainPage.dart';
 import 'globals.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         ],
         initialRoute: '/',
         routes: {
+          '/GoogleMapsMakeView': (BuildContext context) => GoogleMapsMakeView()
           // When navigating to the "/" route, build the FirstScreen widget.
           // When navigating to the "/second" route, build the SecondScreen widget.
         },

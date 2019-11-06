@@ -21,8 +21,14 @@ class _MainpageDarwerState extends State<MainpageDarwer> {
                 child: Center(
                     child: CircleAvatar(
                   maxRadius: 80,
-                  backgroundImage: NetworkImage(
-                      GolobalStateContainer.of(context)
+                  backgroundImage: GolobalStateContainer.of(context)
+                              .state
+                              .userInfoMain
+                              .profilepicktureurl
+                              .length ==
+                          0
+                      ? AssetImage("assets/basicprofileimage.png")
+                      : NetworkImage(GolobalStateContainer.of(context)
                           .state
                           .userInfoMain
                           .profilepicktureurl),

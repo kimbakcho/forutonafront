@@ -1,13 +1,16 @@
 import 'dart:typed_data';
+import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/FcubeMakeAndList.dart';
+import 'package:forutonafront/globals.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart';
 import 'package:search_map_place/search_map_place.dart';
-import 'Component/CubeMakeAndList.dart';
 import 'dart:ui' as ui;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:uuid/uuid.dart';
 
 const kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";
 
@@ -40,18 +43,22 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   bool _myLocationButtonEnabled = true;
   GoogleMapController _controller;
   String error;
-  // CameraPosition _currentCameraPosition;
+  BitmapDescriptor messageboxicon;
 
-  // Position _lastKnownPosition;
-  // Position _currentPosition;
   Geolocator searchgeolocator = Geolocator();
   Set<Marker> markers = Set<Marker>();
   Marker selectMarker;
+  Marker currentMakrer;
   Uint8List _selectmarkerIcon;
 
+  Fcube selectFcube;
+
+  Uuid uuid = Uuid();
   @override
   void initState() {
     super.initState();
+    selectFcube = Fcube();
+    selectFcube.cubeuuid = uuid.v4();
     geolocationinit();
     _makerImageInit();
   }
@@ -72,9 +79,6 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   }
 
   geolocationinit() async {
-    await PermissionHandler().requestPermissions(
-        [PermissionGroup.location, PermissionGroup.locationAlways]);
-
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager = true;
     GeolocationStatus geolocationStatus =
         await geolocator.checkGeolocationPermissionStatus();
@@ -92,10 +96,44 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   }
 
   void onMapCreated(GoogleMapController controller) async {
+    setmymarkers();
     setState(() {
       _controller = controller;
-      // _isMapCreated = true;
     });
+  }
+
+  void setmymarkers() async {
+    List<Fcube> cubelist = await Fcube.getusercubes();
+    var messagecubemaker =
+        await getBytesFromAsset('assets/MarkesImages/MessageCube.png', 100);
+    var message1cubemaker =
+        await getBytesFromAsset('assets/MarkesImages/MessageCube.png', 150);
+    cubelist.forEach((cube) {
+      Marker setcube = Marker(
+          markerId: MarkerId(cube.cubeuuid),
+          position: LatLng(cube.latitude, cube.longitude),
+          icon: BitmapDescriptor.fromBytes(messagecubemaker),
+          infoWindow: InfoWindow(title: cube.cubename),
+          onTap: () {
+            if (currentMakrer != null) {
+              Marker recovermemarks = currentMakrer.copyWith(
+                  iconParam: BitmapDescriptor.fromBytes(messagecubemaker));
+              markers.remove(currentMakrer);
+              markers.add(recovermemarks);
+            }
+            Marker memarks = markers.firstWhere((test) {
+              return test.markerId.value == cube.cubeuuid;
+            });
+            Marker newmemarks = memarks.copyWith(
+                iconParam: BitmapDescriptor.fromBytes(message1cubemaker));
+            markers.remove(memarks);
+            markers.add(newmemarks);
+            currentMakrer = newmemarks;
+            setState(() {});
+          });
+      markers.add(setcube);
+    });
+    setState(() {});
   }
 
   void _updateCameraPosition(CameraPosition position) {
@@ -143,11 +181,12 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
                 _kInitialPosition = CameraPosition(
                     target: LatLng(position.latitude, position.longitude),
                     zoom: 16)));
-
             selectMarker = Marker(
                 markerId: MarkerId("selectMarter"),
                 position: LatLng(position.latitude, position.longitude),
                 icon: BitmapDescriptor.fromBytes(_selectmarkerIcon));
+            selectFcube.latitude = position.latitude;
+            selectFcube.longitude = position.longitude;
             markers.add(selectMarker);
             // _currentPosition = position;
           });
@@ -158,23 +197,18 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   }
 
   void _googlemaptap(LatLng latlang) {
-    markers.removeWhere((test) {
-      if (test.markerId.value == "selectMarter") {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    selectMarker = Marker(
-        markerId: MarkerId("selectMarter"),
-        position: latlang,
-        icon: BitmapDescriptor.fromBytes(_selectmarkerIcon));
+    Marker tempselectMarker = selectMarker.copyWith(positionParam: latlang);
+    markers.remove(selectMarker);
+    selectMarker = tempselectMarker;
+    selectFcube.latitude = latlang.latitude;
+    selectFcube.longitude = latlang.longitude;
     markers.add(selectMarker);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    selectFcube.uid = GolobalStateContainer.of(context).state.userInfoMain.uid;
     final GoogleMap googleMap = GoogleMap(
       onMapCreated: onMapCreated,
       initialCameraPosition: _kInitialPosition,
@@ -199,7 +233,16 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
       Container(margin: EdgeInsets.only(top: 90), child: googleMap),
       Positioned(
         top: MediaQuery.of(context).size.height * 0.75,
-        child: CubeMakeAndList(),
+        child: FcubeMakeAndList(
+          selectionFcube: selectFcube,
+          onretrunnavi: () async {
+            var tempselectMarker = selectMarker.copyWith();
+            markers.clear();
+            markers.add(tempselectMarker);
+            selectMarker = tempselectMarker;
+            setmymarkers();
+          },
+        ),
       ),
       Positioned(
           top: 30,

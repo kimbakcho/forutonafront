@@ -101,10 +101,17 @@ class _MainPageState extends State<MainPage> {
     } else {
       return Container(
           child: CircleAvatar(
-        backgroundImage: NetworkImage(GolobalStateContainer.of(context)
-            .state
-            .userInfoMain
-            .profilepicktureurl),
+        backgroundImage: GolobalStateContainer.of(context)
+                    .state
+                    .userInfoMain
+                    .profilepicktureurl
+                    .length ==
+                0
+            ? AssetImage("assets/basicprofileimage.png")
+            : NetworkImage(GolobalStateContainer.of(context)
+                .state
+                .userInfoMain
+                .profilepicktureurl),
       ));
     }
   }

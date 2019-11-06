@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/GoogleMapsMakeView.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MakePageView extends StatefulWidget {
   MakePageView({Key key}) : super(key: key);
@@ -68,9 +69,23 @@ class _MakePageViewState extends State<MakePageView> {
               size: 50,
             ),
             onPressed: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return GoogleMapsMakeView();
-              }));
+              Map<PermissionGroup, PermissionStatus> permissition =
+                  await PermissionHandler().requestPermissions([
+                PermissionGroup.location,
+                PermissionGroup.locationAlways
+              ]);
+              if ((permissition[PermissionGroup.location] ==
+                      PermissionStatus.granted) &&
+                  (permissition[PermissionGroup.locationAlways] ==
+                      PermissionStatus.granted)) {
+                Navigator.pushNamed(context, "/GoogleMapsMakeView");
+              } else {
+                SnackBar snak = new SnackBar(
+                  content: Text("다시 한번 버튼을 눌러 주세요."),
+                  duration: Duration(seconds: 1),
+                );
+                Scaffold.of(context).showSnackBar(snak);
+              }
             },
           ),
         )
