@@ -84,10 +84,14 @@ class _MainPageState extends State<MainPage> {
         GolobalStateContainer.of(context).state.userInfoMain = null;
         setState(() {});
       } else {
-        GolobalStateContainer.of(context).state.userInfoMain =
-            await UserInfoMain.getUserInfoMain(firebaseUser);
-        print(GolobalStateContainer.of(context).state.userInfoMain.uid);
-        setState(() {});
+        if (GolobalStateContainer.of(context).state.isnewuser = true) {
+          GolobalStateContainer.of(context).state.isnewuser = false;
+        } else {
+          GolobalStateContainer.of(context).state.userInfoMain =
+              await UserInfoMain.getUserInfoMain(firebaseUser);
+          print(GolobalStateContainer.of(context).state.userInfoMain.uid);
+          setState(() {});
+        }
       }
     });
   }

@@ -2,15 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/globals.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 
-part 'UserInfoMain.g.dart';
-
-@JsonSerializable()
 class UserInfoMain {
   String uid;
   String nickname = "";
@@ -28,7 +25,50 @@ class UserInfoMain {
   String snstoken = "";
   String phoneauthcheckcode = "";
   String phonenumber = "";
+  String isocode = "";
   UserInfoMain();
+
+  UserInfoMain.fromJson(Map<String, dynamic> json) {
+    uid = json['uid'];
+    nickname = json['nickname'];
+    profilepicktureurl = json['profilepicktureurl'];
+    sex = json['sex'];
+    agedate = json['agedate'];
+    email = json['email'];
+    forutonaagree = json['forutonaagree'];
+    privateagree = json['privateagree'];
+    positionagree = json['positionagree'];
+    martketingagree = json['martketingagree'];
+    agelimitagree = json['agelimitagree'];
+    password = json['password'];
+    snsservice = json['snsservice'];
+    snstoken = json['snstoken'];
+    phoneauthcheckcode = json['phoneauthcheckcode'];
+    phonenumber = json['phonenumber'];
+    isocode = json['isocode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['uid'] = this.uid;
+    data['nickname'] = this.nickname;
+    data['profilepicktureurl'] = this.profilepicktureurl;
+    data['sex'] = this.sex;
+    data['agedate'] = this.agedate;
+    data['email'] = this.email;
+    data['forutonaagree'] = this.forutonaagree;
+    data['privateagree'] = this.privateagree;
+    data['positionagree'] = this.positionagree;
+    data['martketingagree'] = this.martketingagree;
+    data['agelimitagree'] = this.agelimitagree;
+    data['password'] = this.password;
+    data['snsservice'] = this.snsservice;
+    data['snstoken'] = this.snstoken;
+    data['phoneauthcheckcode'] = this.phoneauthcheckcode;
+    data['phonenumber'] = this.phonenumber;
+    data['isocode'] = this.isocode;
+    return data;
+  }
 
   static Future<int> insertUserInfo(
     UserInfoMain item,
@@ -80,10 +120,6 @@ class UserInfoMain {
     return response.body;
   }
 
-  factory UserInfoMain.fromJson(Map<String, dynamic> json) =>
-      _$UserInfoMainFromJson(json);
-  Map<String, dynamic> toJson() => _$UserInfoMainToJson(this);
-
   static Future<String> uploadWithGetProfileimage() async {
     var uploadurl = Preference.httpurlbase(
         Preference.baseBackEndUrl, '/api/v1/Auth/UploadProfileImage');
@@ -104,12 +140,17 @@ class UserInfoMain {
     }
   }
 
-  static void requestAuthPhoneNumber(String uuid, String phonenumber) async {
+  static void requestAuthPhoneNumber(
+      String uuid, String phonenumber, String isocode) async {
     var requesturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Auth/requestAuthPhoneNumber");
     Response response = await http.post(requesturl,
-        body: jsonEncode(
-            {"uuid": uuid, "phonenumber": phonenumber, "authnumber": ''}),
+        body: jsonEncode({
+          "uuid": uuid,
+          "phonenumber": phonenumber,
+          "authnumber": '',
+          'isocode': isocode
+        }),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
   }
 

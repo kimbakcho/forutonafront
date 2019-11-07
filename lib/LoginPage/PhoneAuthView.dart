@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
+import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
+import 'package:forutonafront/LoginPage/SignIn1View.dart';
+import 'package:forutonafront/LoginPage/SignIn2View.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:uuid/uuid.dart';
-import 'SignIn2View.dart';
 import 'package:sms_receiver/sms_receiver.dart';
 import 'package:intl/intl.dart';
 
@@ -38,6 +40,7 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
       currenetinternationalizedPhoneNumber = internationalizedPhoneNumber;
       phoneNumber = number;
       phoneIsoCode = isoCode;
+      userinfo.isocode = isoCode;
     });
   }
 
@@ -55,8 +58,9 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
 
   void onSmsReceived(String message) {
     setState(() {
-      _textContent = message;
-      print(_textContent);
+      int find = message.indexOf(':');
+      String code = message.substring(find + 1, find + 7);
+      phoneauthnumbercontroller.text = code;
     });
   }
 
@@ -133,8 +137,10 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
                   child: RaisedButton(
                     onPressed: iscanrequest
                         ? () async {
-                            UserInfoMain.requestAuthPhoneNumber(currentuuid,
-                                currenetinternationalizedPhoneNumber);
+                            UserInfoMain.requestAuthPhoneNumber(
+                                currentuuid,
+                                currenetinternationalizedPhoneNumber,
+                                userinfo.isocode);
                             _startListening();
                           }
                         : null,
@@ -162,6 +168,7 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
                           phoneauthnumbercontroller.text);
                   if (userinfo.phoneauthcheckcode != 'false') {
                     userinfo.phonenumber = currenetinternationalizedPhoneNumber;
+                    periodicSub.cancel();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return SignIn2View(

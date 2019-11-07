@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
+import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 
 import 'package:forutonafront/LoginPage/ForutonaAgreeView.dart';
 import 'package:forutonafront/LoginPage/PhoneAuthView.dart';
@@ -211,7 +212,7 @@ class _SignInViewState extends State<SignInView> {
                                 userInfo.privateagree == 1 &&
                                 userInfo.positionagree == 1 &&
                                 userInfo.agelimitagree == 1) {
-                              if (loginpage == "Email") {
+                              if (loginpage == SnsLoginDataLogic.email) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return PhoneAuthView(userinfo: userInfo);

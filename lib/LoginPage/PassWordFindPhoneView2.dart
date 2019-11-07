@@ -121,8 +121,8 @@ class _PassWordFindPhoneView2State extends State<PassWordFindPhoneView2> {
                   child: RaisedButton(
                     onPressed: iscanrequest
                         ? () async {
-                            UserInfoMain.requestAuthPhoneNumber(
-                                currentuuid, userinfo.phonenumber);
+                            UserInfoMain.requestAuthPhoneNumber(currentuuid,
+                                userinfo.phonenumber, userinfo.isocode);
                             _startListening();
                           }
                         : null,
@@ -143,6 +143,7 @@ class _PassWordFindPhoneView2State extends State<PassWordFindPhoneView2> {
               child: RaisedButton(
                 child: Text("완료"),
                 onPressed: () async {
+                  periodicSub.cancel();
                   userinfo.phoneauthcheckcode =
                       await UserInfoMain.requestAuthVerificationPhoneNumber(
                           currentuuid,

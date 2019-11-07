@@ -46,6 +46,7 @@ class _InheritedStateContainer extends InheritedWidget {
 
 class GlobalState {
   UserInfoMain userInfoMain;
+  bool isnewuser = false;
   GlobalState({
     this.userInfoMain,
   });

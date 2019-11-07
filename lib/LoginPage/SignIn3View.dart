@@ -1,9 +1,11 @@
 import 'package:date_util/date_util.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
+import 'package:forutonafront/globals.dart';
 import 'package:intl/intl.dart';
 import 'Component/DropDownPicker.dart';
 
@@ -125,7 +127,12 @@ class _SignIn3ViewState extends State<SignIn3View> {
                     _signIn3ViewscaffoldKey.currentState.showSnackBar(snackBar);
                     return;
                   }
+                  GolobalStateContainer.of(context).state.isnewuser = true;
                   int result = await UserInfoMain.insertUserInfo(userinfo);
+                  GolobalStateContainer.of(context).state.userInfoMain =
+                      await UserInfoMain.getUserInfoMain(
+                          await FirebaseAuth.instance.currentUser());
+
                   if (result == 0) {
                     final snackBar = SnackBar(
                       content: Text("전산에 오류가 생겼습니다."),
