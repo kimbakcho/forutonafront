@@ -65,6 +65,7 @@ class _FcubeMakeDetail1ViewState extends State<FcubeMakeDetail1View> {
                   margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
                   child: RaisedButton(
                     onPressed: () async {
+                      selectionfcube.cubestate = 1;
                       if (_formkey.currentState.validate()) {
                         selectionfcube.cubename = cubenamecontroller.text;
                         int result = await selectionfcube.makebox();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/FcubeMakeDetail1View.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:search_map_place/search_map_place.dart';
 import 'package:uuid/uuid.dart';
 
 class FcubeListItem {
@@ -119,7 +121,27 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
             padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
             child: RaisedButton(
               child: Text("Make"),
-              onPressed: () {
+              onPressed: () async {
+                List<Placemark> placeaddress = await Geolocator()
+                    .placemarkFromCoordinates(
+                        selectionFcube.latitude, selectionFcube.longitude,
+                        localeIdentifier: "ko");
+                if (placeaddress.length > 0) {
+                  selectionFcube.country = placeaddress[0].country;
+                  selectionFcube.administrativearea =
+                      placeaddress[0].administrativeArea;
+                  selectionFcube.placeaddress =
+                      placeaddress[0].administrativeArea +
+                          " " +
+                          placeaddress[0].thoroughfare +
+                          " " +
+                          placeaddress[0].subThoroughfare;
+                } else {
+                  selectionFcube.placeaddress =
+                      selectionFcube.latitude.toStringAsFixed(2) +
+                          "," +
+                          selectionFcube.longitude.toStringAsFixed(2);
+                }
                 selectPushNavi(context);
               },
             ),

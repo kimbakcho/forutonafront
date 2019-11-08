@@ -103,7 +103,7 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   }
 
   void setmymarkers() async {
-    List<Fcube> cubelist = await Fcube.getusercubes();
+    List<Fcube> cubelist = await Fcube.getusercubes(offset: 0,limit: 10);
     var messagecubemaker =
         await getBytesFromAsset('assets/MarkesImages/MessageCube.png', 100);
     var message1cubemaker =

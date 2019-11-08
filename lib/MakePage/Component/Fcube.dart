@@ -14,6 +14,10 @@ class Fcube {
   String cubetype;
   String maketime;
   double influence;
+  int cubestate;
+  String placeaddress;
+  String administrativearea;
+  String country;
 
   Fcube(
       {this.cubeuuid,
@@ -23,7 +27,11 @@ class Fcube {
       this.cubename,
       this.cubetype,
       this.maketime,
-      this.influence});
+      this.influence,
+      this.cubestate,
+      this.placeaddress,
+      this.administrativearea,
+      this.country});
 
   Fcube.fromJson(Map<String, dynamic> json) {
     cubeuuid = json['cubeuuid'];
@@ -34,6 +42,10 @@ class Fcube {
     cubetype = json['cubetype'];
     maketime = json['maketime'];
     influence = json['influence'];
+    cubestate = json['cubestate'];
+    placeaddress = json['placeaddress'];
+    administrativearea = json['administrativearea'];
+    country = json['country'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,6 +58,10 @@ class Fcube {
     data['cubetype'] = this.cubetype;
     data['maketime'] = this.maketime;
     data['influence'] = this.influence;
+    data['cubestate'] = this.cubestate;
+    data['placeaddress'] = this.placeaddress;
+    data['administrativearea'] = this.administrativearea;
+    data['country'] = this.country;
     return data;
   }
 
@@ -62,11 +78,11 @@ class Fcube {
     return int.tryParse(response.body);
   }
 
-  static Future<List<Fcube>> getusercubes() async {
+  static Future<List<Fcube>> getusercubes({int offset, int limit}) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     IdTokenResult token = await user.getIdToken();
-    var url = Preference.httpurlbase(
-        Preference.baseBackEndUrl, "/api/v1/Fcube/getusercubes");
+    var url = Preference.httpurloption(Preference.baseBackEndUrl,
+        "/api/v1/Fcube/getusercubes", {"offset": "$offset", "limit": "$limit"});
     var response = await http.get(url,
         headers: {HttpHeaders.authorizationHeader: "Bearer " + token.token});
     var recvjson = jsonDecode(response.body);

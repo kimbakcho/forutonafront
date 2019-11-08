@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/HomePage/HomePageView.dart';
+import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/MakePageView.dart';
 import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
@@ -82,9 +83,14 @@ class _MainPageState extends State<MainPage> {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
         GolobalStateContainer.of(context).state.userInfoMain = null;
+        GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
+        GolobalStateContainer.of(context).resetcubeListUtilcubeList();
         setState(() {});
       } else {
-        if (GolobalStateContainer.of(context).state.isnewuser = true) {
+        //isnewuser를 하는 이유는 SignIn3View 에서 UserInfoMain.insertUserInfo(userinfo); 를
+        //하기전에 상태 변경 해당  메소드로 들어와 insert 되기 전에 DB에서
+        // UserInfoMain.getUserInfoMain(firebaseUser) 를 막기 위함이다.
+        if (GolobalStateContainer.of(context).state.isnewuser == true) {
           GolobalStateContainer.of(context).state.isnewuser = false;
         } else {
           GolobalStateContainer.of(context).state.userInfoMain =
@@ -92,6 +98,15 @@ class _MainPageState extends State<MainPage> {
           print(GolobalStateContainer.of(context).state.userInfoMain.uid);
           setState(() {});
         }
+        GolobalStateContainer.of(context).resetcubeListUtilcubeList();
+        Future.delayed(Duration.zero, () async {
+          GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
+
+          GolobalStateContainer.of(context).addfcubeListUtilcubeList(
+              await Fcube.getusercubes(offset: 0, limit: 10));
+
+          GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
+        });
       }
     });
   }

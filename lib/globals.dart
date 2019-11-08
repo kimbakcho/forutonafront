@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
+import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 
 class GolobalStateContainer extends StatefulWidget {
   final Widget child;
@@ -23,6 +25,30 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
     super.initState();
   }
 
+  setfcubeListUtilisLoading(bool value) {
+    setState(() {
+      state.fcubeListUtil.isLoading = value;
+    });
+  }
+
+  addfcubeListUtilcubeList(List<Fcube> value) {
+    setState(() {
+      state.fcubeListUtil.cubeList.addAll(value);
+    });
+  }
+
+  addfcubeListUtilcube(Fcube value) {
+    setState(() {
+      state.fcubeListUtil.cubeList.add(value);
+    });
+  }
+
+  resetcubeListUtilcubeList() {
+    setState(() {
+      state.fcubeListUtil.cubeList.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new _InheritedStateContainer(
@@ -34,22 +60,27 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
 
 class _InheritedStateContainer extends InheritedWidget {
   final _GolobalStateContainerState data;
-
   _InheritedStateContainer({
     Key key,
     @required this.data,
     @required Widget child,
   }) : super(key: key, child: child);
+
   @override
-  bool updateShouldNotify(_InheritedStateContainer old) => false;
+  bool updateShouldNotify(_InheritedStateContainer old) {
+    return true;
+  }
 }
 
 class GlobalState {
   UserInfoMain userInfoMain;
   bool isnewuser = false;
+  FcubeListUtil fcubeListUtil = FcubeListUtil();
+
   GlobalState({
     this.userInfoMain,
   });
+
   factory GlobalState.loading() =>
       new GlobalState(userInfoMain: new UserInfoMain());
 }
