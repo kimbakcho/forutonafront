@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeMakeAndList.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -103,7 +104,8 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   }
 
   void setmymarkers() async {
-    List<Fcube> cubelist = await Fcube.getusercubes(offset: 0,limit: 10);
+    List<FcubeExtender1> cubelist =
+        await FcubeExtender1.getusercubes(offset: 0, limit: 10);
     var messagecubemaker =
         await getBytesFromAsset('assets/MarkesImages/MessageCube.png', 100);
     var message1cubemaker =

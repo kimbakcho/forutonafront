@@ -65,9 +65,10 @@ class Fcube {
     return data;
   }
 
-  Future<int> makebox() async {
+  Future<int> makecube() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     IdTokenResult token = await user.getIdToken();
+
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/makecube");
     var response =
@@ -78,18 +79,16 @@ class Fcube {
     return int.tryParse(response.body);
   }
 
-  static Future<List<Fcube>> getusercubes({int offset, int limit}) async {
+  Future<int> deletecube() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     IdTokenResult token = await user.getIdToken();
-    var url = Preference.httpurloption(Preference.baseBackEndUrl,
-        "/api/v1/Fcube/getusercubes", {"offset": "$offset", "limit": "$limit"});
-    var response = await http.get(url,
-        headers: {HttpHeaders.authorizationHeader: "Bearer " + token.token});
-    var recvjson = jsonDecode(response.body);
-    List<Fcube> list = new List<Fcube>();
-    recvjson.forEach((v) {
-      list.add(new Fcube.fromJson(v));
+    var url = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/deletecube");
+    var response =
+        await http.post(url, body: jsonEncode(this.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
     });
-    return list;
+    return int.tryParse(response.body);
   }
 }

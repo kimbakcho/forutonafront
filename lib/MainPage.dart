@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/HomePage/HomePageView.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/MakePageView.dart';
 import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
@@ -103,7 +104,7 @@ class _MainPageState extends State<MainPage> {
           GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
 
           GolobalStateContainer.of(context).addfcubeListUtilcubeList(
-              await Fcube.getusercubes(offset: 0, limit: 10));
+              await FcubeExtender1.getusercubes(offset: 0, limit: 10));
 
           GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
         });

@@ -347,6 +347,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+10"
+  instant:
+    dependency: "direct main"
+    description:
+      name: instant
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1+2"
   international_phone_input:
     dependency: "direct main"
     description:

@@ -68,7 +68,7 @@ class _FcubeMakeDetail1ViewState extends State<FcubeMakeDetail1View> {
                       selectionfcube.cubestate = 1;
                       if (_formkey.currentState.validate()) {
                         selectionfcube.cubename = cubenamecontroller.text;
-                        int result = await selectionfcube.makebox();
+                        int result = await selectionfcube.makecube();
                         if (result == 0) {
                           SnackBar snackBar = SnackBar(
                             content: Text("설치에 실패 했습니다."),

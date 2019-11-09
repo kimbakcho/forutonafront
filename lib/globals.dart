@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 
 class GolobalStateContainer extends StatefulWidget {
@@ -31,13 +32,13 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
     });
   }
 
-  addfcubeListUtilcubeList(List<Fcube> value) {
+  addfcubeListUtilcubeList(List<FcubeExtender1> value) {
     setState(() {
       state.fcubeListUtil.cubeList.addAll(value);
     });
   }
 
-  addfcubeListUtilcube(Fcube value) {
+  addfcubeListUtilcube(FcubeExtender1 value) {
     setState(() {
       state.fcubeListUtil.cubeList.add(value);
     });

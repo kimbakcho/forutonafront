@@ -1,8 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/GoogleMapsMakeView.dart';
+
 import 'package:forutonafront/globals.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:intl/intl.dart';
 
 class MakePageView extends StatefulWidget {
   MakePageView({Key key}) : super(key: key);
@@ -14,6 +17,8 @@ class MakePageView extends StatefulWidget {
 class _MakePageViewState extends State<MakePageView> {
   ScrollController cubescroller = ScrollController();
   List<String> litems = [];
+  bool iseditmode = false;
+  FcubeExtender1 currentedititem = null;
   @override
   void initState() {
     super.initState();
@@ -94,14 +99,12 @@ class _MakePageViewState extends State<MakePageView> {
   }
 
   Widget makeCubeListWidget() {
+    List<FcubeExtender1> cubes =
+        GolobalStateContainer.of(context).state.fcubeListUtil.cubeList;
     return Container(
       margin: EdgeInsets.all(8),
       child: ListView.builder(
-        itemCount: GolobalStateContainer.of(context)
-            .state
-            .fcubeListUtil
-            .cubeList
-            .length,
+        itemCount: cubes.length,
         itemBuilder: (cxtx, index) {
           return Container(
               margin: EdgeInsets.all(5),
@@ -121,11 +124,7 @@ class _MakePageViewState extends State<MakePageView> {
                       ),
                       Container(width: 10),
                       Expanded(
-                        child: Text(GolobalStateContainer.of(context)
-                            .state
-                            .fcubeListUtil
-                            .cubeList[index]
-                            .cubename),
+                        child: Text(cubes[index].cubename),
                       ),
                       Container(
                         margin: EdgeInsets.fromLTRB(0, 0, 10, 20),
@@ -134,7 +133,11 @@ class _MakePageViewState extends State<MakePageView> {
                         height: 20,
                         child: RaisedButton(
                           padding: EdgeInsets.all(0),
-                          onPressed: () {},
+                          onPressed: () {
+                            this.iseditmode = true;
+                            this.currentedititem = cubes[index];
+                            setState(() {});
+                          },
                           child: Icon(
                             Icons.apps,
                             size: 15,
@@ -150,19 +153,40 @@ class _MakePageViewState extends State<MakePageView> {
                       ),
                       Expanded(
                         child: Container(
-                          child: Text(GolobalStateContainer.of(context)
-                                      .state
-                                      .fcubeListUtil
-                                      .cubeList[index]
-                                      .placeaddress ==
-                                  null
+                          child: Text(cubes[index].placeaddress == null
                               ? ""
-                              : GolobalStateContainer.of(context)
-                                  .state
-                                  .fcubeListUtil
-                                  .cubeList[index]
-                                  .placeaddress),
+                              : cubes[index].placeaddress),
                         ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 60,
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                            child: Text(cubes[index].nickname),
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Container(
+                            child: Text(DateFormat("yyyy-MM-dd HH:mm:ss")
+                                .format(DateTime.parse(cubes[index].maketime)
+                                    .add(Duration(hours: 9)))),
+                            //
+                          )),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 60,
+                      ),
+                      Container(
+                        child: Text("${cubes[index].influence}"),
                       )
                     ],
                   )
@@ -173,44 +197,140 @@ class _MakePageViewState extends State<MakePageView> {
     );
   }
 
+  Future<bool> _asyncConfirmDeletecubeDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // user must tap button for close dialog!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text('정말로 삭제 하시겠습니까?'),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text('취소'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            FlatButton(
+              child: const Text('삭제'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      overflow: Overflow.clip,
-      children: [
-        makeMainViewChioce(),
-        Positioned(
-          bottom: 15,
-          right: 0,
-          child: RaisedButton(
-            padding: EdgeInsets.all(7),
-            shape: CircleBorder(),
-            child: Icon(
-              Icons.control_point_duplicate,
-              size: 50,
+    return Scaffold(
+      bottomNavigationBar: iseditmode
+          ? BottomAppBar(
+              child: Container(
+                height: 120,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: FlatButton(
+                        child: Text("수정 하기"),
+                        onPressed: () {
+                          iseditmode = false;
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: FlatButton(
+                        child: Text("삭제 하기"),
+                        onPressed: () async {
+                          bool result =
+                              await _asyncConfirmDeletecubeDialog(context);
+                          this.iseditmode = false;
+                          if (result) {
+                            currentedititem.deletecube();
+                            GolobalStateContainer.of(context)
+                                .state
+                                .fcubeListUtil
+                                .cubeList
+                                .removeWhere((value) {
+                              if (value.cubeuuid == currentedititem.cubeuuid) {
+                                return true;
+                              } else {
+                                return false;
+                              }
+                            });
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          : null,
+      body: Container(
+        decoration: iseditmode ? BoxDecoration(color: Colors.grey) : null,
+        child: Stack(
+          overflow: Overflow.clip,
+          children: [
+            GestureDetector(
+              onTap: () {
+                this.iseditmode = false;
+                setState(() {});
+              },
+              child: makeMainViewChioce(),
             ),
-            onPressed: () async {
-              Map<PermissionGroup, PermissionStatus> permissition =
-                  await PermissionHandler().requestPermissions([
-                PermissionGroup.location,
-                PermissionGroup.locationAlways
-              ]);
-              if ((permissition[PermissionGroup.location] ==
-                      PermissionStatus.granted) &&
-                  (permissition[PermissionGroup.locationAlways] ==
-                      PermissionStatus.granted)) {
-                Navigator.pushNamed(context, "/GoogleMapsMakeView");
-              } else {
-                SnackBar snak = new SnackBar(
-                  content: Text("다시 한번 버튼을 눌러 주세요."),
-                  duration: Duration(seconds: 1),
-                );
-                Scaffold.of(context).showSnackBar(snak);
-              }
-            },
-          ),
-        )
-      ],
+            Positioned(
+              bottom: 15,
+              right: 0,
+              child: RaisedButton(
+                padding: EdgeInsets.all(7),
+                shape: CircleBorder(),
+                child: Icon(
+                  Icons.control_point_duplicate,
+                  size: 50,
+                ),
+                onPressed: () async {
+                  Map<PermissionGroup, PermissionStatus> permissition =
+                      await PermissionHandler().requestPermissions([
+                    PermissionGroup.location,
+                    PermissionGroup.locationAlways
+                  ]);
+                  if ((permissition[PermissionGroup.location] ==
+                          PermissionStatus.granted) &&
+                      (permissition[PermissionGroup.locationAlways] ==
+                          PermissionStatus.granted)) {
+                    await Navigator.pushNamed(context, "/GoogleMapsMakeView");
+                    GolobalStateContainer.of(context)
+                        .resetcubeListUtilcubeList();
+                    GolobalStateContainer.of(context)
+                        .setfcubeListUtilisLoading(true);
+                    GolobalStateContainer.of(context).addfcubeListUtilcubeList(
+                        await FcubeExtender1.getusercubes(
+                            offset: 0, limit: 10));
+                    GolobalStateContainer.of(context)
+                        .setfcubeListUtilisLoading(false);
+                  } else {
+                    SnackBar snak = new SnackBar(
+                      content: Text("다시 한번 버튼을 눌러 주세요."),
+                      duration: Duration(seconds: 1),
+                    );
+                    Scaffold.of(context).showSnackBar(snak);
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

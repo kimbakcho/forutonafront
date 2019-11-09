@@ -1,6 +1,6 @@
-import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 
 class FcubeListUtil {
-   List<Fcube> cubeList = List<Fcube>();
-   bool isLoading = false;
+  List<FcubeExtender1> cubeList = List<FcubeExtender1>();
+  bool isLoading = false;
 }
