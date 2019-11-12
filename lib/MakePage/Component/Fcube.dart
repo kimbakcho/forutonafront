@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:ui' as ui;
 
 class Fcube {
   String cubeuuid;
@@ -90,5 +94,19 @@ class Fcube {
       HttpHeaders.authorizationHeader: "Bearer " + token.token
     });
     return int.tryParse(response.body);
+  }
+
+  static Future<Uint8List> _getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
+  }
+
+  static Future<BitmapDescriptor> getMarkerImage(String path, int widt) async {
+    return BitmapDescriptor.fromBytes(await _getBytesFromAsset(path, widt));
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubePositionSetupView.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/FcubeMakeDetail1View.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:search_map_place/search_map_place.dart';
@@ -9,7 +11,13 @@ class FcubeListItem {
   String type;
   String name;
   IconData icon;
-  FcubeListItem({this.type, this.name, this.icon});
+  String description = "";
+  FcubeListItem({this.type, this.name, this.icon, this.description});
+}
+
+class FcubeType {
+  static String messageCube = "MessageCube";
+  static String questCube = "questCube";
 }
 
 class FcubeMakeAndList extends StatefulWidget {
@@ -34,9 +42,15 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
   void initState() {
     super.initState();
     items.add(FcubeListItem(
-        type: "MeessageBox", name: "메세제 박스", icon: Icons.picture_in_picture));
+        type: FcubeType.messageCube,
+        name: "메세제 박스",
+        icon: Icons.picture_in_picture,
+        description: "기본형"));
     items.add(FcubeListItem(
-        type: "큐브타입2", name: "메세제 박스1", icon: Icons.picture_in_picture));
+        type: FcubeType.questCube,
+        name: "퀘스트 큐브",
+        icon: Icons.picture_in_picture,
+        description: "퀘스트 큐브"));
     items.add(FcubeListItem(
         type: "큐브타입3", name: "메세제 박스1", icon: Icons.picture_in_picture));
     items.add(FcubeListItem(
@@ -57,7 +71,7 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
   }
 
   void selectPushNavi(context) async {
-    if (selectionFcube.cubetype == "MeessageBox") {
+    if (selectionFcube.cubetype == FcubeType.messageCube) {
       await Navigator.push(context, MaterialPageRoute(builder: (context) {
         return FcubeMakeDetail1View(
           selectionfcube: selectionFcube,
@@ -68,13 +82,19 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
       selectionFcube.cubename =
           selectionFcube.cubetype = items[currentClick].type;
       this.widget.onretrunnavi();
+    } else if (selectionFcube.cubetype == FcubeType.questCube) {
+      await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return FcubePositionSetupView(
+          fcubeQuest: new FcubeQuest(cube: selectionFcube),
+        );
+      }));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.25,
+        height: MediaQuery.of(context).size.height * 0.3,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(color: Color(0xADA3A37D)),
         child: Column(children: <Widget>[
@@ -117,6 +137,9 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
             child: Text(items[currentClick].name),
           ),
           Container(
+            child: Text(items[currentClick].description),
+          ),
+          Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
             child: RaisedButton(
@@ -135,7 +158,9 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
                           " " +
                           placeaddress[0].thoroughfare +
                           " " +
-                          placeaddress[0].subThoroughfare;
+                          placeaddress[0].subThoroughfare +
+                          placeaddress[0].name;
+                  ;
                 } else {
                   selectionFcube.placeaddress =
                       selectionFcube.latitude.toStringAsFixed(2) +

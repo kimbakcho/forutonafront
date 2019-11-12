@@ -10,7 +10,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart';
 import 'package:search_map_place/search_map_place.dart';
 import 'dart:ui' as ui;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 const kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";
@@ -234,7 +233,7 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
         body: Stack(children: <Widget>[
       Container(margin: EdgeInsets.only(top: 90), child: googleMap),
       Positioned(
-        top: MediaQuery.of(context).size.height * 0.75,
+        top: MediaQuery.of(context).size.height * 0.7,
         child: FcubeMakeAndList(
           selectionFcube: selectFcube,
           onretrunnavi: () async {

@@ -47,9 +47,13 @@ dependencies:
   uuid: ^2.0.1
   sms_receiver: ^0.2.0
   instant: ^0.1.1
+  quill_delta: ^1.0.0
   flutter_kakao_login:
     git:
       url: https://github.com/kimbakcho/flutter_kakao_login
+
+  zefyr:
+    path: ./extlib/zefyr/packages/zefyr/
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +75,7 @@ flutter:
   assets:
     - assets/
     - assets/MarkesImages/
+    - assets/Html/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
