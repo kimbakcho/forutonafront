@@ -6,7 +6,7 @@ import 'package:forutonafront/LoginPage/ForutonaAgreeView.dart';
 import 'package:forutonafront/LoginPage/PhoneAuthView.dart';
 
 import 'PrivateAgreeView.dart';
-import 'SignIn2View.dart';
+
 import 'SignIn3View.dart';
 
 class SignInView extends StatefulWidget {

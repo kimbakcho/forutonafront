@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
-import 'package:forutonafront/MakePage/Component/QuestCube/FcubePositionSetupView.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FQuestCubePositionSetupView.dart';
+
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/FcubeMakeDetail1View.dart';
+import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:search_map_place/search_map_place.dart';
 import 'package:uuid/uuid.dart';
 
 class FcubeListItem {
@@ -13,11 +14,6 @@ class FcubeListItem {
   IconData icon;
   String description = "";
   FcubeListItem({this.type, this.name, this.icon, this.description});
-}
-
-class FcubeType {
-  static String messageCube = "MessageCube";
-  static String questCube = "questCube";
 }
 
 class FcubeMakeAndList extends StatefulWidget {
@@ -41,33 +37,6 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
   @override
   void initState() {
     super.initState();
-    items.add(FcubeListItem(
-        type: FcubeType.messageCube,
-        name: "메세제 박스",
-        icon: Icons.picture_in_picture,
-        description: "기본형"));
-    items.add(FcubeListItem(
-        type: FcubeType.questCube,
-        name: "퀘스트 큐브",
-        icon: Icons.picture_in_picture,
-        description: "퀘스트 큐브"));
-    items.add(FcubeListItem(
-        type: "큐브타입3", name: "메세제 박스1", icon: Icons.picture_in_picture));
-    items.add(FcubeListItem(
-        type: "큐브타입4", name: "메세제 박스1", icon: Icons.picture_in_picture));
-    items.add(FcubeListItem(
-        type: "큐브타입5", name: "메세제 박스1", icon: Icons.picture_in_picture));
-    items.add(FcubeListItem(
-        type: "큐브타입6", name: "메세제 박스1", icon: Icons.picture_in_picture));
-    items.add(FcubeListItem(
-        type: "큐브타입7", name: "메세제 박스1", icon: Icons.picture_in_picture));
-    items.add(FcubeListItem(
-        type: "큐브타입8", name: "메세제 박스1", icon: Icons.picture_in_picture));
-    items.add(FcubeListItem(
-        type: "큐브타입9", name: "메세제 박스1", icon: Icons.picture_in_picture));
-    items.add(FcubeListItem(
-        type: "큐브타입10", name: "메세제 박스1", icon: Icons.picture_in_picture));
-    selectionFcube.cubetype = items[currentClick].type;
   }
 
   void selectPushNavi(context) async {
@@ -84,7 +53,7 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
       this.widget.onretrunnavi();
     } else if (selectionFcube.cubetype == FcubeType.questCube) {
       await Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return FcubePositionSetupView(
+        return FQuestCubePositionSetupView(
           fcubeQuest: new FcubeQuest(cube: selectionFcube),
         );
       }));
@@ -160,7 +129,6 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
                           " " +
                           placeaddress[0].subThoroughfare +
                           placeaddress[0].name;
-                  ;
                 } else {
                   selectionFcube.placeaddress =
                       selectionFcube.latitude.toStringAsFixed(2) +

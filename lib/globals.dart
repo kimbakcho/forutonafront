@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
-import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 

@@ -1,78 +1,58 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
-import 'package:forutonafront/MakePage/Component/QuestCube/CustomImageDelegate%20.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FQuestCubeDetailCubeSetupView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:quill_delta/quill_delta.dart';
-import 'package:zefyr/zefyr.dart';
 
-class FcubePositionSetupView extends StatefulWidget {
+class FQuestCubePositionSetupView extends StatefulWidget {
   final FcubeQuest fcubeQuest;
-  FcubePositionSetupView({Key key, this.fcubeQuest}) : super(key: key);
+  FQuestCubePositionSetupView({Key key, this.fcubeQuest}) : super(key: key);
 
   @override
-  _FcubePositionSetupViewState createState() {
-    return _FcubePositionSetupViewState(fcubeQuest);
+  _FQuestCubePositionSetupViewState createState() {
+    return _FQuestCubePositionSetupViewState(fcubeQuest);
   }
 }
 
-class _FcubePositionSetupViewState extends State<FcubePositionSetupView> {
+class _FQuestCubePositionSetupViewState
+    extends State<FQuestCubePositionSetupView> {
   FcubeQuest fcubeQuest;
-  _FcubePositionSetupViewState(this.fcubeQuest);
+  _FQuestCubePositionSetupViewState(this.fcubeQuest);
 
   CameraPosition initialCameraPosition;
   GoogleMapController _mapController;
-
-  NotusDocument document;
-  ZefyrController _wigcontroller;
-  FocusNode _focusNode;
-
   ScrollController _mainListcontroller = ScrollController();
-
   Set<Marker> makres = new Set<Marker>();
-
-  bool isedithint = true;
+  GlobalKey<FormState> pageeditfrom = GlobalKey<FormState>();
+  TextEditingController namecontroller;
+  CubeRichTextController richTextController;
 
   @override
   void initState() {
-    // TODO: implement initState
+    richTextController = new CubeRichTextController();
+    richTextController.isedithint = true;
+    richTextController.ondatacahnge = (value) {
+      setState(() {});
+    };
+    richTextController.ontoolbarshow = () {
+      setState(() {
+        _mainListcontroller.jumpTo(MediaQuery.of(context).size.height * 0.6);
+      });
+    };
+    namecontroller = new TextEditingController();
     initialCameraPosition = new CameraPosition(
         target: LatLng(fcubeQuest.latitude, fcubeQuest.longitude), zoom: 16);
-
     super.initState();
-
-    document = _loadDocument();
-    setState(() {
-      _wigcontroller = ZefyrController(document);
-
-      _focusNode = FocusNode();
-    });
-    document.changes.listen((data) {
-      print(document.length);
-      if (document.length > 0) {
-        isedithint = false;
-        setState(() {});
-      } else {
-        isedithint = true;
-        setState(() {});
-      }
-    });
-  }
-
-  NotusDocument _loadDocument() {
-    // For simplicity we hardcode a simple document with one line of text
-    // saying "Zefyr Quick Start".
-    // (Note that delta must always end with newline.)
-
-    return NotusDocument();
   }
 
   void setmakers() async {
     BitmapDescriptor icon =
-        await Fcube.getMarkerImage("assets/MarkesImages/QuestCube.png", 150);
+        await Fcube.getMarkerImage(fcubeQuest.cubeimage, 150);
 
     setState(() {
       makres.add(Marker(
@@ -108,7 +88,21 @@ class _FcubePositionSetupViewState extends State<FcubePositionSetupView> {
             Container(
               margin: EdgeInsets.all(10),
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (pageeditfrom.currentState.validate()) {
+                    fcubeQuest.cubename = namecontroller.text;
+                    fcubeQuest.description =
+                        jsonEncode(richTextController.document.toJson());
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return FQuestCubeDetailCubeSetupView(
+                        fcubeQuest: fcubeQuest,
+                      );
+                    }));
+                  } else {
+                    setState(() {});
+                  }
+                },
                 child: Text("다음"),
               ),
             )
@@ -130,37 +124,37 @@ class _FcubePositionSetupViewState extends State<FcubePositionSetupView> {
               Container(
                   padding: EdgeInsets.all(15),
                   alignment: Alignment(-1, 0),
-                  child: TextField(
-                    decoration: InputDecoration(hintText: "이름을 지어 주세요!."),
+                  child: Form(
+                    key: pageeditfrom,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "제목이 비어 있습니다.";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: namecontroller,
+                      decoration: InputDecoration(hintText: "이름을 지어 주세요!."),
+                    ),
                   )),
               Container(
                 height: 500,
                 child: Stack(
                   children: <Widget>[
+                    CubeMakeRichTextEdit(
+                        custommode: "forutona1",
+                        fcube: fcubeQuest,
+                        parentcontroller: richTextController),
                     Positioned(
                       top: 70,
                       left: 20,
-                      child: isedithint
+                      child: richTextController.isedithint
                           ? Text("퀘스트 내용을 입력 하세요")
                           : Container(
                               width: 0,
                             ),
                     ),
-                    ZefyrScaffold(
-                      child: ZefyrEditor(
-                        custommode: "forutona1",
-                        autofocus: false,
-                        padding: EdgeInsets.all(16),
-                        imageDelegate: CustomImageDelegate(),
-                        controller: _wigcontroller,
-                        focusNode: _focusNode,
-                        ontoolbarshow: () {
-                          _mainListcontroller
-                              .jumpTo(MediaQuery.of(context).size.height * 0.5);
-                          setState(() {});
-                        },
-                      ),
-                    )
                   ],
                 ),
               )

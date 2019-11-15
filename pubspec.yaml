@@ -48,6 +48,7 @@ dependencies:
   sms_receiver: ^0.2.0
   instant: ^0.1.1
   quill_delta: ^1.0.0
+
   flutter_kakao_login:
     git:
       url: https://github.com/kimbakcho/flutter_kakao_login

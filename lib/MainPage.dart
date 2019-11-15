@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/HomePage/HomePageView.dart';
-import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/MakePageView.dart';
 import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
-
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
 import 'LoginPage/LoginPageView.dart';
-
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'MainpageDarwer.dart';

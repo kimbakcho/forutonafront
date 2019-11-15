@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/PassWordFindPhoneView3.dart';
-import 'package:international_phone_input/international_phone_input.dart';
+
 import 'package:uuid/uuid.dart';
-import 'SignIn2View.dart';
+
 import 'package:sms_receiver/sms_receiver.dart';
 import 'package:intl/intl.dart';
 
 class PassWordFindPhoneView2 extends StatefulWidget {
-  UserInfoMain userinfo;
+  final UserInfoMain userinfo;
   PassWordFindPhoneView2({Key key, this.userinfo}) : super(key: key);
 
   @override
@@ -38,7 +38,6 @@ class _PassWordFindPhoneView2State extends State<PassWordFindPhoneView2> {
   SmsReceiver _smsReceiver;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     currentuuid = uuid.v4();
@@ -162,7 +161,6 @@ class _PassWordFindPhoneView2State extends State<PassWordFindPhoneView2> {
                     _passWordFindPhoneView2State.currentState
                         .showSnackBar(snackbar);
                   }
-                  ;
                 },
               ),
             )

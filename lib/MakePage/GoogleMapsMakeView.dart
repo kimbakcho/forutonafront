@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
-import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
-import 'package:forutonafront/MakePage/Component/FcubeMakeAndList.dart';
-import 'package:forutonafront/globals.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FQuestCubePositionSetupView.dart';
+
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
+import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,13 +16,18 @@ import 'package:uuid/uuid.dart';
 const kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";
 
 class GoogleMapsMakeView extends StatefulWidget {
-  GoogleMapsMakeView({Key key}) : super(key: key);
+  final Fcube selectFcube;
+  GoogleMapsMakeView({Key key, this.selectFcube}) : super(key: key);
 
   @override
-  _GoogleMapsMakeViewState createState() => _GoogleMapsMakeViewState();
+  _GoogleMapsMakeViewState createState() {
+    return _GoogleMapsMakeViewState(selectFcube);
+  }
 }
 
 class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
+  Fcube selectFcube;
+  _GoogleMapsMakeViewState(this.selectFcube);
   CameraPosition _kInitialPosition = const CameraPosition(
     target: LatLng(37.550944, 126.990819),
     zoom: 16.0,
@@ -51,14 +57,10 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   Marker currentMakrer;
   Uint8List _selectmarkerIcon;
 
-  Fcube selectFcube;
-
   Uuid uuid = Uuid();
   @override
   void initState() {
     super.initState();
-    selectFcube = Fcube();
-    selectFcube.cubeuuid = uuid.v4();
     geolocationinit();
     _makerImageInit();
   }
@@ -96,12 +98,11 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   }
 
   void onMapCreated(GoogleMapController controller) async {
-    setmymarkers();
     setState(() {
       _controller = controller;
     });
   }
-
+/*
   void setmymarkers() async {
     List<FcubeExtender1> cubelist =
         await FcubeExtender1.getusercubes(offset: 0, limit: 10);
@@ -136,6 +137,7 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
     });
     setState(() {});
   }
+*/
 
   void _updateCameraPosition(CameraPosition position) {
     setState(() {
@@ -207,9 +209,20 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
     setState(() {});
   }
 
+  void _selectPushNavi(context) async {
+    if (selectFcube.cubetype == FcubeType.messageCube) {
+      print("messagecube");
+    } else if (selectFcube.cubetype == FcubeType.questCube) {
+      await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return FQuestCubePositionSetupView(
+          fcubeQuest: new FcubeQuest(cube: selectFcube),
+        );
+      }));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    selectFcube.uid = GolobalStateContainer.of(context).state.userInfoMain.uid;
     final GoogleMap googleMap = GoogleMap(
       onMapCreated: onMapCreated,
       initialCameraPosition: _kInitialPosition,
@@ -233,18 +246,56 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
         body: Stack(children: <Widget>[
       Container(margin: EdgeInsets.only(top: 90), child: googleMap),
       Positioned(
-        top: MediaQuery.of(context).size.height * 0.7,
-        child: FcubeMakeAndList(
-          selectionFcube: selectFcube,
-          onretrunnavi: () async {
-            var tempselectMarker = selectMarker.copyWith();
-            markers.clear();
-            markers.add(tempselectMarker);
-            selectMarker = tempselectMarker;
-            setmymarkers();
-          },
-        ),
-      ),
+          top: MediaQuery.of(context).size.height * 0.7,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.3,
+            decoration: BoxDecoration(color: Color(0xADA3A37D)),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment(0, 0),
+                  child: Image(
+                    image: AssetImage(selectFcube.cubeimage),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment(0, 0),
+                  child: Text(selectFcube.cubedispalyname),
+                ),
+                Container(
+                    margin: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width,
+                    child: RaisedButton(
+                      child: Text("여기에 설치하기"),
+                      onPressed: () async {
+                        List<Placemark> placeaddress = await Geolocator()
+                            .placemarkFromCoordinates(
+                                selectFcube.latitude, selectFcube.longitude,
+                                localeIdentifier: "ko");
+                        if (placeaddress.length > 0) {
+                          selectFcube.country = placeaddress[0].country;
+                          selectFcube.administrativearea =
+                              placeaddress[0].administrativeArea;
+                          selectFcube.placeaddress =
+                              placeaddress[0].administrativeArea +
+                                  " " +
+                                  placeaddress[0].thoroughfare +
+                                  " " +
+                                  placeaddress[0].subThoroughfare +
+                                  placeaddress[0].name;
+                        } else {
+                          selectFcube.placeaddress =
+                              selectFcube.latitude.toStringAsFixed(2) +
+                                  "," +
+                                  selectFcube.longitude.toStringAsFixed(2);
+                        }
+                        _selectPushNavi(context);
+                      },
+                    ))
+              ],
+            ),
+          )),
       Positioned(
           top: 30,
           left: MediaQuery.of(context).size.width * 0.17,

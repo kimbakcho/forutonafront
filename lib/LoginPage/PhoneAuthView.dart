@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
-import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
-import 'package:forutonafront/LoginPage/SignIn1View.dart';
 import 'package:forutonafront/LoginPage/SignIn2View.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:uuid/uuid.dart';
@@ -44,11 +42,9 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
     });
   }
 
-  String _textContent = 'Waiting for messages...';
   SmsReceiver _smsReceiver;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     currentuuid = uuid.v4();
@@ -65,9 +61,7 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
   }
 
   void onTimeout() {
-    setState(() {
-      _textContent = "Timeout!!!";
-    });
+    setState(() {});
   }
 
   void _startListening() {
@@ -176,7 +170,6 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
                       );
                     }));
                   }
-                  ;
                 },
               ),
             )

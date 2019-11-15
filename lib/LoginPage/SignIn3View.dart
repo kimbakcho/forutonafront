@@ -7,7 +7,6 @@ import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:intl/intl.dart';
-import 'Component/DropDownPicker.dart';
 
 class SignIn3View extends StatefulWidget {
   SignIn3View({Key key, this.userinfo, this.loginpage}) : super(key: key);
@@ -292,35 +291,6 @@ class _SignIn3ViewState extends State<SignIn3View> {
                     )
                   ],
                 )
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: <Widget>[
-                //     Container(
-                //       width: 100,
-                //       child: DropDownPicker(
-                //         items: yearitem,
-                //       ),
-                //     ),
-                //     Container(
-                //       width: 20,
-                //     ),
-                //     Container(
-                //       width: 100,
-                //       child: DropDownPicker(
-                //         items: monthitem,
-                //       ),
-                //     ),
-                //     Container(
-                //       width: 20,
-                //     ),
-                //     Container(
-                //       width: 100,
-                //       child: DropDownPicker(
-                //         items: dayitem,
-                //       ),
-                //     )
-                //   ],
-                // ),
               ],
             ),
           );

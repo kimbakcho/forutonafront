@@ -15,27 +15,38 @@ class Fcube {
   double longitude;
   double latitude;
   String cubename;
+  String cubedispalyname;
   String cubetype;
+  String cubeimage;
   String maketime;
   double influence;
   int cubestate;
   String placeaddress;
   String administrativearea;
   String country;
+  double pointreward;
+  double influencereward;
+  String activationtime;
 
-  Fcube(
-      {this.cubeuuid,
-      this.uid,
-      this.longitude,
-      this.latitude,
-      this.cubename,
-      this.cubetype,
-      this.maketime,
-      this.influence,
-      this.cubestate,
-      this.placeaddress,
-      this.administrativearea,
-      this.country});
+  Fcube({
+    this.cubeuuid,
+    this.uid,
+    this.longitude,
+    this.latitude,
+    this.cubename,
+    this.cubedispalyname,
+    this.cubetype,
+    this.maketime,
+    this.influence,
+    this.cubestate,
+    this.placeaddress,
+    this.administrativearea,
+    this.country,
+    this.cubeimage,
+    this.pointreward,
+    this.influencereward,
+    this.activationtime,
+  });
 
   Fcube.fromJson(Map<String, dynamic> json) {
     cubeuuid = json['cubeuuid'];
@@ -50,6 +61,9 @@ class Fcube {
     placeaddress = json['placeaddress'];
     administrativearea = json['administrativearea'];
     country = json['country'];
+    pointreward = json['pointreward'];
+    influencereward = json['influencereward'];
+    activationtime = json['activationtime'];
   }
 
   Map<String, dynamic> toJson() {
@@ -66,6 +80,9 @@ class Fcube {
     data['placeaddress'] = this.placeaddress;
     data['administrativearea'] = this.administrativearea;
     data['country'] = this.country;
+    data['pointreward'] = this.pointreward;
+    data['influencereward'] = this.influencereward;
+    data['activationtime'] = this.activationtime;
     return data;
   }
 
@@ -109,4 +126,6 @@ class Fcube {
   static Future<BitmapDescriptor> getMarkerImage(String path, int widt) async {
     return BitmapDescriptor.fromBytes(await _getBytesFromAsset(path, widt));
   }
+
+  
 }

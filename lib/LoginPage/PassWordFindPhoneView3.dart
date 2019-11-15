@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/LoginPageView.dart';
 
 class PassWordFindPhoneView3 extends StatefulWidget {
-  UserInfoMain userinfo;
+  final UserInfoMain userinfo;
   PassWordFindPhoneView3({Key key, this.userinfo}) : super(key: key);
 
   @override

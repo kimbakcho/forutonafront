@@ -1,7 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
-import 'package:forutonafront/MakePage/GoogleMapsMakeView.dart';
 
 import 'package:forutonafront/globals.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -308,7 +307,7 @@ class _MakePageViewState extends State<MakePageView> {
                           PermissionStatus.granted) &&
                       (permissition[PermissionGroup.locationAlways] ==
                           PermissionStatus.granted)) {
-                    await Navigator.pushNamed(context, "/GoogleMapsMakeView");
+                    await Navigator.pushNamed(context, "/SelectSwipeCubeView");
                     GolobalStateContainer.of(context)
                         .resetcubeListUtilcubeList();
                     GolobalStateContainer.of(context)
