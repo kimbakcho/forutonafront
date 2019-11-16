@@ -44,8 +44,8 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   bool _scrollGesturesEnabled = true;
   bool _tiltGesturesEnabled = true;
   bool _zoomGesturesEnabled = true;
-  bool _indoorViewEnabled = true;
   bool _myLocationEnabled = true;
+  bool _indoorViewEnabled = true;
   bool _myLocationButtonEnabled = true;
   GoogleMapController _controller;
   String error;
@@ -76,8 +76,8 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
   }
 
   void _makerImageInit() async {
-    _selectmarkerIcon =
-        await getBytesFromAsset('assets/MarkesImages/SelectMarker.png', 100);
+    _selectmarkerIcon = await getBytesFromAsset(
+        CurrentSelectCubeLocation.currentSelectCubeIconPath, 100);
   }
 
   geolocationinit() async {

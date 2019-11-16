@@ -9,6 +9,7 @@ class CubeRichTextController {
   Function ondatacahnge;
   bool isedithint;
   NotusDocument document;
+  bool autofocus = false;
 }
 
 class CubeMakeRichTextEdit extends StatefulWidget {
@@ -83,7 +84,7 @@ class _CubeMakeRichTextEditState extends State<CubeMakeRichTextEdit> {
     return ZefyrScaffold(
       child: ZefyrEditor(
         custommode: custommode,
-        autofocus: false,
+        autofocus: parentcontroller.autofocus,
         padding: EdgeInsets.all(16),
         imageDelegate: CustomImageDelegate(cube: fcube),
         controller: _wigcontroller,

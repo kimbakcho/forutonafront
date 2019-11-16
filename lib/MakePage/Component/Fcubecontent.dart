@@ -56,12 +56,11 @@ class Fcubecontent {
       try {
         sendresult += await contents[i].makecubecontent();
       } catch (ex) {}
-      if (sendresult == contents.length) {
-        return 1;
-      } else {
-        return 0;
-      }
     }
-    return 0;
+    if (sendresult == contents.length) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }

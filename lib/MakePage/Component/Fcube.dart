@@ -9,6 +9,24 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:ui' as ui;
 
+class CurrentSelectCubeLocation {
+  Marker currentselectmaker;
+  double longitude;
+  double latitude;
+  static String currentSelectCubeIconPath = "assets/MarkesImages/SelectMarker.png";
+  CurrentSelectCubeLocation();
+  CurrentSelectCubeLocation.fromJson(Map<String, dynamic> json) {
+    longitude = json['longitude'];
+    latitude = json['latitude'];
+  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['longitude'] = this.longitude;
+    data['latitude'] = this.latitude;
+    return data;
+  }
+}
+
 class Fcube {
   String cubeuuid;
   String uid;
@@ -27,6 +45,7 @@ class Fcube {
   double pointreward;
   double influencereward;
   String activationtime;
+  CurrentSelectCubeLocation currentselectcube;
 
   Fcube({
     this.cubeuuid,
@@ -126,6 +145,4 @@ class Fcube {
   static Future<BitmapDescriptor> getMarkerImage(String path, int widt) async {
     return BitmapDescriptor.fromBytes(await _getBytesFromAsset(path, widt));
   }
-
-  
 }
