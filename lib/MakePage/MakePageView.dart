@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestBottomNaviBar.dart';
+import 'package:forutonafront/MakePage/FcubeTypes.dart';
 
 import 'package:forutonafront/globals.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -222,59 +224,26 @@ class _MakePageViewState extends State<MakePageView> {
     );
   }
 
+  Widget _selectbottomNavigationBar() {
+    if (iseditmode == true) {
+      if (this.currentedititem.cubetype == FcubeType.questCube) {
+        return FcubeQuestBottomNaviBar(
+          fcube: currentedititem,
+          onfuntionclick: (value) {
+            setState(() {});
+          },
+        );
+      }
+    } else {
+      return null;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: iseditmode
-          ? BottomAppBar(
-              child: Container(
-                height: 120,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: FlatButton(
-                        child: Text("수정 하기"),
-                        onPressed: () {
-                          iseditmode = false;
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.black,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: FlatButton(
-                        child: Text("삭제 하기"),
-                        onPressed: () async {
-                          bool result =
-                              await _asyncConfirmDeletecubeDialog(context);
-                          this.iseditmode = false;
-                          if (result) {
-                            currentedititem.deletecube();
-                            GolobalStateContainer.of(context)
-                                .state
-                                .fcubeListUtil
-                                .cubeList
-                                .removeWhere((value) {
-                              if (value.cubeuuid == currentedititem.cubeuuid) {
-                                return true;
-                              } else {
-                                return false;
-                              }
-                            });
-                            setState(() {});
-                          }
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          : null,
+      bottomNavigationBar: _selectbottomNavigationBar(),
       body: Container(
         decoration: iseditmode ? BoxDecoration(color: Colors.grey) : null,
         child: Stack(
