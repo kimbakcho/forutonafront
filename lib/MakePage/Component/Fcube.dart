@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,8 @@ class CurrentSelectCubeLocation {
   Marker currentselectmaker;
   double longitude;
   double latitude;
-  static String currentSelectCubeIconPath = "assets/MarkesImages/SelectMarker.png";
+  static String currentSelectCubeIconPath =
+      "assets/MarkesImages/SelectMarker.png";
   CurrentSelectCubeLocation();
   CurrentSelectCubeLocation.fromJson(Map<String, dynamic> json) {
     longitude = json['longitude'];
@@ -34,7 +36,7 @@ class Fcube {
   double latitude;
   String cubename;
   String cubedispalyname;
-  String cubetype;
+  FcubeType cubetype;
   String cubeimage;
   String maketime;
   double influence;
@@ -73,7 +75,7 @@ class Fcube {
     longitude = json['longitude'];
     latitude = json['latitude'];
     cubename = json['cubename'];
-    cubetype = json['cubetype'];
+    cubetype = FcubeType.fromJson(json['cubetype']);
     maketime = json['maketime'];
     influence = json['influence'];
     cubestate = json['cubestate'];
@@ -92,7 +94,7 @@ class Fcube {
     data['longitude'] = this.longitude;
     data['latitude'] = this.latitude;
     data['cubename'] = this.cubename;
-    data['cubetype'] = this.cubetype;
+    data['cubetype'] = FcubeType.toJson(this.cubetype);
     data['maketime'] = this.maketime;
     data['influence'] = this.influence;
     data['cubestate'] = this.cubestate;

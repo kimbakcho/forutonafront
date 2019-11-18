@@ -16,25 +16,25 @@ class SelectSwipeCubeView extends StatefulWidget {
 
 class _SelectSwipeCubeStateView extends State<SelectSwipeCubeView> {
   SwiperController _controller;
-  List<FcubeType> cubeLists;
+  List<FcubeTypeObj> cubeLists;
   Uuid uuid = Uuid();
   int currentindex = 0;
   @override
   void initState() {
     super.initState();
     _controller = new SwiperController();
-    cubeLists = new List<FcubeType>();
-    cubeLists.add(FcubeType(
+    cubeLists = new List<FcubeTypeObj>();
+    cubeLists.add(FcubeTypeObj(
         name: "퀘스트큐브",
         type: FcubeType.questCube,
         description: "장황한 설명",
         picture: "assets/MarkesImages/QuestCube.png"));
-    cubeLists.add(FcubeType(
+    cubeLists.add(FcubeTypeObj(
         name: "메세지 큐브",
         type: FcubeType.messageCube,
         description: "장황한 설명",
         picture: "assets/MarkesImages/MessageCube.png"));
-    cubeLists.add(FcubeType(
+    cubeLists.add(FcubeTypeObj(
         name: "메세지 큐브2",
         type: FcubeType.messageCube,
         description: "장황한 설명",

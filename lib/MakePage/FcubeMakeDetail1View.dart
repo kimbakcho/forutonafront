@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
-import 'package:forutonafront/MakePage/Component/Fcubecontent.dart';
+import 'package:forutonafront/MakePage/Fcubecontent.dart';
 
 class FcubeMakeDetail1View extends StatefulWidget {
   final Fcube selectionfcube;
@@ -79,10 +79,10 @@ class _FcubeMakeDetail1ViewState extends State<FcubeMakeDetail1View> {
                           return;
                         }
                         List<Fcubecontent> contents = List<Fcubecontent>();
-                        contents.add(Fcubecontent(
-                            cubeuuid: selectionfcube.cubeuuid,
-                            contentvalue: messagecontroller.text,
-                            contenttype: "Message"));
+                        // contents.add(Fcubecontent(
+                        //     cubeuuid: selectionfcube.cubeuuid,
+                        //     contentvalue: messagecontroller.text,
+                        //     contenttype: ""));
                         int reslutconent =
                             await Fcubecontent.makecubecontents(contents);
                         if (reslutconent == 1) {

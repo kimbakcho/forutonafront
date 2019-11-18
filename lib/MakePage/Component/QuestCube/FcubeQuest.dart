@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
-import 'package:forutonafront/MakePage/Component/Fcubecontent.dart';
+import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class StartCubeLocation {
@@ -123,6 +123,8 @@ class FcubeQuest extends Fcube {
   String authmethod;
   String authPicturedescription;
 
+  getFcubeQuestFromBackend() {}
+
   @override
   Future<int> makecube() async {
     int makecubereslut = await super.makecube();
@@ -130,13 +132,13 @@ class FcubeQuest extends Fcube {
       List<Fcubecontent> cubecontents = List<Fcubecontent>();
       if (startCubeLocation != null) {
         cubecontents.add(Fcubecontent(
-            contenttype: "startCubeLocation",
+            contenttype: FcubecontentType.startCubeLocation,
             contentvalue: jsonEncode(startCubeLocation.toJson()),
             cubeuuid: this.cubeuuid));
       }
       if (finishCubeLocation != null) {
         cubecontents.add(Fcubecontent(
-            contenttype: "finishCubeLocation",
+            contenttype: FcubecontentType.finishCubeLocation,
             contentvalue: jsonEncode(finishCubeLocation.toJson()),
             cubeuuid: this.cubeuuid));
       }
@@ -147,7 +149,7 @@ class FcubeQuest extends Fcube {
         });
 
         cubecontents.add(Fcubecontent(
-            contenttype: "messagecubeLocations",
+            contenttype: FcubecontentType.messagecubeLocations,
             contentvalue:
                 jsonEncode(List<dynamic>.from(filter.toList().map((x) => x))),
             cubeuuid: this.cubeuuid));
@@ -158,31 +160,31 @@ class FcubeQuest extends Fcube {
           return item.ismarkersetuponmap;
         });
         cubecontents.add(Fcubecontent(
-            contenttype: "checkincubeLocations",
+            contenttype: FcubecontentType.checkincubeLocations,
             contentvalue:
                 jsonEncode(List<dynamic>.from(filter.toList().map((x) => x))),
             cubeuuid: this.cubeuuid));
       }
       if (description != null) {
         cubecontents.add(Fcubecontent(
-            contenttype: "description",
+            contenttype: FcubecontentType.description,
             contentvalue: jsonEncode({"description": description}),
             cubeuuid: this.cubeuuid));
       }
       if (authmethod != null) {
         cubecontents.add(Fcubecontent(
-            contenttype: "authmethod",
+            contenttype: FcubecontentType.authmethod,
             contentvalue: jsonEncode({"authmethod": authmethod}),
             cubeuuid: this.cubeuuid));
       }
       if (authPicturedescription != null) {
         cubecontents.add(Fcubecontent(
-            contenttype: "authPicturedescription",
+            contenttype: FcubecontentType.authPicturedescription,
             contentvalue:
                 jsonEncode({"authPicturedescription": authPicturedescription}),
             cubeuuid: this.cubeuuid));
       }
-      return  await Fcubecontent.makecubecontents(cubecontents);
+      return await Fcubecontent.makecubecontents(cubecontents);
     }
 
     return 0;

@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:uuid/uuid.dart';
 
 class FcubeListItem {
-  String type;
+  FcubeType type;
   String name;
   IconData icon;
   String description = "";
@@ -48,8 +48,7 @@ class _FcubeMakeAndListState extends State<FcubeMakeAndList> {
       }));
 
       selectionFcube.cubeuuid = uuid.v4();
-      selectionFcube.cubename =
-          selectionFcube.cubetype = items[currentClick].type;
+      selectionFcube.cubetype = items[currentClick].type;
       this.widget.onretrunnavi();
     } else if (selectionFcube.cubetype == FcubeType.questCube) {
       await Navigator.push(context, MaterialPageRoute(builder: (context) {

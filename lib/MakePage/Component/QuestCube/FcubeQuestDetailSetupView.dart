@@ -23,6 +23,7 @@ class _FcubeQuestDetailSetupViewState extends State<FcubeQuestDetailSetupView> {
   Future<void> _ackAlert(BuildContext context) {
     return showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           content: const Text('퀘스트 큐브 생성을 완료 하였습니다.'),

@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestBottomNaviBar.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 
 import 'package:forutonafront/globals.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
+import 'package:search_map_place/search_map_place.dart';
 
 class MakePageView extends StatefulWidget {
   MakePageView({Key key}) : super(key: key);
@@ -19,10 +24,35 @@ class _MakePageViewState extends State<MakePageView> {
   ScrollController cubescroller = ScrollController();
   List<String> litems = [];
   bool iseditmode = false;
-  FcubeExtender1 currentedititem = null;
+  FcubeExtender1 currentedititem;
+  Position currentposition;
+  var geolocator = Geolocator();
+  var locationOptions =
+      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
   @override
   void initState() {
     super.initState();
+    initgeolocation();
+  }
+
+  initgeolocation() async {
+    PermissionStatus permissition = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.location);
+    if (permissition == PermissionStatus.granted) {
+      geolocator
+          .getPositionStream(locationOptions)
+          .listen((Position position) async {
+        if (position == null) {
+          currentposition = await Geolocator()
+              .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
+          currentposition = position;
+        } else {
+          currentposition = position;
+        }
+        GolobalStateContainer.of(context)
+            .updateCubeListupdatedistancewithme(currentposition);
+      });
+    }
   }
 
   makeMainViewChioce() {
@@ -110,88 +140,115 @@ class _MakePageViewState extends State<MakePageView> {
           return Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(border: Border.all(width: 1)),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: 50,
-                        height: 50,
-                        child: Image(
-                          image:
-                              AssetImage('assets/MarkesImages/MessageCube.png'),
-                        ),
-                      ),
-                      Container(width: 10),
-                      Expanded(
-                        child: Text(cubes[index].cubename),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 10, 20),
-                        padding: EdgeInsets.all(0),
-                        width: 20,
-                        height: 20,
-                        child: RaisedButton(
-                          padding: EdgeInsets.all(0),
-                          onPressed: () {
-                            this.iseditmode = true;
-                            this.currentedititem = cubes[index];
-                            setState(() {});
-                          },
-                          child: Icon(
-                            Icons.apps,
-                            size: 15,
+              child: FlatButton(
+                padding: EdgeInsets.all(0),
+                onPressed: () {
+                  if (cubes[index].cubetype == FcubeType.questCube) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return FcubeQuestDetailPage(fcube: cubes[index]);
+                    }));
+                  }
+                },
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: 50,
+                          height: 50,
+                          child: Image(
+                            image: AssetImage(
+                                'assets/MarkesImages/MessageCube.png'),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        width: 60,
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: Text(cubes[index].placeaddress == null
-                              ? ""
-                              : cubes[index].placeaddress),
+                        Container(width: 10),
+                        Expanded(
+                          child: Text(cubes[index].cubename),
                         ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        width: 60,
-                      ),
-                      Expanded(
-                          flex: 1,
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 10, 20),
+                          padding: EdgeInsets.all(0),
+                          width: 20,
+                          height: 20,
+                          child: RaisedButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {
+                              this.iseditmode = true;
+                              this.currentedititem = cubes[index];
+                              setState(() {});
+                            },
+                            child: Icon(
+                              Icons.apps,
+                              size: 15,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                        ),
+                        Expanded(
                           child: Container(
-                            child: Text(cubes[index].nickname),
-                          )),
-                      Expanded(
-                          flex: 2,
-                          child: Container(
-                            child: Text(DateFormat("yyyy-MM-dd HH:mm:ss")
-                                .format(DateTime.parse(cubes[index].maketime)
-                                    .add(Duration(hours: 9)))),
-                            //
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        width: 60,
-                      ),
-                      Container(
-                        child: Text("${cubes[index].influence}"),
-                      )
-                    ],
-                  )
-                ],
+                            child: Text(cubes[index].placeaddress == null
+                                ? ""
+                                : cubes[index].placeaddress),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                              "${cubes[index].distancewithme.roundToDouble()} m"),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Text(cubes[index].nickname),
+                            )),
+                        Expanded(
+                            flex: 2,
+                            child: Container(
+                              child: Text(DateFormat("yyyy-MM-dd HH:mm:ss")
+                                  .format(DateTime.parse(cubes[index].maketime)
+                                      .add(Duration(hours: 9)))),
+                              //
+                            )),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                        ),
+                        Container(
+                          child: Text("${cubes[index].pointreward}"),
+                        ),
+                        Container(
+                          width: 60,
+                        ),
+                        Container(
+                          child: Text("${cubes[index].influencereward}"),
+                        ),
+                        Container(
+                          width: 60,
+                        ),
+                        Container(
+                          child: Text("${cubes[index].activationtime}"),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ));
         },
       ),
@@ -244,61 +301,43 @@ class _MakePageViewState extends State<MakePageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: _selectbottomNavigationBar(),
-      body: Container(
-        decoration: iseditmode ? BoxDecoration(color: Colors.grey) : null,
-        child: Stack(
-          overflow: Overflow.clip,
-          children: [
-            GestureDetector(
-              onTap: () {
-                this.iseditmode = false;
-                setState(() {});
-              },
-              child: makeMainViewChioce(),
-            ),
-            Positioned(
-              bottom: 15,
-              right: 0,
-              child: RaisedButton(
-                padding: EdgeInsets.all(7),
-                shape: CircleBorder(),
-                child: Icon(
-                  Icons.control_point_duplicate,
-                  size: 50,
-                ),
-                onPressed: () async {
-                  Map<PermissionGroup, PermissionStatus> permissition =
-                      await PermissionHandler().requestPermissions([
-                    PermissionGroup.location,
-                    PermissionGroup.locationAlways
-                  ]);
-                  if ((permissition[PermissionGroup.location] ==
-                          PermissionStatus.granted) &&
-                      (permissition[PermissionGroup.locationAlways] ==
-                          PermissionStatus.granted)) {
-                    await Navigator.pushNamed(context, "/SelectSwipeCubeView");
-                    GolobalStateContainer.of(context)
-                        .resetcubeListUtilcubeList();
-                    GolobalStateContainer.of(context)
-                        .setfcubeListUtilisLoading(true);
-                    GolobalStateContainer.of(context).addfcubeListUtilcubeList(
-                        await FcubeExtender1.getusercubes(
-                            offset: 0, limit: 10));
-                    GolobalStateContainer.of(context)
-                        .setfcubeListUtilisLoading(false);
-                  } else {
-                    SnackBar snak = new SnackBar(
-                      content: Text("다시 한번 버튼을 눌러 주세요."),
-                      duration: Duration(seconds: 1),
-                    );
-                    Scaffold.of(context).showSnackBar(snak);
-                  }
-                },
-              ),
-            ),
-          ],
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+          onPressed: () async {
+            Map<PermissionGroup, PermissionStatus> permissition =
+                await PermissionHandler().requestPermissions(
+                    [PermissionGroup.location, PermissionGroup.locationAlways]);
+            if ((permissition[PermissionGroup.location] ==
+                    PermissionStatus.granted) &&
+                (permissition[PermissionGroup.locationAlways] ==
+                    PermissionStatus.granted)) {
+              await Navigator.pushNamed(context, "/SelectSwipeCubeView");
+              GolobalStateContainer.of(context).resetcubeListUtilcubeList();
+              GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
+              GolobalStateContainer.of(context).addfcubeListUtilcubeList(
+                  await FcubeExtender1.getusercubes(offset: 0, limit: 10));
+              GolobalStateContainer.of(context)
+                  .setfcubeListUtilisLoading(false);
+            } else {
+              SnackBar snak = new SnackBar(
+                content: Text("다시 한번 버튼을 눌러 주세요."),
+                duration: Duration(seconds: 1),
+              );
+              Scaffold.of(context).showSnackBar(snak);
+            }
+          },
+          child: Icon(Icons.add),
         ),
       ),
+      body: Container(
+          decoration: iseditmode ? BoxDecoration(color: Colors.grey) : null,
+          child: GestureDetector(
+            child: makeMainViewChioce(),
+            onTap: () {
+              this.iseditmode = false;
+              setState(() {});
+            },
+          )),
     );
   }
 }

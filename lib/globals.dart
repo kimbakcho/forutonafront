@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
+import 'package:geolocator/geolocator.dart';
 
 class GolobalStateContainer extends StatefulWidget {
   final Widget child;
@@ -47,6 +48,11 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
     setState(() {
       state.fcubeListUtil.cubeList.clear();
     });
+  }
+
+  updateCubeListupdatedistancewithme(Position position) async {
+    await state.fcubeListUtil.updatecubedistancewithme(position);
+    setState(() {});
   }
 
   @override

@@ -26,7 +26,7 @@ class _FQuestCubeDetailCubeSetupViewState
   CameraPosition _kInitialPosition;
   PanelController panelcontroller;
   bool isonPanelOpened = false;
-  String currentSelectCubeType = "";
+  FcubeType currentSelectCubeType;
   int currentMessagecubeindex = 0;
   int currentCheckincubeindex = 0;
   Set<Marker> markers = Set<Marker>();
@@ -66,7 +66,7 @@ class _FQuestCubeDetailCubeSetupViewState
       fcubeQuest.currentselectcube.longitude = fcubeQuest.longitude;
 
       fcubeQuest.currentselectcube.currentselectmaker = Marker(
-          markerId: MarkerId(FcubeType.currentselectcube),
+          markerId: MarkerId(FcubeType.currentselectcube.toString()),
           icon: await Fcube.getMarkerImage(
               CurrentSelectCubeLocation.currentSelectCubeIconPath, 100),
           position: LatLng(fcubeQuest.currentselectcube.latitude,
@@ -169,8 +169,8 @@ class _FQuestCubeDetailCubeSetupViewState
         ));
   }
 
-  Widget selectTopCollapsed(String selectcubetype) {
-    if (selectcubetype == "") {
+  Widget selectTopCollapsed(FcubeType selectcubetype) {
+    if (selectcubetype == null) {
       return Container(width: 0);
     } else if (selectcubetype == FcubeType.startcube) {
       return Container(
@@ -235,7 +235,8 @@ class _FQuestCubeDetailCubeSetupViewState
                           fcubeQuest.startCubeLocation =
                               new StartCubeLocation();
                           fcubeQuest.startCubeLocation.startmaker = Marker(
-                              markerId: MarkerId(FcubeType.startcube),
+                              markerId:
+                                  MarkerId(FcubeType.startcube.toString()),
                               position: fcubeQuest.currentselectcube
                                   .currentselectmaker.position,
                               icon: await Fcube.getMarkerImage(
@@ -327,7 +328,8 @@ class _FQuestCubeDetailCubeSetupViewState
                           fcubeQuest.finishCubeLocation =
                               new FinishCubeLocation();
                           fcubeQuest.finishCubeLocation.finishmaker = Marker(
-                              markerId: MarkerId(FcubeType.finishcube),
+                              markerId:
+                                  MarkerId(FcubeType.finishcube.toString()),
                               position: fcubeQuest.currentselectcube
                                   .currentselectmaker.position,
                               icon: await Fcube.getMarkerImage(
@@ -676,7 +678,7 @@ class _FQuestCubeDetailCubeSetupViewState
         ],
       ),
       body: SlidingUpPanel(
-          minHeight: currentSelectCubeType.length == 0 ? 50 : 210,
+          minHeight: currentSelectCubeType == null ? 50 : 210,
           controller: panelcontroller,
           maxHeight: MediaQuery.of(context).size.height * 0.4,
           onPanelOpened: onpanelopend,
