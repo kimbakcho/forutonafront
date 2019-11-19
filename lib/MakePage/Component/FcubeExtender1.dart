@@ -21,7 +21,7 @@ class FcubeExtender1 extends Fcube {
     cubetype = FcubeType.fromJson(json['cubetype']);
     maketime = json['maketime'];
     influence = json['influence'];
-    cubestate = json['cubestate'];
+    cubestate = FcubeState.fromJson(json['cubestate']);
     placeaddress = json['placeaddress'];
     administrativearea = json['administrativearea'];
     country = json['country'];
@@ -39,7 +39,7 @@ class FcubeExtender1 extends Fcube {
     data['cubetype'] = FcubeType.toJson(this.cubetype);
     data['maketime'] = this.maketime;
     data['influence'] = this.influence;
-    data['cubestate'] = this.cubestate;
+    data['cubestate'] = FcubeState.toJson(this.cubestate);
     data['placeaddress'] = this.placeaddress;
     data['administrativearea'] = this.administrativearea;
     data['country'] = this.country;

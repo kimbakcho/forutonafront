@@ -3,6 +3,7 @@ import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class GolobalStateContainer extends StatefulWidget {
   final Widget child;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 
 class FcubeQuestDetailSetupView extends StatefulWidget {
@@ -55,6 +56,7 @@ class _FcubeQuestDetailSetupViewState extends State<FcubeQuestDetailSetupView> {
                       authdiscriptioncontroller.text;
                   isuploading = true;
                   setState(() {});
+                  fcubeQuest.cubestate = FcubeState.startWait;
                   int result = await fcubeQuest.makecube();
                   isuploading = false;
                   setState(() {});

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -40,7 +41,7 @@ class Fcube {
   String cubeimage;
   String maketime;
   double influence;
-  int cubestate;
+  FcubeState cubestate;
   String placeaddress;
   String administrativearea;
   String country;
@@ -78,7 +79,7 @@ class Fcube {
     cubetype = FcubeType.fromJson(json['cubetype']);
     maketime = json['maketime'];
     influence = json['influence'];
-    cubestate = json['cubestate'];
+    cubestate = FcubeState.fromJson(json['cubestate']);
     placeaddress = json['placeaddress'];
     administrativearea = json['administrativearea'];
     country = json['country'];
@@ -97,7 +98,7 @@ class Fcube {
     data['cubetype'] = FcubeType.toJson(this.cubetype);
     data['maketime'] = this.maketime;
     data['influence'] = this.influence;
-    data['cubestate'] = this.cubestate;
+    data['cubestate'] = FcubeState.toJson(this.cubestate);
     data['placeaddress'] = this.placeaddress;
     data['administrativearea'] = this.administrativearea;
     data['country'] = this.country;
@@ -147,4 +148,25 @@ class Fcube {
   static Future<BitmapDescriptor> getMarkerImage(String path, int widt) async {
     return BitmapDescriptor.fromBytes(await _getBytesFromAsset(path, widt));
   }
+}
+
+class FcubeState {
+  const FcubeState._(this.value);
+  final int value;
+  static const FcubeState startWait = FcubeState._(0);
+  static const FcubeState play = FcubeState._(1);
+  static const FcubeState finish = FcubeState._(2);
+
+  static const List<FcubeState> values = <FcubeState>[startWait, play, finish];
+  static const List<int> _names = <int>[0, 1, 2];
+  static FcubeState fromJson(value) {
+    return values[_names.indexOf(value)];
+  }
+
+  static int toJson(type) {
+    return _names[type.value];
+  }
+
+  @override
+  String toString() => "${_names[value]}";
 }

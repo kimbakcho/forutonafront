@@ -69,7 +69,7 @@ class Fcubecontent {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer " + token.token
     });
-    print(response.body);
+    
     var recvjson = jsonDecode(response.body);
     Map<FcubecontentType, Fcubecontent> contents =
         Map<FcubecontentType, Fcubecontent>();
