@@ -70,6 +70,7 @@ class Fcube {
     this.activationtime,
   });
 
+
   Fcube.fromJson(Map<String, dynamic> json) {
     cubeuuid = json['cubeuuid'];
     uid = json['uid'];
@@ -107,6 +108,8 @@ class Fcube {
     data['activationtime'] = this.activationtime;
     return data;
   }
+
+
 
   Future<int> makecube() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();

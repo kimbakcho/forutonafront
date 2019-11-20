@@ -11,6 +11,7 @@ class FcubeExtender1 extends Fcube {
   String nickname;
   String profilepicktureurl;
   double distancewithme = 0;
+  FcubeExtender1();
 
   FcubeExtender1.fromJson(Map<String, dynamic> json) {
     cubeuuid = json['cubeuuid'];

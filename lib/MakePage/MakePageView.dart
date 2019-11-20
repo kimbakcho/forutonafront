@@ -146,7 +146,7 @@ class _MakePageViewState extends State<MakePageView> {
                   if (cubes[index].cubetype == FcubeType.questCube) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return FcubeQuestDetailPage(fcube: cubes[index]);
+                      return FcubeQuestDetailPage(fcubeextender1: cubes[index]);
                     }));
                   }
                 },

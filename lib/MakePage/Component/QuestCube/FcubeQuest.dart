@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -114,6 +115,30 @@ class FcubeQuest extends Fcube {
     this.influencereward = cube.influencereward;
     this.activationtime = cube.activationtime;
   }
+  String nickname;
+  String profilepicktureurl;
+  FcubeQuest.fromFcubeExtender1(FcubeExtender1 extender1) {
+    this.cubeuuid = extender1.cubeuuid;
+    this.uid = extender1.uid;
+    this.longitude = extender1.longitude;
+    this.latitude = extender1.latitude;
+    this.cubedispalyname = extender1.cubedispalyname;
+    this.cubename = extender1.cubename;
+    this.cubetype = extender1.cubetype;
+    this.maketime = extender1.maketime;
+    this.influence = extender1.influence;
+    this.cubestate = extender1.cubestate;
+    this.placeaddress = extender1.placeaddress;
+    this.administrativearea = extender1.administrativearea;
+    this.country = extender1.country;
+    this.cubeimage = extender1.cubeimage;
+    this.pointreward = extender1.pointreward;
+    this.influencereward = extender1.influencereward;
+    this.activationtime = extender1.activationtime;
+    this.nickname = extender1.nickname;
+    this.profilepicktureurl = extender1.profilepicktureurl;
+  }
+
   StartCubeLocation startCubeLocation;
   FinishCubeLocation finishCubeLocation;
   List<MessageCubeLocation> messagecubeLocations;
