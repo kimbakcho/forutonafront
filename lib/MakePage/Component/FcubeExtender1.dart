@@ -28,6 +28,15 @@ class FcubeExtender1 extends Fcube {
     country = json['country'];
     nickname = json['nickname'];
     profilepicktureurl = json['profilepicktureurl'];
+    activationtime = json['activationtime'];
+    cubepassword = json['cubepassword'];
+    haspassword = json['haspassword'];
+    cubescope = json['cubescope'];
+    influencelevel = json['influencelevel'];
+    cubehits = json['cubehits'];
+    cubelikes = json['cubelikes'];
+    cubedislikes = json['cubedislikes'];
+    maximumplayers = json['maximumplayers'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,6 +55,15 @@ class FcubeExtender1 extends Fcube {
     data['country'] = this.country;
     data['nickname'] = this.nickname;
     data['profilepicktureurl'] = this.profilepicktureurl;
+    data['activationtime'] = this.activationtime;
+    data['cubepassword'] = this.cubepassword;
+    data['haspassword'] = this.haspassword;
+    data['cubescope'] = this.cubescope;
+    data['influencelevel'] = this.influencelevel;
+    data['cubehits'] = this.cubehits;
+    data['cubelikes'] = this.cubelikes;
+    data['cubedislikes'] = this.cubedislikes;
+    data['maximumplayers'] = this.maximumplayers;
     return data;
   }
 

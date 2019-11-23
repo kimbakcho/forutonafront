@@ -114,6 +114,14 @@ class FcubeQuest extends Fcube {
     this.pointreward = cube.pointreward;
     this.influencereward = cube.influencereward;
     this.activationtime = cube.activationtime;
+    this.cubepassword = cube.cubepassword;
+    this.haspassword = cube.haspassword;
+    this.cubescope = cube.cubescope;
+    this.influencelevel = cube.influencelevel;
+    this.cubehits = cube.cubehits;
+    this.cubelikes = cube.cubelikes;
+    this.cubedislikes = cube.cubedislikes;
+    this.maximumplayers = cube.maximumplayers;
   }
   String nickname;
   String profilepicktureurl;
@@ -137,6 +145,14 @@ class FcubeQuest extends Fcube {
     this.activationtime = extender1.activationtime;
     this.nickname = extender1.nickname;
     this.profilepicktureurl = extender1.profilepicktureurl;
+    this.cubepassword = extender1.cubepassword;
+    this.haspassword = extender1.haspassword;
+    this.cubescope = extender1.cubescope;
+    this.influencelevel = extender1.influencelevel;
+    this.cubehits = extender1.cubehits;
+    this.cubelikes = extender1.cubelikes;
+    this.cubedislikes = extender1.cubedislikes;
+    this.maximumplayers = extender1.maximumplayers;
   }
 
   StartCubeLocation startCubeLocation;

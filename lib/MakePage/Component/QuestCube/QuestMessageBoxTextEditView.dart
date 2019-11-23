@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
+import 'package:zefyr/zefyr.dart';
 
 class QuestMessageCubeTextEditView extends StatefulWidget {
   final FcubeQuest fcubeQuest;
@@ -59,6 +60,7 @@ class _QuestMessageCubeTextEditViewState
         children: <Widget>[
           CubeMakeRichTextEdit(
               custommode: "forutona1",
+              zefyrMode: ZefyrMode.edit,
               fcube: fcubeQuest,
               parentcontroller: richTextController),
           Positioned(

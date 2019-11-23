@@ -8,6 +8,7 @@ import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FQuestCubeDetailCubeSetupView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:zefyr/zefyr.dart';
 
 class FQuestCubePositionSetupView extends StatefulWidget {
   final FcubeQuest fcubeQuest;
@@ -143,6 +144,7 @@ class _FQuestCubePositionSetupViewState
                 child: Stack(
                   children: <Widget>[
                     CubeMakeRichTextEdit(
+                        zefyrMode: ZefyrMode.edit,
                         custommode: "forutona1",
                         fcube: fcubeQuest,
                         parentcontroller: richTextController),

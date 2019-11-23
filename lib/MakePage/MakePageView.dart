@@ -137,17 +137,21 @@ class _MakePageViewState extends State<MakePageView> {
       child: ListView.builder(
         itemCount: cubes.length,
         itemBuilder: (cxtx, index) {
+          String acttime = DateFormat("yyyy-MM-dd HH:mm:ss").format(
+              DateTime.parse(cubes[index].activationtime)
+                  .add(Duration(hours: 9)));
           return Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(border: Border.all(width: 1)),
               child: FlatButton(
                 padding: EdgeInsets.all(0),
-                onPressed: () {
+                onPressed: () async {
                   if (cubes[index].cubetype == FcubeType.questCube) {
-                    Navigator.push(context,
+                    await Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return FcubeQuestDetailPage(fcubeextender1: cubes[index]);
                     }));
+                    resetcubeList();
                   }
                 },
                 child: Column(
@@ -243,7 +247,9 @@ class _MakePageViewState extends State<MakePageView> {
                           width: 60,
                         ),
                         Container(
-                          child: Text("${cubes[index].activationtime}"),
+                          width: 150,
+                          padding: EdgeInsets.only(right: 20),
+                          child: Text("$acttime"),
                         )
                       ],
                     )
@@ -281,6 +287,14 @@ class _MakePageViewState extends State<MakePageView> {
     );
   }
 
+  resetcubeList() async {
+    GolobalStateContainer.of(context).resetcubeListUtilcubeList();
+    GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
+    GolobalStateContainer.of(context).addfcubeListUtilcubeList(
+        await FcubeExtender1.getusercubes(offset: 0, limit: 10));
+    GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
+  }
+
   Widget _selectbottomNavigationBar() {
     if (iseditmode == true) {
       if (this.currentedititem.cubetype == FcubeType.questCube) {
@@ -312,12 +326,7 @@ class _MakePageViewState extends State<MakePageView> {
                 (permissition[PermissionGroup.locationAlways] ==
                     PermissionStatus.granted)) {
               await Navigator.pushNamed(context, "/SelectSwipeCubeView");
-              GolobalStateContainer.of(context).resetcubeListUtilcubeList();
-              GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
-              GolobalStateContainer.of(context).addfcubeListUtilcubeList(
-                  await FcubeExtender1.getusercubes(offset: 0, limit: 10));
-              GolobalStateContainer.of(context)
-                  .setfcubeListUtilisLoading(false);
+              resetcubeList();
             } else {
               SnackBar snak = new SnackBar(
                 content: Text("다시 한번 버튼을 눌러 주세요."),

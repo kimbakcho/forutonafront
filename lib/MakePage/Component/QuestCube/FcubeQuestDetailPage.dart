@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Fcubereply.dart';
+import 'package:forutonafront/Common/FcubereplyExtender1.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
@@ -46,6 +50,11 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   Set<Marker> makres = new Set<Marker>();
   bool isscrolling = false;
   TabController tabController;
+  Timer acttimetimer;
+  TextEditingController replycontroller = new TextEditingController();
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  List<FcubereplyExtender1> replyExtenderlist = List<FcubereplyExtender1>();
+  CubeMakeRichTextEdit richtextview;
 
   @override
   void initState() {
@@ -79,6 +88,24 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     initgeolocation();
 
     isloading = false;
+    setState(() {});
+    acttimetimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {});
+    });
+    initreply();
+
+    richtextview = CubeMakeRichTextEdit(
+      custommode: "nomal",
+      jsondata:
+          jsonDecode(this.contents[FcubecontentType.description].contentvalue)[
+              "description"],
+      zefyrMode: ZefyrMode.view,
+    );
+  }
+
+  void initreply() async {
+    replyExtenderlist = await FcubereplyExtender1.selectStep1ForReply(
+        fcubequest.cubeuuid, 0, 0);
     setState(() {});
   }
 
@@ -160,7 +187,28 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     }
   }
 
+  @override
+  void dispose() {
+    if (acttimetimer != null && acttimetimer.isActive) {
+      acttimetimer.cancel();
+    }
+    super.dispose();
+  }
+
   Widget makedetailcontent() {
+    DateTime activationtime =
+        DateTime.parse(fcubequest.activationtime).add(Duration(hours: 9));
+    Duration avtibetime = activationtime
+        .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
+
+    int actday = avtibetime.inSeconds ~/ (60 * 60 * 24);
+    int acthour = (avtibetime.inSeconds - actday * 60 * 60 * 24) ~/ (60 * 60);
+    int actmin =
+        (avtibetime.inSeconds - actday * 60 * 60 * 24 - acthour * 3600) ~/ (60);
+    int actsec = avtibetime.inSeconds % 60;
+
+    String stravtibetime = "${actday}일 ${acthour}:${actmin}:${actsec}";
+
     return Container(
         child: Column(
       children: <Widget>[
@@ -177,13 +225,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
         ),
         Container(
           height: getdescriptionheight() + 40,
-          child: CubeMakeRichTextEdit(
-            custommode: "nomal",
-            jsondata: jsonDecode(this
-                .contents[FcubecontentType.description]
-                .contentvalue)["description"],
-            zefyrMode: ZefyrMode.view,
-          ),
+          child: richtextview,
         ),
         Divider(
           color: Colors.black,
@@ -257,10 +299,305 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
             Divider(
               color: Colors.black,
             ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    child: Text("남은 시간"),
+                  ),
+                ),
+                Container(
+                  child: Text("${stravtibetime}"),
+                )
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    child: Text("참가 제한"),
+                  ),
+                ),
+                Container(
+                  child: Text("${fcubequest.haspassword == 0 ? "공개" : "비공개"}"),
+                )
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    child: Text("박스 공개 범위"),
+                  ),
+                ),
+                Container(
+                  child: Text("${fcubequest.cubescope == 0 ? "공개" : "비공개"}"),
+                )
+              ],
+            ),
+            Divider(
+              color: Colors.black,
+              height: 2,
+            ),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Text("영향력"),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Text("영향력 레벨"),
+                              ),
+                              Container(
+                                child: Text("${fcubequest.influencelevel}"),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: Text("조회수"),
+                            ),
+                            Container(
+                              child: Text("${fcubequest.cubehits}"),
+                            )
+                          ],
+                        ),
+                      )),
+                      Expanded(
+                          child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: Text("좋아요 수"),
+                            ),
+                            Container(
+                              child: Text("${fcubequest.cubelikes}"),
+                            )
+                          ],
+                        ),
+                      )),
+                      Expanded(
+                          child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: Text("싫어요 수"),
+                            ),
+                            Container(
+                              child: Text("${fcubequest.cubedislikes}"),
+                            )
+                          ],
+                        ),
+                      ))
+                    ],
+                  )
+                ],
+              ),
+            )
           ],
-        ))
+        )),
+        Container(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Form(
+                    child: TextFormField(
+                        controller: replycontroller,
+                        maxLines: 2,
+                        decoration: InputDecoration(hintText: "댓글 달기")),
+                  ),
+                ),
+                Container(
+                  child: RaisedButton(
+                    child: Text("댓글"),
+                    onPressed: () async {
+                      FirebaseUser user = await _auth.currentUser();
+                      Fcubereply reply = Fcubereply(
+                          commnttext: replycontroller.text,
+                          cubeuuid: fcubequest.cubeuuid,
+                          uid: user.uid,
+                          bgroup: 0,
+                          depth: 0,
+                          commnttime: DateTime.now(),
+                          sorts: 0);
+                      Fcubereply result = await reply.makereply();
+                      if (result != null) {
+                        replycontroller.clear();
+                        FcubereplyExtender1 replyitem =
+                            FcubereplyExtender1.fromFcubereply(result,
+                                nickname: GolobalStateContainer.of(context)
+                                    .state
+                                    .userInfoMain
+                                    .nickname,
+                                profilepicktureurl:
+                                    GolobalStateContainer.of(context)
+                                        .state
+                                        .userInfoMain
+                                        .profilepicktureurl);
+                        replyExtenderlist.add(replyitem);
+                      } else {
+                        print("댓글 실패");
+                      }
+                    },
+                  ),
+                ),
+              ],
+            )),
+        Container(
+            height: 400,
+            child: ListView.builder(
+              itemCount: replyExtenderlist.length,
+              itemBuilder: (context, index) {
+                return Container(
+                    margin: EdgeInsets.only(
+                        left: replyExtenderlist[index].depth > 0 ? 70 : 0),
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              replyExtenderlist[index].profilepicktureurl),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child:
+                                        Text(replyExtenderlist[index].nickname),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.dashboard,
+                                      size: 20,
+                                    ),
+                                    onPressed: () {},
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Text(
+                                        replyExtenderlist[index].commnttext),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Text(
+                                        DateFormat("yyyy-MM-dd HH:mm:ss")
+                                            .format(replyExtenderlist[index]
+                                                .commnttime
+                                                .toUtc()
+                                                .add(Duration(hours: 9)))),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () async {
+                                      var response = await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return replyDialog();
+                                          });
+                                      if (response != null) {
+                                        FirebaseUser user =
+                                            await _auth.currentUser();
+                                        Fcubereply reply = new Fcubereply(
+                                            bgroup:
+                                                replyExtenderlist[index].bgroup,
+                                            commnttext: response,
+                                            cubeuuid: replyExtenderlist[index]
+                                                .cubeuuid,
+                                            depth: 1,
+                                            uid: user.uid,
+                                            commnttime: DateTime.now());
+                                        FcubereplyExtender1 rereply =
+                                            FcubereplyExtender1.fromFcubereply(
+                                                reply,
+                                                nickname:
+                                                    GolobalStateContainer.of(
+                                                            context)
+                                                        .state
+                                                        .userInfoMain
+                                                        .nickname,
+                                                profilepicktureurl:
+                                                    GolobalStateContainer.of(
+                                                            context)
+                                                        .state
+                                                        .userInfoMain
+                                                        .profilepicktureurl);
+                                        Fcubereply result =
+                                            await rereply.makereply();
+                                        if (result != null) {
+                                          replyExtenderlist.insert(
+                                              index + 1, rereply);
+                                        }
+                                      }
+                                    },
+                                    child: replyExtenderlist[index].depth > 0
+                                        ? null
+                                        : Text(
+                                            "답글 달기",
+                                            style: TextStyle(inherit: true),
+                                          ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ));
+              },
+            ))
       ],
     ));
+  }
+
+  Widget replyDialog() {
+    TextEditingController replycontroller = TextEditingController();
+    return Dialog(
+      child: Container(
+          height: 350,
+          child: Column(
+            children: <Widget>[
+              Container(child: Text("댓글 달기")),
+              Form(
+                child: TextFormField(
+                  controller: replycontroller,
+                  decoration: InputDecoration(hintText: "댓글을 입력"),
+                ),
+              ),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Close")),
+                  RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(replycontroller.text);
+                      },
+                      child: Text("OK")),
+                ],
+              )
+            ],
+          )),
+    );
   }
 
   void onMapCreated(GoogleMapController controller) async {
@@ -275,16 +612,17 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
         jsonDecode(this.contents[FcubecontentType.description].contentvalue)[
             "description"];
     List<dynamic> description = jsonDecode(tempdescription);
-    if (description.length > 0) {
-      return (description.length.toDouble() * 40);
-    } else {
-      return 150;
-    }
+    // if (description.length > 0) {
+    //   return (description.length.toDouble() * 50);
+    // } else {
+    //   return 150;
+    // }
+    return 350;
   }
 
   double getsiktycontentheight() {
     if (tabController.index == 0) {
-      return getdescriptionheight() + 150 + 200 + 200;
+      return getdescriptionheight() + 150 + 200 + 200 + 200 + 400;
     } else {
       return 300;
     }

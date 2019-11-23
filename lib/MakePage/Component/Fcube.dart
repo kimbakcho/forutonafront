@@ -48,28 +48,43 @@ class Fcube {
   double pointreward;
   double influencereward;
   String activationtime;
+  String cubepassword;
+  int haspassword;
+  int cubescope;
+  double influencelevel;
+  int cubehits;
+  int cubelikes;
+  int cubedislikes;
+  int maximumplayers;
+
   CurrentSelectCubeLocation currentselectcube;
 
-  Fcube({
-    this.cubeuuid,
-    this.uid,
-    this.longitude,
-    this.latitude,
-    this.cubename,
-    this.cubedispalyname,
-    this.cubetype,
-    this.maketime,
-    this.influence,
-    this.cubestate,
-    this.placeaddress,
-    this.administrativearea,
-    this.country,
-    this.cubeimage,
-    this.pointreward,
-    this.influencereward,
-    this.activationtime,
-  });
-
+  Fcube(
+      {this.cubeuuid,
+      this.uid,
+      this.longitude,
+      this.latitude,
+      this.cubename,
+      this.cubedispalyname,
+      this.cubetype,
+      this.maketime,
+      this.influence,
+      this.cubestate,
+      this.placeaddress,
+      this.administrativearea,
+      this.country,
+      this.cubeimage,
+      this.pointreward,
+      this.influencereward,
+      this.activationtime,
+      this.haspassword,
+      this.cubepassword,
+      this.cubescope,
+      this.influencelevel,
+      this.cubehits,
+      this.cubelikes,
+      this.cubedislikes,
+      this.maximumplayers});
 
   Fcube.fromJson(Map<String, dynamic> json) {
     cubeuuid = json['cubeuuid'];
@@ -87,6 +102,14 @@ class Fcube {
     pointreward = json['pointreward'];
     influencereward = json['influencereward'];
     activationtime = json['activationtime'];
+    cubepassword = json['cubepassword'];
+    haspassword = json['haspassword'];
+    cubescope = json['cubescope'];
+    influencelevel = json['influencelevel'];
+    cubehits = json['cubehits'];
+    cubelikes = json['cubelikes'];
+    cubedislikes = json['cubedislikes'];
+    maximumplayers = json['maximumplayers'];
   }
 
   Map<String, dynamic> toJson() {
@@ -106,10 +129,16 @@ class Fcube {
     data['pointreward'] = this.pointreward;
     data['influencereward'] = this.influencereward;
     data['activationtime'] = this.activationtime;
+    data['cubepassword'] = this.cubepassword;
+    data['haspassword'] = this.haspassword;
+    data['cubescope'] = this.cubescope;
+    data['influencelevel'] = this.influencelevel;
+    data['cubehits'] = this.cubehits;
+    data['cubelikes'] = this.cubelikes;
+    data['cubedislikes'] = this.cubedislikes;
+    data['maximumplayers'] = this.maximumplayers;
     return data;
   }
-
-
 
   Future<int> makecube() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
