@@ -180,6 +180,19 @@ class Fcube {
   static Future<BitmapDescriptor> getMarkerImage(String path, int widt) async {
     return BitmapDescriptor.fromBytes(await _getBytesFromAsset(path, widt));
   }
+
+  Future<int> updateCubeState() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var url = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/updateCubeState");
+    var response =
+        await http.post(url, body: jsonEncode(this.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    return int.tryParse(response.body);
+  }
 }
 
 class FcubeState {

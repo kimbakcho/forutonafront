@@ -6,6 +6,8 @@ import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/MakePageView.dart';
 import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
 import 'LoginPage/LoginPageView.dart';
@@ -26,6 +28,9 @@ class _MainPageState extends State<MainPage> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser currentuser;
   HomeNavi homenavi;
+  var geolocator = Geolocator();
+  var locationOptions =
+      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
   List<Widget> mainSwipeList = List<Widget>();
   MakePageView makePageView = MakePageView();
   HomePageView homePageView = HomePageView();
@@ -35,7 +40,7 @@ class _MainPageState extends State<MainPage> {
     return new Container();
   });
   SwiperController swipercontroller = SwiperController();
-
+  Position currentposition;
   Swiper swiper;
 
   @override
@@ -100,11 +105,105 @@ class _MainPageState extends State<MainPage> {
 
           GolobalStateContainer.of(context).addfcubeListUtilcubeList(
               await FcubeExtender1.getusercubes(offset: 0, limit: 10));
-
+          initgeolocation();
           GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
         });
       }
     });
+    initgeopermisstion() {}
+  }
+
+  initgeopermisstion() async {
+    Map<PermissionGroup, PermissionStatus> reqpermissition =
+        await PermissionHandler().requestPermissions(
+            [PermissionGroup.location, PermissionGroup.locationAlways]);
+    PermissionStatus permissition = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.location);
+    if (permissition == PermissionStatus.granted) {
+    } else {
+      Future.delayed(Duration.zero, () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: Text("해당 서비스 이용이 어렵습니다."),
+                    ),
+                    Container(
+                        child: RaisedButton(
+                      child: Text("Close"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ))
+                  ],
+                ),
+              );
+            });
+      });
+    }
+  }
+
+  initgeolocation() async {
+    Map<PermissionGroup, PermissionStatus> reqpermissition =
+        await PermissionHandler().requestPermissions(
+            [PermissionGroup.location, PermissionGroup.locationAlways]);
+    PermissionStatus permissition = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.location);
+    if (permissition == PermissionStatus.granted) {
+      geolocator
+          .getPositionStream(locationOptions)
+          .listen((Position position) async {
+        if (position == null) {
+          currentposition = await Geolocator()
+              .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
+          currentposition = position;
+        } else {
+          currentposition = position;
+        }
+        GolobalStateContainer.of(context)
+            .updateCurrnetPosition(currentposition);
+        GolobalStateContainer.of(context)
+            .updateCubeListupdatedistancewithme(currentposition);
+      });
+
+      currentposition = await Geolocator()
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      if (currentposition == null) {
+        currentposition = await Geolocator()
+            .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
+      }
+      GolobalStateContainer.of(context).updateCurrnetPosition(currentposition);
+      GolobalStateContainer.of(context)
+          .updateCubeListupdatedistancewithme(currentposition);
+
+      GolobalStateContainer.of(context).updateCurrentAddress(currentposition);
+    } else {
+      Future.delayed(Duration.zero, () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: Text("해당 서비스 이용이 어렵습니다."),
+                    ),
+                    Container(
+                        child: RaisedButton(
+                      child: Text("Close"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ))
+                  ],
+                ),
+              );
+            });
+      });
+    }
   }
 
   Widget loginButton() {

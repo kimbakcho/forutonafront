@@ -6,6 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:forutonafront/Common/Fcubeplayer.dart';
+import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/Common/Fcubereply.dart';
 import 'package:forutonafront/Common/FcubereplyExtender1.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
@@ -18,6 +21,7 @@ import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:intl/intl.dart';
 import 'package:zefyr/zefyr.dart';
@@ -55,11 +59,18 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   FirebaseAuth _auth = FirebaseAuth.instance;
   List<FcubereplyExtender1> replyExtenderlist = List<FcubereplyExtender1>();
   CubeMakeRichTextEdit richtextview;
+  bool isSlidingUpPanelDrag = false;
+  PanelController panelcontroller = new PanelController();
+  bool ispanelopen = false;
+  DateTime selectfinishtime;
+  FirebaseUser _currentuser;
+  List<FcubeplayerExtender1> myfcubs;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     tabController = TabController(length: 3, vsync: this);
     fcubequest = FcubeQuest.fromFcubeExtender1(fcubeextender1);
     fcubequest.cubeimage = "assets/MarkesImages/QuestCube.png";
@@ -83,9 +94,14 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     initialCameraPosition = new CameraPosition(
         target: LatLng(fcubequest.latitude, fcubequest.longitude), zoom: 16);
     isloading = true;
+    _currentuser = await FirebaseAuth.instance.currentUser();
     setState(() {});
     this.contents = await initFcubeQuest();
     initgeolocation();
+
+    Fcubeplayer player =
+        new Fcubeplayer(cubeuuid: fcubequest.cubeuuid, uid: _currentuser.uid);
+    myfcubs = await FcubeplayerExtender1.selectPlayers(player);
 
     isloading = false;
     setState(() {});
@@ -93,7 +109,6 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
       setState(() {});
     });
     initreply();
-
     richtextview = CubeMakeRichTextEdit(
       custommode: "nomal",
       jsondata:
@@ -107,6 +122,14 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     replyExtenderlist = await FcubereplyExtender1.selectStep1ForReply(
         fcubequest.cubeuuid, 0, 0);
     setState(() {});
+  }
+
+  double replyheight() {
+    double reslut = replyExtenderlist.length * 100.0;
+    if (reslut >= 300) {
+      reslut = 300;
+    }
+    return reslut;
   }
 
   Future<Map<FcubecontentType, Fcubecontent>> initFcubeQuest() async {
@@ -161,7 +184,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     }
   }
 
-  Widget bottomNavi(FcubeState state) {
+  Widget makebottomNavi(FcubeState state) {
     switch (state) {
       case FcubeState.startWait:
         return Container(
@@ -175,15 +198,115 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                 width: 100,
                 height: 50,
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    setState(() {
+                      panelcontroller.open();
+                    });
+                  },
                   child: Text("시작 준비"),
                 ),
               )),
         );
-
         break;
+      case FcubeState.play:
+        DateTime activationtime =
+            DateTime.parse(fcubequest.activationtime).add(Duration(hours: 9));
+
+        Duration avtibetime = activationtime
+            .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
+        int actday = avtibetime.inSeconds ~/ (60 * 60 * 24);
+        int acthour =
+            (avtibetime.inSeconds - actday * 60 * 60 * 24) ~/ (60 * 60);
+        int actmin =
+            (avtibetime.inSeconds - actday * 60 * 60 * 24 - acthour * 3600) ~/
+                (60);
+        int actsec = avtibetime.inSeconds % 60;
+        return Container(
+            color: Color.fromARGB(125, 10, 10, 10),
+            child: Container(
+                height: 70,
+                alignment: Alignment(1, 0),
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      color: Colors.white,
+                      child: Text("참가자 수"),
+                    ),
+                    SizedBox(
+                      width: 50,
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Text("${actday}일 ${acthour}:${actmin}:${actsec}"),
+                    ),
+                    Expanded(
+                        child: SizedBox(
+                      width: 50,
+                    )),
+                    Container(
+                      child: RaisedButton(
+                        onPressed: () {},
+                        child: Text("관리자 모드"),
+                      ),
+                    )
+                  ],
+                )));
       default:
         return null;
+    }
+  }
+
+  Widget playerbottomNavi(FcubeState state) {
+    //참가 했는지 Player 리스트 따와야함
+    if (state == FcubeState.play && myfcubs.length == 0) {
+      return Container(
+        color: Color.fromARGB(125, 10, 10, 10),
+        child: Container(
+            height: 70,
+            alignment: Alignment(1, 0),
+            width: MediaQuery.of(context).size.width,
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              width: 100,
+              height: 50,
+              child: RaisedButton(
+                onPressed: () async {
+                  setState(() {
+                    if (myfcubs[0].hasgiveup > 0 || myfcubs[0].hasexit > 0) {
+                      showDialog(
+                          context: context,
+                          builder: (bulder) {
+                            return Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Text("퇴출이나 항복한 이력이 있습니다."),
+                                ),
+                                Container(
+                                    child: RaisedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("close"),
+                                ))
+                              ],
+                            );
+                          });
+                    }
+                  });
+                },
+                child: Text("참가 하기"),
+              ),
+            )),
+      );
+    }
+  }
+
+  Widget bottomNavi() {
+    if (_currentuser.uid == fcubequest.uid) {
+      return makebottomNavi(fcubequest.cubestate);
+    } else {
+      return playerbottomNavi(fcubequest.cubestate);
     }
   }
 
@@ -198,6 +321,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   Widget makedetailcontent() {
     DateTime activationtime =
         DateTime.parse(fcubequest.activationtime).add(Duration(hours: 9));
+
     Duration avtibetime = activationtime
         .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
 
@@ -456,7 +580,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
               ],
             )),
         Container(
-            height: 400,
+            height: replyheight(),
             child: ListView.builder(
               itemCount: replyExtenderlist.length,
               itemBuilder: (context, index) {
@@ -567,6 +691,14 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     ));
   }
 
+  Widget makedetailcubes() {
+    return Container(child: Text("박스 목록"));
+    //예제 코드
+    // if(contents.containsKey(FcubecontentType.startCubeLocation)){
+    //    StartCubeLocation startcube = StartCubeLocation.fromJson(json.decode(contents[FcubecontentType.startCubeLocation].contentvalue));
+    // }
+  }
+
   Widget replyDialog() {
     TextEditingController replycontroller = TextEditingController();
     return Dialog(
@@ -608,16 +740,32 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   }
 
   double getdescriptionheight() {
+    double setheight = 50;
     String tempdescription =
         jsonDecode(this.contents[FcubecontentType.description].contentvalue)[
             "description"];
     List<dynamic> description = jsonDecode(tempdescription);
+    description.forEach((value) {
+      Map values = value as Map;
+      values.keys.forEach((key) {
+        if (key == "insert") {
+          String text = value[key];
+          Iterable<Match> findn = text.allMatches("\n");
+          setheight += findn.length * 50;
+        } else if (key == "attributes") {
+          if (value[key]["embed"]["type"] == "image") {
+            setheight += 150;
+          }
+        }
+      });
+    });
+
     // if (description.length > 0) {
     //   return (description.length.toDouble() * 50);
     // } else {
     //   return 150;
     // }
-    return 350;
+    return setheight;
   }
 
   double getsiktycontentheight() {
@@ -640,15 +788,105 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     });
   }
 
+  Widget selectSlidingUpPanel() {
+    DateTime acttime = DateTime.parse(fcubequest.activationtime)
+        .toUtc()
+        .add(Duration(hours: 9));
+    if (selectfinishtime == null) {
+      selectfinishtime = DateTime.now();
+    }
+    if (fcubequest.cubestate == FcubeState.startWait && ispanelopen) {
+      return Container(
+        color: Colors.white,
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: RaisedButton(
+                child: Icon(Icons.arrow_drop_down),
+                onPressed: () async {
+                  panelcontroller.close();
+                  setState(() {});
+                },
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    child: Text("종료일자"),
+                  ),
+                  Container(
+                    child: RaisedButton(
+                      onPressed: () {
+                        DatePicker.showDatePicker(context,
+                            currentTime: selectfinishtime, onConfirm: (date) {
+                          if (date.difference(DateTime.now()).inSeconds < 0) {
+                            print("지난 날짜");
+                          } else {
+                            selectfinishtime = date;
+                          }
+                          setState(() {});
+                          print(date);
+                        },
+                            minTime: selectfinishtime,
+                            maxTime: acttime.add(Duration(days: 7)),
+                            locale: LocaleType.ko);
+                      },
+                      child: Text(
+                          DateFormat("yyyy-MM-dd").format(selectfinishtime)),
+                    ),
+                  ),
+                  Container(
+                    child: RaisedButton(
+                      onPressed: () {
+                        DatePicker.showTimePicker(context,
+                            currentTime: selectfinishtime,
+                            locale: LocaleType.ko, onConfirm: (date) {
+                          if (date.difference(DateTime.now()).inSeconds < 0) {
+                            print("지난 날짜");
+                          } else {
+                            selectfinishtime = date;
+                          }
+                          setState(() {});
+                          print(date);
+                        });
+                      },
+                      child: Text(DateFormat("HH:mm").format(selectfinishtime)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: RaisedButton(
+                onPressed: () {
+                  fcubequest.activationtime =
+                      selectfinishtime.toUtc().toIso8601String();
+                  fcubequest.cubestate = FcubeState.play;
+                  fcubequest.updateCubeState();
+                  panelcontroller.close();
+                },
+                child: Text("퀘스트 시작"),
+              ),
+            )
+          ],
+        ),
+      );
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final GoogleMap googleMap = GoogleMap(
-      gestureRecognizers: Set()
-        ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
-        ..add(Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
-        ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
-        ..add(Factory<VerticalDragGestureRecognizer>(
-            () => VerticalDragGestureRecognizer())),
+      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+        new Factory<OneSequenceGestureRecognizer>(
+          () => new EagerGestureRecognizer(),
+        ),
+      ].toSet(),
       initialCameraPosition: initialCameraPosition,
       onMapCreated: onMapCreated,
       myLocationEnabled: true,
@@ -656,25 +894,39 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
       markers: makres,
     );
     return Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            Container(
-              child: IconButton(
-                icon: Icon(Icons.share),
-                onPressed: () {},
-              ),
+      appBar: AppBar(
+        actions: <Widget>[
+          Container(
+            child: IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {},
             ),
-            Container(
-              child: IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () {},
-              ),
+          ),
+          Container(
+            child: IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {},
             ),
-          ],
-        ),
-        body: isloading
-            ? Center(child: CircularProgressIndicator())
-            : Stack(children: <Widget>[
+          ),
+        ],
+      ),
+      body: isloading
+          ? Center(child: CircularProgressIndicator())
+          : SlidingUpPanel(
+              controller: panelcontroller,
+              isDraggable: isSlidingUpPanelDrag,
+              onPanelOpened: () {
+                ispanelopen = true;
+              },
+              onPanelClosed: () {
+                ispanelopen = false;
+              },
+              panel: Container(
+                child: selectSlidingUpPanel(),
+              ),
+              collapsed: isscrolling ? Container() : bottomNavi(),
+              renderPanelSheet: false,
+              body: Stack(children: <Widget>[
                 ListView(
                   controller: listviewcontroller,
                   children: <Widget>[
@@ -744,12 +996,8 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                             )),
                   ],
                 ),
-                Positioned(
-                  bottom: 0,
-                  child: isscrolling
-                      ? Container()
-                      : bottomNavi(fcubequest.cubestate),
-                )
-              ]));
+              ]),
+            ),
+    );
   }
 }

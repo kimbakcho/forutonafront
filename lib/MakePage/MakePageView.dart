@@ -25,34 +25,12 @@ class _MakePageViewState extends State<MakePageView> {
   List<String> litems = [];
   bool iseditmode = false;
   FcubeExtender1 currentedititem;
-  Position currentposition;
-  var geolocator = Geolocator();
-  var locationOptions =
-      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+
+
   @override
   void initState() {
     super.initState();
-    initgeolocation();
-  }
 
-  initgeolocation() async {
-    PermissionStatus permissition = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.location);
-    if (permissition == PermissionStatus.granted) {
-      geolocator
-          .getPositionStream(locationOptions)
-          .listen((Position position) async {
-        if (position == null) {
-          currentposition = await Geolocator()
-              .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
-          currentposition = position;
-        } else {
-          currentposition = position;
-        }
-        GolobalStateContainer.of(context)
-            .updateCubeListupdatedistancewithme(currentposition);
-      });
-    }
   }
 
   makeMainViewChioce() {
