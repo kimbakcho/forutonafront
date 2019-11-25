@@ -121,6 +121,7 @@ class FcubeQuest extends Fcube {
     this.cubehits = cube.cubehits;
     this.cubelikes = cube.cubelikes;
     this.cubedislikes = cube.cubedislikes;
+    this.joinplayer = cube.joinplayer;
     this.maximumplayers = cube.maximumplayers;
   }
   String nickname;
@@ -152,6 +153,7 @@ class FcubeQuest extends Fcube {
     this.cubehits = extender1.cubehits;
     this.cubelikes = extender1.cubelikes;
     this.cubedislikes = extender1.cubedislikes;
+    this.joinplayer = extender1.joinplayer;
     this.maximumplayers = extender1.maximumplayers;
   }
 

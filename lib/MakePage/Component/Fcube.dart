@@ -55,6 +55,7 @@ class Fcube {
   int cubehits;
   int cubelikes;
   int cubedislikes;
+  int joinplayer;
   int maximumplayers;
 
   CurrentSelectCubeLocation currentselectcube;
@@ -84,6 +85,7 @@ class Fcube {
       this.cubehits,
       this.cubelikes,
       this.cubedislikes,
+      this.joinplayer,
       this.maximumplayers});
 
   Fcube.fromJson(Map<String, dynamic> json) {
@@ -109,6 +111,7 @@ class Fcube {
     cubehits = json['cubehits'];
     cubelikes = json['cubelikes'];
     cubedislikes = json['cubedislikes'];
+    joinplayer = json['joinplayer'];
     maximumplayers = json['maximumplayers'];
   }
 
@@ -136,6 +139,7 @@ class Fcube {
     data['cubehits'] = this.cubehits;
     data['cubelikes'] = this.cubelikes;
     data['cubedislikes'] = this.cubedislikes;
+    data['joinplayer'] = this.joinplayer;
     data['maximumplayers'] = this.maximumplayers;
     return data;
   }

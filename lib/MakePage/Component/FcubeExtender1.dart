@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/Preference.dart';
@@ -36,6 +37,7 @@ class FcubeExtender1 extends Fcube {
     cubehits = json['cubehits'];
     cubelikes = json['cubelikes'];
     cubedislikes = json['cubedislikes'];
+    joinplayer = json['joinplayer'];
     maximumplayers = json['maximumplayers'];
   }
 
@@ -63,6 +65,7 @@ class FcubeExtender1 extends Fcube {
     data['cubehits'] = this.cubehits;
     data['cubelikes'] = this.cubelikes;
     data['cubedislikes'] = this.cubedislikes;
+    data['joinplayer'] = this.joinplayer;
     data['maximumplayers'] = this.maximumplayers;
     return data;
   }
@@ -82,5 +85,20 @@ class FcubeExtender1 extends Fcube {
       list.add(new FcubeExtender1.fromJson(v));
     });
     return list;
+  }
+
+  static Future<List<FcubeExtender1>> findNearDistanceCube(
+      FCubeGeoSearchUtil searchitem) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var url = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/findNearDistanceCube");
+    var response =
+        await http.post(url, body: json.encode(searchitem.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    return List<FcubeExtender1>.from(
+        json.decode(response.body).map((x) => FcubeExtender1.fromJson(x)));
   }
 }
