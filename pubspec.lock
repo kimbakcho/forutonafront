@@ -102,11 +102,9 @@ packages:
   clustering_google_maps:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "5cdfcf8aa736dc62185dade5bda24615d8194fb5"
-      url: "https://github.com/kimbakcho/clustering_google_maps"
-    source: git
+      path: "extlib\\clustering_google_maps"
+      relative: true
+    source: path
     version: "0.1.2"
   code_builder:
     dependency: transitive

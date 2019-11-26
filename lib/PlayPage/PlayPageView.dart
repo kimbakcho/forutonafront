@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -27,17 +28,22 @@ class _PlayPageViewState extends State<PlayPageView> {
   bool isloading;
   PanelController panelController = PanelController();
   List<FcubeExtender1> currentvisualfcube = List<FcubeExtender1>();
-  List<LatLngAndGeohash> currentvisualPoints = List();
+  List<FcubeLatLngAndGeohash> currentvisualPoints = List();
   ClusteringHelper clusteringHelper;
+  FcubeTypeMakerImage fcubetypeiamge;
   @override
   void initState() {
     super.initState();
     clusteringHelper = ClusteringHelper.forMemory(
-      list: currentvisualPoints,
-      updateMarkers: updateMarkers,
-      aggregationSetup: AggregationSetup(markerSize: 150),
-    );
+        list: currentvisualPoints,
+        updateMarkers: updateMarkers,
+        aggregationSetup: AggregationSetup(markerSize: 150),
+        onMakertap: onMakertap);
     initgeolocation();
+  }
+
+  onMakertap(FcubeMakerHelper helper) {
+    print(helper.cubeuuid);
   }
 
   initgeolocation() async {
@@ -53,38 +59,92 @@ class _PlayPageViewState extends State<PlayPageView> {
   void onMapCreated(GoogleMapController controller) async {
     googlemap_controller = controller;
     clusteringHelper.mapController = controller;
-    initMemoryClustering();
+    //CubeImageinit
+    fcubetypeiamge = FcubeTypeMakerImage();
+    await fcubetypeiamge.initImage(100, 150);
+    await initMemoryClustering(initialCameraPosition);
+    // LatLngBounds visibleGegion = await googlemap_controller.getVisibleRegion();
+    // double distance = await geolocation.distanceBetween(
+    //     initialCameraPosition.target.latitude,
+    //     initialCameraPosition.target.longitude,
+    //     visibleGegion.northeast.latitude,
+    //     visibleGegion.northeast.longitude);
+
+    // FCubeGeoSearchUtil searchitem = FCubeGeoSearchUtil.fromGeoSearchUtil(
+    //     GeoSearchUtil(
+    //         distance: distance,
+    //         latitude: initialCameraPosition.target.latitude,
+    //         longitude: initialCameraPosition.target.longitude,
+    //         limit: 1000,
+    //         offset: 0),
+    //     cubescope: 0,
+    //     cubestate: 1,
+    //     activationtime: DateTime.now());
+    // currentvisualfcube = await FcubeExtender1.findNearDistanceCube(searchitem);
+    // print("currentvisualfcube.length = ${currentvisualfcube.length}");
+    // for (int i = 0; i < currentvisualfcube.length; i++) {
+    //   FcubeLatLngAndGeohash tempitem = FcubeLatLngAndGeohash(LatLng(
+    //       currentvisualfcube[i].latitude, currentvisualfcube[i].longitude));
+    //   tempitem.makerhelp = FcubeMakerHelper(
+    //       cubename: currentvisualfcube[i].cubename,
+    //       cubeuuid: currentvisualfcube[i].cubeuuid,
+    //       cubeType: currentvisualfcube[i].cubetype.toString(),
+    //       nickname: currentvisualfcube[i].nickname,
+    //       iconmarker:
+    //           fcubetypeiamge.nomalimage[currentvisualfcube[i].cubetype]);
+
+    //   currentvisualPoints.add(tempitem);
+    // }
+    // print("currentvisualPoints.length = ${currentvisualPoints.length}");
+    // clusteringHelper.list = currentvisualPoints;
+    // clusteringHelper.onCameraMove(initialCameraPosition);
+    // clusteringHelper.updateMap();
+
     setMarkers();
     setState(() {});
   }
 
-  initMemoryClustering() async {
+  initMakerCubeImage() {}
+
+  initMemoryClustering(CameraPosition cameraPosition) async {
+    print("currentvisualPointsclear.length = ${currentvisualPoints.length}");
     LatLngBounds visibleGegion = await googlemap_controller.getVisibleRegion();
     double distance = await geolocation.distanceBetween(
-        initialCameraPosition.target.latitude,
-        initialCameraPosition.target.longitude,
+        cameraPosition.target.latitude,
+        cameraPosition.target.longitude,
         visibleGegion.northeast.latitude,
         visibleGegion.northeast.longitude);
 
     FCubeGeoSearchUtil searchitem = FCubeGeoSearchUtil.fromGeoSearchUtil(
         GeoSearchUtil(
             distance: distance,
-            latitude: initialCameraPosition.target.latitude,
-            longitude: initialCameraPosition.target.longitude,
-            limit: 100,
+            latitude: cameraPosition.target.latitude,
+            longitude: cameraPosition.target.longitude,
+            limit: 1000,
             offset: 0),
         cubescope: 0,
         cubestate: 1,
         activationtime: DateTime.now());
+
     currentvisualfcube = await FcubeExtender1.findNearDistanceCube(searchitem);
+    //await 시 해당 메소드 외에 다시 이 메소드를 실행 시키니 Clear는 awiat 메소드를 다 호출한 다음에 해야함.
+    currentvisualPoints.clear();
     for (int i = 0; i < currentvisualfcube.length; i++) {
-      currentvisualPoints.add(LatLngAndGeohash(
-        LatLng(currentvisualfcube[i].latitude, currentvisualfcube[i].longitude),
-      ));
+      FcubeLatLngAndGeohash tempitem = FcubeLatLngAndGeohash(LatLng(
+          currentvisualfcube[i].latitude, currentvisualfcube[i].longitude));
+      tempitem.makerhelp = FcubeMakerHelper(
+          cubename: currentvisualfcube[i].cubename,
+          cubeuuid: currentvisualfcube[i].cubeuuid,
+          cubeType: currentvisualfcube[i].cubetype.toString(),
+          nickname: currentvisualfcube[i].nickname,
+          iconmarker:
+              fcubetypeiamge.nomalimage[currentvisualfcube[i].cubetype]);
+      currentvisualPoints.add(tempitem);
     }
     clusteringHelper.list = currentvisualPoints;
-    clusteringHelper.onCameraMove(initialCameraPosition);
+    clusteringHelper.onCameraMove(cameraPosition);
     clusteringHelper.updateMap();
+    return;
   }
 
   updateMarkers(Set<Marker> markers) {
@@ -94,37 +154,8 @@ class _PlayPageViewState extends State<PlayPageView> {
   }
 
   //해당 부분 Backend 에서 추후 Asnyc 처리 필요할것으로 예상
-  onPanelCameraMove(CameraPosition cameraPosition) async {
-    print(cameraPosition.zoom);
-    print(cameraPosition.target.toString());
-    LatLngBounds visibleGegion = await googlemap_controller.getVisibleRegion();
-    double distance = await geolocation.distanceBetween(
-        cameraPosition.target.latitude,
-        cameraPosition.target.longitude,
-        visibleGegion.northeast.latitude,
-        visibleGegion.northeast.longitude);
-    print("${distance} M");
-
-    FCubeGeoSearchUtil searchitem = FCubeGeoSearchUtil.fromGeoSearchUtil(
-        GeoSearchUtil(
-            distance: distance,
-            latitude: cameraPosition.target.latitude,
-            longitude: cameraPosition.target.longitude,
-            limit: 100,
-            offset: 0),
-        cubescope: 0,
-        cubestate: 1,
-        activationtime: DateTime.now());
-    currentvisualfcube = await FcubeExtender1.findNearDistanceCube(searchitem);
-    currentvisualPoints.clear();
-    for (int i = 0; i < currentvisualfcube.length; i++) {
-      currentvisualPoints.add(LatLngAndGeohash(
-        LatLng(currentvisualfcube[i].latitude, currentvisualfcube[i].longitude),
-      ));
-    }
-    clusteringHelper.list = currentvisualPoints;
-    clusteringHelper.onCameraMove(cameraPosition);
-    clusteringHelper.updateMap();
+  onPanelCameraMove(CameraPosition cameraPosition) {
+    initMemoryClustering(cameraPosition);
   }
 
   //setinit markes

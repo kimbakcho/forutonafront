@@ -58,8 +58,7 @@ dependencies:
       url: https://github.com/kimbakcho/zefyr
       path: packages/zefyr
   clustering_google_maps:
-    git:
-      url: https://github.com/kimbakcho/clustering_google_maps
+    path: ./extlib/clustering_google_maps/
 
 dev_dependencies:
   flutter_test:
