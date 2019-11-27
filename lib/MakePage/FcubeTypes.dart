@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -19,9 +20,12 @@ class FcubeTypeMakerImage {
       Map<FcubeType, BitmapDescriptor>();
   Map<FcubeType, BitmapDescriptor> bigimage =
       Map<FcubeType, BitmapDescriptor>();
-  FcubeTypeMakerImage();
-
-  Future<void> initImage(int nomal, int big) async {
+  Map<FcubeType, Image> iconImage = Map<FcubeType, Image>();
+  int nomal = 100;
+  int big = 150;
+  int iconimagesize = 80;
+  FcubeTypeMakerImage({this.nomal, this.big, this.iconimagesize});
+  Future<void> initImage() async {
     nomalimage[FcubeType.messageCube] =
         await getMarkerImage("assets/MarkesImages/MessageCube.png", nomal);
     nomalimage[FcubeType.questCube] =
@@ -47,6 +51,36 @@ class FcubeTypeMakerImage {
         await getMarkerImage("assets/MarkesImages/startCube.png", big);
     bigimage[FcubeType.currentselectcube] =
         await getMarkerImage("assets/MarkesImages/SelectMarker.png", big);
+
+    iconImage[FcubeType.messageCube] = Image(
+        image: AssetImage("assets/MarkesImages/MessageCube.png"),
+        width: iconimagesize.toDouble(),
+        height: iconimagesize.toDouble());
+
+    iconImage[FcubeType.questCube] = Image(
+        image: AssetImage("assets/MarkesImages/QuestCube.png"),
+        width: iconimagesize.toDouble(),
+        height: iconimagesize.toDouble());
+
+    iconImage[FcubeType.checkincube] = Image(
+        image: AssetImage("assets/MarkesImages/CheckInCube.png"),
+        width: iconimagesize.toDouble(),
+        height: iconimagesize.toDouble());
+
+    iconImage[FcubeType.finishcube] = Image(
+        image: AssetImage("assets/MarkesImages/finishCube.png"),
+        width: iconimagesize.toDouble(),
+        height: iconimagesize.toDouble());
+
+    iconImage[FcubeType.startcube] = Image(
+        image: AssetImage("assets/MarkesImages/startCube.png"),
+        width: iconimagesize.toDouble(),
+        height: iconimagesize.toDouble());
+
+    iconImage[FcubeType.currentselectcube] = Image(
+        image: AssetImage("assets/MarkesImages/SelectMarker.png"),
+        width: iconimagesize.toDouble(),
+        height: iconimagesize.toDouble());
   }
 
   static Future<Uint8List> _getBytesFromAsset(String path, int width) async {

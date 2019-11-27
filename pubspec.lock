@@ -326,6 +326,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  great_circle_distance2:
+    dependency: "direct main"
+    description:
+      name: great_circle_distance2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1+1"
   html:
     dependency: transitive
     description:

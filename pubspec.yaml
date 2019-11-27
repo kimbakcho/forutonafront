@@ -50,6 +50,8 @@ dependencies:
   quill_delta: ^1.0.0
   sliding_up_panel: ^0.3.6
   sticky_headers: "^0.1.8"
+  great_circle_distance2: ^1.0.1+1
+
   flutter_kakao_login:
     git:
       url: https://github.com/kimbakcho/flutter_kakao_login

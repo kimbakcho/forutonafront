@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
+import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,6 +13,9 @@ class FcubeExtender1 extends Fcube {
   String nickname;
   String profilepicktureurl;
   double distancewithme = 0;
+  FcubecontentType contenttype;
+  String contentvalue;
+
   FcubeExtender1();
 
   FcubeExtender1.fromJson(Map<String, dynamic> json) {
@@ -39,6 +43,10 @@ class FcubeExtender1 extends Fcube {
     cubedislikes = json['cubedislikes'];
     joinplayer = json['joinplayer'];
     maximumplayers = json['maximumplayers'];
+    contenttype = json['contenttype'] == null
+        ? null
+        : FcubecontentType.fromJson(json['contenttype']);
+    contentvalue = json['contentvalue'] == null ? null : json['contentvalue'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +75,10 @@ class FcubeExtender1 extends Fcube {
     data['cubedislikes'] = this.cubedislikes;
     data['joinplayer'] = this.joinplayer;
     data['maximumplayers'] = this.maximumplayers;
+    data['contenttype'] = this.contenttype == null
+        ? null
+        : FcubecontentType.toJson(this.contenttype);
+    data['contentvalue'] = this.contentvalue == null ? null : this.contentvalue;
     return data;
   }
 

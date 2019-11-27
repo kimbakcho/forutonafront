@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
+import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
+import 'package:forutonafront/Common/GeoSearchUtil.dart';
 import 'package:forutonafront/HomePage/HomePageView.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/MakePageView.dart';
 import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
@@ -105,12 +108,12 @@ class _MainPageState extends State<MainPage> {
 
           GolobalStateContainer.of(context).addfcubeListUtilcubeList(
               await FcubeExtender1.getusercubes(offset: 0, limit: 10));
-          initgeolocation();
+
           GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
         });
       }
     });
-    initgeopermisstion() {}
+    initgeopermisstion();
   }
 
   initgeopermisstion() async {
@@ -120,6 +123,8 @@ class _MainPageState extends State<MainPage> {
     PermissionStatus permissition = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.location);
     if (permissition == PermissionStatus.granted) {
+      await initgeolocation();
+      initPlayViewCubelist();
     } else {
       Future.delayed(Duration.zero, () {
         showDialog(
@@ -146,7 +151,7 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  initgeolocation() async {
+  Future<void> initgeolocation() async {
     Map<PermissionGroup, PermissionStatus> reqpermissition =
         await PermissionHandler().requestPermissions(
             [PermissionGroup.location, PermissionGroup.locationAlways]);
@@ -167,6 +172,14 @@ class _MainPageState extends State<MainPage> {
             .updateCurrnetPosition(currentposition);
         GolobalStateContainer.of(context)
             .updateCubeListupdatedistancewithme(currentposition);
+        GolobalStateContainer.of(context)
+            .updatePlayViewCubeListupdatedistancewithme(currentposition);
+
+        GolobalStateContainer.of(context).setmainInitialCameraPosition(
+            CameraPosition(
+                target:
+                    LatLng(currentposition.latitude, currentposition.longitude),
+                zoom: 16));
       });
 
       currentposition = await Geolocator()
@@ -178,8 +191,10 @@ class _MainPageState extends State<MainPage> {
       GolobalStateContainer.of(context).updateCurrnetPosition(currentposition);
       GolobalStateContainer.of(context)
           .updateCubeListupdatedistancewithme(currentposition);
-
+      GolobalStateContainer.of(context)
+          .updatePlayViewCubeListupdatedistancewithme(currentposition);
       GolobalStateContainer.of(context).updateCurrentAddress(currentposition);
+      return;
     } else {
       Future.delayed(Duration.zero, () {
         showDialog(
@@ -204,6 +219,29 @@ class _MainPageState extends State<MainPage> {
             });
       });
     }
+  }
+
+  initPlayViewCubelist() async {
+    FCubeGeoSearchUtil searchitem = FCubeGeoSearchUtil.fromGeoSearchUtil(
+        GeoSearchUtil(
+            distance: 5000,
+            latitude: GolobalStateContainer.of(context)
+                .state
+                .currentposition
+                .latitude,
+            longitude: GolobalStateContainer.of(context)
+                .state
+                .currentposition
+                .longitude,
+            limit: 10,
+            offset: 0),
+        cubescope: 0,
+        cubestate: 1,
+        activationtime: DateTime.now());
+    GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
+    GolobalStateContainer.of(context).addfcubeplayerListUtilcubeList(
+        await FcubeExtender1.findNearDistanceCube(searchitem));
+    GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
   }
 
   Widget loginButton() {

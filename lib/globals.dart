@@ -3,6 +3,8 @@ import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:search_map_place/search_map_place.dart';
 
@@ -34,9 +36,45 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
     });
   }
 
+  setfcubeplayerListUtilisLoading(bool value) {
+    setState(() {
+      state.fcubeplayerListUtil.isLoading = value;
+    });
+  }
+
   addfcubeListUtilcubeList(List<FcubeExtender1> value) {
     setState(() {
       state.fcubeListUtil.cubeList.addAll(value);
+    });
+  }
+
+  addfcubeplayerListUtilcubeList(List<FcubeExtender1> value) {
+    setState(() {
+      state.fcubeplayerListUtil.cubeList.addAll(value);
+    });
+  }
+
+  addfcubeplayerListUtilcubeListwithReset(List<FcubeExtender1> value) {
+    setState(() {
+      //자신와의 거리순으로 정렬
+      value.sort((a, b) {
+        double adistance = GreatCircleDistance.fromDegrees(
+                latitude1: a.latitude,
+                longitude1: a.longitude,
+                latitude2: state.currentposition.latitude,
+                longitude2: state.currentposition.longitude)
+            .haversineDistance();
+        double bdistance = GreatCircleDistance.fromDegrees(
+                latitude1: b.latitude,
+                longitude1: b.longitude,
+                latitude2: state.currentposition.latitude,
+                longitude2: state.currentposition.longitude)
+            .haversineDistance();
+        return adistance.toInt() - bdistance.toInt();
+      });
+      state.fcubeplayerListUtil.cubeList.clear();
+
+      state.fcubeplayerListUtil.cubeList.addAll(value);
     });
   }
 
@@ -46,14 +84,31 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
     });
   }
 
+  addfcubeplayerListUtilcube(FcubeExtender1 value) {
+    setState(() {
+      state.fcubeplayerListUtil.cubeList.add(value);
+    });
+  }
+
   resetcubeListUtilcubeList() {
     setState(() {
       state.fcubeListUtil.cubeList.clear();
     });
   }
 
+  resetfcubeplayerListUtilcubeList() {
+    setState(() {
+      state.fcubeplayerListUtil.cubeList.clear();
+    });
+  }
+
   updateCurrnetPosition(Position position) {
     state.currentposition = position;
+    setState(() {});
+  }
+
+  setmainInitialCameraPosition(CameraPosition postion) {
+    state.mainInitialCameraPosition = postion;
     setState(() {});
   }
 
@@ -79,7 +134,11 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
   //여기서 CurrentPosition을 업데이트 해준다.
   updateCubeListupdatedistancewithme(Position position) async {
     await state.fcubeListUtil.updatecubedistancewithme(position);
+    setState(() {});
+  }
 
+  updatePlayViewCubeListupdatedistancewithme(Position position) async {
+    await state.fcubeplayerListUtil.updatecubedistancewithme(position);
     setState(() {});
   }
 
@@ -112,6 +171,9 @@ class GlobalState {
   Position currentposition;
   String currentaddress;
   FcubeListUtil fcubeListUtil = FcubeListUtil();
+  FcubeListUtil fcubeplayerListUtil = FcubeListUtil();
+  CameraPosition mainInitialCameraPosition =
+      new CameraPosition(target: LatLng(37.550991, 126.990861), zoom: 16);
 
   GlobalState({
     this.userInfoMain,
