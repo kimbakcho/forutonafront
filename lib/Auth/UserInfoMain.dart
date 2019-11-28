@@ -24,6 +24,8 @@ class UserInfoMain {
   String phoneauthcheckcode = "";
   String phonenumber = "";
   String isocode = "";
+  double latitude = 0;
+  double longitude = 0;
   UserInfoMain();
 
   UserInfoMain.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,8 @@ class UserInfoMain {
     phoneauthcheckcode = json['phoneauthcheckcode'];
     phonenumber = json['phonenumber'];
     isocode = json['isocode'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
   }
 
   Map<String, dynamic> toJson() {
@@ -64,7 +68,8 @@ class UserInfoMain {
     data['snstoken'] = this.snstoken;
     data['phoneauthcheckcode'] = this.phoneauthcheckcode;
     data['phonenumber'] = this.phonenumber;
-    data['isocode'] = this.isocode;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
     return data;
   }
 

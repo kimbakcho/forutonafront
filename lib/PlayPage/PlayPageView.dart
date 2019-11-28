@@ -6,10 +6,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
+import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
+import 'package:forutonafront/PlayPage/QuestCube/QuestCollapsed.dart';
+import 'package:forutonafront/PlayPage/QuestCube/QuestCubeCard.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
@@ -209,118 +213,46 @@ class _PlayPageViewState extends State<PlayPageView> {
       return ListView.builder(
           itemCount: fcubeplayerListUtil.cubeList.length,
           itemBuilder: (BuildContext ctxt, int index) {
-            FcubeExtender1 cubeitem = fcubeplayerListUtil.cubeList[index];
-            String makeitme = DateFormat("yyyy-MM-dd HH:mm:ss").format(
-                DateTime.parse(cubeitem.maketime).add(Duration(hours: 9)));
-            List<String> imagelist = new List();
-            if (cubeitem.contenttype == FcubecontentType.description) {
-              String descriptionjson =
-                  json.decode(cubeitem.contentvalue)["description"];
-              List<dynamic> description = json.decode(descriptionjson);
-              description.forEach((value) {
-                Map values = value as Map;
-                values.keys.forEach((key) {
-                  if (key == "attributes") {
-                    if (value[key]["embed"]["type"] == "image") {
-                      imagelist.add(value[key]["embed"]["source"]);
-                    }
-                  }
-                });
-              });
-            }
-            String mainImage;
-            double calcheight = 0;
-            if (imagelist.length > 0) {
-              mainImage = imagelist.first;
+            if (fcubeplayerListUtil.cubeList[index].cubetype ==
+                FcubeType.questCube) {
+              return QuestCubeCard(
+                cubeitem: fcubeplayerListUtil.cubeList[index],
+                fcubetypeiamge: fcubetypeiamge,
+              );
             } else {
-              calcheight = 0.25;
+              return Container(
+                child: Text("뭔지 모르는 큐브"),
+              );
             }
-
-            return Container(
-              height: MediaQuery.of(context).size.height * (0.5 - calcheight),
-              child: FlatButton(
-                onPressed: () {},
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          fcubetypeiamge.iconImage[cubeitem.cubetype] == null
-                              ? Container()
-                              : fcubetypeiamge.iconImage[cubeitem.cubetype],
-                          Expanded(
-                            child: Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                      alignment: Alignment(-1, 0),
-                                      child: Text(cubeitem.cubename)),
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Text(cubeitem.placeaddress),
-                                      ),
-                                      Text(
-                                          "${cubeitem.distancewithme.round()} m")
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(cubeitem.profilepicktureurl),
-                            maxRadius: 20,
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  alignment: Alignment(-1, 0),
-                                  child: Text(cubeitem.nickname),
-                                ),
-                                Container(
-                                    alignment: Alignment(-1, 0),
-                                    child: Text(makeitme)),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height *
-                          (0.25 - calcheight),
-                      child: Stack(
-                        children: <Widget>[
-                          mainImage != null
-                              ? Image(image: NetworkImage(mainImage))
-                              : Container(),
-                          imagelist.length > 2
-                              ? Positioned(
-                                  bottom: 0,
-                                  right: 10,
-                                  child: RaisedButton(
-                                    onPressed: () {},
-                                    child: Text("+ ${imagelist.length - 1}"),
-                                  ),
-                                )
-                              : Container()
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
           });
+    }
+  }
+
+  Widget makeCollapsed() {
+    FcubeListUtil fcubeplayerListUtil =
+        GolobalStateContainer.of(context).state.fcubeplayerListUtil;
+    if (fcubeplayerListUtil.isLoading) {
+      return CircularProgressIndicator();
+    } else {
+      return Container(
+          color: Colors.grey,
+          width: MediaQuery.of(context).size.width,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: fcubeplayerListUtil.cubeList.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              if (fcubeplayerListUtil.cubeList[index].cubetype ==
+                  FcubeType.questCube) {
+                return QuestCollapsed(
+                  cubeitem: fcubeplayerListUtil.cubeList[index],
+                );
+              } else {
+                return Container(
+                  child: Text("무슨 큐브인지 모르겠음"),
+                );
+              }
+            },
+          ));
     }
   }
 
@@ -364,20 +296,7 @@ class _PlayPageViewState extends State<PlayPageView> {
           ],
         ),
       ),
-      collapsed: Container(
-          color: Colors.grey,
-          width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 10,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return Container(
-                  margin: EdgeInsets.all(20),
-                  color: Colors.blue,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: Text("${index}"));
-            },
-          )),
+      collapsed: makeCollapsed(),
       body: Container(
         child: Stack(
           children: <Widget>[

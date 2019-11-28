@@ -25,6 +25,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:intl/intl.dart';
 import 'package:zefyr/zefyr.dart';
+import 'package:intl/intl.dart';
 
 class FcubeQuestDetailPage extends StatefulWidget {
   final FcubeExtender1 fcubeextender1;
@@ -35,6 +36,8 @@ class FcubeQuestDetailPage extends StatefulWidget {
     return _FcubeQuestDetailPageState(fcubeextender1: fcubeextender1);
   }
 }
+
+enum FcubeJoinMode { administrator, player }
 
 class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     with SingleTickerProviderStateMixin {
@@ -65,6 +68,8 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   DateTime selectfinishtime;
   FirebaseUser _currentuser;
   List<FcubeplayerExtender1> myfcubs;
+  List<FcubeplayerExtender1> joinplayer;
+  Fcubeplayer playerme;
 
   @override
   void initState() {
@@ -80,16 +85,6 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     init();
   }
 
-  heidBottomNavi() async {
-    if (!this.isscrolling) {
-      this.isscrolling = true;
-      setState(() {});
-      await Future.delayed(Duration(seconds: 1));
-      this.isscrolling = false;
-      setState(() {});
-    }
-  }
-
   init() async {
     initialCameraPosition = new CameraPosition(
         target: LatLng(fcubequest.latitude, fcubequest.longitude), zoom: 16);
@@ -102,7 +97,8 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     Fcubeplayer player =
         new Fcubeplayer(cubeuuid: fcubequest.cubeuuid, uid: _currentuser.uid);
     myfcubs = await FcubeplayerExtender1.selectPlayers(player);
-
+    Fcubeplayer findjoinplayer = new Fcubeplayer(cubeuuid: fcubequest.cubeuuid);
+    joinplayer = await FcubeplayerExtender1.selectPlayers(findjoinplayer);
     isloading = false;
     setState(() {});
     acttimetimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -122,6 +118,61 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     replyExtenderlist = await FcubereplyExtender1.selectStep1ForReply(
         fcubequest.cubeuuid, 0, 0);
     setState(() {});
+  }
+
+  FcubeJoinMode getjoinmode() {
+    if (_currentuser == null) {
+      return FcubeJoinMode.player;
+    } else {
+      if (_currentuser.uid == fcubequest.uid) {
+        return FcubeJoinMode.administrator;
+      } else {
+        return FcubeJoinMode.player;
+      }
+    }
+  }
+
+  Widget makePlaymodebtn() {
+    FcubeJoinMode mode = getjoinmode();
+    if (mode == FcubeJoinMode.administrator) {
+      return RaisedButton(
+        onPressed: () {},
+        child: Text("관리자 모드 "),
+      );
+    } else if (mode == FcubeJoinMode.player) {
+      if (myfcubs.length == 0) {
+        return RaisedButton(
+          onPressed: () async {
+            playerme = Fcubeplayer(
+                cubeuuid: fcubequest.cubeuuid,
+                uid: _currentuser.uid,
+                playstate: FcubeplayerState.playing);
+            if (await playerme.insertFcubePlayer() > 0) {
+              myfcubs = await FcubeplayerExtender1.selectPlayers(playerme);
+              setState(() {});
+            }
+          },
+          child: Text("참가 하기"),
+        );
+      } else {
+        return RaisedButton(
+          onPressed: null,
+          child: Text("참가 했음"),
+        );
+      }
+    } else {
+      return Container();
+    }
+  }
+
+  heidBottomNavi() async {
+    if (!this.isscrolling) {
+      this.isscrolling = true;
+      setState(() {});
+      await Future.delayed(Duration(seconds: 1));
+      this.isscrolling = false;
+      setState(() {});
+    }
   }
 
   double replyheight() {
@@ -244,69 +295,11 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                         child: SizedBox(
                       width: 50,
                     )),
-                    Container(
-                      child: RaisedButton(
-                        onPressed: () {},
-                        child: Text("관리자 모드"),
-                      ),
-                    )
+                    Container(child: makePlaymodebtn())
                   ],
                 )));
       default:
         return null;
-    }
-  }
-
-  Widget playerbottomNavi(FcubeState state) {
-    //참가 했는지 Player 리스트 따와야함
-    if (state == FcubeState.play && myfcubs.length == 0) {
-      return Container(
-        color: Color.fromARGB(125, 10, 10, 10),
-        child: Container(
-            height: 70,
-            alignment: Alignment(1, 0),
-            width: MediaQuery.of(context).size.width,
-            child: Container(
-              margin: EdgeInsets.only(right: 10),
-              width: 100,
-              height: 50,
-              child: RaisedButton(
-                onPressed: () async {
-                  setState(() {
-                    if (myfcubs[0].hasgiveup > 0 || myfcubs[0].hasexit > 0) {
-                      showDialog(
-                          context: context,
-                          builder: (bulder) {
-                            return Column(
-                              children: <Widget>[
-                                Container(
-                                  child: Text("퇴출이나 항복한 이력이 있습니다."),
-                                ),
-                                Container(
-                                    child: RaisedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text("close"),
-                                ))
-                              ],
-                            );
-                          });
-                    }
-                  });
-                },
-                child: Text("참가 하기"),
-              ),
-            )),
-      );
-    }
-  }
-
-  Widget bottomNavi() {
-    if (_currentuser.uid == fcubequest.uid) {
-      return makebottomNavi(fcubequest.cubestate);
-    } else {
-      return playerbottomNavi(fcubequest.cubestate);
     }
   }
 
@@ -879,6 +872,62 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     }
   }
 
+  Widget makePlayerPanel() {
+    return Container(
+      child: ListView.builder(
+        itemCount: joinplayer.length,
+        itemBuilder: ((context, index) {
+          FcubeplayerExtender1 jplay = joinplayer[index];
+          DateTime starttime = jplay.starttime.add(Duration(hours: 9));
+          DateFormat("yyyy-MM-dd HH:mm:ss").format(starttime);
+          String playstate;
+          if (jplay.playstate == FcubeplayerState.playing) {
+            playstate = "진행중";
+          } else {
+            playstate = "대기중";
+          }
+          return Container(
+            child: FlatButton(
+              onPressed: () {},
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(jplay.profilepicktureurl),
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Text("${jplay.nickname}"),
+                              ),
+                              Container(
+                                child: Text(
+                                    "${DateFormat("yyyy-MM-dd HH:mm:ss").format(starttime)}"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(playstate),
+                      )
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.black,
+                  )
+                ],
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final GoogleMap googleMap = GoogleMap(
@@ -924,7 +973,9 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
               panel: Container(
                 child: selectSlidingUpPanel(),
               ),
-              collapsed: isscrolling ? Container() : bottomNavi(),
+              collapsed: isscrolling
+                  ? Container()
+                  : makebottomNavi(fcubequest.cubestate),
               renderPanelSheet: false,
               body: Stack(children: <Widget>[
                 ListView(
@@ -966,7 +1017,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                             tabs: <Widget>[
                               Tab(text: '상세정보'),
                               Tab(text: '박스'),
-                              Tab(text: '참가자'),
+                              Tab(text: '참가자(${joinplayer.length})'),
                             ],
                           ),
                         ),
@@ -979,9 +1030,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                 Container(
                                   child: Text("456"),
                                 ),
-                                Container(
-                                  child: Text("789"),
-                                ),
+                                makePlayerPanel()
                               ],
                             )
 

@@ -10,45 +10,47 @@ import 'package:http/http.dart' as http;
 class FcubeplayerExtender1 extends Fcubeplayer {
   String nickname;
   String profilepicktureurl;
+  double latitude;
+  double longitude;
 
   FcubeplayerExtender1.fromFcubeplayer(Fcubeplayer fcubeplayer,
       {this.nickname, this.profilepicktureurl}) {
     idx = fcubeplayer.idx;
     cubeuuid = fcubeplayer.cubeuuid;
     uid = fcubeplayer.uid;
-    latitude = fcubeplayer.latitude;
-    longitude = fcubeplayer.longitude;
     haslike = fcubeplayer.haslike;
     hasdislike = fcubeplayer.hasdislike;
     hasgiveup = fcubeplayer.hasgiveup;
     hasexit = fcubeplayer.hasexit;
+    starttime = fcubeplayer.starttime;
+    playstate = fcubeplayer.playstate;
   }
 
   FcubeplayerExtender1.fromJson(Map<String, dynamic> json) {
     idx = json["idx"];
-    cubeuuid = json["Cubeuuid"];
-    uid = json["Uid"];
-    latitude = json["latitude"].toDouble();
-    longitude = json["longitude"].toDouble();
+    cubeuuid = json["cubeuuid"];
+    uid = json["uid"];
     nickname = json["nickname"];
     profilepicktureurl = json["profilepicktureurl"];
     haslike = json["haslike"];
     hasdislike = json["hasdislike"];
     hasgiveup = json["hasgiveup"];
     hasexit = json["hasexit"];
+    starttime = DateTime.parse(json["starttime"]);
+    playstate = FcubeplayerState.values[json["playstate"]];
   }
   Map<String, dynamic> toJson() => {
         "idx": idx,
-        "Cubeuuid": cubeuuid,
-        "Uid": uid,
-        "latitude": latitude,
-        "longitude": longitude,
+        "cubeuuid": cubeuuid,
+        "uid": uid,
         "nickname": nickname,
         "profilepicktureurl": profilepicktureurl,
         "haslike": haslike,
         "hasdislike": hasdislike,
         "hasgiveup": hasgiveup,
         "hasexit": hasexit,
+        "starttime": starttime.toIso8601String(),
+        "playstate": playstate,
       };
 
   static Future<List<FcubeplayerExtender1>> selectPlayers(
