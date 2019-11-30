@@ -26,11 +26,9 @@ class _MakePageViewState extends State<MakePageView> {
   bool iseditmode = false;
   FcubeExtender1 currentedititem;
 
-
   @override
   void initState() {
     super.initState();
-
   }
 
   makeMainViewChioce() {
@@ -270,6 +268,10 @@ class _MakePageViewState extends State<MakePageView> {
     GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
     GolobalStateContainer.of(context).addfcubeListUtilcubeList(
         await FcubeExtender1.getusercubes(offset: 0, limit: 10));
+    Position currentposition =
+        GolobalStateContainer.of(context).state.currentposition;
+    GolobalStateContainer.of(context)
+        .updateCubeListupdatedistancewithme(currentposition);
     GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
   }
 

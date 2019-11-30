@@ -1,12 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:search_map_place/search_map_place.dart';
+import 'package:http/http.dart' as http;
 
 class GolobalStateContainer extends StatefulWidget {
   final Widget child;
@@ -102,8 +108,20 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
     });
   }
 
-  updateCurrnetPosition(Position position) {
+  updateCurrnetPosition(Position position) async {
     state.currentposition = position;
+    if (state.userInfoMain != null) {
+      FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      IdTokenResult token = await user.getIdToken();
+      state.userInfoMain.latitude = position.latitude;
+      state.userInfoMain.longitude = position.longitude;
+      Uri url = Preference.httpurlbase(
+          Preference.baseBackEndUrl, "/api/v1/Auth/updateCurrentPosition");
+      http.post(url, body: json.encode(state.userInfoMain.toJson()), headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+        HttpHeaders.authorizationHeader: "Bearer " + token.token
+      });
+    }
     setState(() {});
   }
 

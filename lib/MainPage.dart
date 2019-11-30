@@ -89,6 +89,7 @@ class _MainPageState extends State<MainPage> {
         GolobalStateContainer.of(context).state.userInfoMain = null;
         GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
         GolobalStateContainer.of(context).resetcubeListUtilcubeList();
+        initgeopermisstion();
         setState(() {});
       } else {
         //isnewuser를 하는 이유는 SignIn3View 에서 UserInfoMain.insertUserInfo(userinfo); 를
@@ -109,11 +110,12 @@ class _MainPageState extends State<MainPage> {
           GolobalStateContainer.of(context).addfcubeListUtilcubeList(
               await FcubeExtender1.getusercubes(offset: 0, limit: 10));
 
+          initgeopermisstion();
+
           GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
         });
       }
     });
-    initgeopermisstion();
   }
 
   initgeopermisstion() async {
@@ -189,8 +191,10 @@ class _MainPageState extends State<MainPage> {
             .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
       }
       GolobalStateContainer.of(context).updateCurrnetPosition(currentposition);
-      GolobalStateContainer.of(context)
-          .updateCubeListupdatedistancewithme(currentposition);
+      if (currentuser != null) {
+        GolobalStateContainer.of(context)
+            .updateCubeListupdatedistancewithme(currentposition);
+      }
       GolobalStateContainer.of(context)
           .updatePlayViewCubeListupdatedistancewithme(currentposition);
       GolobalStateContainer.of(context).updateCurrentAddress(currentposition);

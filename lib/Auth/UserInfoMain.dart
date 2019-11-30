@@ -1,10 +1,16 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:math';
 
 class UserInfoMain {
   String uid;
@@ -218,5 +224,46 @@ class UserInfoMain {
         body: jsonEncode(userinfo.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
     return int.tryParse(response.body);
+  }
+
+  static Future<ui.Image> loadFromUrl(String url) async {
+    final response = await http.get(url);
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      ui.Codec codec = await ui.instantiateImageCodec(response.bodyBytes,
+          targetHeight: 100, targetWidth: 100);
+      ui.FrameInfo frameinfo = await codec.getNextFrame();
+      ui.Image i = frameinfo.image;
+      return i;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<BitmapDescriptor> getBytesFromCanvasMakerIcon(
+      String imageurl) async {
+    double width = 50.0;
+    double height = 50.0;
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final center = Offset(50, 50);
+    final radius = min(height, width) / 8;
+    Paint paintCircle = Paint()..color = Colors.black;
+    Paint paintBorder = Paint()
+      ..color = Colors.white
+      ..strokeWidth = width / 36
+      ..style = PaintingStyle.stroke;
+    canvas.drawCircle(center, 50, paintCircle);
+    canvas.drawCircle(center, 50, paintBorder);
+    Path path = Path()
+      ..addOval(Rect.fromCircle(center: Offset(50, 50), radius: 45.0));
+    canvas.clipPath(path);
+    ui.Image image = await loadFromUrl(imageurl);
+    canvas.drawImage(image, new Offset(0, 0), new Paint());
+    final img = await pictureRecorder.endRecording().toImage(100, 100);
+
+    final data = await img.toByteData(format: ui.ImageByteFormat.png);
+
+    return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
   }
 }

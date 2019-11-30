@@ -14,6 +14,7 @@ import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/PlayPage/QuestCube/QuestCollapsed.dart';
 import 'package:forutonafront/PlayPage/QuestCube/QuestCubeCard.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
@@ -32,6 +33,8 @@ class PlayPageView extends StatefulWidget {
 
 class _PlayPageViewState extends State<PlayPageView> {
   CameraPosition initialCameraPosition;
+  CameraPosition currentCameraPosition;
+  String currentselectcubeuuid;
   Geolocator geolocation = Geolocator();
   Position initposition;
   GoogleMapController googlemap_controller;
@@ -41,12 +44,14 @@ class _PlayPageViewState extends State<PlayPageView> {
   List<FcubeLatLngAndGeohash> currentvisualPoints = List();
   ClusteringHelper clusteringHelper;
   FcubeTypeMakerImage fcubetypeiamge;
-
+  ScrollController collapsedscrollcontroller = new ScrollController();
   List<FcubeExtender1> panellistfcube = List<FcubeExtender1>();
   bool isplistloading = false;
   Position initpanelposition;
   int panellistoffet;
   int panellistlimit;
+  String currentFindAddredss;
+  bool ismarktap = false;
 
   @override
   void initState() {
@@ -64,7 +69,8 @@ class _PlayPageViewState extends State<PlayPageView> {
   }
 
   onMakertap(FcubeMakerHelper helper) {
-    print(helper.cubeuuid);
+    ismarktap = true;
+    currentselectcubeuuid = helper.cubeuuid;
   }
 
   initimage() async {
@@ -180,7 +186,8 @@ class _PlayPageViewState extends State<PlayPageView> {
           cubeuuid: cubeList[i].cubeuuid,
           cubeType: cubeList[i].cubetype.toString(),
           nickname: cubeList[i].nickname,
-          iconmarker: fcubetypeiamge.nomalimage[cubeList[i].cubetype]);
+          iconmarker: fcubetypeiamge.nomalimage[cubeList[i].cubetype],
+          selecticonmaker: fcubetypeiamge.bigimage[cubeList[i].cubetype]);
       currentvisualPoints.add(tempitem);
     }
     clusteringHelper.list = currentvisualPoints;
@@ -198,7 +205,13 @@ class _PlayPageViewState extends State<PlayPageView> {
 
   //해당 부분 Backend 에서 추후 Asnyc 처리 필요할것으로 예상
   onPanelCameraMove(CameraPosition cameraPosition) {
-    initMemoryClustering(cameraPosition);
+    currentCameraPosition = cameraPosition;
+  }
+
+  onCameraIdle() {
+    if (currentCameraPosition != null) {
+      initMemoryClustering(currentCameraPosition);
+    }
   }
 
   //setinit markes
@@ -234,10 +247,11 @@ class _PlayPageViewState extends State<PlayPageView> {
     if (fcubeplayerListUtil.isLoading) {
       return CircularProgressIndicator();
     } else {
-      return Container(
+      Widget resultwidget = Container(
           color: Colors.grey,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
+            controller: collapsedscrollcontroller,
             scrollDirection: Axis.horizontal,
             itemCount: fcubeplayerListUtil.cubeList.length,
             itemBuilder: (BuildContext ctxt, int index) {
@@ -253,6 +267,22 @@ class _PlayPageViewState extends State<PlayPageView> {
               }
             },
           ));
+      // 만약 Marktap을 해서 구글 맵을 이동 했다면 List 이동
+      Future.delayed(Duration.zero, () {
+        if (ismarktap) {
+          List<FcubeExtender1> cubelist = GolobalStateContainer.of(context)
+              .state
+              .fcubeplayerListUtil
+              .cubeList;
+          int findindex = cubelist.indexWhere((cube) {
+            return cube.cubeuuid == currentselectcubeuuid;
+          });
+          collapsedscrollcontroller.jumpTo(findindex *
+              ((findindex * MediaQuery.of(context).size.width * 0.8) + 40));
+          ismarktap = false;
+        }
+      });
+      return resultwidget;
     }
   }
 
@@ -270,6 +300,7 @@ class _PlayPageViewState extends State<PlayPageView> {
       myLocationButtonEnabled: true,
       markers: markers,
       onCameraMove: onPanelCameraMove,
+      onCameraIdle: onCameraIdle,
     );
 
     return SlidingUpPanel(
@@ -303,7 +334,28 @@ class _PlayPageViewState extends State<PlayPageView> {
             Container(
               height: MediaQuery.of(context).size.height * 0.57,
               child: googleMap,
-            )
+            ),
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: SearchMapPlaceWidget(
+                  apiKey: Preference.kGoogleApiKey,
+                  location: initialCameraPosition.target,
+                  language: "ko",
+                  radius: 30000,
+                  onSelected: (place) async {
+                    final geolocation = await place.geolocation;
+                    googlemap_controller.animateCamera(
+                        CameraUpdate.newLatLng(geolocation.coordinates));
+                    googlemap_controller.animateCamera(
+                        CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
+                    currentFindAddredss = place.description;
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -312,17 +364,16 @@ class _PlayPageViewState extends State<PlayPageView> {
 
   @override
   Widget build(BuildContext context) {
-    String currentaddress =
-        GolobalStateContainer.of(context).state.currentaddress;
-    if (currentaddress == null) {
-      currentaddress = "";
+    if (currentFindAddredss == null) {
+      currentFindAddredss =
+          GolobalStateContainer.of(context).state.currentaddress;
     }
     return Container(
         child: Column(
       children: <Widget>[
         Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          child: Text(currentaddress),
+          height: MediaQuery.of(context).size.height * 0.05,
+          child: Text(currentFindAddredss),
         ),
         Container(
           height: MediaQuery.of(context).size.height * 0.78,

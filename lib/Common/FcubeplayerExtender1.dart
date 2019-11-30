@@ -36,6 +36,8 @@ class FcubeplayerExtender1 extends Fcubeplayer {
     hasdislike = json["hasdislike"];
     hasgiveup = json["hasgiveup"];
     hasexit = json["hasexit"];
+    latitude = json["latitude"];
+    longitude = json["longitude"];
     starttime = DateTime.parse(json["starttime"]);
     playstate = FcubeplayerState.values[json["playstate"]];
   }
@@ -48,7 +50,9 @@ class FcubeplayerExtender1 extends Fcubeplayer {
         "haslike": haslike,
         "hasdislike": hasdislike,
         "hasgiveup": hasgiveup,
-        "hasexit": hasexit,
+        "hasgiveup": hasgiveup,
+        "latitude": latitude,
+        "longitude": longitude,
         "starttime": starttime.toIso8601String(),
         "playstate": playstate,
       };

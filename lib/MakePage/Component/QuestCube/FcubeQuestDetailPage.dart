@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:forutonafront/Common/Fcubeplayer.dart';
 import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
@@ -15,8 +16,11 @@ import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestBottomNaviBar.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/QuestAdministratorPage.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -70,7 +74,8 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   List<FcubeplayerExtender1> myfcubs;
   List<FcubeplayerExtender1> joinplayer;
   Fcubeplayer playerme;
-
+  static const MethodChannel platform =
+      MethodChannel('com.wing.forutonafront/service');
   @override
   void initState() {
     // TODO: implement initState
@@ -136,7 +141,11 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     FcubeJoinMode mode = getjoinmode();
     if (mode == FcubeJoinMode.administrator) {
       return RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return QuestAdministratorPage(fcubequest: fcubequest);
+          }));
+        },
         child: Text("관리자 모드 "),
       );
     } else if (mode == FcubeJoinMode.player) {
@@ -149,6 +158,15 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                 playstate: FcubeplayerState.playing);
             if (await playerme.insertFcubePlayer() > 0) {
               myfcubs = await FcubeplayerExtender1.selectPlayers(playerme);
+              await platform.invokeMethod<void>('connectservice');
+              List<String> args = List<String>();
+              Uri uri = Preference.httpurlbase(Preference.baseBackEndUrl,
+                  "/api/v1/Auth/updateCurrentPosition");
+              args.add(uri.toString());
+              args.add(_currentuser.uid);
+              IdTokenResult token = await _currentuser.getIdToken();
+              args.add(token.token);
+              await platform.invokeMethod<void>('startLocationManager', args);
               setState(() {});
             }
           },
@@ -867,6 +885,12 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
           ],
         ),
       );
+    } else if (fcubequest.cubestate == FcubeState.play &&
+        ispanelopen &&
+        getjoinmode() == FcubeJoinMode.administrator) {
+      return FcubeQuestBottomNaviBar(
+        fcube: fcubequest,
+      );
     } else {
       return null;
     }
@@ -928,6 +952,16 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     );
   }
 
+  getSlidingUpPanelmaxheight() {
+    if (fcubequest.cubestate == FcubeState.startWait) {
+      return MediaQuery.of(context).size.height * 0.8;
+    } else if (fcubequest.cubestate == FcubeState.play) {
+      return MediaQuery.of(context).size.height * 0.4;
+    } else {
+      return MediaQuery.of(context).size.height * 0.8;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final GoogleMap googleMap = GoogleMap(
@@ -951,17 +985,26 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
               onPressed: () {},
             ),
           ),
-          Container(
-            child: IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {},
-            ),
-          ),
+          getjoinmode() == FcubeJoinMode.administrator
+              ? Container(
+                  child: IconButton(
+                    icon: Icon(Icons.settings),
+                    onPressed: () {
+                      if (panelcontroller.isPanelOpen()) {
+                        panelcontroller.close();
+                      } else {
+                        panelcontroller.open();
+                      }
+                    },
+                  ),
+                )
+              : Container()
         ],
       ),
       body: isloading
           ? Center(child: CircularProgressIndicator())
           : SlidingUpPanel(
+              maxHeight: getSlidingUpPanelmaxheight(),
               controller: panelcontroller,
               isDraggable: isSlidingUpPanelDrag,
               onPanelOpened: () {

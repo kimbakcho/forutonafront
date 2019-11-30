@@ -4,6 +4,7 @@ import 'package:forutonafront/MakePage/Component/QuestCube/FQuestCubePositionSet
 
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +13,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:search_map_place/search_map_place.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-
-const kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";
 
 class GoogleMapsMakeView extends StatefulWidget {
   final Fcube selectFcube;
@@ -302,7 +301,7 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
           child: Container(
               width: MediaQuery.of(context).size.width * 0.8,
               child: SearchMapPlaceWidget(
-                apiKey: kGoogleApiKey,
+                apiKey: Preference.kGoogleApiKey,
                 location: _kInitialPosition.target,
                 language: "ko",
                 radius: 30000,
