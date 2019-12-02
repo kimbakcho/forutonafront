@@ -113,9 +113,8 @@ class _MakePageViewState extends State<MakePageView> {
       child: ListView.builder(
         itemCount: cubes.length,
         itemBuilder: (cxtx, index) {
-          String acttime = DateFormat("yyyy-MM-dd HH:mm:ss").format(
-              DateTime.parse(cubes[index].activationtime)
-                  .add(Duration(hours: 9)));
+          String acttime = DateFormat("yyyy-MM-dd HH:mm:ss")
+              .format(cubes[index].activationtime.add(Duration(hours: 9)));
           return Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(border: Border.all(width: 1)),

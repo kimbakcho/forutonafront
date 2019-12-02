@@ -70,14 +70,14 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
     @Override
     protected void onStop() {
         super.onStop();
-//         unbindService(connection);
-//         serviceConnected = false;
+        // unbindService(connection);
+        // serviceConnected = false;
     }
 
     @Override
     protected void onDestroy() {
-        unbindService(connection);
-         serviceConnected = false;
+        // unbindService(connection);
+        // serviceConnected = false;
         super.onDestroy();
     }
 

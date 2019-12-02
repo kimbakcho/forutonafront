@@ -7,6 +7,7 @@ import 'package:forutonafront/Common/Fcubeplayer.dart';
 import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCard.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/globals.dart';
@@ -29,10 +30,11 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   GoogleMapController _mapController;
   CameraPosition initialCameraPosition;
   Set<Marker> markers = new Set<Marker>();
-  List<FcubeplayerExtender1> players;
+  List<FcubeplayerExtender1> players = new List<FcubeplayerExtender1>();
   bool isdataloading = false;
   FcubeplayerExtender1 playerextender1;
   Timer mianRefrashTimer;
+  Timer remainRefrashTimer;
   TabController tabController;
   Map<FcubecontentType, Fcubecontent> detailcontent;
   FcubeTypeMakerImage fcubetypeiamge;
@@ -58,6 +60,15 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     players = await FcubeplayerExtender1.selectPlayers(playerextender1);
 
     isdataloading = false;
+    if (remainRefrashTimer == null) {
+      remainRefrashTimer = Timer.periodic(Duration(seconds: 1), remainRefrash);
+    }
+
+    setState(() {});
+  }
+
+  //남는 시간 때문에표시 때문에 1초씩 돌림
+  void remainRefrash(Timer timer) async {
     setState(() {});
   }
 
@@ -100,18 +111,25 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     if (mianRefrashTimer == null) {
       mianRefrashTimer = Timer.periodic(Duration(seconds: 5), maintimerFunc);
     }
-    // List<dynamic> startcubes = List<dynamic>.from(json
-    //     .decode(detailcontent[FcubecontentType.startCubeLocation].contentvalue)
-    //     .map((x) => json.decode(x)));
 
     dynamic findstartcubes = json
         .decode(detailcontent[FcubecontentType.startCubeLocation].contentvalue);
     Marker startcube = Marker(
-      markerId: MarkerId("startcube,"),
-      position: LatLng(findstartcubes["latitude"], findstartcubes["longitude"]),
-      icon: fcubetypeiamge.nomalimage[FcubeType.startcube],
-      infoWindow: InfoWindow(title: "스타트 큐브"),
-    );
+        markerId: MarkerId("startcube,"),
+        position:
+            LatLng(findstartcubes["latitude"], findstartcubes["longitude"]),
+        icon: fcubetypeiamge.nomalimage[FcubeType.startcube],
+        infoWindow: InfoWindow(title: "스타트 큐브"),
+        onTap: () {
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return FcubeQuestStartCubeDialog(
+                    startCubecontent:
+                        detailcontent[FcubecontentType.startCubeLocation]);
+              });
+        });
     markers.add(startcube);
 
     dynamic findfinishcube = json.decode(
@@ -124,26 +142,24 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     );
     markers.add(finishcube);
 
-    List<dynamic> findmessagecube = List<dynamic>.from(json
-        .decode(
-            detailcontent[FcubecontentType.messagecubeLocations].contentvalue)
-        .map((x) => json.decode(x)));
+    List<dynamic> findmessagecube = List<dynamic>.from(json.decode(
+        detailcontent[FcubecontentType.messagecubeLocations].contentvalue));
+    // .map((x) => json.decode(x)));
     for (int i = 0; i < findmessagecube.length; i++) {
       Marker messagecube = Marker(
-        markerId: MarkerId("startcube,"),
+        markerId: MarkerId("messagecube,"),
         position: LatLng(
             findmessagecube[i]["latitude"], findmessagecube[i]["longitude"]),
         icon: fcubetypeiamge.nomalimage[FcubeType.messageCube],
       );
-      markers.add(finishcube);
+      markers.add(messagecube);
     }
-    List<dynamic> findcheckincube = List<dynamic>.from(json
-        .decode(
-            detailcontent[FcubecontentType.checkincubeLocations].contentvalue)
-        .map((x) => json.decode(x)));
+    List<dynamic> findcheckincube = List<dynamic>.from(json.decode(
+        detailcontent[FcubecontentType.checkincubeLocations].contentvalue));
+    // .map((x) => json.decode(x)));
     for (int i = 0; i < findcheckincube.length; i++) {
       Marker checkincube = Marker(
-        markerId: MarkerId("startcube,"),
+        markerId: MarkerId("checkcube,"),
         position: LatLng(
             findcheckincube[i]["latitude"], findcheckincube[i]["longitude"]),
         icon: fcubetypeiamge.nomalimage[FcubeType.checkincube],
@@ -181,6 +197,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   void dispose() {
     // TODO: implement dispose
     mianRefrashTimer.cancel();
+    remainRefrashTimer.cancel();
     super.dispose();
   }
 
@@ -193,9 +210,27 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
       myLocationButtonEnabled: true,
       markers: markers,
     );
+    DateTime activationtime = fcubequest.activationtime.add(Duration(hours: 9));
+
+    Duration avtibetime = activationtime
+        .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
+    int actday = avtibetime.inSeconds ~/ (60 * 60 * 24);
+    int acthour = (avtibetime.inSeconds - actday * 60 * 60 * 24) ~/ (60 * 60);
+    int actmin =
+        (avtibetime.inSeconds - actday * 60 * 60 * 24 - acthour * 3600) ~/ (60);
+    int actsec = avtibetime.inSeconds % 60;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("123"),
+        title: Row(
+          children: <Widget>[
+            Text("${players.length}"),
+            SizedBox(
+              width: 50,
+            ),
+            Text("${actday}일 ${acthour}:${actmin}:${actsec}"),
+          ],
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.picture_in_picture),

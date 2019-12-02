@@ -198,8 +198,8 @@ class FcubeQuest extends Fcube {
             cubeuuid: this.cubeuuid));
       }
       if (checkincubeLocations != null) {
-        Iterable<MessageCubeLocation> filter =
-            messagecubeLocations.where((item) {
+        Iterable<CheckinCubeLocation> filter =
+            checkincubeLocations.where((item) {
           return item.ismarkersetuponmap;
         });
         cubecontents.add(Fcubecontent(

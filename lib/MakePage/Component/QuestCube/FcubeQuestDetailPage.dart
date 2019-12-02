@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -18,7 +16,6 @@ import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestBottomNaviBar.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/QuestAdministratorPage.dart';
-import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/globals.dart';
@@ -29,7 +26,6 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:intl/intl.dart';
 import 'package:zefyr/zefyr.dart';
-import 'package:intl/intl.dart';
 
 class FcubeQuestDetailPage extends StatefulWidget {
   final FcubeExtender1 fcubeextender1;
@@ -42,6 +38,7 @@ class FcubeQuestDetailPage extends StatefulWidget {
 }
 
 enum FcubeJoinMode { administrator, player }
+enum UpPanelMode { startedit, settingedit }
 
 class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     with SingleTickerProviderStateMixin {
@@ -76,6 +73,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   Fcubeplayer playerme;
   static const MethodChannel platform =
       MethodChannel('com.wing.forutonafront/service');
+  UpPanelMode currentupPanelmode = UpPanelMode.startedit;
   @override
   void initState() {
     // TODO: implement initState
@@ -268,6 +266,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                 height: 50,
                 child: RaisedButton(
                   onPressed: () async {
+                    currentupPanelmode = UpPanelMode.startedit;
                     setState(() {
                       panelcontroller.open();
                     });
@@ -279,7 +278,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
         break;
       case FcubeState.play:
         DateTime activationtime =
-            DateTime.parse(fcubequest.activationtime).add(Duration(hours: 9));
+            fcubequest.activationtime.add(Duration(hours: 9));
 
         Duration avtibetime = activationtime
             .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
@@ -330,8 +329,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   }
 
   Widget makedetailcontent() {
-    DateTime activationtime =
-        DateTime.parse(fcubequest.activationtime).add(Duration(hours: 9));
+    DateTime activationtime = fcubequest.activationtime.add(Duration(hours: 9));
 
     Duration avtibetime = activationtime
         .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
@@ -800,13 +798,14 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   }
 
   Widget selectSlidingUpPanel() {
-    DateTime acttime = DateTime.parse(fcubequest.activationtime)
-        .toUtc()
-        .add(Duration(hours: 9));
+    DateTime acttime =
+        fcubequest.activationtime.toUtc().add(Duration(hours: 9));
     if (selectfinishtime == null) {
       selectfinishtime = DateTime.now();
     }
-    if (fcubequest.cubestate == FcubeState.startWait && ispanelopen) {
+    if (fcubequest.cubestate == FcubeState.startWait &&
+        ispanelopen &&
+        currentupPanelmode == UpPanelMode.startedit) {
       return Container(
         color: Colors.white,
         child: Column(
@@ -873,8 +872,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
               width: MediaQuery.of(context).size.width,
               child: RaisedButton(
                 onPressed: () {
-                  fcubequest.activationtime =
-                      selectfinishtime.toUtc().toIso8601String();
+                  fcubequest.activationtime = selectfinishtime.toUtc();
                   fcubequest.cubestate = FcubeState.play;
                   fcubequest.updateCubeState();
                   panelcontroller.close();
@@ -885,11 +883,17 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
           ],
         ),
       );
-    } else if (fcubequest.cubestate == FcubeState.play &&
+    } else if (currentupPanelmode == UpPanelMode.settingedit &&
         ispanelopen &&
         getjoinmode() == FcubeJoinMode.administrator) {
       return FcubeQuestBottomNaviBar(
         fcube: fcubequest,
+        onfuntionclick: (FcubeQuestBottomNaviFuncType value, Fcube cube) async {
+          if (value == FcubeQuestBottomNaviFuncType.delete) {
+            await cube.deletecube();
+            Navigator.pop(context);
+          }
+        },
       );
     } else {
       return null;
@@ -953,9 +957,9 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   }
 
   getSlidingUpPanelmaxheight() {
-    if (fcubequest.cubestate == FcubeState.startWait) {
+    if (currentupPanelmode == UpPanelMode.startedit) {
       return MediaQuery.of(context).size.height * 0.8;
-    } else if (fcubequest.cubestate == FcubeState.play) {
+    } else if (currentupPanelmode == UpPanelMode.settingedit) {
       return MediaQuery.of(context).size.height * 0.4;
     } else {
       return MediaQuery.of(context).size.height * 0.8;
@@ -993,6 +997,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                       if (panelcontroller.isPanelOpen()) {
                         panelcontroller.close();
                       } else {
+                        currentupPanelmode = UpPanelMode.settingedit;
                         panelcontroller.open();
                       }
                     },

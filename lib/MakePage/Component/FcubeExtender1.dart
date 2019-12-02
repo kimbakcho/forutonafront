@@ -33,7 +33,7 @@ class FcubeExtender1 extends Fcube {
     country = json['country'];
     nickname = json['nickname'];
     profilepicktureurl = json['profilepicktureurl'];
-    activationtime = json['activationtime'];
+    activationtime = DateTime.parse(json['activationtime']);
     cubepassword = json['cubepassword'];
     haspassword = json['haspassword'];
     cubescope = json['cubescope'];
@@ -65,7 +65,7 @@ class FcubeExtender1 extends Fcube {
     data['country'] = this.country;
     data['nickname'] = this.nickname;
     data['profilepicktureurl'] = this.profilepicktureurl;
-    data['activationtime'] = this.activationtime;
+    data['activationtime'] = activationtime.toIso8601String();
     data['cubepassword'] = this.cubepassword;
     data['haspassword'] = this.haspassword;
     data['cubescope'] = this.cubescope;

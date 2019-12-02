@@ -36,8 +36,8 @@ class _QuestCubeCardState extends State<QuestCubeCard> {
   Widget build(BuildContext context) {
     String makeitme = DateFormat("yyyy-MM-dd HH:mm:ss")
         .format(DateTime.parse(cubeitem.maketime).add(Duration(hours: 9)));
-    String activetime = DateFormat("yyyy-MM-dd HH:mm:ss").format(
-        DateTime.parse(cubeitem.activationtime).add(Duration(hours: 9)));
+    String activetime = DateFormat("yyyy-MM-dd HH:mm:ss")
+        .format(cubeitem.activationtime.add(Duration(hours: 9)));
     List<String> imagelist = new List();
     if (cubeitem.contenttype == FcubecontentType.description) {
       String descriptionjson =

@@ -47,7 +47,7 @@ class Fcube {
   String country;
   double pointreward;
   double influencereward;
-  String activationtime;
+  DateTime activationtime;
   String cubepassword;
   int haspassword;
   int cubescope;
@@ -103,7 +103,7 @@ class Fcube {
     country = json['country'];
     pointreward = json['pointreward'];
     influencereward = json['influencereward'];
-    activationtime = json['activationtime'];
+    activationtime = DateTime.parse(json['activationtime']);
     cubepassword = json['cubepassword'];
     haspassword = json['haspassword'];
     cubescope = json['cubescope'];
@@ -131,7 +131,7 @@ class Fcube {
     data['country'] = this.country;
     data['pointreward'] = this.pointreward;
     data['influencereward'] = this.influencereward;
-    data['activationtime'] = this.activationtime;
+    data['activationtime'] = activationtime.toIso8601String();
     data['cubepassword'] = this.cubepassword;
     data['haspassword'] = this.haspassword;
     data['cubescope'] = this.cubescope;
