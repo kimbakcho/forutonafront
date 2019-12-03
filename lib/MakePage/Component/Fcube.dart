@@ -131,7 +131,8 @@ class Fcube {
     data['country'] = this.country;
     data['pointreward'] = this.pointreward;
     data['influencereward'] = this.influencereward;
-    data['activationtime'] = activationtime.toIso8601String();
+    data['activationtime'] =
+        activationtime != null ? activationtime.toIso8601String() : null;
     data['cubepassword'] = this.cubepassword;
     data['haspassword'] = this.haspassword;
     data['cubescope'] = this.cubescope;

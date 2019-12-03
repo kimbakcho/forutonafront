@@ -56,14 +56,16 @@ class _CubeMakeRichTextEditState extends State<CubeMakeRichTextEdit> {
   NotusDocument document;
   ZefyrController _wigcontroller;
   FocusNode _focusNode;
+  int currentdocumentlenght = 0;
 
   @override
   void initState() {
     document = _loadDocument();
+
     if (parentcontroller != null) {
       parentcontroller.document = document;
     }
-
+    currentdocumentlenght = document.length;
     setState(() {
       _wigcontroller = ZefyrController(document);
 
@@ -71,15 +73,29 @@ class _CubeMakeRichTextEditState extends State<CubeMakeRichTextEdit> {
     });
     if (zefyrMode != null && zefyrMode == ZefyrMode.edit) {
       document.changes.listen((data) async {
-        data.before.toList().forEach((item) async {
-          if (item.attributes != null && item.attributes.containsKey("embed")) {
-            if (item.attributes["embed"]["type"] == "image") {
-              print(item.attributes["embed"]["source"]);
+        /** 임시 이미지 삭제를 위한 코드  */
+        bool isdelete = false;
+        if (currentdocumentlenght > document.length) {
+          isdelete = true;
+        }
+        currentdocumentlenght = document.length;
+        List<Operation> changesitem = data.change.toList();
+        if (changesitem.length == 2 &&
+            changesitem[0].key == "retain" &&
+            changesitem[1].key == "delete" &&
+            isdelete) {
+          Operation changeitem =
+              finddeletetime(changesitem[0].value, data.before.toList());
+          if (changeitem.attributes != null &&
+              changeitem.attributes.containsKey("embed")) {
+            if (changeitem.attributes["embed"]["type"] == "image") {
+              print(changeitem.attributes["embed"]["source"]);
               await CustomImageDelegate.cuberelationimagedelete(
-                  item.attributes["embed"]["source"]);
+                  changeitem.attributes["embed"]["source"]);
             }
           }
-        });
+        }
+
         if (document.length > 0) {
           if (parentcontroller.isedithint != null) {
             parentcontroller.isedithint = false;
@@ -96,6 +112,17 @@ class _CubeMakeRichTextEditState extends State<CubeMakeRichTextEdit> {
     }
 
     super.initState();
+  }
+
+  Operation finddeletetime(int offset, List<Operation> items) {
+    int index = 0;
+    for (int i = 0; i < items.length; i++) {
+      index += items[i].length;
+      if (index > offset) {
+        return items[i];
+      }
+    }
+    return null;
   }
 
   NotusDocument _loadDocument() {

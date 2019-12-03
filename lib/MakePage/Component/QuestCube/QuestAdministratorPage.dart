@@ -135,11 +135,21 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     dynamic findfinishcube = json.decode(
         detailcontent[FcubecontentType.finishCubeLocation].contentvalue);
     Marker finishcube = Marker(
-      markerId: MarkerId("finishcube,"),
-      position: LatLng(findfinishcube["latitude"], findfinishcube["longitude"]),
-      icon: fcubetypeiamge.nomalimage[FcubeType.finishcube],
-      infoWindow: InfoWindow(title: "피니쉬 큐브"),
-    );
+        markerId: MarkerId("finishcube,"),
+        position:
+            LatLng(findfinishcube["latitude"], findfinishcube["longitude"]),
+        icon: fcubetypeiamge.nomalimage[FcubeType.finishcube],
+        infoWindow: InfoWindow(title: "피니쉬 큐브"),
+        onTap: () {
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return FcubeQuestFinishcubeDialog(
+                    finishCubecontent:
+                        detailcontent[FcubecontentType.finishCubeLocation]);
+              });
+        });
     markers.add(finishcube);
 
     List<dynamic> findmessagecube = List<dynamic>.from(json.decode(
@@ -147,11 +157,19 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     // .map((x) => json.decode(x)));
     for (int i = 0; i < findmessagecube.length; i++) {
       Marker messagecube = Marker(
-        markerId: MarkerId("messagecube,"),
-        position: LatLng(
-            findmessagecube[i]["latitude"], findmessagecube[i]["longitude"]),
-        icon: fcubetypeiamge.nomalimage[FcubeType.messageCube],
-      );
+          markerId: MarkerId("messagecube,"),
+          position: LatLng(
+              findmessagecube[i]["latitude"], findmessagecube[i]["longitude"]),
+          icon: fcubetypeiamge.nomalimage[FcubeType.messageCube],
+          onTap: () {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return FcubeQuestMesssagecubeDialog(
+                      messageCubecontent: findmessagecube[i]["message"]);
+                });
+          });
       markers.add(messagecube);
     }
     List<dynamic> findcheckincube = List<dynamic>.from(json.decode(
@@ -159,11 +177,19 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     // .map((x) => json.decode(x)));
     for (int i = 0; i < findcheckincube.length; i++) {
       Marker checkincube = Marker(
-        markerId: MarkerId("checkcube,"),
-        position: LatLng(
-            findcheckincube[i]["latitude"], findcheckincube[i]["longitude"]),
-        icon: fcubetypeiamge.nomalimage[FcubeType.checkincube],
-      );
+          markerId: MarkerId("checkcube,"),
+          position: LatLng(
+              findcheckincube[i]["latitude"], findcheckincube[i]["longitude"]),
+          icon: fcubetypeiamge.nomalimage[FcubeType.checkincube],
+          onTap: () {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return FcubeQuestCheckincubeDialog(
+                      checkinCubecontent: findcheckincube[i]["message"]);
+                });
+          });
       markers.add(checkincube);
     }
   }
