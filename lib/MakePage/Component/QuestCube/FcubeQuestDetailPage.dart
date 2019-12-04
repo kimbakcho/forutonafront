@@ -10,6 +10,7 @@ import 'package:forutonafront/Common/Fcubeplayer.dart';
 import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/Common/Fcubereply.dart';
 import 'package:forutonafront/Common/FcubereplyExtender1.dart';
+import 'package:forutonafront/Common/RouterSettingObj.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
@@ -74,6 +75,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   static const MethodChannel platform =
       MethodChannel('com.wing.forutonafront/service');
   UpPanelMode currentupPanelmode = UpPanelMode.startedit;
+
   @override
   void initState() {
     // TODO: implement initState

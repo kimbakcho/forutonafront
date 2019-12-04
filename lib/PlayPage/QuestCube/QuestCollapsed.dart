@@ -30,9 +30,13 @@ class _QuestCollapsedState extends State<QuestCollapsed> {
         width: MediaQuery.of(context).size.width * 0.8,
         child: FlatButton(
           onPressed: () async {
-            await Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return FcubeQuestDetailPage(fcubeextender1: cubeitem);
-            }));
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    settings: RouteSettings(name: "FcubeQuestDetailPage"),
+                    builder: (context) {
+                      return FcubeQuestDetailPage(fcubeextender1: cubeitem);
+                    }));
           },
           child: Column(
             children: <Widget>[

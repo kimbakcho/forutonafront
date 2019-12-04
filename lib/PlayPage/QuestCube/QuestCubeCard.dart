@@ -66,9 +66,13 @@ class _QuestCubeCardState extends State<QuestCubeCard> {
       height: MediaQuery.of(context).size.height * (0.6 - calcheight),
       child: FlatButton(
         onPressed: () async {
-          await Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return FcubeQuestDetailPage(fcubeextender1: cubeitem);
-          }));
+          await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  settings: RouteSettings(name: "FcubeQuestDetailPage"),
+                  builder: (context) {
+                    return FcubeQuestDetailPage(fcubeextender1: cubeitem);
+                  }));
         },
         child: Column(
           children: <Widget>[

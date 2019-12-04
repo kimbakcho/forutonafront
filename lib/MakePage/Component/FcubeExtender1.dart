@@ -15,6 +15,8 @@ class FcubeExtender1 extends Fcube {
   double distancewithme = 0;
   FcubecontentType contenttype;
   String contentvalue;
+  DateTime positionupdatetime;
+  double userlevel;
 
   FcubeExtender1();
 
@@ -47,6 +49,10 @@ class FcubeExtender1 extends Fcube {
         ? null
         : FcubecontentType.fromJson(json['contenttype']);
     contentvalue = json['contentvalue'] == null ? null : json['contentvalue'];
+    positionupdatetime = json['positionupdatetime'] != null
+        ? DateTime.parse(json['positionupdatetime'])
+        : null;
+    userlevel = json['userlevel'];
   }
 
   Map<String, dynamic> toJson() {
@@ -65,7 +71,8 @@ class FcubeExtender1 extends Fcube {
     data['country'] = this.country;
     data['nickname'] = this.nickname;
     data['profilepicktureurl'] = this.profilepicktureurl;
-    data['activationtime'] = activationtime.toIso8601String();
+    data['activationtime'] =
+        activationtime != null ? activationtime.toIso8601String() : null;
     data['cubepassword'] = this.cubepassword;
     data['haspassword'] = this.haspassword;
     data['cubescope'] = this.cubescope;
@@ -79,6 +86,10 @@ class FcubeExtender1 extends Fcube {
         ? null
         : FcubecontentType.toJson(this.contenttype);
     data['contentvalue'] = this.contentvalue == null ? null : this.contentvalue;
+    data['positionupdatetime'] = positionupdatetime != null
+        ? positionupdatetime.toIso8601String()
+        : null;
+    data['userlevel'] = this.userlevel;
     return data;
   }
 

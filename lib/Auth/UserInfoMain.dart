@@ -32,6 +32,8 @@ class UserInfoMain {
   String isocode = "";
   double latitude = 0;
   double longitude = 0;
+  DateTime positionupdatetime;
+  double userlevel;
   UserInfoMain();
 
   UserInfoMain.fromJson(Map<String, dynamic> json) {
@@ -54,6 +56,10 @@ class UserInfoMain {
     isocode = json['isocode'];
     latitude = json['latitude'];
     longitude = json['longitude'];
+    positionupdatetime = json['positionupdatetime'] != null
+        ? DateTime.parse(json['positionupdatetime'])
+        : null;
+    userlevel = json['userlevel'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +82,10 @@ class UserInfoMain {
     data['phonenumber'] = this.phonenumber;
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
+    data['positionupdatetime'] = positionupdatetime != null
+        ? positionupdatetime.toIso8601String()
+        : null;
+    data['userlevel'] = this.userlevel;
     return data;
   }
 

@@ -126,6 +126,8 @@ class FcubeQuest extends Fcube {
   }
   String nickname;
   String profilepicktureurl;
+  DateTime positionupdatetime;
+  double userlevel;
   FcubeQuest.fromFcubeExtender1(FcubeExtender1 extender1) {
     this.cubeuuid = extender1.cubeuuid;
     this.uid = extender1.uid;
@@ -155,6 +157,8 @@ class FcubeQuest extends Fcube {
     this.cubedislikes = extender1.cubedislikes;
     this.joinplayer = extender1.joinplayer;
     this.maximumplayers = extender1.maximumplayers;
+    this.positionupdatetime = extender1.positionupdatetime;
+    this.userlevel = extender1.userlevel;
   }
 
   StartCubeLocation startCubeLocation;

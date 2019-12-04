@@ -122,10 +122,15 @@ class _MakePageViewState extends State<MakePageView> {
                 padding: EdgeInsets.all(0),
                 onPressed: () async {
                   if (cubes[index].cubetype == FcubeType.questCube) {
-                    await Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return FcubeQuestDetailPage(fcubeextender1: cubes[index]);
-                    }));
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            settings:
+                                RouteSettings(name: "FcubeQuestDetailPage"),
+                            builder: (context) {
+                              return FcubeQuestDetailPage(
+                                  fcubeextender1: cubes[index]);
+                            }));
                     resetcubeList();
                   }
                 },

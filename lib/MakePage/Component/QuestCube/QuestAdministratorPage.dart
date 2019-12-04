@@ -8,13 +8,14 @@ import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCard.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/QuestAdministratorDrawer.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class QuestAdministratorPage extends StatefulWidget {
-  FcubeQuest fcubequest;
+  final FcubeQuest fcubequest;
   QuestAdministratorPage({Key key, this.fcubequest}) : super(key: key);
 
   @override
@@ -38,6 +39,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   TabController tabController;
   Map<FcubecontentType, Fcubecontent> detailcontent;
   FcubeTypeMakerImage fcubetypeiamge;
+  var _questAdministratorPageState = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
     // TODO: implement initState
@@ -247,7 +249,21 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     int actsec = avtibetime.inSeconds % 60;
 
     return Scaffold(
+      key: _questAdministratorPageState,
+      drawer: QuestAdministratorDrawer(
+        fcubequest: fcubequest,
+        detailcontent: detailcontent,
+      ),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.dehaze),
+          onPressed: () {
+            if (!_questAdministratorPageState.currentState.isDrawerOpen) {
+              _questAdministratorPageState.currentState.openDrawer();
+            }
+          },
+        ),
         title: Row(
           children: <Widget>[
             Text("${players.length}"),

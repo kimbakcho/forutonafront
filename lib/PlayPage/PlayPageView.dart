@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
@@ -34,7 +35,7 @@ class PlayPageView extends StatefulWidget {
 class _PlayPageViewState extends State<PlayPageView> {
   CameraPosition initialCameraPosition;
   CameraPosition currentCameraPosition;
-  String currentselectcubeuuid;
+  String findcurrentselectcubeuuid;
   Geolocator geolocation = Geolocator();
   Position initposition;
   GoogleMapController googlemap_controller;
@@ -52,6 +53,10 @@ class _PlayPageViewState extends State<PlayPageView> {
   int panellistlimit;
   String currentFindAddredss;
   bool ismarktap = false;
+  SwiperController swiperControl = new SwiperController();
+  int currentcollasedindex = 0;
+  int initcollasedindex = 0;
+  int currentlimit = 400;
 
   @override
   void initState() {
@@ -69,8 +74,7 @@ class _PlayPageViewState extends State<PlayPageView> {
   }
 
   onMakertap(FcubeMakerHelper helper) {
-    ismarktap = true;
-    currentselectcubeuuid = helper.cubeuuid;
+    findcurrentselectcubeuuid = helper.cubeuuid;
   }
 
   initimage() async {
@@ -101,43 +105,6 @@ class _PlayPageViewState extends State<PlayPageView> {
 
     initMemoryClustering(initialCameraPosition);
 
-    // LatLngBounds visibleGegion = await googlemap_controller.getVisibleRegion();
-    // double distance = await geolocation.distanceBetween(
-    //     initialCameraPosition.target.latitude,
-    //     initialCameraPosition.target.longitude,
-    //     visibleGegion.northeast.latitude,
-    //     visibleGegion.northeast.longitude);
-
-    // FCubeGeoSearchUtil searchitem = FCubeGeoSearchUtil.fromGeoSearchUtil(
-    //     GeoSearchUtil(
-    //         distance: distance,
-    //         latitude: initialCameraPosition.target.latitude,
-    //         longitude: initialCameraPosition.target.longitude,
-    //         limit: 1000,
-    //         offset: 0),
-    //     cubescope: 0,
-    //     cubestate: 1,
-    //     activationtime: DateTime.now());
-    // currentvisualfcube = await FcubeExtender1.findNearDistanceCube(searchitem);
-    // print("currentvisualfcube.length = ${currentvisualfcube.length}");
-    // for (int i = 0; i < currentvisualfcube.length; i++) {
-    //   FcubeLatLngAndGeohash tempitem = FcubeLatLngAndGeohash(LatLng(
-    //       currentvisualfcube[i].latitude, currentvisualfcube[i].longitude));
-    //   tempitem.makerhelp = FcubeMakerHelper(
-    //       cubename: currentvisualfcube[i].cubename,
-    //       cubeuuid: currentvisualfcube[i].cubeuuid,
-    //       cubeType: currentvisualfcube[i].cubetype.toString(),
-    //       nickname: currentvisualfcube[i].nickname,
-    //       iconmarker:
-    //           fcubetypeiamge.nomalimage[currentvisualfcube[i].cubetype]);
-
-    //   currentvisualPoints.add(tempitem);
-    // }
-    // print("currentvisualPoints.length = ${currentvisualPoints.length}");
-    // clusteringHelper.list = currentvisualPoints;
-    // clusteringHelper.onCameraMove(initialCameraPosition);
-    // clusteringHelper.updateMap();
-
     setMarkers();
     setState(() {});
   }
@@ -154,7 +121,7 @@ class _PlayPageViewState extends State<PlayPageView> {
             distance: distance,
             latitude: cameraPosition.target.latitude,
             longitude: cameraPosition.target.longitude,
-            limit: 1000,
+            limit: currentlimit,
             offset: 0),
         cubescope: 0,
         cubestate: 1,
@@ -190,9 +157,20 @@ class _PlayPageViewState extends State<PlayPageView> {
           selecticonmaker: fcubetypeiamge.bigimage[cubeList[i].cubetype]);
       currentvisualPoints.add(tempitem);
     }
+
+    int findindex = cubeList.indexWhere((cube) {
+      clusteringHelper.currentclickuuid = findcurrentselectcubeuuid;
+      return cube.cubeuuid == findcurrentselectcubeuuid;
+    });
+    if (findindex >= 0) {
+      initcollasedindex = findindex;
+    } else {
+      initcollasedindex = 0;
+    }
     clusteringHelper.list = currentvisualPoints;
     clusteringHelper.onCameraMove(cameraPosition);
     clusteringHelper.updateMap();
+    setState(() {});
     print("currentvisualPointsclear.length = ${currentvisualPoints.length}");
     return;
   }
@@ -250,10 +228,27 @@ class _PlayPageViewState extends State<PlayPageView> {
       Widget resultwidget = Container(
           color: Colors.grey,
           width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-            controller: collapsedscrollcontroller,
-            scrollDirection: Axis.horizontal,
+          child: Swiper(
+            controller: swiperControl,
             itemCount: fcubeplayerListUtil.cubeList.length,
+            index: initcollasedindex,
+            loop: false,
+            viewportFraction: 0.8,
+            onIndexChanged: (index) {
+              int beforeindex = index;
+              currentcollasedindex = index;
+              Future.delayed(Duration(seconds: 2), () {
+                if (beforeindex == currentcollasedindex) {
+                  findcurrentselectcubeuuid =
+                      fcubeplayerListUtil.cubeList[index].cubeuuid;
+                  LatLng selectlatlng = LatLng(
+                      fcubeplayerListUtil.cubeList[index].latitude,
+                      fcubeplayerListUtil.cubeList[index].longitude);
+                  googlemap_controller
+                      .animateCamera(CameraUpdate.newLatLng(selectlatlng));
+                }
+              });
+            },
             itemBuilder: (BuildContext ctxt, int index) {
               if (fcubeplayerListUtil.cubeList[index].cubetype ==
                   FcubeType.questCube) {
@@ -267,21 +262,6 @@ class _PlayPageViewState extends State<PlayPageView> {
               }
             },
           ));
-      // 만약 Marktap을 해서 구글 맵을 이동 했다면 List 이동
-      Future.delayed(Duration.zero, () {
-        if (ismarktap) {
-          List<FcubeExtender1> cubelist = GolobalStateContainer.of(context)
-              .state
-              .fcubeplayerListUtil
-              .cubeList;
-          int findindex = cubelist.indexWhere((cube) {
-            return cube.cubeuuid == currentselectcubeuuid;
-          });
-          collapsedscrollcontroller.jumpTo(findindex *
-              ((findindex * MediaQuery.of(context).size.width * 0.8) + 40));
-          ismarktap = false;
-        }
-      });
       return resultwidget;
     }
   }
@@ -373,7 +353,9 @@ class _PlayPageViewState extends State<PlayPageView> {
       children: <Widget>[
         Container(
           height: MediaQuery.of(context).size.height * 0.05,
-          child: Text(currentFindAddredss),
+          child: currentFindAddredss == null
+              ? Text("주소 받기 대기")
+              : Text(currentFindAddredss),
         ),
         Container(
           height: MediaQuery.of(context).size.height * 0.78,
