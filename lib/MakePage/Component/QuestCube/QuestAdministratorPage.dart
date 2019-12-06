@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Common/Fcubeplayer.dart';
@@ -8,9 +9,12 @@ import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCard.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/QuestAdministratorDrawer.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
+import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
+import 'package:forutonafront/PlayPage/FcubeplayercontentExtender1.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -31,6 +35,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   GoogleMapController _mapController;
   CameraPosition initialCameraPosition;
   Set<Marker> markers = new Set<Marker>();
+  List<FcubeplayerExtender1> myfcubs = new List<FcubeplayerExtender1>();
   List<FcubeplayerExtender1> players = new List<FcubeplayerExtender1>();
   bool isdataloading = false;
   FcubeplayerExtender1 playerextender1;
@@ -38,8 +43,11 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   Timer remainRefrashTimer;
   TabController tabController;
   Map<FcubecontentType, Fcubecontent> detailcontent;
+  Map<FcubeplayercontentType, FcubePlayerContent> playerdetailcontent;
   FcubeTypeMakerImage fcubetypeiamge;
   var _questAdministratorPageState = new GlobalKey<ScaffoldState>();
+  FirebaseUser _currentuser;
+  Fcubeplayer myplayer;
   @override
   void initState() {
     // TODO: implement initState
@@ -55,11 +63,18 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
 
   init() async {
     isdataloading = true;
+    _currentuser = await FirebaseAuth.instance.currentUser();
+    myplayer =
+        new Fcubeplayer(cubeuuid: fcubequest.cubeuuid, uid: _currentuser.uid);
+    myfcubs = await FcubeplayerExtender1.selectPlayers(myplayer);
     fcubetypeiamge =
         FcubeTypeMakerImage(big: 150, nomal: 100, iconimagesize: 50);
     await fcubetypeiamge.initImage();
     detailcontent = await initFcubeQuest();
     players = await FcubeplayerExtender1.selectPlayers(playerextender1);
+    if (getjoinmode() == FcubeJoinMode.player) {
+      playerdetailcontent = await initFcubeQuestPlayerContent();
+    }
 
     isdataloading = false;
     if (remainRefrashTimer == null) {
@@ -67,6 +82,18 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     }
 
     setState(() {});
+  }
+
+  FcubeJoinMode getjoinmode() {
+    if (_currentuser == null) {
+      return FcubeJoinMode.player;
+    } else {
+      if (_currentuser.uid == fcubequest.uid) {
+        return FcubeJoinMode.administrator;
+      } else {
+        return FcubeJoinMode.player;
+      }
+    }
   }
 
   //남는 시간 때문에표시 때문에 1초씩 돌림
@@ -87,6 +114,20 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
       types.add(FcubecontentType.authPicturedescription);
       contents = await Fcubecontent.getFcubecontent(FcubeContentSelector(
           cubeuuid: fcubequest.cubeuuid, uid: uid, contenttypes: types));
+    });
+    return contents;
+  }
+
+  Future<Map<FcubeplayercontentType, FcubePlayerContent>>
+      initFcubeQuestPlayerContent() async {
+    Map<FcubeplayercontentType, FcubePlayerContent> contents;
+    await Future.delayed(Duration.zero, () async {
+      String uid = GolobalStateContainer.of(context).state.userInfoMain.uid;
+      List<FcubeplayercontentType> types = List<FcubeplayercontentType>();
+      types.add(FcubeplayercontentType.startCubeLocationCheckin);
+      contents = await FcubeplayercontentExtender1.getFcubeplayercontent(
+          FcubeplayercontentSelector(
+              cubeuuid: fcubequest.cubeuuid, uid: uid, contenttypes: types));
     });
     return contents;
   }
@@ -227,6 +268,18 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     mianRefrashTimer.cancel();
     remainRefrashTimer.cancel();
     super.dispose();
+  }
+
+  makebottomNavigationBar() {
+    if (isdataloading) {
+      return CircularProgressIndicator();
+    } else {
+      if (getjoinmode() == FcubeJoinMode.player) {
+        if (myfcubs.length >= 0 &&
+            myfcubs[0].playstate == FcubeplayerState.playing &&
+            fcubequest.remindActiveTimetoDuration().inSeconds > 0) ;
+      }
+    }
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:forutonafront/Common/FcubeAuthMethodType.dart';
 import 'package:forutonafront/Common/Fcubeplayer.dart';
 import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/Common/Fcubereply.dart';
@@ -28,6 +29,7 @@ import 'package:sticky_headers/sticky_headers.dart';
 import 'package:intl/intl.dart';
 import 'package:zefyr/zefyr.dart';
 
+//Paly와Maker는 같은 객체를 공유 업데이트 보안 정보 체크는 BackEnd 에서 JWT로 탄탄히
 class FcubeQuestDetailPage extends StatefulWidget {
   final FcubeExtender1 fcubeextender1;
   FcubeQuestDetailPage({Key key, this.fcubeextender1}) : super(key: key);
@@ -75,7 +77,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   static const MethodChannel platform =
       MethodChannel('com.wing.forutonafront/service');
   UpPanelMode currentupPanelmode = UpPanelMode.startedit;
-
+  bool isjoininsertbtnloading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -146,35 +148,24 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
             return QuestAdministratorPage(fcubequest: fcubequest);
           }));
         },
-        child: Text("관리자 모드 "),
+        child: Text("관리자 모드"),
       );
     } else if (mode == FcubeJoinMode.player) {
+      //myfcubs.length 참여자가 참가하지 않을때 검색할했을때 큐브가 0
       if (myfcubs.length == 0) {
         return RaisedButton(
           onPressed: () async {
-            playerme = Fcubeplayer(
-                cubeuuid: fcubequest.cubeuuid,
-                uid: _currentuser.uid,
-                playstate: FcubeplayerState.playing);
-            if (await playerme.insertFcubePlayer() > 0) {
-              myfcubs = await FcubeplayerExtender1.selectPlayers(playerme);
-              await platform.invokeMethod<void>('connectservice');
-              List<String> args = List<String>();
-              Uri uri = Preference.httpurlbase(Preference.baseBackEndUrl,
-                  "/api/v1/Auth/updateCurrentPosition");
-              args.add(uri.toString());
-              args.add(_currentuser.uid);
-              IdTokenResult token = await _currentuser.getIdToken();
-              args.add(token.token);
-              await platform.invokeMethod<void>('startLocationManager', args);
-              setState(() {});
-            }
+            panelcontroller.open();
           },
           child: Text("참가 하기"),
         );
       } else {
         return RaisedButton(
-          onPressed: null,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return QuestAdministratorPage(fcubequest: fcubequest);
+            }));
+          },
           child: Text("참가 했음"),
         );
       }
@@ -331,19 +322,6 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   }
 
   Widget makedetailcontent() {
-    DateTime activationtime = fcubequest.activationtime.add(Duration(hours: 9));
-
-    Duration avtibetime = activationtime
-        .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
-
-    int actday = avtibetime.inSeconds ~/ (60 * 60 * 24);
-    int acthour = (avtibetime.inSeconds - actday * 60 * 60 * 24) ~/ (60 * 60);
-    int actmin =
-        (avtibetime.inSeconds - actday * 60 * 60 * 24 - acthour * 3600) ~/ (60);
-    int actsec = avtibetime.inSeconds % 60;
-
-    String stravtibetime = "${actday}일 ${acthour}:${actmin}:${actsec}";
-
     return Container(
         child: Column(
       children: <Widget>[
@@ -442,7 +420,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                   ),
                 ),
                 Container(
-                  child: Text("${stravtibetime}"),
+                  child: Text("${fcubequest.remindActiveTimetoString()}"),
                 )
               ],
             ),
@@ -897,6 +875,122 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
           }
         },
       );
+    } else if (currentupPanelmode == UpPanelMode.startedit &&
+        ispanelopen &&
+        getjoinmode() == FcubeJoinMode.player &&
+        myfcubs.length == 0) {
+      String authmethod = json.decode(this
+          .contents[FcubecontentType.authmethod]
+          .contentvalue)["authmethod"];
+      String authPicturedescription = json.decode(this
+          .contents[FcubecontentType.authPicturedescription]
+          .contentvalue)["authPicturedescription"];
+      return Container(
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: RaisedButton(
+                  onPressed: () {
+                    panelcontroller.close();
+                  },
+                  child: Icon(Icons.arrow_drop_down),
+                ),
+              ),
+              Expanded(
+                  child: ListView(
+                children: <Widget>[
+                  Container(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Text("현재 참가자수 : ${joinplayer.length} 명"),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                            "남은시간 : ${fcubequest.remindActiveTimetoString()}"),
+                      ),
+                    ],
+                  )),
+                  Divider(
+                    color: Colors.black,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Image(
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                          image: AssetImage(FcubeAuthMethodType.toImagePath(
+                              FcubeAuthMethodType.fromString(authmethod)))),
+                      Column(
+                        children: <Widget>[
+                          Container(
+                            child: Text("인증법 = ${authmethod}"),
+                          ),
+                          Container(
+                            child: Text("인증 방법 설명 = ${authPicturedescription}"),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.black,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                          child: Container(
+                        child: Text("보상 보인트"),
+                      )),
+                      Container(
+                        child: Text("${fcubequest.pointreward}"),
+                      )
+                    ],
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: RaisedButton(
+                      onPressed: () async {
+                        isjoininsertbtnloading = true;
+                        setState(() {});
+                        playerme = Fcubeplayer(
+                            cubeuuid: fcubequest.cubeuuid,
+                            uid: _currentuser.uid,
+                            playstate: FcubeplayerState.playing);
+                        //back android service start
+                        if (await playerme.insertFcubePlayer() > 0) {
+                          myfcubs = await FcubeplayerExtender1.selectPlayers(
+                              playerme);
+                          await platform.invokeMethod<void>('connectservice');
+                          List<String> args = List<String>();
+                          Uri uri = Preference.httpurlbase(
+                              Preference.baseBackEndUrl,
+                              "/api/v1/Auth/updateCurrentPosition");
+                          args.add(uri.toString());
+                          args.add(_currentuser.uid);
+                          IdTokenResult token = await _currentuser.getIdToken();
+                          args.add(token.token);
+                          await platform.invokeMethod<void>(
+                              'startLocationManager', args);
+                          isjoininsertbtnloading = false;
+                          setState(() {});
+                        }
+                      },
+                      child: isjoininsertbtnloading
+                          ? CircularProgressIndicator()
+                          : Text("참가하기"),
+                    ),
+                  )
+                ],
+              ))
+            ],
+          ));
     } else {
       return null;
     }
@@ -1016,9 +1110,13 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
               isDraggable: isSlidingUpPanelDrag,
               onPanelOpened: () {
                 ispanelopen = true;
+                isSlidingUpPanelDrag = true;
+                setState(() {});
               },
               onPanelClosed: () {
                 ispanelopen = false;
+                isSlidingUpPanelDrag = false;
+                setState(() {});
               },
               panel: Container(
                 child: selectSlidingUpPanel(),

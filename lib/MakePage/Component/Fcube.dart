@@ -198,6 +198,27 @@ class Fcube {
     });
     return int.tryParse(response.body);
   }
+
+  Duration remindActiveTimetoDuration() {
+    DateTime activationtime = this.activationtime.add(Duration(hours: 9));
+
+    Duration avtibetime = activationtime
+        .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
+    return avtibetime;
+  }
+
+  String remindActiveTimetoString() {
+    Duration avtibetime = remindActiveTimetoDuration();
+
+    int actday = avtibetime.inSeconds ~/ (60 * 60 * 24);
+    int acthour = (avtibetime.inSeconds - actday * 60 * 60 * 24) ~/ (60 * 60);
+    int actmin =
+        (avtibetime.inSeconds - actday * 60 * 60 * 24 - acthour * 3600) ~/ (60);
+    int actsec = avtibetime.inSeconds % 60;
+
+    String stravtibetime = "${actday}일 ${acthour}:${actmin}:${actsec}";
+    return stravtibetime;
+  }
 }
 
 class FcubeState {
