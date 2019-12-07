@@ -75,6 +75,7 @@ class CheckinCubeLocation {
   double latitude;
   Marker checkincubemaker;
   bool ismarkersetuponmap = false;
+  String cubeid;
   static String cubeimagepath = "assets/MarkesImages/CheckInCube.png";
   CheckinCubeLocation();
   CheckinCubeLocation.fromJson(Map<String, dynamic> json) {
@@ -83,6 +84,7 @@ class CheckinCubeLocation {
     range = json['range'];
     longitude = json['longitude'];
     latitude = json['latitude'];
+    cubeid = json['cubeid'];
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -91,6 +93,34 @@ class CheckinCubeLocation {
     data['range'] = this.range;
     data['longitude'] = this.longitude;
     data['latitude'] = this.latitude;
+    data['cubeid'] = this.cubeid;
+    return data;
+  }
+}
+
+class CheckInCubeLocationCheckin {
+  double longitude;
+  double latitude;
+  DateTime checkintime;
+  String cubeid;
+
+  CheckInCubeLocationCheckin(
+      {this.longitude, this.latitude, this.checkintime, this.cubeid});
+  CheckInCubeLocationCheckin.fromJson(Map<String, dynamic> json) {
+    longitude = json['longitude'];
+    latitude = json['latitude'];
+    cubeid = json['cubeid'];
+    checkintime = json["checkintime"] == null
+        ? null
+        : DateTime.parse(json["checkintime"]);
+  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['longitude'] = this.longitude;
+    data['latitude'] = this.latitude;
+    data['cubeid'] = this.cubeid;
+    data["checkintime"] =
+        checkintime == null ? null : checkintime.toIso8601String();
     return data;
   }
 }

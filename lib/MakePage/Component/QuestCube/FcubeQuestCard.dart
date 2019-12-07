@@ -3,7 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
+import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
+import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
+import 'package:forutonafront/PlayPage/FcubeplayercontentExtender1.dart';
+import 'package:forutonafront/globals.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:zefyr/zefyr.dart';
 
 class FcubeQuestStartCubeDialog extends StatefulWidget {
@@ -213,25 +220,45 @@ class _FcubeQuestMesssagecubeDialogState
                 ],
               )),
             ])));
-    ;
   }
 }
 
 class FcubeQuestCheckincubeDialog extends StatefulWidget {
-  FcubeQuestCheckincubeDialog({Key key, @required this.checkinCubecontent})
+  FcubeQuestCheckincubeDialog(
+      {Key key,
+      @required this.checkinCubecontent,
+      @required this.fcubequest,
+      @required this.joinmode,
+      this.playerdetailcontent,
+      this.currentScaffoldState})
       : super(key: key);
-  final String checkinCubecontent;
+  final FcubeQuest fcubequest;
+  final CheckinCubeLocation checkinCubecontent;
+  final List<FcubeplayercontentExtender1> playerdetailcontent;
+  final FcubeJoinMode joinmode;
+  final ScaffoldState currentScaffoldState;
+
   @override
   _FcubeQuestCheckincubeDialogState createState() {
-    return _FcubeQuestCheckincubeDialogState(this.checkinCubecontent);
+    return _FcubeQuestCheckincubeDialogState(
+        this.checkinCubecontent, this.fcubequest, this.joinmode,
+        playerdetailcontent: this.playerdetailcontent,
+        currentScaffoldState: currentScaffoldState);
   }
 }
 
 class _FcubeQuestCheckincubeDialogState
     extends State<FcubeQuestCheckincubeDialog> {
-  _FcubeQuestCheckincubeDialogState(this.checkinCubecontent);
-  String checkinCubecontent;
+  _FcubeQuestCheckincubeDialogState(
+      this.checkinCubecontent, this.fcubequest, this.joinmode,
+      {this.playerdetailcontent, this.currentScaffoldState});
+  FcubeQuest fcubequest;
+  CheckinCubeLocation checkinCubecontent;
   CubeMakeRichTextEdit richtextview;
+  List<FcubeplayercontentExtender1> playerdetailcontent;
+  FcubeJoinMode joinmode;
+  FcubeplayercontentExtender1 findcheckin;
+  ScaffoldState currentScaffoldState;
 
   @override
   void initState() {
@@ -239,8 +266,119 @@ class _FcubeQuestCheckincubeDialogState
     super.initState();
     richtextview = CubeMakeRichTextEdit(
       custommode: "nomal",
-      jsondata: checkinCubecontent,
+      jsondata: checkinCubecontent.message,
       zefyrMode: ZefyrMode.view,
+    );
+    int findindex = playerdetailcontent.indexWhere((value) {
+      if (value.contenttype ==
+          FcubeplayercontentType.checkInCubeLocationCheckin) {
+        var temp = CheckInCubeLocationCheckin.fromJson(
+            json.decode(value.contentvalue));
+        if (temp.cubeid == checkinCubecontent.cubeid) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    });
+    if (findindex >= 0) {
+      findcheckin = playerdetailcontent[findindex];
+    }
+  }
+
+  Widget makeexcutebtn() {
+    if (joinmode == FcubeJoinMode.player) {
+      if (findcheckin == null) {
+        return IconButton(
+            icon: Icon(Icons.location_on),
+            onPressed: () async {
+              Position currentposition =
+                  GolobalStateContainer.of(context).state.currentposition;
+              double checkindistance = GreatCircleDistance.fromDegrees(
+                      latitude1: checkinCubecontent.latitude,
+                      longitude1: checkinCubecontent.longitude,
+                      latitude2: currentposition.latitude,
+                      longitude2: currentposition.longitude)
+                  .haversineDistance();
+              if (checkindistance > 5) {
+                print("checkflase");
+                final snackBar = SnackBar(
+                  content: Text("Checkin은 5M 이내에 있어야 합니다."),
+                  duration: Duration(milliseconds: 1000),
+                );
+                currentScaffoldState.showSnackBar(snackBar);
+              } else {
+                var tempitem = CheckInCubeLocationCheckin(
+                    latitude: currentposition.latitude,
+                    longitude: currentposition.longitude,
+                    cubeid: checkinCubecontent.cubeid,
+                    checkintime: DateTime.now().toUtc());
+                FcubeplayercontentExtender1 makeitem =
+                    FcubeplayercontentExtender1(
+                        contenttype:
+                            FcubeplayercontentType.checkInCubeLocationCheckin,
+                        contentupdatetime: DateTime.now().toUtc(),
+                        contentvalue: json.encode(tempitem.toJson()),
+                        cubeuuid: fcubequest.cubeuuid,
+                        uid: GolobalStateContainer.of(context)
+                            .state
+                            .userInfoMain
+                            .uid);
+                if (await makeitem.makeFcubeplayercontent() > 0) {
+                  playerdetailcontent.add(makeitem);
+                }
+                findcheckin = makeitem;
+                setState(() {});
+                print("checkIn");
+              }
+            });
+      }
+    }
+    return IconButton(
+      onPressed: () async {
+        int result = await showDialog(
+            context: (context),
+            barrierDismissible: false,
+            builder: (context) {
+              return Dialog(
+                  child: Container(
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: richtextview,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.undo),
+                            onPressed: () {
+                              Navigator.pop(context, 0);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.pop(context, 1);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+            });
+        if (result == 1) {
+          Navigator.pop(context);
+        }
+      },
+      icon: Icon(Icons.library_books),
     );
   }
 
@@ -270,52 +408,7 @@ class _FcubeQuestCheckincubeDialogState
               Container(
                   child: Row(
                 children: <Widget>[
-                  IconButton(
-                    onPressed: () async {
-                      int result = await showDialog(
-                          context: (context),
-                          barrierDismissible: false,
-                          builder: (context) {
-                            return Dialog(
-                                child: Container(
-                              height: MediaQuery.of(context).size.height * 0.5,
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.4,
-                                    child: richtextview,
-                                  ),
-                                  Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.1,
-                                    child: Row(
-                                      children: <Widget>[
-                                        IconButton(
-                                          icon: Icon(Icons.undo),
-                                          onPressed: () {
-                                            Navigator.pop(context, 0);
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.close),
-                                          onPressed: () {
-                                            Navigator.pop(context, 1);
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ));
-                          });
-                      if (result == 1) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    icon: Icon(Icons.library_books),
-                  ),
+                  makeexcutebtn(),
                   IconButton(
                     onPressed: () {
                       Navigator.pop(context);

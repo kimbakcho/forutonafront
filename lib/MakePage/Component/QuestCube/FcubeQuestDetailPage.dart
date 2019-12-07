@@ -78,6 +78,8 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
       MethodChannel('com.wing.forutonafront/service');
   UpPanelMode currentupPanelmode = UpPanelMode.startedit;
   bool isjoininsertbtnloading = false;
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Fcubeplayer findjoinplayer;
   @override
   void initState() {
     // TODO: implement initState
@@ -104,7 +106,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     Fcubeplayer player =
         new Fcubeplayer(cubeuuid: fcubequest.cubeuuid, uid: _currentuser.uid);
     myfcubs = await FcubeplayerExtender1.selectPlayers(player);
-    Fcubeplayer findjoinplayer = new Fcubeplayer(cubeuuid: fcubequest.cubeuuid);
+    findjoinplayer = new Fcubeplayer(cubeuuid: fcubequest.cubeuuid);
     joinplayer = await FcubeplayerExtender1.selectPlayers(findjoinplayer);
     isloading = false;
     setState(() {});
@@ -283,6 +285,9 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                 (60);
         int actsec = avtibetime.inSeconds % 60;
         return Container(
+            height: 70,
+            alignment: Alignment(1, 0),
+            width: MediaQuery.of(context).size.width,
             color: Color.fromARGB(125, 10, 10, 10),
             child: Container(
                 height: 70,
@@ -308,6 +313,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                     Container(child: makePlaymodebtn())
                   ],
                 )));
+        break;
       default:
         return null;
     }
@@ -967,19 +973,18 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                         if (await playerme.insertFcubePlayer() > 0) {
                           myfcubs = await FcubeplayerExtender1.selectPlayers(
                               playerme);
-                          await platform.invokeMethod<void>('connectservice');
-                          List<String> args = List<String>();
-                          Uri uri = Preference.httpurlbase(
-                              Preference.baseBackEndUrl,
-                              "/api/v1/Auth/updateCurrentPosition");
-                          args.add(uri.toString());
-                          args.add(_currentuser.uid);
-                          IdTokenResult token = await _currentuser.getIdToken();
-                          args.add(token.token);
-                          await platform.invokeMethod<void>(
-                              'startLocationManager', args);
+                          joinplayer = await FcubeplayerExtender1.selectPlayers(
+                              findjoinplayer);
+                          // startservice();
                           isjoininsertbtnloading = false;
-                          setState(() {});
+                          panelcontroller.close();
+                          setState(() {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return QuestAdministratorPage(
+                                  fcubequest: fcubequest);
+                            }));
+                          });
                         }
                       },
                       child: isjoininsertbtnloading
@@ -993,6 +998,23 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
           ));
     } else {
       return null;
+    }
+  }
+
+  startservice() async {
+    try {
+      await platform.invokeMethod<void>('connectservice');
+
+      List<String> args = List<String>();
+      Uri uri = Preference.httpurlbase(
+          Preference.baseBackEndUrl, "/api/v1/Auth/updateCurrentPosition");
+      args.add(uri.toString());
+      args.add(_currentuser.uid);
+      IdTokenResult token = await _currentuser.getIdToken();
+      args.add(token.token);
+      await platform.invokeMethod<void>('startLocationManager', args);
+    } catch (ex) {
+      print(ex);
     }
   }
 
@@ -1077,6 +1099,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
       markers: makres,
     );
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         actions: <Widget>[
           Container(
@@ -1106,6 +1129,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
           ? Center(child: CircularProgressIndicator())
           : SlidingUpPanel(
               maxHeight: getSlidingUpPanelmaxheight(),
+              minHeight: 70,
               controller: panelcontroller,
               isDraggable: isSlidingUpPanelDrag,
               onPanelOpened: () {

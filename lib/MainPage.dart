@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
   HomeNavi homenavi;
   var geolocator = Geolocator();
   var locationOptions =
-      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 2);
   List<Widget> mainSwipeList = List<Widget>();
   MakePageView makePageView = MakePageView();
   HomePageView homePageView = HomePageView();

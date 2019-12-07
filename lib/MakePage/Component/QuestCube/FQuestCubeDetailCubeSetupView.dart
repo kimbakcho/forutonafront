@@ -7,6 +7,7 @@ import 'package:forutonafront/MakePage/Component/QuestCube/QuestMessageBoxTextEd
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:uuid/uuid.dart';
 
 class FQuestCubeDetailCubeSetupView extends StatefulWidget {
   final FcubeQuest fcubeQuest;
@@ -30,7 +31,7 @@ class _FQuestCubeDetailCubeSetupViewState
   int currentMessagecubeindex = 0;
   int currentCheckincubeindex = 0;
   Set<Marker> markers = Set<Marker>();
-
+  var uuid = new Uuid();
   @override
   void initState() {
     // TODO: implement initState
@@ -611,10 +612,13 @@ class _FQuestCubeDetailCubeSetupViewState
                                     .checkincubemaker
                                     .position
                                     .longitude;
-
                             fcubeQuest
                                 .checkincubeLocations[currentCheckincubeindex]
                                 .ismarkersetuponmap = true;
+                            fcubeQuest
+                                .checkincubeLocations[currentCheckincubeindex]
+                                .cubeid = uuid.v4();
+
                             fcubeQuest.checkincubeLocations
                                 .add(CheckinCubeLocation());
                             currentCheckincubeindex++;

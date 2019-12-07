@@ -79,6 +79,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
             ? null
             : contentupdatetime.toIso8601String(),
       };
+
   static Future<Map<FcubeplayercontentType, FcubeplayercontentExtender1>>
       getFcubeplayercontent(FcubeplayercontentSelector selector) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -100,6 +101,23 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
       contents[tempitem.contenttype] = tempitem;
     });
     return contents;
+  }
+
+  static Future<List<FcubeplayercontentExtender1>>
+      getFcubeplayercontentTypeList(FcubeplayercontentSelector selector) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var posturl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/getFcubeplayercontent");
+    var response = await http
+        .post(posturl, body: json.encode(selector.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+
+    return List<FcubeplayercontentExtender1>.from(json
+        .decode(response.body)
+        .map((x) => FcubeplayercontentExtender1.fromJson(x)));
   }
 
   Future<int> makeFcubeplayercontent() async {

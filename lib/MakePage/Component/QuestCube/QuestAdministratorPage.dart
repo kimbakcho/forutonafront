@@ -16,7 +16,9 @@ import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
 import 'package:forutonafront/PlayPage/FcubeplayercontentExtender1.dart';
 import 'package:forutonafront/globals.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:great_circle_distance2/great_circle_distance2.dart';
 
 class QuestAdministratorPage extends StatefulWidget {
   final FcubeQuest fcubequest;
@@ -43,7 +45,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   Timer remainRefrashTimer;
   TabController tabController;
   Map<FcubecontentType, Fcubecontent> detailcontent;
-  Map<FcubeplayercontentType, FcubePlayerContent> playerdetailcontent;
+  List<FcubeplayercontentExtender1> playerdetailcontent;
   FcubeTypeMakerImage fcubetypeiamge;
   var _questAdministratorPageState = new GlobalKey<ScaffoldState>();
   FirebaseUser _currentuser;
@@ -118,16 +120,20 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     return contents;
   }
 
-  Future<Map<FcubeplayercontentType, FcubePlayerContent>>
+  Future<List<FcubeplayercontentExtender1>>
       initFcubeQuestPlayerContent() async {
-    Map<FcubeplayercontentType, FcubePlayerContent> contents;
+    List<FcubeplayercontentExtender1> contents;
     await Future.delayed(Duration.zero, () async {
       String uid = GolobalStateContainer.of(context).state.userInfoMain.uid;
       List<FcubeplayercontentType> types = List<FcubeplayercontentType>();
       types.add(FcubeplayercontentType.startCubeLocationCheckin);
-      contents = await FcubeplayercontentExtender1.getFcubeplayercontent(
-          FcubeplayercontentSelector(
-              cubeuuid: fcubequest.cubeuuid, uid: uid, contenttypes: types));
+      types.add(FcubeplayercontentType.checkInCubeLocationCheckin);
+      contents =
+          await FcubeplayercontentExtender1.getFcubeplayercontentTypeList(
+              FcubeplayercontentSelector(
+                  cubeuuid: fcubequest.cubeuuid,
+                  uid: uid,
+                  contenttypes: types));
     });
     return contents;
   }
@@ -215,14 +221,17 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
           });
       markers.add(messagecube);
     }
-    List<dynamic> findcheckincube = List<dynamic>.from(json.decode(
-        detailcontent[FcubecontentType.checkincubeLocations].contentvalue));
+    List<CheckinCubeLocation> findcheckincube = List<CheckinCubeLocation>.from(
+        json
+            .decode(detailcontent[FcubecontentType.checkincubeLocations]
+                .contentvalue)
+            .map((x) => CheckinCubeLocation.fromJson(x)));
     // .map((x) => json.decode(x)));
     for (int i = 0; i < findcheckincube.length; i++) {
       Marker checkincube = Marker(
           markerId: MarkerId("checkcube,"),
-          position: LatLng(
-              findcheckincube[i]["latitude"], findcheckincube[i]["longitude"]),
+          position:
+              LatLng(findcheckincube[i].latitude, findcheckincube[i].longitude),
           icon: fcubetypeiamge.nomalimage[FcubeType.checkincube],
           onTap: () {
             showDialog(
@@ -230,7 +239,12 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
                 context: context,
                 builder: (context) {
                   return FcubeQuestCheckincubeDialog(
-                      checkinCubecontent: findcheckincube[i]["message"]);
+                    currentScaffoldState :_questAdministratorPageState.currentState,
+                    checkinCubecontent: findcheckincube[i],
+                    fcubequest: fcubequest,
+                    joinmode: getjoinmode(),
+                    playerdetailcontent: playerdetailcontent,
+                  );
                 });
           });
       markers.add(checkincube);
@@ -240,24 +254,57 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   maintimerFunc(Timer timer) async {
     print("maintimerFunc");
     if (_mapController != null) {
-      players = await FcubeplayerExtender1.selectPlayers(playerextender1);
-      markers.removeWhere((value) {
-        return value.markerId.value.split(',')[0] == "forutonaplayer";
+      //Player 에 CheckIn 에서는 자기의 큐브만 보이기
+      FcubeplayercontentExtender1 startCubeLocationCheckin;
+      int index = playerdetailcontent.indexWhere((value) {
+        return value.contenttype ==
+            FcubeplayercontentType.startCubeLocationCheckin;
       });
-      for (int i = 0; i < players.length; i++) {
+      if (index >= 0) {
+        startCubeLocationCheckin = playerdetailcontent[index];
+      }
+      if (myfcubs.length > 0 &&
+          myfcubs[0].playstate == FcubeplayerState.playing &&
+          fcubequest.remindActiveTimetoDuration().inSeconds > 0 &&
+          startCubeLocationCheckin == null) {
+        markers.removeWhere((value) {
+          return value.markerId.value.split(',')[0] == "forutonaplayer";
+        });
+        UserInfoMain userInfoMain =
+            GolobalStateContainer.of(context).state.userInfoMain;
         BitmapDescriptor markericon =
             await UserInfoMain.getBytesFromCanvasMakerIcon(
-                players[i].profilepicktureurl);
-        if (players[i].latitude != null && players[i].longitude != null) {
-          Marker marker = Marker(
-              markerId: MarkerId("forutonaplayer,${players[i].uid}"),
-              position: LatLng(players[i].latitude, players[i].longitude),
-              infoWindow: InfoWindow(title: players[i].nickname),
-              icon: markericon);
+                userInfoMain.profilepicktureurl);
+        Position currentposition =
+            GolobalStateContainer.of(context).state.currentposition;
+        Marker marker = Marker(
+            markerId: MarkerId("forutonaplayer,${_currentuser.uid}"),
+            position:
+                LatLng(currentposition.latitude, currentposition.longitude),
+            infoWindow: InfoWindow(title: userInfoMain.nickname),
+            icon: markericon);
+        markers.add(marker);
+      } else {
+        players = await FcubeplayerExtender1.selectPlayers(playerextender1);
+        markers.removeWhere((value) {
+          return value.markerId.value.split(',')[0] == "forutonaplayer";
+        });
+        for (int i = 0; i < players.length; i++) {
+          BitmapDescriptor markericon =
+              await UserInfoMain.getBytesFromCanvasMakerIcon(
+                  players[i].profilepicktureurl);
+          if (players[i].latitude != null && players[i].longitude != null) {
+            Marker marker = Marker(
+                markerId: MarkerId("forutonaplayer,${players[i].uid}"),
+                position: LatLng(players[i].latitude, players[i].longitude),
+                infoWindow: InfoWindow(title: players[i].nickname),
+                icon: markericon);
 
-          markers.add(marker);
+            markers.add(marker);
+          }
         }
       }
+
       setState(() {});
     }
   }
@@ -270,15 +317,100 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     super.dispose();
   }
 
-  makebottomNavigationBar() {
+  Widget makebottomNavigationBar() {
     if (isdataloading) {
       return CircularProgressIndicator();
     } else {
       if (getjoinmode() == FcubeJoinMode.player) {
+        FcubeplayercontentExtender1 startCubeLocationCheckin;
+        int index = playerdetailcontent.indexWhere((value) {
+          return value.contenttype ==
+              FcubeplayercontentType.startCubeLocationCheckin;
+        });
+        if (index >= 0) {
+          startCubeLocationCheckin = playerdetailcontent[index];
+        }
         if (myfcubs.length >= 0 &&
             myfcubs[0].playstate == FcubeplayerState.playing &&
-            fcubequest.remindActiveTimetoDuration().inSeconds > 0) ;
+            fcubequest.remindActiveTimetoDuration().inSeconds > 0 &&
+            startCubeLocationCheckin == null) {
+          bool nearhavestartcube = false;
+          dynamic startCubeLocation = json.decode(
+              detailcontent[FcubecontentType.startCubeLocation].contentvalue);
+          Position currentposition =
+              GolobalStateContainer.of(context).state.currentposition;
+          double scubedistance = GreatCircleDistance.fromDegrees(
+                  latitude1: startCubeLocation["latitude"],
+                  longitude1: startCubeLocation["longitude"],
+                  latitude2: currentposition.latitude,
+                  longitude2: currentposition.longitude)
+              .haversineDistance();
+          if (scubedistance < 5) {
+            nearhavestartcube = true;
+          }
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.1,
+            child: Container(
+              margin: EdgeInsets.all(8),
+              child: FloatingActionButton(
+                onPressed: nearhavestartcube
+                    ? () async {
+                        print("check in");
+                        FcubeplayercontentExtender1 startcubecheckin =
+                            FcubeplayercontentExtender1(
+                          contenttype:
+                              FcubeplayercontentType.startCubeLocationCheckin,
+                          contentvalue: json.encode({
+                            "latitude": currentposition.latitude,
+                            "longitude": currentposition.longitude,
+                            "checkintime":
+                                DateTime.now().toUtc().toIso8601String()
+                          }),
+                          contentupdatetime: DateTime.now().toUtc(),
+                          cubeuuid: fcubequest.cubeuuid,
+                          uid: _currentuser.uid,
+                        );
+                        if (await startcubecheckin.makeFcubeplayercontent() >
+                            0) {
+                          playerdetailcontent.add(startcubecheckin);
+                          setState(() {});
+                        }
+                      }
+                    : null,
+                backgroundColor: nearhavestartcube ? Colors.white : Colors.grey,
+                disabledElevation: 20,
+                child: Icon(
+                  Icons.check,
+                ),
+              ),
+            ),
+          );
+        }
       }
+      return Container(
+        color: Colors.white,
+        height: MediaQuery.of(context).size.height * 0.1,
+        width: MediaQuery.of(context).size.width,
+        child: TabBar(
+          controller: tabController,
+          indicatorColor: Colors.black,
+          tabs: <Widget>[
+            Tab(
+              icon: Icon(Icons.access_alarms),
+            ),
+            Tab(
+              icon: Icon(Icons.account_balance),
+            ),
+            Tab(
+              icon: Icon(Icons.add_alarm),
+            ),
+            Tab(
+              icon: Icon(Icons.add_location),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -341,32 +473,14 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
               children: <Widget>[
                 Container(
                   child: googleMap,
+                ),
+                Positioned(
+                  bottom: 0,
+                  child: makebottomNavigationBar(),
                 )
               ],
             ),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          child: TabBar(
-            controller: tabController,
-            indicatorColor: Colors.black,
-            tabs: <Widget>[
-              Tab(
-                icon: Icon(Icons.access_alarms),
-              ),
-              Tab(
-                icon: Icon(Icons.account_balance),
-              ),
-              Tab(
-                icon: Icon(Icons.add_alarm),
-              ),
-              Tab(
-                icon: Icon(Icons.add_location),
-              ),
-            ],
-          ),
-        ),
-      ),
+      // bottomNavigationBar: (),
     );
   }
 }

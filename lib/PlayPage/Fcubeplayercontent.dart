@@ -74,13 +74,17 @@ class FcubeplayercontentType {
   final int value;
   static const FcubeplayercontentType startCubeLocationCheckin =
       FcubeplayercontentType._(0);
+  static const FcubeplayercontentType checkInCubeLocationCheckin =
+      FcubeplayercontentType._(1);
 
   static const List<FcubeplayercontentType> values = <FcubeplayercontentType>[
     startCubeLocationCheckin,
+    checkInCubeLocationCheckin,
   ];
 
   static const List<String> _names = <String>[
     'startCubeLocationCheckin',
+    'checkInCubeLocationCheckin'
   ];
 
   static FcubeplayercontentType fromJson(value) {
