@@ -9,6 +9,7 @@ import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCard.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCompleteReqView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/QuestAdministratorDrawer.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
@@ -239,7 +240,8 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
                 context: context,
                 builder: (context) {
                   return FcubeQuestCheckincubeDialog(
-                    currentScaffoldState :_questAdministratorPageState.currentState,
+                    currentScaffoldState:
+                        _questAdministratorPageState.currentState,
                     checkinCubecontent: findcheckincube[i],
                     fcubequest: fcubequest,
                     joinmode: getjoinmode(),
@@ -307,14 +309,6 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
 
       setState(() {});
     }
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    mianRefrashTimer.cancel();
-    remainRefrashTimer.cancel();
-    super.dispose();
   }
 
   Widget makebottomNavigationBar() {
@@ -432,55 +426,74 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     int actmin =
         (avtibetime.inSeconds - actday * 60 * 60 * 24 - acthour * 3600) ~/ (60);
     int actsec = avtibetime.inSeconds % 60;
-
-    return Scaffold(
-      key: _questAdministratorPageState,
-      drawer: QuestAdministratorDrawer(
-        fcubequest: fcubequest,
-        detailcontent: detailcontent,
-      ),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(Icons.dehaze),
-          onPressed: () {
-            if (!_questAdministratorPageState.currentState.isDrawerOpen) {
-              _questAdministratorPageState.currentState.openDrawer();
-            }
-          },
+    return WillPopScope(
+      onWillPop: () {
+        mianRefrashTimer.cancel();
+        remainRefrashTimer.cancel();
+        Navigator.pop(context);
+        return;
+      },
+      child: Scaffold(
+        key: _questAdministratorPageState,
+        drawer: QuestAdministratorDrawer(
+          fcubequest: fcubequest,
+          detailcontent: detailcontent,
         ),
-        title: Row(
-          children: <Widget>[
-            Text("${players.length}"),
-            SizedBox(
-              width: 50,
-            ),
-            Text("${actday}일 ${acthour}:${actmin}:${actsec}"),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(Icons.dehaze),
+            onPressed: () {
+              if (!_questAdministratorPageState.currentState.isDrawerOpen) {
+                _questAdministratorPageState.currentState.openDrawer();
+              }
+            },
+          ),
+          title: Row(
+            children: <Widget>[
+              Text("${players.length}"),
+              SizedBox(
+                width: 50,
+              ),
+              Text("${actday}일 ${acthour}:${actmin}:${actsec}"),
+            ],
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.picture_in_picture),
+              onPressed: () async {
+                mianRefrashTimer.cancel();
+                remainRefrashTimer.cancel();
+                await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                  return FcubeQuestCompleteReqView(
+                      fcubequest: fcubequest, detailcontent: detailcontent);
+                }));
+                mianRefrashTimer =
+                    Timer.periodic(Duration(seconds: 5), maintimerFunc);
+                remainRefrashTimer =
+                    Timer.periodic(Duration(seconds: 1), remainRefrash);
+              },
+            )
           ],
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.picture_in_picture),
-            onPressed: () {},
-          )
-        ],
+        body: isdataloading
+            ? Container(
+                child: CircularProgressIndicator(),
+              )
+            : Stack(
+                children: <Widget>[
+                  Container(
+                    child: googleMap,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: makebottomNavigationBar(),
+                  )
+                ],
+              ),
+        // bottomNavigationBar: (),
       ),
-      body: isdataloading
-          ? Container(
-              child: CircularProgressIndicator(),
-            )
-          : Stack(
-              children: <Widget>[
-                Container(
-                  child: googleMap,
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: makebottomNavigationBar(),
-                )
-              ],
-            ),
-      // bottomNavigationBar: (),
     );
   }
 }

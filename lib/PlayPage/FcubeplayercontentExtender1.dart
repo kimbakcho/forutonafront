@@ -6,6 +6,7 @@ import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class FcubeplayercontentExtender1 extends FcubePlayerContent {
   FcubeplayercontentExtender1({
@@ -180,6 +181,41 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer " + token.token
     });
+    return int.tryParse(response.body);
+  }
+
+  static Future<String> uploadAuthimage(List<int> image) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var uploadurl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, '/api/v1/Fcube/uploadAuthForImage');
+    var request = new http.MultipartRequest("POST", uploadurl);
+    http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
+        'CubeAuthRelationImage', image,
+        filename: "CubeAuthRelationImage.png");
+    request.files.add(multipartFile);
+    request.headers.addAll({
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    request.fields.addAll({"uid": user.uid});
+    StreamedResponse streamresponse = await request.send();
+    Response response = await Response.fromStream(streamresponse);
+    if (response.statusCode == 200) {
+      var revlink = response.body;
+      return revlink;
+    } else {
+      return "";
+    }
+  }
+
+  static Future<int> deleteAuthimage(String urlpath) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var url = Preference.httpurloption(Preference.baseBackEndUrl,
+        "/api/v1/Fcube/deleteAuthForImage", {"url": urlpath, "uid": user.uid});
+    var response = await http.post(url,
+        headers: {HttpHeaders.authorizationHeader: "Bearer " + token.token});
     return int.tryParse(response.body);
   }
 }
