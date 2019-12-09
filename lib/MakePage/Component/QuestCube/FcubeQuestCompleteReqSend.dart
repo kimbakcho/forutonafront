@@ -182,6 +182,21 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
     }
   }
 
+  authpicktuer() async {
+    FcubeQuestAuthPicture reqcontent = FcubeQuestAuthPicture();
+    reqcontent.authpicture = authimages;
+    reqcontent.authtext = authtextcontroller.text;
+    reqitem.fromuid = GolobalStateContainer.of(context).state.userInfoMain.uid;
+    reqitem.contenttype = "FcubeQuestAuthPicture";
+    reqitem.content = reqcontent.toRawJson();
+    if (await reqitem.requestFcubeQuestSuccess() > 0) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return FcubeQuestCompleteReqSend1(
+            pickreqcontent: reqcontent, detailcontent: detailcontent);
+      }));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,16 +205,8 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
           RaisedButton(
             child: Text("제출하기"),
             onPressed: () async {
-              FcubeQuestAuthPicture reqcontent = FcubeQuestAuthPicture();
-              reqcontent.authpicture = authimages;
-              reqcontent.authtext = authtextcontroller.text;
-              reqitem.fromuid =
-                  GolobalStateContainer.of(context).state.userInfoMain.uid;
-              reqitem.content = reqcontent.toRawJson();
-              if(await reqitem.requestFcubeQuestSuccess()>0){
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return FcubeQuestCompleteReqSend1();
-                }));
+              if (authmethod == "인증샷") {
+                authpicktuer();
               }
             },
           )

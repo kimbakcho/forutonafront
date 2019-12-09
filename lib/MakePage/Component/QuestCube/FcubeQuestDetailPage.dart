@@ -146,9 +146,13 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     if (mode == FcubeJoinMode.administrator) {
       return RaisedButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return QuestAdministratorPage(fcubequest: fcubequest);
-          }));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  settings: RouteSettings(name: "QuestAdministratorPage"),
+                  builder: (context) {
+                    return QuestAdministratorPage(fcubequest: fcubequest);
+                  }));
         },
         child: Text("관리자 모드"),
       );
@@ -164,9 +168,13 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
       } else {
         return RaisedButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return QuestAdministratorPage(fcubequest: fcubequest);
-            }));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    settings: RouteSettings(name: "QuestAdministratorPage"),
+                    builder: (context) {
+                      return QuestAdministratorPage(fcubequest: fcubequest);
+                    }));
           },
           child: Text("참가 했음"),
         );
@@ -979,11 +987,15 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                           isjoininsertbtnloading = false;
                           panelcontroller.close();
                           setState(() {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return QuestAdministratorPage(
-                                  fcubequest: fcubequest);
-                            }));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    settings: RouteSettings(
+                                        name: "QuestAdministratorPage"),
+                                    builder: (context) {
+                                      return QuestAdministratorPage(
+                                          fcubequest: fcubequest);
+                                    }));
                           });
                         }
                       },

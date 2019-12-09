@@ -9,6 +9,7 @@ class FcubeQuestSuccess {
   String cubeuuid;
   String uid;
   String fromuid;
+  String contenttype;
   String content;
   int readingcheck;
   int scuesscheck;
@@ -20,6 +21,7 @@ class FcubeQuestSuccess {
     this.cubeuuid,
     this.uid,
     this.fromuid,
+    this.contenttype,
     this.content,
     this.readingcheck,
     this.scuesscheck,
@@ -32,6 +34,7 @@ class FcubeQuestSuccess {
     String cubeuuid,
     String uid,
     String fromuid,
+    String contenttype,
     String content,
     int readingcheck,
     int scuesscheck,
@@ -43,6 +46,7 @@ class FcubeQuestSuccess {
         cubeuuid: cubeuuid ?? this.cubeuuid,
         uid: uid ?? this.uid,
         fromuid: fromuid ?? this.fromuid,
+        contenttype: contenttype ?? this.contenttype,
         content: content ?? this.content,
         readingcheck: readingcheck ?? this.readingcheck,
         scuesscheck: scuesscheck ?? this.scuesscheck,
@@ -61,6 +65,7 @@ class FcubeQuestSuccess {
         cubeuuid: json["cubeuuid"] == null ? null : json["cubeuuid"],
         uid: json["uid"] == null ? null : json["uid"],
         fromuid: json["fromuid"] == null ? null : json["fromuid"],
+        contenttype: json["contenttype"] == null ? null : json["contenttype"],
         content: json["content"] == null ? null : json["content"],
         readingcheck:
             json["readingcheck"] == null ? null : json["readingcheck"],
@@ -75,6 +80,7 @@ class FcubeQuestSuccess {
         "cubeuuid": cubeuuid == null ? null : cubeuuid,
         "uid": uid == null ? null : uid,
         "fromuid": fromuid == null ? null : fromuid,
+        "contenttype": contenttype == null ? null : contenttype,
         "content": content == null ? null : content,
         "readingcheck": readingcheck == null ? null : readingcheck,
         "scuesscheck": scuesscheck == null ? null : scuesscheck,
@@ -87,7 +93,6 @@ class FcubeQuestSuccess {
     IdTokenResult token = await user.getIdToken();
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/requestFcubeQuestSuccess");
-    print(toRawJson());
     var response = await http.post(posturl, body: toRawJson(), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer " + token.token
@@ -95,6 +100,9 @@ class FcubeQuestSuccess {
     return int.tryParse(response.body);
   }
 }
+
+
+
 
 class FcubeQuestAuthPicture {
   List<String> authpicture;
@@ -105,7 +113,8 @@ class FcubeQuestAuthPicture {
     this.authtext,
   });
 
-  FcubeQuestAuthPicture copyWith({List<String> authpicture, String authtext}) =>
+  FcubeQuestAuthPicture copyWith(
+          {List<String> authpicture, String authtext, String contexttype}) =>
       FcubeQuestAuthPicture(
           authpicture: authpicture ?? this.authpicture,
           authtext: authtext ?? this.authtext);
