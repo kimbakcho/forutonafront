@@ -18,6 +18,7 @@ class CubeRichTextController {
 class CubeMakeRichTextEdit extends StatefulWidget {
   final Fcube fcube;
   final String custommode;
+  final String customscrollmode;
   final String jsondata;
   final ZefyrMode zefyrMode;
   final CubeRichTextController parentcontroller;
@@ -27,6 +28,7 @@ class CubeMakeRichTextEdit extends StatefulWidget {
       this.jsondata,
       this.zefyrMode,
       this.custommode,
+      this.customscrollmode,
       this.parentcontroller})
       : super(key: key);
 
@@ -35,6 +37,7 @@ class CubeMakeRichTextEdit extends StatefulWidget {
     return _CubeMakeRichTextEditState(
         fcube: this.fcube,
         custommode: this.custommode,
+        customscrollmode: this.customscrollmode,
         jsondata: this.jsondata,
         zefyrMode: this.zefyrMode,
         parentcontroller: this.parentcontroller);
@@ -44,12 +47,14 @@ class CubeMakeRichTextEdit extends StatefulWidget {
 class _CubeMakeRichTextEditState extends State<CubeMakeRichTextEdit> {
   Fcube fcube;
   String custommode;
+  String customscrollmode;
   String jsondata;
   ZefyrMode zefyrMode;
   CubeRichTextController parentcontroller;
   _CubeMakeRichTextEditState(
       {this.fcube,
       this.custommode,
+      this.customscrollmode,
       this.jsondata,
       this.zefyrMode,
       this.parentcontroller});
@@ -136,8 +141,9 @@ class _CubeMakeRichTextEditState extends State<CubeMakeRichTextEdit> {
   @override
   Widget build(BuildContext context) {
     return ZefyrScaffold(
+      custommode: custommode,
+      customscrollmode: customscrollmode,
       child: ZefyrEditor(
-        custommode: custommode,
         mode: zefyrMode != null ? zefyrMode : ZefyrMode.edit,
         autofocus:
             parentcontroller != null ? parentcontroller.autofocus : false,

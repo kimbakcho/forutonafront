@@ -55,10 +55,12 @@ dependencies:
   flutter_kakao_login:
     git:
       url: https://github.com/kimbakcho/flutter_kakao_login
+  # zefyr:
+  #   git:
+  #     url: https://github.com/kimbakcho/zefyr
+  #     path: packages/zefyr
   zefyr:
-    git:
-      url: https://github.com/kimbakcho/zefyr
-      path: packages/zefyr
+    path: ./extlib/zefyr/packages/zefyr
   clustering_google_maps:
     path: ./extlib/clustering_google_maps/
 

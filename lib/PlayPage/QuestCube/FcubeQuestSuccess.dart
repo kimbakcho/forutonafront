@@ -10,6 +10,7 @@ class FcubeQuestSuccess {
   String uid;
   String fromuid;
   String contenttype;
+  String toplayercomment;
   String content;
   int readingcheck;
   int scuesscheck;
@@ -22,6 +23,7 @@ class FcubeQuestSuccess {
     this.uid,
     this.fromuid,
     this.contenttype,
+    this.toplayercomment,
     this.content,
     this.readingcheck,
     this.scuesscheck,
@@ -35,6 +37,7 @@ class FcubeQuestSuccess {
     String uid,
     String fromuid,
     String contenttype,
+    String toplayercomment,
     String content,
     int readingcheck,
     int scuesscheck,
@@ -47,6 +50,7 @@ class FcubeQuestSuccess {
         uid: uid ?? this.uid,
         fromuid: fromuid ?? this.fromuid,
         contenttype: contenttype ?? this.contenttype,
+        toplayercomment: toplayercomment ?? this.toplayercomment,
         content: content ?? this.content,
         readingcheck: readingcheck ?? this.readingcheck,
         scuesscheck: scuesscheck ?? this.scuesscheck,
@@ -66,6 +70,8 @@ class FcubeQuestSuccess {
         uid: json["uid"] == null ? null : json["uid"],
         fromuid: json["fromuid"] == null ? null : json["fromuid"],
         contenttype: json["contenttype"] == null ? null : json["contenttype"],
+        toplayercomment:
+            json["toplayercomment"] == null ? null : json["toplayercomment"],
         content: json["content"] == null ? null : json["content"],
         readingcheck:
             json["readingcheck"] == null ? null : json["readingcheck"],
@@ -81,6 +87,7 @@ class FcubeQuestSuccess {
         "uid": uid == null ? null : uid,
         "fromuid": fromuid == null ? null : fromuid,
         "contenttype": contenttype == null ? null : contenttype,
+        "toplayercomment": toplayercomment == null ? null : toplayercomment,
         "content": content == null ? null : content,
         "readingcheck": readingcheck == null ? null : readingcheck,
         "scuesscheck": scuesscheck == null ? null : scuesscheck,
@@ -100,9 +107,6 @@ class FcubeQuestSuccess {
     return int.tryParse(response.body);
   }
 }
-
-
-
 
 class FcubeQuestAuthPicture {
   List<String> authpicture;

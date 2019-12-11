@@ -10,12 +10,15 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
   String nickname;
   String profilepicktureurl;
   double userlevel;
+  String readuid;
+  int confirm;
   FcubeQuestSuccessExtender1(
       {int reqno,
       String cubeuuid,
       String uid,
       String fromuid,
       String contenttype,
+      String toplayercomment,
       String content,
       int readingcheck,
       int scuesscheck,
@@ -23,13 +26,16 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
       dynamic judgmenttime,
       this.nickname,
       this.profilepicktureurl,
-      this.userlevel})
+      this.userlevel,
+      this.readuid,
+      this.confirm})
       : super(
           reqno: reqno,
           cubeuuid: cubeuuid,
           uid: uid,
           fromuid: fromuid,
           contenttype: contenttype,
+          toplayercomment: toplayercomment,
           content: content,
           readingcheck: readingcheck,
           scuesscheck: scuesscheck,
@@ -43,6 +49,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
         cubeuuid: item.cubeuuid ?? item.cubeuuid,
         fromuid: item.fromuid ?? item.fromuid,
         contenttype: item.contenttype ?? item.contenttype,
+        toplayercomment: item.toplayercomment ?? item.toplayercomment,
         content: item.content ?? item.content,
         readingcheck: item.readingcheck ?? item.readingcheck,
         scuesscheck: item.scuesscheck ?? item.scuesscheck,
@@ -56,6 +63,8 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
         uid: json["uid"] == null ? null : json["uid"],
         fromuid: json["fromuid"] == null ? null : json["fromuid"],
         contenttype: json["contenttype"] == null ? null : json["contenttype"],
+        toplayercomment:
+            json["toplayercomment"] == null ? null : json["toplayercomment"],
         content: json["content"] == null ? null : json["content"],
         readingcheck:
             json["readingcheck"] == null ? null : json["readingcheck"],
@@ -68,6 +77,8 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
             ? null
             : json["profilepicktureurl"],
         userlevel: json["userlevel"] == null ? null : json["userlevel"],
+        readuid: json["readuid"] == null ? null : json["readuid"],
+        confirm: json["confirm"] == null ? null : json["confirm"],
       );
 
   factory FcubeQuestSuccessExtender1.fromRawJson(String str) =>
@@ -81,6 +92,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
         "uid": uid == null ? null : uid,
         "fromuid": fromuid == null ? null : fromuid,
         "contenttype": contenttype == null ? null : contenttype,
+        "toplayercomment": toplayercomment == null ? null : toplayercomment,
         "content": content == null ? null : content,
         "readingcheck": readingcheck == null ? null : readingcheck,
         "scuesscheck": scuesscheck == null ? null : scuesscheck,
@@ -90,6 +102,8 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
         "profilepicktureurl":
             profilepicktureurl == null ? null : profilepicktureurl,
         "userlevel": userlevel == null ? null : userlevel,
+        "readuid": readuid == null ? null : readuid,
+        "confirm": confirm == null ? null : confirm,
       };
 
   static Future<List<FcubeQuestSuccessExtender1>> getQuestReqList(
@@ -118,5 +132,33 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
       HttpHeaders.authorizationHeader: "Bearer " + token.token
     });
     return int.tryParse(response.body);
+  }
+
+  Future<int> updateQuesttoplayercomment() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var posturl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/updateQuesttoplayercomment");
+    var response = await http.post(posturl, body: toRawJson(), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    return int.tryParse(response.body);
+  }
+
+  static Future<List<FcubeQuestSuccessExtender1>> getPlayerQuestSuccessList(
+      FcubeQuestSuccessExtender1 finditem) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var posturl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/getPlayerQuestSuccessList");
+    var response =
+        await http.post(posturl, body: finditem.toRawJson(), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    return List<FcubeQuestSuccessExtender1>.from(json
+        .decode(response.body)
+        .map((x) => FcubeQuestSuccessExtender1.fromJson(x)));
   }
 }

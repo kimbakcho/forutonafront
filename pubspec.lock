@@ -859,11 +859,9 @@ packages:
   zefyr:
     dependency: "direct main"
     description:
-      path: "packages/zefyr"
-      ref: HEAD
-      resolved-ref: fd63979cad111f45c5f7e54cfe4a4b7229599d5b
-      url: "https://github.com/kimbakcho/zefyr"
-    source: git
+      path: "extlib\\zefyr\\packages\\zefyr"
+      relative: true
+    source: path
     version: "0.8.0"
 sdks:
   dart: ">=2.5.0 <3.0.0"

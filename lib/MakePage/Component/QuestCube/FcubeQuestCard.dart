@@ -8,6 +8,8 @@ import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
 import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
 import 'package:forutonafront/PlayPage/FcubeplayercontentExtender1.dart';
+import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccessCheck.dart';
+import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccessExtender1.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
@@ -418,5 +420,68 @@ class _FcubeQuestCheckincubeDialogState
                 ],
               )),
             ])));
+  }
+}
+
+class FcubeQuestAuthChcekCard extends StatefulWidget {
+  final FcubeQuestSuccessExtender1 item;
+  final FcubeQuest fcubequest;
+  FcubeQuestAuthChcekCard({Key key, this.fcubequest, this.item})
+      : super(key: key);
+
+  @override
+  _FcubeQuestAuthChcekCardState createState() =>
+      _FcubeQuestAuthChcekCardState(fcubequest: fcubequest, item: item);
+}
+
+class _FcubeQuestAuthChcekCardState extends State<FcubeQuestAuthChcekCard> {
+  FcubeQuestSuccessExtender1 item;
+  FcubeQuest fcubequest;
+  _FcubeQuestAuthChcekCardState({this.fcubequest, this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      width: 250,
+      child: Column(
+        children: <Widget>[
+          item.scuesscheck == 0 ? Text("퀘스트 완료 실패") : Text("퀘스트 완료 성공"),
+          SizedBox(
+            height: 30,
+          ),
+          Container(
+              child: SizedBox(
+            height: 80,
+            width: 80,
+            child: Placeholder(
+              fallbackHeight: 80,
+              fallbackWidth: 80,
+            ),
+          )),
+          Container(
+              child: item.scuesscheck == 0
+                  ? Text("${item.nickname} 님이 퀘스트를 완료 실패 하였습니다. ")
+                  : Text("${item.nickname} 님이 퀘스트를 완료 성공 하였습니다. ")),
+          Container(
+            child: RaisedButton(
+              onPressed: () async {
+                String uid =
+                    GolobalStateContainer.of(context).state.userInfoMain.uid;
+                FcubeQuestSuccessCheck checkitem = FcubeQuestSuccessCheck(
+                    confirm: 1,
+                    cubeuuid: item.cubeuuid,
+                    fromuid: item.fromuid,
+                    uid: item.uid,
+                    readuid: uid);
+                await checkitem.insertFcubeQuestSuccessCheck();
+                Navigator.pop(context, 0);
+              },
+              child: Text("확인"),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

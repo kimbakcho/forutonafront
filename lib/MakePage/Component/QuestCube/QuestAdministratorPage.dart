@@ -64,6 +64,13 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     init();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    mianRefrashTimer.cancel();
+    remainRefrashTimer.cancel();
+  }
+
   init() async {
     isdataloading = true;
     _currentuser = await FirebaseAuth.instance.currentUser();
@@ -74,7 +81,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
         FcubeTypeMakerImage(big: 150, nomal: 100, iconimagesize: 50);
     await fcubetypeiamge.initImage();
     detailcontent = await initFcubeQuest();
-    players = await FcubeplayerExtender1.selectPlayers(playerextender1);
+
     if (getjoinmode() == FcubeJoinMode.player) {
       playerdetailcontent = await initFcubeQuestPlayerContent();
     }
@@ -140,6 +147,53 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   }
 
   onMapCreated(GoogleMapController controller) {
+    setState(() {
+      _mapController = controller;
+    });
+    FcubeplayercontentExtender1 startCubeLocationCheckin;
+    if (getjoinmode() == FcubeJoinMode.player) {
+      int index = playerdetailcontent.indexWhere((value) {
+        return value.contenttype ==
+            FcubeplayercontentType.startCubeLocationCheckin;
+      });
+      if (index >= 0) {
+        startCubeLocationCheckin = playerdetailcontent[index];
+      }
+    }
+
+    if (getjoinmode() == FcubeJoinMode.player &&
+        detailcontent.containsKey(FcubecontentType.startCubeLocation) &&
+        startCubeLocationCheckin == null) {
+      dynamic findstartcubes = json.decode(
+          detailcontent[FcubecontentType.startCubeLocation].contentvalue);
+      Marker startcube = Marker(
+          markerId: MarkerId("startcube,"),
+          position:
+              LatLng(findstartcubes["latitude"], findstartcubes["longitude"]),
+          icon: fcubetypeiamge.nomalimage[FcubeType.startcube],
+          infoWindow: InfoWindow(title: "스타트 큐브"),
+          onTap: () {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return FcubeQuestStartCubeDialog(
+                      startCubecontent:
+                          detailcontent[FcubecontentType.startCubeLocation]);
+                });
+          });
+      markers.add(startcube);
+    } else {
+      makeplayer();
+      makebasicmaker();
+    }
+    if (mianRefrashTimer == null) {
+      mianRefrashTimer = Timer.periodic(Duration(seconds: 5), maintimerFunc);
+    }
+  }
+
+  makeplayer() async {
+    players = await FcubeplayerExtender1.selectPlayers(playerextender1);
     players.forEach((play) async {
       BitmapDescriptor markericon =
           await UserInfoMain.getBytesFromCanvasMakerIcon(
@@ -155,13 +209,9 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
         setState(() {});
       }
     });
-    setState(() {
-      _mapController = controller;
-    });
-    if (mianRefrashTimer == null) {
-      mianRefrashTimer = Timer.periodic(Duration(seconds: 5), maintimerFunc);
-    }
+  }
 
+  makebasicmaker() {
     dynamic findstartcubes = json
         .decode(detailcontent[FcubecontentType.startCubeLocation].contentvalue);
     Marker startcube = Marker(
@@ -255,54 +305,51 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
 
   maintimerFunc(Timer timer) async {
     print("maintimerFunc");
+    print(context);
     if (_mapController != null) {
       //Player 에 CheckIn 에서는 자기의 큐브만 보이기
       FcubeplayercontentExtender1 startCubeLocationCheckin;
-      int index = playerdetailcontent.indexWhere((value) {
-        return value.contenttype ==
-            FcubeplayercontentType.startCubeLocationCheckin;
-      });
-      if (index >= 0) {
-        startCubeLocationCheckin = playerdetailcontent[index];
+      if (getjoinmode() == FcubeJoinMode.player &&
+          detailcontent.containsKey(FcubecontentType.startCubeLocation)) {
+        int index = playerdetailcontent.indexWhere((value) {
+          return value.contenttype ==
+              FcubeplayercontentType.startCubeLocationCheckin;
+        });
+        if (index >= 0) {
+          startCubeLocationCheckin = playerdetailcontent[index];
+        }
       }
-      if (myfcubs.length > 0 &&
+
+      if (getjoinmode() == FcubeJoinMode.player &&
+          myfcubs.length > 0 &&
           myfcubs[0].playstate == FcubeplayerState.playing &&
           fcubequest.remindActiveTimetoDuration().inSeconds > 0 &&
+          detailcontent.containsKey(FcubecontentType.startCubeLocation) &&
           startCubeLocationCheckin == null) {
-        markers.removeWhere((value) {
-          return value.markerId.value.split(',')[0] == "forutonaplayer";
-        });
-        UserInfoMain userInfoMain =
-            GolobalStateContainer.of(context).state.userInfoMain;
-        BitmapDescriptor markericon =
-            await UserInfoMain.getBytesFromCanvasMakerIcon(
-                userInfoMain.profilepicktureurl);
-        Position currentposition =
-            GolobalStateContainer.of(context).state.currentposition;
-        Marker marker = Marker(
-            markerId: MarkerId("forutonaplayer,${_currentuser.uid}"),
-            position:
-                LatLng(currentposition.latitude, currentposition.longitude),
-            infoWindow: InfoWindow(title: userInfoMain.nickname),
-            icon: markericon);
-        markers.add(marker);
       } else {
         players = await FcubeplayerExtender1.selectPlayers(playerextender1);
-        markers.removeWhere((value) {
-          return value.markerId.value.split(',')[0] == "forutonaplayer";
-        });
         for (int i = 0; i < players.length; i++) {
-          BitmapDescriptor markericon =
-              await UserInfoMain.getBytesFromCanvasMakerIcon(
-                  players[i].profilepicktureurl);
-          if (players[i].latitude != null && players[i].longitude != null) {
-            Marker marker = Marker(
-                markerId: MarkerId("forutonaplayer,${players[i].uid}"),
-                position: LatLng(players[i].latitude, players[i].longitude),
-                infoWindow: InfoWindow(title: players[i].nickname),
-                icon: markericon);
-
-            markers.add(marker);
+          Marker findmaker = markers.firstWhere((value) {
+            return value.markerId.value == "forutonaplayer,${players[i].uid}";
+          });
+          if (findmaker == null) {
+            BitmapDescriptor markericon =
+                await UserInfoMain.getBytesFromCanvasMakerIcon(
+                    players[i].profilepicktureurl);
+            if (players[i].latitude != null && players[i].longitude != null) {
+              Marker marker = Marker(
+                  markerId: MarkerId("forutonaplayer,${players[i].uid}"),
+                  position: LatLng(players[i].latitude, players[i].longitude),
+                  infoWindow: InfoWindow(title: players[i].nickname),
+                  icon: markericon);
+              markers.add(marker);
+            }
+          } else {
+            Marker tempMarker = findmaker.copyWith(
+              positionParam: LatLng(players[i].latitude, players[i].longitude),
+            );
+            markers.remove(findmaker);
+            markers.add(tempMarker);
           }
         }
       }
@@ -315,7 +362,8 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     if (isdataloading) {
       return CircularProgressIndicator();
     } else {
-      if (getjoinmode() == FcubeJoinMode.player) {
+      if (getjoinmode() == FcubeJoinMode.player &&
+          detailcontent.containsKey(FcubecontentType.startCubeLocation)) {
         FcubeplayercontentExtender1 startCubeLocationCheckin;
         int index = playerdetailcontent.indexWhere((value) {
           return value.contenttype ==
@@ -368,6 +416,8 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
                         if (await startcubecheckin.makeFcubeplayercontent() >
                             0) {
                           playerdetailcontent.add(startcubecheckin);
+                          makeplayer();
+                          makebasicmaker();
                           setState(() {});
                         }
                       }

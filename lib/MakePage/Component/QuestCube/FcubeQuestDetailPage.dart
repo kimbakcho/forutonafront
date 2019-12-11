@@ -80,6 +80,11 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   bool isjoininsertbtnloading = false;
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   Fcubeplayer findjoinplayer;
+  GlobalKey _richtextkey = GlobalKey();
+  GlobalKey _replykey = GlobalKey();
+  double richtextheightsize = 0;
+  double replysize = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -116,6 +121,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     initreply();
     richtextview = CubeMakeRichTextEdit(
       custommode: "nomal",
+      customscrollmode: "noscroll",
       jsondata:
           jsonDecode(this.contents[FcubecontentType.description].contentvalue)[
               "description"],
@@ -337,7 +343,9 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
 
   Widget makedetailcontent() {
     return Container(
-        child: Column(
+        child: ListView(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       children: <Widget>[
         ListTile(
           leading: CircleAvatar(
@@ -351,7 +359,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
           color: Colors.black,
         ),
         Container(
-          height: getdescriptionheight() + 40,
+          key: _richtextkey,
           child: richtextview,
         ),
         Divider(
@@ -583,8 +591,10 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
               ],
             )),
         Container(
-            height: replyheight(),
+            key: _replykey,
             child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               itemCount: replyExtenderlist.length,
               itemBuilder: (context, index) {
                 return Container(
@@ -742,38 +752,9 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     setmakers();
   }
 
-  double getdescriptionheight() {
-    double setheight = 50;
-    String tempdescription =
-        jsonDecode(this.contents[FcubecontentType.description].contentvalue)[
-            "description"];
-    List<dynamic> description = jsonDecode(tempdescription);
-    description.forEach((value) {
-      Map values = value as Map;
-      values.keys.forEach((key) {
-        if (key == "insert") {
-          String text = value[key];
-          Iterable<Match> findn = text.allMatches("\n");
-          setheight += findn.length * 50;
-        } else if (key == "attributes") {
-          if (value[key]["embed"]["type"] == "image") {
-            setheight += 150;
-          }
-        }
-      });
-    });
-
-    // if (description.length > 0) {
-    //   return (description.length.toDouble() * 50);
-    // } else {
-    //   return 150;
-    // }
-    return setheight;
-  }
-
   double getsiktycontentheight() {
     if (tabController.index == 0) {
-      return getdescriptionheight() + 150 + 200 + 200 + 200 + 400;
+      return richtextheightsize + replysize + 900;
     } else {
       return 300;
     }
@@ -1110,6 +1091,14 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
       myLocationButtonEnabled: true,
       markers: makres,
     );
+    if (_richtextkey.currentContext != null) {
+      RenderBox renderbox = _richtextkey.currentContext.findRenderObject();
+      richtextheightsize = renderbox.size.height;
+    }
+    if (_replykey.currentContext != null) {
+      RenderBox renderbox = _replykey.currentContext.findRenderObject();
+      replysize = renderbox.size.height;
+    }
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -1216,17 +1205,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                 ),
                                 makePlayerPanel()
                               ],
-                            )
-
-                            // TabBarView(
-                            //   controller: tabController,
-                            //   children: <Widget>[
-                            //     Text("11"),
-                            //     Text("22"),
-                            //     Text("44"),
-                            //   ],
-                            // ),
-                            )),
+                            ))),
                   ],
                 ),
               ]),
