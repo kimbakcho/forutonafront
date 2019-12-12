@@ -181,6 +181,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                     builder: (context) {
                       return QuestAdministratorPage(fcubequest: fcubequest);
                     }));
+            startservice();
           },
           child: Text("참가 했음"),
         );
@@ -964,7 +965,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                               playerme);
                           joinplayer = await FcubeplayerExtender1.selectPlayers(
                               findjoinplayer);
-                          // startservice();
+                          startservice();
                           isjoininsertbtnloading = false;
                           panelcontroller.close();
                           setState(() {
