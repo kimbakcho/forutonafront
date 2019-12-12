@@ -82,7 +82,6 @@ class _PlayPageViewState extends State<PlayPageView> {
     initialCameraPosition = new CameraPosition(
         target: LatLng(initposition.latitude, initposition.longitude),
         zoom: 16);
-    setState(() {});
   }
 
   void onMapCreated(GoogleMapController controller) async {
@@ -99,7 +98,6 @@ class _PlayPageViewState extends State<PlayPageView> {
     initMemoryClustering(initialCameraPosition);
 
     setMarkers();
-    setState(() {});
   }
 
   initMemoryClustering(CameraPosition cameraPosition) async {
@@ -163,7 +161,7 @@ class _PlayPageViewState extends State<PlayPageView> {
     clusteringHelper.list = currentvisualPoints;
     clusteringHelper.onCameraMove(cameraPosition);
     clusteringHelper.updateMap();
-    setState(() {});
+
     print("currentvisualPointsclear.length = ${currentvisualPoints.length}");
     return;
   }

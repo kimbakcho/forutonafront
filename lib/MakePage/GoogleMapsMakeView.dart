@@ -296,23 +296,24 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
             ),
           )),
       Positioned(
-          top: 30,
+          top: 0,
           left: MediaQuery.of(context).size.width * 0.17,
-          child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: SearchMapPlaceWidget(
-                apiKey: Preference.kGoogleApiKey,
-                location: _kInitialPosition.target,
-                language: "ko",
-                radius: 30000,
-                onSelected: (place) async {
-                  final geolocation = await place.geolocation;
-                  _controller.animateCamera(
-                      CameraUpdate.newLatLng(geolocation.coordinates));
-                  _controller.animateCamera(
-                      CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
-                },
-              ))),
+          child: SafeArea(
+              child: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: SearchMapPlaceWidget(
+                    apiKey: Preference.kGoogleApiKey,
+                    location: _kInitialPosition.target,
+                    language: "ko",
+                    radius: 30000,
+                    onSelected: (place) async {
+                      final geolocation = await place.geolocation;
+                      _controller.animateCamera(
+                          CameraUpdate.newLatLng(geolocation.coordinates));
+                      _controller.animateCamera(
+                          CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
+                    },
+                  )))),
       Positioned(
         top: 30,
         left: 2,

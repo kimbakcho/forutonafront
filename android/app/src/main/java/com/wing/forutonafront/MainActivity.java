@@ -1,5 +1,6 @@
 package com.wing.forutonafront;
 
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,29 +10,27 @@ import android.os.IBinder;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
-public class MainActivity extends FlutterActivity implements MethodChannel.MethodCallHandler {
+public class MainActivity extends FlutterActivity implements MethodChannel.MethodCallHandler  {
+
     static final String TAG = "forutonafront";
     static final String CHANNEL = "com.wing.forutonafront/service";
 
     AppService appService;
     boolean serviceConnected = false;
     MethodChannel.Result keepResult = null;
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(this::onMethodCall);
     }
-
     private void connectToService() {
         if (!serviceConnected) {
             Intent service = new Intent(this, AppService.class);
@@ -66,21 +65,6 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
             Log.i(TAG, "Service disconnected");
         }
     };
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // unbindService(connection);
-        // serviceConnected = false;
-    }
-
-    @Override
-    protected void onDestroy() {
-        // unbindService(connection);
-        // serviceConnected = false;
-        super.onDestroy();
-    }
-
     @Override
     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
         try {
@@ -106,4 +90,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
             result.error(null, e.getMessage(), null);
         }
     }
+
+
+
 }
