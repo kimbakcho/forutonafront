@@ -83,7 +83,7 @@ public class AppService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startForegroundService();
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override

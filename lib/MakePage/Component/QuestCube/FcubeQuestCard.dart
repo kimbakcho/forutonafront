@@ -271,22 +271,25 @@ class _FcubeQuestCheckincubeDialogState
       jsondata: checkinCubecontent.message,
       zefyrMode: ZefyrMode.view,
     );
-    int findindex = playerdetailcontent.indexWhere((value) {
-      if (value.contenttype ==
-          FcubeplayercontentType.checkInCubeLocationCheckin) {
-        var temp = CheckInCubeLocationCheckin.fromJson(
-            json.decode(value.contentvalue));
-        if (temp.cubeid == checkinCubecontent.cubeid) {
-          return true;
+    if (joinmode == FcubeJoinMode.administrator) {
+    } else {
+      int findindex = playerdetailcontent.indexWhere((value) {
+        if (value.contenttype ==
+            FcubeplayercontentType.checkInCubeLocationCheckin) {
+          var temp = CheckInCubeLocationCheckin.fromJson(
+              json.decode(value.contentvalue));
+          if (temp.cubeid == checkinCubecontent.cubeid) {
+            return true;
+          } else {
+            return false;
+          }
         } else {
           return false;
         }
-      } else {
-        return false;
+      });
+      if (findindex >= 0) {
+        findcheckin = playerdetailcontent[findindex];
       }
-    });
-    if (findindex >= 0) {
-      findcheckin = playerdetailcontent[findindex];
     }
   }
 

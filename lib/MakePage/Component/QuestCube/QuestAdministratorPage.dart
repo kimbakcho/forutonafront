@@ -215,6 +215,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     dynamic findstartcubes = json
         .decode(detailcontent[FcubecontentType.startCubeLocation].contentvalue);
     Marker startcube = Marker(
+        zIndex: 1,
         markerId: MarkerId("startcube,"),
         position:
             LatLng(findstartcubes["latitude"], findstartcubes["longitude"]),
@@ -235,6 +236,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     dynamic findfinishcube = json.decode(
         detailcontent[FcubecontentType.finishCubeLocation].contentvalue);
     Marker finishcube = Marker(
+        zIndex: 1,
         markerId: MarkerId("finishcube,"),
         position:
             LatLng(findfinishcube["latitude"], findfinishcube["longitude"]),
@@ -257,6 +259,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     // .map((x) => json.decode(x)));
     for (int i = 0; i < findmessagecube.length; i++) {
       Marker messagecube = Marker(
+          zIndex: 1,
           markerId: MarkerId("messagecube,"),
           position: LatLng(
               findmessagecube[i]["latitude"], findmessagecube[i]["longitude"]),
@@ -280,6 +283,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     // .map((x) => json.decode(x)));
     for (int i = 0; i < findcheckincube.length; i++) {
       Marker checkincube = Marker(
+          zIndex: 1,
           markerId: MarkerId("checkcube,"),
           position:
               LatLng(findcheckincube[i].latitude, findcheckincube[i].longitude),
