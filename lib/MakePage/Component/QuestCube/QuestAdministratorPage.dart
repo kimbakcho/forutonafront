@@ -123,6 +123,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
       types.add(FcubecontentType.checkincubeLocations);
       types.add(FcubecontentType.authmethod);
       types.add(FcubecontentType.authPicturedescription);
+      types.add(FcubecontentType.etcCubemode);
       contents = await Fcubecontent.getFcubecontent(FcubeContentSelector(
           cubeuuid: fcubequest.cubeuuid, uid: uid, contenttypes: types));
     });

@@ -199,6 +199,7 @@ class FcubeQuest extends Fcube {
   String markdowndescription;
   String authmethod;
   String authPicturedescription;
+  String etcCubemode;
 
   getFcubeQuestFromBackend() {}
 
@@ -259,6 +260,12 @@ class FcubeQuest extends Fcube {
             contenttype: FcubecontentType.authPicturedescription,
             contentvalue:
                 jsonEncode({"authPicturedescription": authPicturedescription}),
+            cubeuuid: this.cubeuuid));
+      }
+      if (etcCubemode != null) {
+        cubecontents.add(Fcubecontent(
+            contenttype: FcubecontentType.etcCubemode,
+            contentvalue: etcCubemode,
             cubeuuid: this.cubeuuid));
       }
       return await Fcubecontent.makecubecontents(cubecontents);

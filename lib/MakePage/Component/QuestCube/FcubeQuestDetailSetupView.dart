@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
@@ -54,6 +56,9 @@ class _FcubeQuestDetailSetupViewState extends State<FcubeQuestDetailSetupView> {
                   fcubeQuest.authmethod = authmethod;
                   fcubeQuest.authPicturedescription =
                       authdiscriptioncontroller.text;
+                  fcubeQuest.etcCubemode =
+                      json.encode({"mode": "singleSucess"});
+
                   isuploading = true;
                   setState(() {});
                   fcubeQuest.cubestate = FcubeState.startWait;

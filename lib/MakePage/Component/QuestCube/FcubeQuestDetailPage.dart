@@ -221,6 +221,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
       types.add(FcubecontentType.checkincubeLocations);
       types.add(FcubecontentType.authmethod);
       types.add(FcubecontentType.authPicturedescription);
+      types.add(FcubecontentType.etcCubemode);
       contents = await Fcubecontent.getFcubecontent(FcubeContentSelector(
           cubeuuid: fcubequest.cubeuuid, uid: uid, contenttypes: types));
     });
@@ -328,6 +329,26 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                     Container(child: makePlaymodebtn())
                   ],
                 )));
+        break;
+      case FcubeState.finish:
+        if (getjoinmode() == FcubeJoinMode.administrator) {
+          return Container(
+            height: 70,
+            alignment: Alignment(1, 0),
+            width: MediaQuery.of(context).size.width,
+            color: Color.fromARGB(125, 10, 10, 10),
+            child: makePlaymodebtn(),
+          );
+        } else {
+          return Container(
+            height: 70,
+            alignment: Alignment(1, 0),
+            width: MediaQuery.of(context).size.width,
+            color: Color.fromARGB(125, 10, 10, 10),
+            child: Text("퀘스트가 종료 되었습니다."),
+          );
+        }
+
         break;
       default:
         return null;

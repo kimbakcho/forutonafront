@@ -34,6 +34,7 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
   List<FcubeQuestSuccessExtender1> reqitems =
       List<FcubeQuestSuccessExtender1>();
   Iterable<FcubeQuestSuccessExtender1> notcheck;
+  GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
     // TODO: implement initState
@@ -210,16 +211,27 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
                     if (reslut == 1) {
                       item.readingcheck = 1;
                       item.scuesscheck = 1;
-                      await item.updateQuestReq();
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return FcubeQuestCompleteReqSend2(
-                          fcubequest: fcubequest,
-                          item: item,
-                        );
-                      }));
+                      int updateresult = await item.updateQuestReq();
+                      if (updateresult == 1) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return FcubeQuestCompleteReqSend2(
+                            fcubequest: fcubequest,
+                            item: item,
+                          );
+                        }));
+                      } else if (updateresult == 2) {
+                        item.scuesscheck = 0;
+                        _scaffoldkey.currentState.showSnackBar(SnackBar(
+                          content: Text(
+                              "Single 성공 모드에서 이미 성공한 유저가 있습니다. \n 해당 퀘스트는 실패 처리 됩니다."),
+                        ));
+                      }
+                      reqitems.removeWhere((value) {
+                        return value.fromuid == item.fromuid;
+                      });
+                      setState(() {});
                     }
-                    // await item.updateQuestReq();
                   },
                   child: Text("퀘스트 성공"),
                 ),
@@ -259,6 +271,10 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
                       item.readingcheck = 1;
                       item.scuesscheck = 0;
                       await item.updateQuestReq();
+                      reqitems.removeWhere((value) {
+                        return value.fromuid == item.fromuid;
+                      });
+                      setState(() {});
                     }
                   },
                   child: Text("퀘스트 실패"),
@@ -388,6 +404,7 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
       appBar: AppBar(
         actions: <Widget>[makeActionbtn()],
       ),

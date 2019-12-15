@@ -69,7 +69,7 @@ class Fcubecontent {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer " + token.token
     });
-    
+
     var recvjson = jsonDecode(response.body);
     Map<FcubecontentType, Fcubecontent> contents =
         Map<FcubecontentType, Fcubecontent>();
@@ -128,6 +128,7 @@ class FcubecontentType {
   static const FcubecontentType description = FcubecontentType._(4);
   static const FcubecontentType authmethod = FcubecontentType._(5);
   static const FcubecontentType authPicturedescription = FcubecontentType._(6);
+  static const FcubecontentType etcCubemode = FcubecontentType._(7);
 
   static const List<FcubecontentType> values = <FcubecontentType>[
     startCubeLocation,
@@ -136,7 +137,8 @@ class FcubecontentType {
     checkincubeLocations,
     description,
     authmethod,
-    authPicturedescription
+    authPicturedescription,
+    etcCubemode
   ];
 
   static const List<String> _names = <String>[
@@ -146,7 +148,8 @@ class FcubecontentType {
     'checkincubeLocations',
     'description',
     'authmethod',
-    'authPicturedescription'
+    'authPicturedescription',
+    'etcCubemode'
   ];
 
   static FcubecontentType fromJson(value) {
