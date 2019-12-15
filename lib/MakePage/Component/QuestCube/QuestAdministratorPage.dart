@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Common/Fcubeplayer.dart';
 import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
-import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCard.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCompleteReqView.dart';
@@ -51,10 +50,12 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   var _questAdministratorPageState = new GlobalKey<ScaffoldState>();
   FirebaseUser _currentuser;
   Fcubeplayer myplayer;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    markers.clear();
     tabController = new TabController(length: 4, vsync: this);
 
     playerextender1 = FcubeplayerExtender1.fromFcubeplayer(
@@ -309,7 +310,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
 
   maintimerFunc(Timer timer) async {
     print("maintimerFunc");
-    print(context);
+
     if (_mapController != null) {
       //Player 에 CheckIn 에서는 자기의 큐브만 보이기
       FcubeplayercontentExtender1 startCubeLocationCheckin;
@@ -395,8 +396,8 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
             nearhavestartcube = true;
           }
           return Container(
-            width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.1,
+            width: MediaQuery.of(context).size.width,
             child: Container(
               margin: EdgeInsets.all(8),
               child: FloatingActionButton(

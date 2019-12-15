@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/MutipleImageSelectView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCompleteReqSend1.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
@@ -8,6 +9,7 @@ import 'package:forutonafront/PlayPage/FcubeplayercontentExtender1.dart';
 import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccess.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 class FcubeQuestCompleteReqSend extends StatefulWidget {
   final FcubeQuest fcubequest;
@@ -31,6 +33,8 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
   List<String> authimages = new List<String>();
   FcubeQuestSuccess reqitem;
   TextEditingController authtextcontroller = TextEditingController();
+  List<Asset> pickimages = List<Asset>();
+  var scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     // TODO: implement initState
@@ -79,18 +83,42 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
         width: MediaQuery.of(context).size.width * 0.8,
         child: RaisedButton(
           onPressed: () async {
-            var image =
-                await ImagePicker.pickImage(source: ImageSource.gallery);
-            var bytes = await image.readAsBytes();
-            String link =
-                await FcubeplayercontentExtender1.uploadAuthimage(bytes);
-            print(link);
-            for (int i = 0; i < authimages.length; i++) {
-              if (authimages[i] == "") {
-                authimages[i] = link;
-                break;
+            var authhaveitems = authimages.where((value) {
+              return value.length != 0;
+            });
+
+            if (authhaveitems.length == 3) {
+              final snakbbar = SnackBar(
+                content: Text("이미지가 다 찾습니다. 지워주세요."),
+                duration: Duration(milliseconds: 1000),
+              );
+              scaffoldkey.currentState.showSnackBar(snakbbar);
+            } else {
+              var resultList = await MultiImagePicker.pickImages(
+                maxImages: 3 - authhaveitems.length,
+                cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+                materialOptions: MaterialOptions(
+                  actionBarColor: "#abcdef",
+                  actionBarTitle: "인증샷",
+                  allViewTitle: "인증샷",
+                  useDetailsView: false,
+                  selectCircleStrokeColor: "#000000",
+                ),
+              );
+              for (int i = 0; i < resultList.length; i++) {
+                var bytes = await resultList[i].getByteData();
+                String link = await FcubeplayercontentExtender1.uploadAuthimage(
+                    bytes.buffer.asInt8List());
+                print(link);
+                for (int j = 0; j < authimages.length; j++) {
+                  if (authimages[j] == "") {
+                    authimages[j] = link;
+                    break;
+                  }
+                }
               }
             }
+
             setState(() {});
           },
           child: Text("갤러리에서 가져오기"),
@@ -128,28 +156,38 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
 
   Widget makepictureplace(int index) {
     return Container(
-        width: MediaQuery.of(context).size.width * 0.3,
+        margin: EdgeInsets.only(right: 10),
+        width: MediaQuery.of(context).size.width * 0.28,
         height: MediaQuery.of(context).size.width * 0.23,
         child: FlatButton(
+          padding: EdgeInsets.all(0),
           onPressed: () {
             print("pic1");
           },
           child: Stack(
-            overflow: Overflow.visible,
             children: <Widget>[
               Container(
-                decoration: BoxDecoration(
-                    image: authimages[index] != ""
-                        ? DecorationImage(
-                            image: NetworkImage(authimages[index]),
-                            fit: BoxFit.cover)
-                        : null,
-                    border: Border.all(width: 1, color: Colors.black)),
+                width: MediaQuery.of(context).size.width * 0.28,
+                height: MediaQuery.of(context).size.width * 0.23,
+                alignment: Alignment(-1, 1),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.28 - 10,
+                  height: MediaQuery.of(context).size.width * 0.23 - 10,
+                  decoration: BoxDecoration(
+                      image: authimages[index] != ""
+                          ? DecorationImage(
+                              image: NetworkImage(authimages[index]),
+                              fit: BoxFit.cover)
+                          : null,
+                      border: Border.all(width: 1, color: Colors.black)),
+                ),
               ),
               Positioned(
-                  right: -10,
-                  top: -10,
+                  right: 0,
+                  top: 0,
                   child: Container(
+                    padding: EdgeInsets.all(0),
+                    margin: EdgeInsets.all(0),
                     height: 20,
                     width: 20,
                     child: RaisedButton(
@@ -157,7 +195,7 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
                       padding: EdgeInsets.all(0),
                       child: Icon(
                         Icons.remove,
-                        size: 10,
+                        size: 15,
                       ),
                       onPressed: () async {
                         if (await FcubeplayercontentExtender1.deleteAuthimage(
@@ -200,6 +238,7 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldkey,
       appBar: AppBar(
         actions: <Widget>[
           RaisedButton(

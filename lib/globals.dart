@@ -19,8 +19,8 @@ class GolobalStateContainer extends StatefulWidget {
   GolobalStateContainer({@required this.child});
 
   static _GolobalStateContainerState of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(_InheritedStateContainer)
-            as _InheritedStateContainer)
+    return context
+        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
         .data;
   }
 

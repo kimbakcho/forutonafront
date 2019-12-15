@@ -19,7 +19,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^0.4.0+9 # add dependency for Firebase Core
+  firebase_core: ^0.4.3+1 # add dependency for Firebase Core
+  firebase_core_web: ^0.1.1+1
+  url_launcher: ^5.4.1
+  url_launcher_macos: ^0.0.1+2
   firebase_analytics: ^5.0.2 # add dependency for Google Analytics for Firebase
   flutter_naver_login: ^1.0.1
   # The following adds the Cupertino Icons font to your application.
@@ -51,7 +54,7 @@ dependencies:
   sliding_up_panel: ^0.3.6
   sticky_headers: "^0.1.8"
   great_circle_distance2: ^1.0.1+1
-
+  multi_image_picker: ^4.6.0
   flutter_kakao_login:
     git:
       url: https://github.com/kimbakcho/flutter_kakao_login

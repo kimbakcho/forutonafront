@@ -6,7 +6,6 @@ import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
-import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
 import 'package:forutonafront/PlayPage/FcubeplayercontentExtender1.dart';
 import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccessCheck.dart';
 import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccessExtender1.dart';
