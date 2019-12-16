@@ -43,7 +43,7 @@ dependencies:
   dotted_border: ^1.0.3
   geolocator: ^5.1.4+2
   flutter_google_places: ^0.2.3
-
+  after_init: ^0.1.2
   permission_handler: "^3.3.0"
   flutter_datetime_picker: ^1.2.8
   international_phone_input: ^1.0.2

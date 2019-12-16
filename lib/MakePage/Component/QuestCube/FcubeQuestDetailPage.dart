@@ -11,12 +11,12 @@ import 'package:forutonafront/Common/Fcubeplayer.dart';
 import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/Common/Fcubereply.dart';
 import 'package:forutonafront/Common/FcubereplyExtender1.dart';
-import 'package:forutonafront/Common/RouterSettingObj.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestBottomNaviBar.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestResultView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/QuestAdministratorPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/Preference.dart';
@@ -331,24 +331,28 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                 )));
         break;
       case FcubeState.finish:
-        if (getjoinmode() == FcubeJoinMode.administrator) {
-          return Container(
-            height: 70,
-            alignment: Alignment(1, 0),
-            width: MediaQuery.of(context).size.width,
-            color: Color.fromARGB(125, 10, 10, 10),
-            child: makePlaymodebtn(),
-          );
-        } else {
-          return Container(
-            height: 70,
-            alignment: Alignment(1, 0),
-            width: MediaQuery.of(context).size.width,
-            color: Color.fromARGB(125, 10, 10, 10),
-            child: Text("퀘스트가 종료 되었습니다."),
-          );
-        }
-
+        return Container(
+          height: 70,
+          width: MediaQuery.of(context).size.width,
+          color: Color.fromARGB(125, 10, 10, 10),
+          child: Row(children: <Widget>[
+            Expanded(
+              child: Text(
+                  "${DateFormat("yyyy-MM-dd HH:mm:ss").format(fcubequest.activationtime.add(Duration(hours: 9)))}"),
+            ),
+            Container(
+                width: 150,
+                padding: EdgeInsets.all(10),
+                child: RaisedButton(
+                    child: Text("결과 확인"),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return FcubeQuestResultView(fcubequest: fcubequest);
+                      }));
+                    }))
+          ]),
+        );
         break;
       default:
         return null;

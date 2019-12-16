@@ -33,7 +33,6 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
   FirebaseUser _currentuser;
   List<FcubeQuestSuccessExtender1> reqitems =
       List<FcubeQuestSuccessExtender1>();
-  Iterable<FcubeQuestSuccessExtender1> notcheck;
   GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
@@ -50,11 +49,9 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
       FcubeQuestSuccessExtender1 searchitem = FcubeQuestSuccessExtender1(
           cubeuuid: fcubequest.cubeuuid,
           uid: fcubequest.uid,
-          fromuid: _currentuser.uid);
+          fromuid: _currentuser.uid,
+          readingcheck: 0);
       reqitems = await FcubeQuestSuccessExtender1.getQuestReqList(searchitem);
-      notcheck = reqitems.where((value) {
-        return value.readingcheck == 0;
-      });
     } else {
       FcubeQuestSuccessExtender1 searchitem = FcubeQuestSuccessExtender1(
           cubeuuid: fcubequest.cubeuuid, readuid: _currentuser.uid);
@@ -99,7 +96,7 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
       children: <Widget>[
         Container(
           alignment: Alignment(-1, 0),
-          child: Text("완료요청(${notcheck.length})"),
+          child: Text("완료요청(${reqitems.length})"),
         ),
         Container(
           height: MediaQuery.of(context).size.height * 0.8,

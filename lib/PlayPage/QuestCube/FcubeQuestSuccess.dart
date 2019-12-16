@@ -11,6 +11,8 @@ class FcubeQuestSuccess {
   String fromuid;
   String contenttype;
   String toplayercomment;
+  String tomakercomment;
+  double starpoint;
   String content;
   int readingcheck;
   int scuesscheck;
@@ -24,6 +26,8 @@ class FcubeQuestSuccess {
     this.fromuid,
     this.contenttype,
     this.toplayercomment,
+    this.tomakercomment,
+    this.starpoint,
     this.content,
     this.readingcheck,
     this.scuesscheck,
@@ -38,6 +42,8 @@ class FcubeQuestSuccess {
     String fromuid,
     String contenttype,
     String toplayercomment,
+    String tomakercomment,
+    double starpoint,
     String content,
     int readingcheck,
     int scuesscheck,
@@ -51,6 +57,8 @@ class FcubeQuestSuccess {
         fromuid: fromuid ?? this.fromuid,
         contenttype: contenttype ?? this.contenttype,
         toplayercomment: toplayercomment ?? this.toplayercomment,
+        tomakercomment: tomakercomment ?? this.tomakercomment,
+        starpoint: starpoint ?? this.starpoint,
         content: content ?? this.content,
         readingcheck: readingcheck ?? this.readingcheck,
         scuesscheck: scuesscheck ?? this.scuesscheck,
@@ -72,6 +80,9 @@ class FcubeQuestSuccess {
         contenttype: json["contenttype"] == null ? null : json["contenttype"],
         toplayercomment:
             json["toplayercomment"] == null ? null : json["toplayercomment"],
+        tomakercomment:
+            json["tomakercomment"] == null ? null : json["tomakercomment"],
+        starpoint: json["starpoint"] == null ? null : json["starpoint"],
         content: json["content"] == null ? null : json["content"],
         readingcheck:
             json["readingcheck"] == null ? null : json["readingcheck"],
@@ -88,6 +99,8 @@ class FcubeQuestSuccess {
         "fromuid": fromuid == null ? null : fromuid,
         "contenttype": contenttype == null ? null : contenttype,
         "toplayercomment": toplayercomment == null ? null : toplayercomment,
+        "tomakercomment": tomakercomment == null ? null : tomakercomment,
+        "starpoint": starpoint == null ? null : starpoint,
         "content": content == null ? null : content,
         "readingcheck": readingcheck == null ? null : readingcheck,
         "scuesscheck": scuesscheck == null ? null : scuesscheck,
