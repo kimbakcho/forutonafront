@@ -1,6 +1,5 @@
 package com.wing.forutonafront;
 
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +15,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
-public class MainActivity extends FlutterActivity implements MethodChannel.MethodCallHandler  {
+public class MainActivity extends FlutterActivity implements MethodChannel.MethodCallHandler {
 
     static final String TAG = "forutonafront";
     static final String CHANNEL = "com.wing.forutonafront/service";
@@ -24,6 +23,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
     AppService appService;
     boolean serviceConnected = false;
     MethodChannel.Result keepResult = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +31,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(this::onMethodCall);
     }
+
     private void connectToService() {
         if (!serviceConnected) {
             Intent service = new Intent(this, AppService.class);
@@ -65,6 +66,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
             Log.i(TAG, "Service disconnected");
         }
     };
+
     @Override
     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
         try {
@@ -90,7 +92,5 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
             result.error(null, e.getMessage(), null);
         }
     }
-
-
 
 }

@@ -1,5 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
@@ -45,7 +47,9 @@ class _MainPageState extends State<MainPage> {
   SwiperController swipercontroller = SwiperController();
   Position currentposition;
   Swiper swiper;
-
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
   @override
   void initState() {
     super.initState();
@@ -116,6 +120,47 @@ class _MainPageState extends State<MainPage> {
         });
       }
     });
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+            'com.wing.forutonafront/mainnnoti', 'forutona', 'forutona',
+            importance: Importance.High,
+            priority: Priority.High,
+            ticker: 'ticker');
+        var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+        var platformChannelSpecifics = NotificationDetails(
+            androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        await _flutterLocalNotificationsPlugin.show(
+            0, 'plain title', 'plain body', platformChannelSpecifics,
+            payload: 'item x');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      print(token);
+    });
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
   }
 
   initgeopermisstion() async {

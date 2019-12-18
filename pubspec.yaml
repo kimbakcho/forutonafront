@@ -48,12 +48,15 @@ dependencies:
   flutter_datetime_picker: ^1.2.8
   international_phone_input: ^1.0.2
   uuid: ^2.0.1
-  sms_receiver: ^0.2.0
+  sms_receiver:
+    git:
+      url: https://github.com/kimbakcho/flutter_sms_receiver
   instant: ^0.1.1
   quill_delta: ^1.0.0
   sliding_up_panel: ^0.3.6
   sticky_headers: "^0.1.8"
   great_circle_distance2: ^1.0.1+1
+  firebase_messaging: ^6.0.9
   multi_image_picker: ^4.6.0
   flutter_kakao_login:
     git:
@@ -68,6 +71,7 @@ dependencies:
     path: ./extlib/clustering_google_maps/
   search_map_place:
     path: ./extlib/search_map_place/
+  flutter_local_notifications: ^0.9.0+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
