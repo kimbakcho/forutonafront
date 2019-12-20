@@ -221,7 +221,7 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
                         item.scuesscheck = 0;
                         _scaffoldkey.currentState.showSnackBar(SnackBar(
                           content: Text(
-                              "Single 성공 모드에서 이미 성공한 유저가 있습니다. \n 해당 퀘스트는 실패 처리 됩니다."),
+                              "이미 성공한 유저가 있습니다. \n 해당 퀘스트는 실패 처리 됩니다."),
                         ));
                       }
                       reqitems.removeWhere((value) {

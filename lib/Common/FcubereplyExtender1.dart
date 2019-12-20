@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 class FcubereplyExtender1 extends Fcubereply {
   String nickname;
   String profilepicktureurl;
+  String fcmtoken;
 
   FcubereplyExtender1.fromJson(Map<String, dynamic> json) {
     commntno = json["commntno"];
@@ -19,6 +20,7 @@ class FcubereplyExtender1 extends Fcubereply {
     commnttime = DateTime.parse(json["commnttime"]);
     nickname = json["nickname"];
     profilepicktureurl = json["profilepicktureurl"];
+    fcmtoken = json["fcmtoken"];
   }
 
   FcubereplyExtender1.fromFcubereply(Fcubereply fcubereply,
@@ -42,7 +44,8 @@ class FcubereplyExtender1 extends Fcubereply {
         "depth": depth,
         "commnttext": commnttext,
         "nickname": nickname,
-        "profilepicktureurl": profilepicktureurl
+        "profilepicktureurl": profilepicktureurl,
+        "fcmtoken": fcmtoken
       };
 
   static Future<List<FcubereplyExtender1>> selectStep1ForReply(

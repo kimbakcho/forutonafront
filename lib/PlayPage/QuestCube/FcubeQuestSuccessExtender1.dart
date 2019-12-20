@@ -12,6 +12,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
   double userlevel;
   String readuid;
   int confirm;
+  String fcmtoken;
   FcubeQuestSuccessExtender1(
       {int reqno,
       String cubeuuid,
@@ -30,7 +31,8 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
       this.profilepicktureurl,
       this.userlevel,
       this.readuid,
-      this.confirm})
+      this.confirm,
+      this.fcmtoken})
       : super(
           reqno: reqno,
           cubeuuid: cubeuuid,
@@ -88,6 +90,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
         userlevel: json["userlevel"] == null ? null : json["userlevel"],
         readuid: json["readuid"] == null ? null : json["readuid"],
         confirm: json["confirm"] == null ? null : json["confirm"],
+        fcmtoken: json["fcmtoken"] == null ? null : json["fcmtoken"],
       );
 
   factory FcubeQuestSuccessExtender1.fromRawJson(String str) =>
@@ -115,6 +118,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
         "userlevel": userlevel == null ? null : userlevel,
         "readuid": readuid == null ? null : readuid,
         "confirm": confirm == null ? null : confirm,
+        "fcmtoken": fcmtoken == null ? null : fcmtoken,
       };
 
   static Future<List<FcubeQuestSuccessExtender1>> getQuestReqList(

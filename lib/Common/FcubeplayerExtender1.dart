@@ -12,6 +12,7 @@ class FcubeplayerExtender1 extends Fcubeplayer {
   String profilepicktureurl;
   double latitude;
   double longitude;
+  String fcmtoken;
 
   FcubeplayerExtender1.fromFcubeplayer(Fcubeplayer fcubeplayer,
       {this.nickname, this.profilepicktureurl}) {
@@ -38,6 +39,7 @@ class FcubeplayerExtender1 extends Fcubeplayer {
     hasexit = json["hasexit"];
     latitude = json["latitude"];
     longitude = json["longitude"];
+    fcmtoken = json["fcmtoken"];
     starttime = DateTime.parse(json["starttime"]);
     playstate = FcubeplayerState.values[json["playstate"]];
   }
@@ -55,6 +57,7 @@ class FcubeplayerExtender1 extends Fcubeplayer {
         "longitude": longitude,
         "starttime": starttime.toIso8601String(),
         "playstate": playstate,
+        "fcmtoken": fcmtoken,
       };
 
   static Future<List<FcubeplayerExtender1>> selectPlayers(

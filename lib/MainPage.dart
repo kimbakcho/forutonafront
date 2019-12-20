@@ -118,6 +118,13 @@ class _MainPageState extends State<MainPage> {
 
           GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
         });
+        String fcmtoken = await _firebaseMessaging.getToken();
+        GolobalStateContainer.of(context).state.userInfoMain.fcmtoken =
+            fcmtoken;
+        await GolobalStateContainer.of(context)
+            .state
+            .userInfoMain
+            .updateFCMtoken();
       }
     });
     _firebaseMessaging.configure(
@@ -149,10 +156,7 @@ class _MainPageState extends State<MainPage> {
         .listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
     });
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      print(token);
-    });
+    _firebaseMessaging.getToken().then((String token) async {});
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettingsIOS = IOSInitializationSettings();

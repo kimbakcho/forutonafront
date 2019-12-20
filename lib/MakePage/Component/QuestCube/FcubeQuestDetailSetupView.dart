@@ -56,8 +56,7 @@ class _FcubeQuestDetailSetupViewState extends State<FcubeQuestDetailSetupView> {
                   fcubeQuest.authmethod = authmethod;
                   fcubeQuest.authPicturedescription =
                       authdiscriptioncontroller.text;
-                  fcubeQuest.etcCubemode =
-                      json.encode({"mode": "singleSucess"});
+                  fcubeQuest.etcCubemode = json.encode({"maxSuccess": 1});
 
                   isuploading = true;
                   setState(() {});

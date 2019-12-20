@@ -34,6 +34,7 @@ class UserInfoMain {
   double longitude = 0;
   DateTime positionupdatetime;
   double userlevel;
+  String fcmtoken;
   UserInfoMain();
 
   UserInfoMain.fromJson(Map<String, dynamic> json) {
@@ -60,6 +61,7 @@ class UserInfoMain {
         ? DateTime.parse(json['positionupdatetime'])
         : null;
     userlevel = json['userlevel'];
+    fcmtoken = json['fcmtoken'];
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +88,7 @@ class UserInfoMain {
         ? positionupdatetime.toIso8601String()
         : null;
     data['userlevel'] = this.userlevel;
+    data['fcmtoken'] = this.fcmtoken;
     return data;
   }
 
@@ -275,5 +278,18 @@ class UserInfoMain {
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
 
     return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
+  }
+
+  Future<int> updateFCMtoken() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var url = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Auth/updateFCMtoken");
+    var response =
+        await http.post(url, body: jsonEncode(this.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    return int.tryParse(response.body);
   }
 }
