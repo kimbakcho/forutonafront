@@ -220,8 +220,8 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
                       } else if (updateresult == 2) {
                         item.scuesscheck = 0;
                         _scaffoldkey.currentState.showSnackBar(SnackBar(
-                          content: Text(
-                              "이미 성공한 유저가 있습니다. \n 해당 퀘스트는 실패 처리 됩니다."),
+                          content:
+                              Text("이미 성공한 유저가 있습니다. \n 해당 퀘스트는 실패 처리 됩니다."),
                         ));
                       }
                       reqitems.removeWhere((value) {
@@ -368,6 +368,7 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
             child: RaisedButton(
               onPressed: () async {
                 await showDialog(
+                    barrierDismissible: false,
                     context: context,
                     builder: (context) {
                       return AlertDialog(
@@ -376,6 +377,16 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
                               fcubequest: fcubequest, item: item));
                     });
                 this.reqitems.remove(item);
+                if (item.scuesscheck == 1) {
+                  await showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                            content: FcubeQuestReviewCard(
+                                fcubequest: fcubequest));
+                      });
+                }
                 setState(() {});
               },
               child: Text("결과 확인"),

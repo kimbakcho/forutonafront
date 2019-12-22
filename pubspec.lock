@@ -314,6 +314,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.3"
+  flutter_rating_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_rating_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0+1"
   flutter_swiper:
     dependency: "direct main"
     description:
@@ -754,7 +761,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: db88ccb8f640ba280e446a79a7f0c113c7ef9c75
+      resolved-ref: "84cfed2a3517c8fd393a65f673c06945e86b8106"
       url: "https://github.com/kimbakcho/flutter_sms_receiver"
     source: git
     version: "0.1.0+2"

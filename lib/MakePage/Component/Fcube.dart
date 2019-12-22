@@ -223,6 +223,16 @@ class Fcube {
     String stravtibetime = "${actday}일 ${acthour}:${actmin}:${actsec}";
     return stravtibetime;
   }
+
+  Future<int> getwithupdatecubestate() async {
+    var url = Preference.httpurloption(Preference.baseBackEndUrl,
+        "/api/v1/Fcube/getFcubestate", {"cubeuuid": cubeuuid});
+    var response = await http.get(url);
+    Fcube current = Fcube.fromJson(json.decode(response.body));
+    activationtime = current.activationtime;
+    cubestate = current.cubestate;
+    return 1;
+  }
 }
 
 class FcubeState {

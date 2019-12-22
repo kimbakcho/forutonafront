@@ -13,31 +13,30 @@ class FcubeQuestSuccessCheck {
   String readuid;
   int confirm;
 
-  FcubeQuestSuccessCheck({
-    this.idx,
-    this.cubeuuid,
-    this.uid,
-    this.fromuid,
-    this.readuid,
-    this.confirm,
-  });
+  FcubeQuestSuccessCheck(
+      {this.idx,
+      this.cubeuuid,
+      this.uid,
+      this.fromuid,
+      this.readuid,
+      this.confirm});
 
-  FcubeQuestSuccessCheck copyWith({
-    int idx,
-    String cubeuuid,
-    String uid,
-    String fromuid,
-    String readuid,
-    int confirm,
-  }) =>
+  FcubeQuestSuccessCheck copyWith(
+          {int idx,
+          String cubeuuid,
+          String uid,
+          String fromuid,
+          String readuid,
+          int confirm,
+          String tomakercomment,
+          double starpoint}) =>
       FcubeQuestSuccessCheck(
-        idx: idx ?? this.idx,
-        cubeuuid: cubeuuid ?? this.cubeuuid,
-        uid: uid ?? this.uid,
-        fromuid: fromuid ?? this.fromuid,
-        readuid: readuid ?? this.readuid,
-        confirm: confirm ?? this.confirm,
-      );
+          idx: idx ?? this.idx,
+          cubeuuid: cubeuuid ?? this.cubeuuid,
+          uid: uid ?? this.uid,
+          fromuid: fromuid ?? this.fromuid,
+          readuid: readuid ?? this.readuid,
+          confirm: confirm ?? this.confirm);
 
   factory FcubeQuestSuccessCheck.fromRawJson(String str) =>
       FcubeQuestSuccessCheck.fromJson(json.decode(str));
@@ -60,13 +59,25 @@ class FcubeQuestSuccessCheck {
         "uid": uid == null ? null : uid,
         "fromuid": fromuid == null ? null : fromuid,
         "readuid": readuid == null ? null : readuid,
-        "confirm": confirm == null ? null : confirm,
+        "confirm": confirm == null ? null : confirm
       };
   Future<int> insertFcubeQuestSuccessCheck() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     IdTokenResult token = await user.getIdToken();
     var url = Preference.httpurlbase(Preference.baseBackEndUrl,
         "/api/v1/Fcube/insertFcubeQuestSuccessCheck");
+    var response = await http.post(url, body: toRawJson(), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    return int.tryParse(response.body);
+  }
+
+  Future<int> updatetoMakerComment() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var url = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/updatetoMakerComment");
     var response = await http.post(url, body: toRawJson(), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer " + token.token

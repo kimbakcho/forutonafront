@@ -15,6 +15,7 @@ import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
 import 'package:forutonafront/PlayPage/FcubeplayercontentExtender1.dart';
+import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccessExtender1.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -50,6 +51,8 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   var _questAdministratorPageState = new GlobalKey<ScaffoldState>();
   FirebaseUser _currentuser;
   Fcubeplayer myplayer;
+  List<FcubeQuestSuccessExtender1> reqsuccesslist =
+      List<FcubeQuestSuccessExtender1>();
 
   @override
   void initState() {
@@ -109,6 +112,22 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
 
   //남는 시간 때문에표시 때문에 1초씩 돌림
   void remainRefrash(Timer timer) async {
+    //남은 시간은 utc로 계산해도됨.
+    DateTime activationtime = fcubequest.activationtime;
+    Duration avtibetime = activationtime.difference(DateTime.now().toUtc());
+    await fcubequest.getwithupdatecubestate();
+    if (avtibetime.inSeconds < 0) {
+      mianRefrashTimer.cancel();
+      remainRefrashTimer.cancel();
+      await showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+                content: FcubeQuestReviewCard(fcubequest: fcubequest));
+          });
+      Navigator.pop(context);
+    }
     setState(() {});
   }
 
@@ -359,6 +378,13 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
           }
         }
       }
+      if (getjoinmode() == FcubeJoinMode.player) {
+        FcubeQuestSuccessExtender1 searchitem = FcubeQuestSuccessExtender1(
+            cubeuuid: fcubequest.cubeuuid, readuid: _currentuser.uid);
+        reqsuccesslist =
+            await FcubeQuestSuccessExtender1.getPlayerQuestSuccessList(
+                searchitem);
+      }
 
       setState(() {});
     }
@@ -515,21 +541,41 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
             ],
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.picture_in_picture),
-              onPressed: () async {
-                mianRefrashTimer.cancel();
-                remainRefrashTimer.cancel();
-                await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                  return FcubeQuestCompleteReqView(
-                      fcubequest: fcubequest, detailcontent: detailcontent);
-                }));
-                mianRefrashTimer =
-                    Timer.periodic(Duration(seconds: 5), maintimerFunc);
-                remainRefrashTimer =
-                    Timer.periodic(Duration(seconds: 1), remainRefrash);
-              },
+            Stack(
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  // child: Placeholder(),
+                ),
+                Positioned(
+                  child: IconButton(
+                    icon: Icon(Icons.picture_in_picture),
+                    onPressed: () async {
+                      mianRefrashTimer.cancel();
+                      remainRefrashTimer.cancel();
+
+                      await Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return FcubeQuestCompleteReqView(
+                            fcubequest: fcubequest,
+                            detailcontent: detailcontent);
+                      }));
+                      mianRefrashTimer =
+                          Timer.periodic(Duration(seconds: 5), maintimerFunc);
+                      remainRefrashTimer =
+                          Timer.periodic(Duration(seconds: 1), remainRefrash);
+                    },
+                  ),
+                ),
+                Positioned(
+                  child: Container(
+                    color: Colors.blue,
+                    child: Text("${reqsuccesslist.length}"),
+                  ),
+                  top: 5,
+                  left: 5,
+                )
+              ],
             )
           ],
         ),

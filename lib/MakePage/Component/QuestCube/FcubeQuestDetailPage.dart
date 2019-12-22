@@ -151,14 +151,15 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     FcubeJoinMode mode = getjoinmode();
     if (mode == FcubeJoinMode.administrator) {
       return RaisedButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
               context,
               MaterialPageRoute(
                   settings: RouteSettings(name: "QuestAdministratorPage"),
                   builder: (context) {
                     return QuestAdministratorPage(fcubequest: fcubequest);
                   }));
+          await fcubequest.getwithupdatecubestate();
         },
         child: Text("관리자 모드"),
       );
@@ -173,14 +174,15 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
         );
       } else {
         return RaisedButton(
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            await Navigator.push(
                 context,
                 MaterialPageRoute(
                     settings: RouteSettings(name: "QuestAdministratorPage"),
                     builder: (context) {
                       return QuestAdministratorPage(fcubequest: fcubequest);
                     }));
+            await fcubequest.getwithupdatecubestate();
             startservice();
           },
           child: Text("참가 했음"),
@@ -993,8 +995,8 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                           startservice();
                           isjoininsertbtnloading = false;
                           panelcontroller.close();
-                          setState(() {
-                            Navigator.push(
+                          setState(() async {
+                            await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     settings: RouteSettings(
@@ -1003,6 +1005,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                       return QuestAdministratorPage(
                                           fcubequest: fcubequest);
                                     }));
+                            await fcubequest.getwithupdatecubestate();
                           });
                         }
                       },

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:forutonafront/Common/FcubeReview.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
+import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
@@ -482,6 +485,94 @@ class _FcubeQuestAuthChcekCardState extends State<FcubeQuestAuthChcekCard> {
               child: Text("확인"),
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class FcubeQuestReviewCard extends StatefulWidget {
+  final FcubeQuest fcubequest;
+  FcubeQuestReviewCard({Key key, this.fcubequest}) : super(key: key);
+
+  @override
+  _FcubeQuestReviewCardState createState() {
+    return _FcubeQuestReviewCardState(fcubequest: fcubequest);
+  }
+}
+
+class _FcubeQuestReviewCardState extends State<FcubeQuestReviewCard> {
+  _FcubeQuestReviewCardState({this.fcubequest});
+
+  FcubeQuest fcubequest;
+  double ratingpoint = 0;
+  TextEditingController reviewcomment = new TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.5,
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: Column(
+        children: <Widget>[
+          // Container(
+          //   child: Text(
+          //     "퀘스트 종료 \n [${item.nickname}] 님이 퀘스트를 완료 하였습니다.! ",
+          //     textAlign: TextAlign.center,
+          //   ),
+          // ),
+          Expanded(
+              child: Container(
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  child: Text("퀘스트를 평가하고 보상을 획득하세요!"),
+                ),
+                Container(
+                  child: RatingBar(
+                    initialRating: ratingpoint,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      ratingpoint = rating;
+                    },
+                  ),
+                ),
+                TextField(
+                    controller: reviewcomment,
+                    maxLines: 10,
+                    minLines: 5,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    )),
+                Container(
+                    child: RaisedButton(
+                  onPressed: () async {
+                    FcubeReview reviewitem = FcubeReview(
+                        cubeuuid: fcubequest.cubeuuid,
+                        uid: GolobalStateContainer.of(context)
+                            .state
+                            .userInfoMain
+                            .uid,
+                        starpoint: ratingpoint,
+                        tomakercomment: reviewcomment.text);
+
+                    var result = await reviewitem.insertFcubeReview();
+                    if (result > 0) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text("평가 완료"),
+                )),
+              ],
+            ),
+          ))
         ],
       ),
     );
