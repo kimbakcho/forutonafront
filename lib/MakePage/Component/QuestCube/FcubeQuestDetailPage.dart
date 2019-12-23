@@ -214,7 +214,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   Future<Map<FcubecontentType, Fcubecontent>> initFcubeQuest() async {
     Map<FcubecontentType, Fcubecontent> contents;
     await Future.delayed(Duration.zero, () async {
-      String uid = GolobalStateContainer.of(context).state.userInfoMain.uid;
+      String uid = GlobalStateContainer.of(context).state.userInfoMain.uid;
       List<FcubecontentType> types = List<FcubecontentType>();
       types.add(FcubecontentType.startCubeLocation);
       types.add(FcubecontentType.finishCubeLocation);
@@ -600,12 +600,12 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                         replycontroller.clear();
                         FcubereplyExtender1 replyitem =
                             FcubereplyExtender1.fromFcubereply(result,
-                                nickname: GolobalStateContainer.of(context)
+                                nickname: GlobalStateContainer.of(context)
                                     .state
                                     .userInfoMain
                                     .nickname,
                                 profilepicktureurl:
-                                    GolobalStateContainer.of(context)
+                                    GlobalStateContainer.of(context)
                                         .state
                                         .userInfoMain
                                         .profilepicktureurl);
@@ -693,13 +693,13 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                             FcubereplyExtender1.fromFcubereply(
                                                 reply,
                                                 nickname:
-                                                    GolobalStateContainer.of(
+                                                    GlobalStateContainer.of(
                                                             context)
                                                         .state
                                                         .userInfoMain
                                                         .nickname,
                                                 profilepicktureurl:
-                                                    GolobalStateContainer.of(
+                                                    GlobalStateContainer.of(
                                                             context)
                                                         .state
                                                         .userInfoMain

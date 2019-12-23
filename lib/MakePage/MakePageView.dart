@@ -33,7 +33,7 @@ class _MakePageViewState extends State<MakePageView> {
 
   makeMainViewChioce() {
     if (litems.length == 0) {
-      if (GolobalStateContainer.of(context).state.fcubeListUtil.isLoading) {
+      if (GlobalStateContainer.of(context).state.fcubeListUtil.isLoading) {
         return Center(
             child: Container(
                 height: 160,
@@ -55,9 +55,9 @@ class _MakePageViewState extends State<MakePageView> {
                   ],
                 )));
       }
-      if (GolobalStateContainer.of(context).state.fcubeListUtil.cubeList ==
+      if (GlobalStateContainer.of(context).state.fcubeListUtil.cubeList ==
               null ||
-          GolobalStateContainer.of(context)
+          GlobalStateContainer.of(context)
                   .state
                   .fcubeListUtil
                   .cubeList
@@ -94,11 +94,7 @@ class _MakePageViewState extends State<MakePageView> {
           ),
         );
       }
-      if (GolobalStateContainer.of(context)
-              .state
-              .fcubeListUtil
-              .cubeList
-              .length >
+      if (GlobalStateContainer.of(context).state.fcubeListUtil.cubeList.length >
           0) {
         return makeCubeListWidget();
       }
@@ -107,7 +103,7 @@ class _MakePageViewState extends State<MakePageView> {
 
   Widget makeCubeListWidget() {
     List<FcubeExtender1> cubes =
-        GolobalStateContainer.of(context).state.fcubeListUtil.cubeList;
+        GlobalStateContainer.of(context).state.fcubeListUtil.cubeList;
     return Container(
       margin: EdgeInsets.all(8),
       child: ListView.builder(
@@ -268,15 +264,15 @@ class _MakePageViewState extends State<MakePageView> {
   }
 
   resetcubeList() async {
-    GolobalStateContainer.of(context).resetcubeListUtilcubeList();
-    GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
-    GolobalStateContainer.of(context).addfcubeListUtilcubeList(
+    GlobalStateContainer.of(context).resetcubeListUtilcubeList();
+    GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
+    GlobalStateContainer.of(context).addfcubeListUtilcubeList(
         await FcubeExtender1.getusercubes(offset: 0, limit: 10));
     Position currentposition =
-        GolobalStateContainer.of(context).state.currentposition;
-    GolobalStateContainer.of(context)
+        GlobalStateContainer.of(context).state.currentposition;
+    GlobalStateContainer.of(context)
         .updateCubeListupdatedistancewithme(currentposition);
-    GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
+    GlobalStateContainer.of(context).setfcubeListUtilisLoading(false);
   }
 
   Widget _selectbottomNavigationBar() {

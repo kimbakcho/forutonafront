@@ -49,6 +49,7 @@ dependencies:
   international_phone_input: ^1.0.2
   flutter_rating_bar: ^3.0.0+1
   uuid: ^2.0.1
+  loading: ^1.0.2
   sms_receiver:
     git:
       url: https://github.com/kimbakcho/flutter_sms_receiver

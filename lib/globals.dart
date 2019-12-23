@@ -14,21 +14,21 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:search_map_place/search_map_place.dart';
 import 'package:http/http.dart' as http;
 
-class GolobalStateContainer extends StatefulWidget {
+class GlobalStateContainer extends StatefulWidget {
   final Widget child;
-  GolobalStateContainer({@required this.child});
+  GlobalStateContainer({@required this.child});
 
-  static _GolobalStateContainerState of(BuildContext context) {
+  static _GlobalStateContainerState of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
         .data;
   }
 
   @override
-  _GolobalStateContainerState createState() => _GolobalStateContainerState();
+  _GlobalStateContainerState createState() => _GlobalStateContainerState();
 }
 
-class _GolobalStateContainerState extends State<GolobalStateContainer> {
+class _GlobalStateContainerState extends State<GlobalStateContainer> {
   GlobalState state = new GlobalState();
 
   @override
@@ -170,7 +170,7 @@ class _GolobalStateContainerState extends State<GolobalStateContainer> {
 }
 
 class _InheritedStateContainer extends InheritedWidget {
-  final _GolobalStateContainerState data;
+  final _GlobalStateContainerState data;
   _InheritedStateContainer({
     Key key,
     @required this.data,

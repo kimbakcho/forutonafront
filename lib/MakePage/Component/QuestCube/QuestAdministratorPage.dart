@@ -134,7 +134,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
   Future<Map<FcubecontentType, Fcubecontent>> initFcubeQuest() async {
     Map<FcubecontentType, Fcubecontent> contents;
     await Future.delayed(Duration.zero, () async {
-      String uid = GolobalStateContainer.of(context).state.userInfoMain.uid;
+      String uid = GlobalStateContainer.of(context).state.userInfoMain.uid;
       List<FcubecontentType> types = List<FcubecontentType>();
       types.add(FcubecontentType.startCubeLocation);
       types.add(FcubecontentType.finishCubeLocation);
@@ -153,7 +153,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
       initFcubeQuestPlayerContent() async {
     List<FcubeplayercontentExtender1> contents;
     await Future.delayed(Duration.zero, () async {
-      String uid = GolobalStateContainer.of(context).state.userInfoMain.uid;
+      String uid = GlobalStateContainer.of(context).state.userInfoMain.uid;
       List<FcubeplayercontentType> types = List<FcubeplayercontentType>();
       types.add(FcubeplayercontentType.startCubeLocationCheckin);
       types.add(FcubeplayercontentType.checkInCubeLocationCheckin);
@@ -412,7 +412,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
           dynamic startCubeLocation = json.decode(
               detailcontent[FcubecontentType.startCubeLocation].contentvalue);
           Position currentposition =
-              GolobalStateContainer.of(context).state.currentposition;
+              GlobalStateContainer.of(context).state.currentposition;
           double scubedistance = GreatCircleDistance.fromDegrees(
                   latitude1: startCubeLocation["latitude"],
                   longitude1: startCubeLocation["longitude"],

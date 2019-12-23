@@ -302,7 +302,7 @@ class _FcubeQuestCheckincubeDialogState
             icon: Icon(Icons.location_on),
             onPressed: () async {
               Position currentposition =
-                  GolobalStateContainer.of(context).state.currentposition;
+                  GlobalStateContainer.of(context).state.currentposition;
               double checkindistance = GreatCircleDistance.fromDegrees(
                       latitude1: checkinCubecontent.latitude,
                       longitude1: checkinCubecontent.longitude,
@@ -329,7 +329,7 @@ class _FcubeQuestCheckincubeDialogState
                         contentupdatetime: DateTime.now().toUtc(),
                         contentvalue: json.encode(tempitem.toJson()),
                         cubeuuid: fcubequest.cubeuuid,
-                        uid: GolobalStateContainer.of(context)
+                        uid: GlobalStateContainer.of(context)
                             .state
                             .userInfoMain
                             .uid);
@@ -472,7 +472,7 @@ class _FcubeQuestAuthChcekCardState extends State<FcubeQuestAuthChcekCard> {
             child: RaisedButton(
               onPressed: () async {
                 String uid =
-                    GolobalStateContainer.of(context).state.userInfoMain.uid;
+                    GlobalStateContainer.of(context).state.userInfoMain.uid;
                 FcubeQuestSuccessCheck checkitem = FcubeQuestSuccessCheck(
                     confirm: 1,
                     cubeuuid: item.cubeuuid,
@@ -556,7 +556,7 @@ class _FcubeQuestReviewCardState extends State<FcubeQuestReviewCard> {
                   onPressed: () async {
                     FcubeReview reviewitem = FcubeReview(
                         cubeuuid: fcubequest.cubeuuid,
-                        uid: GolobalStateContainer.of(context)
+                        uid: GlobalStateContainer.of(context)
                             .state
                             .userInfoMain
                             .uid,

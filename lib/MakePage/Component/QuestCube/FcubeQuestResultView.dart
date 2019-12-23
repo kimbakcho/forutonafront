@@ -42,7 +42,7 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
       isloading = true;
     });
 
-    String uid = GolobalStateContainer.of(context).state.userInfoMain.uid;
+    String uid = GlobalStateContainer.of(context).state.userInfoMain.uid;
     FcubeQuestSuccessExtender1 finditem = FcubeQuestSuccessExtender1(
       cubeuuid: fcubequest.cubeuuid,
       uid: fcubequest.uid,
@@ -195,10 +195,9 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
                       )
                     ]),
                     //tab2
-                    ListView(children: <Widget>[
-                      
-
-                    ],)
+                    ListView(
+                      children: <Widget>[],
+                    )
                   ],
                 ))
               ])));

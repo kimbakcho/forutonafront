@@ -90,38 +90,37 @@ class _MainPageState extends State<MainPage> {
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) async {
       currentuser = firebaseUser;
       if (firebaseUser == null) {
-        GolobalStateContainer.of(context).state.userInfoMain = null;
-        GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
-        GolobalStateContainer.of(context).resetcubeListUtilcubeList();
+        GlobalStateContainer.of(context).state.userInfoMain = null;
+        GlobalStateContainer.of(context).setfcubeListUtilisLoading(false);
+        GlobalStateContainer.of(context).resetcubeListUtilcubeList();
         initgeopermisstion();
         setState(() {});
       } else {
         //isnewuser를 하는 이유는 SignIn3View 에서 UserInfoMain.insertUserInfo(userinfo); 를
         //하기전에 상태 변경 해당  메소드로 들어와 insert 되기 전에 DB에서
         // UserInfoMain.getUserInfoMain(firebaseUser) 를 막기 위함이다.
-        if (GolobalStateContainer.of(context).state.isnewuser == true) {
-          GolobalStateContainer.of(context).state.isnewuser = false;
+        if (GlobalStateContainer.of(context).state.isnewuser == true) {
+          GlobalStateContainer.of(context).state.isnewuser = false;
         } else {
-          GolobalStateContainer.of(context).state.userInfoMain =
+          GlobalStateContainer.of(context).state.userInfoMain =
               await UserInfoMain.getUserInfoMain(firebaseUser);
-          print(GolobalStateContainer.of(context).state.userInfoMain.uid);
+          print(GlobalStateContainer.of(context).state.userInfoMain.uid);
           setState(() {});
         }
-        GolobalStateContainer.of(context).resetcubeListUtilcubeList();
+        GlobalStateContainer.of(context).resetcubeListUtilcubeList();
         Future.delayed(Duration.zero, () async {
-          GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
+          GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
 
-          GolobalStateContainer.of(context).addfcubeListUtilcubeList(
+          GlobalStateContainer.of(context).addfcubeListUtilcubeList(
               await FcubeExtender1.getusercubes(offset: 0, limit: 10));
 
           initgeopermisstion();
 
-          GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
+          GlobalStateContainer.of(context).setfcubeListUtilisLoading(false);
         });
         String fcmtoken = await _firebaseMessaging.getToken();
-        GolobalStateContainer.of(context).state.userInfoMain.fcmtoken =
-            fcmtoken;
-        await GolobalStateContainer.of(context)
+        GlobalStateContainer.of(context).state.userInfoMain.fcmtoken = fcmtoken;
+        await GlobalStateContainer.of(context)
             .state
             .userInfoMain
             .updateFCMtoken();
@@ -219,14 +218,13 @@ class _MainPageState extends State<MainPage> {
         } else {
           currentposition = position;
         }
-        GolobalStateContainer.of(context)
-            .updateCurrnetPosition(currentposition);
-        GolobalStateContainer.of(context)
+        GlobalStateContainer.of(context).updateCurrnetPosition(currentposition);
+        GlobalStateContainer.of(context)
             .updateCubeListupdatedistancewithme(currentposition);
-        GolobalStateContainer.of(context)
+        GlobalStateContainer.of(context)
             .updatePlayViewCubeListupdatedistancewithme(currentposition);
 
-        GolobalStateContainer.of(context).setmainInitialCameraPosition(
+        GlobalStateContainer.of(context).setmainInitialCameraPosition(
             CameraPosition(
                 target:
                     LatLng(currentposition.latitude, currentposition.longitude),
@@ -239,14 +237,14 @@ class _MainPageState extends State<MainPage> {
         currentposition = await Geolocator()
             .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
       }
-      GolobalStateContainer.of(context).updateCurrnetPosition(currentposition);
+      GlobalStateContainer.of(context).updateCurrnetPosition(currentposition);
       if (currentuser != null) {
-        GolobalStateContainer.of(context)
+        GlobalStateContainer.of(context)
             .updateCubeListupdatedistancewithme(currentposition);
       }
-      GolobalStateContainer.of(context)
+      GlobalStateContainer.of(context)
           .updatePlayViewCubeListupdatedistancewithme(currentposition);
-      GolobalStateContainer.of(context).updateCurrentAddress(currentposition);
+      GlobalStateContainer.of(context).updateCurrentAddress(currentposition);
       return;
     } else {
       Future.delayed(Duration.zero, () {
@@ -278,11 +276,9 @@ class _MainPageState extends State<MainPage> {
     FCubeGeoSearchUtil searchitem = FCubeGeoSearchUtil.fromGeoSearchUtil(
         GeoSearchUtil(
             distance: 5000,
-            latitude: GolobalStateContainer.of(context)
-                .state
-                .currentposition
-                .latitude,
-            longitude: GolobalStateContainer.of(context)
+            latitude:
+                GlobalStateContainer.of(context).state.currentposition.latitude,
+            longitude: GlobalStateContainer.of(context)
                 .state
                 .currentposition
                 .longitude,
@@ -291,14 +287,14 @@ class _MainPageState extends State<MainPage> {
         cubescope: 0,
         cubestate: 1,
         activationtime: DateTime.now());
-    GolobalStateContainer.of(context).setfcubeListUtilisLoading(true);
-    GolobalStateContainer.of(context).addfcubeplayerListUtilcubeList(
+    GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
+    GlobalStateContainer.of(context).addfcubeplayerListUtilcubeList(
         await FcubeExtender1.findNearDistanceCube(searchitem));
-    GolobalStateContainer.of(context).setfcubeListUtilisLoading(false);
+    GlobalStateContainer.of(context).setfcubeListUtilisLoading(false);
   }
 
   Widget loginButton() {
-    if (GolobalStateContainer.of(context).state.userInfoMain == null) {
+    if (GlobalStateContainer.of(context).state.userInfoMain == null) {
       return Text(
         "Log in",
         style: TextStyle(fontSize: 15),
@@ -306,14 +302,14 @@ class _MainPageState extends State<MainPage> {
     } else {
       return Container(
           child: CircleAvatar(
-        backgroundImage: GolobalStateContainer.of(context)
+        backgroundImage: GlobalStateContainer.of(context)
                     .state
                     .userInfoMain
                     .profilepicktureurl
                     .length ==
                 0
             ? AssetImage("assets/basicprofileimage.png")
-            : NetworkImage(GolobalStateContainer.of(context)
+            : NetworkImage(GlobalStateContainer.of(context)
                 .state
                 .userInfoMain
                 .profilepicktureurl),

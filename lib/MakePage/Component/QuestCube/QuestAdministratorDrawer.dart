@@ -37,7 +37,7 @@ class _QuestAdministratorDrawerState extends State<QuestAdministratorDrawer> {
 
   FcubeJoinMode getjoinmode() {
     UserInfoMain userInfoMain =
-        GolobalStateContainer.of(context).state.userInfoMain;
+        GlobalStateContainer.of(context).state.userInfoMain;
     if (userInfoMain == null) {
       return FcubeJoinMode.player;
     } else {

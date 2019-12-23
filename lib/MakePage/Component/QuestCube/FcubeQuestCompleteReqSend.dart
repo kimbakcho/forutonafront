@@ -224,7 +224,7 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
     FcubeQuestAuthPicture reqcontent = FcubeQuestAuthPicture();
     reqcontent.authpicture = authimages;
     reqcontent.authtext = authtextcontroller.text;
-    reqitem.fromuid = GolobalStateContainer.of(context).state.userInfoMain.uid;
+    reqitem.fromuid = GlobalStateContainer.of(context).state.userInfoMain.uid;
     reqitem.contenttype = "FcubeQuestAuthPicture";
     reqitem.content = reqcontent.toRawJson();
     if (await reqitem.requestFcubeQuestSuccess() > 0) {

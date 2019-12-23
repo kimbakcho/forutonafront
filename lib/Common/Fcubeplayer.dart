@@ -9,7 +9,7 @@ Fcubeplayer fcubeplayerFromJson(String str) =>
 
 String fcubeplayerToJson(Fcubeplayer data) => json.encode(data.toJson());
 
-enum FcubeplayerState { wait, playing }
+enum FcubeplayerState { wait, playing ,finish }
 
 class Fcubeplayer {
   int idx;

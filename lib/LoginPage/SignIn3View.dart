@@ -126,9 +126,9 @@ class _SignIn3ViewState extends State<SignIn3View> {
                     _signIn3ViewscaffoldKey.currentState.showSnackBar(snackBar);
                     return;
                   }
-                  GolobalStateContainer.of(context).state.isnewuser = true;
+                  GlobalStateContainer.of(context).state.isnewuser = true;
                   int result = await UserInfoMain.insertUserInfo(userinfo);
-                  GolobalStateContainer.of(context).state.userInfoMain =
+                  GlobalStateContainer.of(context).state.userInfoMain =
                       await UserInfoMain.getUserInfoMain(
                           await FirebaseAuth.instance.currentUser());
 

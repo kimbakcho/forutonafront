@@ -7,6 +7,7 @@ import 'package:forutonafront/Common/GeoSearchUtil.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
+import 'package:forutonafront/PlayPage/FcubeJoinHistoryView.dart';
 import 'package:forutonafront/PlayPage/QuestCube/QuestCollapsed.dart';
 import 'package:forutonafront/PlayPage/QuestCube/QuestCubeCard.dart';
 import 'package:forutonafront/Preference.dart';
@@ -117,24 +118,22 @@ class _PlayPageViewState extends State<PlayPageView> {
         cubescope: 0,
         cubestate: 1,
         activationtime: DateTime.now());
-    GolobalStateContainer.of(context).setfcubeplayerListUtilisLoading(true);
-    GolobalStateContainer.of(context).addfcubeplayerListUtilcubeListwithReset(
+    GlobalStateContainer.of(context).setfcubeplayerListUtilisLoading(true);
+    GlobalStateContainer.of(context).addfcubeplayerListUtilcubeListwithReset(
         await FcubeExtender1.findNearDistanceCube(searchitem));
 
-    GolobalStateContainer.of(context).setfcubeplayerListUtilisLoading(false);
-    GolobalStateContainer.of(context)
-        .updatePlayViewCubeListupdatedistancewithme(Position(
-            latitude: GolobalStateContainer.of(context)
-                .state
-                .currentposition
-                .latitude,
-            longitude: GolobalStateContainer.of(context)
+    GlobalStateContainer.of(context).setfcubeplayerListUtilisLoading(false);
+    GlobalStateContainer.of(context).updatePlayViewCubeListupdatedistancewithme(
+        Position(
+            latitude:
+                GlobalStateContainer.of(context).state.currentposition.latitude,
+            longitude: GlobalStateContainer.of(context)
                 .state
                 .currentposition
                 .longitude));
     //await 시 해당 메소드 외에 다시 이 메소드를 실행 시키니 Clear는 awiat 메소드를 다 호출한 다음에 해야함.
     List<FcubeExtender1> cubeList =
-        GolobalStateContainer.of(context).state.fcubeplayerListUtil.cubeList;
+        GlobalStateContainer.of(context).state.fcubeplayerListUtil.cubeList;
     currentvisualPoints.clear();
     for (int i = 0; i < cubeList.length; i++) {
       FcubeLatLngAndGeohash tempitem = FcubeLatLngAndGeohash(
@@ -188,7 +187,7 @@ class _PlayPageViewState extends State<PlayPageView> {
 
   Widget makeMainListPanel() {
     FcubeListUtil fcubeplayerListUtil =
-        GolobalStateContainer.of(context).state.fcubeplayerListUtil;
+        GlobalStateContainer.of(context).state.fcubeplayerListUtil;
     if (fcubeplayerListUtil.isLoading) {
       return CircularProgressIndicator();
     } else {
@@ -212,7 +211,7 @@ class _PlayPageViewState extends State<PlayPageView> {
 
   Widget makeCollapsed() {
     FcubeListUtil fcubeplayerListUtil =
-        GolobalStateContainer.of(context).state.fcubeplayerListUtil;
+        GlobalStateContainer.of(context).state.fcubeplayerListUtil;
     if (fcubeplayerListUtil.isLoading) {
       return CircularProgressIndicator();
     } else {
@@ -265,7 +264,7 @@ class _PlayPageViewState extends State<PlayPageView> {
         ),
       ].toSet(),
       initialCameraPosition:
-          GolobalStateContainer.of(context).state.mainInitialCameraPosition,
+          GlobalStateContainer.of(context).state.mainInitialCameraPosition,
       onMapCreated: onMapCreated,
       myLocationEnabled: true,
       myLocationButtonEnabled: true,
@@ -277,26 +276,58 @@ class _PlayPageViewState extends State<PlayPageView> {
     return SlidingUpPanel(
       controller: panelController,
       minHeight: MediaQuery.of(context).size.height * 0.2,
-      panel: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: Center(
-                  child: IconButton(
-                icon: Icon(
-                  Icons.arrow_drop_down,
+      panel: Stack(
+        children: <Widget>[
+          Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: Center(
+                      child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                    ),
+                    onPressed: () {
+                      panelController.close();
+                    },
+                  )),
                 ),
-                onPressed: () {
-                  panelController.close();
-                },
-              )),
+                Expanded(
+                    child: Container(
+                  child: makeMainListPanel(),
+                )),
+              ],
             ),
-            Expanded(
-                child: Container(
-              child: makeMainListPanel(),
-            )),
-          ],
-        ),
+          ),
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.13,
+              height: MediaQuery.of(context).size.width * 0.13,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return FcubeJoinHistoryView();
+                  }));
+                },
+                child: Icon(Icons.menu),
+              ),
+            ),
+          ),
+          // 해당 부분 일단 고도화 부분
+          // Positioned(
+          //   bottom: MediaQuery.of(context).size.width * 0.13 - 5,
+          //   right: MediaQuery.of(context).size.width * 0.13 - 5,
+          //   child: Container(
+          //     alignment: Alignment(0, 0),
+          //     color: Colors.blueAccent,
+          //     width: MediaQuery.of(context).size.width * 0.05,
+          //     height: MediaQuery.of(context).size.width * 0.05,
+          //     child: Text("${2}"),
+          //   ),
+          // )
+        ],
       ),
       collapsed: makeCollapsed(),
       body: Container(
@@ -337,7 +368,7 @@ class _PlayPageViewState extends State<PlayPageView> {
   Widget build(BuildContext context) {
     if (currentFindAddredss == null) {
       currentFindAddredss =
-          GolobalStateContainer.of(context).state.currentaddress;
+          GlobalStateContainer.of(context).state.currentaddress;
     }
     return Container(
         child: Column(

@@ -108,7 +108,7 @@ class _SelectSwipeCubeStateView extends State<SelectSwipeCubeView> {
                       cubedispalyname: cubeLists[this.currentindex].name,
                       cubetype: cubeLists[this.currentindex].type,
                       cubeuuid: uuid.v4(),
-                      uid: GolobalStateContainer.of(context)
+                      uid: GlobalStateContainer.of(context)
                           .state
                           .userInfoMain
                           .uid,

@@ -5,7 +5,7 @@ import 'package:forutonafront/MakePage/SelectSwipeCubeView.dart';
 import 'MainPage.dart';
 import 'globals.dart';
 
-void main() => runApp(new GolobalStateContainer(child: MyApp()));
+void main() => runApp(new GlobalStateContainer(child: MyApp()));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
