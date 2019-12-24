@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:forutonafront/Common/FcubeAuthMethodType.dart';
+import 'package:forutonafront/Common/FcubeReview.dart';
 import 'package:forutonafront/Common/Fcubeplayer.dart';
 import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/Common/Fcubereply.dart';
@@ -16,6 +17,7 @@ import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestBottomNaviBar.dart';
+import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCard.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestResultView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/QuestAdministratorPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
@@ -347,11 +349,43 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                 padding: EdgeInsets.all(10),
                 child: RaisedButton(
                     child: Text("결과 확인"),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return FcubeQuestResultView(fcubequest: fcubequest);
-                      }));
+                    onPressed: () async {
+                      if (getjoinmode() == FcubeJoinMode.player) {
+                        String uid = GlobalStateContainer.of(context)
+                            .state
+                            .userInfoMain
+                            .uid;
+                        List<FcubeReview> reviews =
+                            await FcubeReview.getFcubeReviews(
+                                fcubequest.cubeuuid, uid);
+                        if (reviews.length > 0) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return FcubeQuestResultView(fcubequest: fcubequest);
+                          }));
+                        } else {
+                          int result = await showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    content: FcubeQuestReviewCard(
+                                        fcubequest: fcubequest));
+                              });
+                          if (result == 1) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return FcubeQuestResultView(
+                                  fcubequest: fcubequest);
+                            }));
+                          }
+                        }
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return FcubeQuestResultView(fcubequest: fcubequest);
+                        }));
+                      }
                     }))
           ]),
         );

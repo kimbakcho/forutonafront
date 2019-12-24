@@ -565,7 +565,7 @@ class _FcubeQuestReviewCardState extends State<FcubeQuestReviewCard> {
 
                     var result = await reviewitem.insertFcubeReview();
                     if (result > 0) {
-                      Navigator.pop(context);
+                      Navigator.pop(context, 1);
                     }
                   },
                   child: Text("평가 완료"),

@@ -61,6 +61,20 @@ class FcubeReview {
         "starpoint": starpoint == null ? null : starpoint,
       };
 
+  static Future<List<FcubeReview>> getFcubeReviews(
+      String cubeuuid, String uid) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var geturl = Preference.httpurloption(Preference.baseBackEndUrl,
+        "/api/v1/Fcube/getFcubeReview", {"cubeuuid": cubeuuid, "uid": uid});
+    var response = await http.get(geturl, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    return List<FcubeReview>.from(
+        json.decode(response.body).map((x) => FcubeReview.fromJson(x)));
+  }
+
   Future<int> insertFcubeReview() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     IdTokenResult token = await user.getIdToken();
