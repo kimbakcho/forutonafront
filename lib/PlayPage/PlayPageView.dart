@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
+import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
@@ -244,6 +245,7 @@ class _PlayPageViewState extends State<PlayPageView> {
                   FcubeType.questCube) {
                 return QuestCollapsed(
                   cubeitem: fcubeplayerListUtil.cubeList[index],
+                  cubeclickevent: fcubeClickFunc,
                 );
               } else {
                 return Container(
@@ -254,6 +256,10 @@ class _PlayPageViewState extends State<PlayPageView> {
           ));
       return resultwidget;
     }
+  }
+
+  void fcubeClickFunc(Fcube cube) async {
+    await cube.updateCubeHitPoint();
   }
 
   Widget makeMainPanel() {

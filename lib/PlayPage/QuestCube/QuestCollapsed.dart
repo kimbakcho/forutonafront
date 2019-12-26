@@ -8,17 +8,20 @@ import 'package:intl/intl.dart';
 
 class QuestCollapsed extends StatefulWidget {
   final FcubeExtender1 cubeitem;
-  QuestCollapsed({Key key, @required this.cubeitem}) : super(key: key);
+  final Function cubeclickevent;
+  QuestCollapsed({Key key, @required this.cubeitem, this.cubeclickevent})
+      : super(key: key);
 
   @override
   _QuestCollapsedState createState() {
-    return _QuestCollapsedState(this.cubeitem);
+    return _QuestCollapsedState(this.cubeitem, this.cubeclickevent);
   }
 }
 
 class _QuestCollapsedState extends State<QuestCollapsed> {
   FcubeExtender1 cubeitem;
-  _QuestCollapsedState(this.cubeitem);
+  Function cubeclickevent;
+  _QuestCollapsedState(this.cubeitem, this.cubeclickevent);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class _QuestCollapsedState extends State<QuestCollapsed> {
         width: MediaQuery.of(context).size.width * 0.8,
         child: FlatButton(
           onPressed: () async {
+            cubeclickevent(cubeitem);
             await Navigator.push(
                 context,
                 MaterialPageRoute(

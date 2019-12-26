@@ -231,7 +231,17 @@ class Fcube {
     Fcube current = Fcube.fromJson(json.decode(response.body));
     activationtime = current.activationtime;
     cubestate = current.cubestate;
+    cubehits = current.cubehits;
+    joinplayer = current.joinplayer;
     return 1;
+  }
+
+  Future<int> updateCubeHitPoint() async {
+    var url = Preference.httpurloption(Preference.baseBackEndUrl,
+        "/api/v1/Fcube/updateCubeHitPoint", {"cubeuuid": cubeuuid});
+    var response = await http.post(url);
+    cubehits = int.tryParse(response.body);
+    return cubehits;
   }
 }
 

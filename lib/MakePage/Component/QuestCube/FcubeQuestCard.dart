@@ -565,6 +565,7 @@ class _FcubeQuestReviewCardState extends State<FcubeQuestReviewCard> {
 
                     var result = await reviewitem.insertFcubeReview();
                     if (result > 0) {
+                      await reviewitem.insertFcubeReviewExpPoint();
                       Navigator.pop(context, 1);
                     }
                   },

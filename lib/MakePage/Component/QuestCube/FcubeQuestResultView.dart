@@ -1,6 +1,7 @@
 import 'package:after_init/after_init.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Auth/UserExpPointHistroy.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccessExtender1.dart';
 import 'package:forutonafront/globals.dart';
@@ -29,11 +30,12 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
       List<FcubeQuestSuccessExtender1>();
   bool isloading = false;
   String questsucesstxt;
+  double makercubegetpoint = 0;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 2);
+    _tabController = TabController(vsync: this, length: 3);
   }
 
   @override
@@ -41,7 +43,7 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
     setState(() {
       isloading = true;
     });
-
+    await fcubequest.getwithupdatecubestate();
     String uid = GlobalStateContainer.of(context).state.userInfoMain.uid;
     FcubeQuestSuccessExtender1 finditem = FcubeQuestSuccessExtender1(
       cubeuuid: fcubequest.cubeuuid,
@@ -56,6 +58,9 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
     failreqlist = questreqlist.where((value) {
       return value.scuesscheck == 0;
     }).toList();
+
+    makercubegetpoint =
+        await UserExpPointHistroy.getCubeuuidGetPoint(fcubequest.cubeuuid);
 
     setState(() {
       isloading = false;
@@ -159,6 +164,7 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
                 TabBar(controller: _tabController, tabs: <Widget>[
                   Text("플레이어 성적"),
                   Text("메이커 성적"),
+                  Text("완료 요청")
                 ]),
                 Expanded(
                     child: TabBarView(
@@ -195,6 +201,36 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
                       )
                     ]),
                     //tab2
+                    ListView(
+                      children: <Widget>[
+                        Card(
+                            margin: EdgeInsets.all(10),
+                            elevation: 10,
+                            child: Column(children: <Widget>[
+                              Container(
+                                alignment: Alignment(-1, 0),
+                                child: Text("조회수 = ${fcubequest.cubehits}"),
+                              ),
+                              Container(
+                                alignment: Alignment(-1, 0),
+                                child: Text("참가자 수 = ${fcubequest.joinplayer}"),
+                              )
+                            ])),
+                        Card(
+                            margin: EdgeInsets.all(10),
+                            elevation: 10,
+                            child: Column(children: <Widget>[
+                              Container(
+                                alignment: Alignment(-1, 0),
+                                child: Text("제작 경험치 = +300"),
+                              ),
+                              Container(
+                                alignment: Alignment(-1, 0),
+                                child: Text("평가 경험치= ${makercubegetpoint}"),
+                              )
+                            ])),
+                      ],
+                    ),
                     ListView(
                       children: <Widget>[],
                     )

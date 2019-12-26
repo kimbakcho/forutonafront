@@ -86,4 +86,16 @@ class FcubeReview {
     });
     return int.tryParse(response.body);
   }
+
+  Future<int> insertFcubeReviewExpPoint() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var posturl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/insertFcubeReviewExpPoint");
+    var response = await http.post(posturl, body: toRawJson(), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer " + token.token
+    });
+    return int.tryParse(response.body);
+  }
 }

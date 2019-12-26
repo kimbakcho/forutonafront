@@ -86,6 +86,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   GlobalKey _replykey = GlobalKey();
   double richtextheightsize = 0;
   double replysize = 0;
+  Duration avtibetime = Duration();
 
   @override
   void initState() {
@@ -105,6 +106,13 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     initialCameraPosition = new CameraPosition(
         target: LatLng(fcubequest.latitude, fcubequest.longitude), zoom: 16);
     isloading = true;
+    await fcubequest.getwithupdatecubestate();
+    avtibetime =
+        fcubequest.activationtime.toUtc().difference(DateTime.now().toUtc());
+    if (avtibetime.inSeconds < 0) {
+      fcubequest.cubestate = FcubeState.finish;
+    }
+
     _currentuser = await FirebaseAuth.instance.currentUser();
     setState(() {});
     this.contents = await initFcubeQuest();
@@ -295,7 +303,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
         DateTime activationtime =
             fcubequest.activationtime.add(Duration(hours: 9));
 
-        Duration avtibetime = activationtime
+        avtibetime = activationtime
             .difference(DateTime.now().toUtc().add(Duration(hours: 9)));
         int actday = avtibetime.inSeconds ~/ (60 * 60 * 24);
         int acthour =
