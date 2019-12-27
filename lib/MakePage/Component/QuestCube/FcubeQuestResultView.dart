@@ -30,7 +30,7 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
       List<FcubeQuestSuccessExtender1>();
   bool isloading = false;
   String questsucesstxt;
-  double makercubegetpoint = 0;
+  double makercubegetreviewpoint = 0;
 
   @override
   void initState() {
@@ -59,8 +59,8 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
       return value.scuesscheck == 0;
     }).toList();
 
-    makercubegetpoint =
-        await UserExpPointHistroy.getCubeuuidGetPoint(fcubequest.cubeuuid);
+    makercubegetreviewpoint = await UserExpPointHistroy.getCubeuuidGetPoint(
+        fcubequest.cubeuuid, "ReviewPoint");
 
     setState(() {
       isloading = false;
@@ -222,11 +222,16 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
                             child: Column(children: <Widget>[
                               Container(
                                 alignment: Alignment(-1, 0),
+                                child: Text("총 획득 경험치 = ${makercubegetreviewpoint}"),
+                              ),
+                              Container(
+                                alignment: Alignment(-1, 0),
                                 child: Text("제작 경험치 = +300"),
                               ),
                               Container(
                                 alignment: Alignment(-1, 0),
-                                child: Text("평가 경험치= ${makercubegetpoint}"),
+                                child:
+                                    Text("평가 경험치= ${makercubegetreviewpoint}"),
                               )
                             ])),
                       ],

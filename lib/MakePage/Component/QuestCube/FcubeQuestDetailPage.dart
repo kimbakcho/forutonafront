@@ -367,10 +367,11 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                             await FcubeReview.getFcubeReviews(
                                 fcubequest.cubeuuid, uid);
                         if (reviews.length > 0) {
-                          Navigator.push(context,
+                          await Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return FcubeQuestResultView(fcubequest: fcubequest);
                           }));
+                          fcubequest.cubestate = FcubeState.finish;
                         } else {
                           int result = await showDialog(
                               barrierDismissible: false,
@@ -381,18 +382,20 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                         fcubequest: fcubequest));
                               });
                           if (result == 1) {
-                            Navigator.push(context,
+                            await Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return FcubeQuestResultView(
                                   fcubequest: fcubequest);
                             }));
+                            fcubequest.cubestate = FcubeState.finish;
                           }
                         }
                       } else {
-                        Navigator.push(context,
+                        await Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return FcubeQuestResultView(fcubequest: fcubequest);
                         }));
+                        fcubequest.cubestate = FcubeState.finish;
                       }
                     }))
           ]),
@@ -1227,26 +1230,24 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                   children: <Widget>[
                     StickyHeader(
                       header: Container(
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: Image(
-                            image: AssetImage(fcubequest.cubeimage),
-                          ),
-                          title: Text(fcubequest.cubename),
-                          subtitle: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(fcubequest.placeaddress),
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          child: ListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              leading: Image(
+                                image: AssetImage(fcubequest.cubeimage),
                               ),
-                              Container(
-                                width: 50,
-                              ),
-                              Text("${currentdistancediff} m")
-                            ],
-                          ),
-                        ),
-                      ),
+                              title: Text(fcubequest.cubename),
+                              subtitle: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Text(fcubequest.placeaddress),
+                                  ),
+                                  Container(
+                                    width: 50,
+                                  ),
+                                  Text("${currentdistancediff} m")
+                                ],
+                              ))),
                       content: Container(
                           height: MediaQuery.of(context).size.height * 0.35,
                           child: googleMap),

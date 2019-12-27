@@ -85,9 +85,12 @@ class UserExpPointHistroy {
   //       "/api/v1/Fcube/getFcubeReview", finditem.toJson());
   // }
 
-  static Future<double> getCubeuuidGetPoint(String cubeuuid) async {
-    var geturl = Preference.httpurloption(Preference.baseBackEndUrl,
-        "/api/v1/Fcube/getCubeuuidGetPoint", {"cubeuuid": cubeuuid});
+  static Future<double> getCubeuuidGetPoint(
+      String cubeuuid, String explains) async {
+    var geturl = Preference.httpurloption(
+        Preference.baseBackEndUrl,
+        "/api/v1/Fcube/getCubeuuidGetPoint",
+        {"cubeuuid": cubeuuid, 'explains': explains});
     var response = await http.get(geturl);
     return double.tryParse(response.body);
   }

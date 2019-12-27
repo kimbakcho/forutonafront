@@ -25,13 +25,6 @@ class _QuestCubeCardState extends State<QuestCubeCard> {
   FcubeTypeMakerImage fcubetypeiamge;
   _QuestCubeCardState(this.cubeitem, {this.fcubetypeiamge});
 
-  Future<int> fcubeItemSelectToNavi(FcubeExtender1 fcube) async {
-    if (fcube.cubetype == FcubeType.questCube) {
-      return 1;
-    }
-    return 0;
-  }
-
   @override
   Widget build(BuildContext context) {
     String makeitme = DateFormat("yyyy-MM-dd HH:mm:ss")

@@ -38,6 +38,8 @@ class FcubeTypeMakerImage {
         await getMarkerImage("assets/MarkesImages/startCube.png", nomal);
     nomalimage[FcubeType.currentselectcube] =
         await getMarkerImage("assets/MarkesImages/SelectMarker.png", nomal);
+    nomalimage[FcubeType.issuecube] =
+        await getMarkerImage("assets/MarkesImages/TempCube.png", nomal);
 
     bigimage[FcubeType.messageCube] =
         await getMarkerImage("assets/MarkesImages/MessageCube.png", big);
@@ -51,6 +53,8 @@ class FcubeTypeMakerImage {
         await getMarkerImage("assets/MarkesImages/startCube.png", big);
     bigimage[FcubeType.currentselectcube] =
         await getMarkerImage("assets/MarkesImages/SelectMarker.png", big);
+    bigimage[FcubeType.issuecube] =
+        await getMarkerImage("assets/MarkesImages/TempCube.png", big);
 
     iconImage[FcubeType.messageCube] = Image(
         image: AssetImage("assets/MarkesImages/MessageCube.png"),
@@ -81,6 +85,10 @@ class FcubeTypeMakerImage {
         image: AssetImage("assets/MarkesImages/SelectMarker.png"),
         width: iconimagesize.toDouble(),
         height: iconimagesize.toDouble());
+    iconImage[FcubeType.issuecube] = Image(
+        image: AssetImage("assets/MarkesImages/TempCube.png"),
+        width: iconimagesize.toDouble(),
+        height: iconimagesize.toDouble());
   }
 
   static Future<Uint8List> _getBytesFromAsset(String path, int width) async {
@@ -108,6 +116,7 @@ class FcubeType {
   static const FcubeType finishcube = FcubeType._(3);
   static const FcubeType checkincube = FcubeType._(4);
   static const FcubeType currentselectcube = FcubeType._(5);
+  static const FcubeType issuecube = FcubeType._(6);
 
   static const List<FcubeType> values = <FcubeType>[
     messageCube,
@@ -115,7 +124,8 @@ class FcubeType {
     startcube,
     finishcube,
     checkincube,
-    currentselectcube
+    currentselectcube,
+    issuecube
   ];
 
   static const List<String> _names = <String>[
@@ -124,7 +134,8 @@ class FcubeType {
     'startcube',
     'finishcube',
     'checkincube',
-    'currentselectcube'
+    'currentselectcube',
+    'issuecube'
   ];
 
   static FcubeType fromJson(value) {

@@ -378,13 +378,13 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
           }
         }
       }
-      if (getjoinmode() == FcubeJoinMode.player) {
-        FcubeQuestSuccessExtender1 searchitem = FcubeQuestSuccessExtender1(
-            cubeuuid: fcubequest.cubeuuid, readuid: _currentuser.uid);
-        reqsuccesslist =
-            await FcubeQuestSuccessExtender1.getPlayerQuestSuccessList(
-                searchitem);
-      }
+      FcubeQuestSuccessExtender1 searchitem = FcubeQuestSuccessExtender1(
+          cubeuuid: fcubequest.cubeuuid, readuid: _currentuser.uid);
+      reqsuccesslist =
+          await FcubeQuestSuccessExtender1.getPlayerQuestSuccessList(
+              searchitem);
+      // if (getjoinmode() == FcubeJoinMode.player) {
+      // } else {}
 
       setState(() {});
     }

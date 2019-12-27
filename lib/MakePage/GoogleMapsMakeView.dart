@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/IssueCube/IssueCubeSetupView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FQuestCubePositionSetupView.dart';
 
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
@@ -217,6 +218,10 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
           fcubeQuest: new FcubeQuest(cube: selectFcube),
         );
       }));
+    } else if (selectFcube.cubetype == FcubeType.issuecube) {
+      await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return IssueCubeSetupView(fcube: selectFcube);
+      }));
     }
   }
 
@@ -255,6 +260,8 @@ class _GoogleMapsMakeViewState extends State<GoogleMapsMakeView> {
                 Container(
                   alignment: Alignment(0, 0),
                   child: Image(
+                    height: 100,
+                    fit: BoxFit.cover,
                     image: AssetImage(selectFcube.cubeimage),
                   ),
                 ),

@@ -9,6 +9,8 @@ import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/PlayPage/FcubeJoinHistoryView.dart';
+import 'package:forutonafront/PlayPage/IssueCube/IssueCollapsed.dart';
+import 'package:forutonafront/PlayPage/IssueCube/IssueCubeCard.dart';
 import 'package:forutonafront/PlayPage/QuestCube/QuestCollapsed.dart';
 import 'package:forutonafront/PlayPage/QuestCube/QuestCubeCard.dart';
 import 'package:forutonafront/Preference.dart';
@@ -201,6 +203,12 @@ class _PlayPageViewState extends State<PlayPageView> {
                 cubeitem: fcubeplayerListUtil.cubeList[index],
                 fcubetypeiamge: fcubetypeiamge,
               );
+            } else if (fcubeplayerListUtil.cubeList[index].cubetype ==
+                FcubeType.issuecube) {
+              return IssueCubeCard(
+                cubeitem: fcubeplayerListUtil.cubeList[index],
+                fcubetypeiamge: fcubetypeiamge,
+              );
             } else {
               return Container(
                 child: Text("뭔지 모르는 큐브"),
@@ -244,6 +252,12 @@ class _PlayPageViewState extends State<PlayPageView> {
               if (fcubeplayerListUtil.cubeList[index].cubetype ==
                   FcubeType.questCube) {
                 return QuestCollapsed(
+                  cubeitem: fcubeplayerListUtil.cubeList[index],
+                  cubeclickevent: fcubeClickFunc,
+                );
+              } else if (fcubeplayerListUtil.cubeList[index].cubetype ==
+                  FcubeType.issuecube) {
+                return IssueCollapsed(
                   cubeitem: fcubeplayerListUtil.cubeList[index],
                   cubeclickevent: fcubeClickFunc,
                 );

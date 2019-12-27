@@ -30,10 +30,10 @@ class _SelectSwipeCubeStateView extends State<SelectSwipeCubeView> {
         description: "장황한 설명",
         picture: "assets/MarkesImages/QuestCube.png"));
     cubeLists.add(FcubeTypeObj(
-        name: "메세지 큐브",
-        type: FcubeType.messageCube,
+        name: "이슈 큐브",
+        type: FcubeType.issuecube,
         description: "장황한 설명",
-        picture: "assets/MarkesImages/MessageCube.png"));
+        picture: "assets/MarkesImages/TempCube.png"));
     cubeLists.add(FcubeTypeObj(
         name: "메세지 큐브2",
         type: FcubeType.messageCube,
