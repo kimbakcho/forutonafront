@@ -154,6 +154,7 @@ class FcubeQuest extends Fcube {
     this.joinplayer = cube.joinplayer;
     this.maximumplayers = cube.maximumplayers;
     this.starpoints = cube.starpoints;
+    this.makeexp = cube.makeexp;
   }
   String nickname;
   String profilepicktureurl;
@@ -193,6 +194,7 @@ class FcubeQuest extends Fcube {
     this.userlevel = extender1.userlevel;
     this.starpoints = extender1.starpoints;
     this.fcmtoken = extender1.fcmtoken;
+    this.makeexp = extender1.makeexp;
   }
 
   StartCubeLocation startCubeLocation;

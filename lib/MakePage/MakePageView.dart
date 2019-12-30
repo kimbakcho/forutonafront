@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/Component/IssueCube/IssueCubeDetailPage.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestBottomNaviBar.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
@@ -125,6 +126,17 @@ class _MakePageViewState extends State<MakePageView> {
                                 RouteSettings(name: "FcubeQuestDetailPage"),
                             builder: (context) {
                               return FcubeQuestDetailPage(
+                                  fcubeextender1: cubes[index]);
+                            }));
+                    resetcubeList();
+                  } else if (cubes[index].cubetype == FcubeType.issuecube) {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            settings:
+                                RouteSettings(name: "FcubeQuestDetailPage"),
+                            builder: (context) {
+                              return IssueCubeDetailPage(
                                   fcubeextender1: cubes[index]);
                             }));
                     resetcubeList();

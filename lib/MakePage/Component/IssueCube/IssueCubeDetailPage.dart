@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/Component/IssueCube/IssueCubeResultView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/globals.dart';
@@ -28,6 +29,8 @@ class IssueCubeDetailPage extends StatefulWidget {
   }
 }
 
+enum IssueCurrentPanel { close, setting, share }
+
 class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
     with AfterInitMixin {
   FcubeExtender1 fcubeextender1;
@@ -45,6 +48,7 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
   PanelController panelcontroller = new PanelController();
   bool isSlidingUpPanelDrag = false;
   ScrollNotification scorllernotifiy;
+  IssueCurrentPanel currentpanel = IssueCurrentPanel.close;
 
   @override
   void initState() {
@@ -151,7 +155,12 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
           child: Container(
             child: RaisedButton(
               child: Text("결과 확인"),
-              onPressed: () {},
+              onPressed: () async {
+                await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                  return IssueCubeResultView(fcubeextender1: fcubeextender1);
+                }));
+              },
             ),
           ),
         );
@@ -191,6 +200,53 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
           child: RaisedButton(onPressed: () {}, child: Text("345")),
         )
       ]));
+    }
+  }
+
+  Widget makeuppanel() {
+    if (currentpanel == IssueCurrentPanel.setting) {
+      return setpanel();
+    } else {
+      return Container();
+    }
+  }
+
+  Widget setpanel() {
+    return Container(
+        color: Colors.white,
+        child: ListView(
+          children: <Widget>[
+            RaisedButton(
+              child: Icon(Icons.arrow_downward),
+              onPressed: () {
+                currentpanel = IssueCurrentPanel.close;
+                setState(() {});
+                panelcontroller.close();
+              },
+            ),
+            ListTile(
+              title: FlatButton(
+                child: Text("수정하기"),
+                onPressed: () {},
+              ),
+            ),
+            ListTile(
+                title: FlatButton(
+              child: Text("삭제하기"),
+              onPressed: () async {
+                await fcubeextender1.deletecube();
+                Navigator.pop(context);
+              },
+            )),
+          ],
+        ));
+  }
+
+  double calcpanelmaxheight() {
+    if (currentpanel == IssueCurrentPanel.setting) {
+      return 170;
+    } else {
+      return 100;
     }
   }
 
@@ -235,19 +291,23 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
             ),
             RaisedButton(
               child: Icon(Icons.call_merge),
-              onPressed: () {},
+              onPressed: () {
+                currentpanel = IssueCurrentPanel.setting;
+                setState(() {});
+                panelcontroller.open();
+              },
             ),
           ],
         ),
         body: ispageloading
             ? CircularProgressIndicator()
             : SlidingUpPanel(
-                maxHeight: 100,
+                maxHeight: calcpanelmaxheight(),
                 minHeight: 70,
                 controller: panelcontroller,
                 isDraggable: isSlidingUpPanelDrag,
                 panel: Container(
-                  child: Container(),
+                  child: makeuppanel(),
                 ),
                 collapsed: scorllernotifiy is ScrollUpdateNotification
                     ? Container()

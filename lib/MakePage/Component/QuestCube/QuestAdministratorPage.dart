@@ -116,7 +116,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
     DateTime activationtime = fcubequest.activationtime;
     Duration avtibetime = activationtime.difference(DateTime.now().toUtc());
     await fcubequest.getwithupdatecubestate();
-    if (avtibetime.inSeconds < 0) {
+    if ((avtibetime.inSeconds < 0) && (getjoinmode() == FcubeJoinMode.player)) {
       mianRefrashTimer.cancel();
       remainRefrashTimer.cancel();
       await showDialog(
