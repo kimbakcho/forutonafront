@@ -74,6 +74,7 @@ dependencies:
   search_map_place:
     path: ./extlib/search_map_place/
   flutter_local_notifications: ^0.9.0+1
+  flare_flutter: ^1.8.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -95,6 +96,8 @@ flutter:
     - assets/
     - assets/MarkesImages/
     - assets/AuthMethodImages/
+    - assets/Rive/
+    - assets/Brand/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
