@@ -75,6 +75,7 @@ dependencies:
     path: ./extlib/search_map_place/
   flutter_local_notifications: ^0.9.0+1
   flare_flutter: ^1.8.3
+  flutter_keyboard_visibility: ^0.7.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -98,6 +99,7 @@ flutter:
     - assets/AuthMethodImages/
     - assets/Rive/
     - assets/Brand/
+    - assets/MainImage/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
@@ -107,12 +109,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: NotoSansKR
+      fonts:
+        - asset: assets/fonts/NotoSansKR-Regular.ttf
+        - asset: assets/fonts/NotoSansKR-Bold.ttf
+          weight: 700
+    - family: Gibson
+      fonts:
+        - asset: assets/fonts/gibson-Regular.ttf
+        - asset: assets/fonts/gibson-bold.ttf
+          weight: 700
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

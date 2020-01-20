@@ -6,6 +6,7 @@ import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
 import 'package:forutonafront/HomePage/HomePageView.dart';
+import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/MakePageView.dart';
 import 'package:forutonafront/PlayPage/PlayPageView.dart';
@@ -15,7 +16,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
-import 'LoginPage/LoginPageView.dart';
+
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -343,7 +344,7 @@ class _MainPageState extends State<MainPage> {
                         if (currentuser == null) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return LoginPageView();
+                            return A000LoginPageView();
                           }));
                         } else {
                           Scaffold.of(context).openDrawer();

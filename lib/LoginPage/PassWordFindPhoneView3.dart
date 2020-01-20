@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
-import 'package:forutonafront/LoginPage/LoginPageView.dart';
+import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
+
 
 class PassWordFindPhoneView3 extends StatefulWidget {
   final UserInfoMain userinfo;
@@ -63,7 +64,7 @@ class _PassWordFindPhoneView3State extends State<PassWordFindPhoneView3> {
                     await _ackAlert(context);
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) {
-                      return LoginPageView();
+                      return A000LoginPageView();
                     }), ModalRoute.withName('/'));
                   }
                 }

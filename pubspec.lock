@@ -302,6 +302,13 @@ packages:
       url: "https://github.com/kimbakcho/flutter_kakao_login"
     source: git
     version: "0.5.0"
+  flutter_keyboard_visibility:
+    dependency: "direct main"
+    description:
+      name: flutter_keyboard_visibility
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   flutter_local_notifications:
     dependency: "direct main"
     description:
