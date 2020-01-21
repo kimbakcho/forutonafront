@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class AgreeFieldItem {
   String text;
+  String subtext;
   Function onchenge;
   MaterialPageRoute nextpage;
-  AgreeFieldItem({this.text, this.onchenge, this.nextpage});
+  bool ischecked = false;
+  AgreeFieldItem({this.text, this.onchenge, this.nextpage, this.subtext});
 }
 
 class AgreeFieldComponent extends StatefulWidget {
@@ -19,13 +21,13 @@ class AgreeFieldComponent extends StatefulWidget {
 
 class _AgreeFieldComponentState extends State<AgreeFieldComponent> {
   _AgreeFieldComponentState({this.fielditem});
-  bool ischecked = false;
+
   AgreeFieldItem fielditem;
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      double top = (constraints.maxHeight / 2) - 20;
+      double top = (constraints.maxHeight / 2) - 15;
       return Container(
           child: Stack(children: <Widget>[
         Positioned(
@@ -36,7 +38,9 @@ class _AgreeFieldComponentState extends State<AgreeFieldComponent> {
               width: 28,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: ischecked ? Color(0xFF3497FD) : Color(0xFFB1B1B1)),
+                  color: this.fielditem.ischecked
+                      ? Color(0xFF3497FD)
+                      : Color(0xFFB1B1B1)),
               child: IconButton(
                   padding: EdgeInsets.all(0),
                   icon: Icon(
@@ -45,7 +49,10 @@ class _AgreeFieldComponentState extends State<AgreeFieldComponent> {
                     size: 26,
                   ),
                   onPressed: () {
-                    ischecked = !ischecked;
+                    this.fielditem.ischecked = !this.fielditem.ischecked;
+                    if (this.fielditem.onchenge != null) {
+                      this.fielditem.onchenge(this.fielditem.ischecked);
+                    }
                     setState(() {});
                   }),
             )),
@@ -61,7 +68,31 @@ class _AgreeFieldComponentState extends State<AgreeFieldComponent> {
               ),
             ),
           ),
-        )
+        ),
+        this.fielditem.subtext != null
+            ? Positioned(
+                left: 16.0 + 28.0 + 8.0,
+                top: top + 20,
+                child: Container(
+                    child: Text(this.fielditem.subtext,
+                        style: TextStyle(
+                          fontFamily: 'NotoSansKR',
+                          fontSize: 10,
+                        ))))
+            : Container(),
+        this.fielditem.nextpage != null
+            ? Positioned(
+                right: 0.0,
+                top: top - 11,
+                child: Container(
+                    child: IconButton(
+                  icon: Icon(Icons.arrow_forward_ios),
+                  onPressed: () {
+                    Navigator.push(context, this.fielditem.nextpage);
+                  },
+                )),
+              )
+            : Container()
       ]));
     });
   }

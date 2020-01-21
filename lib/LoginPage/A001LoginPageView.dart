@@ -1,4 +1,3 @@
-import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -6,7 +5,9 @@ class A001LoginPageView extends StatefulWidget {
   A001LoginPageView({Key key}) : super(key: key);
 
   @override
-  _A001LoginPageViewState createState() => _A001LoginPageViewState();
+  _A001LoginPageViewState createState() {
+    return _A001LoginPageViewState();
+  }
 }
 
 class _A001LoginPageViewState extends State<A001LoginPageView> {

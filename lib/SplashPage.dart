@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import "package:flare_flutter/flare_actor.dart";
+import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
 import 'package:forutonafront/MainPage.dart';
 
 class SplashPage extends StatefulWidget {
@@ -10,6 +12,8 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,14 +22,21 @@ class _SplashPageState extends State<SplashPage> {
         "assets/Rive/KvuSplash.flr",
         alignment: Alignment.center,
         animation: "initAni",
-        callback: (value) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  settings: RouteSettings(isInitialRoute: true, name: "/"),
-                  builder: (context) {
-                    return MainPage();
-                  }));
+        callback: (value) async {
+          FirebaseUser user = await _auth.currentUser();
+          if (user == null) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return A000LoginPageView();
+            }));
+          } else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    settings: RouteSettings(isInitialRoute: true, name: "/"),
+                    builder: (context) {
+                      return MainPage();
+                    }));
+          }
         },
       ),
     );
