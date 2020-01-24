@@ -27,15 +27,8 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
   }
 
   Widget makemaincard() {
-    if (iskeyboardshow) {
-      this.cardsize = MediaQuery.of(context).size.height;
-    } else {
-      this.cardsize = null;
-    }
-
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: cardsize,
         decoration: BoxDecoration(
             color: Color(0xFFE4E7E8),
             borderRadius: BorderRadius.only(
@@ -261,11 +254,13 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                       )
                     : Container(),
                 !iskeyboardshow
-                    ? Expanded(
-                        child: Container(),
+                    ? SizedBox(
+                        height: 56,
                       )
                     : Container(),
-                makemaincard(),
+                Expanded(
+                  child: makemaincard(),
+                ),
               ],
             ),
           )),

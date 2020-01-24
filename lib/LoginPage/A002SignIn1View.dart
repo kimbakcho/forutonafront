@@ -270,8 +270,11 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
                                                 : 0;
                                         userinfomain.agelimitagree =
                                             ageAgreeItem.ischecked ? 1 : 0;
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                                          return A004PhoneAuthView();
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return A004PhoneAuthView(
+                                              userinfomain: userinfomain);
                                         }));
                                       },
                                     )),
@@ -312,6 +315,7 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Container(
+            height: 10,
             child: LinearProgressIndicator(
               value: 0.25,
               backgroundColor: Color(0xffCCCCCC),
