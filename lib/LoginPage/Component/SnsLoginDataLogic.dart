@@ -24,9 +24,9 @@ class SnsLoginDataLogic {
         if (res1.account.gender == 'F') {
           userInfo.sex = 1;
         } else if (res1.account.gender == 'M') {
-          userInfo.sex = 0;
+          userInfo.sex = 2;
         } else {
-          userInfo.sex = 0;
+          userInfo.sex = 2;
         }
         List<String> ages = res1.account.age.split("-");
         int tempage = int.parse(ages[0]);
@@ -50,7 +50,7 @@ class SnsLoginDataLogic {
         userInfo.email = result.account.userEmail;
         userInfo.profilepicktureurl = result.account.userProfileImagePath;
         userInfo.nickname = result.account.userNickname;
-        userInfo.sex = 0;
+        userInfo.sex = 1;
         userInfo.snsservice = SnsLoginDataLogic.kakao;
         KakaoAccessToken token = await kakaoSignIn.currentAccessToken;
 

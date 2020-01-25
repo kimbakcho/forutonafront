@@ -1,43 +1,33 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
-import 'package:forutonafront/LoginPage/A005SignIn2View.dart';
-import 'package:forutonafront/LoginPage/A006SignIn3View.dart';
-import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
-import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/LoginPage/A010PhoneAuthStep3.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:sms_receiver/sms_receiver.dart';
-import 'package:uuid/uuid.dart';
-import 'package:http/http.dart' as http;
 
-class A004PhoneAuthView extends StatefulWidget {
-  A004PhoneAuthView({this.userinfomain, Key key}) : super(key: key);
-  final UserInfoMain userinfomain;
+class A009PhoneAuthSetp2 extends StatefulWidget {
+  A009PhoneAuthSetp2({this.userInfoMain, key}) : super(key: key);
+  final UserInfoMain userInfoMain;
   @override
-  _A004PhoneAuthViewState createState() {
-    return _A004PhoneAuthViewState(userinfomain: userinfomain);
+  _A009PhoneAuthSetp2State createState() {
+    return _A009PhoneAuthSetp2State(userInfoMain: userInfoMain);
   }
 }
 
-class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
-  _A004PhoneAuthViewState({this.userinfomain});
-  UserInfoMain userinfomain;
-  var uuid = new Uuid();
-  String currentuuid = "";
-  String phoneNumber = "";
-  SmsReceiver _smsReceiver;
-  StreamSubscription periodicSub;
+class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
+  _A009PhoneAuthSetp2State({this.userInfoMain});
+  UserInfoMain userInfoMain;
   TextEditingController phoneauthnumbercontroller = TextEditingController();
+  String phoneNumber = "";
   bool iscanrequest = true;
   int authtimelimit = 0;
-  bool iskeyboardshow = false;
-
+  SmsReceiver _smsReceiver;
+  StreamSubscription periodicSub;
   onPhoneNumberChange(
       String phoneText, String number, String selectedItemcode) {
-    userinfomain.phonenumber = number;
-    userinfomain.isocode = selectedItemcode;
+    userInfoMain.phonenumber = number;
+    userInfoMain.isocode = selectedItemcode;
   }
 
   void onSmsReceived(String message) {
@@ -46,25 +36,6 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
       String code = message.substring(find + 1, find + 7);
       phoneauthnumbercontroller.text = code;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    currentuuid = uuid.v4();
-    userinfomain.uid = currentuuid;
-    _smsReceiver = SmsReceiver(onSmsReceived, onTimeout: onTimeout);
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        setState(() {
-          this.iskeyboardshow = visible;
-        });
-      },
-    );
-  }
-
-  void onTimeout() {
-    setState(() {});
   }
 
   void _startListening() {
@@ -76,14 +47,12 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
         .take(300)
         .listen((count) {
       if (count == 300) {
-        setState(() {
-          authtimelimit = 300 - count;
-          iscanrequest = true;
-        });
-      }
-      setState(() {
         authtimelimit = 300 - count;
-      });
+        iscanrequest = true;
+        setState(() {});
+      }
+      authtimelimit = 300 - count;
+      setState(() {});
     });
 
     periodicSub.onDone(() {
@@ -92,145 +61,54 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
     _smsReceiver.startListening();
   }
 
-  showjoinedAlret() async {
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) {
-          return AlertDialog(
-              content: Container(
-            height: 110,
-            child: Column(children: <Widget>[
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "이미 가입하였습니다.",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'NotoSansKR',
-                      fontSize: 20),
-                ),
-              ),
-              Container(
-                  height: 30,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Color(0xff454f63),
-                    borderRadius: BorderRadius.circular(12.00),
-                  ),
-                  child: FlatButton(
-                      onPressed: () {
-                        Navigator.popUntil(context, ModalRoute.withName('/'));
-                      },
-                      child: Text("확인",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontFamily: 'NotoSansKR',
-                              fontSize: 14))))
-            ]),
-          ));
-        });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    if (periodicSub != null) {
-      periodicSub.cancel();
-    }
-  }
-
-  Future<bool> checkhaveuid(UserInfoMain userinfo) async {
-    var uri = Preference.httpurloption(
-        Preference.baseBackEndUrl, '/api/v1/Auth/GetUid', {
-      'Uid': userinfo.uid,
-    });
-    var response = await http.get(uri);
-    String getuid = response.body;
-    if (userinfo.uid == getuid) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [Color(0xFF606060), Color(0xFF0E1014)]),
-          image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.5), BlendMode.dstATop),
-              fit: BoxFit.cover,
-              image: AssetImage("assets/MainImage/map-846083_1920.png"))),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          titleSpacing: 0.0,
-          title: !iskeyboardshow
-              ? Text("")
-              : Text("가입하기",
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Color(0xFF606060), Color(0xFF0E1014)]),
+            image: DecorationImage(
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                fit: BoxFit.cover,
+                image: AssetImage("assets/MainImage/map-846083_1920.png"))),
+        child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              titleSpacing: 0.0,
+              title: Text("휴대폰 인증하기",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'NotoSansKR',
                       fontSize: 20)),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              !iskeyboardshow
-                  ? Container(
-                      alignment: Alignment.center,
-                      child: Text("가입하기",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'NotoSansKR',
-                              fontSize: 24)),
-                    )
-                  : Container(),
-              SizedBox(
-                height: 13,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
               ),
-              !iskeyboardshow
-                  ? Container(
-                      alignment: Alignment.center,
-                      child: Text("먼저,휴대폰 인증이 필요합니다.",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'NotoSansKR',
-                              fontSize: 13)),
-                    )
-                  : Container(),
-              SizedBox(height: 17),
+            ),
+            backgroundColor: Colors.transparent,
+            body: Container(
+                child: Column(children: <Widget>[
               Expanded(
                 child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Color(0xFFE4E7E8),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16.00),
-                            topRight: Radius.circular(16.00))),
-                    child: Column(children: <Widget>[
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFE4E7E8),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16.00),
+                          topRight: Radius.circular(16.00))),
+                  child: Column(
+                    children: <Widget>[
                       SizedBox(
                         height: 32,
                       ),
@@ -289,11 +167,94 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                     child: FlatButton(
                                         padding: EdgeInsets.all(0),
                                         onPressed: () async {
-                                          UserInfoMain.requestAuthPhoneNumber(
-                                              currentuuid,
-                                              userinfomain.phonenumber,
-                                              userinfomain.isocode);
-                                          _startListening();
+                                          int result = await UserInfoMain
+                                              .requestFindAuthPhoneNumber(
+                                                  userInfoMain.uid,
+                                                  userInfoMain.phonenumber,
+                                                  userInfoMain.isocode);
+                                          if (result == 1) {
+                                            _startListening();
+                                          } else {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Container(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text("휴대폰 번호 불일치",
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansKR",
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 20,
+                                                            color: Color(
+                                                                0xff000000),
+                                                          )),
+                                                    ),
+                                                    content: Container(
+                                                      height: 140,
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          Container(
+                                                              child: Text(
+                                                                  "입력하신 정보와 일치하는 계정이 없습니다.\n\n휴대폰 번호를 변경하셨다면, 이메일 인증으로\n패스워드를 찾아주세요.",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "NotoSansKR",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w300,
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Color(
+                                                                        0xff454f63),
+                                                                  ))),
+                                                          SizedBox(
+                                                            height: 21,
+                                                          ),
+                                                          Container(
+                                                            height: 36.00,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Color(
+                                                                  0xff454f63),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.00),
+                                                            ),
+                                                            child: FlatButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                              child: Text("확인",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "NotoSansKR",
+                                                                    fontSize:
+                                                                        15,
+                                                                    color: Color(
+                                                                        0xff39f999),
+                                                                  )),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
+                                          }
                                         },
                                         child: Text(
                                           "인증번호 요청",
@@ -343,7 +304,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                       borderRadius:
                                           BorderRadius.circular(12.00),
                                     ),
-                                  )
+                                  ),
                           ],
                         ),
                       ),
@@ -380,82 +341,31 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                       Container(
                         width: MediaQuery.of(context).size.width,
                         margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                        decoration: BoxDecoration(
+                          color: Color(0xff78849e),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0.00, 12.00),
+                              color: Color(0xff455b63).withOpacity(0.10),
+                              blurRadius: 16,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(12.00),
+                        ),
                         child: FlatButton(
                           onPressed: () async {
-                            // Navigator.push(context,
-                            //     MaterialPageRoute(builder: (context) {
-                            //   return A005SignIn2View(
-                            //     userinfomain: userinfomain,
-                            //   );
-                            // }));
-
-                            userinfomain.phoneauthcheckcode = await UserInfoMain
+                            userInfoMain.phoneauthcheckcode = await UserInfoMain
                                 .requestAuthVerificationPhoneNumber(
-                                    currentuuid,
-                                    userinfomain.phonenumber,
+                                    userInfoMain.uid,
+                                    userInfoMain.phonenumber,
                                     phoneauthnumbercontroller.text);
-                            if (userinfomain.phoneauthcheckcode != 'false') {
-                              userinfomain.phonenumber =
-                                  userinfomain.phonenumber;
+                            if (userInfoMain.phoneauthcheckcode != 'false') {
                               periodicSub.cancel();
-                              if (userinfomain.snsservice ==
-                                  SnsLoginDataLogic.email) {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return A005SignIn2View(
-                                    userinfomain: userinfomain,
-                                  );
-                                }));
-                              } else if (userinfomain.snsservice ==
-                                  SnsLoginDataLogic.facebook) {
-                                bool loginresult =
-                                    await SnsLoginDataLogic.snsLogins(
-                                        SnsLoginDataLogic.facebook,
-                                        userinfomain);
-                                if (loginresult) {
-                                  if (await checkhaveuid(userinfomain)) {
-                                    showjoinedAlret();
-                                  } else {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return A006SignIn3View(
-                                          userinfomain: userinfomain);
-                                    }));
-                                  }
-                                }
-                              } else if (userinfomain.snsservice ==
-                                  SnsLoginDataLogic.naver) {
-                                bool loginresult =
-                                    await SnsLoginDataLogic.snsLogins(
-                                        SnsLoginDataLogic.naver, userinfomain);
-                                if (loginresult) {
-                                  if (await checkhaveuid(userinfomain)) {
-                                    showjoinedAlret();
-                                  } else {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return A006SignIn3View(
-                                          userinfomain: userinfomain);
-                                    }));
-                                  }
-                                }
-                              } else if (userinfomain.snsservice ==
-                                  SnsLoginDataLogic.kakao) {
-                                bool loginresult =
-                                    await SnsLoginDataLogic.snsLogins(
-                                        SnsLoginDataLogic.kakao, userinfomain);
-                                if (loginresult) {
-                                  if (await checkhaveuid(userinfomain)) {
-                                    showjoinedAlret();
-                                  } else {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return A006SignIn3View(
-                                          userinfomain: userinfomain);
-                                    }));
-                                  }
-                                }
-                              }
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return A010PhoneAuthStep3(
+                                    userInfoMain: userInfoMain);
+                              }));
                             } else {
                               showDialog(
                                   context: context,
@@ -521,43 +431,31 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                   });
                             }
                           },
-                          child: Text(
-                            "인증번호 확인",
-                            style: TextStyle(
+                          child: Text("인증번호 확인",
+                              style: TextStyle(
+                                fontFamily: "NotoSansKR",
+                                fontSize: 15,
                                 color: iscanrequest
-                                    ? Colors.white
+                                    ? Color(0xffffffff)
                                     : Theme.of(context).primaryColor,
-                                fontFamily: 'NotoSansKR',
-                                fontSize: 15),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0xff78849e),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0.00, 12.00),
-                              color: Color(0xff455b63).withOpacity(0.10),
-                              blurRadius: 16,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(12.00),
+                              )),
                         ),
                       )
-                    ])),
+                    ],
+                  ),
+                ),
+              )
+            ])),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: Container(
+              height: 10,
+              child: LinearProgressIndicator(
+                value: 0.68,
+                backgroundColor: Color(0xffCCCCCC),
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF39F999)),
               ),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Container(
-          height: 10,
-          child: LinearProgressIndicator(
-            value: 0.5,
-            backgroundColor: Color(0xffCCCCCC),
-            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF39F999)),
-          ),
-        ),
-      ),
-    );
+            )
+            ));
   }
 }

@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:flutter/services.dart';
+import 'package:forutonafront/LoginPage/A007PasswordfindView.dart';
 
 class A001LoginPageView extends StatefulWidget {
   A001LoginPageView({Key key}) : super(key: key);
@@ -12,7 +15,9 @@ class A001LoginPageView extends StatefulWidget {
 
 class _A001LoginPageViewState extends State<A001LoginPageView> {
   bool iskeyboardshow = false;
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
   double cardsize = null;
   @override
   void initState() {
@@ -43,7 +48,10 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
             margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
             child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
+                controller: emailController,
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                   hintText: "아이디(이메일 주소)",
                   focusedBorder: OutlineInputBorder(
@@ -58,8 +66,11 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
             height: 50,
             margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
             child: TextFormField(
+                controller: passController,
                 obscureText: true,
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                   hintText: "비밀번호 입력",
                   focusedBorder: OutlineInputBorder(
@@ -85,7 +96,64 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
               borderRadius: BorderRadius.circular(12.00),
             ),
             child: FlatButton(
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    await _auth.signInWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passController.text);
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                  } catch (value) {
+                    PlatformException excode = value as PlatformException;
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Container(
+                              child: Text("로그인 실패",
+                                  style: TextStyle(
+                                    fontFamily: "NotoSansKR",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                    color: Color(0xff000000),
+                                  )),
+                            ),
+                            content: Container(
+                                height: 110,
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Text(excode.message),
+                                    ),
+                                    SizedBox(height: 16),
+                                    Container(
+                                        child: FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text(
+                                            "확인",
+                                            style: TextStyle(
+                                                fontFamily: "NotoSansKR",
+                                                fontSize: 15,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                        ),
+                                        height: 36.00,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xff454f63),
+                                          borderRadius:
+                                              BorderRadius.circular(12.00),
+                                        )),
+                                  ],
+                                )),
+                          );
+                        });
+                    return;
+                  }
+                },
                 child: Container(
                     child: Center(
                         child: Text(
@@ -115,7 +183,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                       onTap: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return A001LoginPageView();
+                          return A007PasswordfindView();
                         }));
                       }))
               : Container(),

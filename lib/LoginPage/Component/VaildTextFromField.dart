@@ -53,7 +53,7 @@ class _VaildTextFromFieldState extends State<VaildTextFromField> {
               keyboardType: item.inputtype,
               obscureText: item.obscureText != null ? item.obscureText : false,
               decoration: InputDecoration(
-                  
+                  contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                   fillColor: Colors.white,
                   filled: true,
                   hintText: item.hintText,

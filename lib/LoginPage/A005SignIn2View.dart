@@ -32,6 +32,7 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
     emailvailditem = VaildTextFromFieldItem(
         hintText: "아이디(이메일주소)",
         inputtype: TextInputType.emailAddress,
+        obscureText: false,
         onchange: (value) {
           this.onchange(value);
         },

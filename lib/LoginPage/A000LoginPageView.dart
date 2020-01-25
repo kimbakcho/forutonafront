@@ -240,7 +240,6 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                                                     userInfoMain.snsservice =
                                                         SnsLoginDataLogic
                                                             .facebook;
-
                                                     Navigator.of(context).push(
                                                         MaterialPageRoute(
                                                             builder: (context) {

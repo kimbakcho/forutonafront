@@ -176,6 +176,28 @@ class UserInfoMain {
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
   }
 
+  static Future<int> requestFindAuthPhoneNumber(
+      String uuid, String phonenumber, String isocode) async {
+    var requesturl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Auth/requestFindAuthPhoneNumber");
+    Response response = await http.post(requesturl,
+        body: jsonEncode({
+          "uuid": uuid,
+          "phonenumber": phonenumber,
+          "authnumber": '',
+          'isocode': isocode
+        }),
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    return int.tryParse(response.body);
+  }
+
+  static Future<String> getEmailtoUid(String email) async {
+    var requesturl = Preference.httpurloption(Preference.baseBackEndUrl,
+        "/api/v1/Auth/GetEmailtoUid", {"email": email});
+    Response response = await http.get(requesturl);
+    return response.body;
+  }
+
   static Future<String> requestAuthVerificationPhoneNumber(
       String uuid, String phonenumber, String authnumber) async {
     var requesturl = Preference.httpurlbase(Preference.baseBackEndUrl,
