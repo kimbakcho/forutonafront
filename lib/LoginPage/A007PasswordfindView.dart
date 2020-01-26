@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/LoginPage/A008PhoneAuthStep1.dart';
+import 'package:forutonafront/LoginPage/A011PassFindEmailStep1.dart';
 
 class A007PasswordfindView extends StatefulWidget {
   A007PasswordfindView({Key key}) : super(key: key);
@@ -195,7 +196,12 @@ class _A007PasswordfindViewState extends State<A007PasswordfindView> {
                                 child: FlatButton(
                                   padding: EdgeInsets.all(0),
                                   shape: CircleBorder(),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) {
+                                      return A011PassFindEmailStep1();
+                                    }));
+                                  },
                                   child: Icon(
                                     Icons.arrow_forward,
                                     size: 22,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A001LoginPageView.dart';
 import 'package:forutonafront/LoginPage/A002SignIn1View.dart';
-import 'package:forutonafront/LoginPage/Component/SignInItem.dart';
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 
 class A000LoginPageView extends StatefulWidget {
@@ -319,10 +318,11 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                               ),
                             ),
                             onTap: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return A001LoginPageView();
-                              }));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  settings: RouteSettings(name: "A001"),
+                                  builder: (context) {
+                                    return A001LoginPageView();
+                                  }));
                             })),
                     SizedBox(height: 21),
                     Container(

@@ -25,9 +25,13 @@ class _SplashPageState extends State<SplashPage> {
         callback: (value) async {
           FirebaseUser user = await _auth.currentUser();
           if (user == null) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return A000LoginPageView();
-            }));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    settings: RouteSettings(name: "A000"),
+                    builder: (context) {
+                      return A000LoginPageView();
+                    }));
           } else {
             Navigator.push(
                 context,

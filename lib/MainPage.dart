@@ -342,10 +342,13 @@ class _MainPageState extends State<MainPage> {
                       child: loginButton(),
                       onPressed: () {
                         if (currentuser == null) {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return A000LoginPageView();
-                          }));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  settings: RouteSettings(name: "A000"),
+                                  builder: (context) {
+                                    return A000LoginPageView();
+                                  }));
                         } else {
                           Scaffold.of(context).openDrawer();
                         }

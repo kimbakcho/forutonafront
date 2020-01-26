@@ -2,36 +2,32 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Common/LoadingOverlay%20.dart';
-import 'package:forutonafront/LoginPage/A009PhoneAuthSetp2.dart';
+import 'package:forutonafront/LoginPage/A012PassFindEmailStep2.dart';
 import 'package:forutonafront/LoginPage/Component/VaildTextFromField.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
 
-class A008PhoneAuthStep1 extends StatefulWidget {
-  A008PhoneAuthStep1({Key key}) : super(key: key);
+class A011PassFindEmailStep1 extends StatefulWidget {
+  A011PassFindEmailStep1({Key key}) : super(key: key);
 
   @override
-  _A008PhoneAuthStep1State createState() => _A008PhoneAuthStep1State();
+  _A011PassFindEmailStep1State createState() => _A011PassFindEmailStep1State();
 }
 
-class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
+class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
+  bool isloading = false;
   bool isnext = false;
   VaildTextFromFieldItem emailvailditem;
-  bool isloading = false;
   @override
   void initState() {
     super.initState();
     emailvailditem = VaildTextFromFieldItem(
+        hintText: "아이디(이메일주소)",
         inputtype: TextInputType.emailAddress,
-        onchange: (value) {
-          if (emailvailditem.validator(value) == null) {
-            isnext = true;
-          } else {
-            isnext = false;
-          }
-          setState(() {});
-        },
         obscureText: false,
+        onchange: (value) {
+          this.onchange(value);
+        },
         validator: (value) {
           Pattern pattern =
               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -40,8 +36,17 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
             return '';
           else
             return null;
-        },
-        hintText: "아이디(이메일 주소)");
+        });
+  }
+
+  onchange(value) {
+    if (emailvailditem.validator(emailvailditem.text) == null) {
+      isnext = true;
+      setState(() {});
+    } else {
+      isnext = false;
+      setState(() {});
+    }
   }
 
   @override
@@ -69,21 +74,20 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
               elevation: 0,
               automaticallyImplyLeading: false,
               titleSpacing: 0.0,
-              title: Text("휴대폰 인증하기",
+              title: Text("이메일주소 인증하기",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'NotoSansKR',
                       fontSize: 20)),
               leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-              ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  )),
               actions: <Widget>[
                 isnext
                     ? Container(
@@ -120,12 +124,12 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                                 isloading = false;
                                 setState(() {});
                                 if (authitems.length > 0) {
-                                  userInfoMain.uid =
-                                      await UserInfoMain.getEmailtoUid(
-                                          userInfoMain.email);
+                                  await FirebaseAuth.instance
+                                      .sendPasswordResetEmail(
+                                          email: userInfoMain.email);
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return A009PhoneAuthSetp2(
+                                    return A012PassFindEmailStep2(
                                         userInfoMain: userInfoMain);
                                   }));
                                 } else {
@@ -243,7 +247,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                         height: 32,
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(32, 0, 0, 0),
+                        margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
                         alignment: Alignment.centerLeft,
                         child: Text("현재 사용중이신 계정 이메일 주소를\n입력해주세요.",
                             style: TextStyle(
@@ -253,12 +257,11 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                             )),
                       ),
                       SizedBox(
-                        height: 32,
+                        height: 21,
                       ),
                       Container(
-                        height: 50,
                         margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
-                        width: MediaQuery.of(context).size.width,
+                        height: 50,
                         child: VaildTextFromField(
                           item: emailvailditem,
                         ),
@@ -273,7 +276,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
             floatingActionButton: Container(
               height: 10,
               child: LinearProgressIndicator(
-                value: 0.34,
+                value: 0.5,
                 backgroundColor: Color(0xffCCCCCC),
                 valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF39F999)),
               ),

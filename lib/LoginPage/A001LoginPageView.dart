@@ -108,6 +108,9 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(16.0),
+                            ),
                             title: Container(
                               child: Text("로그인 실패",
                                   style: TextStyle(
