@@ -324,54 +324,55 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(16.00),
                                 topRight: Radius.circular(16.00))),
-                        child: Column(
+                        child: ListView(
+                          shrinkWrap: true,
                           children: <Widget>[
                             SizedBox(
                               height: 53,
                             ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
-                                  child: CountryPickerDropdown(
-                                    initialValue: userinfomain.isocode,
-                                    itemBuilder: _buildDropdownItem,
-                                    onValuePicked: (Country country) {
-                                      userinfomain.isocode = country.isoCode;
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Container(
-                                  margin: EdgeInsets.only(right: 16),
-                                  child: TextField(
-                                      onChanged: (value) {
-                                        userinfomain.nickname = value;
-                                        vaildcheck();
-                                        setState(() {});
+                            Container(
+                              margin: EdgeInsets.only(bottom: 31),
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
+                                    child: CountryPickerDropdown(
+                                      initialValue: userinfomain.isocode,
+                                      itemBuilder: _buildDropdownItem,
+                                      onValuePicked: (Country country) {
+                                        userinfomain.isocode = country.isoCode;
                                       },
-                                      controller: nickController,
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(16, 0, 16, 0),
-                                        fillColor: Colors.white,
-                                        filled: true,
-                                        hintText: "닉네임 입력",
-                                        hintStyle: TextStyle(
-                                          fontFamily: "NotoSansKR",
-                                          fontSize: 15,
-                                          color: Color(0xff78849e)
-                                              .withOpacity(0.56),
-                                        ),
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(16.0))),
-                                      )),
-                                ))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 31,
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Container(
+                                    margin: EdgeInsets.only(right: 16),
+                                    child: TextField(
+                                        onChanged: (value) {
+                                          userinfomain.nickname = value;
+                                          vaildcheck();
+                                          setState(() {});
+                                        },
+                                        controller: nickController,
+                                        decoration: InputDecoration(
+                                          contentPadding:
+                                              EdgeInsets.fromLTRB(16, 0, 16, 0),
+                                          fillColor: Colors.white,
+                                          filled: true,
+                                          hintText: "닉네임 입력",
+                                          hintStyle: TextStyle(
+                                            fontFamily: "NotoSansKR",
+                                            fontSize: 15,
+                                            color: Color(0xff78849e)
+                                                .withOpacity(0.56),
+                                          ),
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(16.0))),
+                                        )),
+                                  ))
+                                ],
+                              ),
                             ),
                             Row(
                               children: <Widget>[

@@ -2,7 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A007PasswordfindView.dart';
+import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
+import 'package:forutonafront/Preference.dart';
+import 'package:http/http.dart' as http;
 
 class A001LoginPageView extends StatefulWidget {
   A001LoginPageView({Key key}) : super(key: key);
@@ -31,6 +35,26 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
     );
   }
 
+  Future<void> snsLogin(String logintype) async {
+    UserInfoMain userinfo = new UserInfoMain();
+    bool loginresult = await SnsLoginDataLogic.snsLogins(logintype, userinfo);
+    if (!loginresult) {
+      return;
+    }
+    var queryParameters = {
+      'Uid': userinfo.uid,
+    };
+    var uri = Preference.httpurloption(
+        Preference.baseBackEndUrl, '/api/v1/Auth/GetUid', queryParameters);
+    var response = await http.get(uri);
+    String getuid = response.body;
+    if (userinfo.uid == getuid) {
+      String customtoken = await UserInfoMain.getCustomToken(userinfo);
+      await _auth.signInWithCustomToken(token: customtoken);
+      Navigator.popUntil(context, ModalRoute.withName('/'));
+    }
+  }
+
   Widget makemaincard() {
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -39,7 +63,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16.00),
                 topRight: Radius.circular(16.00))),
-        child: Column(children: <Widget>[
+        child: ListView(shrinkWrap: true, children: <Widget>[
           SizedBox(
             height: 32,
           ),
@@ -192,6 +216,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
               : Container(),
           !iskeyboardshow
               ? Container(
+                  alignment: Alignment.center,
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 17),
                   child: Text(
                     "소셜계정으로 로그인하기",
@@ -219,7 +244,9 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                                     "assets/MainImage/facebookicon.png"))),
                         child: FlatButton(
                           child: Container(),
-                          onPressed: () {},
+                          onPressed: () async {
+                            await snsLogin(SnsLoginDataLogic.facebook);
+                          },
                         ),
                       ),
                       Container(
@@ -232,7 +259,9 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                                     "assets/MainImage/kakaotalkicon.png"))),
                         child: FlatButton(
                           child: Container(),
-                          onPressed: () {},
+                          onPressed: () async {
+                            await snsLogin(SnsLoginDataLogic.kakao);
+                          },
                         ),
                       ),
                       Container(
@@ -244,7 +273,9 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                                     "assets/MainImage/navericon.png"))),
                         child: FlatButton(
                           child: Container(),
-                          onPressed: () {},
+                          onPressed: () async {
+                            await snsLogin(SnsLoginDataLogic.naver);
+                          },
                         ),
                       )
                     ],

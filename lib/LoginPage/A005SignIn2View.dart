@@ -215,11 +215,13 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(16.00),
                                       topRight: Radius.circular(16.00))),
-                              child: Column(children: <Widget>[
+                              child:
+                                  ListView(shrinkWrap: true, children: <Widget>[
                                 SizedBox(
                                   height: 32,
                                 ),
                                 Container(
+                                  margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                                   child: Text(
                                     "아이디는 실제 사용하시는 이메일로 작성해주세요. \n 패스워드 분실시 복구에 사용됩니다.",
                                     style: TextStyle(
@@ -228,9 +230,6 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
                                       color: Color(0xff78849e),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 21,
                                 ),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
@@ -263,7 +262,7 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
                                   height: 21,
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                                  margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                                   height: 50,
                                   child:
                                       VaildTextFromField(item: pass2vailditem),

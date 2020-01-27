@@ -241,13 +241,14 @@ class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16.00),
                           topRight: Radius.circular(16.00))),
-                  child: Column(
+                  child: ListView(
+                    shrinkWrap: true,
                     children: <Widget>[
                       SizedBox(
                         height: 32,
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                        margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                         alignment: Alignment.centerLeft,
                         child: Text("현재 사용중이신 계정 이메일 주소를\n입력해주세요.",
                             style: TextStyle(
@@ -256,11 +257,8 @@ class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
                               color: Color(0xff78849e),
                             )),
                       ),
-                      SizedBox(
-                        height: 21,
-                      ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                        margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                         height: 50,
                         child: VaildTextFromField(
                           item: emailvailditem,

@@ -244,12 +244,12 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(16.00),
                               topRight: Radius.circular(16.00))),
-                      child: Column(children: <Widget>[
+                      child: ListView(shrinkWrap: true, children: <Widget>[
                         SizedBox(
                           height: 32,
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                          margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                           child: InternationalPhoneInput(
                               onPhoneNumberChange: onPhoneNumberChange,
                               initialPhoneNumber: phoneNumber,
@@ -268,11 +268,8 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                             borderRadius: BorderRadius.circular(12.00),
                           ),
                         ),
-                        SizedBox(
-                          height: 21,
-                        ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                          margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                           child: Row(
                             children: <Widget>[
                               Expanded(
@@ -365,10 +362,8 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 21,
-                        ),
                         Container(
+                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
                           child: RichText(
                             text: TextSpan(
                                 text: "인증번호는 ",

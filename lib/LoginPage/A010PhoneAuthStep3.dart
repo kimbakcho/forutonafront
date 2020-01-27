@@ -245,7 +245,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(16.00),
                                   topRight: Radius.circular(16.00))),
-                          child: Column(children: <Widget>[
+                          child: ListView(shrinkWrap: true, children: <Widget>[
                             SizedBox(height: 32),
                             Container(
                                 margin: EdgeInsets.only(left: 32),
@@ -259,15 +259,12 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                                     ))),
                             SizedBox(height: 21),
                             Container(
-                              margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                              margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                               height: 50,
                               child: VaildTextFromField(item: pass1vailditem),
                             ),
-                            SizedBox(
-                              height: 21,
-                            ),
                             Container(
-                              margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                              margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                               height: 50,
                               child: VaildTextFromField(item: pass2vailditem),
                             )

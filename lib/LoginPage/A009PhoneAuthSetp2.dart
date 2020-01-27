@@ -117,13 +117,14 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(16.00),
                             topRight: Radius.circular(16.00))),
-                    child: Column(
+                    child: ListView(
+                      shrinkWrap: true,
                       children: <Widget>[
                         SizedBox(
                           height: 32,
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                          margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                           child: InternationalPhoneInput(
                               onPhoneNumberChange: onPhoneNumberChange,
                               initialPhoneNumber: phoneNumber,
@@ -142,11 +143,8 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                             borderRadius: BorderRadius.circular(12.00),
                           ),
                         ),
-                        SizedBox(
-                          height: 21,
-                        ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                          margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
                           child: Row(
                             children: <Widget>[
                               Expanded(
@@ -330,9 +328,6 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                     ),
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 21,
                         ),
                         Container(
                           child: RichText(
