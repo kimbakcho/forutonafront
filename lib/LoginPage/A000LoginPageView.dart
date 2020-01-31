@@ -3,6 +3,7 @@ import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A001LoginPageView.dart';
 import 'package:forutonafront/LoginPage/A002SignIn1View.dart';
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
+import 'package:forutonafront/MainPage/BCD001MainPage.dart';
 
 class A000LoginPageView extends StatefulWidget {
   A000LoginPageView({Key key}) : super(key: key);
@@ -57,6 +58,7 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                   "우리의 세상을 흥미롭게!",
                   style: TextStyle(
                       color: Colors.white,
+                      fontWeight: FontWeight.w500,
                       fontFamily: "NotoSansKR",
                       fontSize: 20),
                 ),
@@ -327,18 +329,25 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                     SizedBox(height: 21),
                     Container(
                         child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  settings: RouteSettings(name: "BCD001"),
+                                  builder: (context) {
+                                    return BCD001MainPage();
+                                  }));
+                            },
                             child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "나중에하기",
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontFamily: 'NotoSansKR',
-                          fontSize: 12,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ))),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "나중에하기",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontFamily: 'NotoSansKR',
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ))),
                     SizedBox(height: 27),
                   ],
                 ),

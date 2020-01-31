@@ -66,6 +66,16 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _smsReceiver = SmsReceiver(onSmsReceived, onTimeout: onTimeout);
+  }
+
+  void onTimeout() {
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
@@ -182,6 +192,8 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                     userInfoMain.uid,
                                                     userInfoMain.phonenumber,
                                                     userInfoMain.isocode);
+                                            isloading = false;
+                                            setState(() {});
                                             if (result == 1) {
                                               _startListening();
                                             } else {
@@ -274,8 +286,6 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                     );
                                                   });
                                             }
-                                            isloading = false;
-                                            setState(() {});
                                           },
                                           child: Text(
                                             "인증번호 요청",
@@ -330,6 +340,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                           ),
                         ),
                         Container(
+                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
                           child: RichText(
                             text: TextSpan(
                                 text: "인증번호는 ",

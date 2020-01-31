@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import "package:flare_flutter/flare_actor.dart";
 import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
 import 'package:forutonafront/MainPage.dart';
+import 'package:forutonafront/MainPage/BCD001MainPage.dart';
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
@@ -36,9 +37,10 @@ class _SplashPageState extends State<SplashPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    settings: RouteSettings(isInitialRoute: true, name: "/"),
+                    settings:
+                        RouteSettings(isInitialRoute: true, name: "/BCD001"),
                     builder: (context) {
-                      return MainPage();
+                      return BCD001MainPage();
                     }));
           }
         },

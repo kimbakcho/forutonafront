@@ -113,13 +113,15 @@ flutter:
   fonts:
     - family: NotoSansKR
       fonts:
-        - asset: assets/fonts/NotoSansKR-Regular.ttf
-        - asset: assets/fonts/NotoSansKR-Bold.ttf
+        - asset: fonts/NotoSansKR-Regular.otf
+        - asset: fonts/NotoSansKR-Medium.otf
+          weight: 500
+        - asset: fonts/NotoSansKR-Bold.otf
           weight: 700
     - family: Gibson
       fonts:
-        - asset: assets/fonts/gibson-Regular.ttf
-        - asset: assets/fonts/gibson-bold.ttf
+        - asset: fonts/gibson-Regular.ttf
+        - asset: fonts/gibson-bold.ttf
           weight: 700
   #   - family: Trajan Pro
   #     fonts:
