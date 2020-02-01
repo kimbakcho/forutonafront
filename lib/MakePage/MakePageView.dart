@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
@@ -12,7 +10,6 @@ import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
-import 'package:search_map_place/search_map_place.dart';
 
 class MakePageView extends StatefulWidget {
   MakePageView({Key key}) : super(key: key);
@@ -249,31 +246,31 @@ class _MakePageViewState extends State<MakePageView> {
     );
   }
 
-  Future<bool> _asyncConfirmDeletecubeDialog(BuildContext context) async {
-    return showDialog<bool>(
-      context: context,
-      barrierDismissible: false, // user must tap button for close dialog!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: const Text('정말로 삭제 하시겠습니까?'),
-          actions: <Widget>[
-            FlatButton(
-              child: const Text('취소'),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-            ),
-            FlatButton(
-              child: const Text('삭제'),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
+  // Future<bool> _asyncConfirmDeletecubeDialog(BuildContext context) async {
+  //   return showDialog<bool>(
+  //     context: context,
+  //     barrierDismissible: false, // user must tap button for close dialog!
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         content: const Text('정말로 삭제 하시겠습니까?'),
+  //         actions: <Widget>[
+  //           FlatButton(
+  //             child: const Text('취소'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop(false);
+  //             },
+  //           ),
+  //           FlatButton(
+  //             child: const Text('삭제'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop(true);
+  //             },
+  //           )
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   resetcubeList() async {
     GlobalStateContainer.of(context).resetcubeListUtilcubeList();

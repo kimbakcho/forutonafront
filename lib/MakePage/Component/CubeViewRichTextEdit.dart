@@ -6,22 +6,16 @@ class CubeViewRichTextEdit extends StatefulWidget {
 
   @override
   _CubeViewRichTextEditState createState() {
-    _CubeViewRichTextEditState();
+    return _CubeViewRichTextEditState();
   }
 }
 
 class _CubeViewRichTextEditState extends State<CubeViewRichTextEdit> {
-  ZefyrController _controller;
   NotusDocument document;
-  FocusNode _focusNode;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    _controller = ZefyrController(document);
-    _focusNode = FocusNode();
   }
 
   @override

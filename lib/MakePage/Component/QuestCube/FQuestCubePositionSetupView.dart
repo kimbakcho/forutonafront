@@ -26,7 +26,8 @@ class _FQuestCubePositionSetupViewState
   _FQuestCubePositionSetupViewState(this.fcubeQuest);
 
   CameraPosition initialCameraPosition;
-  GoogleMapController _mapController;
+
+  // GoogleMapController _mapController;
   ScrollController _mainListcontroller = ScrollController();
   Set<Marker> makres = new Set<Marker>();
   GlobalKey<FormState> pageeditfrom = GlobalKey<FormState>();
@@ -65,7 +66,7 @@ class _FQuestCubePositionSetupViewState
 
   void onMapCreated(GoogleMapController controller) async {
     setState(() {
-      _mapController = controller;
+      // _mapController = controller;
     });
     setmakers();
   }

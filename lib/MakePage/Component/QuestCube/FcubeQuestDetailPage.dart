@@ -57,7 +57,6 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   var locationOptions =
       LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
   Position currentposition;
-  GoogleMapController _mapController;
   CameraPosition initialCameraPosition;
   ScrollController listviewcontroller = ScrollController();
   Set<Marker> makres = new Set<Marker>();
@@ -90,7 +89,6 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     tabController = TabController(length: 3, vsync: this);
@@ -332,7 +330,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                     ),
                     Container(
                       color: Colors.white,
-                      child: Text("${actday}일 ${acthour}:${actmin}:${actsec}"),
+                      child: Text("$actday일 $acthour:$actmin:$actsec"),
                     ),
                     Expanded(
                         child: SizedBox(
@@ -819,9 +817,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   }
 
   void onMapCreated(GoogleMapController controller) async {
-    setState(() {
-      _mapController = controller;
-    });
+    setState(() {});
     setmakers();
   }
 
@@ -998,10 +994,10 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                       Column(
                         children: <Widget>[
                           Container(
-                            child: Text("인증법 = ${authmethod}"),
+                            child: Text("인증법 = $authmethod"),
                           ),
                           Container(
-                            child: Text("인증 방법 설명 = ${authPicturedescription}"),
+                            child: Text("인증 방법 설명 = $authPicturedescription"),
                           )
                         ],
                       )
@@ -1245,7 +1241,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                   Container(
                                     width: 50,
                                   ),
-                                  Text("${currentdistancediff} m")
+                                  Text("$currentdistancediff m")
                                 ],
                               ))),
                       content: Container(

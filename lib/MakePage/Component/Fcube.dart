@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -59,6 +58,7 @@ class Fcube {
   int maximumplayers;
   double starpoints;
   double makeexp;
+  int commentcount;
 
   CurrentSelectCubeLocation currentselectcube;
 
@@ -90,7 +90,8 @@ class Fcube {
       this.joinplayer,
       this.maximumplayers,
       this.starpoints,
-      this.makeexp});
+      this.makeexp,
+      this.commentcount});
 
   Fcube.fromJson(Map<String, dynamic> json) {
     cubeuuid = json['cubeuuid'];
@@ -119,6 +120,7 @@ class Fcube {
     maximumplayers = json['maximumplayers'];
     starpoints = json['starpoints'];
     makeexp = json['makeexp'];
+    commentcount = json['commentcount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -150,6 +152,7 @@ class Fcube {
     data['maximumplayers'] = this.maximumplayers;
     data['starpoints'] = this.starpoints;
     data['makeexp'] = this.makeexp;
+    data['commentcount'] = this.commentcount;
     return data;
   }
 
@@ -224,7 +227,7 @@ class Fcube {
         (avtibetime.inSeconds - actday * 60 * 60 * 24 - acthour * 3600) ~/ (60);
     int actsec = avtibetime.inSeconds % 60;
 
-    String stravtibetime = "${actday}일 ${acthour}:${actmin}:${actsec}";
+    String stravtibetime = "$actday일 $acthour:$actmin:$actsec";
     return stravtibetime;
   }
 

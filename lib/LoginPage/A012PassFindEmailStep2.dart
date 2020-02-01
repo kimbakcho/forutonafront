@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Common/LoadingOverlay%20.dart';
-import 'package:forutonafront/LoginPage/A001LoginPageView.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
 
@@ -49,7 +48,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
-                        fontFamily: 'NotoSansKR',
+                        fontFamily: 'Noto Sans CJK KR',
                         fontSize: 20)),
                 leading: IconButton(
                     onPressed: () {
@@ -83,7 +82,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                               text: TextSpan(
                                   text: "${userInfoMain.email}",
                                   style: TextStyle(
-                                    fontFamily: "NotoSansKR",
+                                    fontFamily: "Noto Sans CJK KR",
                                     fontSize: 14,
                                     color: Color(0xff3497FD),
                                   ),
@@ -92,7 +91,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                         text:
                                             "로 패스워드를 재설정하실 수 있는 \n 메일을 발송하였습니다.",
                                         style: TextStyle(
-                                          fontFamily: "NotoSansKR",
+                                          fontFamily: "Noto Sans CJK KR",
                                           fontSize: 14,
                                           color: Color(0xff78849e),
                                         ))
@@ -124,7 +123,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                             },
                             child: Text("로그인 페이지로 이동",
                                 style: TextStyle(
-                                  fontFamily: "NotoSansKR",
+                                  fontFamily: "Noto Sans CJK KR",
                                   fontSize: 15,
                                   color: Color(0xff39f999),
                                 )),
@@ -142,7 +141,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                     "혹시 인증 메일을 받지 못하셨나요?",
                                     style: TextStyle(
                                       decoration: TextDecoration.underline,
-                                      fontFamily: 'NotoSansKR',
+                                      fontFamily: 'Noto Sans CJK KR',
                                       fontSize: 13,
                                       color: Color(0xFFFF4F9A),
                                     ),
@@ -161,7 +160,8 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                             alignment: Alignment.centerLeft,
                                             child: Text("인증메일을 받지 못하셨나요?",
                                                 style: TextStyle(
-                                                  fontFamily: "NotoSansKR",
+                                                  fontFamily:
+                                                      "Noto Sans CJK KR",
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 20,
                                                   color: Color(0xff000000),
@@ -178,7 +178,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                                       "이메일을 올바르게 입력하셨는지 다시 한번 확\n인해 보세요.\n\n스팸편지함 혹은 휴지통을 확인해 보세요.\n메일 서비스에 따라 도착하기까지 다소 시간이 \n걸릴 수 있습니다.",
                                                       style: TextStyle(
                                                         fontFamily:
-                                                            "NotoSansKR",
+                                                            "Noto Sans CJK KR",
                                                         fontWeight:
                                                             FontWeight.w300,
                                                         fontSize: 14,
@@ -211,7 +211,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                                           "재발송",
                                                           style: TextStyle(
                                                             fontFamily:
-                                                                "NotoSansKR",
+                                                                "Noto Sans CJK KR",
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 15,
@@ -233,7 +233,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                                           "닫기",
                                                           style: TextStyle(
                                                             fontFamily:
-                                                                "NotoSansKR",
+                                                                "Noto Sans CJK KR",
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 15,

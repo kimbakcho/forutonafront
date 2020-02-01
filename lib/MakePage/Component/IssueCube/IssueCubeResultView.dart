@@ -23,7 +23,6 @@ class _IssueCubeResultViewState extends State<IssueCubeResultView>
 
   @override
   void didInitState() async {
-    // TODO: implement didInitState
     isloading = true;
     setState(() {});
     makercubegetreviewpoint = await UserExpPointHistroy.getCubeuuidGetPoint(
@@ -57,7 +56,7 @@ class _IssueCubeResultViewState extends State<IssueCubeResultView>
                           child: Text("제작 경험치 = ${fcubeextender1.makeexp}"),
                         ),
                         Container(
-                          child: Text("평가 경험치 = ${makercubegetreviewpoint}"),
+                          child: Text("평가 경험치 = $makercubegetreviewpoint"),
                         )
                       ],
                     ),

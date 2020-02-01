@@ -22,7 +22,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
-  double cardsize = null;
+
   @override
   void initState() {
     super.initState();
@@ -138,7 +138,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                             title: Container(
                               child: Text("로그인 실패",
                                   style: TextStyle(
-                                    fontFamily: "NotoSansKR",
+                                    fontFamily: "Noto Sans CJK KR",
                                     fontWeight: FontWeight.w700,
                                     fontSize: 20,
                                     color: Color(0xff000000),
@@ -160,7 +160,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                                           child: Text(
                                             "확인",
                                             style: TextStyle(
-                                                fontFamily: "NotoSansKR",
+                                                fontFamily: "Noto Sans CJK KR",
                                                 fontSize: 15,
                                                 color: Theme.of(context)
                                                     .primaryColor),
@@ -186,7 +186,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                         child: Text(
                   "로그인",
                   style: TextStyle(
-                      fontFamily: 'NotoSansKR',
+                      fontFamily: 'Noto Sans CJK KR',
                       fontSize: 15,
                       color: Colors.white),
                 )))),
@@ -201,7 +201,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                           "혹시 비밀번호를 분실하셧나요?",
                           style: TextStyle(
                             decoration: TextDecoration.underline,
-                            fontFamily: 'NotoSansKR',
+                            fontFamily: 'Noto Sans CJK KR',
                             fontSize: 13,
                             color: Color(0xFFFF4F9A),
                           ),
@@ -221,7 +221,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                   child: Text(
                     "소셜계정으로 로그인하기",
                     style: TextStyle(
-                      fontFamily: 'NotoSansKR',
+                      fontFamily: 'Noto Sans CJK KR',
                       fontSize: 13,
                       color: Color(0xFF78849E),
                     ),
@@ -319,7 +319,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                     : Text("로그인하기",
                         style: TextStyle(
                             color: Colors.white,
-                            fontFamily: 'NotoSansKR',
+                            fontFamily: 'Noto Sans CJK KR',
                             fontWeight: FontWeight.w700,
                             fontSize: 24))),
             elevation: 0,
@@ -334,7 +334,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                           "로그인하기",
                           style: TextStyle(
                               color: Colors.white,
-                              fontFamily: 'NotoSansKR',
+                              fontFamily: 'Noto Sans CJK KR',
                               fontWeight: FontWeight.w700,
                               fontSize: 24),
                         ),
@@ -350,7 +350,7 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                           "라드볼을 만들기 위해서는 로그인이 필요합니다.",
                           style: TextStyle(
                               color: Colors.white,
-                              fontFamily: 'NotoSansKR',
+                              fontFamily: 'Noto Sans CJK KR',
                               fontSize: 13),
                         ),
                       )

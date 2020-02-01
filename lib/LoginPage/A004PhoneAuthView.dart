@@ -115,7 +115,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
-                          fontFamily: 'NotoSansKR',
+                          fontFamily: 'Noto Sans CJK KR',
                           fontSize: 20),
                     ),
                   ),
@@ -134,7 +134,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                           child: Text("확인",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
-                                  fontFamily: 'NotoSansKR',
+                                  fontFamily: 'Noto Sans CJK KR',
                                   fontSize: 14))))
                 ]),
               ));
@@ -143,7 +143,6 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     if (periodicSub != null) {
       periodicSub.cancel();
@@ -195,7 +194,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
-                        fontFamily: 'NotoSansKR',
+                        fontFamily: 'Noto Sans CJK KR',
                         fontSize: 20)),
             leading: IconButton(
               onPressed: () {
@@ -218,7 +217,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
-                                fontFamily: 'NotoSansKR',
+                                fontFamily: 'Noto Sans CJK KR',
                                 fontSize: 24)),
                       )
                     : Container(),
@@ -231,7 +230,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                         child: Text("먼저,휴대폰 인증이 필요합니다.",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontFamily: 'NotoSansKR',
+                                fontFamily: 'Noto Sans CJK KR',
                                 fontSize: 13)),
                       )
                     : Container(),
@@ -286,7 +285,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                             hintText: "인증번호 입력",
                                             hintStyle: TextStyle(
                                                 color: Color(0xFF78849E),
-                                                fontFamily: 'NotoSansKR',
+                                                fontFamily: 'Noto Sans CJK KR',
                                                 fontSize: 15),
                                             border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
@@ -314,7 +313,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                             "인증번호 요청",
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontFamily: 'NotoSansKR',
+                                                fontFamily: 'Noto Sans CJK KR',
                                                 fontSize: 15),
                                           )),
                                       decoration: BoxDecoration(
@@ -342,7 +341,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                             "인증번호 요청",
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontFamily: 'NotoSansKR',
+                                                fontFamily: 'Noto Sans CJK KR',
                                                 fontSize: 15),
                                           )),
                                       decoration: BoxDecoration(
@@ -369,21 +368,21 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                 text: "인증번호는 ",
                                 children: [
                                   TextSpan(
-                                      text: "${authtimelimit}초 ",
+                                      text: "$authtimelimit초 ",
                                       style: TextStyle(
                                           color: Color(0xffFF4F9A),
-                                          fontFamily: 'NotoSansKR',
+                                          fontFamily: 'Noto Sans CJK KR',
                                           fontSize: 13)),
                                   TextSpan(
                                       text: "후에 다시 요청 하실수 있습니다.",
                                       style: TextStyle(
                                           color: Color(0xff454F63),
-                                          fontFamily: 'NotoSansKR',
+                                          fontFamily: 'Noto Sans CJK KR',
                                           fontSize: 13))
                                 ],
                                 style: TextStyle(
                                     color: Color(0xff454F63),
-                                    fontFamily: 'NotoSansKR',
+                                    fontFamily: 'Noto Sans CJK KR',
                                     fontSize: 13)),
                           ),
                         ),
@@ -495,7 +494,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         fontFamily:
-                                                            'NotoSansKR',
+                                                            'Noto Sans CJK KR',
                                                         fontSize: 20),
                                                   ),
                                                 ),
@@ -510,7 +509,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontFamily:
-                                                            'NotoSansKR',
+                                                            'Noto Sans CJK KR',
                                                         fontSize: 14),
                                                   ),
                                                 ),
@@ -540,7 +539,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                                                         context)
                                                                     .primaryColor,
                                                                 fontFamily:
-                                                                    'NotoSansKR',
+                                                                    'Noto Sans CJK KR',
                                                                 fontSize: 14))))
                                               ])));
                                     });
@@ -552,7 +551,7 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
                                   color: iscanrequest
                                       ? Colors.white
                                       : Theme.of(context).primaryColor,
-                                  fontFamily: 'NotoSansKR',
+                                  fontFamily: 'Noto Sans CJK KR',
                                   fontSize: 15),
                             ),
                           ),

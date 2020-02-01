@@ -95,7 +95,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontFamily: 'NotoSansKR',
+                          fontFamily: 'Noto Sans CJK KR',
                           fontSize: 20)),
                   leading: IconButton(
                       onPressed: () {
@@ -125,7 +125,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                                     "완료",
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor,
-                                        fontFamily: 'NotoSansKR',
+                                        fontFamily: 'Noto Sans CJK KR',
                                         fontSize: 16),
                                   ),
                                   onPressed: () async {
@@ -157,7 +157,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                                                         "패스워드를 변경하였습니다.",
                                                         style: TextStyle(
                                                           fontFamily:
-                                                              "NotoSansKR",
+                                                              "Noto Sans CJK KR",
                                                           fontWeight:
                                                               FontWeight.w300,
                                                           fontSize: 14,
@@ -194,7 +194,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                                                         child: Text("확인",
                                                             style: TextStyle(
                                                               fontFamily:
-                                                                  "NotoSansKR",
+                                                                  "Noto Sans CJK KR",
                                                               fontSize: 15,
                                                               color: Color(
                                                                   0xff39f999),
@@ -226,7 +226,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                                   "완료",
                                   style: TextStyle(
                                       color: Color(0xff999999),
-                                      fontFamily: 'NotoSansKR',
+                                      fontFamily: 'Noto Sans CJK KR',
                                       fontSize: 16),
                                 ),
                                 onPressed: () async {},
@@ -253,7 +253,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                                 child: Text(
                                     "새로운 패스워드를 생성합니다.\n패스워드는 8자리 이상을 사용해주세요.",
                                     style: TextStyle(
-                                      fontFamily: "NotoSansKR",
+                                      fontFamily: "Noto Sans CJK KR",
                                       fontSize: 14,
                                       color: Color(0xff78849e),
                                     ))),

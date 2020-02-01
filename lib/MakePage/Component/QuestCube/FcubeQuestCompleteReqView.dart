@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCard.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCompleteReqSend.dart';
@@ -9,7 +8,7 @@ import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccess.dart';
 import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccessExtender1.dart';
-import 'package:forutonafront/globals.dart';
+
 import 'package:intl/intl.dart';
 
 class FcubeQuestCompleteReqView extends StatefulWidget {
@@ -36,7 +35,6 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
   GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     init();
   }
@@ -383,8 +381,8 @@ class _FcubeQuestCompleteReqViewState extends State<FcubeQuestCompleteReqView> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                            content: FcubeQuestReviewCard(
-                                fcubequest: fcubequest));
+                            content:
+                                FcubeQuestReviewCard(fcubequest: fcubequest));
                       });
                 }
                 setState(() {});

@@ -57,6 +57,7 @@ class FcubeExtender1 extends Fcube {
     userlevel = json['userlevel'];
     fcmtoken = json['fcmtoken'];
     makeexp = json['makeexp'];
+    commentcount = json['commentcount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -97,6 +98,8 @@ class FcubeExtender1 extends Fcube {
     data['userlevel'] = this.userlevel;
     data['fcmtoken'] = this.fcmtoken;
     data['makeexp'] = this.makeexp;
+    data['commentcount'] = this.commentcount;
+
     return data;
   }
 

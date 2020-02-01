@@ -15,7 +15,6 @@ import 'package:forutonafront/PlayPage/QuestCube/QuestCollapsed.dart';
 import 'package:forutonafront/PlayPage/QuestCube/QuestCubeCard.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/globals.dart';
-import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_place/search_map_place.dart';
@@ -35,7 +34,7 @@ class _PlayPageViewState extends State<PlayPageView> {
   String findcurrentselectcubeuuid;
   Geolocator geolocation = Geolocator();
   Position initposition;
-  GoogleMapController googlemap_controller;
+  GoogleMapController googlemapcontroller;
   Set<Marker> markers = Set<Marker>();
   bool isloading;
   PanelController panelController = PanelController();
@@ -89,7 +88,7 @@ class _PlayPageViewState extends State<PlayPageView> {
   }
 
   void onMapCreated(GoogleMapController controller) async {
-    googlemap_controller = controller;
+    googlemapcontroller = controller;
     clusteringHelper.mapController = controller;
     initposition = await geolocation.getCurrentPosition();
     initialCameraPosition = new CameraPosition(
@@ -105,7 +104,7 @@ class _PlayPageViewState extends State<PlayPageView> {
   }
 
   initMemoryClustering(CameraPosition cameraPosition) async {
-    LatLngBounds visibleGegion = await googlemap_controller.getVisibleRegion();
+    LatLngBounds visibleGegion = await googlemapcontroller.getVisibleRegion();
     double distance = await geolocation.distanceBetween(
         cameraPosition.target.latitude,
         cameraPosition.target.longitude,
@@ -243,7 +242,7 @@ class _PlayPageViewState extends State<PlayPageView> {
                   LatLng selectlatlng = LatLng(
                       fcubeplayerListUtil.cubeList[index].latitude,
                       fcubeplayerListUtil.cubeList[index].longitude);
-                  googlemap_controller
+                  googlemapcontroller
                       .animateCamera(CameraUpdate.newLatLng(selectlatlng));
                 }
               });
@@ -369,9 +368,9 @@ class _PlayPageViewState extends State<PlayPageView> {
                   radius: 30000,
                   onSelected: (place) async {
                     final geolocation = await place.geolocation;
-                    googlemap_controller.animateCamera(
+                    googlemapcontroller.animateCamera(
                         CameraUpdate.newLatLng(geolocation.coordinates));
-                    googlemap_controller.animateCamera(
+                    googlemapcontroller.animateCamera(
                         CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
                     currentFindAddredss = place.description;
                   },

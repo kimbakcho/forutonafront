@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/PlayPage/Fcubeplayercontent.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart' as http;

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 
 class HomePageView extends StatefulWidget {
   HomePageView({Key key}) : super(key: key);
@@ -17,7 +16,6 @@ class _HomePageViewState extends State<HomePageView> {
   IdTokenResult token;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     inits();
   }

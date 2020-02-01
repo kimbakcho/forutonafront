@@ -73,7 +73,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
-                      fontFamily: 'NotoSansKR',
+                      fontFamily: 'Noto Sans CJK KR',
                       fontSize: 20)),
               leading: IconButton(
                 onPressed: () {
@@ -104,7 +104,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                                 "다음",
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColor,
-                                    fontFamily: 'NotoSansKR',
+                                    fontFamily: 'Noto Sans CJK KR',
                                     fontSize: 16),
                               ),
                               onPressed: () async {
@@ -140,7 +140,8 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                                           title: Container(
                                             child: Text("계정 정보 오류",
                                                 style: TextStyle(
-                                                  fontFamily: "NotoSansKR",
+                                                  fontFamily:
+                                                      "Noto Sans CJK KR",
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 20,
                                                   color: Color(0xff000000),
@@ -157,7 +158,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                                                       "입력하신 정보와 일치하는 계정이 없습니다.",
                                                       style: TextStyle(
                                                         fontFamily:
-                                                            "NotoSansKR",
+                                                            "Noto Sans CJK KR",
                                                         fontWeight:
                                                             FontWeight.w300,
                                                         fontSize: 14,
@@ -177,7 +178,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                                                         child: Text("확인",
                                                             style: TextStyle(
                                                                 fontFamily:
-                                                                    "NotoSansKR",
+                                                                    "Noto Sans CJK KR",
                                                                 fontSize: 15,
                                                                 color: Theme.of(
                                                                         context)
@@ -218,7 +219,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                               "다음",
                               style: TextStyle(
                                   color: Color(0xff999999),
-                                  fontFamily: 'NotoSansKR',
+                                  fontFamily: 'Noto Sans CJK KR',
                                   fontSize: 16),
                             ),
                             onPressed: () async {},
@@ -248,7 +249,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                         alignment: Alignment.centerLeft,
                         child: Text("현재 사용중이신 계정 이메일 주소를\n입력해주세요.",
                             style: TextStyle(
-                              fontFamily: "NotoSansKR",
+                              fontFamily: "Noto Sans CJK KR",
                               fontSize: 14,
                               color: Color(0xff78849e),
                             )),

@@ -58,7 +58,7 @@ class _VaildTextFromFieldState extends State<VaildTextFromField> {
                   filled: true,
                   hintText: item.hintText,
                   hintStyle: TextStyle(
-                    fontFamily: "NotoSansKR",
+                    fontFamily: "Noto Sans CJK KR",
                     fontSize: 15,
                     color: Color(0xff78849e).withOpacity(0.56),
                   ),

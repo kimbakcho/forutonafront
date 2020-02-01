@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Preference.dart';
@@ -10,7 +9,6 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:math';
 
 class UserInfoMain {
   String uid;
@@ -166,7 +164,7 @@ class UserInfoMain {
       String uuid, String phonenumber, String isocode) async {
     var requesturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Auth/requestAuthPhoneNumber");
-    Response response = await http.post(requesturl,
+    await http.post(requesturl,
         body: jsonEncode({
           "uuid": uuid,
           "phonenumber": phonenumber,
@@ -278,11 +276,11 @@ class UserInfoMain {
   static Future<BitmapDescriptor> getBytesFromCanvasMakerIcon(
       String imageurl) async {
     double width = 50.0;
-    double height = 50.0;
+    // double height = 50.0;
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final center = Offset(50, 50);
-    final radius = min(height, width) / 8;
+    // final radius = min(height, width) / 8;
     Paint paintCircle = Paint()..color = Colors.black;
     Paint paintBorder = Paint()
       ..color = Colors.white

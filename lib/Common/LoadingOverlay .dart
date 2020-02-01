@@ -38,11 +38,11 @@ class _LoadingOverlayState extends State<LoadingOverlay>
       // ignore: unnecessary_statements
       status == AnimationStatus.forward
           ? setState(() => {_overlayVisible = true})
-          : null;
+          : setState(() => {});
       // ignore: unnecessary_statements
       status == AnimationStatus.dismissed
           ? setState(() => {_overlayVisible = false})
-          : null;
+          : setState(() => {});
     });
   }
 

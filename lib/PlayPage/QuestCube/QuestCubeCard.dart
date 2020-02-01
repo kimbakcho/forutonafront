@@ -152,7 +152,7 @@ class _QuestCubeCardState extends State<QuestCubeCard> {
                     child:
                         Container(child: Text("${cubeitem.influencereward}"))),
                 Expanded(
-                  child: Container(child: Text("${activetime}")),
+                  child: Container(child: Text(activetime)),
                 ),
               ],
             )

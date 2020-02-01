@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:forutonafront/MakePage/GoogleMapsMakeView.dart';
 import 'package:forutonafront/MakePage/SelectSwipeCubeView.dart';
 import 'package:forutonafront/SplashPage.dart';
-import 'MainPage.dart';
 import 'globals.dart';
 
 void main() => runApp(new GlobalStateContainer(child: MyApp()));

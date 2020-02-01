@@ -59,7 +59,7 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
-                      fontFamily: "NotoSansKR",
+                      fontFamily: "Noto Sans CJK KR",
                       fontSize: 20),
                 ),
               ),
@@ -102,7 +102,7 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                                         child: Text(
                                   "회원가입",
                                   style: TextStyle(
-                                      fontFamily: 'NotoSansKR',
+                                      fontFamily: 'Noto Sans CJK KR',
                                       fontSize: 14,
                                       color: Color(0xff39F999)),
                                 )))),
@@ -147,7 +147,7 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                                               child: Text(
                                         "회원가입",
                                         style: TextStyle(
-                                            fontFamily: 'NotoSansKR',
+                                            fontFamily: 'Noto Sans CJK KR',
                                             fontSize: 14,
                                             color: Color(0xff39F999)),
                                       )))),
@@ -205,7 +205,8 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                                             child: Text("이메일로 가입하기",
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontFamily: 'NotoSansKR',
+                                                    fontFamily:
+                                                        'Noto Sans CJK KR',
                                                     fontSize: 14))),
                                       ),
                                       SizedBox(height: 51),
@@ -213,7 +214,7 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                                           child: new Text(
                                         "소셜계정으로 가입하기",
                                         style: TextStyle(
-                                          fontFamily: "NotoSansKR",
+                                          fontFamily: "Noto Sans CJK KR",
                                           fontSize: 14,
                                           color: Color(0xff78849e),
                                         ),
@@ -313,7 +314,7 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                               child: Text(
                                 "이미 회원이신가요? 로그인하기",
                                 style: TextStyle(
-                                  fontFamily: 'NotoSansKR',
+                                  fontFamily: 'Noto Sans CJK KR',
                                   fontSize: 12,
                                   color: Colors.white,
                                 ),
@@ -342,7 +343,7 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
                                 "나중에하기",
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,
-                                  fontFamily: 'NotoSansKR',
+                                  fontFamily: 'Noto Sans CJK KR',
                                   fontSize: 12,
                                   color: Colors.white,
                                 ),

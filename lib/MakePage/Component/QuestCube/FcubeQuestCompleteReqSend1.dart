@@ -77,6 +77,8 @@ class _FcubeQuestCompleteReqSend1State
           )
         ],
       );
+    } else {
+      return null;
     }
   }
 

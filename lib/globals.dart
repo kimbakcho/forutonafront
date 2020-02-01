@@ -10,8 +10,6 @@ import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:search_map_place/search_map_place.dart';
 import 'package:http/http.dart' as http;
 
 class GlobalStateContainer extends StatefulWidget {
@@ -37,9 +35,8 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
   }
 
   setfcubeListUtilisLoading(bool value) {
-    setState(() {
-      state.fcubeListUtil.isLoading = value;
-    });
+    state.fcubeListUtil.isLoading = value;
+
   }
 
   setfcubeplayerListUtilisLoading(bool value) {
@@ -49,9 +46,7 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
   }
 
   addfcubeListUtilcubeList(List<FcubeExtender1> value) {
-    setState(() {
-      state.fcubeListUtil.cubeList.addAll(value);
-    });
+    state.fcubeListUtil.cubeList.addAll(value);
   }
 
   addfcubeplayerListUtilcubeList(List<FcubeExtender1> value) {
@@ -97,9 +92,7 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
   }
 
   resetcubeListUtilcubeList() {
-    setState(() {
-      state.fcubeListUtil.cubeList.clear();
-    });
+    state.fcubeListUtil.cubeList.clear();
   }
 
   resetfcubeplayerListUtilcubeList() {
@@ -152,7 +145,6 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
   //여기서 CurrentPosition을 업데이트 해준다.
   updateCubeListupdatedistancewithme(Position position) async {
     await state.fcubeListUtil.updatecubedistancewithme(position);
-    setState(() {});
   }
 
   updatePlayViewCubeListupdatedistancewithme(Position position) async {

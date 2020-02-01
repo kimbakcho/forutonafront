@@ -23,7 +23,7 @@ class _FQuestCubeDetailCubeSetupViewState
     extends State<FQuestCubeDetailCubeSetupView> {
   FcubeQuest fcubeQuest;
   _FQuestCubeDetailCubeSetupViewState({this.fcubeQuest});
-  GoogleMapController googlemap_controller;
+  GoogleMapController googlemapcontroller;
   CameraPosition _kInitialPosition;
   PanelController panelcontroller;
   bool isonPanelOpened = false;
@@ -34,7 +34,6 @@ class _FQuestCubeDetailCubeSetupViewState
   var uuid = new Uuid();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     panelcontroller = new PanelController();
     isonPanelOpened = true;
@@ -50,7 +49,6 @@ class _FQuestCubeDetailCubeSetupViewState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     print("dispose");
     fcubeQuest.currentselectcube = null;
@@ -88,7 +86,7 @@ class _FQuestCubeDetailCubeSetupViewState
   }
 
   void onMapCreated(GoogleMapController controller) async {
-    googlemap_controller = controller;
+    googlemapcontroller = controller;
     BitmapDescriptor markericon =
         await Fcube.getMarkerImage(fcubeQuest.cubeimage, 100);
     markers.add(Marker(
@@ -204,7 +202,7 @@ class _FQuestCubeDetailCubeSetupViewState
                       onPressed: () {
                         if (fcubeQuest.startCubeLocation != null &&
                             fcubeQuest.startCubeLocation.startmaker != null) {
-                          googlemap_controller.animateCamera(
+                          googlemapcontroller.animateCamera(
                               CameraUpdate.newLatLng(fcubeQuest
                                   .startCubeLocation.startmaker.position));
                         }
@@ -297,7 +295,7 @@ class _FQuestCubeDetailCubeSetupViewState
                       onPressed: () {
                         if (fcubeQuest.finishCubeLocation != null &&
                             fcubeQuest.finishCubeLocation.finishmaker != null) {
-                          googlemap_controller.animateCamera(
+                          googlemapcontroller.animateCamera(
                               CameraUpdate.newLatLng(fcubeQuest
                                   .finishCubeLocation.finishmaker.position));
                         }
@@ -395,7 +393,7 @@ class _FQuestCubeDetailCubeSetupViewState
                       if (fcubeQuest
                           .messagecubeLocations[currentMessagecubeindex]
                           .ismarkersetuponmap) {
-                        googlemap_controller.animateCamera(
+                        googlemapcontroller.animateCamera(
                             CameraUpdate.newLatLng(fcubeQuest
                                 .messagecubeLocations[currentMessagecubeindex]
                                 .messagemaker
@@ -533,7 +531,7 @@ class _FQuestCubeDetailCubeSetupViewState
                       if (fcubeQuest
                           .checkincubeLocations[currentCheckincubeindex]
                           .ismarkersetuponmap) {
-                        googlemap_controller.animateCamera(
+                        googlemapcontroller.animateCamera(
                             CameraUpdate.newLatLng(fcubeQuest
                                 .checkincubeLocations[currentCheckincubeindex]
                                 .checkincubemaker

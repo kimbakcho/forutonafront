@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A003ServiceUserAgreements.dart';
 import 'package:forutonafront/LoginPage/A004PhoneAuthView.dart';
 import 'package:forutonafront/LoginPage/Component/AgreeFieldComponent.dart';
-import 'package:forutonafront/LoginPage/Component/SignInItem.dart';
 
 class A002SignIn1View extends StatefulWidget {
   A002SignIn1View({this.userinfomain, Key key}) : super(key: key);
@@ -117,7 +115,7 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
                     "환영합니다!",
                     style: TextStyle(
                         color: Colors.white,
-                        fontFamily: 'NotoSansKR',
+                        fontFamily: 'Noto Sans CJK KR',
                         fontWeight: FontWeight.w700,
                         fontSize: 24),
                   ),
@@ -131,7 +129,7 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
                     "회원이 되기 위해서는 약관에 동의가 필요합니다.",
                     style: TextStyle(
                         color: Colors.white,
-                        fontFamily: 'NotoSansKR',
+                        fontFamily: 'Noto Sans CJK KR',
                         fontSize: 13),
                   ),
                 ),
@@ -254,7 +252,7 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
                                         "다음",
                                         style: TextStyle(
                                             color: Color(0xff39F999),
-                                            fontFamily: 'NotoSansKR',
+                                            fontFamily: 'Noto Sans CJK KR',
                                             fontSize: 16),
                                       ),
                                       onPressed: () {
@@ -298,7 +296,7 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
                                       "다음",
                                       style: TextStyle(
                                           color: Color(0xff999999),
-                                          fontFamily: 'NotoSansKR',
+                                          fontFamily: 'Noto Sans CJK KR',
                                           fontSize: 16),
                                     ),
                                     onPressed: () {},

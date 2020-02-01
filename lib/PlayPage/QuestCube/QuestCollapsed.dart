@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:intl/intl.dart';
@@ -55,7 +52,7 @@ class _QuestCollapsedState extends State<QuestCollapsed> {
                     ),
                   ),
                   Container(
-                    child: Text("${makeitme}"),
+                    child: Text(makeitme),
                   )
                 ],
               ),

@@ -1,5 +1,4 @@
 import 'package:after_init/after_init.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserExpPointHistroy.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
@@ -177,7 +176,7 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
                           decoration: BoxDecoration(
                               border:
                                   Border.all(width: 1, color: Colors.black)),
-                          child: Text("${questsucesstxt}")),
+                          child: Text(questsucesstxt)),
                       Column(children: makeSucessMessage()),
                       Container(
                           child: Column(children: <Widget>[
@@ -222,7 +221,8 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
                             child: Column(children: <Widget>[
                               Container(
                                 alignment: Alignment(-1, 0),
-                                child: Text("총 획득 경험치 = ${makercubegetreviewpoint}"),
+                                child:
+                                    Text("총 획득 경험치 = $makercubegetreviewpoint"),
                               ),
                               Container(
                                 alignment: Alignment(-1, 0),
@@ -230,8 +230,7 @@ class _FcubeQuestResultViewState extends State<FcubeQuestResultView>
                               ),
                               Container(
                                 alignment: Alignment(-1, 0),
-                                child:
-                                    Text("평가 경험치= ${makercubegetreviewpoint}"),
+                                child: Text("평가 경험치= $makercubegetreviewpoint"),
                               )
                             ])),
                       ],

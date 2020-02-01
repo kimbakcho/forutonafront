@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import "package:flare_flutter/flare_actor.dart";
+import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
-import 'package:forutonafront/MainPage.dart';
 import 'package:forutonafront/MainPage/BCD001MainPage.dart';
+import 'package:forutonafront/globals.dart';
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
@@ -34,6 +35,8 @@ class _SplashPageState extends State<SplashPage> {
                       return A000LoginPageView();
                     }));
           } else {
+            GlobalStateContainer.of(context).state.userInfoMain =
+                await UserInfoMain.getUserInfoMain(user);
             Navigator.push(
                 context,
                 MaterialPageRoute(

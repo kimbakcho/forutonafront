@@ -65,7 +65,7 @@ class _APartCheckBoxState extends State<APartCheckBox> {
         Container(
           child: Text(item.text,
               style: TextStyle(
-                fontFamily: "NotoSansKR",
+                fontFamily: "Noto Sans CJK KR",
                 fontSize: 18,
                 color: Color(0xff454f63),
               )),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/IssueCube/IssueCubeDetailPage.dart';
-import 'package:forutonafront/MakePage/FcubeTypes.dart';
-import 'package:intl/intl.dart';
-
 class IssueCollapsed extends StatefulWidget {
   final FcubeExtender1 cubeitem;
   final Function cubeclickevent;

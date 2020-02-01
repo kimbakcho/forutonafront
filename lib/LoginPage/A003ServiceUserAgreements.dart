@@ -31,7 +31,7 @@ class _A003ServiceUserAgreementsState extends State<A003ServiceUserAgreements> {
             title: Text("서비스 이용 약관",
                 style: TextStyle(
                   color: Colors.white,
-                  fontFamily: "NotoSansKR",
+                  fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                 )),
@@ -75,7 +75,7 @@ class _A003ServiceUserAgreementsState extends State<A003ServiceUserAgreements> {
                             text: "텍스트 추후 웹페이지 링크",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'NotoSansKR',
+                                fontFamily: 'Noto Sans CJK KR',
                                 fontWeight: FontWeight.w700,
                                 fontSize: 24)),
                       ),

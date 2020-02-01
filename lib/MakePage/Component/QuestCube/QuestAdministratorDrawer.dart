@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
-import 'package:forutonafront/Common/Fcubeplayer.dart';
-import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
@@ -28,12 +25,6 @@ class _QuestAdministratorDrawerState extends State<QuestAdministratorDrawer> {
   FcubeQuest fcubequest;
   Map<FcubecontentType, Fcubecontent> detailcontent;
   _QuestAdministratorDrawerState({this.fcubequest, this.detailcontent});
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-  }
 
   FcubeJoinMode getjoinmode() {
     UserInfoMain userInfoMain =

@@ -37,7 +37,6 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
   _IssueCubeDetailPageState({this.fcubeextender1});
   bool ispageloading = false;
   CameraPosition initialCameraPosition;
-  GoogleMapController _mapController;
   Fcubecontent description;
   Set<Marker> makres = new Set<Marker>();
   CubeMakeRichTextEdit richtextview;
@@ -52,7 +51,6 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ispageloading = true;
     initialCameraPosition = new CameraPosition(
@@ -62,7 +60,6 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
 
   @override
   void didInitState() async {
-    // TODO: implement didInitState
     setState(() {
       ispageloading = true;
     });
@@ -120,7 +117,6 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
   }
 
   void onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
     setmakers();
   }
 
@@ -138,7 +134,6 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     remainRefrashTimer.cancel();
     mianRefrashTimer.cancel();
@@ -317,6 +312,7 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
                     onNotification: (scrollNotification) {
                       scorllernotifiy = scrollNotification;
                       setState(() {});
+                      return true;
                     },
                     child: ListView(
                       children: <Widget>[
@@ -338,7 +334,7 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
                                   Container(
                                     width: 50,
                                   ),
-                                  Text("${currentdistancediff} m")
+                                  Text("$currentdistancediff m")
                                 ],
                               ),
                             ),
@@ -373,7 +369,7 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
                                   child: Row(
                                     children: <Widget>[
                                       Text("조회수 = ${fcubeextender1.cubehits}"),
-                                      Text("등록일시 = ${makeitme}"),
+                                      Text("등록일시 = $makeitme"),
                                     ],
                                   ),
                                 ),

@@ -56,7 +56,6 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     markers.clear();
     tabController = new TabController(length: 4, vsync: this);
@@ -537,7 +536,7 @@ class _QuestAdministratorPageState extends State<QuestAdministratorPage>
               SizedBox(
                 width: 50,
               ),
-              Text("${actday}일 ${acthour}:${actmin}:${actsec}"),
+              Text("$actday일 $acthour:$actmin:$actsec"),
             ],
           ),
           actions: <Widget>[

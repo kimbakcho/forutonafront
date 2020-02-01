@@ -6,7 +6,6 @@ import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/globals.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
 
@@ -27,7 +26,6 @@ class _FcubeJoinHistoryViewState extends State<FcubeJoinHistoryView>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     scrollController.addListener(() async {

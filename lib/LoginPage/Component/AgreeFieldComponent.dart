@@ -63,7 +63,7 @@ class _AgreeFieldComponentState extends State<AgreeFieldComponent> {
             child: Text(
               this.fielditem.text,
               style: TextStyle(
-                fontFamily: 'NotoSansKR',
+                fontFamily: 'Noto Sans CJK KR',
                 fontSize: 14,
               ),
             ),
@@ -76,7 +76,7 @@ class _AgreeFieldComponentState extends State<AgreeFieldComponent> {
                 child: Container(
                     child: Text(this.fielditem.subtext,
                         style: TextStyle(
-                          fontFamily: 'NotoSansKR',
+                          fontFamily: 'Noto Sans CJK KR',
                           fontSize: 10,
                         ))))
             : Container(),

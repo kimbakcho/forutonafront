@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/MutipleImageSelectView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestCompleteReqSend1.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
@@ -37,7 +36,6 @@ class _FcubeQuestCompleteReqSendState extends State<FcubeQuestCompleteReqSend> {
   var scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     authmethod = json.decode(
         detailcontent[FcubecontentType.authmethod].contentvalue)["authmethod"];

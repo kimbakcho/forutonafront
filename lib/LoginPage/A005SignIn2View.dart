@@ -117,7 +117,7 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontFamily: 'NotoSansKR',
+                          fontFamily: 'Noto Sans CJK KR',
                           fontSize: 20)),
                   leading: IconButton(
                     onPressed: () {
@@ -148,7 +148,7 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
                                     "다음",
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor,
-                                        fontFamily: 'NotoSansKR',
+                                        fontFamily: 'Noto Sans CJK KR',
                                         fontSize: 16),
                                   ),
                                   onPressed: () async {
@@ -195,7 +195,7 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
                                   "다음",
                                   style: TextStyle(
                                       color: Color(0xff999999),
-                                      fontFamily: 'NotoSansKR',
+                                      fontFamily: 'Noto Sans CJK KR',
                                       fontSize: 16),
                                 ),
                                 onPressed: () async {},
@@ -225,7 +225,7 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
                                   child: Text(
                                     "아이디는 실제 사용하시는 이메일로 작성해주세요. \n 패스워드 분실시 복구에 사용됩니다.",
                                     style: TextStyle(
-                                      fontFamily: "NotoSansKR",
+                                      fontFamily: "Noto Sans CJK KR",
                                       fontSize: 14,
                                       color: Color(0xff78849e),
                                     ),
@@ -247,7 +247,7 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
                                             EdgeInsets.fromLTRB(48, 10, 0, 21),
                                         child: Text("*이미 존재하는 아이디 입니다.",
                                             style: TextStyle(
-                                              fontFamily: "NotoSansKR",
+                                              fontFamily: "Noto Sans CJK KR",
                                               fontSize: 14,
                                               color: Color(0xffff4f9a),
                                             )),

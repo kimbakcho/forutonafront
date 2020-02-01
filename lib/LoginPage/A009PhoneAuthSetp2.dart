@@ -104,7 +104,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
-                        fontFamily: 'NotoSansKR',
+                        fontFamily: 'Noto Sans CJK KR',
                         fontSize: 20)),
                 leading: IconButton(
                   onPressed: () {
@@ -171,7 +171,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                             hintText: "인증번호 입력",
                                             hintStyle: TextStyle(
                                                 color: Color(0xFF78849E),
-                                                fontFamily: 'NotoSansKR',
+                                                fontFamily: 'Noto Sans CJK KR',
                                                 fontSize: 15),
                                             border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
@@ -214,7 +214,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                             "휴대폰 번호 불일치",
                                                             style: TextStyle(
                                                               fontFamily:
-                                                                  "NotoSansKR",
+                                                                  "Noto Sans CJK KR",
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,
@@ -233,7 +233,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                                     style:
                                                                         TextStyle(
                                                                       fontFamily:
-                                                                          "NotoSansKR",
+                                                                          "Noto Sans CJK KR",
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w300,
@@ -272,7 +272,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                                     style:
                                                                         TextStyle(
                                                                       fontFamily:
-                                                                          "NotoSansKR",
+                                                                          "Noto Sans CJK KR",
                                                                       fontSize:
                                                                           15,
                                                                       color: Color(
@@ -291,7 +291,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                             "인증번호 요청",
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontFamily: 'NotoSansKR',
+                                                fontFamily: 'Noto Sans CJK KR',
                                                 fontSize: 15),
                                           )),
                                       decoration: BoxDecoration(
@@ -319,7 +319,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                             "인증번호 요청",
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontFamily: 'NotoSansKR',
+                                                fontFamily: 'Noto Sans CJK KR',
                                                 fontSize: 15),
                                           )),
                                       decoration: BoxDecoration(
@@ -346,21 +346,21 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                 text: "인증번호는 ",
                                 children: [
                                   TextSpan(
-                                      text: "${authtimelimit}초 ",
+                                      text: "$authtimelimit초 ",
                                       style: TextStyle(
                                           color: Color(0xffFF4F9A),
-                                          fontFamily: 'NotoSansKR',
+                                          fontFamily: 'Noto Sans CJK KR',
                                           fontSize: 13)),
                                   TextSpan(
                                       text: "후에 다시 요청 하실수 있습니다.",
                                       style: TextStyle(
                                           color: Color(0xff454F63),
-                                          fontFamily: 'NotoSansKR',
+                                          fontFamily: 'Noto Sans CJK KR',
                                           fontSize: 13))
                                 ],
                                 style: TextStyle(
                                     color: Color(0xff454F63),
-                                    fontFamily: 'NotoSansKR',
+                                    fontFamily: 'Noto Sans CJK KR',
                                     fontSize: 13)),
                           ),
                         ),
@@ -419,7 +419,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         fontFamily:
-                                                            'NotoSansKR',
+                                                            'Noto Sans CJK KR',
                                                         fontSize: 20),
                                                   ),
                                                 ),
@@ -434,7 +434,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontFamily:
-                                                            'NotoSansKR',
+                                                            'Noto Sans CJK KR',
                                                         fontSize: 14),
                                                   ),
                                                 ),
@@ -464,7 +464,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                                         context)
                                                                     .primaryColor,
                                                                 fontFamily:
-                                                                    'NotoSansKR',
+                                                                    'Noto Sans CJK KR',
                                                                 fontSize: 14))))
                                               ])));
                                     });
@@ -472,7 +472,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                             },
                             child: Text("인증번호 확인",
                                 style: TextStyle(
-                                  fontFamily: "NotoSansKR",
+                                  fontFamily: "Noto Sans CJK KR",
                                   fontSize: 15,
                                   color: iscanrequest
                                       ? Color(0xffffffff)

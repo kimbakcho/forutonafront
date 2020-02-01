@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:forutonafront/Common/FcubeReview.dart';
 import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
-import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
@@ -134,7 +133,7 @@ class _FcubeQuestMesssagecubeDialogState
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     richtextview = CubeMakeRichTextEdit(
       custommode: "nomal",
@@ -266,7 +265,7 @@ class _FcubeQuestCheckincubeDialogState
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     richtextview = CubeMakeRichTextEdit(
       custommode: "nomal",

@@ -29,7 +29,7 @@ class _IssueCubeSetupViewState extends State<IssueCubeSetupView>
   _IssueCubeSetupViewState({this.fcube});
   Set<Marker> makres = new Set<Marker>();
   CameraPosition initialCameraPosition;
-  GoogleMapController _mapController;
+
   ScrollController _mainListcontroller = ScrollController();
   GlobalKey<FormState> pageeditfrom = GlobalKey<FormState>();
   TextEditingController namecontroller = TextEditingController();
@@ -37,7 +37,6 @@ class _IssueCubeSetupViewState extends State<IssueCubeSetupView>
   bool ismakeing = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initialCameraPosition = CameraPosition(
         target: LatLng(fcube.latitude, fcube.longitude), zoom: 16);
@@ -47,7 +46,6 @@ class _IssueCubeSetupViewState extends State<IssueCubeSetupView>
 
   @override
   void didInitState() {
-    // TODO: implement didInitState
     richTextController.ondatacahnge = (value) {
       setState(() {});
     };
@@ -70,9 +68,7 @@ class _IssueCubeSetupViewState extends State<IssueCubeSetupView>
   }
 
   void onMapCreated(GoogleMapController controller) {
-    setState(() {
-      _mapController = controller;
-    });
+    setState(() {});
     setmakers();
   }
 

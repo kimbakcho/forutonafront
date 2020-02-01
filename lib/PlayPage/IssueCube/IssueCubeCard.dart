@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
-import 'package:intl/intl.dart';
 
 class IssueCubeCard extends StatefulWidget {
   final FcubeExtender1 cubeitem;
@@ -29,7 +28,6 @@ class _IssueCubeCardState extends State<IssueCubeCard> with AfterInitMixin {
 
   @override
   void didInitState() {
-    // TODO: implement didInitState
     if (cubeitem.contenttype == FcubecontentType.description) {
       String descriptionjson =
           json.decode(cubeitem.contentvalue)["description"];

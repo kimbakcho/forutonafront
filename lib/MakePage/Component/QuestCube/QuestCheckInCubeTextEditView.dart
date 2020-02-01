@@ -28,7 +28,6 @@ class _QuestCheckInCubeTextEditViewState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     richTextController = new CubeRichTextController();
     richTextController.isedithint = true;

@@ -235,7 +235,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                               "완료",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
-                                  fontFamily: 'NotoSansKR',
+                                  fontFamily: 'Noto Sans CJK KR',
                                   fontSize: 16),
                             ),
                             onPressed: () async {
@@ -276,7 +276,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                             "완료",
                             style: TextStyle(
                                 color: Color(0xff999999),
-                                fontFamily: 'NotoSansKR',
+                                fontFamily: 'Noto Sans CJK KR',
                                 fontSize: 16),
                           ),
                           onPressed: () async {},
@@ -290,7 +290,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
             Container(
               child: Text("거의 다 왔습니다!",
                   style: TextStyle(
-                    fontFamily: "NotoSansKR",
+                    fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w700,
                     fontSize: 24,
                     color: Color(0xffffffff),
@@ -302,7 +302,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
             Container(
               child: Text("간단한 프로필을 입력하고 입장합니다.",
                   style: TextStyle(
-                    fontFamily: "NotoSansKR",
+                    fontFamily: "Noto Sans CJK KR",
                     fontSize: 13,
                     color: Color(0xffffffff),
                   )),
@@ -361,7 +361,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                                           filled: true,
                                           hintText: "닉네임 입력",
                                           hintStyle: TextStyle(
-                                            fontFamily: "NotoSansKR",
+                                            fontFamily: "Noto Sans CJK KR",
                                             fontSize: 15,
                                             color: Color(0xff78849e)
                                                 .withOpacity(0.56),
@@ -380,7 +380,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                                   margin: EdgeInsets.fromLTRB(32, 0, 68, 0),
                                   child: Text("성별",
                                       style: TextStyle(
-                                        fontFamily: "NotoSansKR",
+                                        fontFamily: "Noto Sans CJK KR",
                                         fontSize: 15,
                                         color: Color(0xff454f63),
                                       )),
@@ -403,7 +403,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                                   margin: EdgeInsets.fromLTRB(32, 0, 16, 0),
                                   child: Text("생년월일",
                                       style: TextStyle(
-                                        fontFamily: "NotoSansKR",
+                                        fontFamily: "Noto Sans CJK KR",
                                         fontSize: 15,
                                         color: Color(0xff454f63),
                                       )),

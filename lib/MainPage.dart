@@ -167,9 +167,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   initgeopermisstion() async {
-    Map<PermissionGroup, PermissionStatus> reqpermissition =
-        await PermissionHandler().requestPermissions(
-            [PermissionGroup.location, PermissionGroup.locationAlways]);
+    await PermissionHandler().requestPermissions(
+        [PermissionGroup.location, PermissionGroup.locationAlways]);
     PermissionStatus permissition = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.location);
     if (permissition == PermissionStatus.granted) {
@@ -202,9 +201,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> initgeolocation() async {
-    Map<PermissionGroup, PermissionStatus> reqpermissition =
-        await PermissionHandler().requestPermissions(
-            [PermissionGroup.location, PermissionGroup.locationAlways]);
+    await PermissionHandler().requestPermissions(
+        [PermissionGroup.location, PermissionGroup.locationAlways]);
     PermissionStatus permissition = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.location);
     if (permissition == PermissionStatus.granted) {

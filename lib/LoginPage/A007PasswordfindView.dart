@@ -31,7 +31,7 @@ class _A007PasswordfindViewState extends State<A007PasswordfindView> {
               automaticallyImplyLeading: false,
               title: Text("패스워드 찾기",
                   style: TextStyle(
-                    fontFamily: "NotoSansKR",
+                    fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w700,
                     fontSize: 20,
                     color: Color(0xffffffff),
@@ -86,7 +86,7 @@ class _A007PasswordfindViewState extends State<A007PasswordfindView> {
                               height: 65,
                               child: Text("휴대폰 인증하기",
                                   style: TextStyle(
-                                    fontFamily: "NotoSansKR",
+                                    fontFamily: "Noto Sans CJK KR",
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: Color(0xff454f63),
@@ -100,7 +100,7 @@ class _A007PasswordfindViewState extends State<A007PasswordfindView> {
                               alignment: Alignment.centerLeft,
                               child: Text("계정에 등록된 휴대폰 번호를 인증\n하고 패스워드를 변경합니다.",
                                   style: TextStyle(
-                                    fontFamily: "NotoSansKR",
+                                    fontFamily: "Noto Sans CJK KR",
                                     fontWeight: FontWeight.w300,
                                     fontSize: 15,
                                     color: Color(0xff78849e),
@@ -162,7 +162,7 @@ class _A007PasswordfindViewState extends State<A007PasswordfindView> {
                               height: 65,
                               child: Text("이메일주소 인증하기",
                                   style: TextStyle(
-                                    fontFamily: "NotoSansKR",
+                                    fontFamily: "Noto Sans CJK KR",
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: Color(0xff454f63),
@@ -177,7 +177,7 @@ class _A007PasswordfindViewState extends State<A007PasswordfindView> {
                               child:
                                   Text("계정으로 사용한 이메일 주소를 인\n증하고 패스워드를 변경합니다.",
                                       style: TextStyle(
-                                        fontFamily: "NotoSansKR",
+                                        fontFamily: "Noto Sans CJK KR",
                                         fontWeight: FontWeight.w300,
                                         fontSize: 15,
                                         color: Color(0xff78849e),
