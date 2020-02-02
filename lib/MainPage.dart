@@ -8,6 +8,7 @@ import 'package:forutonafront/Common/GeoSearchUtil.dart';
 import 'package:forutonafront/HomePage/HomePageView.dart';
 import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
 import 'package:forutonafront/MakePage/MakePageView.dart';
 import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
@@ -112,7 +113,7 @@ class _MainPageState extends State<MainPage> {
           GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
 
           GlobalStateContainer.of(context).addfcubeListUtilcubeList(
-              await FcubeExtender1.getusercubes(offset: 0, limit: 10));
+              await FcubeExtender1.getusercubes(FcubeSearch(limit: 10,offset: 0,isdesc: true,orderby: "MakeTime")));
 
           initgeopermisstion();
 

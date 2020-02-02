@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/Preference.dart';
@@ -58,6 +59,10 @@ class FcubeExtender1 extends Fcube {
     fcmtoken = json['fcmtoken'];
     makeexp = json['makeexp'];
     commentcount = json['commentcount'];
+    napoint = json['napoint'];
+    youpoint = json['youpoint'];
+    pointreward = json['pointreward'];
+    userexp = json['userexp'];
   }
 
   Map<String, dynamic> toJson() {
@@ -99,25 +104,28 @@ class FcubeExtender1 extends Fcube {
     data['fcmtoken'] = this.fcmtoken;
     data['makeexp'] = this.makeexp;
     data['commentcount'] = this.commentcount;
-
+    data['napoint'] = this.napoint;
+    data['youpoint'] = this.youpoint;
+    data['pointreward'] = this.pointreward;
+    data['userexp'] = this.userexp;
     return data;
   }
 
-  static Future<List<FcubeExtender1>> getusercubes(
-      {int offset, int limit}) async {
+  static Future<List<FcubeExtender1>> getusercubes(FcubeSearch search) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     IdTokenResult token = await user.getIdToken();
-    var url = Preference.httpurloption(Preference.baseBackEndUrl,
-        "/api/v1/Fcube/getusercubes", {"offset": "$offset", "limit": "$limit"});
+    var url = Preference.httpurloption(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/getusercubes", {
+      "limit": search.limit.toString(),
+      "offset": search.offset.toString(),
+      "orderby": search.orderby,
+      "isdesc": search.isdesc.toString(),
+    });
     var response = await http.get(url,
         headers: {HttpHeaders.authorizationHeader: "Bearer " + token.token});
-    // print(response.body);
-    var recvjson = jsonDecode(response.body);
-    List<FcubeExtender1> list = new List<FcubeExtender1>();
-    recvjson.forEach((v) {
-      list.add(new FcubeExtender1.fromJson(v));
-    });
-    return list;
+
+    return List<FcubeExtender1>.from(
+        json.decode(response.body).map((x) => FcubeExtender1.fromJson(x)));
   }
 
   static Future<FcubeExtender1> getFcubeExtender1(

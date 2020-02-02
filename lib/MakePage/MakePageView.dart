@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
 import 'package:forutonafront/MakePage/Component/IssueCube/IssueCubeDetailPage.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestBottomNaviBar.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
@@ -276,7 +277,7 @@ class _MakePageViewState extends State<MakePageView> {
     GlobalStateContainer.of(context).resetcubeListUtilcubeList();
     GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
     GlobalStateContainer.of(context).addfcubeListUtilcubeList(
-        await FcubeExtender1.getusercubes(offset: 0, limit: 10));
+        await FcubeExtender1.getusercubes(FcubeSearch(limit: 10,offset: 0,isdesc: true,orderby: "MakeTime")));
     Position currentposition =
         GlobalStateContainer.of(context).state.currentposition;
     GlobalStateContainer.of(context)

@@ -20,10 +20,15 @@ class ForutonaIcon {
 
   static const _kFontFam = 'ForutonaIcon';
 
+  static const IconData issue = const IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData quest = const IconData(0xe801, fontFamily: _kFontFam);
+  static const IconData mainfab = const IconData(0xe802, fontFamily: _kFontFam);
+  static const IconData napoint = const IconData(0xe803, fontFamily: _kFontFam);
   static const IconData thumbsdown = const IconData(0xe804, fontFamily: _kFontFam);
   static const IconData thumbsup = const IconData(0xe805, fontFamily: _kFontFam);
   static const IconData whatshot = const IconData(0xe806, fontFamily: _kFontFam);
   static const IconData accesstime = const IconData(0xe807, fontFamily: _kFontFam);
   static const IconData comment = const IconData(0xe808, fontFamily: _kFontFam);
   static const IconData pointdash = const IconData(0xe809, fontFamily: _kFontFam);
+  static const IconData path = const IconData(0xe80a, fontFamily: _kFontFam);
 }

@@ -11,6 +11,7 @@ class Preference {
 
   static Uri httpurloption(String authority, String unencodedPath,
       [Map<String, String> queryParameters]) {
+
     return Uri.http(authority, unencodedPath, queryParameters);
   }
 

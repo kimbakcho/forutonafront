@@ -44,6 +44,8 @@ class Fcube {
   String placeaddress;
   String administrativearea;
   String country;
+  double napoint;
+  double youpoint;
   double pointreward;
   double influencereward;
   DateTime activationtime;
@@ -59,6 +61,7 @@ class Fcube {
   double starpoints;
   double makeexp;
   int commentcount;
+  double userexp;
 
   CurrentSelectCubeLocation currentselectcube;
 
@@ -77,6 +80,8 @@ class Fcube {
       this.administrativearea,
       this.country,
       this.cubeimage,
+      this.napoint,
+      this.youpoint,
       this.pointreward,
       this.influencereward,
       this.activationtime,
@@ -91,7 +96,8 @@ class Fcube {
       this.maximumplayers,
       this.starpoints,
       this.makeexp,
-      this.commentcount});
+      this.commentcount,
+      this.userexp});
 
   Fcube.fromJson(Map<String, dynamic> json) {
     cubeuuid = json['cubeuuid'];
@@ -106,6 +112,8 @@ class Fcube {
     placeaddress = json['placeaddress'];
     administrativearea = json['administrativearea'];
     country = json['country'];
+    napoint = json['napoint'];
+    youpoint = json['youpoint'];
     pointreward = json['pointreward'];
     influencereward = json['influencereward'];
     activationtime = DateTime.parse(json['activationtime']);
@@ -121,6 +129,7 @@ class Fcube {
     starpoints = json['starpoints'];
     makeexp = json['makeexp'];
     commentcount = json['commentcount'];
+    userexp = json['userexp'];
   }
 
   Map<String, dynamic> toJson() {
@@ -137,6 +146,8 @@ class Fcube {
     data['placeaddress'] = this.placeaddress;
     data['administrativearea'] = this.administrativearea;
     data['country'] = this.country;
+    data['napoint'] = this.napoint;
+    data['youpoint'] = this.youpoint;
     data['pointreward'] = this.pointreward;
     data['influencereward'] = this.influencereward;
     data['activationtime'] =
@@ -153,6 +164,7 @@ class Fcube {
     data['starpoints'] = this.starpoints;
     data['makeexp'] = this.makeexp;
     data['commentcount'] = this.commentcount;
+    data['userexp'] = this.userexp;
     return data;
   }
 

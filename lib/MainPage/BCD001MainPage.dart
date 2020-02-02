@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
+import 'package:forutonafront/HomePage/HomePageView.dart';
 import 'package:forutonafront/MainPage/Component/BCD001NaviAnimationController.dart';
 import 'package:forutonafront/MakePage/C001MakePageView.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
+import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,6 +39,7 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
   });
   var locationOptions =
       LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 2);
+  int currentoffset = 0;
   Widget loginButton() {
     if (GlobalStateContainer.of(context).state.userInfoMain == null) {
       return FlatButton(
@@ -112,6 +116,7 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
             if (userinfo != null) {
               await FirebaseAuth.instance.signOut();
             }
+            GlobalStateContainer.of(context).state.userInfoMain = null;
             Navigator.of(context).pop();
             setState(() {});
           },
@@ -223,19 +228,51 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
     return;
   }
 
+  C001MakePageView c001makePageView;
+  PlayPageView playPageView;
+  HomePageView homePageView;
   @override
   void initState() {
     super.initState();
+    c001makePageView = new C001MakePageView();
+    playPageView = new PlayPageView();
+    homePageView = new HomePageView();
     loginBtn = Container();
     snsBtn = Container();
     navicontroller =
         BCD001NaviAnimationController(onChangeNaviPostion: onChangeNaviPostion);
     swiper = new Swiper(
-        index: 0,
-        itemCount: 1,
+        onIndexChanged: swiperonindexchange,
+        controller: swipercontroller,
+        index: 1,
+        itemCount: 3,
         itemBuilder: (BuildContext context, int index) {
-          return C001MakePageView();
+          if (index == 0) {
+            return c001makePageView;
+          } else if (index == 1) {
+            return homePageView;
+          } else if (index == 2) {
+            return playPageView;
+          } else {
+            return Container();
+          }
         });
+    currentoffset = swiper.index;
+  }
+
+  swiperonindexchange(value) {
+    if (navicontroller.tapSource == "Swiper") {
+      if (value == (swiper.itemCount - 1) && currentoffset == 0) {
+        navicontroller.processValue = navicontroller.processValue + 0.5;
+      } else if (value == 0 && currentoffset == (swiper.itemCount - 1)) {
+        navicontroller.processValue = navicontroller.processValue - 0.5;
+      } else if (currentoffset > value) {
+        navicontroller.processValue = navicontroller.processValue + 0.5;
+      } else {
+        navicontroller.processValue = navicontroller.processValue - 0.5;
+      }
+    }
+    currentoffset = value;
   }
 
   @override
@@ -247,7 +284,8 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
       GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
       setState(() {});
       GlobalStateContainer.of(context).addfcubeListUtilcubeList(
-          await FcubeExtender1.getusercubes(offset: 0, limit: 10));
+          await FcubeExtender1.getusercubes(FcubeSearch(
+              limit: 10, offset: 0, isdesc: true, orderby: "MakeTime")));
       initgeopermisstion();
       GlobalStateContainer.of(context).setfcubeListUtilisLoading(false);
       setState(() {});
@@ -262,7 +300,16 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
   }
 
   onChangeNaviPostion(NaviPosition currentposition) {
-    print(currentposition);
+    if (navicontroller.tapSource == "Appbar") {
+      print(currentposition);
+      if (currentposition == NaviPosition.make) {
+        swipercontroller.move(0);
+      } else if (currentposition == NaviPosition.home) {
+        swipercontroller.move(1);
+      } else if (currentposition == NaviPosition.paly) {
+        swipercontroller.move(2);
+      }
+    }
   }
 
   @override
@@ -285,6 +332,7 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
                       width: 128,
                       child: GestureDetector(
                           onTapUp: (TapUpDetails value) {
+                            navicontroller.tapSource = "Appbar";
                             double cellsize = 128.0 / 3;
                             if (value.localPosition.dx < (cellsize * 1.0)) {
                               navicontroller.processValue =
@@ -311,7 +359,12 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
         ),
       ),
       body: Container(
-        child: swiper,
+        child: GestureDetector(
+          onPanDown: (value) {
+            navicontroller.tapSource = "Swiper";
+          },
+          child: swiper,
+        ),
       ),
     );
   }

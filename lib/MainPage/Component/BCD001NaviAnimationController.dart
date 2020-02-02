@@ -12,6 +12,7 @@ class BCD001NaviAnimationController extends FlareController {
   double _currentProcessValue = 0.0;
   double _processValue = 0.0;
   double _speed = 5.0;
+  String tapSource;
   NaviPosition currentNavipostion = NaviPosition.home;
   Function(NaviPosition) onChangeNaviPostion;
   // static const double FPS = 60;
