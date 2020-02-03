@@ -1,6 +1,9 @@
 import 'package:after_init/after_init.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
+import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
@@ -25,6 +28,27 @@ class _C003GoogleMapMakeViewState extends State<C003GoogleMapMakeView>
   GoogleMapController googleMapController;
   final Geolocator geolocator = Geolocator();
   bool moveingcameraflag = false;
+
+  String selectflareartborad() {
+    if (this.selectFcube.cubetype == FcubeType.issuecube) {
+      return "IssueAni";
+    } else if (this.selectFcube.cubetype == FcubeType.questCube) {
+      return "QuestAni";
+    } else {
+      return "IssueAni";
+    }
+  }
+
+  String selectCubetext() {
+    if (this.selectFcube.cubetype == FcubeType.issuecube) {
+      return "이슈 큐브";
+    } else if (this.selectFcube.cubetype == FcubeType.questCube) {
+      return "퀘스트 큐브";
+    } else {
+      return "이슈 큐브";
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -71,7 +95,17 @@ class _C003GoogleMapMakeViewState extends State<C003GoogleMapMakeView>
             children: <Widget>[
               googleMap,
               Center(
-                child: Container(child: Text("123")),
+                child: Container(
+                    margin: EdgeInsets.only(bottom: 120),
+                    width: 80,
+                    height: 120,
+                    child: FlareActor(
+                      "assets/Rive/MakerAni.flr",
+                      alignment: Alignment.center,
+                      artboard: selectflareartborad(),
+                      animation: moveingcameraflag ? "jump" : "down",
+                      fit: BoxFit.contain,
+                    )),
               ),
               Positioned(
                   top: 100,
@@ -135,7 +169,7 @@ class _C003GoogleMapMakeViewState extends State<C003GoogleMapMakeView>
                             child: FlatButton(
                               padding: EdgeInsets.all(0),
                               onPressed: () {},
-                              child: Text("이슈 큐브를 설치 합니다.",
+                              child: Text("${selectCubetext()}를 설치 합니다.",
                                   style: TextStyle(
                                     fontFamily: "Noto Sans CJK KR",
                                     fontWeight: FontWeight.w500,
@@ -159,7 +193,7 @@ class _C003GoogleMapMakeViewState extends State<C003GoogleMapMakeView>
                             child: FlatButton(
                               padding: EdgeInsets.all(0),
                               onPressed: () {},
-                              child: Text("이슈 큐브를 설치 합니다.",
+                              child: Text("${selectCubetext()}를 설치 합니다.",
                                   style: TextStyle(
                                     fontFamily: "Noto Sans CJK KR",
                                     fontWeight: FontWeight.w500,
