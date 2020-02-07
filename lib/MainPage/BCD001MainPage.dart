@@ -11,6 +11,7 @@ import 'package:forutonafront/MainPage/Component/BCD001NaviAnimationController.d
 import 'package:forutonafront/MakePage/C001MakePageView.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
+import 'package:forutonafront/PlayPage/D001PlayPageView.dart';
 import 'package:forutonafront/PlayPage/PlayPageView.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
@@ -229,13 +230,13 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
   }
 
   C001MakePageView c001makePageView;
-  PlayPageView playPageView;
+  D001PlayPageView playPageView;
   HomePageView homePageView;
   @override
   void initState() {
     super.initState();
     c001makePageView = new C001MakePageView();
-    playPageView = new PlayPageView();
+    playPageView = new D001PlayPageView();
     homePageView = new HomePageView();
     loginBtn = Container();
     snsBtn = Container();

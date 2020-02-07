@@ -86,6 +86,7 @@ class _C003GoogleMapMakeViewState extends State<C003GoogleMapMakeView>
       onMapCreated: onMapCreated,
       onCameraMoveStarted: onCameraMoveStarted,
       onCameraIdle: onCameraIdle,
+      
     );
     return Scaffold(
       body: Stack(
