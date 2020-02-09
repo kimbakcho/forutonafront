@@ -1,3 +1,4 @@
+import 'package:after_init/after_init.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import "package:flare_flutter/flare_actor.dart";
@@ -5,6 +6,7 @@ import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
 import 'package:forutonafront/MainPage/BCD001MainPage.dart';
 import 'package:forutonafront/globals.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);

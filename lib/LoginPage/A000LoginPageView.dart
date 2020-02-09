@@ -1,9 +1,11 @@
+import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A001LoginPageView.dart';
 import 'package:forutonafront/LoginPage/A002SignIn1View.dart';
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 import 'package:forutonafront/MainPage/BCD001MainPage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class A000LoginPageView extends StatefulWidget {
   A000LoginPageView({Key key}) : super(key: key);
@@ -11,7 +13,8 @@ class A000LoginPageView extends StatefulWidget {
   _A000LoginPageViewState createState() => _A000LoginPageViewState();
 }
 
-class _A000LoginPageViewState extends State<A000LoginPageView> {
+class _A000LoginPageViewState extends State<A000LoginPageView>
+    with AfterInitMixin {
   bool isjoinflowflag = false;
   UserInfoMain userInfoMain = new UserInfoMain();
 
@@ -356,5 +359,11 @@ class _A000LoginPageViewState extends State<A000LoginPageView> {
             ],
           )),
         ));
+  }
+
+  @override
+  Future<void> didInitState() async {
+    await PermissionHandler().requestPermissions(
+        [PermissionGroup.location, PermissionGroup.locationAlways]);
   }
 }

@@ -19,7 +19,7 @@ class C001MakePageView extends StatefulWidget {
 }
 
 class _C001MakePageViewState extends State<C001MakePageView>
-    with AfterInitMixin {
+    with AfterInitMixin, AutomaticKeepAliveClientMixin {
   Widget maincontentwidget = Container();
   bool floatingbtnflag = true;
   bool overscrollflag = false;
@@ -749,4 +749,7 @@ class _C001MakePageViewState extends State<C001MakePageView>
           floatingActionButton: makeFloatingActionButton(),
         ));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

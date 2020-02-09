@@ -15,7 +15,6 @@ import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'MainPage/Component/HomeNavi.dart';
 import 'MainPage/Component/HomeNaviInter.dart';
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -33,7 +32,7 @@ class _MainPageState extends State<MainPage> {
   HomeNaviInter naviitme;
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser currentuser;
-  HomeNavi homenavi;
+
   var geolocator = Geolocator();
   var locationOptions =
       LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 2);
@@ -66,26 +65,6 @@ class _MainPageState extends State<MainPage> {
       itemCount: mainSwipeList.length,
       pagination: pagenation,
       controller: swipercontroller,
-      onIndexChanged: (index) {
-        if (index == 0) {
-          homenavi.setPosition(HomeNaviInter.makeMode);
-        } else if (index == 1) {
-          homenavi.setPosition(HomeNaviInter.homeMode);
-        } else if (index == 2) {
-          homenavi.setPosition(HomeNaviInter.palyMode);
-        }
-      },
-    );
-    homenavi = HomeNavi(
-      parentitem: naviitme,
-      onclickbutton: (String btnmode) => {
-        if (btnmode == HomeNaviInter.makeMode)
-          {swipercontroller.move(0)}
-        else if (btnmode == HomeNaviInter.homeMode)
-          {swipercontroller.move(1)}
-        else if (btnmode == HomeNaviInter.palyMode)
-          {swipercontroller.move(2)}
-      },
     );
 
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) async {
@@ -113,7 +92,8 @@ class _MainPageState extends State<MainPage> {
           GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
 
           GlobalStateContainer.of(context).addfcubeListUtilcubeList(
-              await FcubeExtender1.getusercubes(FcubeSearch(limit: 10,offset: 0,isdesc: true,orderby: "MakeTime")));
+              await FcubeExtender1.getusercubes(FcubeSearch(
+                  limit: 10, offset: 0, isdesc: true, orderby: "MakeTime")));
 
           initgeopermisstion();
 
@@ -362,7 +342,7 @@ class _MainPageState extends State<MainPage> {
                       color: Colors.black54,
                       width: 1.0,
                     )),
-                    child: Center(child: homenavi),
+                    child: Center(),
                   ),
                 ),
                 Container(

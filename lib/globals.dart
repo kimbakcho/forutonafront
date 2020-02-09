@@ -36,7 +36,6 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
 
   setfcubeListUtilisLoading(bool value) {
     state.fcubeListUtil.isLoading = value;
-
   }
 
   setfcubeplayerListUtilisLoading(bool value) {
@@ -50,9 +49,7 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
   }
 
   addfcubeplayerListUtilcubeList(List<FcubeExtender1> value) {
-    setState(() {
-      state.fcubeplayerListUtil.cubeList.addAll(value);
-    });
+    state.fcubeplayerListUtil.cubeList.addAll(value);
   }
 
   addfcubeplayerListUtilcubeListwithReset(List<FcubeExtender1> value) {
@@ -72,6 +69,14 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
                 longitude2: state.currentposition.longitude)
             .haversineDistance();
         return adistance.toInt() - bdistance.toInt();
+      });
+      value.forEach((item) {
+        item.distancewithme = GreatCircleDistance.fromDegrees(
+                latitude1: item.latitude,
+                longitude1: item.longitude,
+                latitude2: state.currentposition.latitude,
+                longitude2: state.currentposition.longitude)
+            .haversineDistance();
       });
       state.fcubeplayerListUtil.cubeList.clear();
 
@@ -129,16 +134,19 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
     if (state.currentaddress == null) {
       var geolocation = Geolocator();
       String currentaddressstr = "";
-      List<Placemark> currentaddress = await geolocation
-          .placemarkFromCoordinates(position.latitude, position.longitude,
-              localeIdentifier: "ko");
-      if (currentaddress.length > 0) {
-        currentaddressstr += currentaddress[0].administrativeArea +
-            " " +
-            currentaddress[0].thoroughfare;
+      try {
+        List<Placemark> currentaddress = await geolocation
+            .placemarkFromCoordinates(position.latitude, position.longitude,
+                localeIdentifier: "ko");
+        if (currentaddress.length > 0) {
+          currentaddressstr += currentaddress[0].administrativeArea +
+              " " +
+              currentaddress[0].thoroughfare;
+        }
+        state.currentaddress = currentaddressstr;
+      } catch (ex) {
+        print(ex);
       }
-      state.currentaddress = currentaddressstr;
-      setState(() {});
     }
   }
 

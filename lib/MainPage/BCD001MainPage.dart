@@ -12,10 +12,11 @@ import 'package:forutonafront/MakePage/C001MakePageView.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
 import 'package:forutonafront/PlayPage/D001PlayPageView.dart';
-import 'package:forutonafront/PlayPage/PlayPageView.dart';
+
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 
 class BCD001MainPage extends StatefulWidget {
@@ -30,6 +31,7 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
   Widget loginBtn;
   Widget snsBtn;
   Swiper swiper;
+
   var geolocator = Geolocator();
   Position currentposition;
   SwiperController swipercontroller = SwiperController();
@@ -316,57 +318,56 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        titleSpacing: 0.0,
-        title: Row(
-          children: <Widget>[
-            loginBtn,
-            Expanded(
-                flex: 3,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          titleSpacing: 0.0,
+          title: Row(
+            children: <Widget>[
+              loginBtn,
+              Expanded(
+                  flex: 3,
                   child: Container(
-                      height: 42,
-                      width: 128,
-                      child: GestureDetector(
-                          onTapUp: (TapUpDetails value) {
-                            navicontroller.tapSource = "Appbar";
-                            double cellsize = 128.0 / 3;
-                            if (value.localPosition.dx < (cellsize * 1.0)) {
-                              navicontroller.processValue =
-                                  navicontroller.processValue + 0.5;
-                            } else if (value.localPosition.dx >
-                                    (cellsize * 1.0) &&
-                                value.localPosition.dx < (cellsize * 2.0)) {
-                            } else if (value.localPosition.dx >
-                                (cellsize * 2.0)) {
-                              navicontroller.processValue =
-                                  navicontroller.processValue - 0.5;
-                            }
-                          },
-                          child: FlareActor(
-                            "assets/Rive/navi.flr",
-                            fit: BoxFit.fitWidth,
-                            animation: "play",
-                            artboard: "navi",
-                            controller: navicontroller,
-                          ))),
-                )),
-            snsBtn
-          ],
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.center,
+                    child: Container(
+                        height: 42,
+                        width: 128,
+                        child: GestureDetector(
+                            onTapUp: (TapUpDetails value) {
+                              navicontroller.tapSource = "Appbar";
+                              double cellsize = 128.0 / 3;
+                              if (value.localPosition.dx < (cellsize * 1.0)) {
+                                navicontroller.processValue =
+                                    navicontroller.processValue + 0.5;
+                              } else if (value.localPosition.dx >
+                                      (cellsize * 1.0) &&
+                                  value.localPosition.dx < (cellsize * 2.0)) {
+                              } else if (value.localPosition.dx >
+                                  (cellsize * 2.0)) {
+                                navicontroller.processValue =
+                                    navicontroller.processValue - 0.5;
+                              }
+                            },
+                            child: FlareActor(
+                              "assets/Rive/navi.flr",
+                              fit: BoxFit.fitWidth,
+                              animation: "play",
+                              artboard: "navi",
+                              controller: navicontroller,
+                            ))),
+                  )),
+              snsBtn
+            ],
+          ),
         ),
-      ),
-      body: Container(
-        child: GestureDetector(
-          onPanDown: (value) {
-            navicontroller.tapSource = "Swiper";
-          },
-          child: swiper,
-        ),
-      ),
-    );
+        body: Container(
+          child: GestureDetector(
+            onPanDown: (value) {
+              navicontroller.tapSource = "Swiper";
+            },
+            child: swiper,
+          ),
+        ));
   }
 }

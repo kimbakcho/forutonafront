@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
@@ -19,6 +20,7 @@ class FcubeExtender1 extends Fcube {
   DateTime positionupdatetime;
   double userlevel;
   String fcmtoken;
+  Widget markerwidget;
 
   FcubeExtender1();
 
