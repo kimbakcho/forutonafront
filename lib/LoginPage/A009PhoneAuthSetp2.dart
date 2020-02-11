@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
-import 'package:forutonafront/Common/LoadingOverlay%20.dart';
+import 'package:forutonafront/Common/LoadingOverlay.dart';
 import 'package:forutonafront/LoginPage/A010PhoneAuthStep3.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';

@@ -1,6 +1,6 @@
 import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/LoadingOverlay%20.dart';
+import 'package:forutonafront/Common/LoadingOverlay.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/C007SelectMakeCubeView.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
@@ -27,9 +27,26 @@ class _C001MakePageViewState extends State<C001MakePageView>
   String currentorderby = "Maketime";
   bool currentdesc = true;
   int currentofsset = 0;
+  ScrollController _listscrollcontroller;
+
+  @override
+  void initState() {
+    super.initState();
+    _listscrollcontroller = ScrollController();
+    _listscrollcontroller.addListener(_onlistscrollListener);
+  }
 
   @override
   void didInitState() async {}
+
+  _onlistscrollListener() {
+    //바탐
+    if (_listscrollcontroller.offset >=
+            _listscrollcontroller.position.maxScrollExtent &&
+        !_listscrollcontroller.position.outOfRange) {
+      bottmappendcubelist();
+    }
+  }
 
   resetcubeList() async {
     GlobalStateContainer.of(context).resetcubeListUtilcubeList();
@@ -153,23 +170,14 @@ class _C001MakePageViewState extends State<C001MakePageView>
                 floatingbtnflag = true;
                 setState(() {});
               }
-            } else if (scrollNotification is OverscrollNotification) {
-              OverscrollNotification scroller = scrollNotification;
-              overscrollflag = true;
-              overscrollvalue = scroller.overscroll;
-            } else if (scrollNotification is ScrollEndNotification) {
-              if (overscrollflag) {
-                overscrollflag = false;
-                if (overscrollvalue > 0) {
-                  bottmappendcubelist();
-                }
-              }
             }
             return true;
           },
           child: ListView.builder(
             shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
             itemCount: fcubelist.length,
+            controller: _listscrollcontroller,
             itemBuilder: (BuildContext context, int index) {
               if (fcubelist[index].cubetype == FcubeType.questCube) {
                 return Card(

@@ -79,6 +79,7 @@ dependencies:
   flutter_keyboard_visibility: ^0.7.0
   country_pickers: ^1.1.0
   enum_to_string: ^1.0.8
+  carousel_slider: ^1.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:country_pickers/country_pickers.dart';
-import 'package:forutonafront/Common/LoadingOverlay%20.dart';
+import 'package:forutonafront/Common/LoadingOverlay.dart';
 import 'package:forutonafront/LoginPage/Component/APartCheckBox.dart';
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 import 'package:forutonafront/globals.dart';

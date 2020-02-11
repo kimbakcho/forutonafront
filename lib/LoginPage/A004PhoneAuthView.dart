@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
-import 'package:forutonafront/Common/LoadingOverlay%20.dart';
+import 'package:forutonafront/Common/LoadingOverlay.dart';
 import 'package:forutonafront/LoginPage/A005SignIn2View.dart';
 import 'package:forutonafront/LoginPage/A006SignIn3View.dart';
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';

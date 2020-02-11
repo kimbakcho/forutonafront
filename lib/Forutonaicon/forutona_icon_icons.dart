@@ -31,4 +31,5 @@ class ForutonaIcon {
   static const IconData comment = const IconData(0xe808, fontFamily: _kFontFam);
   static const IconData pointdash = const IconData(0xe809, fontFamily: _kFontFam);
   static const IconData path = const IconData(0xe80a, fontFamily: _kFontFam);
+  static const IconData icninboxdark = const IconData(0xe80b, fontFamily: _kFontFam);
 }
