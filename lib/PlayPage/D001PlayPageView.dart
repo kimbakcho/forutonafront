@@ -34,11 +34,19 @@ import 'dart:ui' as ui;
 
 import 'package:sliding_sheet/sliding_sheet.dart';
 
+class D001Controller {
+  Function selecttimerstart;
+  Function selecttimerstop;
+}
+
 class D001PlayPageView extends StatefulWidget {
-  D001PlayPageView({Key key}) : super(key: key);
+  D001PlayPageView({this.d001controller, Key key}) : super(key: key);
+  final D001Controller d001controller;
 
   @override
-  _D001PlayPageViewState createState() => _D001PlayPageViewState();
+  _D001PlayPageViewState createState() {
+    return _D001PlayPageViewState(d001controller: d001controller);
+  }
 }
 
 class _D001PlayPageViewState extends State<D001PlayPageView>
@@ -46,6 +54,20 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
         AfterInitMixin,
         AutomaticKeepAliveClientMixin,
         SingleTickerProviderStateMixin {
+  _D001PlayPageViewState({this.d001controller}) {
+    if (d001controller != null) {
+      d001controller.selecttimerstart = () {
+        selectedTimer =
+            Timer.periodic(Duration(milliseconds: 150), makeSelectedIcon);
+      };
+      d001controller.selecttimerstop = () {
+        if (selectedTimer != null) {
+          selectedTimer.cancel();
+        }
+      };
+    }
+  }
+  D001Controller d001controller;
   static double initlatitude = 37.550944;
   static double initlongitude = 126.990819;
   CameraPosition _kInitialPosition = CameraPosition(
@@ -168,8 +190,8 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
   void didInitState() async {
     nowplayer = Fcubeplayer(
         uid: GlobalStateContainer.of(context).state.userInfoMain.uid);
-    selectedTimer =
-        Timer.periodic(Duration(milliseconds: 150), makeSelectedIcon);
+    // selectedTimer =
+    //     Timer.periodic(Duration(milliseconds: 150), makeSelectedIcon);
   }
 
   @override
@@ -1475,7 +1497,7 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
                     ))),
             Positioned(
               top: 100,
-              left: 30,
+              left: 20,
               child: D001JoinPlayerDisPlay(
                 controller: joinPlayerDisPlayController,
               ),

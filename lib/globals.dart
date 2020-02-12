@@ -49,6 +49,14 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
   }
 
   addfcubeplayerListUtilcubeList(List<FcubeExtender1> value) {
+    value.forEach((item) {
+      item.distancewithme = GreatCircleDistance.fromDegrees(
+              latitude1: item.latitude,
+              longitude1: item.longitude,
+              latitude2: state.currentposition.latitude,
+              longitude2: state.currentposition.longitude)
+          .haversineDistance();
+    });
     state.fcubeplayerListUtil.cubeList.addAll(value);
   }
 

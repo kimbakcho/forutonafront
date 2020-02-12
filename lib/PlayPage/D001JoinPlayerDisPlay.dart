@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/PlayPage/D007JoinBallsPageView.dart';
 
 class JoinPlayerDisPlayController {
   Function open;
@@ -48,7 +49,13 @@ class _D001JoinPlayerDisPlayState extends State<D001JoinPlayerDisPlay>
         Container(
           child: FlatButton(
             child: Icon(ForutonaIcon.icninboxdark),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  settings: RouteSettings(name: "D007"),
+                  builder: (context) {
+                    return D007JoinBallsPageView();
+                  }));
+            },
           ),
           height: 52.00,
           width: 52.00,

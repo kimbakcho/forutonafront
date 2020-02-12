@@ -234,11 +234,13 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
   C001MakePageView c001makePageView;
   D001PlayPageView playPageView;
   HomePageView homePageView;
+  D001Controller d001controller;
   @override
   void initState() {
     super.initState();
     c001makePageView = new C001MakePageView();
-    playPageView = new D001PlayPageView();
+    d001controller = D001Controller();
+    playPageView = new D001PlayPageView(d001controller: d001controller);
     homePageView = new HomePageView();
     loginBtn = Container();
     snsBtn = Container();
@@ -274,6 +276,11 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
       } else {
         navicontroller.processValue = navicontroller.processValue - 0.5;
       }
+    }
+    if (value == 2) {
+      d001controller.selecttimerstart();
+    } else {
+      d001controller.selecttimerstop();
     }
     currentoffset = value;
   }

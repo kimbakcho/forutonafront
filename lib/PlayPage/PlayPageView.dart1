@@ -8,7 +8,6 @@ import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeListUtil.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
-import 'package:forutonafront/PlayPage/FcubeJoinHistoryView.dart';
 import 'package:forutonafront/PlayPage/IssueCube/IssueCollapsed.dart';
 import 'package:forutonafront/PlayPage/IssueCube/IssueCubeCard.dart';
 import 'package:forutonafront/PlayPage/QuestCube/QuestCollapsed.dart';
@@ -325,11 +324,7 @@ class _PlayPageViewState extends State<PlayPageView> {
               width: MediaQuery.of(context).size.width * 0.13,
               height: MediaQuery.of(context).size.width * 0.13,
               child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return FcubeJoinHistoryView();
-                  }));
-                },
+                onPressed: () {},
                 child: Icon(Icons.menu),
               ),
             ),
