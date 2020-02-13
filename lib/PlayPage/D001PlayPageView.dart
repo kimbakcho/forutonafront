@@ -904,6 +904,7 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
           EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.73),
       child: CarouselSlider.builder(
           viewportFraction: 0.8,
+          initialPage: currentswiperindex,
           itemCount: cubelist.length,
           onPageChanged: onswiperindexchange,
           itemBuilder: (BuildContext context, int index) {

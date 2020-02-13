@@ -555,6 +555,57 @@ class _D007JoinBallsPageViewState extends State<D007JoinBallsPageView>
     );
   }
 
+  Widget selectBody() {
+    if (joincubelist.length == 0) {
+      return Container(
+          child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 122,
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Icon(
+              ForutonaIcon.noballinbox,
+              color: Color(0xFF999999),
+              size: 50,
+            ),
+          ),
+          SizedBox(
+            height: 38,
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Text("아쉽게도\n참여하신 볼이 없습니다.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontSize: 14,
+                  color: Color(0xffb1b1b1),
+                )),
+          )
+        ],
+      ));
+    } else {
+      return Container(
+          child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              controller: _expandListController,
+              itemCount: joincubelist.length,
+              itemBuilder: (context, index) {
+                if (joincubelist[index].cubeType == FcubeType.issuecube) {
+                  return getExpanedIssueBallWidget(joincubelist[index]);
+                } else if (joincubelist[index].cubeType ==
+                    FcubeType.questCube) {
+                  return getExpanedQuestBallWidget(joincubelist[index]);
+                } else {
+                  return Container();
+                }
+              }));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return LoadingOverlay(
@@ -564,32 +615,17 @@ class _D007JoinBallsPageViewState extends State<D007JoinBallsPageView>
             size: 100.0,
             color: Theme.of(context).accentColor),
         child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              title: Text("내가 참여한 볼",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20,
-                    color: Color(0xff454f63),
-                  )),
-            ),
-            body: Container(
-              child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  controller: _expandListController,
-                  itemCount: joincubelist.length,
-                  itemBuilder: (context, index) {
-                    if (joincubelist[index].cubeType == FcubeType.issuecube) {
-                      return getExpanedIssueBallWidget(joincubelist[index]);
-                    } else if (joincubelist[index].cubeType ==
-                        FcubeType.questCube) {
-                      return getExpanedQuestBallWidget(joincubelist[index]);
-                    } else {
-                      return Container();
-                    }
-                  }),
-            )));
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            title: Text("내가 참여한 볼",
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  color: Color(0xff454f63),
+                )),
+          ),
+          body: selectBody(),
+        ));
   }
 }

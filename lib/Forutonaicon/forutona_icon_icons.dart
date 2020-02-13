@@ -32,4 +32,5 @@ class ForutonaIcon {
   static const IconData pointdash = const IconData(0xe809, fontFamily: _kFontFam);
   static const IconData path = const IconData(0xe80a, fontFamily: _kFontFam);
   static const IconData icninboxdark = const IconData(0xe80b, fontFamily: _kFontFam);
+  static const IconData noballinbox = const IconData(0xe80c, fontFamily: _kFontFam);
 }
