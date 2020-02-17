@@ -37,7 +37,7 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage> {
   Widget build(BuildContext context) {
     final GoogleMap googleMap = GoogleMap(
         onTap: (LatLng lat) {
-          print("tap");
+          print("tap1");
         },
         onMapCreated: (GoogleMapController controller) {
           mapController = controller;
@@ -91,155 +91,156 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage> {
       body: Stack(
         children: <Widget>[
           Positioned(
-              top: 0,
-              child: Container(
-                  margin: EdgeInsets.only(left: 16),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text("이슈볼",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
-                                color: Color(0xffff4f9a),
-                              )),
-                        ),
-                        Container(
-                          child: Text(fcubeextender1.cubename,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 19,
-                                color: Color(0xff454f63),
-                              )),
-                        ),
-                        Container(
-                            child: Row(children: <Widget>[
-                          Container(
-                            child: Icon(
-                              ForutonaIcon.visibility,
-                              color: Color(0xff78849E),
-                              size: 20,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            child: Text("${fcubeextender1.cubehits}",
-                                style: TextStyle(
-                                  fontFamily: "Gibson",
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                  color: Color(0xff78849e),
-                                )),
-                          )
-                        ]))
-                      ]))),
-          Positioned(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (scrollNotification) {
-                if (scrollNotification is ScrollUpdateNotification) {
-                  ScrollUpdateNotification noti = scrollNotification;
-                  CameraPosition cameraPosition = CameraPosition(
-                      target: LatLng(
-                          fcubeextender1.latitude +
-                              (noti.metrics.pixels * 0.00001),
-                          fcubeextender1.longitude),
-                      zoom: 16);
-                  mapController.moveCamera(
-                      CameraUpdate.newCameraPosition(cameraPosition));
-                }
-              },
-              child: ListView(
-                children: <Widget>[
-                  Container(
+            child: ListView(
+              children: <Widget>[
+                Container(
                     height: MediaQuery.of(context).size.height * 0.4,
-                    child: googleMap,
-                  ),
-                  MakerPanel(fcubeextender1: fcubeextender1),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Color(0xffffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0.00, 4.00),
-                          color: Color(0xff455b63).withOpacity(0.08),
-                          blurRadius: 16,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(12.00),
-                    ),
-                    child: Row(
+                    child: Stack(
                       children: <Widget>[
-                        Container(
-                          height: 42.00,
-                          width: 42.00,
-                          child: Icon(Icons.location_on),
-                          decoration: BoxDecoration(
-                            color: Color(0xffe4e7e8),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0.00, 12.00),
-                                color: Color(0xff455b63).withOpacity(0.10),
-                                blurRadius: 16,
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(20.00),
-                          ),
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 16),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text("설치 장소",
-                                      style: TextStyle(
-                                        fontFamily: "Noto Sans CJK KR",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14,
-                                        color: Color(0xff454f63),
-                                      )),
-                                  Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.68,
-                                      child:
-                                          Text("${fcubeextender1.placeaddress}",
-                                              softWrap: true,
+                        googleMap,
+                        GestureDetector(
+                            onTap: () {
+                              print("tap");
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                    Colors.white.withOpacity(0.8),
+                                    Colors.white.withOpacity(0)
+                                  ])),
+                            )),
+                        Positioned(
+                            top: 0,
+                            child: Container(
+                                margin: EdgeInsets.only(left: 16),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                          child: Text("이슈볼",
+                                              textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontFamily: "Noto Sans CJK KR",
-                                                fontSize: 14,
-                                                color: Color(0xff78849e),
-                                              )))
-                                ]))
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
+                                                color: Color(0xffff4f9a),
+                                              ))),
+                                      Container(
+                                          child: Text(fcubeextender1.cubename,
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                fontFamily: "Noto Sans CJK KR",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 19,
+                                                color: Color(0xff454f63),
+                                              ))),
+                                      Container(
+                                          child: Row(children: <Widget>[
+                                        Container(
+                                          child: Icon(
+                                            ForutonaIcon.visibility,
+                                            color: Color(0xff78849E),
+                                            size: 20,
+                                          ),
+                                        ),
+                                        Container(
+                                            margin: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                                "${fcubeextender1.cubehits}",
+                                                style: TextStyle(
+                                                  fontFamily: "Gibson",
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 14,
+                                                  color: Color(0xff78849e),
+                                                )))
+                                      ]))
+                                    ])))
                       ],
-                    ),
+                    )),
+                MakerPanel(fcubeextender1: fcubeextender1),
+                SizedBox(
+                  height: 16,
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xffffffff),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0.00, 4.00),
+                        color: Color(0xff455b63).withOpacity(0.08),
+                        blurRadius: 16,
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(12.00),
                   ),
-                  Container(
-                    height: 300,
-                    child: (Text("123123")),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        height: 42.00,
+                        width: 42.00,
+                        child: Icon(Icons.location_on),
+                        decoration: BoxDecoration(
+                          color: Color(0xffe4e7e8),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0.00, 12.00),
+                              color: Color(0xff455b63).withOpacity(0.10),
+                              blurRadius: 16,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(20.00),
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(left: 16),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("설치 장소",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: Color(0xff454f63),
+                                    )),
+                                Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.68,
+                                    child:
+                                        Text("${fcubeextender1.placeaddress}",
+                                            softWrap: true,
+                                            style: TextStyle(
+                                              fontFamily: "Noto Sans CJK KR",
+                                              fontSize: 14,
+                                              color: Color(0xff78849e),
+                                            )))
+                              ]))
+                    ],
                   ),
-                  Container(
-                    height: 300,
-                    child: (Text("123123")),
-                  ),
-                  Container(
-                    height: 300,
-                    child: (Text("123123")),
-                  ),
-                  Container(
-                    height: 300,
-                    child: (Text("123123")),
-                  )
-                ],
-              ),
+                ),
+                Container(
+                  height: 300,
+                  child: (Text("123123")),
+                ),
+                Container(
+                  height: 300,
+                  child: (Text("123123")),
+                ),
+                Container(
+                  height: 300,
+                  child: (Text("123123")),
+                ),
+                Container(
+                  height: 300,
+                  child: (Text("123123")),
+                )
+              ],
             ),
           )
         ],
