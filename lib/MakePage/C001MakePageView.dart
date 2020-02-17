@@ -5,6 +5,7 @@ import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/C007SelectMakeCubeView.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
+import 'package:forutonafront/MakePage/Component/IssueCube/ID001CubeDetailPage.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
@@ -350,186 +351,199 @@ class _C001MakePageViewState extends State<C001MakePageView>
                     // color: Color(0xFFfae2e6),
                     color: Color(0xffFAE2E6),
                     margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    child: Column(
-                      children: <Widget>[
-                        Stack(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(bottom: 15),
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                      padding: EdgeInsets.only(left: 2),
-                                      margin:
-                                          EdgeInsets.fromLTRB(16, 16, 16, 16),
-                                      height: 30,
-                                      width: 30,
-                                      child: Icon(
-                                        ForutonaIcon.issue,
-                                        size: 15,
-                                        color: Colors.white,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Color(0xffDC3E57),
-                                        shape: BoxShape.circle,
-                                      )),
-                                  Expanded(
-                                    child: Container(
-                                      width: 150,
-                                      child: RichText(
-                                        text: TextSpan(
-                                            text: fcubelist[index].cubename,
-                                            style: TextStyle(
-                                              fontFamily: "Noto Sans CJK KR",
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 13,
-                                              color: Color(0xff454f63),
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                  text:
-                                                      "\n${fcubelist[index].placeaddress}",
-                                                  style: TextStyle(
-                                                    fontFamily:
-                                                        "Noto Sans CJK KR",
-                                                    fontSize: 11,
-                                                    color: Color(0xff454f63)
-                                                        .withOpacity(0.56),
-                                                  ))
-                                            ]),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                      height: 43,
-                                      width: 43,
-                                      margin: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                                      alignment: Alignment.topRight,
-                                      child: Container(
-                                        height: 10,
-                                        child: IconButton(
-                                          padding: EdgeInsets.all(0),
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            ForutonaIcon.pointdash,
-                                            color: Colors.black,
-                                            size: 16,
-                                          ),
-                                        ),
-                                      )),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 16,
-                              right: 16,
-                              child: Container(
-                                  child: Text(
-                                      "${(fcubelist[index].distancewithme.roundToDouble() / 1000).toStringAsFixed(1)} km 이내",
-                                      style: TextStyle(
-                                        fontFamily: "Noto Sans CJK KR",
-                                        fontSize: 10,
-                                        color:
-                                            Color(0xffff4f9a).withOpacity(0.56),
-                                      ))),
-                            )
-                          ],
-                        ),
-                        Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.only(top: 16, bottom: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                    child: FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return ID001CubeDetailPage(
+                              fcubeextender1: fcubelist[index]);
+                        }));
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Stack(
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.only(right: 3),
-                                child: Text("${fcubelist[index].cubelikes}",
-                                    style: TextStyle(
-                                      fontFamily: "Gibson",
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: Color(0xff78849e),
-                                    )),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Icon(
-                                  ForutonaIcon.thumbsup,
-                                  size: 18,
-                                  color: Color(0xff78849E),
+                                padding: EdgeInsets.only(bottom: 15),
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                        padding: EdgeInsets.only(left: 2),
+                                        margin:
+                                            EdgeInsets.fromLTRB(16, 16, 16, 16),
+                                        height: 30,
+                                        width: 30,
+                                        child: Icon(
+                                          ForutonaIcon.issue,
+                                          size: 15,
+                                          color: Colors.white,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffDC3E57),
+                                          shape: BoxShape.circle,
+                                        )),
+                                    Expanded(
+                                      child: Container(
+                                        width: 150,
+                                        child: RichText(
+                                          text: TextSpan(
+                                              text: fcubelist[index].cubename,
+                                              style: TextStyle(
+                                                fontFamily: "Noto Sans CJK KR",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 13,
+                                                color: Color(0xff454f63),
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                    text:
+                                                        "\n${fcubelist[index].placeaddress}",
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          "Noto Sans CJK KR",
+                                                      fontSize: 11,
+                                                      color: Color(0xff454f63)
+                                                          .withOpacity(0.56),
+                                                    ))
+                                              ]),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                        height: 43,
+                                        width: 43,
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 16, 0, 0),
+                                        alignment: Alignment.topRight,
+                                        child: Container(
+                                          height: 10,
+                                          child: IconButton(
+                                            padding: EdgeInsets.all(0),
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              ForutonaIcon.pointdash,
+                                              color: Colors.black,
+                                              size: 16,
+                                            ),
+                                          ),
+                                        )),
+                                  ],
                                 ),
                               ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 3),
-                                child: Text("${fcubelist[index].cubedislikes}",
-                                    style: TextStyle(
-                                      fontFamily: "Gibson",
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: Color(0xff78849e),
-                                    )),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Icon(
-                                  ForutonaIcon.thumbsdown,
-                                  size: 18,
-                                  color: Color(0xff78849E),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 3),
-                                child: Text("${fcubelist[index].commentcount}",
-                                    style: TextStyle(
-                                      fontFamily: "Gibson",
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: Color(0xff78849e),
-                                    )),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Icon(
-                                  ForutonaIcon.comment,
-                                  size: 18,
-                                  color: Color(0xff78849E),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 3),
-                                child: Text(
-                                    "${fcubelist[index].remindActiveTimetoDuration().inMinutes}",
-                                    style: TextStyle(
-                                      fontFamily: "Gibson",
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: Color(0xff78849e),
-                                    )),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Icon(
-                                  ForutonaIcon.accesstime,
-                                  size: 18,
-                                  color: Color(0xff78849E),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
+                              Positioned(
+                                bottom: 16,
+                                right: 16,
+                                child: Container(
+                                    child: Text(
+                                        "${(fcubelist[index].distancewithme.roundToDouble() / 1000).toStringAsFixed(1)} km 이내",
+                                        style: TextStyle(
+                                          fontFamily: "Noto Sans CJK KR",
+                                          fontSize: 10,
+                                          color: Color(0xffff4f9a)
+                                              .withOpacity(0.56),
+                                        ))),
+                              )
                             ],
                           ),
-                        )
-                      ],
+                          Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.only(top: 16, bottom: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(right: 3),
+                                  child: Text("${fcubelist[index].cubelikes}",
+                                      style: TextStyle(
+                                        fontFamily: "Gibson",
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
+                                        color: Color(0xff78849e),
+                                      )),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(
+                                    ForutonaIcon.thumbsup,
+                                    size: 18,
+                                    color: Color(0xff78849E),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 3),
+                                  child:
+                                      Text("${fcubelist[index].cubedislikes}",
+                                          style: TextStyle(
+                                            fontFamily: "Gibson",
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            color: Color(0xff78849e),
+                                          )),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(
+                                    ForutonaIcon.thumbsdown,
+                                    size: 18,
+                                    color: Color(0xff78849E),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 3),
+                                  child:
+                                      Text("${fcubelist[index].commentcount}",
+                                          style: TextStyle(
+                                            fontFamily: "Gibson",
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            color: Color(0xff78849e),
+                                          )),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(
+                                    ForutonaIcon.comment,
+                                    size: 18,
+                                    color: Color(0xff78849E),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 3),
+                                  child: Text(
+                                      "${fcubelist[index].remindActiveTimetoDuration().inMinutes}",
+                                      style: TextStyle(
+                                        fontFamily: "Gibson",
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
+                                        color: Color(0xff78849e),
+                                      )),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(
+                                    ForutonaIcon.accesstime,
+                                    size: 18,
+                                    color: Color(0xff78849E),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ));
               } else {
                 return Container();

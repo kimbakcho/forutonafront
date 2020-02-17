@@ -278,9 +278,13 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
       }
     }
     if (value == 2) {
-      d001controller.selecttimerstart();
+      if (d001controller != null) {
+        d001controller.selecttimerstart();
+      }
     } else {
-      d001controller.selecttimerstop();
+      if (d001controller.selecttimerstop != null) {
+        d001controller.selecttimerstop();
+      }
     }
     currentoffset = value;
   }

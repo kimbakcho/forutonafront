@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:after_init/after_init.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
     if (d001controller != null) {
       d001controller.selecttimerstart = () {
         selectedTimer =
-            Timer.periodic(Duration(milliseconds: 150), makeSelectedIcon);
+            Timer.periodic(Duration(milliseconds: 20), makeSelectedIcon);
       };
       d001controller.selecttimerstop = () {
         if (selectedTimer != null) {
@@ -1420,15 +1421,16 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
               bottom: 0,
               right: 0,
               child: RepaintBoundary(
-                key: laderkey,
-                child: Container(
-                  height: ladertween.evaluate(laderanimation),
-                  width: ladertween.evaluate(laderanimation),
-                  decoration: BoxDecoration(
-                      color: Color(0xff39F999).withOpacity(0.5),
-                      shape: BoxShape.circle),
-                ),
-              ),
+                  key: laderkey,
+                  child: Container(
+                      height: 300,
+                      width: 300,
+                      child: FlareActor(
+                        "assets/Rive/radar.flr",
+                        alignment: Alignment.center,
+                        animation: "animating",
+                        fit: BoxFit.contain,
+                      ))),
             ),
             googleMap,
             Positioned(

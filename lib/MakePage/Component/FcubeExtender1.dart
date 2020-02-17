@@ -21,6 +21,7 @@ class FcubeExtender1 extends Fcube {
   double userlevel;
   String fcmtoken;
   Widget markerwidget;
+  int followcount;
 
   FcubeExtender1();
 
@@ -65,6 +66,7 @@ class FcubeExtender1 extends Fcube {
     youpoint = json['youpoint'];
     pointreward = json['pointreward'];
     userexp = json['userexp'];
+    followcount = json['followcount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -110,6 +112,8 @@ class FcubeExtender1 extends Fcube {
     data['youpoint'] = this.youpoint;
     data['pointreward'] = this.pointreward;
     data['userexp'] = this.userexp;
+    data['followcount'] = this.followcount;
+
     return data;
   }
 
