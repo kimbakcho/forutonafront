@@ -34,6 +34,7 @@ class ForutonaIcon {
   static const IconData icninboxdark = const IconData(0xe80b, fontFamily: _kFontFam);
   static const IconData noballinbox = const IconData(0xe80c, fontFamily: _kFontFam);
   static const IconData smallyoupoint = const IconData(0xe80d, fontFamily: _kFontFam);
+  static const IconData contributor = const IconData(0xe80e, fontFamily: _kFontFam);
   static const IconData done = const IconData(0xe80f, fontFamily: _kFontFam);
   static const IconData bigyoupoint = const IconData(0xe810, fontFamily: _kFontFam);
   static const IconData visibility = const IconData(0xe811, fontFamily: _kFontFam);
