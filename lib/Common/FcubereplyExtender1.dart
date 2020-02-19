@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/Fcubereply.dart';
+import 'package:forutonafront/Common/FcubereplySearch.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,6 +12,7 @@ class FcubereplyExtender1 extends Fcubereply {
   String nickname;
   String profilepicktureurl;
   String fcmtoken;
+  int bgroupcount;
 
   FcubereplyExtender1.fromJson(Map<String, dynamic> json) {
     commntno = json["commntno"];
@@ -21,6 +26,7 @@ class FcubereplyExtender1 extends Fcubereply {
     nickname = json["nickname"];
     profilepicktureurl = json["profilepicktureurl"];
     fcmtoken = json["fcmtoken"];
+    bgroupcount = json["bgroupcount"];
   }
 
   FcubereplyExtender1.fromFcubereply(Fcubereply fcubereply,
@@ -45,8 +51,26 @@ class FcubereplyExtender1 extends Fcubereply {
         "commnttext": commnttext,
         "nickname": nickname,
         "profilepicktureurl": profilepicktureurl,
-        "fcmtoken": fcmtoken
+        "fcmtoken": fcmtoken,
+        "bgroupcount": bgroupcount
       };
+
+  static Future<List<FcubereplyExtender1>> selectReplyForCubeGroup(
+      FcubereplySearch search) async {
+    Dio dio = new Dio();
+    Uri url = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/SelectReplyForCubeGroup");
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    Response response = await dio.get(url.toString(),
+        queryParameters: search.toJson(),
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+          HttpHeaders.authorizationHeader: "Bearer " + token.token
+        }));
+    return List<FcubereplyExtender1>.from(
+        response.data.map((x) => FcubereplyExtender1.fromJson(x)));
+  }
 
   static Future<List<FcubereplyExtender1>> selectStep1ForReply(
       String cubeuuid, int offset, int limit) async {

@@ -3,8 +3,11 @@ import 'dart:typed_data';
 
 import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/FcubeDescription.dart';
+import 'package:forutonafront/Common/FcubereplyExtender1.dart';
+import 'package:forutonafront/Common/FcubereplySearch.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
 import 'package:forutonafront/Common/marker_generator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -13,6 +16,7 @@ import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:intl/intl.dart';
@@ -41,6 +45,14 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
   bool isLoading = false;
   Map<FcubecontentType, Fcubecontent> contents;
   FcubeDescription description;
+  TextEditingController textEditingController = new TextEditingController();
+  bool replybtnactive = false;
+  List<FcubereplyExtender1> replylist = new List<FcubereplyExtender1>();
+  FcubereplySearch groupsearch;
+  bool replymode1 = false;
+  bool backgroundblock = false;
+  bool iskeyboardshow = false;
+
   @override
   void initState() {
     super.initState();
@@ -66,6 +78,17 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
       this.timer = timer;
       setState(() {});
     });
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        if (!visible) {
+          replymode1 = false;
+          backgroundblock = false;
+        }
+        setState(() {
+          this.iskeyboardshow = visible;
+        });
+      },
+    );
   }
 
   @override
@@ -80,6 +103,10 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
         cubeuuid: fcubeextender1.cubeuuid, uid: uid, contenttypes: types));
     description = FcubeDescription.fromRawJson(
         contents[FcubecontentType.description].contentvalue);
+    groupsearch = FcubereplySearch(
+        cubeuuid: fcubeextender1.cubeuuid, limit: 10, offset: 0);
+    replylist
+        .addAll(await FcubereplyExtender1.selectReplyForCubeGroup(groupsearch));
     this.isLoading = false;
     setState(() {});
   }
@@ -244,80 +271,371 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
             ],
           )),
         ),
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (nonification) {
-            if (nonification is ScrollUpdateNotification) {
-              ScrollUpdateNotification noti = nonification;
-              if ((noti.metrics.pixels >
-                  MediaQuery.of(context).size.height * 0.1)) {
-                isappBartitle = true;
-                setState(() {});
-              } else {
-                isappBartitle = false;
+        body: Stack(children: <Widget>[
+          NotificationListener<ScrollNotification>(
+            onNotification: (nonification) {
+              if (nonification is ScrollUpdateNotification) {
+                ScrollUpdateNotification noti = nonification;
+                if ((noti.metrics.pixels >
+                    MediaQuery.of(context).size.height * 0.1)) {
+                  isappBartitle = true;
+                  setState(() {});
+                } else {
+                  isappBartitle = false;
+                }
               }
-            }
-          },
-          child: ListView(
-            children: <Widget>[
-              Container(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  child: Stack(
-                    children: <Widget>[
-                      googleMap,
-                      GestureDetector(
-                          onTap: () {
-                            print("tap");
+            },
+            child: ListView(
+              children: <Widget>[
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    child: Stack(
+                      children: <Widget>[
+                        googleMap,
+                        GestureDetector(
+                            onTap: () {
+                              print("tap");
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                    Colors.white.withOpacity(0.8),
+                                    Colors.white.withOpacity(0)
+                                  ])),
+                            )),
+                        Positioned(
+                            top: 0,
+                            child: isappBartitle
+                                ? Container()
+                                : TitleWidget(fcubeextender1: fcubeextender1))
+                      ],
+                    )),
+                MakerPanel(fcubeextender1: fcubeextender1),
+                SizedBox(
+                  height: 16,
+                ),
+                PlaceAddressPanel(fcubeextender1: fcubeextender1),
+                SizedBox(
+                  height: 16,
+                ),
+                RemindTimePanel(fcubeextender1: fcubeextender1),
+                SizedBox(
+                  height: 16,
+                ),
+                ContributorPanel(fcubeextender1: fcubeextender1),
+                SizedBox(
+                  height: 16,
+                ),
+                description != null
+                    ? DescriptionImageSwiper(description: description)
+                    : Container(),
+                SizedBox(
+                  height: 16,
+                ),
+                description != null
+                    ? DescriptionText(description: description)
+                    : Container(),
+                SizedBox(
+                  height: 16,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Container(
+                    height: 87,
+                    padding: EdgeInsets.fromLTRB(9, 20, 9, 20),
+                    child: FlatButton(
+                        onPressed: () {
+                          replymode1 = true;
+                          backgroundblock = true;
+                          setState(() {});
+                        },
+                        child: TextField(
+                          enabled: false,
+                          onChanged: (value) {
+                            if (value.length > 0) {
+                              replybtnactive = true;
+                            } else {
+                              replybtnactive = false;
+                            }
+
+                            setState(() {});
                           },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                  Colors.white.withOpacity(0.8),
-                                  Colors.white.withOpacity(0)
-                                ])),
-                          )),
-                      Positioned(
-                          top: 0,
-                          child: isappBartitle
-                              ? Container()
-                              : TitleWidget(fcubeextender1: fcubeextender1))
-                    ],
-                  )),
-              MakerPanel(fcubeextender1: fcubeextender1),
-              SizedBox(
-                height: 16,
-              ),
-              PlaceAddressPanel(fcubeextender1: fcubeextender1),
-              SizedBox(
-                height: 16,
-              ),
-              RemindTimePanel(fcubeextender1: fcubeextender1),
-              SizedBox(
-                height: 16,
-              ),
-              ContributorPanel(fcubeextender1: fcubeextender1),
-              SizedBox(
-                height: 16,
-              ),
-              description != null
-                  ? DescriptionImageSwiper(description: description)
-                  : Container(),
-              SizedBox(
-                height: 16,
-              ),
-              description != null
-                  ? DescriptionText(description: description)
-                  : Container(),
-              SizedBox(
-                height: 16,
-              ),
-            ],
+                          controller: textEditingController,
+                          maxLengthEnforced: true,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                fontFamily: "Noto Sans CJK KR",
+                                fontSize: 14,
+                                color: Color(0xff78849e),
+                              ),
+                              hintText: "의견을 남겨 주세요.",
+                              filled: true,
+                              suffixIcon: Container(
+                                  width: 30,
+                                  margin: EdgeInsets.all(7),
+                                  decoration: BoxDecoration(
+                                      color: replybtnactive
+                                          ? Color(0xFF454F63)
+                                          : Color(0xFFCCCCCC),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          offset: Offset(0.00, 4.00),
+                                          color: Color(0xff455b63)
+                                              .withOpacity(0.08),
+                                          blurRadius: 16,
+                                        ),
+                                      ],
+                                      shape: BoxShape.circle),
+                                  child: FlatButton(
+                                    shape: CircleBorder(),
+                                    padding: EdgeInsets.all(0),
+                                    onPressed: () {
+                                      if (replybtnactive) {}
+                                    },
+                                    child: Icon(ForutonaIcon.icn_send,
+                                        color: replybtnactive
+                                            ? Color(0xFF39F999)
+                                            : Colors.white,
+                                        size: 13),
+                                  )),
+                              contentPadding: EdgeInsets.fromLTRB(23, 0, 15, 0),
+                              fillColor: Colors.white,
+                              disabledBorder: OutlineInputBorder(
+                                  gapPadding: 0,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                  borderSide:
+                                      BorderSide(color: Color(0xffe4e7e8))),
+                              border: OutlineInputBorder(
+                                  gapPadding: 0,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                  borderSide:
+                                      BorderSide(color: Color(0xffe4e7e8)))),
+                        )),
+                    decoration: BoxDecoration(
+                      color: Color(0xffe4e7e8),
+                      border: Border.all(
+                        width: 1.00,
+                        color: Color(0xffe4e7e8),
+                      ),
+                    ),
+                  ),
+                ),
+                FCubeReplyList(replylist: replylist)
+              ],
+            ),
           ),
-        ),
+          backgroundblock
+              ? Container(
+                  color: Color(0xff454F63).withOpacity(0.5),
+                )
+              : Container(),
+          replymode1
+              ? Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Container(
+                      height: 87,
+                      padding: EdgeInsets.fromLTRB(9, 20, 9, 20),
+                      child: TextField(
+                        autofocus: true,
+                        onChanged: (value) {
+                          if (value.length > 0) {
+                            replybtnactive = true;
+                          } else {
+                            replybtnactive = false;
+                          }
+                          setState(() {});
+                        },
+                        controller: textEditingController,
+                        maxLengthEnforced: true,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                            hintStyle: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontSize: 14,
+                              color: Color(0xff78849e),
+                            ),
+                            hintText: "의견을 남겨 주세요.",
+                            filled: true,
+                            suffixIcon: Container(
+                                width: 30,
+                                margin: EdgeInsets.all(7),
+                                decoration: BoxDecoration(
+                                    color: replybtnactive
+                                        ? Color(0xFF454F63)
+                                        : Color(0xFFCCCCCC),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(0.00, 4.00),
+                                        color:
+                                            Color(0xff455b63).withOpacity(0.08),
+                                        blurRadius: 16,
+                                      ),
+                                    ],
+                                    shape: BoxShape.circle),
+                                child: FlatButton(
+                                  shape: CircleBorder(),
+                                  padding: EdgeInsets.all(0),
+                                  onPressed: () {
+                                    if (replybtnactive) {}
+                                  },
+                                  child: Icon(ForutonaIcon.icn_send,
+                                      color: replybtnactive
+                                          ? Color(0xFF39F999)
+                                          : Colors.white,
+                                      size: 13),
+                                )),
+                            contentPadding: EdgeInsets.fromLTRB(23, 0, 15, 0),
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                                gapPadding: 0,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                borderSide:
+                                    BorderSide(color: Color(0xffe4e7e8))),
+                            enabledBorder: OutlineInputBorder(
+                                gapPadding: 0,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                borderSide:
+                                    BorderSide(color: Color(0xffe4e7e8))),
+                            border: OutlineInputBorder(
+                                gapPadding: 0,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                borderSide:
+                                    BorderSide(color: Color(0xffe4e7e8)))),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color(0xffe4e7e8),
+                        border: Border.all(
+                          width: 1.00,
+                          color: Color(0xffe4e7e8),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Container()
+        ]),
       ),
     );
+  }
+}
+
+class FCubeReplyList extends StatelessWidget {
+  const FCubeReplyList({
+    Key key,
+    @required this.replylist,
+  }) : super(key: key);
+
+  final List<FcubereplyExtender1> replylist;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: ListView.builder(
+            itemCount: replylist.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Stack(children: <Widget>[
+                Container(
+                  margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  padding: EdgeInsets.only(bottom: 32),
+                  decoration: BoxDecoration(
+                    color: Color(0xffffffff),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0.00, 4.00),
+                        color: Color(0xff455b63).withOpacity(0.08),
+                        blurRadius: 16,
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(12.00),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.all(16),
+                        height: 44,
+                        width: 44,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    replylist[index].profilepicktureurl))),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                              margin: EdgeInsets.only(top: 16),
+                              child: Text("${replylist[index].nickname}",
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: Color(0xff454f63),
+                                  ))),
+                          Container(
+                              child: Text("${replylist[index].commnttext}",
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontSize: 14,
+                                    color: Color(0xff78849e),
+                                  ))),
+                          Container(
+                              child: Text(
+                                  "${DateFormat("yyyy-MM-dd a KK:mm").format(replylist[index].commnttime.toLocal())}",
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontSize: 9,
+                                    color: Color(0xffb1b1b1),
+                                  )))
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 16,
+                  right: 0,
+                  child: FlatButton(
+                    shape: CircleBorder(),
+                    child: Icon(
+                      ForutonaIcon.pointdash,
+                      size: 17,
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+                Positioned(
+                  bottom: 16,
+                  right: 16,
+                  child: FlatButton(
+                    child: Text(
+                      "답글",
+                      style: TextStyle(
+                        fontFamily: "Noto Sans CJK KR",
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        color: Color(0xff454f63),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+              ]);
+            }));
   }
 }
 
