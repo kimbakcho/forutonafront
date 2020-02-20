@@ -631,12 +631,12 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                     onPressed: () async {
                       FirebaseUser user = await _auth.currentUser();
                       Fcubereply reply = Fcubereply(
-                          commnttext: replycontroller.text,
+                          commenttext: replycontroller.text,
                           cubeuuid: fcubequest.cubeuuid,
                           uid: user.uid,
                           bgroup: 0,
                           depth: 0,
-                          commnttime: DateTime.now(),
+                          commenttime: DateTime.now(),
                           sorts: 0);
                       Fcubereply result = await reply.makereply();
                       if (result != null) {
@@ -699,7 +699,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                 children: <Widget>[
                                   Expanded(
                                     child: Text(
-                                        replyExtenderlist[index].commnttext),
+                                        replyExtenderlist[index].commenttext),
                                   ),
                                 ],
                               ),
@@ -709,7 +709,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                     child: Text(
                                         DateFormat("yyyy-MM-dd HH:mm:ss")
                                             .format(replyExtenderlist[index]
-                                                .commnttime
+                                                .commenttime
                                                 .toUtc()
                                                 .add(Duration(hours: 9)))),
                                   ),
@@ -726,12 +726,12 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
                                         Fcubereply reply = new Fcubereply(
                                             bgroup:
                                                 replyExtenderlist[index].bgroup,
-                                            commnttext: response,
+                                            commenttext: response,
                                             cubeuuid: replyExtenderlist[index]
                                                 .cubeuuid,
                                             depth: 1,
                                             uid: user.uid,
-                                            commnttime: DateTime.now());
+                                            commenttime: DateTime.now());
                                         FcubereplyExtender1 rereply =
                                             FcubereplyExtender1.fromFcubereply(
                                                 reply,

@@ -13,16 +13,17 @@ class FcubereplyExtender1 extends Fcubereply {
   String profilepicktureurl;
   String fcmtoken;
   int bgroupcount;
+  FcubereplyExtender1();
 
   FcubereplyExtender1.fromJson(Map<String, dynamic> json) {
-    commntno = json["commntno"];
+    commentno = json["commentno"];
     cubeuuid = json["cubeuuid"];
     uid = json["Uid"];
     bgroup = json["bgroup"];
     sorts = json["sorts"];
     depth = json["depth"];
-    commnttext = json["commnttext"];
-    commnttime = DateTime.parse(json["commnttime"]);
+    commenttext = json["commenttext"];
+    commenttime = DateTime.parse(json["commenttime"]);
     nickname = json["nickname"];
     profilepicktureurl = json["profilepicktureurl"];
     fcmtoken = json["fcmtoken"];
@@ -31,24 +32,24 @@ class FcubereplyExtender1 extends Fcubereply {
 
   FcubereplyExtender1.fromFcubereply(Fcubereply fcubereply,
       {this.nickname, this.profilepicktureurl}) {
-    commntno = fcubereply.commntno;
+    commentno = fcubereply.commentno;
     cubeuuid = fcubereply.cubeuuid;
     uid = fcubereply.uid;
     sorts = fcubereply.sorts;
     bgroup = fcubereply.bgroup;
     depth = fcubereply.depth;
-    commnttext = fcubereply.commnttext;
-    commnttime = fcubereply.commnttime;
+    commenttext = fcubereply.commenttext;
+    commenttime = fcubereply.commenttime;
   }
 
   Map<String, dynamic> toJson() => {
-        "commntno": commntno,
+        "commentno": commentno,
         "cubeuuid": cubeuuid,
         "uid": uid,
         "bgroup": bgroup,
         "sorts": sorts,
         "depth": depth,
-        "commnttext": commnttext,
+        "commenttext": commenttext,
         "nickname": nickname,
         "profilepicktureurl": profilepicktureurl,
         "fcmtoken": fcmtoken,

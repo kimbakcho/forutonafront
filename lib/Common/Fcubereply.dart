@@ -11,50 +11,51 @@ Fcubereply fcubereplyFromJson(String str) =>
 String fcubereplyToJson(Fcubereply data) => json.encode(data.toJson());
 
 class Fcubereply {
-  int commntno;
+  int commentno;
   String cubeuuid;
   String uid;
   int bgroup;
   int sorts;
   int depth;
-  String commnttext;
-  DateTime commnttime;
+  String commenttext;
+  DateTime commenttime;
 
   Fcubereply({
-    this.commntno,
+    this.commentno,
     this.cubeuuid,
     this.uid,
     this.bgroup,
     this.sorts,
     this.depth,
-    this.commnttext,
-    this.commnttime,
+    this.commenttext,
+    this.commenttime,
   });
 
   factory Fcubereply.fromJson(Map<String, dynamic> json) => Fcubereply(
-        commntno: json["commntno"],
+        commentno: json["commentno"],
         cubeuuid: json["cubeuuid"],
         uid: json["uid"],
         sorts: json["sorts"],
         bgroup: json["bgroup"],
         depth: json["depth"],
-        commnttext: json["commnttext"],
-        commnttime: DateTime.parse(json["commnttime"]),
+        commenttext: json["commenttext"],
+        commenttime: DateTime.parse(json["commenttime"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "commntno": commntno,
+        "commentno": commentno,
         "cubeuuid": cubeuuid,
         "uid": uid,
         "bgroup": bgroup,
         "sorts": sorts,
         "depth": depth,
-        "commnttext": commnttext,
-        "commnttime": commnttime.toIso8601String(),
+        "commenttext": commenttext,
+        "commenttime": commenttime.toIso8601String(),
       };
 
   Future<Fcubereply> makereply() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    this.uid = user.uid;
     IdTokenResult token = await user.getIdToken();
     Uri url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/InsertCubeReply");

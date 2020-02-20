@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/FcubeDescription.dart';
+import 'package:forutonafront/Common/Fcubereply.dart';
 import 'package:forutonafront/Common/FcubereplyExtender1.dart';
 import 'package:forutonafront/Common/FcubereplySearch.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
@@ -483,8 +484,31 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
                                 child: FlatButton(
                                   shape: CircleBorder(),
                                   padding: EdgeInsets.all(0),
-                                  onPressed: () {
-                                    if (replybtnactive) {}
+                                  onPressed: () async {
+                                    if (replybtnactive) {
+                                      FcubereplyExtender1 reply =
+                                          new FcubereplyExtender1();
+                                      reply.bgroup = 0;
+                                      reply.sorts = 0;
+                                      reply.depth = 0;
+                                      reply.cubeuuid = fcubeextender1.cubeuuid;
+                                      reply.commenttext =
+                                          textEditingController.text;
+                                      Fcubereply rereply =
+                                          await reply.makereply();
+                                      textEditingController.clear();
+                                      isLoading = true;
+                                      setState(() {});
+                                      replylist.clear();
+                                      replylist.addAll(await FcubereplyExtender1
+                                          .selectReplyForCubeGroup(
+                                              groupsearch));
+                                      isLoading = false;
+                                      setState(() {});
+
+                                      replymode1 = false;
+                                      setState(() {});
+                                    }
                                   },
                                   child: Icon(ForutonaIcon.icn_send,
                                       color: replybtnactive
@@ -542,6 +566,7 @@ class FCubeReplyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             itemCount: replylist.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
@@ -586,7 +611,7 @@ class FCubeReplyList extends StatelessWidget {
                                     color: Color(0xff454f63),
                                   ))),
                           Container(
-                              child: Text("${replylist[index].commnttext}",
+                              child: Text("${replylist[index].commenttext}",
                                   style: TextStyle(
                                     fontFamily: "Noto Sans CJK KR",
                                     fontSize: 14,
@@ -594,7 +619,7 @@ class FCubeReplyList extends StatelessWidget {
                                   ))),
                           Container(
                               child: Text(
-                                  "${DateFormat("yyyy-MM-dd a KK:mm").format(replylist[index].commnttime.toLocal())}",
+                                  "${DateFormat("yyyy-MM-dd a KK:mm").format(replylist[index].commenttime.toLocal())}",
                                   style: TextStyle(
                                     fontFamily: "Noto Sans CJK KR",
                                     fontSize: 9,
