@@ -13,6 +13,7 @@ import 'package:forutonafront/Common/LoadingOverlay.dart';
 import 'package:forutonafront/Common/marker_generator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/Component/FcubeSearch.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:forutonafront/globals.dart';
@@ -49,10 +50,15 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
   TextEditingController textEditingController = new TextEditingController();
   bool replybtnactive = false;
   List<FcubereplyExtender1> replylist = new List<FcubereplyExtender1>();
+  List<FcubereplyExtender1> currentrereplylist =
+      new List<FcubereplyExtender1>();
   FcubereplySearch groupsearch;
   bool replymode1 = false;
+  bool replymode2 = false;
   bool backgroundblock = false;
   bool iskeyboardshow = false;
+  int currentreplycount = 0;
+  int currentbgroup = 0;
 
   @override
   void initState() {
@@ -83,7 +89,9 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
       onChange: (bool visible) {
         if (!visible) {
           replymode1 = false;
+          replymode2 = false;
           backgroundblock = false;
+          currentrereplylist.clear();
         }
         setState(() {
           this.iskeyboardshow = visible;
@@ -105,7 +113,7 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
     description = FcubeDescription.fromRawJson(
         contents[FcubecontentType.description].contentvalue);
     groupsearch = FcubereplySearch(
-        cubeuuid: fcubeextender1.cubeuuid, limit: 10, offset: 0);
+        cubeuuid: fcubeextender1.cubeuuid, limit: 10, offset: 0, bgroup: 0);
     replylist
         .addAll(await FcubereplyExtender1.selectReplyForCubeGroup(groupsearch));
     this.isLoading = false;
@@ -219,9 +227,11 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
           elevation: 0,
           actions: <Widget>[
             IconButton(
+              onPressed: () {},
               icon: Icon(ForutonaIcon.share),
             ),
             IconButton(
+              onPressed: () {},
               icon: Icon(ForutonaIcon.setting),
             ),
           ],
@@ -427,7 +437,28 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
                     ),
                   ),
                 ),
-                FCubeReplyList(replylist: replylist)
+                FCubeReplyList(
+                  replylist: replylist,
+                  onpushreply: (reply) async {
+                    isLoading = true;
+                    setState(() {});
+                    FcubereplySearch search = FcubereplySearch(
+                        bgroup: reply.bgroup,
+                        cubeuuid: reply.cubeuuid,
+                        limit: 10,
+                        offset: 0);
+                    currentrereplylist =
+                        await FcubereplyExtender1.selectReplyForCubeWithBgroup(
+                            search);
+                    replymode1 = true;
+                    backgroundblock = true;
+                    replymode2 = true;
+                    currentreplycount = reply.bgroupcount;
+                    currentbgroup = reply.bgroup;
+                    isLoading = false;
+                    setState(() {});
+                  },
+                )
               ],
             ),
           ),
@@ -435,6 +466,32 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
               ? Container(
                   color: Color(0xff454F63).withOpacity(0.5),
                 )
+              : Container(),
+          replymode2
+              ? Positioned(
+                  bottom: 0,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.7,
+                            bottom: 90),
+                        shrinkWrap: true,
+                        itemCount: currentrereplylist.length,
+                        itemBuilder: (context, index) {
+                          if (currentrereplylist[index].sorts == 0 &&
+                              currentrereplylist[index].depth == 0) {
+                            return ReplyFirstPanel(
+                              currentrereplylist: currentrereplylist[index],
+                              currentreplycount: currentreplycount,
+                            );
+                          } else {
+                            return ReplySubPanel(
+                                currentrereplylist: currentrereplylist[index]);
+                          }
+                        }),
+                  ))
               : Container(),
           replymode1
               ? Positioned(
@@ -488,14 +545,15 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
                                     if (replybtnactive) {
                                       FcubereplyExtender1 reply =
                                           new FcubereplyExtender1();
-                                      reply.bgroup = 0;
+                                      reply.bgroup =
+                                          replymode2 ? currentbgroup : 0;
                                       reply.sorts = 0;
                                       reply.depth = 0;
                                       reply.cubeuuid = fcubeextender1.cubeuuid;
                                       reply.commenttext =
                                           textEditingController.text;
-                                      Fcubereply rereply =
-                                          await reply.makereply();
+
+                                      await reply.makereply();
                                       textEditingController.clear();
                                       isLoading = true;
                                       setState(() {});
@@ -507,6 +565,7 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
                                       setState(() {});
 
                                       replymode1 = false;
+                                      replymode2 = false;
                                       setState(() {});
                                     }
                                   },
@@ -554,12 +613,208 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
   }
 }
 
+class ReplySubPanel extends StatelessWidget {
+  const ReplySubPanel({
+    Key key,
+    @required this.currentrereplylist,
+  }) : super(key: key);
+
+  final FcubereplyExtender1 currentrereplylist;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: <Widget>[
+      Container(
+          margin: EdgeInsets.fromLTRB(16, 1, 16, 0),
+          padding: EdgeInsets.only(bottom: 32),
+          decoration: BoxDecoration(
+            color: Color(0xffe4e7e8),
+            border: Border.all(
+              width: 1.00,
+              color: Color(0xffe4e7e8),
+            ),
+          ),
+          child: Row(children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(16),
+              height: 44,
+              width: 44,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image:
+                          NetworkImage(currentrereplylist.profilepicktureurl))),
+            ),
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.only(top: 16),
+                      child: Text("${currentrereplylist.nickname}",
+                          style: TextStyle(
+                            fontFamily: "Noto Sans CJK KR",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            color: Color(0xff454f63),
+                          ))),
+                  Container(
+                      child: Text("${currentrereplylist.commenttext}",
+                          style: TextStyle(
+                            fontFamily: "Noto Sans CJK KR",
+                            fontSize: 14,
+                            color: Color(0xff78849e),
+                          ))),
+                ])
+          ])),
+      Positioned(
+        top: 16,
+        right: 0,
+        child: FlatButton(
+          shape: CircleBorder(),
+          child: Icon(
+            ForutonaIcon.pointdash,
+            size: 17,
+          ),
+          onPressed: () {},
+        ),
+      ),
+      Positioned(
+        top: 0,
+        left: 40,
+        child: Container(
+          child: Icon(ForutonaIcon.replysplitbottom,
+              size: 10, color: Color(0xff707070)),
+        ),
+      ),
+      Positioned(
+        bottom: 0,
+        left: 40,
+        child: Container(
+          child: Icon(ForutonaIcon.replysplittop,
+              size: 10, color: Color(0xff707070)),
+        ),
+      )
+    ]);
+  }
+}
+
+class ReplyFirstPanel extends StatelessWidget {
+  const ReplyFirstPanel(
+      {Key key, @required this.currentrereplylist, this.currentreplycount})
+      : super(key: key);
+  final int currentreplycount;
+  final FcubereplyExtender1 currentrereplylist;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: <Widget>[
+      Container(
+        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+        padding: EdgeInsets.only(bottom: 32),
+        decoration: BoxDecoration(
+            color: Color(0xffffffff),
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(0.00, 4.00),
+                color: Color(0xff455b63).withOpacity(0.08),
+                blurRadius: 16,
+              ),
+            ],
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(16),
+              height: 44,
+              width: 44,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image:
+                          NetworkImage(currentrereplylist.profilepicktureurl))),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(top: 16),
+                    child: Text("${currentrereplylist.nickname}",
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: Color(0xff454f63),
+                        ))),
+                Container(
+                    child: Text("${currentrereplylist.commenttext}",
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontSize: 14,
+                          color: Color(0xff78849e),
+                        ))),
+                Container(
+                    child: Text(
+                        "${DateFormat("yyyy-MM-dd a KK:mm").format(currentrereplylist.commenttime.toLocal())}",
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontSize: 9,
+                          color: Color(0xffb1b1b1),
+                        )))
+              ],
+            )
+          ],
+        ),
+      ),
+      Positioned(
+        top: 16,
+        right: 0,
+        child: FlatButton(
+          shape: CircleBorder(),
+          child: Icon(
+            ForutonaIcon.pointdash,
+            size: 17,
+          ),
+          onPressed: () {},
+        ),
+      ),
+      Positioned(
+        bottom: 16,
+        right: 16,
+        child: FlatButton(
+          child: Text(
+            "답글 ${currentreplycount == 0 ? "" : currentreplycount}",
+            style: TextStyle(
+              fontFamily: "Noto Sans CJK KR",
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              color: Color(0xffFF4F9A),
+              decoration: TextDecoration.underline,
+            ),
+          ),
+          onPressed: () {},
+        ),
+      ),
+      Positioned(
+        bottom: 0,
+        left: 40,
+        child: Container(
+          child: Icon(ForutonaIcon.replysplittop,
+              size: 10, color: Color(0xff707070)),
+        ),
+      )
+    ]);
+  }
+}
+
 class FCubeReplyList extends StatelessWidget {
   const FCubeReplyList({
     Key key,
     @required this.replylist,
+    this.onpushreply,
   }) : super(key: key);
-
+  final Function(FcubereplyExtender1 item) onpushreply;
   final List<FcubereplyExtender1> replylist;
 
   @override
@@ -647,7 +902,7 @@ class FCubeReplyList extends StatelessWidget {
                   right: 16,
                   child: FlatButton(
                     child: Text(
-                      "답글",
+                      "답글 ${replylist[index].bgroupcount == 0 ? "" : replylist[index].bgroupcount}",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w700,
@@ -656,7 +911,9 @@ class FCubeReplyList extends StatelessWidget {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      onpushreply(replylist[index]);
+                    },
                   ),
                 ),
               ]);

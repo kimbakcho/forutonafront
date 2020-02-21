@@ -299,6 +299,34 @@
       "search": [
         "icn_send"
       ]
+    },
+    {
+      "uid": "8f91cc0f564cedf62a0a7decb38be216",
+      "css": "replysplittop",
+      "code": 59414,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M0 152.4H152.4V0H0ZM0 457.2H152.4V304.8H0ZM0 761.9H152.4V609.5H0ZM-0.1 1000.6L153.4 1001.2 152.4 914.3H0Z",
+        "width": 152
+      },
+      "search": [
+        "replysplittop"
+      ]
+    },
+    {
+      "uid": "700b0c4fdec2cf26cd1473128a796503",
+      "css": "replysplitbottom",
+      "code": 59413,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M153.4 848.8L1 848.8 1 1001.2 153.4 1001.2ZM153.4 544L1 544 1 696.4 153.4 696.4ZM153.4 239.3L1 239.3 1 391.7 153.4 391.7ZM153.4 0.6L-0.1 0 1 86.9 153.4 86.9Z",
+        "width": 152
+      },
+      "search": [
+        "replysplitbottom"
+      ]
     }
   ]
 }

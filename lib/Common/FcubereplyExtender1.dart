@@ -73,7 +73,7 @@ class FcubereplyExtender1 extends Fcubereply {
         response.data.map((x) => FcubereplyExtender1.fromJson(x)));
   }
 
-  static Future<List<FcubereplyExtender1>> selectStep1ForReply(
+  static Future<List<FcubereplyExtender1>> selectReplyForCube(
       String cubeuuid, int offset, int limit) async {
     var queryParameters = {
       "cubeuuid": cubeuuid,
@@ -89,5 +89,22 @@ class FcubereplyExtender1 extends Fcubereply {
       list.add(new FcubereplyExtender1.fromJson(v));
     });
     return list;
+  }
+
+  static Future<List<FcubereplyExtender1>> selectReplyForCubeWithBgroup(
+      FcubereplySearch search) async {
+    Dio dio = new Dio();
+    Uri url = Preference.httpurlbase(Preference.baseBackEndUrl,
+        "/api/v1/Fcube/SelectReplyForCubeWithBgroup");
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    Response response = await dio.get(url.toString(),
+        queryParameters: search.toJson(),
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+          HttpHeaders.authorizationHeader: "Bearer " + token.token
+        }));
+    return List<FcubereplyExtender1>.from(
+        response.data.map((x) => FcubereplyExtender1.fromJson(x)));
   }
 }

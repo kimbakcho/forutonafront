@@ -41,4 +41,6 @@ class ForutonaIcon {
   static const IconData setting = const IconData(0xe812, fontFamily: _kFontFam);
   static const IconData share = const IconData(0xe813, fontFamily: _kFontFam);
   static const IconData icn_send = const IconData(0xe814, fontFamily: _kFontFam);
+  static const IconData replysplitbottom = const IconData(0xe815, fontFamily: _kFontFam);
+  static const IconData replysplittop = const IconData(0xe816, fontFamily: _kFontFam);
 }

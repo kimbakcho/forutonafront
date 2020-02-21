@@ -138,7 +138,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   }
 
   void initreply() async {
-    replyExtenderlist = await FcubereplyExtender1.selectStep1ForReply(
+    replyExtenderlist = await FcubereplyExtender1.selectReplyForCube(
         fcubequest.cubeuuid, 0, 0);
     setState(() {});
   }
