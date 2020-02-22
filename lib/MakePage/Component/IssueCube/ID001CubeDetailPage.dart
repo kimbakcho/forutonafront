@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/FcubeDescription.dart';
+import 'package:forutonafront/Common/FcubeSponsor.dart';
+import 'package:forutonafront/Common/FcubeSponsorExtender1.dart';
+import 'package:forutonafront/Common/FcubeSponsorSearch.dart';
 import 'package:forutonafront/Common/Fcubereply.dart';
 import 'package:forutonafront/Common/FcubereplyExtender1.dart';
 import 'package:forutonafront/Common/FcubereplySearch.dart';
@@ -53,12 +56,17 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
   List<FcubereplyExtender1> currentrereplylist =
       new List<FcubereplyExtender1>();
   FcubereplySearch groupsearch;
+  FcubeSponsorSearch fcubeSponsorsearch;
+  List<FcubeSponsorExtender1> fcubeSponsorlist = List<FcubeSponsorExtender1>();
+  int sumSponsorPointValue = 0;
+  int cubeSponsorCount = 0;
   bool replymode1 = false;
   bool replymode2 = false;
   bool backgroundblock = false;
   bool iskeyboardshow = false;
   int currentreplycount = 0;
   int currentbgroup = 0;
+  bool isappicon = false;
 
   @override
   void initState() {
@@ -116,6 +124,20 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
         cubeuuid: fcubeextender1.cubeuuid, limit: 10, offset: 0, bgroup: 0);
     replylist
         .addAll(await FcubereplyExtender1.selectReplyForCubeGroup(groupsearch));
+
+    fcubeSponsorsearch = FcubeSponsorSearch(
+        cubeuuid: fcubeextender1.cubeuuid,
+        isdesc: true,
+        limit: 3,
+        offset: 0,
+        orderby: 'sendTime');
+    sumSponsorPointValue =
+        await FcubeSponsor.getCubeSponsorSumPointValue(fcubeSponsorsearch);
+    cubeSponsorCount =
+        await FcubeSponsor.getCubeSponsorCount(fcubeSponsorsearch);
+    fcubeSponsorlist.addAll(
+        await FcubeSponsorExtender1.getSponsorForCubeuuid(fcubeSponsorsearch));
+
     this.isLoading = false;
     setState(() {});
   }
@@ -238,31 +260,33 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
           title: Container(
               child: Row(
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(left: 2),
-                height: 35.00,
-                width: 35.00,
-                child: Icon(
-                  ForutonaIcon.issue,
-                  size: 20,
-                  color: Colors.white,
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xffdc3e57),
-                  border: Border.all(
-                    width: 1.00,
-                    color: Color(0xffdc3e57),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0.00, 3.00),
-                      color: Color(0xff000000).withOpacity(0.16),
-                      blurRadius: 6,
-                    ),
-                  ],
-                  shape: BoxShape.circle,
-                ),
-              ),
+              isappicon
+                  ? Container(
+                      padding: EdgeInsets.only(left: 2),
+                      height: 35.00,
+                      width: 35.00,
+                      child: Icon(
+                        ForutonaIcon.issue,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color(0xffdc3e57),
+                        border: Border.all(
+                          width: 1.00,
+                          color: Color(0xffdc3e57),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0.00, 3.00),
+                            color: Color(0xff000000).withOpacity(0.16),
+                            blurRadius: 6,
+                          ),
+                        ],
+                        shape: BoxShape.circle,
+                      ),
+                    )
+                  : Container(),
               SizedBox(
                 width: 16,
               ),
@@ -282,13 +306,19 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
             ],
           )),
         ),
+        backgroundColor: Colors.white,
         body: Stack(children: <Widget>[
           NotificationListener<ScrollNotification>(
             onNotification: (nonification) {
               if (nonification is ScrollUpdateNotification) {
                 ScrollUpdateNotification noti = nonification;
-                if ((noti.metrics.pixels >
-                    MediaQuery.of(context).size.height * 0.1)) {
+                if (noti.metrics.pixels >= 20) {
+                  isappicon = true;
+                } else {
+                  isappicon = false;
+                }
+
+                if ((noti.metrics.pixels > 40)) {
                   isappBartitle = true;
                   setState(() {});
                 } else {
@@ -312,33 +342,117 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
                                   gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
+                                      stops: [
+                                    0.15,
+                                    1
+                                  ],
                                       colors: [
-                                    Colors.white.withOpacity(0.8),
+                                    Colors.white.withOpacity(1),
                                     Colors.white.withOpacity(0)
                                   ])),
                             )),
                         Positioned(
                             top: 0,
-                            child: isappBartitle
-                                ? Container()
-                                : TitleWidget(fcubeextender1: fcubeextender1))
+                            child: Container(
+                                margin: EdgeInsets.only(left: 16),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      !isappicon
+                                          ? Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 0, 0, 0),
+                                              child: Text("이슈볼",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "Noto Sans CJK KR",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 12,
+                                                    color: Color(0xffff4f9a),
+                                                  )))
+                                          : Container(),
+                                      !isappBartitle
+                                          ? Container(
+                                              child: Text(
+                                                  fcubeextender1.cubename,
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "Noto Sans CJK KR",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 19,
+                                                    color: Color(0xff454f63),
+                                                  )))
+                                          : Container(),
+                                      !isappBartitle
+                                          ? Container(
+                                              child: Row(children: <Widget>[
+                                              Container(
+                                                child: Icon(
+                                                  ForutonaIcon.visibility,
+                                                  color: Color(0xff78849E),
+                                                  size: 20,
+                                                ),
+                                              ),
+                                              Container(
+                                                  margin:
+                                                      EdgeInsets.only(left: 5),
+                                                  child: Text(
+                                                      "${fcubeextender1.cubehits}",
+                                                      style: TextStyle(
+                                                        fontFamily: "Gibson",
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14,
+                                                        color:
+                                                            Color(0xff78849e),
+                                                      )))
+                                            ]))
+                                          : Container()
+                                    ])))
                       ],
                     )),
                 MakerPanel(fcubeextender1: fcubeextender1),
                 SizedBox(
                   height: 16,
                 ),
-                PlaceAddressPanel(fcubeextender1: fcubeextender1),
-                SizedBox(
-                  height: 16,
-                ),
-                RemindTimePanel(fcubeextender1: fcubeextender1),
-                SizedBox(
-                  height: 16,
-                ),
-                ContributorPanel(fcubeextender1: fcubeextender1),
-                SizedBox(
-                  height: 16,
+                Container(
+                  margin: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xffffffff),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0.00, 4.00),
+                        color: Color(0xff455b63).withOpacity(0.08),
+                        blurRadius: 16,
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(12.00),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      PlaceAddressPanel(fcubeextender1: fcubeextender1),
+                      Divider(
+                        thickness: 2,
+                        indent: 16,
+                        endIndent: 16,
+                        color: Color(0xffF4F4F6),
+                      ),
+                      RemindTimePanel(fcubeextender1: fcubeextender1),
+                      Divider(
+                        thickness: 2,
+                        indent: 16,
+                        endIndent: 16,
+                        color: Color(0xffF4F4F6),
+                      ),
+                      ContributorPanel(fcubeextender1: fcubeextender1),
+                    ],
+                  ),
                 ),
                 description != null
                     ? DescriptionImageSwiper(description: description)
@@ -352,6 +466,304 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
                 SizedBox(
                   height: 16,
                 ),
+                Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xffffffff),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.00, 4.00),
+                          color: Color(0xff455b63).withOpacity(0.08),
+                          blurRadius: 16,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(12.00),
+                    ),
+                    margin: EdgeInsets.all(16),
+                    padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                    child: Column(children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(bottom: 16),
+                        alignment: Alignment.centerLeft,
+                        child: Text("후원 내역",
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: Color(0xff454f63),
+                            )),
+                      ),
+                      Stack(children: <Widget>[
+                        Container(
+                            // margin: EdgeInsets.only(bottom: 16),
+                            child: Row(children: <Widget>[
+                          Container(
+                            height: 42.00,
+                            width: 42.00,
+                            child: Icon(
+                              ForutonaIcon.bigyoupoint,
+                              size: 28,
+                              color: Color(0xff78849E),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color(0xffe4e7e8),
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: Offset(0.00, 12.00),
+                                  color: Color(0xff455b63).withOpacity(0.10),
+                                  blurRadius: 16,
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(21.00),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                child: Text("후원 포인트",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 11,
+                                      color: Color(0xff454f63),
+                                    )),
+                              ),
+                              Container(
+                                child: Text("총 후원된 포인트 입니다.",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontSize: 11,
+                                      color: Color(0xff454f63),
+                                    )),
+                              )
+                            ],
+                          )
+                        ])),
+                        Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                                child: Row(
+                              children: <Widget>[
+                                Text(
+                                    "${NumberFormat("###,###,###").format(sumSponsorPointValue)}",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      color: Color(0xffff4f9a),
+                                    )),
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(5, 5, 0, 0),
+                                    alignment: Alignment.bottomCenter,
+                                    child: Icon(ForutonaIcon.smallyoupoint,
+                                        size: 12, color: Color(0xffff4f9a)))
+                              ],
+                            )))
+                      ]),
+                      Divider(
+                        thickness: 2,
+                        indent: 16,
+                        endIndent: 16,
+                        color: Color(0xffF4F4F6),
+                      ),
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                              margin: EdgeInsets.only(bottom: 16),
+                              child: Row(children: <Widget>[
+                                Container(
+                                  height: 42.00,
+                                  width: 42.00,
+                                  child: Icon(
+                                    ForutonaIcon.sponsorcount,
+                                    size: 28,
+                                    color: Color(0xff78849E),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffe4e7e8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(0.00, 12.00),
+                                        color:
+                                            Color(0xff455b63).withOpacity(0.10),
+                                        blurRadius: 16,
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(21.00),
+                                  ),
+                                ),
+                                SizedBox(width: 16),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      child: Text("후원자",
+                                          style: TextStyle(
+                                            fontFamily: "Noto Sans CJK KR",
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 11,
+                                            color: Color(0xff454f63),
+                                          )),
+                                    ),
+                                    Container(
+                                      child: Text("후원해 주신 모든 분들께 감사드립니다.",
+                                          style: TextStyle(
+                                            fontFamily: "Noto Sans CJK KR",
+                                            fontSize: 11,
+                                            color: Color(0xff454f63),
+                                          )),
+                                    )
+                                  ],
+                                )
+                              ])),
+                          Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Container(
+                                  child: Row(
+                                children: <Widget>[
+                                  Text("$cubeSponsorCount",
+                                      style: TextStyle(
+                                        fontFamily: "Noto Sans CJK KR",
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20,
+                                        color: Color(0xff454f63),
+                                      )),
+                                ],
+                              )))
+                        ],
+                      ),
+                      Divider(
+                        thickness: 2,
+                        indent: 16,
+                        endIndent: 16,
+                        color: Color(0xffF4F4F6),
+                      ),
+                      ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: fcubeSponsorlist.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                                child: Stack(children: <Widget>[
+                                  Container(
+                                      child: Column(
+                                    children: <Widget>[
+                                      Row(children: <Widget>[
+                                        Container(
+                                          height: 62.00,
+                                          width: 62.00,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Color(0xffFF4F9A),
+                                                width: 2),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  fcubeSponsorlist[index]
+                                                      .profilePicktureUrl),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                                "${fcubeSponsorlist[index].nickName}",
+                                                style: TextStyle(
+                                                  fontFamily: "Gibson",
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
+                                                  color: Color(0xff454f63),
+                                                )),
+                                            Text(
+                                                "${fcubeSponsorlist[index].comment}",
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      "Noto Sans CJK KR",
+                                                  fontSize: 11,
+                                                  color: Color(0xff78849e),
+                                                ))
+                                          ],
+                                        )
+                                      ]),
+                                      Divider(
+                                        thickness: 2,
+                                        indent: 16,
+                                        endIndent: 16,
+                                        color: Color(0xffF4F4F6),
+                                      ),
+                                    ],
+                                  )),
+                                  Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Container(
+                                          child: Row(
+                                        children: <Widget>[
+                                          Text(
+                                              "${fcubeSponsorlist[index].pointValue}",
+                                              style: TextStyle(
+                                                fontFamily: "Noto Sans CJK KR",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 16,
+                                                color: Color(0xffff4f9a),
+                                              )),
+                                          Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  5, 5, 0, 0),
+                                              alignment: Alignment.bottomCenter,
+                                              child: Icon(
+                                                  ForutonaIcon.smallyoupoint,
+                                                  size: 12,
+                                                  color: Color(0xffff4f9a)))
+                                        ],
+                                      ))),
+                                ]));
+                          }),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 43,
+                        child: FlatButton(
+                            onPressed: () async {
+                              isLoading = true;
+                              setState(() {});
+                              fcubeSponsorsearch.offset =
+                                  fcubeSponsorlist.length;
+                              fcubeSponsorlist.addAll(
+                                  await FcubeSponsorExtender1
+                                      .getSponsorForCubeuuid(
+                                          fcubeSponsorsearch));
+                              isLoading = false;
+                              setState(() {});
+                            },
+                            child: Text("더보기",
+                                style: TextStyle(
+                                  fontFamily: "Noto Sans CJK KR",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  color: Color(0xffffffff),
+                                ))),
+                        decoration: BoxDecoration(
+                          color: Color(0xffff4f9a),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0.00, 4.00),
+                              color: Color(0xff455b63).withOpacity(0.08),
+                              blurRadius: 16,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(12.00),
+                        ),
+                      )
+                    ])),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: Container(
@@ -1037,18 +1449,9 @@ class ContributorPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-      padding: EdgeInsets.all(16),
+      margin: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Color(0xffffffff),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0.00, 4.00),
-            color: Color(0xff455b63).withOpacity(0.08),
-            blurRadius: 16,
-          ),
-        ],
-        borderRadius: BorderRadius.circular(12.00),
       ),
       child: Row(
         children: <Widget>[
@@ -1110,18 +1513,9 @@ class RemindTimePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-      padding: EdgeInsets.all(16),
+      margin: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Color(0xffffffff),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0.00, 4.00),
-            color: Color(0xff455b63).withOpacity(0.08),
-            blurRadius: 16,
-          ),
-        ],
-        borderRadius: BorderRadius.circular(12.00),
       ),
       child: Row(
         children: <Widget>[
@@ -1238,18 +1632,9 @@ class PlaceAddressPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-      padding: EdgeInsets.all(16),
+      margin: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Color(0xffffffff),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0.00, 4.00),
-            color: Color(0xff455b63).withOpacity(0.08),
-            blurRadius: 16,
-          ),
-        ],
-        borderRadius: BorderRadius.circular(12.00),
       ),
       child: Row(
         children: <Widget>[
@@ -1344,10 +1729,11 @@ class MakerPanel extends StatelessWidget {
                   height: 41.00,
                   width: 41.00,
                   decoration: BoxDecoration(
+                    shape: BoxShape.circle,
                     image: DecorationImage(
                       image: NetworkImage(fcubeextender1.profilepicktureurl),
                     ),
-                    borderRadius: BorderRadius.circular(50.00),
+                    border: Border.all(color: Color(0xffFF4F9A), width: 2),
                   ),
                 ),
                 Expanded(
