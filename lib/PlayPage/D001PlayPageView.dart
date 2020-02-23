@@ -20,6 +20,7 @@ import 'package:forutonafront/Common/marker_generator.dart';
 
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
+import 'package:forutonafront/MakePage/Component/IssueCube/ID001CubeDetailPage.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/PlayPage/D001EagerGestureRecognizer.dart';
 import 'package:forutonafront/PlayPage/D001JoinPlayerDisPlay.dart';
@@ -427,222 +428,230 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
         ],
         borderRadius: BorderRadius.circular(12.00),
       ),
-      child: Column(
-        children: <Widget>[
-          Stack(
+      child: FlatButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return ID001CubeDetailPage(
+                  fcubeextender1: item, initmodifyflag: false);
+            }));
+          },
+          padding: EdgeInsets.all(0),
+          child: Column(
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      height: 33.00,
-                      width: 33.00,
-                      padding: EdgeInsets.only(left: 2),
-                      decoration: BoxDecoration(
-                        color: Color(0xffdc3e57),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        ForutonaIcon.issue,
-                        color: Colors.white,
-                        size: 20,
+              Stack(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 33.00,
+                          width: 33.00,
+                          padding: EdgeInsets.only(left: 2),
+                          decoration: BoxDecoration(
+                            color: Color(0xffdc3e57),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            ForutonaIcon.issue,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        Expanded(
+                            child: Container(
+                          padding: EdgeInsets.only(left: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(item.cubename,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                    color: Color(0xff454f63),
+                                  )),
+                              Text(item.placeaddress,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontSize: 12,
+                                    color: Color(0xff454f63).withOpacity(0.56),
+                                  ))
+                            ],
+                          ),
+                        ))
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Color(0xffdc3e57).withOpacity(0.15),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12.00),
+                        topRight: Radius.circular(12.00),
                       ),
                     ),
-                    Expanded(
-                        child: Container(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(item.cubename,
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                color: Color(0xff454f63),
-                              )),
-                          Text(item.placeaddress,
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontSize: 12,
-                                color: Color(0xff454f63).withOpacity(0.56),
-                              ))
-                        ],
-                      ),
-                    ))
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xffdc3e57).withOpacity(0.15),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12.00),
-                    topRight: Radius.circular(12.00),
                   ),
-                ),
-              ),
-              Positioned(
-                bottom: 10,
-                right: 10,
-                child: Container(
-                    child: Text(
-                        "${(item.distancewithme / 1000).toStringAsFixed(1)} km",
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontSize: 10,
-                          color: Color(0xffff4f9a).withOpacity(0.56),
-                        ))),
-              )
-            ],
-          ),
-          Container(
-              child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(13),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border:
-                              Border.all(color: Color(0xffDC3E57), width: 1),
-                          image: DecorationImage(
-                              image: NetworkImage(item.profilepicktureurl),
-                              fit: BoxFit.fill)),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(9, 0, 0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(item.nickname,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                color: Color(0xff454f63),
-                              )),
-                          Text("${item.userlevel.toInt()} lev",
-                              style: TextStyle(
-                                fontFamily: "Gibson",
-                                fontSize: 12,
-                                color: Color(0xff454f63).withOpacity(0.56),
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(child: selectBallMainImage(description)),
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 13),
-                  padding: EdgeInsets.all(13),
-                  alignment: Alignment.topLeft,
-                  child: Text(description.text)),
-              Container(
-                  margin: EdgeInsets.only(bottom: 13),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(right: 3),
-                        child: Text("${item.cubelikes}",
-                            style: TextStyle(
-                              fontFamily: "Gibson",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Color(0xff78849e),
-                            )),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          ForutonaIcon.thumbsup,
-                          size: 18,
-                          color: Color(0xff78849E),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 3),
-                        child: Text("${item.cubedislikes}",
-                            style: TextStyle(
-                              fontFamily: "Gibson",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Color(0xff78849e),
-                            )),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          ForutonaIcon.thumbsdown,
-                          size: 18,
-                          color: Color(0xff78849E),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 3),
-                        child: Text("${item.commentcount}",
-                            style: TextStyle(
-                              fontFamily: "Gibson",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Color(0xff78849e),
-                            )),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          ForutonaIcon.comment,
-                          size: 18,
-                          color: Color(0xff78849E),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 3),
+                  Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: Container(
                         child: Text(
-                            "${item.remindActiveTimetoDuration().inMinutes}",
+                            "${(item.distancewithme / 1000).toStringAsFixed(1)} km",
                             style: TextStyle(
-                              fontFamily: "Gibson",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Color(0xff78849e),
-                            )),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          ForutonaIcon.accesstime,
-                          size: 18,
-                          color: Color(0xff78849E),
+                              fontFamily: "Noto Sans CJK KR",
+                              fontSize: 10,
+                              color: Color(0xffff4f9a).withOpacity(0.56),
+                            ))),
+                  )
+                ],
+              ),
+              Container(
+                  child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(13),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: Color(0xffDC3E57), width: 1),
+                              image: DecorationImage(
+                                  image: NetworkImage(item.profilepicktureurl),
+                                  fit: BoxFit.fill)),
                         ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      )
-                    ],
-                  ))
+                        Container(
+                          margin: EdgeInsets.fromLTRB(9, 0, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(item.nickname,
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: Color(0xff454f63),
+                                  )),
+                              Text("${item.userlevel.toInt()} lev",
+                                  style: TextStyle(
+                                    fontFamily: "Gibson",
+                                    fontSize: 12,
+                                    color: Color(0xff454f63).withOpacity(0.56),
+                                  ))
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(child: selectBallMainImage(description)),
+                  Container(
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 13),
+                      padding: EdgeInsets.all(13),
+                      alignment: Alignment.topLeft,
+                      child: Text(description.text)),
+                  Container(
+                      margin: EdgeInsets.only(bottom: 13),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: 3),
+                            child: Text("${item.cubelikes}",
+                                style: TextStyle(
+                                  fontFamily: "Gibson",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xff78849e),
+                                )),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              ForutonaIcon.thumbsup,
+                              size: 18,
+                              color: Color(0xff78849E),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 3),
+                            child: Text("${item.cubedislikes}",
+                                style: TextStyle(
+                                  fontFamily: "Gibson",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xff78849e),
+                                )),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              ForutonaIcon.thumbsdown,
+                              size: 18,
+                              color: Color(0xff78849E),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 3),
+                            child: Text("${item.commentcount}",
+                                style: TextStyle(
+                                  fontFamily: "Gibson",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xff78849e),
+                                )),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              ForutonaIcon.comment,
+                              size: 18,
+                              color: Color(0xff78849E),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 3),
+                            child: Text(
+                                "${item.remindActiveTimetoDuration().inMinutes}",
+                                style: TextStyle(
+                                  fontFamily: "Gibson",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xff78849e),
+                                )),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              ForutonaIcon.accesstime,
+                              size: 18,
+                              color: Color(0xff78849E),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          )
+                        ],
+                      ))
+                ],
+              ))
             ],
-          ))
-        ],
-      ),
+          )),
     );
   }
 
@@ -661,200 +670,203 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
               ),
             ],
             borderRadius: BorderRadius.circular(12.00)),
-        child: Column(children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      height: 33.00,
-                      width: 33.00,
-                      decoration: BoxDecoration(
-                        color: Color(0xff4F72FF),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        ForutonaIcon.quest,
-                        color: Colors.white,
-                        size: 20,
+        child: FlatButton(
+            onPressed: () {},
+            padding: EdgeInsets.all(0),
+            child: Column(children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 33.00,
+                          width: 33.00,
+                          decoration: BoxDecoration(
+                            color: Color(0xff4F72FF),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            ForutonaIcon.quest,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        Expanded(
+                            child: Container(
+                          padding: EdgeInsets.only(left: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(item.cubename,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                    color: Color(0xff454f63),
+                                  )),
+                              Text(item.placeaddress,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontSize: 12,
+                                    color: Color(0xff454f63).withOpacity(0.56),
+                                  ))
+                            ],
+                          ),
+                        ))
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Color(0xff4f72ff).withOpacity(0.15),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12.00),
+                        topRight: Radius.circular(12.00),
                       ),
                     ),
-                    Expanded(
-                        child: Container(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(item.cubename,
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                color: Color(0xff454f63),
-                              )),
-                          Text(item.placeaddress,
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontSize: 12,
-                                color: Color(0xff454f63).withOpacity(0.56),
-                              ))
-                        ],
-                      ),
-                    ))
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xff4f72ff).withOpacity(0.15),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12.00),
-                    topRight: Radius.circular(12.00),
                   ),
-                ),
+                  Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: Container(
+                        child: Text(
+                            "${(item.distancewithme / 1000).toStringAsFixed(1)} km",
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontSize: 10,
+                              color: Color(0xffff4f9a).withOpacity(0.56),
+                            ))),
+                  )
+                ],
               ),
-              Positioned(
-                bottom: 10,
-                right: 10,
-                child: Container(
-                    child: Text(
-                        "${(item.distancewithme / 1000).toStringAsFixed(1)} km",
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontSize: 10,
-                          color: Color(0xffff4f9a).withOpacity(0.56),
-                        ))),
-              )
-            ],
-          ),
-          Container(
-              child: Column(
-            children: <Widget>[
               Container(
-                padding: EdgeInsets.all(13),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border:
-                              Border.all(color: Color(0xffDC3E57), width: 1),
-                          image: DecorationImage(
-                              image: NetworkImage(item.profilepicktureurl),
-                              fit: BoxFit.fill)),
+                  child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(13),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: Color(0xffDC3E57), width: 1),
+                              image: DecorationImage(
+                                  image: NetworkImage(item.profilepicktureurl),
+                                  fit: BoxFit.fill)),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(9, 0, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(item.nickname,
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: Color(0xff454f63),
+                                  )),
+                              Text("${item.userlevel.toInt()} lev",
+                                  style: TextStyle(
+                                    fontFamily: "Gibson",
+                                    fontSize: 12,
+                                    color: Color(0xff454f63).withOpacity(0.56),
+                                  ))
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(9, 0, 0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(item.nickname,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                color: Color(0xff454f63),
-                              )),
-                          Text("${item.userlevel.toInt()} lev",
-                              style: TextStyle(
-                                fontFamily: "Gibson",
-                                fontSize: 12,
-                                color: Color(0xff454f63).withOpacity(0.56),
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(child: selectBallMainImage(description)),
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 13),
-                  padding: EdgeInsets.all(13),
-                  alignment: Alignment.topLeft,
-                  child: Text(description.text)),
-              Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(top: 16, bottom: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 3),
-                      child: Text("${item.pointreward.toInt()}",
-                          style: TextStyle(
-                            fontFamily: "Gibson",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            color: Color(0xff78849e),
-                          )),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        ForutonaIcon.napoint,
-                        size: 18,
-                        color: Color(0xff78849E),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(right: 3),
-                      child: Text("${item.userexp.toInt()}",
-                          style: TextStyle(
-                            fontFamily: "Gibson",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            color: Color(0xff78849e),
-                          )),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        ForutonaIcon.whatshot,
-                        size: 18,
-                        color: Color(0xff78849E),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(right: 3),
-                      child:
-                          Text("${item.remindActiveTimetoDuration().inMinutes}",
+                  ),
+                  Container(child: selectBallMainImage(description)),
+                  Container(
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 13),
+                      padding: EdgeInsets.all(13),
+                      alignment: Alignment.topLeft,
+                      child: Text(description.text)),
+                  Container(
+                    color: Colors.white,
+                    margin: EdgeInsets.only(bottom: 13),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 3),
+                          child: Text("${item.pointreward.toInt()}",
                               style: TextStyle(
                                 fontFamily: "Gibson",
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
                                 color: Color(0xff78849e),
                               )),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            ForutonaIcon.napoint,
+                            size: 18,
+                            color: Color(0xff78849E),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 3),
+                          child: Text("${item.userexp.toInt()}",
+                              style: TextStyle(
+                                fontFamily: "Gibson",
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Color(0xff78849e),
+                              )),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            ForutonaIcon.whatshot,
+                            size: 18,
+                            color: Color(0xff78849E),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 3),
+                          child: Text(
+                              "${item.remindActiveTimetoDuration().inMinutes}",
+                              style: TextStyle(
+                                fontFamily: "Gibson",
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Color(0xff78849e),
+                              )),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            ForutonaIcon.accesstime,
+                            size: 18,
+                            color: Color(0xff78849E),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                      ],
                     ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        ForutonaIcon.accesstime,
-                        size: 18,
-                        color: Color(0xff78849E),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ))
-        ]));
+                  )
+                ],
+              ))
+            ])));
   }
 
   Widget getExpanedPlayListView() {
@@ -936,170 +948,179 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
         ),
         borderRadius: BorderRadius.circular(12.00),
       ),
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(9),
-            decoration: BoxDecoration(
-              color: Color(0xffdc3e57).withOpacity(0.15),
-              border: Border.all(
-                width: 1.00,
-                color: Color(0xffff4f9a).withOpacity(0.15),
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.00),
-                topRight: Radius.circular(12.00),
-              ),
-            ),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  height: 35.00,
-                  width: 35.00,
-                  decoration: BoxDecoration(
-                    color: mapOpacityflag
-                        ? Color(0xffdc3e57).withOpacity(0.15)
-                        : Color(0xffdc3e57),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    ForutonaIcon.issue,
-                    size: 17,
-                    color: Colors.white,
-                  ),
+      child: FlatButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return ID001CubeDetailPage(
+                fcubeextender1: item, initmodifyflag: false);
+          }));
+        },
+        padding: EdgeInsets.all(0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(9),
+              decoration: BoxDecoration(
+                color: Color(0xffdc3e57).withOpacity(0.15),
+                border: Border.all(
+                  width: 1.00,
+                  color: Color(0xffff4f9a).withOpacity(0.15),
                 ),
-                SizedBox(
-                  width: 11,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12.00),
+                  topRight: Radius.circular(12.00),
                 ),
-                Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(item.cubename,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                          color: Color(0xff454f63),
-                        )),
-                    RichText(
-                      text: TextSpan(
-                          text: item.nickname,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    height: 35.00,
+                    width: 35.00,
+                    decoration: BoxDecoration(
+                      color: mapOpacityflag
+                          ? Color(0xffdc3e57).withOpacity(0.15)
+                          : Color(0xffdc3e57),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      ForutonaIcon.issue,
+                      size: 17,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 11,
+                  ),
+                  Expanded(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(item.cubename,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontWeight: FontWeight.w700,
-                            fontSize: 10,
+                            fontSize: 13,
+                            color: Color(0xff454f63),
+                          )),
+                      RichText(
+                        text: TextSpan(
+                            text: item.nickname,
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontWeight: FontWeight.w700,
+                              fontSize: 10,
+                              color: Color(0xff78849e),
+                            ),
+                            children: [
+                              TextSpan(
+                                  text: "    ${item.userlevel.toInt()} lv",
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 9,
+                                    color: Color(0xff454f63).withOpacity(0.56),
+                                  ))
+                            ]),
+                      )
+                    ],
+                  ))
+                ],
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: 3),
+                      child: Text("${item.cubelikes}",
+                          style: TextStyle(
+                            fontFamily: "Gibson",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
                             color: Color(0xff78849e),
-                          ),
-                          children: [
-                            TextSpan(
-                                text: "    ${item.userlevel.toInt()} lv",
-                                style: TextStyle(
-                                  fontFamily: "Noto Sans CJK KR",
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 9,
-                                  color: Color(0xff454f63).withOpacity(0.56),
-                                ))
-                          ]),
+                          )),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        ForutonaIcon.thumbsup,
+                        size: 18,
+                        color: Color(0xff78849E),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 3),
+                      child: Text("${item.cubedislikes}",
+                          style: TextStyle(
+                            fontFamily: "Gibson",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                            color: Color(0xff78849e),
+                          )),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        ForutonaIcon.thumbsdown,
+                        size: 18,
+                        color: Color(0xff78849E),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 3),
+                      child: Text("${item.commentcount}",
+                          style: TextStyle(
+                            fontFamily: "Gibson",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                            color: Color(0xff78849e),
+                          )),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        ForutonaIcon.comment,
+                        size: 18,
+                        color: Color(0xff78849E),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 3),
+                      child:
+                          Text("${item.remindActiveTimetoDuration().inMinutes}",
+                              style: TextStyle(
+                                fontFamily: "Gibson",
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Color(0xff78849e),
+                              )),
+                    ),
+                    Container(
+                      child: Icon(
+                        ForutonaIcon.accesstime,
+                        size: 18,
+                        color: Color(0xff78849E),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
                     )
                   ],
                 ))
-              ],
-            ),
-          ),
-          Container(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: 3),
-                    child: Text("${item.cubelikes}",
-                        style: TextStyle(
-                          fontFamily: "Gibson",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: Color(0xff78849e),
-                        )),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      ForutonaIcon.thumbsup,
-                      size: 18,
-                      color: Color(0xff78849E),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 3),
-                    child: Text("${item.cubedislikes}",
-                        style: TextStyle(
-                          fontFamily: "Gibson",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: Color(0xff78849e),
-                        )),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      ForutonaIcon.thumbsdown,
-                      size: 18,
-                      color: Color(0xff78849E),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 3),
-                    child: Text("${item.commentcount}",
-                        style: TextStyle(
-                          fontFamily: "Gibson",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: Color(0xff78849e),
-                        )),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      ForutonaIcon.comment,
-                      size: 18,
-                      color: Color(0xff78849E),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 3),
-                    child:
-                        Text("${item.remindActiveTimetoDuration().inMinutes}",
-                            style: TextStyle(
-                              fontFamily: "Gibson",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Color(0xff78849e),
-                            )),
-                  ),
-                  Container(
-                    child: Icon(
-                      ForutonaIcon.accesstime,
-                      size: 18,
-                      color: Color(0xff78849E),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  )
-                ],
-              ))
-        ],
+          ],
+        ),
       ),
     );
   }

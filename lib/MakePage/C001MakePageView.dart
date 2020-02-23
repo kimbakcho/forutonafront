@@ -357,7 +357,9 @@ class _C001MakePageViewState extends State<C001MakePageView>
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
                           return ID001CubeDetailPage(
-                              fcubeextender1: fcubelist[index]);
+                            fcubeextender1: fcubelist[index],
+                            initmodifyflag: false,
+                          );
                         }));
                       },
                       child: Column(
@@ -420,7 +422,17 @@ class _C001MakePageViewState extends State<C001MakePageView>
                                           height: 10,
                                           child: IconButton(
                                             padding: EdgeInsets.all(0),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                return ID001CubeDetailPage(
+                                                  fcubeextender1:
+                                                      fcubelist[index],
+                                                  initmodifyflag: true,
+                                                );
+                                              }));
+                                            },
                                             icon: Icon(
                                               ForutonaIcon.pointdash,
                                               color: Colors.black,

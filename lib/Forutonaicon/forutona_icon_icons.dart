@@ -43,4 +43,6 @@ class ForutonaIcon {
   static const IconData icn_send = const IconData(0xe814, fontFamily: _kFontFam);
   static const IconData replysplitbottom = const IconData(0xe815, fontFamily: _kFontFam);
   static const IconData replysplittop = const IconData(0xe816, fontFamily: _kFontFam);
+  static const IconData panedit = const IconData(0xe817, fontFamily: _kFontFam);
+  static const IconData removepath = const IconData(0xe818, fontFamily: _kFontFam);
 }

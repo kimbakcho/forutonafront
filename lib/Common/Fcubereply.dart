@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forutonafront/Common/FcubereplySearch.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:http/http.dart' as http;
 
@@ -67,5 +69,21 @@ class Fcubereply {
         body: json.encode(this.toJson()));
 
     return Fcubereply.fromJson(json.decode(response.body));
+  }
+
+  static Future<int> getReplyCount(FcubereplySearch serach) async {
+    Dio dio = new Dio();
+    Uri url = Preference.httpurlbase(
+        Preference.baseBackEndUrl, "/api/v1/Fcube/getReplyCount");
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+
+    Response response = await dio.get(url.toString(),
+        queryParameters: serach.toJson(),
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+          HttpHeaders.authorizationHeader: "Bearer " + token.token
+        }));
+    return int.tryParse(response.data);
   }
 }
