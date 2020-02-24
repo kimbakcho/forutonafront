@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
@@ -261,6 +262,41 @@ class Fcube {
     var response = await http.post(url);
     cubehits = int.tryParse(response.body);
     return cubehits;
+  }
+
+  Future<String> getAddress() async {
+    try {
+      List<Placemark> addresslist = await Geolocator().placemarkFromCoordinates(
+          this.latitude, this.longitude,
+          localeIdentifier: "ko");
+      if (addresslist.length > 0) {
+        this.placeaddress = "";
+
+        if (addresslist[0].administrativeArea != null &&
+            addresslist[0].administrativeArea.length != 0) {
+          this.placeaddress += addresslist[0].administrativeArea;
+          if (addresslist[0].subLocality != null &&
+              addresslist[0].subLocality.length != 0) {
+            this.placeaddress += (" " + addresslist[0].subLocality);
+            if (addresslist[0].thoroughfare != null &&
+                addresslist[0].thoroughfare.length != 0) {
+              this.placeaddress += (" " + addresslist[0].thoroughfare);
+              if (addresslist[0].subThoroughfare != null &&
+                  addresslist[0].subThoroughfare.length != 0) {
+                this.placeaddress += (" " + addresslist[0].subThoroughfare);
+              }
+            }
+          }
+        } else {
+          this.placeaddress = "";
+        }
+      } else {
+        this.placeaddress = "";
+      }
+    } catch (ex) {
+      this.placeaddress = "";
+    }
+    return this.placeaddress;
   }
 }
 
