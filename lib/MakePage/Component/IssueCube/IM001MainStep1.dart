@@ -1,17 +1,31 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
+
+import 'package:forutonafront/Common/YoutubeWidget.dart';
+
 import 'package:forutonafront/Common/marker_generator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+class IM001MainController {
+  FocusNode titlenodefocus;
+  FocusNode contentnodefocus;
+}
 
 class IM001MainStep1 extends StatefulWidget {
   IM001MainStep1({this.selectfcube, Key key}) : super(key: key);
@@ -23,7 +37,7 @@ class IM001MainStep1 extends StatefulWidget {
   }
 }
 
-class _IM001MainStep1State extends State<IM001MainStep1> {
+class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
   _IM001MainStep1State({this.selectfcube});
   Fcube selectfcube;
   bool iscomplete;
@@ -37,9 +51,25 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
   FocusNode contentnodefocus = FocusNode();
   bool backgroundblock = false;
   bool iskeyboardshow = false;
+  List<Uint8List> attachimglist = List<Uint8List>();
+  IM001MainController im001mainController = IM001MainController();
+  bool youtubetogle = false;
+  bool tagtogle = false;
+  String youtubeurl = "";
+  Timer clipboardchecktimer;
+  String oldclipboarddata = "";
+  String currentclipboarddata = "";
+  String videoId = "";
+  YoutubePlayerController _youtubecontroller;
+  List<Chip> chips = new List<Chip>();
+  FocusNode tagnodefocus = FocusNode();
+
+  TextEditingController tagcontroller = TextEditingController();
   @override
   void initState() {
     super.initState();
+    im001mainController.contentnodefocus = contentnodefocus;
+    im001mainController.titlenodefocus = titlenodefocus;
     _kInitialPosition = CameraPosition(
       target: LatLng(selectfcube.latitude, selectfcube.longitude),
       zoom: 16.0,
@@ -71,6 +101,29 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
         });
       },
     );
+    clipboardchecktimer = Timer.periodic(Duration(seconds: 2), (timer) async {
+      ClipboardData clipboarddata = await Clipboard.getData("text/plain");
+      currentclipboarddata = clipboarddata.text.trim();
+      if (youtubetogle) {
+        if (oldclipboarddata != currentclipboarddata) {
+          oldclipboarddata = currentclipboarddata;
+          setState(() {});
+        }
+      }
+    });
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) async {}
+
+  bool isyoutubevideourl(String url) {
+    if (url.indexOf("https://www.youtube.com/watch?v=") == 0) {
+      return true;
+    } else if (url.indexOf("https://youtu.be/") == 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   initMakers() {
@@ -79,6 +132,16 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
         markerId: MarkerId(selectfcube.cubeuuid),
         icon: BitmapDescriptor.fromBytes(markeritem[selectfcube.cubetype]),
         position: LatLng(selectfcube.latitude, selectfcube.longitude)));
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    clipboardchecktimer.cancel();
+  }
+
+  remoteRender() {
     setState(() {});
   }
 
@@ -169,7 +232,8 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
           body: Stack(
             children: <Widget>[
               Container(
-                  margin: EdgeInsets.only(top: appbar.preferredSize.height),
+                  margin: EdgeInsets.only(
+                      top: appbar.preferredSize.height, bottom: 58),
                   child: ListView(shrinkWrap: true, children: <Widget>[
                     Container(
                         margin: EdgeInsets.only(bottom: 16),
@@ -202,7 +266,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
                                       ])))
                         ])),
                     Container(
-                      margin: EdgeInsets.fromLTRB(16, 0, 0, 8),
+                      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
                       child: Text("제목",
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -217,6 +281,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
                         child: TextFormField(
                       focusNode: titlenodefocus,
                       decoration: InputDecoration(
+                        counterText: "",
                         hintText: "제목을 지어주세요!",
                         hintStyle: TextStyle(
                           fontFamily: "Noto Sans CJK KR",
@@ -242,7 +307,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
                       maxLines: 1,
                     )),
                     Container(
-                      margin: EdgeInsets.fromLTRB(16, 0, 0, 8),
+                      margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
                       child: Text("내용",
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -260,6 +325,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
                           setState(() {});
                         },
                         decoration: InputDecoration(
+                          counterText: "",
                           hintText: "어떤 이슈인가요?",
                           hintStyle: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -283,6 +349,18 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
                         maxLines: null,
                         maxLength: 5000,
                       ),
+                    ),
+                    attachimglist.length != 0
+                        ? ImageListPanel(
+                            attachimglist: attachimglist,
+                            remoterander: remoteRender)
+                        : Container(),
+                    youtubetogle ? youtubePanel() : Container(),
+                    TagWidget(
+                      tagnodefocus: tagnodefocus,
+                      tagcontroller: tagcontroller,
+                      chips: chips,
+                      remoterander: remoteRender,
                     )
                   ])),
               Positioned(
@@ -298,7 +376,6 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
                       height: 60,
                       width: MediaQuery.of(context).size.width,
                       child: Container(
-                          margin: EdgeInsets.only(left: 16),
                           decoration: BoxDecoration(
                             color: Color(0xffffffff).withOpacity(0.90),
                             border: Border.all(
@@ -306,55 +383,71 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
                               color: Color(0xffe4e7e8).withOpacity(0.90),
                             ),
                           ),
-                          child: Row(
-                            children: <Widget>[
-                              Container(
-                                  margin: EdgeInsets.only(right: 16),
-                                  height: 42.00,
-                                  width: 42.00,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xffee9acf),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          offset: Offset(0.00, 3.00),
-                                          color: Color(0xff000000)
-                                              .withOpacity(0.16),
-                                          blurRadius: 6,
-                                        )
-                                      ])),
-                              Container(
-                                  margin: EdgeInsets.only(right: 16),
-                                  height: 42.00,
-                                  width: 42.00,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xff8382F2),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          offset: Offset(0.00, 3.00),
-                                          color: Color(0xff000000)
-                                              .withOpacity(0.16),
-                                          blurRadius: 6,
-                                        )
-                                      ])),
-                              Container(
-                                  margin: EdgeInsets.only(right: 16),
-                                  height: 42.00,
-                                  width: 42.00,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xff88D4F1),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          offset: Offset(0.00, 3.00),
-                                          color: Color(0xff000000)
-                                              .withOpacity(0.16),
-                                          blurRadius: 6,
-                                        )
-                                      ]))
-                            ],
-                          ))),
+                          child: Row(children: <Widget>[
+                            SizedBox(
+                              width: 16,
+                            ),
+                            PicktureAddButton(
+                              attachimglist: attachimglist,
+                              remoterander: remoteRender,
+                              im001controller: im001mainController,
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(right: 16),
+                                height: 42.00,
+                                width: 42.00,
+                                child: FlatButton(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 3),
+                                  child: Icon(
+                                    ForutonaIcon.videoattach,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                  shape: CircleBorder(),
+                                  onPressed: () {
+                                    titlenodefocus.unfocus();
+                                    contentnodefocus.unfocus();
+                                    youtubetogle = true;
+                                    setState(() {});
+                                  },
+                                ),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xff8382F2),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(0.00, 3.00),
+                                        color:
+                                            Color(0xff000000).withOpacity(0.16),
+                                        blurRadius: 6,
+                                      )
+                                    ])),
+                            Container(
+                                margin: EdgeInsets.only(right: 16),
+                                height: 42.00,
+                                width: 42.00,
+                                child: FlatButton(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 3),
+                                  child: Icon(
+                                    ForutonaIcon.tagadd,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                  shape: CircleBorder(),
+                                  onPressed: () {},
+                                ),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xff88D4F1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(0.00, 3.00),
+                                        color:
+                                            Color(0xff000000).withOpacity(0.16),
+                                        blurRadius: 6,
+                                      )
+                                    ]))
+                          ]))),
               backgroundblock
                   ? Container(
                       color: Color(0xff454F63).withOpacity(0.5),
@@ -363,6 +456,145 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
             ],
           ),
         ));
+  }
+
+  Container youtubePanel() {
+    return Container(
+      margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              child: Text("YOUTUBE 동영상 첨부",
+                  style: TextStyle(
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                    color: Color(0xff454f63),
+                  )),
+            ),
+            Row(children: <Widget>[
+              Expanded(
+                  child: Container(
+                margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                child: youtubeurl.length == 0
+                    ? Text("동영상 링크를 복사해서 붙어넣기 하세요.",
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontSize: 13,
+                          color: Color(0xff78849e),
+                        ))
+                    : Text("$youtubeurl",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontSize: 13,
+                          color: Color(0xff78849e),
+                        )),
+              )),
+              youtubeurl.length != 0
+                  ? Container(
+                      height: 27.00,
+                      width: 61.00,
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {
+                          youtubeurl = "";
+                          videoId = "";
+                          setState(() {});
+                        },
+                        child: Text("삭제",
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontWeight: FontWeight.w700,
+                              fontSize: 11,
+                              color: Color(0xffffffff),
+                            )),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color(0xffFF4F9A),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0.00, 3.00),
+                            color: Color(0xff000000).withOpacity(0.16),
+                            blurRadius: 6,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(13.00),
+                      ))
+                  : Container(
+                      height: 27.00,
+                      width: 61.00,
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () async {
+                          if (isyoutubevideourl(currentclipboarddata)) {
+                            youtubeurl = currentclipboarddata;
+                            isLoading = true;
+                            setState(() {});
+                            videoId = YoutubePlayer.convertUrlToId(youtubeurl);
+                            _youtubecontroller = YoutubePlayerController(
+                              initialVideoId: videoId,
+                              flags: YoutubePlayerFlags(
+                                forceHD: true,
+                                captionLanguage: "ko",
+                                autoPlay: false,
+                                mute: false,
+                              ),
+                            );
+                            isLoading = false;
+                            setState(() {});
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "유효한 유튜브 링크가 아닙니다.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Color(0xff454F63),
+                                textColor: Colors.white,
+                                fontSize: 12.0);
+                          }
+                        },
+                        child: currentclipboarddata.length != 0
+                            ? Text("붙혀넣기",
+                                style: TextStyle(
+                                  fontFamily: "Noto Sans CJK KR",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                  color: Color(0xffffffff),
+                                ))
+                            : Text("붙혀넣기",
+                                style: TextStyle(
+                                  fontFamily: "Noto Sans CJK KR",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                  color: Color(0xffcccccc),
+                                )),
+                      ),
+                      decoration: BoxDecoration(
+                        color: currentclipboarddata.length != 0
+                            ? Color(0xff8382F2)
+                            : Color(0xffE4E7E8),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0.00, 3.00),
+                            color: Color(0xff000000).withOpacity(0.16),
+                            blurRadius: 6,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(13.00),
+                      ))
+            ]),
+            videoId.length != 0
+                ? Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: YoutubeWidget(
+                      controller: _youtubecontroller,
+                    ),
+                  )
+                : Container()
+          ]),
+    );
   }
 
   isVaildCheck() {
@@ -437,5 +669,388 @@ class _IM001MainStep1State extends State<IM001MainStep1> {
     } else {
       return Container();
     }
+  }
+}
+
+class TagWidget extends StatelessWidget {
+  const TagWidget(
+      {Key key,
+      @required this.tagnodefocus,
+      @required this.tagcontroller,
+      @required this.chips,
+      @required this.remoterander})
+      : super(key: key);
+
+  final FocusNode tagnodefocus;
+  final TextEditingController tagcontroller;
+  final List<Chip> chips;
+  final Function remoterander;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+            margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Text("#태그",
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: tagnodefocus.hasFocus
+                      ? Color(0xff3497fd)
+                      : Color(0xff454f63),
+                ))),
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: TextFormField(
+              focusNode: tagnodefocus,
+              controller: tagcontroller,
+              onChanged: (value) {
+                if (value.indexOf(",") > 0) {
+                  addchip(chips, value.replaceAll(",", ""));
+                  tagcontroller.clear();
+                  remoterander();
+                }
+              },
+              onFieldSubmitted: (value) {
+                addchip(chips, value);
+                tagcontroller.clear();
+                remoterander();
+              },
+              decoration: InputDecoration(
+                  labelStyle: TextStyle(
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                    color: Color(0xff3497fd),
+                  ),
+                  hintText: "태그를 입력해 주세요(000, 로 구분합니다.)",
+                  hintStyle: TextStyle(
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    color: Color(0xffe4e7e8),
+                  ),
+                  contentPadding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xffE4E7E8)),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xffE4E7E8)),
+                  ),
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xffE4E7E8))))),
+        ),
+        Container(
+            margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: Wrap(
+              spacing: 10,
+              children: chips,
+            ))
+      ],
+    );
+  }
+
+  addchip(List<Chip> chips, String value) {
+    int index = chips.indexWhere((item) {
+      Text itemtext = item.label as Text;
+      if (itemtext.data == value) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if (index >= 0) {
+      return;
+    }
+
+    chips.add(Chip(
+      label: Text(value),
+      padding: EdgeInsets.fromLTRB(14, 0, 14, 0),
+      onDeleted: () {
+        chips.removeWhere((item) {
+          Text itemtext = item.label as Text;
+          if (itemtext.data == value) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        remoterander();
+      },
+      deleteIcon: Container(
+        height: 14.00,
+        width: 14.00,
+        child: Icon(
+          Icons.close,
+          color: Color(0xffFF4F9A),
+          size: 10,
+        ),
+        decoration: BoxDecoration(
+          color: Color(0xffffffff),
+          border: Border.all(
+            width: 1.00,
+            color: Color(0xffff4f9a),
+          ),
+          shape: BoxShape.circle,
+        ),
+      ),
+    ));
+  }
+}
+
+class ImageListPanel extends StatelessWidget {
+  const ImageListPanel(
+      {Key key, @required this.attachimglist, this.remoterander})
+      : super(key: key);
+  final Function remoterander;
+  final List<Uint8List> attachimglist;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+        child: Column(children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                  child: Container(
+                      child: Text("이미지",
+                          style: TextStyle(
+                            fontFamily: "Noto Sans CJK KR",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            color: Color(0xff454f63),
+                          )))),
+              Text("${attachimglist.length}/20",
+                  style: TextStyle(
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13,
+                    color: attachimglist.length == 20
+                        ? Color(0xffFF4F9A)
+                        : Color(0xffB1B1B1),
+                  ))
+            ],
+          ),
+          Container(
+              height: 66,
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: attachimglist.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                        width: 79,
+                        height: 66,
+                        child: Stack(children: <Widget>[
+                          Positioned(
+                              bottom: 0,
+                              left: 0,
+                              child: Container(
+                                  height: 62.00,
+                                  width: 75.00,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image:
+                                            MemoryImage(attachimglist[index]),
+                                        fit: BoxFit.fitWidth),
+                                    borderRadius: BorderRadius.circular(12.00),
+                                  ))),
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              height: 14.00,
+                              width: 14.00,
+                              child: FlatButton(
+                                padding: EdgeInsets.all(0),
+                                onPressed: () {
+                                  attachimglist.removeAt(index);
+                                  remoterander();
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  size: 8,
+                                  color: Color(0xffFF4F9A),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xffffffff),
+                                border: Border.all(
+                                  width: 1.00,
+                                  color: Color(0xffff4f9a),
+                                ),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          )
+                        ]));
+                  }))
+        ]));
+  }
+}
+
+class PicktureAddButton extends StatelessWidget {
+  const PicktureAddButton(
+      {Key key,
+      @required this.attachimglist,
+      this.remoterander,
+      this.im001controller})
+      : super(key: key);
+  final Function remoterander;
+  final List<Uint8List> attachimglist;
+  final IM001MainController im001controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: FlatButton(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 3),
+          child: Icon(
+            ForutonaIcon.camera,
+            color: Colors.white,
+            size: 18,
+          ),
+          shape: CircleBorder(),
+          onPressed: () async {
+            im001controller.titlenodefocus.unfocus();
+            im001controller.contentnodefocus.unfocus();
+            await showDialog(
+                context: context,
+                child: Container(
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                                child: Text(""),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height)),
+                        Positioned(
+                            bottom: 76,
+                            left: 37,
+                            height: 70,
+                            width: 180,
+                            child: Container(
+                              height: 70.00,
+                              width: 180.00,
+                              child: Row(children: [
+                                Container(
+                                  width: 88,
+                                  height: 70,
+                                  child: FlatButton(
+                                    onPressed: () async {
+                                      if (attachimglist.length < 20) {
+                                        File imgfile =
+                                            await ImagePicker.pickImage(
+                                                source: ImageSource.camera);
+                                        attachimglist
+                                            .add(await imgfile.readAsBytes());
+                                        Navigator.of(context).pop();
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg: "이미지 20장을 모두 첨부하였습니다.",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIos: 1,
+                                            backgroundColor: Color(0xff454F63),
+                                            textColor: Colors.white,
+                                            fontSize: 12.0);
+                                      }
+                                    },
+                                    child: Text("카메라",
+                                        style: TextStyle(
+                                          fontFamily: "Noto Sans CJK KR",
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13,
+                                          color: Color(0xffc1549a),
+                                        )),
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          right: BorderSide(
+                                              width: 1,
+                                              color: Color(0xffC1549A)))),
+                                ),
+                                Container(
+                                  width: 88,
+                                  child: FlatButton(
+                                    onPressed: () async {
+                                      List<Asset> resultList =
+                                          await MultiImagePicker.pickImages(
+                                        maxImages: 20 - attachimglist.length,
+                                        cupertinoOptions: CupertinoOptions(
+                                            takePhotoIcon: "chat"),
+                                        materialOptions: MaterialOptions(
+                                          actionBarColor: "#abcdef",
+                                          actionBarTitle: "이슈 큐브 이미지",
+                                          allViewTitle: "이슈 큐브 이미지",
+                                          useDetailsView: false,
+                                          selectCircleStrokeColor: "#000000",
+                                        ),
+                                      );
+                                      for (int i = 0;
+                                          i < resultList.length;
+                                          i++) {
+                                        ByteData imgdata =
+                                            await resultList[i].getByteData();
+                                        attachimglist
+                                            .add(imgdata.buffer.asUint8List());
+                                      }
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("사진 선택",
+                                        style: TextStyle(
+                                          fontFamily: "Noto Sans CJK KR",
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13,
+                                          color: Color(0xffc1549a),
+                                        )),
+                                  ),
+                                )
+                              ]),
+                              decoration: BoxDecoration(
+                                color: Color(0xffffffff),
+                                border: Border.all(
+                                  width: 1.00,
+                                  color: Color(0xffc1549a),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0.00, 3.00),
+                                      color:
+                                          Color(0xff000000).withOpacity(0.16),
+                                      blurRadius: 6)
+                                ],
+                                borderRadius: BorderRadius.circular(12.00),
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                ));
+            remoterander();
+          },
+        ),
+        margin: EdgeInsets.only(right: 16),
+        height: 42.00,
+        width: 42.00,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xffee9acf),
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(0.00, 3.00),
+                color: Color(0xff000000).withOpacity(0.16),
+                blurRadius: 6,
+              )
+            ]));
   }
 }

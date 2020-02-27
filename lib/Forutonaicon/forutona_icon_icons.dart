@@ -45,4 +45,8 @@ class ForutonaIcon {
   static const IconData replysplittop = const IconData(0xe816, fontFamily: _kFontFam);
   static const IconData panedit = const IconData(0xe817, fontFamily: _kFontFam);
   static const IconData removepath = const IconData(0xe818, fontFamily: _kFontFam);
+  static const IconData camera = const IconData(0xe819, fontFamily: _kFontFam);
+  static const IconData videoattach = const IconData(0xe81a, fontFamily: _kFontFam);
+  static const IconData tagadd = const IconData(0xe81b, fontFamily: _kFontFam);
+  static const IconData yplay = const IconData(0xe81c, fontFamily: _kFontFam);
 }
