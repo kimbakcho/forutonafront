@@ -31,7 +31,7 @@ class Fcubecontent {
   String cubeuuid;
   FcubecontentType contenttype;
   String contentvalue;
-  String contentupdatetime;
+  DateTime contentupdatetime;
 
   Fcubecontent(
       {this.idx,
@@ -45,7 +45,9 @@ class Fcubecontent {
     cubeuuid = json['cubeuuid'];
     contenttype = FcubecontentType.fromJson(json['contenttype']);
     contentvalue = json['contentvalue'];
-    contentupdatetime = json['contentupdatetime'];
+    contentupdatetime = json["contentupdatetime"] == null
+        ? null
+        : DateTime.parse(json["contentupdatetime"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -54,7 +56,8 @@ class Fcubecontent {
     data['cubeuuid'] = this.cubeuuid;
     data['contenttype'] = FcubecontentType.toJson(this.contenttype);
     data['contentvalue'] = this.contentvalue;
-    data['contentupdatetime'] = this.contentupdatetime;
+    data['contentupdatetime'] =
+        contentupdatetime == null ? null : contentupdatetime.toIso8601String();
     return data;
   }
 

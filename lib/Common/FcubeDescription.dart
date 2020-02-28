@@ -3,26 +3,43 @@
 //     final fcubeDescription = fcubeDescriptionFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../Preference.dart';
 
 class FcubeDescription {
   List<Desimage> desimages;
   String text;
   DateTime writetime;
   bool havemodify;
+  String youtubeVideoid;
+  List<String> tags;
 
   FcubeDescription(
-      {this.desimages, this.text, this.writetime, this.havemodify});
+      {this.desimages,
+      this.text,
+      this.writetime,
+      this.havemodify,
+      this.youtubeVideoid,
+      this.tags});
 
   FcubeDescription copyWith(
           {List<Desimage> desimages,
           String text,
           DateTime writetime,
-          bool havemodify}) =>
+          bool havemodify,
+          String youtubeVideoid,
+          List<String> tags}) =>
       FcubeDescription(
         desimages: desimages ?? this.desimages,
         text: text ?? this.text,
         writetime: writetime ?? this.writetime,
         havemodify: havemodify ?? this.havemodify,
+        youtubeVideoid: youtubeVideoid ?? this.youtubeVideoid,
+        tags: tags ?? this.tags,
       );
 
   factory FcubeDescription.fromRawJson(String str) =>
@@ -32,15 +49,21 @@ class FcubeDescription {
 
   factory FcubeDescription.fromJson(Map<String, dynamic> json) =>
       FcubeDescription(
-          desimages: json["desimages"] == null
-              ? null
-              : List<Desimage>.from(
-                  json["desimages"].map((x) => Desimage.fromJson(x))),
-          text: json["text"] == null ? null : json["text"],
-          writetime: json["writetime"] == null
-              ? null
-              : DateTime.parse(json["writetime"]),
-          havemodify: json["havemodify"] == null ? null : json["havemodify"]);
+        desimages: json["desimages"] == null
+            ? null
+            : List<Desimage>.from(
+                json["desimages"].map((x) => Desimage.fromJson(x))),
+        text: json["text"] == null ? null : json["text"],
+        writetime: json["writetime"] == null
+            ? null
+            : DateTime.parse(json["writetime"]),
+        havemodify: json["havemodify"] == null ? null : json["havemodify"],
+        youtubeVideoid:
+            json["youtubeVideoid"] == null ? null : json["youtubeVideoid"],
+        tags: json["tags"] == null
+            ? null
+            : List<String>.from(json["tags"].map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
         "desimages": desimages == null
@@ -48,8 +71,27 @@ class FcubeDescription {
             : List<dynamic>.from(desimages.map((x) => x.toJson())),
         "text": text == null ? null : text,
         "writetime": writetime == null ? null : writetime.toIso8601String(),
-        "havemodify": havemodify == null ? null : havemodify
+        "havemodify": havemodify == null ? null : havemodify,
+        "youtubeVideoid": youtubeVideoid == null ? null : youtubeVideoid,
+        "tags": tags == null ? null : List<dynamic>.from(tags.map((x) => x)),
       };
+  static Future<String> cuberelationimageupload(List<int> image) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    IdTokenResult token = await user.getIdToken();
+    var uploadurl = Preference.httpurlbase(
+        Preference.baseBackEndUrl, '/api/v1/Fcube/cuberelationimageupload');
+    var formData = FormData.fromMap({
+      "CubeRelationImage":
+          MultipartFile.fromBytes(image, filename: "cubeiamge.png"),
+    });
+    Dio dio = new Dio();
+    var response = await dio.postUri(uploadurl,
+        data: formData,
+        options: Options(headers: {
+          HttpHeaders.authorizationHeader: "Bearer " + token.token
+        }));
+    return response.data;
+  }
 }
 
 class Desimage {

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/Common/FcubeDescription.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
 
 import 'package:forutonafront/Common/YoutubeWidget.dart';
@@ -15,6 +16,7 @@ import 'package:forutonafront/Common/marker_generator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
+import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
@@ -25,6 +27,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class IM001MainController {
   FocusNode titlenodefocus;
   FocusNode contentnodefocus;
+  bool imagepicktogle = false;
+  ScrollController mainScrollController;
 }
 
 class IM001MainStep1 extends StatefulWidget {
@@ -63,6 +67,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
   YoutubePlayerController _youtubecontroller;
   List<Chip> chips = new List<Chip>();
   FocusNode tagnodefocus = FocusNode();
+  ScrollController mainScrollController = ScrollController();
 
   TextEditingController tagcontroller = TextEditingController();
   @override
@@ -70,6 +75,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
     super.initState();
     im001mainController.contentnodefocus = contentnodefocus;
     im001mainController.titlenodefocus = titlenodefocus;
+    im001mainController.mainScrollController = mainScrollController;
     _kInitialPosition = CameraPosition(
       target: LatLng(selectfcube.latitude, selectfcube.longitude),
       zoom: 16.0,
@@ -175,7 +181,55 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
                   height: 36.00,
                   width: 78.00,
                   child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      isLoading = true;
+                      setState(() {});
+
+                      selectfcube.cubename = titleController.text;
+                      selectfcube.cubestate = FcubeState.play;
+
+                      if (await selectfcube.makecube() > 0) {}
+                      List<Desimage> desimage = List<Desimage>();
+                      for (int i = 0; i < attachimglist.length; i++) {
+                        String uploadurl =
+                            await FcubeDescription.cuberelationimageupload(
+                                attachimglist[i]);
+                        print(uploadurl);
+                        desimage.add(Desimage(index: i, src: uploadurl));
+                      }
+                      List<String> tags = List<String>();
+                      chips.forEach((item1) {
+                        Text wtext = item1.label as Text;
+                        tags.add(wtext.data);
+                      });
+
+                      FcubeDescription description = FcubeDescription(
+                          desimages: desimage,
+                          havemodify: false,
+                          tags: tags,
+                          text: contentController.text,
+                          writetime: DateTime.now().toUtc(),
+                          youtubeVideoid: _youtubecontroller == null
+                              ? ""
+                              : _youtubecontroller.initialVideoId);
+                      Fcubecontent content = Fcubecontent(
+                          contenttype: FcubecontentType.description,
+                          contentupdatetime: DateTime.now(),
+                          contentvalue: description.toRawJson(),
+                          cubeuuid: selectfcube.cubeuuid);
+                      if (await content.makecubecontent() > 0) {
+                        Navigator.of(context).popUntil((value) {
+                          if (value.settings.name == "BCD001") {
+                            return true;
+                          } else {
+                            return false;
+                          }
+                        });
+                      }
+
+                      isLoading = false;
+                      setState(() {});
+                    },
                     child: Text("완료",
                         style: TextStyle(
                           fontFamily: "Noto Sans CJK KR",
@@ -234,135 +288,146 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
               Container(
                   margin: EdgeInsets.only(
                       top: appbar.preferredSize.height, bottom: 58),
-                  child: ListView(shrinkWrap: true, children: <Widget>[
-                    Container(
-                        margin: EdgeInsets.only(bottom: 16),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        child: Stack(children: <Widget>[
-                          googleMap,
-                          Positioned(
-                              bottom: 0,
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  color: Color(0xffffffff).withOpacity(0.70),
-                                  height: 46,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.location_on,
-                                          color: Color(0xff78849E),
-                                          size: 20,
-                                        ),
-                                        Text("${selectfcube.placeaddress}",
-                                            style: TextStyle(
-                                              fontFamily: "Noto Sans CJK KR",
-                                              fontSize: 14,
-                                              color: Color(0xff454f63),
-                                            )),
-                                      ])))
-                        ])),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                      child: Text("제목",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            color: titlenodefocus.hasFocus
-                                ? Color(0xff3497FD)
-                                : Color(0xff454f63),
-                          )),
-                    ),
-                    Container(
-                        child: TextFormField(
-                      focusNode: titlenodefocus,
-                      decoration: InputDecoration(
-                        counterText: "",
-                        hintText: "제목을 지어주세요!",
-                        hintStyle: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: Color(0xffe4e7e8),
+                  child: ListView(
+                      controller: mainScrollController,
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        Container(
+                            margin: EdgeInsets.only(bottom: 16),
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            child: Stack(children: <Widget>[
+                              googleMap,
+                              Positioned(
+                                  bottom: 0,
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      color:
+                                          Color(0xffffffff).withOpacity(0.70),
+                                      height: 46,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.location_on,
+                                              color: Color(0xff78849E),
+                                              size: 20,
+                                            ),
+                                            Text("${selectfcube.placeaddress}",
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      "Noto Sans CJK KR",
+                                                  fontSize: 14,
+                                                  color: Color(0xff454f63),
+                                                )),
+                                          ])))
+                            ])),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                          child: Text("제목",
+                              style: TextStyle(
+                                fontFamily: "Noto Sans CJK KR",
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15,
+                                color: titlenodefocus.hasFocus
+                                    ? Color(0xff3497FD)
+                                    : Color(0xff454f63),
+                              )),
                         ),
-                        contentPadding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xffE4E7E8)),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xffE4E7E8)),
-                        ),
-                        border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffE4E7E8))),
-                      ),
-                      controller: titleController,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      maxLength: 50,
-                      maxLines: 1,
-                    )),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
-                      child: Text("내용",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            color: contentnodefocus.hasFocus
-                                ? Color(0xff3497FD)
-                                : Color(0xff454f63),
-                          )),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: TextFormField(
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                        decoration: InputDecoration(
-                          counterText: "",
-                          hintText: "어떤 이슈인가요?",
-                          hintStyle: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Color(0xffe4e7e8),
+                        Container(
+                            child: TextFormField(
+                          focusNode: titlenodefocus,
+                          decoration: InputDecoration(
+                            counterText: "",
+                            hintText: "제목을 지어주세요!",
+                            hintStyle: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: Color(0xffe4e7e8),
+                            ),
+                            contentPadding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffE4E7E8)),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffE4E7E8)),
+                            ),
+                            border: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffE4E7E8))),
                           ),
-                          contentPadding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffE4E7E8)),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffE4E7E8)),
-                          ),
-                          border: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffE4E7E8))),
+                          controller: titleController,
+                          onChanged: (value) {
+                            setState(() {});
+                          },
+                          maxLength: 50,
+                          maxLines: 1,
+                        )),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
+                          child: Text("내용",
+                              style: TextStyle(
+                                fontFamily: "Noto Sans CJK KR",
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15,
+                                color: contentnodefocus.hasFocus
+                                    ? Color(0xff3497FD)
+                                    : Color(0xff454f63),
+                              )),
                         ),
-                        controller: contentController,
-                        focusNode: contentnodefocus,
-                        minLines: null,
-                        maxLines: null,
-                        maxLength: 5000,
-                      ),
-                    ),
-                    attachimglist.length != 0
-                        ? ImageListPanel(
-                            attachimglist: attachimglist,
-                            remoterander: remoteRender)
-                        : Container(),
-                    youtubetogle ? youtubePanel() : Container(),
-                    TagWidget(
-                      tagnodefocus: tagnodefocus,
-                      tagcontroller: tagcontroller,
-                      chips: chips,
-                      remoterander: remoteRender,
-                    )
-                  ])),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: TextFormField(
+                            onChanged: (value) {
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                              counterText: "",
+                              hintText: "어떤 이슈인가요?",
+                              hintStyle: TextStyle(
+                                fontFamily: "Noto Sans CJK KR",
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Color(0xffe4e7e8),
+                              ),
+                              contentPadding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffE4E7E8)),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffE4E7E8)),
+                              ),
+                              border: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xffE4E7E8))),
+                            ),
+                            controller: contentController,
+                            focusNode: contentnodefocus,
+                            minLines: null,
+                            maxLines: null,
+                            maxLength: 5000,
+                          ),
+                        ),
+                        attachimglist.length != 0
+                            ? ImageListPanel(
+                                attachimglist: attachimglist,
+                                remoterander: remoteRender)
+                            : Container(),
+                        youtubetogle ? youtubePanel() : Container(),
+                        tagtogle
+                            ? TagWidget(
+                                tagnodefocus: tagnodefocus,
+                                tagcontroller: tagcontroller,
+                                chips: chips,
+                                remoterander: remoteRender,
+                              )
+                            : Container()
+                      ])),
               Positioned(
                   top: 0,
                   height: appbar.preferredSize.height +
@@ -408,6 +473,12 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
                                     titlenodefocus.unfocus();
                                     contentnodefocus.unfocus();
                                     youtubetogle = true;
+                                    mainScrollController.animateTo(
+                                        mainScrollController
+                                                .position.maxScrollExtent +
+                                            100,
+                                        duration: Duration(milliseconds: 500),
+                                        curve: Curves.linear);
                                     setState(() {});
                                   },
                                 ),
@@ -434,7 +505,16 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
                                     size: 18,
                                   ),
                                   shape: CircleBorder(),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    tagtogle = !tagtogle;
+                                    mainScrollController.animateTo(
+                                        mainScrollController
+                                                .position.maxScrollExtent +
+                                            100,
+                                        duration: Duration(milliseconds: 500),
+                                        curve: Curves.linear);
+                                    setState(() {});
+                                  },
                                 ),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
@@ -453,6 +533,119 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
                       color: Color(0xff454F63).withOpacity(0.5),
                     )
                   : Container(),
+              im001mainController.imagepicktogle
+                  ? Positioned(
+                      child: GestureDetector(
+                          onTap: () {
+                            im001mainController.imagepicktogle =
+                                !im001mainController.imagepicktogle;
+                            setState(() {});
+                          },
+                          child: Container(
+                              color: Color(0xff454F63).withOpacity(0.5),
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width)))
+                  : Container(),
+              im001mainController.imagepicktogle
+                  ? Positioned(
+                      bottom: 76,
+                      left: 37,
+                      height: 70,
+                      width: 180,
+                      child: Container(
+                        height: 70.00,
+                        width: 180.00,
+                        child: Row(children: [
+                          Container(
+                            width: 88,
+                            height: 70,
+                            child: FlatButton(
+                              onPressed: () async {
+                                if (attachimglist.length < 20) {
+                                  File imgfile = await ImagePicker.pickImage(
+                                      source: ImageSource.camera);
+                                  attachimglist
+                                      .add(await imgfile.readAsBytes());
+                                  im001mainController.imagepicktogle =
+                                      !im001mainController.imagepicktogle;
+                                  setState(() {});
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "이미지 20장을 모두 첨부하였습니다.",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIos: 1,
+                                      backgroundColor: Color(0xff454F63),
+                                      textColor: Colors.white,
+                                      fontSize: 12.0);
+                                }
+                              },
+                              child: Text("카메라",
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                    color: Color(0xffc1549a),
+                                  )),
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    right: BorderSide(
+                                        width: 1, color: Color(0xffC1549A)))),
+                          ),
+                          Container(
+                            width: 88,
+                            child: FlatButton(
+                              onPressed: () async {
+                                List<Asset> resultList =
+                                    await MultiImagePicker.pickImages(
+                                  maxImages: 20 - attachimglist.length,
+                                  cupertinoOptions:
+                                      CupertinoOptions(takePhotoIcon: "chat"),
+                                  materialOptions: MaterialOptions(
+                                    actionBarColor: "#abcdef",
+                                    actionBarTitle: "이슈 큐브 이미지",
+                                    allViewTitle: "이슈 큐브 이미지",
+                                    useDetailsView: false,
+                                    selectCircleStrokeColor: "#000000",
+                                  ),
+                                );
+                                for (int i = 0; i < resultList.length; i++) {
+                                  ByteData imgdata =
+                                      await resultList[i].getByteData();
+                                  attachimglist
+                                      .add(imgdata.buffer.asUint8List());
+                                }
+                                im001mainController.imagepicktogle =
+                                    !im001mainController.imagepicktogle;
+                                setState(() {});
+                              },
+                              child: Text("사진 선택",
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                    color: Color(0xffc1549a),
+                                  )),
+                            ),
+                          )
+                        ]),
+                        decoration: BoxDecoration(
+                          color: Color(0xffffffff),
+                          border: Border.all(
+                            width: 1.00,
+                            color: Color(0xffc1549a),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(0.00, 3.00),
+                                color: Color(0xff000000).withOpacity(0.16),
+                                blurRadius: 6)
+                          ],
+                          borderRadius: BorderRadius.circular(12.00),
+                        ),
+                      ))
+                  : Container()
             ],
           ),
         ));
@@ -918,124 +1111,12 @@ class PicktureAddButton extends StatelessWidget {
           onPressed: () async {
             im001controller.titlenodefocus.unfocus();
             im001controller.contentnodefocus.unfocus();
-            await showDialog(
-                context: context,
-                child: Container(
-                  child: Scaffold(
-                    backgroundColor: Colors.transparent,
-                    body: Stack(
-                      children: <Widget>[
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Container(
-                                child: Text(""),
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height)),
-                        Positioned(
-                            bottom: 76,
-                            left: 37,
-                            height: 70,
-                            width: 180,
-                            child: Container(
-                              height: 70.00,
-                              width: 180.00,
-                              child: Row(children: [
-                                Container(
-                                  width: 88,
-                                  height: 70,
-                                  child: FlatButton(
-                                    onPressed: () async {
-                                      if (attachimglist.length < 20) {
-                                        File imgfile =
-                                            await ImagePicker.pickImage(
-                                                source: ImageSource.camera);
-                                        attachimglist
-                                            .add(await imgfile.readAsBytes());
-                                        Navigator.of(context).pop();
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg: "이미지 20장을 모두 첨부하였습니다.",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.BOTTOM,
-                                            timeInSecForIos: 1,
-                                            backgroundColor: Color(0xff454F63),
-                                            textColor: Colors.white,
-                                            fontSize: 12.0);
-                                      }
-                                    },
-                                    child: Text("카메라",
-                                        style: TextStyle(
-                                          fontFamily: "Noto Sans CJK KR",
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: Color(0xffc1549a),
-                                        )),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          right: BorderSide(
-                                              width: 1,
-                                              color: Color(0xffC1549A)))),
-                                ),
-                                Container(
-                                  width: 88,
-                                  child: FlatButton(
-                                    onPressed: () async {
-                                      List<Asset> resultList =
-                                          await MultiImagePicker.pickImages(
-                                        maxImages: 20 - attachimglist.length,
-                                        cupertinoOptions: CupertinoOptions(
-                                            takePhotoIcon: "chat"),
-                                        materialOptions: MaterialOptions(
-                                          actionBarColor: "#abcdef",
-                                          actionBarTitle: "이슈 큐브 이미지",
-                                          allViewTitle: "이슈 큐브 이미지",
-                                          useDetailsView: false,
-                                          selectCircleStrokeColor: "#000000",
-                                        ),
-                                      );
-                                      for (int i = 0;
-                                          i < resultList.length;
-                                          i++) {
-                                        ByteData imgdata =
-                                            await resultList[i].getByteData();
-                                        attachimglist
-                                            .add(imgdata.buffer.asUint8List());
-                                      }
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("사진 선택",
-                                        style: TextStyle(
-                                          fontFamily: "Noto Sans CJK KR",
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: Color(0xffc1549a),
-                                        )),
-                                  ),
-                                )
-                              ]),
-                              decoration: BoxDecoration(
-                                color: Color(0xffffffff),
-                                border: Border.all(
-                                  width: 1.00,
-                                  color: Color(0xffc1549a),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                      offset: Offset(0.00, 3.00),
-                                      color:
-                                          Color(0xff000000).withOpacity(0.16),
-                                      blurRadius: 6)
-                                ],
-                                borderRadius: BorderRadius.circular(12.00),
-                              ),
-                            ))
-                      ],
-                    ),
-                  ),
-                ));
+            im001controller.imagepicktogle = !im001controller.imagepicktogle;
+            im001controller.mainScrollController.animateTo(
+                im001controller.mainScrollController.position.maxScrollExtent +
+                    100,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.linear);
             remoterander();
           },
         ),

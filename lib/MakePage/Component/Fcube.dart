@@ -172,7 +172,7 @@ class Fcube {
   Future<int> makecube() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     IdTokenResult token = await user.getIdToken();
-
+    this.uid = user.uid;
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/makecube");
     var response =

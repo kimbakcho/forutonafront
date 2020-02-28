@@ -43,7 +43,7 @@ class _SplashPageState extends State<SplashPage> {
                 context,
                 MaterialPageRoute(
                     settings:
-                        RouteSettings(isInitialRoute: true, name: "/BCD001"),
+                        RouteSettings(isInitialRoute: true, name: "BCD001"),
                     builder: (context) {
                       return BCD001MainPage();
                     }));
