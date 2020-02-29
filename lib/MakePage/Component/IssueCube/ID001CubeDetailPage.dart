@@ -12,6 +12,7 @@ import 'package:forutonafront/Common/Fcubereply.dart';
 import 'package:forutonafront/Common/FcubereplyExtender1.dart';
 import 'package:forutonafront/Common/FcubereplySearch.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
+import 'package:forutonafront/Common/YoutubeWidget.dart';
 import 'package:forutonafront/Common/marker_generator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
@@ -25,6 +26,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:intl/intl.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ID001CubeDetailPage extends StatefulWidget {
   final FcubeExtender1 fcubeextender1;
@@ -72,7 +74,7 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
   int totalreplycount = 0;
   bool isappicon = false;
   ScrollController _listscrollcontroller;
-
+  YoutubePlayerController _youtubePlayerController;
   @override
   void initState() {
     super.initState();
@@ -125,12 +127,26 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
     this.isLoading = true;
     setState(() {});
     String uid = GlobalStateContainer.of(context).state.userInfoMain.uid;
+    // if (fcubeextender1.uid != uid) {
+    fcubeextender1.updateCubeHitPoint();
+    // }
     List<FcubecontentType> types = List<FcubecontentType>();
     types.add(FcubecontentType.description);
     contents = await Fcubecontent.getFcubecontent(FcubeContentSelector(
         cubeuuid: fcubeextender1.cubeuuid, uid: uid, contenttypes: types));
     description = FcubeDescription.fromRawJson(
         contents[FcubecontentType.description].contentvalue);
+    if (description.youtubeVideoid.length > 0) {
+      _youtubePlayerController = new YoutubePlayerController(
+          initialVideoId: description.youtubeVideoid,
+          flags: YoutubePlayerFlags(
+            forceHD: true,
+            captionLanguage: "ko",
+            autoPlay: false,
+            mute: false,
+          ));
+    }
+
     groupsearch = FcubereplySearch(
         cubeuuid: fcubeextender1.cubeuuid, limit: 5, offset: 0, bgroup: 0);
     replylist
@@ -501,6 +517,13 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
                           ],
                         ),
                       ),
+                      _youtubePlayerController != null
+                          ? Container(
+                              margin: EdgeInsets.all(16),
+                              child: YoutubeWidget(
+                                controller: _youtubePlayerController,
+                              ))
+                          : Container(),
                       description != null
                           ? DescriptionImageSwiper(description: description)
                           : Container(),
@@ -510,9 +533,24 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
                       description != null
                           ? DescriptionText(description: description)
                           : Container(),
-                      SizedBox(
-                        height: 16,
-                      ),
+                      (description != null && description.tags.length > 0)
+                          ? Container(
+                              margin: EdgeInsets.all(16),
+                              padding: EdgeInsets.all(16),
+                              child: Tagspanel(description: description),
+                              decoration: BoxDecoration(
+                                  color: Color(0xffffffff),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(0.00, 4.00),
+                                      color:
+                                          Color(0xff455b63).withOpacity(0.08),
+                                      blurRadius: 16,
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(12.00)),
+                            )
+                          : Container(),
                       Container(
                           decoration: BoxDecoration(
                             color: Color(0xffffffff),
@@ -1187,6 +1225,51 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
   }
 }
 
+class Tagspanel extends StatelessWidget {
+  Tagspanel({
+    Key key,
+    @required this.description,
+  }) : super(key: key) {
+    description.tags.forEach((item) {
+      chips.add(Chip(
+        padding: EdgeInsets.fromLTRB(14, 0, 14, 0),
+        label: Text(item,
+            style: TextStyle(
+              fontFamily: "Noto Sans CJK KR",
+              fontWeight: FontWeight.w500,
+              fontSize: 13,
+              color: Color(0xff454f63),
+            )),
+      ));
+    });
+  }
+  final List<Chip> chips = new List<Chip>();
+
+  final FcubeDescription description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          child: Text("#태그",
+              style: TextStyle(
+                fontFamily: "Noto Sans CJK KR",
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+                color: Color(0xff454f63),
+              )),
+        ),
+        Container(
+          child: Wrap(children: chips, spacing: 10),
+        )
+      ],
+    ));
+  }
+}
+
 class ReplySubPanel extends StatelessWidget {
   const ReplySubPanel({
     Key key,
@@ -1605,10 +1688,8 @@ class DescriptionImageSwiper extends StatelessWidget {
 }
 
 class ContributorPanel extends StatelessWidget {
-  const ContributorPanel({
-    Key key,
-    @required this.fcubeextender1,
-  }) : super(key: key);
+  const ContributorPanel({Key key, @required this.fcubeextender1})
+      : super(key: key);
 
   final FcubeExtender1 fcubeextender1;
 

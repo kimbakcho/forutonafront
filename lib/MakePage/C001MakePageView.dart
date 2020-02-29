@@ -353,7 +353,7 @@ class _C001MakePageViewState extends State<C001MakePageView>
                     margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
                     child: FlatButton(
                       padding: EdgeInsets.all(0),
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
                           return ID001CubeDetailPage(

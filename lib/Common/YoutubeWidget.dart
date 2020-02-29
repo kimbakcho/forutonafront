@@ -149,6 +149,7 @@ class _YoutubeWidgetState extends State<YoutubeWidget> with AfterLayoutMixin {
                     children: <Widget>[
                       Container(
                         child: Text(title,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontFamily: "Noto Sans CJK KR",
                               fontWeight: FontWeight.w700,
