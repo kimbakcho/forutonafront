@@ -9,9 +9,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/FcubeDescription.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
-
 import 'package:forutonafront/Common/YoutubeWidget.dart';
-
 import 'package:forutonafront/Common/marker_generator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
@@ -729,9 +727,10 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
                             _youtubecontroller = YoutubePlayerController(
                               initialVideoId: videoId,
                               flags: YoutubePlayerFlags(
+                                enableCaption: false,
                                 forceHD: true,
                                 captionLanguage: "ko",
-                                autoPlay: false,
+                                autoPlay: true,
                                 mute: false,
                               ),
                             );

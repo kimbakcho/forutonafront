@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
 import 'package:forutonafront/Common/FcubeExtenderMarkerGenerator.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
-import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -19,6 +20,7 @@ class YoutubeWidget extends StatefulWidget {
 
 class _YoutubeWidgetState extends State<YoutubeWidget> with AfterLayoutMixin {
   _YoutubeWidgetState({this.controller});
+
   String title = "";
   int visitcount = 0;
   String publishDate = "";
@@ -102,42 +104,6 @@ class _YoutubeWidgetState extends State<YoutubeWidget> with AfterLayoutMixin {
                     progressIndicatorColor: Colors.blueAccent,
                   ),
                 ),
-                // Positioned(
-                //     right: 16,
-                //     bottom: 16,
-                //     child: Container(
-                //         height: 40.00,
-                //         width: 40.00,
-                //         child: FlatButton(
-                //             padding: EdgeInsets.all(0),
-                //             onPressed: () {
-                //               controller.play();
-                //             },
-                //             child: Container(
-                //               padding: EdgeInsets.only(left: 3),
-                //               child: Icon(
-                //                 ForutonaIcon.yplay,
-                //                 color: Colors.white,
-                //                 size: 15,
-                //               ),
-                //               height: 30.00,
-                //               width: 30.00,
-                //               decoration: BoxDecoration(
-                //                 color: Color(0xffff4f9a),
-                //                 shape: BoxShape.circle,
-                //               ),
-                //             )),
-                //         decoration: BoxDecoration(
-                //           color: Color(0xffff4f9a).withOpacity(0.3),
-                //           boxShadow: [
-                //             BoxShadow(
-                //               offset: Offset(0.00, 6.00),
-                //               color: Color(0xff321636).withOpacity(0.44),
-                //               blurRadius: 12,
-                //             ),
-                //           ],
-                //           shape: BoxShape.circle,
-                //         )))
               ],
             )),
             Container(
