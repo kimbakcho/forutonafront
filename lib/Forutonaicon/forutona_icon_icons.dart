@@ -49,4 +49,7 @@ class ForutonaIcon {
   static const IconData videoattach = const IconData(0xe81a, fontFamily: _kFontFam);
   static const IconData tagadd = const IconData(0xe81b, fontFamily: _kFontFam);
   static const IconData yplay = const IconData(0xe81c, fontFamily: _kFontFam);
+  static const IconData heart = const IconData(0xe81d, fontFamily: _kFontFam);
+  static const IconData bigexppoint = const IconData(0xe81e, fontFamily: _kFontFam);
+  static const IconData smallexppoint = const IconData(0xe81f, fontFamily: _kFontFam);
 }
