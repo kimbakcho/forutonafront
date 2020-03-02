@@ -9,7 +9,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/FcubeDescription.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
-import 'package:forutonafront/Common/YoutubeWidget.dart';
+import 'package:forutonafront/Common/YoutubeWidget2.dart';
 import 'package:forutonafront/Common/marker_generator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
@@ -20,7 +20,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_parser/youtube_parser.dart';
 
 class IM001MainController {
   FocusNode titlenodefocus;
@@ -62,7 +62,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
   String oldclipboarddata = "";
   String currentclipboarddata = "";
   String videoId = "";
-  YoutubePlayerController _youtubecontroller;
+
   List<Chip> chips = new List<Chip>();
   FocusNode tagnodefocus = FocusNode();
   ScrollController mainScrollController = ScrollController();
@@ -207,9 +207,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
                           tags: tags,
                           text: contentController.text,
                           writetime: DateTime.now().toUtc(),
-                          youtubeVideoid: _youtubecontroller == null
-                              ? ""
-                              : _youtubecontroller.initialVideoId);
+                          youtubeVideoid: videoId);
                       Fcubecontent content = Fcubecontent(
                           contenttype: FcubecontentType.description,
                           contentupdatetime: DateTime.now(),
@@ -723,17 +721,7 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
                             youtubeurl = currentclipboarddata;
                             isLoading = true;
                             setState(() {});
-                            videoId = YoutubePlayer.convertUrlToId(youtubeurl);
-                            _youtubecontroller = YoutubePlayerController(
-                              initialVideoId: videoId,
-                              flags: YoutubePlayerFlags(
-                                enableCaption: false,
-                                forceHD: true,
-                                captionLanguage: "ko",
-                                autoPlay: true,
-                                mute: false,
-                              ),
-                            );
+                            videoId = getIdFromUrl(youtubeurl);
                             isLoading = false;
                             setState(() {});
                           } else {
@@ -779,9 +767,11 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
             ]),
             videoId.length != 0
                 ? Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width,
                     margin: EdgeInsets.only(bottom: 16),
-                    child: YoutubeWidget(
-                      controller: _youtubecontroller,
+                    child: YoutubeWidget2(
+                      id: videoId,
                     ),
                   )
                 : Container()

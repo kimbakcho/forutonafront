@@ -82,7 +82,10 @@ dependencies:
   carousel_slider: ^1.4.1
   dio: ^3.0.8
   fluttertoast: ^3.1.3
-  youtube_player_flutter: ^6.1.0+4
+  youtube_explode_dart: ^0.0.9
+  video_player: ^0.10.8+1
+  chewie2: ^0.10.2
+  youtube_parser: ^1.1.0
 
 dev_dependencies:
   flutter_test:
