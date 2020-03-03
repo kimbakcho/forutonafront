@@ -38,7 +38,9 @@ class _C001MakePageViewState extends State<C001MakePageView>
   }
 
   @override
-  void didInitState() async {}
+  void didInitState() async {
+    setState(() {});
+  }
 
   _onlistscrollListener() {
     //바탐
@@ -769,19 +771,30 @@ class _C001MakePageViewState extends State<C001MakePageView>
 
   @override
   Widget build(BuildContext context) {
-    return LoadingOverlay(
-        isLoading:
-            GlobalStateContainer.of(context).state.fcubeListUtil.isLoading,
-        progressIndicator: Loading(
-            indicator: BallScaleIndicator(),
-            size: 100.0,
-            color: Theme.of(context).accentColor),
-        child: Scaffold(
-          body: Container(
-            child: makeMainContentWidget(),
-          ),
-          floatingActionButton: makeFloatingActionButton(),
-        ));
+    return Stack(children: <Widget>[
+      Scaffold(
+        body: Container(
+          child: makeMainContentWidget(),
+        ),
+        floatingActionButton: makeFloatingActionButton(),
+      ),
+      GlobalStateContainer.of(context).state.fcubeListUtil.isLoading
+          ? Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey.withOpacity(0.5),
+              child: Center(
+                  child: Container(
+                height: 100,
+                width: 100,
+                child: Loading(
+                    indicator: BallScaleIndicator(),
+                    size: 50.0,
+                    color: Theme.of(context).accentColor),
+              )),
+            )
+          : Container()
+    ]);
   }
 
   @override

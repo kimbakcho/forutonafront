@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
+import 'package:forutonafront/HomePage/B001HomePage.dart';
 import 'package:forutonafront/HomePage/HomePageView.dart';
 import 'package:forutonafront/MainPage/Component/BCD001NaviAnimationController.dart';
 import 'package:forutonafront/MakePage/C001MakePageView.dart';
@@ -233,7 +234,7 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
 
   C001MakePageView c001makePageView;
   D001PlayPageView playPageView;
-  HomePageView homePageView;
+  B001HomePage homePageView;
   D001Controller d001controller;
   @override
   void initState() {
@@ -241,7 +242,7 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
     c001makePageView = new C001MakePageView();
     d001controller = D001Controller();
     playPageView = new D001PlayPageView(d001controller: d001controller);
-    homePageView = new HomePageView();
+    homePageView = new B001HomePage();
     loginBtn = Container();
     snsBtn = Container();
     navicontroller =
