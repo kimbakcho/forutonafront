@@ -134,12 +134,11 @@ class FcubeExtender1 extends Fcube {
         json.decode(response.body).map((x) => FcubeExtender1.fromJson(x)));
   }
 
-  static Future<FcubeExtender1> getFcubeExtender1(
-      String uid, String cubeuuid) async {
+  static Future<FcubeExtender1> getFcubeExtender1(String cubeuuid) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     IdTokenResult token = await user.getIdToken();
     var url = Preference.httpurloption(Preference.baseBackEndUrl,
-        "/api/v1/Fcube/getFcubeExtender1", {"uid": uid, "cubeuuid": cubeuuid});
+        "/api/v1/Fcube/getFcubeExtender1", {"cubeuuid": cubeuuid});
     var response = await http.get(url,
         headers: {HttpHeaders.authorizationHeader: "Bearer " + token.token});
     return FcubeExtender1.fromJson(json.decode(response.body));

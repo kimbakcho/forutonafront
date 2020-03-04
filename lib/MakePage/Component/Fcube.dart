@@ -298,6 +298,16 @@ class Fcube {
     }
     return this.placeaddress;
   }
+
+  static String fcubeTypeToStrChange(FcubeType type) {
+    if (type == FcubeType.issuecube) {
+      return "이슈볼";
+    } else if (type == FcubeType.questCube) {
+      return "퀘스트볼";
+    } else {
+      return "모름";
+    }
+  }
 }
 
 class FcubeState {

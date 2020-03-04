@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Fcubetag.dart';
+import 'package:forutonafront/Common/Fcubetagextender1.dart';
+import 'package:forutonafront/HomePage/B002MainTopInner.dart';
+import 'package:forutonafront/HomePage/B003NewsDetailPage.dart';
+import 'package:forutonafront/HomePage/B004NewsInner.dart';
+import 'package:forutonafront/HomePage/B005FUStoryDetailPage.dart';
+import 'package:forutonafront/HomePage/B006FuStoryInner.dart';
 import 'package:forutonafront/HomePage/FUSotryOjbect.dart';
 import 'package:forutonafront/HomePage/HomeMainTop.dart';
 import 'package:forutonafront/HomePage/NewsObject.dart';
@@ -24,6 +30,7 @@ class _B001HomePageState extends State<B001HomePage> {
   List<FUSotryOjbect> storys = List<FUSotryOjbect>();
   List<String> recomandtags = List<String>();
   TagsController tagsController = TagsController();
+  ScrollController scrollcontroller = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -32,7 +39,8 @@ class _B001HomePageState extends State<B001HomePage> {
     storys = FUSotryOjbect.getFUSotryOjbectItems();
     recomandtags = Fcubetag.recomandtegs();
     tagsController.taglists = recomandtags;
-    tagsController.onchangetag = oncurrenttagechange;
+
+    tagsController.onLoadingfinish = onLoadingfinish;
   }
 
   @override
@@ -42,6 +50,7 @@ class _B001HomePageState extends State<B001HomePage> {
         backgroundColor: Color(0xffE4E7E8),
         body: Container(
           child: ListView(
+            controller: scrollcontroller,
             shrinkWrap: true,
             children: <Widget>[
               MainTopPanel(tops: tops),
@@ -82,9 +91,12 @@ class _B001HomePageState extends State<B001HomePage> {
     ]);
   }
 
-  oncurrenttagechange(String tag) {
-    print("oncurrenttagechange");
-    print(tag);
+  onLoadingfinish(List<Fcubetagextender1> item) {
+    scrollcontroller.animateTo(
+        scrollcontroller.position.maxScrollExtent + ((item.length / 2) * 168),
+        duration: Duration(milliseconds: 500),
+        curve: Curves.linear);
+    setState(() {});
   }
 }
 
@@ -118,7 +130,12 @@ class ForutonaStroyPanel extends StatelessWidget {
               Container(
                 child: FlatButton(
                   padding: EdgeInsets.only(left: 30),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return B005FUStoryDetailPage();
+                    }));
+                  },
                   child: Text("더 보기",
                       textAlign: TextAlign.end,
                       style: TextStyle(
@@ -140,14 +157,20 @@ class ForutonaStroyPanel extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: 16),
                       child: FlatButton(
                         padding: EdgeInsets.all(0),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return B006FuStoryInner(story: storys[index]);
+                          }));
+                        },
                         child: Stack(children: <Widget>[
                           Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
                                   height: 76,
-                                  width: 82,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(12),
@@ -159,7 +182,8 @@ class ForutonaStroyPanel extends StatelessWidget {
                                 ),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(5, 5, 0, 5),
-                                  width: 250,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.65,
                                   child: Text(
                                     storys[index].title,
                                     softWrap: true,
@@ -167,7 +191,7 @@ class ForutonaStroyPanel extends StatelessWidget {
                                 )
                               ]),
                           Positioned(
-                            left: 90,
+                            left: MediaQuery.of(context).size.width * 0.25 + 8,
                             bottom: 9,
                             child: Text(storys[index].category,
                                 style: TextStyle(
@@ -236,7 +260,12 @@ class NewsPanel extends StatelessWidget {
               Container(
                 child: FlatButton(
                   padding: EdgeInsets.only(left: 30),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return B003NewsDetailPage();
+                    }));
+                  },
                   child: Text("더 보기",
                       textAlign: TextAlign.end,
                       style: TextStyle(
@@ -258,14 +287,20 @@ class NewsPanel extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: 16),
                       child: FlatButton(
                         padding: EdgeInsets.all(0),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return B004NewsInner(newsitem: news[index]);
+                          }));
+                        },
                         child: Stack(children: <Widget>[
                           Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
                                   height: 76,
-                                  width: 82,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(12),
@@ -277,7 +312,8 @@ class NewsPanel extends StatelessWidget {
                                 ),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(5, 5, 0, 5),
-                                  width: 250,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.65,
                                   child: Text(
                                     news[index].title,
                                     softWrap: true,
@@ -285,7 +321,7 @@ class NewsPanel extends StatelessWidget {
                                 )
                               ]),
                           Positioned(
-                            left: 90,
+                            left: MediaQuery.of(context).size.width * 0.25 + 8,
                             bottom: 9,
                             child: Text(news[index].category,
                                 style: TextStyle(
@@ -355,6 +391,17 @@ class MainTopPanel extends StatelessWidget {
             itemBuilder: (context, index) {
               return Stack(children: <Widget>[
                 Container(
+                  child: FlatButton(
+                    child: Container(),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return B002MainTopInner(
+                          homeMainTop: tops[index],
+                        );
+                      }));
+                    },
+                  ),
                   height: 222,
                   margin: EdgeInsets.fromLTRB(8, 16, 8, 16),
                   width: MediaQuery.of(context).size.width,

@@ -44,7 +44,8 @@ class Fcubetag {
     items.add("데이터장소");
     items.add("축제");
     items.add("연예인사인회");
-
     return items;
   }
+
+  
 }

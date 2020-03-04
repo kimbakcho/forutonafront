@@ -106,8 +106,7 @@ class _IssueCubeSetupViewState extends State<IssueCubeSetupView>
                 if (await fcube.makecube() > 0) {
                   if (await content.makecubecontent() > 0) {
                     FcubeExtender1 fcubeextender1 =
-                        await FcubeExtender1.getFcubeExtender1(
-                            fcube.uid, fcube.cubeuuid);
+                        await FcubeExtender1.getFcubeExtender1(fcube.cubeuuid);
                     await Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return IssueCubeDetailPage(
