@@ -68,7 +68,9 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
       nickController.text = userinfomain.nickname;
       vaildcheck();
     } else if (userinfomain.snsservice == SnsLoginDataLogic.facebook) {
+      userinfomain.isocode = "KR";
       inityear = DateTime.now().year;
+
       initmonth = 1;
       initday = 1;
       userinfomain.sex = 1;
@@ -98,7 +100,9 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
       nickController.text = userinfomain.nickname;
       vaildcheck();
     } else if (userinfomain.snsservice == SnsLoginDataLogic.kakao) {
+      userinfomain.isocode = "KR";
       inityear = DateTime.now().year;
+
       initmonth = 1;
       initday = 1;
       userinfomain.sex = 1;
@@ -128,6 +132,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
       nickController.text = userinfomain.nickname;
       vaildcheck();
     } else if (userinfomain.snsservice == SnsLoginDataLogic.naver) {
+      userinfomain.isocode = "KR";
       inityear = DateTime.now().year;
       initmonth = 1;
       initday = 1;
@@ -420,7 +425,9 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                                                 1,
                                                 1),
                                             maxTime: DateTime(
-                                                DateTime.now().year, 12, 31),
+                                                DateTime.now().year - 14,
+                                                12,
+                                                31),
                                             theme: DatePickerTheme(
                                                 backgroundColor:
                                                     Theme.of(context)

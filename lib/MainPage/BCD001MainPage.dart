@@ -118,6 +118,7 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
           onPressed: () async {
             FirebaseUser userinfo = await FirebaseAuth.instance.currentUser();
             if (userinfo != null) {
+              
               await FirebaseAuth.instance.signOut();
             }
             GlobalStateContainer.of(context).state.userInfoMain = null;

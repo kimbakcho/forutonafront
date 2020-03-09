@@ -160,11 +160,11 @@ class UserInfoMain {
     }
   }
 
-  static void requestAuthPhoneNumber(
+  static Future<int> requestAuthPhoneNumber(
       String uuid, String phonenumber, String isocode) async {
     var requesturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Auth/requestAuthPhoneNumber");
-    await http.post(requesturl,
+    var response = await http.post(requesturl,
         body: jsonEncode({
           "uuid": uuid,
           "phonenumber": phonenumber,
@@ -172,6 +172,7 @@ class UserInfoMain {
           'isocode': isocode
         }),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    return int.tryParse(response.body);
   }
 
   static Future<int> requestFindAuthPhoneNumber(
@@ -311,5 +312,19 @@ class UserInfoMain {
       HttpHeaders.authorizationHeader: "Bearer " + token.token
     });
     return int.tryParse(response.body);
+  }
+
+  static Future<bool> checkhaveuid(String uid) async {
+    var uri = Preference.httpurloption(
+        Preference.baseBackEndUrl, '/api/v1/Auth/GetUid', {
+      'Uid': uid,
+    });
+    var response = await http.get(uri);
+    String getuid = response.body;
+    if (uid == getuid) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

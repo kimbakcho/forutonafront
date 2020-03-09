@@ -1,4 +1,5 @@
 import 'package:after_init/after_init.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A001LoginPageView.dart';
@@ -241,17 +242,19 @@ class _A000LoginPageViewState extends State<A000LoginPageView>
                                                             "assets/MainImage/facebookicon.png"))),
                                                 child: FlatButton(
                                                   child: Container(),
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     userInfoMain.snsservice =
                                                         SnsLoginDataLogic
                                                             .facebook;
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
-                                                      return A002SignIn1View(
-                                                          userinfomain:
-                                                              userInfoMain);
-                                                    }));
+                                                    bool loginresult =
+                                                        await SnsLoginDataLogic
+                                                            .snsLogins(
+                                                                userInfoMain
+                                                                    .snsservice,
+                                                                userInfoMain);
+                                                    if (loginresult) {
+                                                      snsSignCheckAndLogic();
+                                                    }
                                                   },
                                                 ),
                                               ),
@@ -266,16 +269,18 @@ class _A000LoginPageViewState extends State<A000LoginPageView>
                                                             "assets/MainImage/kakaotalkicon.png"))),
                                                 child: FlatButton(
                                                   child: Container(),
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     userInfoMain.snsservice =
                                                         SnsLoginDataLogic.kakao;
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
-                                                      return A002SignIn1View(
-                                                          userinfomain:
-                                                              userInfoMain);
-                                                    }));
+                                                    bool loginresult =
+                                                        await SnsLoginDataLogic
+                                                            .snsLogins(
+                                                                userInfoMain
+                                                                    .snsservice,
+                                                                userInfoMain);
+                                                    if (loginresult) {
+                                                      snsSignCheckAndLogic();
+                                                    }
                                                   },
                                                 ),
                                               ),
@@ -288,16 +293,18 @@ class _A000LoginPageViewState extends State<A000LoginPageView>
                                                             "assets/MainImage/navericon.png"))),
                                                 child: FlatButton(
                                                   child: Container(),
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     userInfoMain.snsservice =
                                                         SnsLoginDataLogic.naver;
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
-                                                      return A002SignIn1View(
-                                                          userinfomain:
-                                                              userInfoMain);
-                                                    }));
+                                                    bool loginresult =
+                                                        await SnsLoginDataLogic
+                                                            .snsLogins(
+                                                                userInfoMain
+                                                                    .snsservice,
+                                                                userInfoMain);
+                                                    if (loginresult) {
+                                                      snsSignCheckAndLogic();
+                                                    }
                                                   },
                                                 ),
                                               )
@@ -359,6 +366,19 @@ class _A000LoginPageViewState extends State<A000LoginPageView>
             ],
           )),
         ));
+  }
+
+  Future<void> snsSignCheckAndLogic() async {
+    bool exist = await UserInfoMain.checkhaveuid(userInfoMain.uid);
+    if (exist) {
+      String customtoken = await UserInfoMain.getCustomToken(userInfoMain);
+      await FirebaseAuth.instance.signInWithCustomToken(token: customtoken);
+      Navigator.popUntil(context, ModalRoute.withName('/'));
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return A002SignIn1View(userinfomain: userInfoMain);
+      }));
+    }
   }
 
   @override

@@ -18,17 +18,20 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
   bool isnext = false;
   VaildTextFromFieldItem emailvailditem;
   bool isloading = false;
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
     emailvailditem = VaildTextFromFieldItem(
         inputtype: TextInputType.emailAddress,
         onchange: (value) {
-          if (emailvailditem.validator(value) == null) {
+          if (value.length > 0) {
             isnext = true;
           } else {
             isnext = false;
           }
+          if (emailvailditem.validator(value) == null) {
+          } else {}
           setState(() {});
         },
         obscureText: false,
@@ -37,7 +40,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
           RegExp regex = new RegExp(pattern);
           if (!regex.hasMatch(value))
-            return '';
+            return '이메일 형식이 아닙니다.';
           else
             return null;
         },
@@ -108,6 +111,9 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                                     fontSize: 16),
                               ),
                               onPressed: () async {
+                                if (!_formKey.currentState.validate()) {
+                                  return;
+                                }
                                 isloading = true;
                                 setState(() {});
                                 UserInfoMain userInfoMain = UserInfoMain();
@@ -255,13 +261,15 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                             )),
                       ),
                       Container(
-                        height: 50,
-                        margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
-                        width: MediaQuery.of(context).size.width,
-                        child: VaildTextFromField(
-                          item: emailvailditem,
-                        ),
-                      )
+                          height: 150,
+                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                          width: MediaQuery.of(context).size.width,
+                          child: Form(
+                            key: _formKey,
+                            child: VaildTextFromField(
+                              item: emailvailditem,
+                            ),
+                          ))
                     ],
                   ),
                 ),

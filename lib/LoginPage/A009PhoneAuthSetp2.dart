@@ -28,6 +28,7 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
   SmsReceiver _smsReceiver;
   StreamSubscription periodicSub;
   bool isloading = false;
+  int remaintime = 0;
   onPhoneNumberChange(
       String phoneText, String number, String selectedItemcode) {
     userInfoMain.phonenumber = number;
@@ -48,14 +49,14 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
     }
     iscanrequest = false;
     periodicSub = new Stream.periodic(const Duration(seconds: 1), (v) => v)
-        .take(300)
+        .take(121)
         .listen((count) {
-      if (count == 300) {
-        authtimelimit = 300 - count;
+      if ((count + remaintime) == 120) {
+        authtimelimit = 120 - (count + remaintime);
         iscanrequest = true;
         setState(() {});
       }
-      authtimelimit = 300 - count;
+      authtimelimit = 120 - (count + remaintime);
       setState(() {});
     });
 
@@ -192,9 +193,11 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                                                     userInfoMain.uid,
                                                     userInfoMain.phonenumber,
                                                     userInfoMain.isocode);
+
                                             isloading = false;
                                             setState(() {});
-                                            if (result == 1) {
+                                            if (result >= 0) {
+                                              remaintime = result;
                                               _startListening();
                                             } else {
                                               showDialog(
@@ -339,147 +342,168 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                             ],
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
-                          child: RichText(
-                            text: TextSpan(
-                                text: "인증번호는 ",
-                                children: [
-                                  TextSpan(
-                                      text: "$authtimelimit초 ",
-                                      style: TextStyle(
-                                          color: Color(0xffFF4F9A),
-                                          fontFamily: 'Noto Sans CJK KR',
-                                          fontSize: 13)),
-                                  TextSpan(
-                                      text: "후에 다시 요청 하실수 있습니다.",
+                        authtimelimit != 0
+                            ? Container(
+                                margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: "인증번호는 ",
+                                      children: [
+                                        TextSpan(
+                                            text: "$authtimelimit초 ",
+                                            style: TextStyle(
+                                                color: Color(0xffFF4F9A),
+                                                fontFamily: 'Noto Sans CJK KR',
+                                                fontSize: 13)),
+                                        TextSpan(
+                                            text: "후에 다시 요청 하실수 있습니다.",
+                                            style: TextStyle(
+                                                color: Color(0xff454F63),
+                                                fontFamily: 'Noto Sans CJK KR',
+                                                fontSize: 13))
+                                      ],
                                       style: TextStyle(
                                           color: Color(0xff454F63),
                                           fontFamily: 'Noto Sans CJK KR',
-                                          fontSize: 13))
-                                ],
-                                style: TextStyle(
-                                    color: Color(0xff454F63),
-                                    fontFamily: 'Noto Sans CJK KR',
-                                    fontSize: 13)),
-                          ),
-                        ),
+                                          fontSize: 13)),
+                                ),
+                              )
+                            : Container(),
                         SizedBox(
                           height: 21,
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
-                          decoration: BoxDecoration(
-                            color: Color(0xff78849e),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0.00, 12.00),
-                                color: Color(0xff455b63).withOpacity(0.10),
-                                blurRadius: 16,
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(12.00),
-                          ),
-                          child: FlatButton(
-                            onPressed: () async {
-                              isloading = true;
-                              setState(() {});
-                              userInfoMain.phoneauthcheckcode =
-                                  await UserInfoMain
-                                      .requestAuthVerificationPhoneNumber(
-                                          userInfoMain.uid,
-                                          userInfoMain.phonenumber,
-                                          phoneauthnumbercontroller.text);
-                              isloading = false;
-                              setState(() {});
-                              if (userInfoMain.phoneauthcheckcode != 'false') {
-                                periodicSub.cancel();
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return A010PhoneAuthStep3(
-                                      userInfoMain: userInfoMain);
-                                }));
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    barrierDismissible: true,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                          content: Container(
-                                              height: 110,
-                                              child: Column(children: <Widget>[
-                                                Container(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    "인증번호 불일치",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontFamily:
-                                                            'Noto Sans CJK KR',
-                                                        fontSize: 20),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 16,
-                                                ),
-                                                Container(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    "인증번호를 잘못 입력하셨습니다.",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontFamily:
-                                                            'Noto Sans CJK KR',
-                                                        fontSize: 14),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Container(
-                                                    height: 30,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    decoration: BoxDecoration(
-                                                      color: Color(0xff454f63),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.00),
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                            child: FlatButton(
+                              onPressed: () async {
+                                isloading = true;
+                                setState(() {});
+                                userInfoMain.phoneauthcheckcode =
+                                    await UserInfoMain
+                                        .requestAuthVerificationPhoneNumber(
+                                            userInfoMain.uid,
+                                            userInfoMain.phonenumber,
+                                            phoneauthnumbercontroller.text);
+                                isloading = false;
+                                setState(() {});
+                                if (userInfoMain.phoneauthcheckcode !=
+                                    'false') {
+                                  periodicSub.cancel();
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return A010PhoneAuthStep3(
+                                        userInfoMain: userInfoMain);
+                                  }));
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            content: Container(
+                                                height: 110,
+                                                child:
+                                                    Column(children: <Widget>[
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "인증번호 불일치",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontFamily:
+                                                              'Noto Sans CJK KR',
+                                                          fontSize: 20),
                                                     ),
-                                                    child: FlatButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: Text("확인",
-                                                            style: TextStyle(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                                fontFamily:
-                                                                    'Noto Sans CJK KR',
-                                                                fontSize: 14))))
-                                              ])));
-                                    });
-                              }
-                            },
-                            child: Text("인증번호 확인",
-                                style: TextStyle(
-                                  fontFamily: "Noto Sans CJK KR",
-                                  fontSize: 15,
-                                  color: iscanrequest
-                                      ? Color(0xffffffff)
-                                      : Theme.of(context).primaryColor,
-                                )),
-                          ),
-                        )
+                                                  ),
+                                                  SizedBox(
+                                                    height: 16,
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "인증번호를 잘못 입력하셨습니다.",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily:
+                                                              'Noto Sans CJK KR',
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Container(
+                                                      height: 30,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            Color(0xff454f63),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    12.00),
+                                                      ),
+                                                      child: FlatButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text("확인",
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColor,
+                                                                  fontFamily:
+                                                                      'Noto Sans CJK KR',
+                                                                  fontSize:
+                                                                      14))))
+                                                ])));
+                                      });
+                                }
+                              },
+                              child: Text("인증번호 확인",
+                                  style: TextStyle(
+                                    fontFamily: "Noto Sans CJK KR",
+                                    fontSize: 15,
+                                    color: isAuthActive()
+                                        ? Color(0xff39F999)
+                                        : Colors.white,
+                                  )),
+                            ),
+                            decoration: isAuthActive()
+                                ? BoxDecoration(
+                                    color: Color(0xff454f63),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(0.00, 12.00),
+                                        color:
+                                            Color(0xff455b63).withOpacity(0.10),
+                                        blurRadius: 16,
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(12.00),
+                                  )
+                                : BoxDecoration(
+                                    color: Color(0xff78849e),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(0.00, 12.00),
+                                        color:
+                                            Color(0xff455b63).withOpacity(0.10),
+                                        blurRadius: 16,
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(12.00),
+                                  ))
                       ],
                     ),
                   ),
@@ -496,5 +520,13 @@ class _A009PhoneAuthSetp2State extends State<A009PhoneAuthSetp2> {
                 ),
               )),
         ));
+  }
+
+  bool isAuthActive() {
+    if (phoneauthnumbercontroller.text.length > 0 && !iscanrequest) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

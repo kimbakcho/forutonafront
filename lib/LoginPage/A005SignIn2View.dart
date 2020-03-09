@@ -55,14 +55,19 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
         },
         obscureText: true,
         validator: (value) {
+          RegExp regExp = new RegExp(
+              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+
           if (value.length < 8) {
             return "패스워드는 최소 8자 이상";
+          } else if (regExp.hasMatch(value)) {
+            return "영문 소문자,대문자,숫자,특수문자 중 3개 이상 조합";
           } else {
             return null;
           }
         });
     pass2vailditem = VaildTextFromFieldItem(
-        hintText: "비밀번호 입력",
+        hintText: "비밀번호 확인",
         onchange: (value) {
           this.onchange(value);
         },

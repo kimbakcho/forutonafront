@@ -43,33 +43,49 @@ class _VaildTextFromFieldState extends State<VaildTextFromField> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      double top = (constraints.maxHeight / 2) - 15;
+      // double top = (constraints.maxHeight / 2) - 15;
       return Container(
         child: Stack(
           children: <Widget>[
-            TextFormField(
-              controller: textcontroller,
-              onChanged: item.onchange == null ? null : item.onchange,
-              keyboardType: item.inputtype,
-              obscureText: item.obscureText != null ? item.obscureText : false,
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: item.hintText,
-                  hintStyle: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontSize: 15,
-                    color: Color(0xff78849e).withOpacity(0.56),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)))),
-              validator: item.validator,
-            ),
+            Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.00, 4.00),
+                      color: Color(0xff455b63).withOpacity(0.08),
+                      blurRadius: 16,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(12.00),
+                ),
+                child: TextFormField(
+                  controller: textcontroller,
+                  onChanged: item.onchange == null ? null : item.onchange,
+                  keyboardType: item.inputtype,
+                  obscureText:
+                      item.obscureText != null ? item.obscureText : false,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: item.hintText,
+                      hintStyle: TextStyle(
+                        fontFamily: "Noto Sans CJK KR",
+                        fontSize: 15,
+                        color: Color(0xff78849e).withOpacity(0.56),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 0, color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(12))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 0, color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(12)))),
+                  validator: item.validator,
+                )),
             textcontroller.text.length != 0
                 ? Positioned(
                     right: 16,
-                    top: top,
+                    top: 10,
                     child: Container(
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,

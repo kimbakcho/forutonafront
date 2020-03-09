@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A003ServiceUserAgreements.dart';
 import 'package:forutonafront/LoginPage/A004PhoneAuthView.dart';
+import 'package:forutonafront/LoginPage/A006SignIn3View.dart';
 import 'package:forutonafront/LoginPage/Component/AgreeFieldComponent.dart';
+import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
 
 class A002SignIn1View extends StatefulWidget {
   A002SignIn1View({this.userinfomain, Key key}) : super(key: key);
@@ -268,12 +270,22 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
                                                 : 0;
                                         userinfomain.agelimitagree =
                                             ageAgreeItem.ischecked ? 1 : 0;
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return A004PhoneAuthView(
-                                              userinfomain: userinfomain);
-                                        }));
+                                        if (userinfomain.snsservice ==
+                                            SnsLoginDataLogic.email) {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return A004PhoneAuthView(
+                                                userinfomain: userinfomain);
+                                          }));
+                                        } else {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return A006SignIn3View(
+                                                userinfomain: userinfomain);
+                                          }));
+                                        }
                                       },
                                     )),
                               )

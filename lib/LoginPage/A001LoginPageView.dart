@@ -69,118 +69,168 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
           ),
           Container(
             height: 50,
+            decoration: BoxDecoration(
+              color: Color(0xffffffff),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0.00, 4.00),
+                  color: Color(0xff455b63).withOpacity(0.08),
+                  blurRadius: 16,
+                ),
+              ],
+              borderRadius: BorderRadius.circular(12.00),
+            ),
             margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
             child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 controller: emailController,
+                onChanged: (value) {
+                  setState(() {});
+                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                   hintText: "아이디(이메일 주소)",
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
+                      borderSide:
+                          BorderSide(width: 1, color: Color(0xff3497FD)),
                       borderRadius: BorderRadius.all(Radius.circular(12))),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
+                      borderSide: BorderSide(width: 0, color: Colors.white),
                       borderRadius: BorderRadius.all(Radius.circular(12))),
                 )),
           ),
           Container(
             height: 50,
+            decoration: BoxDecoration(
+              color: Color(0xffffffff),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0.00, 4.00),
+                  color: Color(0xff455b63).withOpacity(0.08),
+                  blurRadius: 16,
+                ),
+              ],
+              borderRadius: BorderRadius.circular(12.00),
+            ),
             margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
             child: TextFormField(
                 controller: passController,
                 obscureText: true,
+                onChanged: (value) {
+                  setState(() {});
+                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                   hintText: "비밀번호 입력",
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
+                      borderSide:
+                          BorderSide(width: 1, color: Color(0xff3497FD)),
                       borderRadius: BorderRadius.all(Radius.circular(12))),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
+                      borderSide: BorderSide(width: 0, color: Colors.white),
                       borderRadius: BorderRadius.all(Radius.circular(12))),
                 )),
           ),
           Container(
             height: 43.00,
             margin: EdgeInsets.fromLTRB(32, 0, 32, 32),
-            decoration: BoxDecoration(
-              color: Color(0xff78849e),
-              boxShadow: [
-                BoxShadow(
-                  offset: Offset(0.00, 12.00),
-                  color: Color(0xff455b63).withOpacity(0.10),
-                  blurRadius: 16,
-                ),
-              ],
-              borderRadius: BorderRadius.circular(12.00),
-            ),
+            decoration: isActiveLogin()
+                ? BoxDecoration(
+                    color: Color(0xff454f63),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0.00, 12.00),
+                        color: Color(0xff455b63).withOpacity(0.10),
+                        blurRadius: 16,
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(12.00),
+                  )
+                : BoxDecoration(
+                    color: Color(0xff78849e),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0.00, 12.00),
+                        color: Color(0xff455b63).withOpacity(0.10),
+                        blurRadius: 16,
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(12.00),
+                  ),
             child: FlatButton(
-                onPressed: () async {
-                  try {
-                    await _auth.signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passController.text);
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
-                  } catch (value) {
-                    PlatformException excode = value as PlatformException;
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(16.0),
-                            ),
-                            title: Container(
-                              child: Text("로그인 실패",
-                                  style: TextStyle(
-                                    fontFamily: "Noto Sans CJK KR",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20,
-                                    color: Color(0xff000000),
-                                  )),
-                            ),
-                            content: Container(
-                                height: 110,
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text(excode.message),
-                                    ),
-                                    SizedBox(height: 16),
-                                    Container(
-                                        child: FlatButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text(
-                                            "확인",
-                                            style: TextStyle(
-                                                fontFamily: "Noto Sans CJK KR",
-                                                fontSize: 15,
-                                                color: Theme.of(context)
-                                                    .primaryColor),
-                                          ),
-                                        ),
-                                        height: 36.00,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff454f63),
-                                          borderRadius:
-                                              BorderRadius.circular(12.00),
+                onPressed: isActiveLogin()
+                    ? () async {
+                        try {
+                          await _auth.signInWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passController.text);
+                          Navigator.popUntil(context, ModalRoute.withName('/'));
+                        } catch (value) {
+                          PlatformException excode = value as PlatformException;
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(16.0),
+                                  ),
+                                  title: Container(
+                                    child: Text("로그인 실패",
+                                        style: TextStyle(
+                                          fontFamily: "Noto Sans CJK KR",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20,
+                                          color: Color(0xff000000),
                                         )),
-                                  ],
-                                )),
-                          );
-                        });
-                    return;
-                  }
-                },
+                                  ),
+                                  content: Container(
+                                      height: 110,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            child: Text(
+                                                fireBaseLoginErrorMessageLangChage(
+                                                    excode.message)),
+                                          ),
+                                          SizedBox(height: 16),
+                                          Container(
+                                              child: FlatButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  "확인",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          "Noto Sans CJK KR",
+                                                      fontSize: 15,
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                ),
+                                              ),
+                                              height: 36.00,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xff454f63),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        12.00),
+                                              )),
+                                        ],
+                                      )),
+                                );
+                              });
+                          return;
+                        }
+                      }
+                    : () {},
                 child: Container(
                     child: Center(
                         child: Text(
@@ -188,7 +238,8 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                   style: TextStyle(
                       fontFamily: 'Noto Sans CJK KR',
                       fontSize: 15,
-                      color: Colors.white),
+                      color:
+                          isActiveLogin() ? Color(0xff39F999) : Colors.white),
                 )))),
           ),
           !iskeyboardshow
@@ -367,5 +418,29 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
             ),
           )),
     );
+  }
+
+  bool isActiveLogin() {
+    if (emailController.text.length > 0 && passController.text.length >= 8) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  fireBaseLoginErrorMessageLangChage(String message) {
+    if (message == "The email address is badly formatted.") {
+      return "아이디가 이메일 형식이 아닙니다";
+    } else if (message ==
+        "There is no user record corresponding to this identifier. The user may have been deleted.") {
+      return "아이디가 없거나 패스워드가 틀렸습니다.";
+    } else if (message ==
+        "The password is invalid or the user does not have a password.") {
+      return "아이디가 없거나 패스워드가 틀렸습니다.";
+    } else if (message == "An internal error has occurred. [ 7: ]") {
+      return "네트워크 접속에 실패했습ㄴ디ㅏ. 네트워크 연결 상태를 확인해주세요.";
+    } else {
+      return message;
+    }
   }
 }
