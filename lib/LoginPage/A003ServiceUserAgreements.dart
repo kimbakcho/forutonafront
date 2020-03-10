@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class A003ServiceUserAgreements extends StatefulWidget {
-  A003ServiceUserAgreements({Key key}) : super(key: key);
-
+  A003ServiceUserAgreements({this.titlename, key}) : super(key: key);
+  final String titlename;
   @override
   _A003ServiceUserAgreementsState createState() =>
       _A003ServiceUserAgreementsState();
@@ -28,7 +28,7 @@ class _A003ServiceUserAgreementsState extends State<A003ServiceUserAgreements> {
             elevation: 0,
             automaticallyImplyLeading: false,
             titleSpacing: 0.0,
-            title: Text("서비스 이용 약관",
+            title: Text(this.widget.titlename,
                 style: TextStyle(
                   color: Colors.white,
                   fontFamily: "Noto Sans CJK KR",

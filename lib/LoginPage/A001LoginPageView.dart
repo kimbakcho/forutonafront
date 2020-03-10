@@ -259,10 +259,11 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return A007PasswordfindView();
-                        }));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) {
+                              return A007PasswordfindView();
+                            },
+                            settings: RouteSettings(name: "A007")));
                       }))
               : Container(),
           !iskeyboardshow

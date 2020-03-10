@@ -33,20 +33,37 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
     super.initState();
     allAgreeItem.onchenge = this.onallAgreeItemchange;
     serviceAgreeItem.onchenge = (value) {
+      isAllCheck();
       setState(() {});
     };
     personalAgreeItem.onchenge = (value) {
+      isAllCheck();
       setState(() {});
     };
     locationAgreeItem.onchenge = (value) {
+      isAllCheck();
       setState(() {});
     };
     marketingAgreeItem.onchenge = (value) {
+      isAllCheck();
       setState(() {});
     };
     ageAgreeItem.onchenge = (value) {
+      isAllCheck();
       setState(() {});
     };
+  }
+
+  isAllCheck() {
+    if (serviceAgreeItem.ischecked &&
+        personalAgreeItem.ischecked &&
+        locationAgreeItem.ischecked &&
+        marketingAgreeItem.ischecked &&
+        ageAgreeItem.ischecked) {
+      allAgreeItem.ischecked = true;
+    } else {
+      allAgreeItem.ischecked = false;
+    }
   }
 
   onallAgreeItemchange(value) {
@@ -72,13 +89,15 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
   @override
   Widget build(BuildContext context) {
     serviceAgreeItem.nextpage = MaterialPageRoute(builder: (context) {
-      return A003ServiceUserAgreements();
+      return A003ServiceUserAgreements(
+        titlename: serviceAgreeItem.text,
+      );
     });
     personalAgreeItem.nextpage = MaterialPageRoute(builder: (context) {
-      return A003ServiceUserAgreements();
+      return A003ServiceUserAgreements(titlename: personalAgreeItem.text);
     });
     locationAgreeItem.nextpage = MaterialPageRoute(builder: (context) {
-      return A003ServiceUserAgreements();
+      return A003ServiceUserAgreements(titlename: locationAgreeItem.text);
     });
     return Container(
         decoration: BoxDecoration(
@@ -239,7 +258,7 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
                                 margin: EdgeInsets.only(right: 16),
                                 child: Container(
                                     height: 37.00,
-                                    width: 67.00,
+                                    width: 80.00,
                                     decoration: BoxDecoration(
                                       color: Color(0xff454f63),
                                       border: Border.all(
@@ -294,7 +313,7 @@ class _A002SignIn1ViewState extends State<A002SignIn1View> {
                                 margin: EdgeInsets.only(right: 16),
                                 child: Container(
                                   height: 37.00,
-                                  width: 67.00,
+                                  width: 80.00,
                                   decoration: BoxDecoration(
                                       color: Color(0xffe4e7e8),
                                       border: Border.all(

@@ -227,7 +227,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                       margin: EdgeInsets.only(right: 16),
                       child: Container(
                         height: 37.00,
-                        width: 67.00,
+                        width: 80.00,
                         decoration: BoxDecoration(
                             color: Color(0xFF454F63),
                             border: Border.all(
@@ -269,7 +269,7 @@ class _A006SignIn3ViewState extends State<A006SignIn3View> {
                       margin: EdgeInsets.only(right: 16),
                       child: Container(
                         height: 37.00,
-                        width: 67.00,
+                        width: 80.00,
                         decoration: BoxDecoration(
                             border: Border.all(
                               width: 2.00,

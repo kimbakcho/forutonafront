@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Common/LoadingOverlay.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
@@ -170,7 +171,7 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                           contentPadding: EdgeInsets.fromLTRB(
                                               16, 16, 16, 0),
                                           content: Container(
-                                            height: 180,
+                                            height: 200,
                                             child: Column(
                                               children: <Widget>[
                                                 Container(
@@ -205,6 +206,21 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                                                       userInfoMain
                                                                           .email);
                                                           isloading = false;
+                                                          Fluttertoast.showToast(
+                                                              msg: "재전송 하였습니다.",
+                                                              toastLength: Toast
+                                                                  .LENGTH_SHORT,
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .BOTTOM,
+                                                              timeInSecForIos:
+                                                                  1,
+                                                              backgroundColor:
+                                                                  Color(
+                                                                      0xff454F63),
+                                                              textColor:
+                                                                  Colors.white,
+                                                              fontSize: 12.0);
                                                           setState(() {});
                                                         },
                                                         child: Text(

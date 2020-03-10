@@ -18,6 +18,7 @@ class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
   bool isloading = false;
   bool isnext = false;
   VaildTextFromFieldItem emailvailditem;
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -33,20 +34,20 @@ class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
           RegExp regex = new RegExp(pattern);
           if (!regex.hasMatch(value))
-            return '';
+            return '이메일 형식이 아닙니다.';
           else
             return null;
         });
   }
 
   onchange(value) {
-    if (emailvailditem.validator(emailvailditem.text) == null) {
+    if (value.length > 0) {
       isnext = true;
-      setState(() {});
     } else {
       isnext = false;
-      setState(() {});
     }
+    emailvailditem.validator(emailvailditem.text);
+    setState(() {});
   }
 
   @override
@@ -95,7 +96,7 @@ class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
                         margin: EdgeInsets.only(right: 16),
                         child: Container(
                           height: 37.00,
-                          width: 67.00,
+                          width: 80.00,
                           decoration: BoxDecoration(
                               color: Color(0xFF454F63),
                               border: Border.all(
@@ -112,6 +113,9 @@ class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
                                     fontSize: 16),
                               ),
                               onPressed: () async {
+                                if (!_formKey.currentState.validate()) {
+                                  return;
+                                }
                                 isloading = true;
                                 setState(() {});
                                 UserInfoMain userInfoMain = UserInfoMain();
@@ -211,7 +215,7 @@ class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
                         margin: EdgeInsets.only(right: 16),
                         child: Container(
                           height: 37.00,
-                          width: 67.00,
+                          width: 80.00,
                           decoration: BoxDecoration(
                               border: Border.all(
                                 width: 2.00,
@@ -260,10 +264,12 @@ class _A011PassFindEmailStep1State extends State<A011PassFindEmailStep1> {
                       ),
                       Container(
                         margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
-                        height: 50,
-                        child: VaildTextFromField(
-                          item: emailvailditem,
-                        ),
+                        height: 150,
+                        child: Form(
+                            key: _formKey,
+                            child: VaildTextFromField(
+                              item: emailvailditem,
+                            )),
                       )
                     ],
                   ),

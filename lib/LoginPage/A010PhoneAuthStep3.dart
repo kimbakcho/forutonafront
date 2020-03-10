@@ -23,6 +23,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
   VaildTextFromFieldItem pass1vailditem;
   VaildTextFromFieldItem pass2vailditem;
   bool isloading = false;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -34,8 +35,18 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
         },
         obscureText: true,
         validator: (value) {
+          RegExp regExp1 = new RegExp(r'^(?=.*?[A-Z])');
+          RegExp regExp2 = new RegExp(r'^(?=.*?[a-z])');
+          RegExp regExp3 = new RegExp(r'^(?=.*?[0-9])');
+          RegExp regExp4 = new RegExp(r'^(?=.*?[!@#\$&*~])');
+          int match1 = regExp1.hasMatch(value) ? 1 : 0;
+          int match2 = regExp2.hasMatch(value) ? 1 : 0;
+          int match3 = regExp3.hasMatch(value) ? 1 : 0;
+          int match4 = regExp4.hasMatch(value) ? 1 : 0;
           if (value.length < 8) {
             return "패스워드는 최소 8자 이상";
+          } else if ((match1 + match2 + match3 + match4) < 3) {
+            return "영문 소문자,대문자,숫자,특수문자 중 3개 이상 조합";
           } else {
             return null;
           }
@@ -56,14 +67,12 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
   }
 
   onchange(value) {
-    if (pass1vailditem.validator(pass1vailditem.text) == null &&
-        pass2vailditem.validator(pass2vailditem.text) == null) {
+    if (pass1vailditem.text.length > 0 && pass2vailditem.text.length > 0) {
       isnext = true;
-      setState(() {});
     } else {
       isnext = false;
-      setState(() {});
     }
+    setState(() {});
   }
 
   @override
@@ -112,7 +121,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                             margin: EdgeInsets.only(right: 16),
                             child: Container(
                               height: 37.00,
-                              width: 67.00,
+                              width: 80.00,
                               decoration: BoxDecoration(
                                   color: Color(0xFF454F63),
                                   border: Border.all(
@@ -129,6 +138,10 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                                         fontSize: 16),
                                   ),
                                   onPressed: () async {
+                                    if (!_formKey.currentState.validate()) {
+                                      return;
+                                    }
+
                                     userInfoMain.password = pass1vailditem.text;
                                     isloading = true;
                                     setState(() {});
@@ -189,7 +202,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                                                               context,
                                                               ModalRoute
                                                                   .withName(
-                                                                      '/'));
+                                                                      'A001'));
                                                         },
                                                         child: Text("확인",
                                                             style: TextStyle(
@@ -214,7 +227,7 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                             margin: EdgeInsets.only(right: 16),
                             child: Container(
                               height: 37.00,
-                              width: 67.00,
+                              width: 80.00,
                               decoration: BoxDecoration(
                                   border: Border.all(
                                     width: 2.00,
@@ -238,37 +251,42 @@ class _A010PhoneAuthStep3State extends State<A010PhoneAuthStep3> {
                 body: Container(
                     child: Column(children: <Widget>[
                   Expanded(
-                      child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Color(0xFFE4E7E8),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(16.00),
-                                  topRight: Radius.circular(16.00))),
-                          child: ListView(shrinkWrap: true, children: <Widget>[
-                            SizedBox(height: 32),
-                            Container(
-                                margin: EdgeInsets.only(left: 32),
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                    "새로운 패스워드를 생성합니다.\n패스워드는 8자리 이상을 사용해주세요.",
-                                    style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",
-                                      fontSize: 14,
-                                      color: Color(0xff78849e),
-                                    ))),
-                            SizedBox(height: 21),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
-                              height: 50,
-                              child: VaildTextFromField(item: pass1vailditem),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
-                              height: 50,
-                              child: VaildTextFromField(item: pass2vailditem),
-                            )
-                          ])))
+                      child: Form(
+                          key: _formKey,
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFFE4E7E8),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(16.00),
+                                      topRight: Radius.circular(16.00))),
+                              child:
+                                  ListView(shrinkWrap: true, children: <Widget>[
+                                SizedBox(height: 32),
+                                Container(
+                                    margin: EdgeInsets.only(left: 32),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                        "새로운 패스워드를 생성합니다.\n패스워드는 8자리 이상을 사용해주세요.",
+                                        style: TextStyle(
+                                          fontFamily: "Noto Sans CJK KR",
+                                          fontSize: 14,
+                                          color: Color(0xff78849e),
+                                        ))),
+                                SizedBox(height: 21),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
+                                  height: 80,
+                                  child:
+                                      VaildTextFromField(item: pass1vailditem),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(32, 0, 32, 21),
+                                  height: 80,
+                                  child:
+                                      VaildTextFromField(item: pass2vailditem),
+                                )
+                              ]))))
                 ])),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerDocked,

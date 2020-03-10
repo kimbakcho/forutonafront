@@ -30,8 +30,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
           } else {
             isnext = false;
           }
-          if (emailvailditem.validator(value) == null) {
-          } else {}
+          emailvailditem.validator(value);
           setState(() {});
         },
         obscureText: false,
@@ -94,7 +93,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                         margin: EdgeInsets.only(right: 16),
                         child: Container(
                           height: 37.00,
-                          width: 67.00,
+                          width: 80.00,
                           decoration: BoxDecoration(
                               color: Color(0xFF454F63),
                               border: Border.all(
@@ -213,7 +212,7 @@ class _A008PhoneAuthStep1State extends State<A008PhoneAuthStep1> {
                         margin: EdgeInsets.only(right: 16),
                         child: Container(
                           height: 37.00,
-                          width: 67.00,
+                          width: 80.00,
                           decoration: BoxDecoration(
                               border: Border.all(
                                 width: 2.00,

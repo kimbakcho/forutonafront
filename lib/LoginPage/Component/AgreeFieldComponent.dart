@@ -72,7 +72,7 @@ class _AgreeFieldComponentState extends State<AgreeFieldComponent> {
         this.fielditem.subtext != null
             ? Positioned(
                 left: 16.0 + 28.0 + 8.0,
-                top: top + 20,
+                top: top + 25,
                 child: Container(
                     child: Text(this.fielditem.subtext,
                         style: TextStyle(
