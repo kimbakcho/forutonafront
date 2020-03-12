@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_kakao_login/flutter_kakao_login.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/FCubeGeoSearchUtil.dart';
 import 'package:forutonafront/Common/GeoSearchUtil.dart';
@@ -118,7 +121,20 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
           onPressed: () async {
             FirebaseUser userinfo = await FirebaseAuth.instance.currentUser();
             if (userinfo != null) {
-              
+              try {
+                final facebookLogin = FacebookLogin();
+                await facebookLogin.logOut();
+              } catch (ex) {}
+              try {
+                final kakalogin = FlutterKakaoLogin();
+                kakalogin.logOut();
+              } catch (ex) {
+                print(ex);
+              }
+              try {
+                await FlutterNaverLogin.logOut();
+              } catch (ex) {}
+
               await FirebaseAuth.instance.signOut();
             }
             GlobalStateContainer.of(context).state.userInfoMain = null;

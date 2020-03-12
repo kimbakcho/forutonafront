@@ -66,6 +66,8 @@ class _A005SignIn2ViewState extends State<A005SignIn2View> {
           int match4 = regExp4.hasMatch(value) ? 1 : 0;
           if (value.length < 8) {
             return "패스워드는 최소 8자 이상";
+          } else if (value.length > 16) {
+            return "패스워드는 16자 이하";
           } else if ((match1 + match2 + match3 + match4) < 3) {
             return "영문 소문자,대문자,숫자,특수문자 중 3개 이상 조합";
           } else {
