@@ -5,6 +5,7 @@ import "package:flare_flutter/flare_actor.dart";
 import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
 import 'package:forutonafront/MainPage/BCD001MainPage.dart';
+import 'package:forutonafront/MainPage/HCodeMainpage.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -43,9 +44,9 @@ class _SplashPageState extends State<SplashPage> {
                 context,
                 MaterialPageRoute(
                     settings:
-                        RouteSettings(isInitialRoute: true, name: "BCD001"),
+                        RouteSettings(isInitialRoute: true, name: "HCODE"),
                     builder: (context) {
-                      return BCD001MainPage();
+                      return HCodeMainpage();
                     }));
           }
         },

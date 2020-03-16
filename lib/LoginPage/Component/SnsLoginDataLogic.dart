@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/Auth/UserInfoMain.dart';
@@ -84,7 +86,6 @@ class SnsLoginDataLogic {
       return false;
     } else if (loginpage == SnsLoginDataLogic.facebook) {
       final facebookLogin = FacebookLogin();
-
       if (await facebookLogin.isLoggedIn) {
         FacebookAccessToken token = await facebookLogin.currentAccessToken;
         final graphResponse = await http.get(
@@ -114,9 +115,25 @@ class SnsLoginDataLogic {
             return true;
             break;
           case FacebookLoginStatus.cancelledByUser:
+            Fluttertoast.showToast(
+                msg: FacebookLoginStatus.cancelledByUser.toString(),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Color(0xff454F63),
+                textColor: Colors.white,
+                fontSize: 12.0);
             return false;
             break;
           case FacebookLoginStatus.error:
+            Fluttertoast.showToast(
+                msg: FacebookLoginStatus.error.toString(),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Color(0xff454F63),
+                textColor: Colors.white,
+                fontSize: 12.0);
             return false;
             break;
         }

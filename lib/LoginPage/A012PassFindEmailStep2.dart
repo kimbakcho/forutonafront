@@ -153,118 +153,117 @@ class _A012PassFindEmailStep2State extends State<A012PassFindEmailStep2> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                new BorderRadius.circular(16.0),
-                                          ),
-                                          title: Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text("인증메일을 받지 못하셨나요?",
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      "Noto Sans CJK KR",
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 20,
-                                                  color: Color(0xff000000),
-                                                )),
-                                          ),
-                                          contentPadding: EdgeInsets.fromLTRB(
-                                              16, 16, 16, 0),
-                                          content: Container(
-                                            height: 200,
-                                            child: Column(
-                                              children: <Widget>[
-                                                Container(
-                                                  child: Text(
-                                                      "이메일을 올바르게 입력하셨는지 다시 한번 확\n인해 보세요.\n\n스팸편지함 혹은 휴지통을 확인해 보세요.\n메일 서비스에 따라 도착하기까지 다소 시간이 \n걸릴 수 있습니다.",
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "Noto Sans CJK KR",
-                                                        fontWeight:
-                                                            FontWeight.w300,
-                                                        fontSize: 14,
-                                                        color:
-                                                            Color(0xff454f63),
-                                                      )),
-                                                ),
-                                                Divider(),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      child: FlatButton(
-                                                        padding:
-                                                            EdgeInsets.all(0),
-                                                        onPressed: () async {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          isloading = true;
-                                                          setState(() {});
-                                                          await FirebaseAuth
-                                                              .instance
-                                                              .sendPasswordResetEmail(
-                                                                  email:
-                                                                      userInfoMain
-                                                                          .email);
-                                                          isloading = false;
-                                                          Fluttertoast.showToast(
-                                                              msg: "재전송 하였습니다.",
-                                                              toastLength: Toast
-                                                                  .LENGTH_SHORT,
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .BOTTOM,
-                                                              timeInSecForIos:
-                                                                  1,
-                                                              backgroundColor:
-                                                                  Color(
-                                                                      0xff454F63),
-                                                              textColor:
-                                                                  Colors.white,
-                                                              fontSize: 12.0);
-                                                          setState(() {});
-                                                        },
-                                                        child: Text(
-                                                          "재발송",
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                "Noto Sans CJK KR",
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 15,
-                                                            color: Color(
-                                                                0xffff4f9a),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: FlatButton(
-                                                        padding:
-                                                            EdgeInsets.all(0),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: Text(
-                                                          "닫기",
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                "Noto Sans CJK KR",
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 15,
-                                                            color: Color(
-                                                                0xff454f63),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      16.0),
                                             ),
-                                          ),
-                                        );
+                                            title: Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text("인증메일을 받지 못하셨나요?",
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "Noto Sans CJK KR",
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 20,
+                                                    color: Color(0xff000000),
+                                                  )),
+                                            ),
+                                            contentPadding: EdgeInsets.fromLTRB(
+                                                16, 16, 16, 0),
+                                            content: Container(
+                                                height: 200,
+                                                child:
+                                                    Column(children: <Widget>[
+                                                  Container(
+                                                    child: Text(
+                                                        "이메일을 올바르게 입력하셨는지 다시 한번 확\n인해 보세요.\n\n스팸편지함 혹은 휴지통을 확인해 보세요.\n메일 서비스에 따라 도착하기까지 다소 시간이 \n걸릴 수 있습니다.",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "Noto Sans CJK KR",
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          fontSize: 14,
+                                                          color:
+                                                              Color(0xff454f63),
+                                                        )),
+                                                  ),
+                                                  Divider(),
+                                                  Row(children: <Widget>[
+                                                    Expanded(
+                                                        child: FlatButton(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    0),
+                                                            onPressed:
+                                                                () async {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              isloading = true;
+                                                              setState(() {});
+                                                              await FirebaseAuth
+                                                                  .instance
+                                                                  .sendPasswordResetEmail(
+                                                                      email: userInfoMain
+                                                                          .email);
+                                                              isloading = false;
+                                                              Fluttertoast.showToast(
+                                                                  msg:
+                                                                      "재전송 하였습니다.",
+                                                                  toastLength: Toast
+                                                                      .LENGTH_SHORT,
+                                                                  gravity:
+                                                                      ToastGravity
+                                                                          .BOTTOM,
+                                                                  timeInSecForIos:
+                                                                      1,
+                                                                  backgroundColor:
+                                                                      Color(
+                                                                          0xff454F63),
+                                                                  textColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  fontSize:
+                                                                      12.0);
+                                                              setState(() {});
+                                                            },
+                                                            child: Text("재발송",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      "Noto Sans CJK KR",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 15,
+                                                                  color: Color(
+                                                                      0xffff4f9a),
+                                                                )))),
+                                                    Expanded(
+                                                        child: FlatButton(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    0),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: Text("닫기",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      "Noto Sans CJK KR",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 15,
+                                                                  color: Color(
+                                                                      0xff454f63),
+                                                                ))))
+                                                  ])
+                                                ])));
                                       });
                                 }))
                       ],
