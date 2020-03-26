@@ -5,7 +5,7 @@ import 'package:after_init/after_init.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
+
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/IssueCube/IssueCubeResultView.dart';
@@ -16,11 +16,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
-import 'package:zefyr/zefyr.dart';
+
 import 'package:intl/intl.dart';
 
 class IssueCubeDetailPage extends StatefulWidget {
   final FcubeExtender1 fcubeextender1;
+
   IssueCubeDetailPage({Key key, this.fcubeextender1}) : super(key: key);
 
   @override
@@ -34,12 +35,14 @@ enum IssueCurrentPanel { close, setting, share }
 class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
     with AfterInitMixin {
   FcubeExtender1 fcubeextender1;
+
   _IssueCubeDetailPageState({this.fcubeextender1});
+
   bool ispageloading = false;
   CameraPosition initialCameraPosition;
   Fcubecontent description;
   Set<Marker> makres = new Set<Marker>();
-  CubeMakeRichTextEdit richtextview;
+
   double currentdistancediff = 0;
   Position currentposition;
   Timer remainRefrashTimer;
@@ -82,12 +85,7 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
     Map<FcubecontentType, Fcubecontent> detailcontent =
         await Fcubecontent.getFcubecontent(searchitem);
     description = detailcontent[FcubecontentType.description];
-    richtextview = CubeMakeRichTextEdit(
-      custommode: "nomal",
-      customscrollmode: "noscroll",
-      jsondata: json.decode(description.contentvalue)["description"],
-      zefyrMode: ZefyrMode.view,
-    );
+
     setState(() {
       ispageloading = false;
     });
@@ -361,10 +359,6 @@ class _IssueCubeDetailPageState extends State<IssueCubeDetailPage>
                                 )),
                             content: Column(
                               children: <Widget>[
-                                Container(
-                                  // key: _richtextkey,
-                                  child: richtextview,
-                                ),
                                 Container(
                                   child: Row(
                                     children: <Widget>[

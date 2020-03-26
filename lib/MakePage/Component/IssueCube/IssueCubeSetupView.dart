@@ -4,16 +4,15 @@ import 'package:after_init/after_init.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/IssueCube/IssueCubeDetailPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:zefyr/zefyr.dart';
 
 class IssueCubeSetupView extends StatefulWidget {
   final Fcube fcube;
+
   IssueCubeSetupView({Key key, this.fcube}) : super(key: key);
 
   @override
@@ -27,34 +26,25 @@ class _IssueCubeSetupViewState extends State<IssueCubeSetupView>
   Fcube fcube;
 
   _IssueCubeSetupViewState({this.fcube});
+
   Set<Marker> makres = new Set<Marker>();
   CameraPosition initialCameraPosition;
 
   ScrollController _mainListcontroller = ScrollController();
   GlobalKey<FormState> pageeditfrom = GlobalKey<FormState>();
   TextEditingController namecontroller = TextEditingController();
-  CubeRichTextController richTextController;
+
   bool ismakeing = false;
+
   @override
   void initState() {
     super.initState();
     initialCameraPosition = CameraPosition(
         target: LatLng(fcube.latitude, fcube.longitude), zoom: 16);
-    richTextController = new CubeRichTextController();
-    richTextController.isedithint = true;
   }
 
   @override
-  void didInitState() {
-    richTextController.ondatacahnge = (value) {
-      setState(() {});
-    };
-    richTextController.ontoolbarshow = () {
-      setState(() {
-        _mainListcontroller.jumpTo(MediaQuery.of(context).size.height * 0.6);
-      });
-    };
-  }
+  void didInitState() {}
 
   void setmakers() async {
     BitmapDescriptor icon = await Fcube.getMarkerImage(fcube.cubeimage, 150);
@@ -96,10 +86,7 @@ class _IssueCubeSetupViewState extends State<IssueCubeSetupView>
                 fcube.cubename = namecontroller.text;
                 Fcubecontent content = new Fcubecontent(
                   contenttype: FcubecontentType.description,
-                  contentvalue: json.encode({
-                    "description":
-                        json.encode(richTextController.document.toJson())
-                  }),
+                  contentvalue: "",
                   cubeuuid: fcube.cubeuuid,
                 );
                 fcube.cubestate = FcubeState.play;
@@ -155,22 +142,7 @@ class _IssueCubeSetupViewState extends State<IssueCubeSetupView>
             Container(
               height: 500,
               child: Stack(
-                children: <Widget>[
-                  CubeMakeRichTextEdit(
-                      zefyrMode: ZefyrMode.edit,
-                      custommode: "forutona1",
-                      fcube: fcube,
-                      parentcontroller: richTextController),
-                  Positioned(
-                    top: 70,
-                    left: 20,
-                    child: richTextController.isedithint
-                        ? Text("이슈 내용을 입력해 주세요.")
-                        : Container(
-                            width: 10,
-                          ),
-                  ),
-                ],
+                children: <Widget>[],
               ),
             )
           ]),

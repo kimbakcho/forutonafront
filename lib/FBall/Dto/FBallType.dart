@@ -1,0 +1,3 @@
+enum FBallType {
+  IssueBall,QuestBall
+}

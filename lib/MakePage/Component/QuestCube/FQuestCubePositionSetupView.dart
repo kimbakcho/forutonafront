@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
+
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FQuestCubeDetailCubeSetupView.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:zefyr/zefyr.dart';
 
 class FQuestCubePositionSetupView extends StatefulWidget {
   final FcubeQuest fcubeQuest;
+
   FQuestCubePositionSetupView({Key key, this.fcubeQuest}) : super(key: key);
 
   @override
@@ -23,6 +23,7 @@ class FQuestCubePositionSetupView extends StatefulWidget {
 class _FQuestCubePositionSetupViewState
     extends State<FQuestCubePositionSetupView> {
   FcubeQuest fcubeQuest;
+
   _FQuestCubePositionSetupViewState(this.fcubeQuest);
 
   CameraPosition initialCameraPosition;
@@ -32,20 +33,9 @@ class _FQuestCubePositionSetupViewState
   Set<Marker> makres = new Set<Marker>();
   GlobalKey<FormState> pageeditfrom = GlobalKey<FormState>();
   TextEditingController namecontroller;
-  CubeRichTextController richTextController;
 
   @override
   void initState() {
-    richTextController = new CubeRichTextController();
-    richTextController.isedithint = true;
-    richTextController.ondatacahnge = (value) {
-      setState(() {});
-    };
-    richTextController.ontoolbarshow = () {
-      setState(() {
-        _mainListcontroller.jumpTo(MediaQuery.of(context).size.height * 0.6);
-      });
-    };
     namecontroller = new TextEditingController();
     initialCameraPosition = new CameraPosition(
         target: LatLng(fcubeQuest.latitude, fcubeQuest.longitude), zoom: 16);
@@ -92,8 +82,8 @@ class _FQuestCubePositionSetupViewState
                 onPressed: () {
                   if (pageeditfrom.currentState.validate()) {
                     fcubeQuest.cubename = namecontroller.text;
-                    fcubeQuest.description =
-                        jsonEncode(richTextController.document.toJson());
+                    fcubeQuest.description = "";
+
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return FQuestCubeDetailCubeSetupView(
@@ -139,27 +129,6 @@ class _FQuestCubePositionSetupViewState
                       decoration: InputDecoration(hintText: "이름을 지어 주세요!."),
                     ),
                   )),
-              Container(
-                height: 500,
-                child: Stack(
-                  children: <Widget>[
-                    CubeMakeRichTextEdit(
-                        zefyrMode: ZefyrMode.edit,
-                        custommode: "forutona1",
-                        fcube: fcubeQuest,
-                        parentcontroller: richTextController),
-                    Positioned(
-                      top: 70,
-                      left: 20,
-                      child: richTextController.isedithint
-                          ? Text("퀘스트 내용을 입력 하세요")
-                          : Container(
-                              width: 0,
-                            ),
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
         ));

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoDto.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
@@ -34,6 +36,7 @@ class UserInfoMain {
   double userlevel;
   String fcmtoken;
   UserInfoMain();
+
 
   UserInfoMain.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];

@@ -11,7 +11,6 @@ import 'package:forutonafront/Common/PlayerjoincubeSearch.dart';
 import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
-import 'package:http/http.dart' as http;
 
 class Pleyerjoincube {
   String cubeuuid;

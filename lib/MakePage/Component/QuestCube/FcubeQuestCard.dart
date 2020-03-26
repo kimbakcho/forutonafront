@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:forutonafront/Common/FcubeReview.dart';
-import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuestDetailPage.dart';
 import 'package:forutonafront/MakePage/Fcubecontent.dart';
@@ -14,10 +13,10 @@ import 'package:forutonafront/PlayPage/QuestCube/FcubeQuestSuccessExtender1.dart
 import 'package:forutonafront/globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
-import 'package:zefyr/zefyr.dart';
 
 class FcubeQuestStartCubeDialog extends StatefulWidget {
   final Fcubecontent startCubecontent;
+
   FcubeQuestStartCubeDialog({Key key, @required this.startCubecontent})
       : super(key: key);
 
@@ -29,6 +28,7 @@ class FcubeQuestStartCubeDialog extends StatefulWidget {
 
 class _FcubeQuestStartCubeDialogState extends State<FcubeQuestStartCubeDialog> {
   Fcubecontent startCubecontent;
+
   _FcubeQuestStartCubeDialogState(this.startCubecontent);
 
   @override
@@ -67,6 +67,7 @@ class _FcubeQuestStartCubeDialogState extends State<FcubeQuestStartCubeDialog> {
 
 class FcubeQuestFinishcubeDialog extends StatefulWidget {
   final Fcubecontent finishCubecontent;
+
   FcubeQuestFinishcubeDialog({Key key, @required this.finishCubecontent})
       : super(key: key);
 
@@ -79,7 +80,9 @@ class FcubeQuestFinishcubeDialog extends StatefulWidget {
 class _FcubeQuestFinishcubeDialogState
     extends State<FcubeQuestFinishcubeDialog> {
   Fcubecontent finishCubecontent;
+
   _FcubeQuestFinishcubeDialogState(this.finishCubecontent);
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -116,6 +119,7 @@ class _FcubeQuestFinishcubeDialogState
 
 class FcubeQuestMesssagecubeDialog extends StatefulWidget {
   final String messageCubecontent;
+
   FcubeQuestMesssagecubeDialog({Key key, @required this.messageCubecontent})
       : super(key: key);
 
@@ -128,18 +132,12 @@ class FcubeQuestMesssagecubeDialog extends StatefulWidget {
 class _FcubeQuestMesssagecubeDialogState
     extends State<FcubeQuestMesssagecubeDialog> {
   _FcubeQuestMesssagecubeDialogState(this.messageCubecontent);
+
   String messageCubecontent;
-  CubeMakeRichTextEdit richtextview;
 
   @override
   void initState() {
-
     super.initState();
-    richtextview = CubeMakeRichTextEdit(
-      custommode: "nomal",
-      jsondata: messageCubecontent,
-      zefyrMode: ZefyrMode.view,
-    );
   }
 
   @override
@@ -182,7 +180,7 @@ class _FcubeQuestMesssagecubeDialogState
                                   Container(
                                     height: MediaQuery.of(context).size.height *
                                         0.4,
-                                    child: richtextview,
+                                    child: Container(),
                                   ),
                                   Container(
                                     height: MediaQuery.of(context).size.height *
@@ -255,9 +253,9 @@ class _FcubeQuestCheckincubeDialogState
   _FcubeQuestCheckincubeDialogState(
       this.checkinCubecontent, this.fcubequest, this.joinmode,
       {this.playerdetailcontent, this.currentScaffoldState});
+
   FcubeQuest fcubequest;
   CheckinCubeLocation checkinCubecontent;
-  CubeMakeRichTextEdit richtextview;
   List<FcubeplayercontentExtender1> playerdetailcontent;
   FcubeJoinMode joinmode;
   FcubeplayercontentExtender1 findcheckin;
@@ -265,13 +263,7 @@ class _FcubeQuestCheckincubeDialogState
 
   @override
   void initState() {
-
     super.initState();
-    richtextview = CubeMakeRichTextEdit(
-      custommode: "nomal",
-      jsondata: checkinCubecontent.message,
-      zefyrMode: ZefyrMode.view,
-    );
     if (joinmode == FcubeJoinMode.administrator) {
     } else {
       int findindex = playerdetailcontent.indexWhere((value) {
@@ -355,7 +347,7 @@ class _FcubeQuestCheckincubeDialogState
                   children: <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.height * 0.4,
-                      child: richtextview,
+                      child: Container(),
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.1,
@@ -430,6 +422,7 @@ class _FcubeQuestCheckincubeDialogState
 class FcubeQuestAuthChcekCard extends StatefulWidget {
   final FcubeQuestSuccessExtender1 item;
   final FcubeQuest fcubequest;
+
   FcubeQuestAuthChcekCard({Key key, this.fcubequest, this.item})
       : super(key: key);
 
@@ -441,6 +434,7 @@ class FcubeQuestAuthChcekCard extends StatefulWidget {
 class _FcubeQuestAuthChcekCardState extends State<FcubeQuestAuthChcekCard> {
   FcubeQuestSuccessExtender1 item;
   FcubeQuest fcubequest;
+
   _FcubeQuestAuthChcekCardState({this.fcubequest, this.item});
 
   @override
@@ -492,6 +486,7 @@ class _FcubeQuestAuthChcekCardState extends State<FcubeQuestAuthChcekCard> {
 
 class FcubeQuestReviewCard extends StatefulWidget {
   final FcubeQuest fcubequest;
+
   FcubeQuestReviewCard({Key key, this.fcubequest}) : super(key: key);
 
   @override

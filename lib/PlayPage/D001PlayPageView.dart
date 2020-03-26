@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:after_init/after_init.dart';
@@ -116,6 +117,7 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
   ScrollController _expandListController;
   Fcubeplayer nowplayer;
   bool iscurrentballplayer = false;
+  GlobalKey _keyRed = GlobalKey();
 
   JoinPlayerDisPlayController joinPlayerDisPlayController;
   @override
@@ -1408,7 +1410,7 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
         currentCameraposition.zoom == idleCameracCrrentposition.zoom) {
       isLoading = true;
       setState(() {});
-      await resetfindLoadByNearCube();
+      // await resetfindLoadByNearCube();
       isLoading = false;
       setState(() {});
     }
@@ -1453,7 +1455,38 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
                         fit: BoxFit.contain,
                       ))),
             ),
-            googleMap,
+            GestureDetector(
+              key: _keyRed,
+              onPanDown: (value) async {
+                print(value.localPosition);
+                //사이즈 비율을 얻어옴
+                final RenderBox renderBoxRed =
+                    _keyRed.currentContext.findRenderObject();
+                print(renderBoxRed.size);
+                //바운딩 받아옴
+                var d2 = await mapcontroller.getVisibleRegion();
+                //현재 맵 스크린 좌표 받아옴
+                var d3 = await mapcontroller.getScreenCoordinate(
+                    LatLng(d2.southwest.latitude, d2.southwest.longitude));
+
+                //현재 맵 스크린 좌표 받아옴
+                var d4 = await mapcontroller.getScreenCoordinate(
+                    LatLng(d2.northeast.latitude, d2.northeast.longitude));
+                //위젯과 스케일 받기
+                var yscale = d3.y / renderBoxRed.size.height;
+                var xscale = d4.x / renderBoxRed.size.width;
+                print(yscale);
+                print(xscale);
+                //현재 스크린 픽셀 좌표에 Latlng 받기
+                var d5 = await mapcontroller.getLatLng(ScreenCoordinate(
+                    x: (value.localPosition.dx * xscale).toInt(),
+                    y: (value.localPosition.dy * yscale).toInt()));
+
+                print(d5);
+              },
+              onTapDown: (value) async {},
+              child: googleMap,
+            ),
             Positioned(
                 top: 30,
                 child: Container(

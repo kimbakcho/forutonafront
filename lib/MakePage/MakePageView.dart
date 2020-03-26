@@ -277,7 +277,8 @@ class _MakePageViewState extends State<MakePageView> {
     GlobalStateContainer.of(context).resetcubeListUtilcubeList();
     GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
     GlobalStateContainer.of(context).addfcubeListUtilcubeList(
-        await FcubeExtender1.getusercubes(FcubeSearch(limit: 10,offset: 0,isdesc: true,orderby: "MakeTime")));
+        await FcubeExtender1.getusercubes(FcubeSearch(
+            limit: 10, offset: 0, isdesc: true, orderby: "MakeTime")));
     Position currentposition =
         GlobalStateContainer.of(context).state.currentposition;
     GlobalStateContainer.of(context)

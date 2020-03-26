@@ -169,8 +169,8 @@ class _BCD001MainPageState extends State<BCD001MainPage> with AfterInitMixin {
         cubestate: 1,
         activationtime: DateTime.now());
     GlobalStateContainer.of(context).setfcubeListUtilisLoading(true);
-    GlobalStateContainer.of(context).addfcubeplayerListUtilcubeList(
-        await FcubeExtender1.findNearDistanceCube(searchitem));
+    // GlobalStateContainer.of(context).addfcubeplayerListUtilcubeList(
+    //     await FcubeExtender1.findNearDistanceCube(searchitem));
     GlobalStateContainer.of(context).setfcubeListUtilisLoading(false);
   }
 

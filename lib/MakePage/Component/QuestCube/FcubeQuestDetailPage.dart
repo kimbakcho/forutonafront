@@ -12,7 +12,6 @@ import 'package:forutonafront/Common/Fcubeplayer.dart';
 import 'package:forutonafront/Common/FcubeplayerExtender1.dart';
 import 'package:forutonafront/Common/Fcubereply.dart';
 import 'package:forutonafront/Common/FcubereplyExtender1.dart';
-import 'package:forutonafront/MakePage/Component/CubeMakeRichTextEdit.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/QuestCube/FcubeQuest.dart';
@@ -29,11 +28,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:intl/intl.dart';
-import 'package:zefyr/zefyr.dart';
 
 //Paly와Maker는 같은 객체를 공유 업데이트 보안 정보 체크는 BackEnd 에서 JWT로 탄탄히
 class FcubeQuestDetailPage extends StatefulWidget {
   final FcubeExtender1 fcubeextender1;
+
   FcubeQuestDetailPage({Key key, this.fcubeextender1}) : super(key: key);
 
   @override
@@ -48,7 +47,9 @@ enum UpPanelMode { startedit, settingedit }
 class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
     with SingleTickerProviderStateMixin {
   FcubeExtender1 fcubeextender1;
+
   _FcubeQuestDetailPageState({this.fcubeextender1});
+
   double currentdistancediff = 0;
   bool isloading = false;
   FcubeQuest fcubequest;
@@ -66,7 +67,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
   TextEditingController replycontroller = new TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   List<FcubereplyExtender1> replyExtenderlist = List<FcubereplyExtender1>();
-  CubeMakeRichTextEdit richtextview;
+
   bool isSlidingUpPanelDrag = false;
   PanelController panelcontroller = new PanelController();
   bool ispanelopen = false;
@@ -127,19 +128,12 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
       setState(() {});
     });
     initreply();
-    richtextview = CubeMakeRichTextEdit(
-      custommode: "nomal",
-      customscrollmode: "noscroll",
-      jsondata:
-          jsonDecode(this.contents[FcubecontentType.description].contentvalue)[
-              "description"],
-      zefyrMode: ZefyrMode.view,
-    );
+
   }
 
   void initreply() async {
-    replyExtenderlist = await FcubereplyExtender1.selectReplyForCube(
-        fcubequest.cubeuuid, 0, 0);
+    replyExtenderlist =
+        await FcubereplyExtender1.selectReplyForCube(fcubequest.cubeuuid, 0, 0);
     setState(() {});
   }
 
@@ -431,7 +425,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
         ),
         Container(
           key: _richtextkey,
-          child: richtextview,
+          child: Container(),
         ),
         Divider(
           color: Colors.black,
