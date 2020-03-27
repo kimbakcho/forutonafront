@@ -82,6 +82,7 @@ dependencies:
   chewie2: ^0.10.2
   youtube_parser: ^1.1.0
   provider: ^4.0.4
+  flutter_screenutil: ^1.0.2
 
 dev_dependencies:
   flutter_test:

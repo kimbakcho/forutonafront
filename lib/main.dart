@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/MakePage/GoogleMapsMakeView.dart';
 import 'package:forutonafront/MakePage/SelectSwipeCubeView.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Kuv',
       localizationsDelegates: [
@@ -26,8 +28,6 @@ class MyApp extends StatelessWidget {
       ],
       initialRoute: '/',
       routes: {
-        '/GoogleMapsMakeView': (BuildContext context) => GoogleMapsMakeView(),
-        '/SelectSwipeCubeView': (BuildContext context) => SelectSwipeCubeView()
         // When navigating to the "/" route, build the FirstScreen widget.
         // When navigating to the "/second" route, build the SecondScreen widget.
       },
