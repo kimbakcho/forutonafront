@@ -1,28 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
-import 'package:forutonafront/Common/TagRanking/TagRankingDto.dart';
 import 'package:forutonafront/Common/TagRanking/TagRankingRepository.dart';
 import 'package:forutonafront/Common/TagRanking/TagRankingReqDto.dart';
+import 'package:forutonafront/Common/TagRanking/TagRankingWrapDto.dart';
 
 enum H001PageState { H001_01, H003_01 }
 
 class H001ViewModel with ChangeNotifier {
   H001PageState _currentState;
   String _selectPosition = "로 딩 중";
-  List<TagRankingDto> _tagRankings = new List();
+  TagRankingWrapDto _rankingWrapDto;
   SwiperController rankingSwiperController = new SwiperController();
   bool rankingAutoPlay = false;
   bool _inlineRanking = true;
-
-
 
   TagRankingRepository _tagRankingRepository = new TagRankingRepository();
   GeolocationRepository _geolocationRepository = GeolocationRepository();
 
   H001ViewModel() {
     _currentState = H001PageState.H001_01;
-    _tagRankings = new List<TagRankingDto>();
+    _rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
     init();
   }
 
@@ -30,8 +28,9 @@ class H001ViewModel with ChangeNotifier {
     await getCurrentPositionFromGeoLocation();
     var currentPosition =
         await _geolocationRepository.getCurrentPhoneLocation();
-    tagRankings = _tagRankingRepository.getTagRanking(new TagRankingReqDto(
-        currentPosition.latitude, currentPosition.longitude, 10));
+    _rankingWrapDto = await _tagRankingRepository.getTagRanking(
+        new TagRankingReqDto(
+            currentPosition.latitude, currentPosition.longitude, 10));
 
     rankingSwiperController.move(0);
     rankingAutoPlay = true;
@@ -51,10 +50,10 @@ class H001ViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  List<TagRankingDto> get tagRankings => _tagRankings;
+  TagRankingWrapDto get rankingWrapDto => _rankingWrapDto;
 
-  set tagRankings(List<TagRankingDto> value) {
-    _tagRankings = value;
+  set rankingWrapDto(TagRankingWrapDto value) {
+    _rankingWrapDto = value;
   }
 
   String get selectPosition => _selectPosition;

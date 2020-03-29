@@ -63,19 +63,27 @@ class _H001PageState extends State<H001Page> {
           child: ListView.builder(
               padding: EdgeInsets.all(0),
               shrinkWrap: true,
-              itemCount: model.tagRankings.length,
+              itemCount: model.rankingWrapDto.contents.length,
               itemBuilder: (builder, index) {
                 return Container(
+
                     height: 40.h,
                     width: 320.w,
                     padding: EdgeInsets.fromLTRB(18.w, 0, 18.w, 0),
+                    decoration: BoxDecoration(
+
+                      border: Border(
+                        bottom: BorderSide(width: 1.0, color: Color(0xFF38CAF5)
+                        )
+                      ),
+                    ),
                     child: Row(children: <Widget>[
-                      Text("${model.tagRankings[index].ranking}."),
+                      Text("${model.rankingWrapDto.contents[index].ranking}."),
                       SizedBox(width: 12.w),
-                      Text("#${model.tagRankings[index].tagName}"),
+                      Text("#${model.rankingWrapDto.contents[index].tagName}"),
                       Spacer(),
                       Text(
-                          "${(model.tagRankings[index].tagPower / 1000).toStringAsFixed(1)}k"),
+                          "${(model.rankingWrapDto.contents[index].tagPower).toStringAsFixed(1)}k"),
                       SizedBox(width: 12.w),
                       Container(
                         width: 12.w,
@@ -111,7 +119,7 @@ class _H001PageState extends State<H001Page> {
               )),
           onPressed: () {
             model.inlineRanking = true;
-          },
+          }
         ),
         height: 54.00.h,
         width: 328.00.w,
@@ -124,8 +132,8 @@ class _H001PageState extends State<H001Page> {
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(12.00.w),
             bottomRight: Radius.circular(12.00.w),
-          ),
-        ),
+          )
+        )
       )
     ]);
   }
@@ -201,7 +209,7 @@ class _H001PageState extends State<H001Page> {
   Container inlineRanking(H001ViewModel model) {
     return Container(
         child: Swiper(
-          itemCount: model.tagRankings.length,
+          itemCount: model.rankingWrapDto.contents.length,
           autoplay: model.rankingAutoPlay,
           scrollDirection: Axis.vertical,
           autoplayDelay: 2000,
@@ -212,12 +220,12 @@ class _H001PageState extends State<H001Page> {
                 width: 320.w,
                 padding: EdgeInsets.fromLTRB(18.w, 0, 18.w, 0),
                 child: Row(children: <Widget>[
-                  Text("${model.tagRankings[index].ranking}."),
+                  Text("${model.rankingWrapDto.contents[index].ranking}."),
                   SizedBox(width: 12.w),
-                  Text("#${model.tagRankings[index].tagName}"),
+                  Text("#${model.rankingWrapDto.contents[index].tagName}"),
                   Spacer(),
                   Text(
-                      "${(model.tagRankings[index].tagPower / 1000).toStringAsFixed(1)}k"),
+                      "${(model.rankingWrapDto.contents[index].tagPower / 1000).toStringAsFixed(1)}k"),
                   SizedBox(width: 12.w),
                   Container(
                     width: 12.w,
@@ -246,23 +254,21 @@ class _H001PageState extends State<H001Page> {
         height: 73.h,
         padding: EdgeInsets.fromLTRB(16.w, 11.h, 16.w, 16.h),
         child: Container(
-          height: 46.00.h,
-          width: 328.00.w,
-          decoration: BoxDecoration(
-            color: Color(0xfff6f6f6),
-            borderRadius: BorderRadius.circular(12.00.w),
-          ),
-          child: FlatButton(
-            onPressed: () {},
-            child: Text(model.selectPosition,
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14.sp,
-                  color: Color(0xff454f63),
-                )),
-          ),
-        ));
+            height: 46.00.h,
+            width: 328.00.w,
+            decoration: BoxDecoration(
+              color: Color(0xfff6f6f6),
+              borderRadius: BorderRadius.circular(12.00.w),
+            ),
+            child: FlatButton(
+                onPressed: () {},
+                child: Text(model.selectPosition,
+                    style: TextStyle(
+                      fontFamily: "Noto Sans CJK KR",
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14.sp,
+                      color: Color(0xff454f63),
+                    )))));
   }
 
   Container topNavibar(H001ViewModel model) {
