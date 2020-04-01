@@ -12,6 +12,6 @@ class TagRankingRepository {
       var response = await dio.get("/v1/FTag/Ranking",
       queryParameters: reqDto.toJson()
     );
-    return TagRankingWrapDto.fromJson(json.decode(response.data));
+    return TagRankingWrapDto.fromJson(response.data);
   }
 }

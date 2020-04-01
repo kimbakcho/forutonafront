@@ -5,7 +5,7 @@ import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/LoginPage/A001LoginPageView.dart';
 import 'package:forutonafront/LoginPage/A002SignIn1View.dart';
 import 'package:forutonafront/LoginPage/Component/SnsLoginDataLogic.dart';
-import 'package:forutonafront/MainPage/HCodeMainpage.dart';
+import 'package:forutonafront/MainPage/CodeMainpage.dart';
 
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
@@ -359,7 +359,7 @@ class _A000LoginPageViewState extends State<A000LoginPageView>
                                 Navigator.of(context).push(MaterialPageRoute(
                                     settings: RouteSettings(name: "BCD001"),
                                     builder: (context) {
-                                      return HCodeMainpage();
+                                      return CodeMainpage();
                                     }));
                               },
                               child: Container(

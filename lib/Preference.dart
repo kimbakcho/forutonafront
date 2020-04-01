@@ -4,7 +4,7 @@ class Preference {
   static String kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";
 
   //testDebug
-  static String baseBackEndUrl = "http://121.136.211.241:8443";
+  static String baseBackEndUrl = "http://218.155.202.5:8443";
   static Uri httpurlbase(String authority, String unencodedPath) {
     return Uri.http(authority, unencodedPath);
   }

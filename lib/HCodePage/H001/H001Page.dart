@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallType.dart';
+import 'package:forutonafront/FBall/Widget/IssueBall/IssueBallWidgetStyle1.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
-import 'package:forutonafront/MainPage/HCodeMainViewModel.dart';
+import 'package:forutonafront/HCodePage/H002/H002Page.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
 class H001Page extends StatefulWidget {
@@ -16,44 +20,121 @@ class H001Page extends StatefulWidget {
 class _H001PageState extends State<H001Page> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => H001ViewModel(),
+    var h001ViewModel = Provider.of<H001ViewModel>(context);
+    return ChangeNotifierProvider.value(
+        value: h001ViewModel,
         child: Stack(children: <Widget>[
           Scaffold(
               body: Container(
                   color: Color(0xfff2f0f1),
-                  padding: EdgeInsets.fromLTRB(0, 22.h, 0, 0),
                   child: Consumer<H001ViewModel>(builder: (_, model, child) {
                     return Stack(children: <Widget>[
-                      Column(children: <Widget>[
-                        topNavibar(model),
-                        addressDisplay(model),
-                        Expanded(
-                            child: Stack(children: <Widget>[
-                          !model.inlineRanking
-                              ? Positioned(
-                                  height: 52.h,
-                                  width: 360.w,
-                                  bottom: 0,
-                                  child: bottomNavigation(Provider.of(context)))
-                              : Container(),
-                          Positioned(
-                              top: 0.h,
-                              child: model.inlineRanking
-                                  ? inlineRanking(model)
-                                  : unInlineRaking(model)),
-                          model.inlineRanking
-                              ? Positioned(
-                                  height: 52.h,
-                                  width: 360.w,
-                                  bottom: 0,
-                                  child: bottomNavigation(Provider.of(context)))
-                              : Container()
-                        ]))
-                      ])
+                      model.hasBall
+                          ? Column(children: <Widget>[
+                              addressDisplay(model),
+                              Expanded(
+                                  child: Stack(children: <Widget>[
+                                buildListUpPanel(model),
+                              ]))
+                            ])
+                          : ballEmptyPanel(),
+                      MakeButton(model),
                     ]);
                   })))
         ]));
+  }
+
+  Container ballEmptyPanel() {
+    return Container(
+        child: Center(
+            child: Text("아쉽지만\n검색하신 지역에 컨텐츠가 없습니다.",
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontSize: 14.sp,
+                  color: Color(0xffb1b1b1),
+                ),
+                textAlign: TextAlign.center)));
+  }
+
+  ListView buildListUpPanel(H001ViewModel model) {
+    return ListView.separated(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 65.h),
+      physics: BouncingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: model.fBallListUpWrapDto.balls.length + 1,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return model.inlineRanking
+              ? inlineRanking(model)
+              : unInlineRaking(model);
+        }
+        return selectBallWidget(model.fBallListUpWrapDto.balls[index - 1]);
+      },
+      controller: model.h001CenterListViewController,
+      separatorBuilder: (context, index) {
+        return SizedBox(height: 16.h);
+      },
+    );
+  }
+
+  Widget MakeButton(H001ViewModel model) {
+    return model.inlineRanking
+        ? Positioned(
+            child: Hero(
+              tag: "H001MakeButton",
+              child: Container(
+                child: AnimatedContainer(
+                  child: FlatButton(
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.all(0),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              settings: RouteSettings(name: "/H002"),
+                              builder: (context) {
+                                return H002Page(
+                                  heroTag: "H001MakeButton",
+                                );
+                              }));
+                    },
+                  ),
+                  height: 46.00.h,
+                  width: 47.00.w,
+                  decoration: BoxDecoration(
+                      color: Color(0xff3497fd),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.00, 3.00),
+                          color: Color(0xff000000).withOpacity(0.16),
+                        ),
+                      ],
+                      shape: BoxShape.circle),
+                  duration: Duration(milliseconds: 500),
+                  margin: EdgeInsets.only(
+                      top: model.makeButtonDisplayShowFlag ? 0 : 120.h),
+                ),
+                height: 120.h,
+                alignment: Alignment.topCenter,
+              ),
+            ),
+            bottom: 0.h,
+            right: 16.w,
+          )
+        : Container();
+  }
+
+  Widget selectBallWidget(FBallResDto resDto) {
+    if (resDto.ballType == FBallType.IssueBall) {
+      return IssueBallWidgetStyle1(resDto);
+    } else if (resDto.ballType == FBallType.QuestBall) {
+      return Container(child: Text("QuestBallType"));
+    } else {
+      return Container();
+    }
   }
 
   Column unInlineRaking(H001ViewModel model) {
@@ -66,16 +147,13 @@ class _H001PageState extends State<H001Page> {
               itemCount: model.rankingWrapDto.contents.length,
               itemBuilder: (builder, index) {
                 return Container(
-
                     height: 40.h,
                     width: 320.w,
                     padding: EdgeInsets.fromLTRB(18.w, 0, 18.w, 0),
                     decoration: BoxDecoration(
-
                       border: Border(
-                        bottom: BorderSide(width: 1.0, color: Color(0xFF38CAF5)
-                        )
-                      ),
+                          bottom:
+                              BorderSide(width: 1.0, color: Color(0xFF38CAF5))),
                     ),
                     child: Row(children: <Widget>[
                       Text("${model.rankingWrapDto.contents[index].ranking}."),
@@ -109,36 +187,33 @@ class _H001PageState extends State<H001Page> {
                 topRight: Radius.circular(10.00.w),
               ))),
       Container(
-        child: FlatButton(
-          child: Text("접기",
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
-                fontWeight: FontWeight.w700,
-                fontSize: 14.sp,
-                color: Color(0xffffffff),
-              )),
-          onPressed: () {
-            model.inlineRanking = true;
-          }
-        ),
-        height: 54.00.h,
-        width: 328.00.w,
-        decoration: BoxDecoration(
-          color: Color(0xff454f63),
-          border: Border.all(
-            width: 1.00.w,
-            color: Color(0xff454f63),
-          ),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(12.00.w),
-            bottomRight: Radius.circular(12.00.w),
-          )
-        )
-      )
+          child: FlatButton(
+              child: Text("접기",
+                  style: TextStyle(
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14.sp,
+                    color: Color(0xffffffff),
+                  )),
+              onPressed: () {
+                model.inlineRanking = true;
+              }),
+          height: 54.00.h,
+          width: 328.00.w,
+          decoration: BoxDecoration(
+              color: Color(0xff454f63),
+              border: Border.all(
+                width: 1.00.w,
+                color: Color(0xff454f63),
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(12.00.w),
+                bottomRight: Radius.circular(12.00.w),
+              )))
     ]);
   }
 
-  Container bottomNavigation(HCodeMainViewModel model) {
+  Container bottomNavigation(CodeMainViewModel model) {
     return Container(
         color: Colors.white,
         height: 52.h,
@@ -147,11 +222,11 @@ class _H001PageState extends State<H001Page> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.H001);
+                    model.jumpToPage(HCodeState.HCDOE);
                   },
                   child: Icon(
                     ForutonaIcon.list,
-                    color: model.currentState == HCodeState.H001
+                    color: model.currentState == HCodeState.HCDOE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -159,11 +234,11 @@ class _H001PageState extends State<H001Page> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.T004);
+                    model.jumpToPage(HCodeState.ICODE);
                   },
                   child: Icon(
                     ForutonaIcon.map,
-                    color: model.currentState == HCodeState.T004
+                    color: model.currentState == HCodeState.ICODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -171,11 +246,11 @@ class _H001PageState extends State<H001Page> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.T007);
+                    model.jumpToPage(HCodeState.JCODE);
                   },
                   child: Icon(
                     ForutonaIcon.officialchannel,
-                    color: model.currentState == HCodeState.T007
+                    color: model.currentState == HCodeState.JCODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -183,11 +258,11 @@ class _H001PageState extends State<H001Page> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.T009);
+                    model.jumpToPage(HCodeState.KCODE);
                   },
                   child: Icon(
                     ForutonaIcon.social,
-                    color: model.currentState == HCodeState.T009
+                    color: model.currentState == HCodeState.KCODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -195,11 +270,11 @@ class _H001PageState extends State<H001Page> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.T011);
+                    model.jumpToPage(HCodeState.LCODE);
                   },
                   child: Icon(
                     ForutonaIcon.user,
-                    color: model.currentState == HCodeState.T011
+                    color: model.currentState == HCodeState.LCODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -225,7 +300,7 @@ class _H001PageState extends State<H001Page> {
                   Text("#${model.rankingWrapDto.contents[index].tagName}"),
                   Spacer(),
                   Text(
-                      "${(model.rankingWrapDto.contents[index].tagPower / 1000).toStringAsFixed(1)}k"),
+                      "${(model.rankingWrapDto.contents[index].tagPower).toStringAsFixed(1)}k"),
                   SizedBox(width: 12.w),
                   Container(
                     width: 12.w,
@@ -240,7 +315,7 @@ class _H001PageState extends State<H001Page> {
           },
         ),
         margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-        height: 40.h,
+        height: model.rankingWrapDto.contents.length == 0 ? 0 : 40.h,
         width: 328.00.w,
         decoration: BoxDecoration(
             color: Color(0xffe9faff),
@@ -248,10 +323,11 @@ class _H001PageState extends State<H001Page> {
             borderRadius: BorderRadius.circular(10.00.w)));
   }
 
-  Container addressDisplay(H001ViewModel model) {
-    return Container(
+  AnimatedContainer addressDisplay(H001ViewModel model) {
+    return AnimatedContainer(
+        duration: Duration(milliseconds: 500),
         color: Colors.white,
-        height: 73.h,
+        height: model.addressDisplayShowFlag ? 73.h : 0.h,
         padding: EdgeInsets.fromLTRB(16.w, 11.h, 16.w, 16.h),
         child: Container(
             height: 46.00.h,
@@ -269,168 +345,5 @@ class _H001PageState extends State<H001Page> {
                       fontSize: 14.sp,
                       color: Color(0xff454f63),
                     )))));
-  }
-
-  Container topNavibar(H001ViewModel model) {
-    return Container(
-        color: Colors.white,
-        padding: EdgeInsets.fromLTRB(16.w, 7.h, 16.w, 0.h),
-        height: 56.h,
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              H001_01Button(model),
-              SizedBox(
-                width: 16.w,
-              ),
-              H003_01Button(model),
-              Spacer(),
-              searchButton()
-            ]));
-  }
-
-  Container searchButton() {
-    return Container(
-      alignment: Alignment.topCenter,
-      height: 36.h,
-      width: 36.w,
-      decoration: BoxDecoration(
-        color: Color(0xfff6f6f6),
-        borderRadius: BorderRadius.circular(8.00),
-      ),
-      child: FlatButton(
-          padding: EdgeInsets.all(0),
-          onPressed: () {},
-          child: Icon(ForutonaIcon.search)),
-    );
-  }
-
-  Column H003_01Button(H001ViewModel model) {
-    return Column(children: <Widget>[
-      model.currentState == H001PageState.H003_01
-          ? Container(
-              height: 36.h,
-              width: 36.w,
-              child: FlatButton(
-                onPressed: () {
-                  setState(() {
-                    model.currentState = H001PageState.H003_01;
-                  });
-                },
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Icon(
-                  ForutonaIcon.h003top,
-                  color: Color(0xff454F63),
-                  size: 17.sp,
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xffff9edb),
-                border: Border.all(
-                  width: 2.00.w,
-                  color: Color(0xff454f63),
-                ),
-                borderRadius: BorderRadius.circular(8.00.w),
-              ))
-          : Container(
-              height: 36.00,
-              width: 36.00,
-              decoration: BoxDecoration(
-                color: Color(0xfff6f6f6),
-                borderRadius: BorderRadius.circular(8.00.w),
-              ),
-              child: FlatButton(
-                onPressed: () {
-                  setState(() {
-                    model.currentState = H001PageState.H003_01;
-                  });
-                },
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Icon(
-                  ForutonaIcon.h003top,
-                  color: Color(0xffB1B1B1),
-                  size: 17.sp,
-                ),
-              ),
-            ),
-      model.currentState == H001PageState.H003_01
-          ? Container(
-              margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-              height: 4.00.h,
-              width: 4.00.w,
-              decoration: BoxDecoration(
-                color: Color(0xff454f63),
-                border: Border.all(
-                  width: 1.00.w,
-                  color: Color(0xff454f63),
-                ),
-                shape: BoxShape.circle,
-              ))
-          : Container()
-    ]);
-  }
-
-  Column H001_01Button(H001ViewModel model) {
-    return Column(children: <Widget>[
-      model.currentState == H001PageState.H001_01
-          ? Container(
-              height: 36.00.h,
-              width: 36.00.w,
-              child: FlatButton(
-                onPressed: () {
-                  model.currentState = H001PageState.H001_01;
-                },
-                padding: EdgeInsets.fromLTRB(0, 0, 6.w, 0),
-                child: Icon(
-                  ForutonaIcon.joystick,
-                  color: Color(0xff454F63),
-                  size: 17.sp,
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xff88d4f1),
-                border: Border.all(
-                  width: 2.00.w,
-                  color: Color(0xff454f63),
-                ),
-                borderRadius: BorderRadius.circular(8.00.w),
-              ))
-          : Container(
-              height: 36.00.h,
-              width: 36.00.w,
-              decoration: BoxDecoration(
-                color: Color(0xfff6f6f6),
-                borderRadius: BorderRadius.circular(8.00.w),
-              ),
-              child: FlatButton(
-                onPressed: () {
-                  setState(() {
-                    model.currentState = H001PageState.H001_01;
-                  });
-                },
-                padding: EdgeInsets.fromLTRB(0, 0, 6.w, 0),
-                child: Icon(
-                  ForutonaIcon.joystick,
-                  color: Color(0xffB1B1B1),
-                  size: 17.sp,
-                ),
-              ),
-            ),
-      model.currentState == H001PageState.H001_01
-          ? Container(
-              margin: EdgeInsets.fromLTRB(0, 6.sp, 0, 0),
-              height: 4.00.h,
-              width: 4.00.w,
-              decoration: BoxDecoration(
-                color: Color(0xff454f63),
-                border: Border.all(
-                  width: 1.00.w,
-                  color: Color(0xff454f63),
-                ),
-                shape: BoxShape.circle,
-              ))
-          : Container()
-    ]);
   }
 }

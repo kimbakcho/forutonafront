@@ -3,7 +3,7 @@ import "package:flare_flutter/flare_actor.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/LoginPage/A000LoginPageView.dart';
-import 'package:forutonafront/MainPage/HCodeMainpage.dart';
+import 'package:forutonafront/MainPage/CodeMainpage.dart';
 import 'package:forutonafront/Splash/SplashPageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +45,7 @@ class _SplashPageState extends State<SplashPage> {
                         settings:
                             RouteSettings(isInitialRoute: true, name: "HCODE"),
                         builder: (context) {
-                          return HCodeMainpage();
+                          return CodeMainpage();
                         }));
               }
             });

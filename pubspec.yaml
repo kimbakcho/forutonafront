@@ -25,7 +25,6 @@ dependencies:
   url_launcher_macos: ^0.0.1+2
   firebase_analytics: ^5.0.2 # add dependency for Google Analytics for Firebase
   flutter_naver_login: ^1.0.1
-
   firebase_auth: ^0.14.0+5
   flutter_facebook_login: ^3.0.0
   http: ^0.12.0+2
@@ -51,7 +50,6 @@ dependencies:
   sms_receiver:
     git:
       url: https://github.com/kimbakcho/flutter_sms_receiver
-
   sliding_up_panel: ^0.3.6
   sliding_sheet: ^0.2.5
   sticky_headers: "^0.1.8"
@@ -83,6 +81,7 @@ dependencies:
   youtube_parser: ^1.1.0
   provider: ^4.0.4
   flutter_screenutil: ^1.0.2
+  photo_view: ^0.9.2
 
 dev_dependencies:
   flutter_test:

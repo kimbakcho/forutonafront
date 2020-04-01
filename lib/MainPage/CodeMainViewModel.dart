@@ -3,33 +3,33 @@ import 'package:forutonafront/Common/TagRanking/TagRankingDto.dart';
 import 'package:forutonafront/Common/TagRanking/TagRankingRepository.dart';
 import 'package:forutonafront/Common/TagRanking/TagRankingReqDto.dart';
 
-enum HCodeState { H001, T004, T007, T009, T011 }
+enum HCodeState { HCDOE, ICODE, JCODE, KCODE, LCODE }
 
-class HCodeMainViewModel with ChangeNotifier {
+class CodeMainViewModel with ChangeNotifier {
   PageController _pageController;
   HCodeState _currentState;
 
-  HCodeMainViewModel(){
+  CodeMainViewModel(){
     _pageController = new PageController();
-    _currentState = HCodeState.H001;
+    _currentState = HCodeState.HCDOE;
   }
 
   jumpToPage(HCodeState pageCode){
     _currentState = pageCode;
     switch(_currentState){
-      case HCodeState.H001:
+      case HCodeState.HCDOE:
         _pageController.jumpToPage(0);
         break;
-      case HCodeState.T004:
+      case HCodeState.ICODE:
         _pageController.jumpToPage(1);
         break;
-      case HCodeState.T007:
+      case HCodeState.JCODE:
         _pageController.jumpToPage(2);
         break;
-      case HCodeState.T009:
+      case HCodeState.KCODE:
         _pageController.jumpToPage(3);
         break;
-      case HCodeState.T011:
+      case HCodeState.LCODE:
         _pageController.jumpToPage(4);
         break;
     }

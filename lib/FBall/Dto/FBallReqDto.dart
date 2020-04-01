@@ -9,7 +9,6 @@ class FBallReqDto {
   FBallReqDto(this.uid, this.cubeUuid, this.longitude, this.latitude,
       this.matchBallName, this.fBallType, this.makeTime, this.fBallState,
       this.page);
-
   String uid;
   String cubeUuid;
   double longitude;

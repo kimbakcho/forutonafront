@@ -72,6 +72,7 @@ class _C003GoogleMapMakeViewState extends State<C003GoogleMapMakeView>
 
   onMapCreated(GoogleMapController googleMapController) {
     this.googleMapController = googleMapController;
+
   }
 
   onCameraMove(CameraPosition position) {
