@@ -9,6 +9,8 @@ import 'package:forutonafront/HCodePage/HCodePageState.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:provider/provider.dart';
 
+import 'H003/H003MainPage.dart';
+
 class HCodeMainPage extends StatefulWidget {
   @override
   _HCodeMainPageState createState() => _HCodeMainPageState();
@@ -47,9 +49,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                                 controller: model.hCodePagecontroller,
                                 children: <Widget>[
                               H001Page(),
-                              Container(
-                                child: Text("22"),
-                              )
+                              H003MainPage()
                             ])),
                       ]),
                       // 태그 랭킹 접을때 보이기
@@ -72,16 +72,16 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
     return Container(
         color: Colors.white,
         padding: EdgeInsets.fromLTRB(16.w, 7.h, 16.w, 0.h),
-        height: 56.h,
+        height: 63.h,
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              H001_Button(model),
+              h001Button(model),
               SizedBox(
                 width: 16.w,
               ),
-              H003_Button(model),
+              h003Button(model),
               Spacer(),
               searchButton()
             ]));
@@ -103,7 +103,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
     );
   }
 
-  Column H001_Button(HCodeMainPageViewModel model) {
+  Column h001Button(HCodeMainPageViewModel model) {
     return Column(children: <Widget>[
       model.currentState == HCodePageState.H001Page
           ? Container(
@@ -166,7 +166,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
     ]);
   }
 
-  Column H003_Button(HCodeMainPageViewModel model) {
+  Column h003Button(HCodeMainPageViewModel model) {
     return Column(children: <Widget>[
       model.currentState == HCodePageState.H003Page
           ? Container(

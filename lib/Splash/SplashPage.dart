@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, width: 360, height: 640, allowFontScaling: false);
     return ChangeNotifierProvider(
-        create: (_) => SplashPageViewModel(Provider.of(context)),
+        create: (_) => SplashPageViewModel(context),
         child: Container(
           color: Colors.white,
           child: Consumer<SplashPageViewModel>(builder: (_, model, child) {

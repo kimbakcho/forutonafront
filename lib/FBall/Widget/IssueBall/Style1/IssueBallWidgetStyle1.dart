@@ -3,11 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
+import 'package:forutonafront/FBall/Widget/IssueBall/Style1/IssueBallWidgetSyle1ViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'IssueBallWidgetSyle1ViewModel.dart';
 
+
+// ignore: must_be_immutable
 class IssueBallWidgetStyle1 extends StatefulWidget {
   FBallResDto ballResDto;
 
@@ -128,7 +130,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
   Container ballTextBar(IssueBallWidgetSyle1ViewModel model) {
     return Container(
       padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 23.h),
-      child: Text(model.fBallDescirptionBasic.text,
+      child: Text(model.fBallDescriptionBasic.text,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -197,7 +199,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
                     return BallImageViewer(
-                        model.fBallDescirptionBasic.desimages,
+                        model.fBallDescriptionBasic.desimages,
                         model.ballResDto.ballUuid + "picturefromBigpicture");
                   }));
                 },
@@ -223,7 +225,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
                                 return BallImageViewer(
-                                    model.fBallDescirptionBasic.desimages,
+                                    model.fBallDescriptionBasic.desimages,
                                     model.ballResDto.ballUuid +
                                         "picturefrombutton");
                               }));

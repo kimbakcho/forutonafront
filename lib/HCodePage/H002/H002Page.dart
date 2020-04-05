@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H002/H002PageViewModel.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 
+// ignore: must_be_immutable
 class H002Page extends StatelessWidget {
   String heroTag;
 
@@ -34,13 +35,10 @@ class H002Page extends StatelessWidget {
                         )
                       ])))
             ]),
-          )
-
-            ;
+          );
         },
       ),
     );
-    Container();
   }
 
   Container issueBallMakeButton() {
@@ -117,6 +115,7 @@ class H002Page extends StatelessWidget {
               width: 328.w,
               child: FlatButton(
                 onPressed: () {},
+                child: Text(""),
               ),
             )
           ],
@@ -185,7 +184,7 @@ class H002Page extends StatelessWidget {
               left: 16.w,
               child: Text(
                   "현실에서 해결해야할 임무가 있으신가요? 보상을 건 "
-                      "퀘\n스트를 만들어 세상에 도움을 청해보세요.",
+                  "퀘\n스트를 만들어 세상에 도움을 청해보세요.",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontSize: 12.sp,
@@ -197,6 +196,7 @@ class H002Page extends StatelessWidget {
               width: 328.w,
               child: FlatButton(
                 onPressed: () {},
+                child: Text(""),
               ),
             )
           ],

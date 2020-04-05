@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
@@ -13,30 +13,31 @@ import 'package:geolocator/geolocator.dart';
 enum H001PageState { H001_01, H003_01 }
 
 class H001ViewModel with ChangeNotifier {
-  H001PageState _currentState;
-  String _selectPosition = "로 딩 중";
-  TagRankingWrapDto _rankingWrapDto;
-  SwiperController rankingSwiperController = new SwiperController();
+  H001PageState currentState;
+  String selectPosition = "로 딩 중";
   bool rankingAutoPlay = false;
-  bool _inlineRanking = true;
-  int _pageCount = 0;
-  int _ballPageLimitSize = 20;
+  bool inlineRanking = true;
+  int pageCount = 0;
+  int ballPageLimitSize = 20;
   bool hasBall = true;
 
-  TagRankingRepository _tagRankingRepository = new TagRankingRepository();
-  GeolocationRepository _geolocationRepository = GeolocationRepository();
+  SwiperController rankingSwiperController = new SwiperController();
   ScrollController h001CenterListViewController = new ScrollController();
 
   bool addressDisplayShowFlag = true;
   bool makeButtonDisplayShowFlag = true;
 
-  FBallRepository _fBallRepository = new FBallRepository();
-  FBallListUpWrapDto _fBallListUpWrapDto =
+  TagRankingWrapDto rankingWrapDto;
+  FBallListUpWrapDto fBallListUpWrapDto =
       new FBallListUpWrapDto(DateTime.now(), []);
 
+  TagRankingRepository _tagRankingRepository = new TagRankingRepository();
+  GeolocationRepository _geolocationRepository = GeolocationRepository();
+  FBallRepository _fBallRepository = new FBallRepository();
+
   H001ViewModel() {
-    _currentState = H001PageState.H001_01;
-    _rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
+    currentState = H001PageState.H001_01;
+    rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
     h001CenterListViewController
         .addListener(h001CenterListViewControllerListener);
     init();
@@ -47,9 +48,9 @@ class H001ViewModel with ChangeNotifier {
     var currentPosition =
         await _geolocationRepository.getCurrentPhoneLocation();
     getTagRanking(currentPosition);
-    _fBallListUpWrapDto = new FBallListUpWrapDto(DateTime.now(), []);
-    getBallListUp(currentPosition, _pageCount, _ballPageLimitSize);
-    _pageCount = 0;
+    fBallListUpWrapDto = new FBallListUpWrapDto(DateTime.now(), []);
+    getBallListUp(currentPosition, pageCount, ballPageLimitSize);
+    pageCount = 0;
     notifyListeners();
   }
 
@@ -63,9 +64,9 @@ class H001ViewModel with ChangeNotifier {
         sort: "Influence,DESC");
     var fBallListUpWrapDtoTemp =
         await _fBallRepository.listUpBall(ballListUpReqDto);
-    _fBallListUpWrapDto.searchTime = fBallListUpWrapDtoTemp.searchTime;
-    _fBallListUpWrapDto.balls.addAll(fBallListUpWrapDtoTemp.balls);
-    if(_fBallListUpWrapDto.balls.length == 0){
+    fBallListUpWrapDto.searchTime = fBallListUpWrapDtoTemp.searchTime;
+    fBallListUpWrapDto.balls.addAll(fBallListUpWrapDtoTemp.balls);
+    if(fBallListUpWrapDto.balls.length == 0){
       hasBall = false;
     }else {
       hasBall = true;
@@ -74,7 +75,7 @@ class H001ViewModel with ChangeNotifier {
   }
 
   Future getTagRanking(Position currentPosition) async {
-    _rankingWrapDto = await _tagRankingRepository.getTagRanking(
+    rankingWrapDto = await _tagRankingRepository.getTagRanking(
         new TagRankingReqDto(
             currentPosition.latitude, currentPosition.longitude, 10));
     rankingSwiperController.move(0);
@@ -101,58 +102,24 @@ class H001ViewModel with ChangeNotifier {
     if (h001CenterListViewController.offset >=
             h001CenterListViewController.position.maxScrollExtent &&
         !h001CenterListViewController.position.outOfRange) {
-      _pageCount++;
-      if (_pageCount * _ballPageLimitSize >
-          this.fBallListUpWrapDto.balls.length) {
+      pageCount++;
+      if (pageCount * ballPageLimitSize >
+          fBallListUpWrapDto.balls.length) {
         return;
       } else {
         var currentPosition =
             await _geolocationRepository.getCurrentPhoneLocation();
-        getBallListUp(currentPosition, _pageCount, _ballPageLimitSize);
+        getBallListUp(currentPosition, pageCount, ballPageLimitSize);
       }
     }
   }
 
   getCurrentPositionFromGeoLocation() async {
-    _selectPosition = await _geolocationRepository.getCurrentPhoneAddress();
+    selectPosition = await _geolocationRepository.getCurrentPhoneAddress();
     notifyListeners();
-    return _selectPosition;
+    return selectPosition;
   }
 
-  bool get inlineRanking => _inlineRanking;
 
-  set inlineRanking(bool value) {
-    _inlineRanking = value;
-    notifyListeners();
-  }
 
-  TagRankingWrapDto get rankingWrapDto => _rankingWrapDto;
-
-  set rankingWrapDto(TagRankingWrapDto value) {
-    _rankingWrapDto = value;
-  }
-
-  String get selectPosition => _selectPosition;
-
-  set selectPosition(String value) {
-    _selectPosition = value;
-  }
-
-  H001PageState get currentState => _currentState;
-
-  set currentState(H001PageState value) {
-    _currentState = value;
-  }
-
-  GeolocationRepository get geolocationRepository => _geolocationRepository;
-
-  set geolocationRepository(GeolocationRepository value) {
-    _geolocationRepository = value;
-  }
-
-  FBallListUpWrapDto get fBallListUpWrapDto => _fBallListUpWrapDto;
-
-  set fBallListUpWrapDto(FBallListUpWrapDto value) {
-    _fBallListUpWrapDto = value;
-  }
 }

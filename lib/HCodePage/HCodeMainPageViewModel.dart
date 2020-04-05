@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:forutonafront/HCodePage/HCodePageState.dart';
 
 class HCodeMainPageViewModel extends ChangeNotifier {
   HCodePageState currentState;
   PageController hCodePagecontroller = new PageController();
+
   HCodeMainPageViewModel(){
     currentState = HCodePageState.H001Page;
     hCodePagecontroller.addListener(onhCodePageChangeListners);
@@ -27,4 +28,5 @@ class HCodeMainPageViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 }

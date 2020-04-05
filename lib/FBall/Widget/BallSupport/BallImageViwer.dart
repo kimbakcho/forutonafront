@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter/scheduler.dart' show timeDilation;
 
+// ignore: must_be_immutable
 class BallImageViewer extends StatelessWidget {
   BallImageViewer(this.imageList, this.tag);
 

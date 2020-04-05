@@ -1,20 +1,31 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallDescirptionBasic.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
   FBallResDto ballResDto;
-  FBallDescirptionBasic fBallDescirptionBasic;
-
+  FBallDescirptionBasic fBallDescriptionBasic;
   IssueBallWidgetSyle1ViewModel(FBallResDto ballResDto) {
     this.ballResDto = ballResDto;
-    this.fBallDescirptionBasic = FBallDescirptionBasic.fromJson(
+    this.fBallDescriptionBasic = FBallDescirptionBasic.fromJson(
         json.decode(this.ballResDto.description));
+
   }
+
+  bool isAliveBall(){
+    return this.ballResDto.activationTime.isAfter(DateTime.now());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+  }
+
   isMainPicture(){
-    if(this.fBallDescirptionBasic.desimages.length>0){
+    if(fBallDescriptionBasic.desimages.length>0){
       return true;
     }else {
       return false;
@@ -22,14 +33,15 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
   }
   String mainPictureSrc(){
     if(isMainPicture()){
-      return this.fBallDescirptionBasic.desimages[0].src;
+      return fBallDescriptionBasic.desimages[0].src;
     }else {
       return null;
     }
   }
   int getPicktureCount(){
-      return this.fBallDescirptionBasic.desimages.length;
+      return fBallDescriptionBasic.desimages.length;
   }
+
 
 
 }

@@ -1,0 +1,3 @@
+enum QueryOrders{
+  ASC,DESC
+}

@@ -5,7 +5,6 @@ import 'package:forutonafront/Common/Fcubetagextender1.dart';
 import 'package:forutonafront/MakePage/Component/Fcube.dart';
 import 'package:forutonafront/MakePage/Component/FcubeExtender1.dart';
 import 'package:forutonafront/MakePage/Component/IssueCube/ID001CubeDetailPage.dart';
-import 'package:forutonafront/MakePage/FcubeTypes.dart';
 import 'package:forutonafront/globals.dart';
 import 'package:great_circle_distance2/great_circle_distance2.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';

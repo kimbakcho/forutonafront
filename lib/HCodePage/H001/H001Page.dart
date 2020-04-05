@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
-import 'package:forutonafront/FBall/Widget/IssueBall/IssueBallWidgetStyle1.dart';
+import 'package:forutonafront/FBall/Widget/IssueBall/Style1/IssueBallWidgetStyle1.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
@@ -38,7 +38,7 @@ class _H001PageState extends State<H001Page> {
                               ]))
                             ])
                           : ballEmptyPanel(),
-                      MakeButton(model),
+                      makeButton(model),
                     ]);
                   })))
         ]));
@@ -77,7 +77,7 @@ class _H001PageState extends State<H001Page> {
     );
   }
 
-  Widget MakeButton(H001ViewModel model) {
+  Widget makeButton(H001ViewModel model) {
     return model.inlineRanking
         ? Positioned(
             child: Hero(

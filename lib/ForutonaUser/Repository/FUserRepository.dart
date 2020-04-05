@@ -1,7 +1,6 @@
-import 'dart:convert';
+
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:forutonafront/Auth/UserInfoMain.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoDto.dart';

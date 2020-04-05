@@ -1,5 +1,4 @@
 
-import 'package:forutonafront/Common/Dto/Pageable.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'FBallListUpReqDto.g.dart';
 

@@ -1,4 +1,5 @@
-import 'package:forutonafront/Common/Dto/Pageable.dart';
+
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'FBallState.dart';

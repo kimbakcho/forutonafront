@@ -9,6 +9,7 @@ class FDio extends DioForNative {
     this.options = FBaseOption(token);
   }
 
+  // ignore: non_constant_identifier_names
   BaseOptions FBaseOption(String token) {
     BaseOptions options = BaseOptions();
     options.baseUrl = Preference.baseBackEndUrl;
