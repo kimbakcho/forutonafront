@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001Page.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
+import 'package:forutonafront/HCodePage/H004/H004MainPage.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPageViewModel.dart';
 import 'package:forutonafront/HCodePage/HCodePageState.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
@@ -89,18 +90,23 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
 
   Container searchButton() {
     return Container(
-      alignment: Alignment.topCenter,
-      height: 36.h,
-      width: 36.w,
-      decoration: BoxDecoration(
-        color: Color(0xfff6f6f6),
-        borderRadius: BorderRadius.circular(8.00),
-      ),
-      child: FlatButton(
-          padding: EdgeInsets.all(0),
-          onPressed: () {},
-          child: Icon(ForutonaIcon.search)),
-    );
+        alignment: Alignment.topCenter,
+        height: 36.h,
+        width: 36.w,
+        decoration: BoxDecoration(
+          color: Color(0xfff6f6f6),
+          borderRadius: BorderRadius.circular(8.00),
+        ),
+        child: FlatButton(
+            padding: EdgeInsets.all(0),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  settings: RouteSettings(name: "/H004"),
+                  builder: (context) {
+                    return H004MainPage();
+                  }));
+            },
+            child: Icon(ForutonaIcon.search)));
   }
 
   Column h001Button(HCodeMainPageViewModel model) {

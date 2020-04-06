@@ -13,8 +13,8 @@ class H002Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Hero Animation Speed
     timeDilation = 1.5;
-
     return ChangeNotifierProvider(
       create: (_) => H002PageViewModel(),
       child: Consumer<H002PageViewModel>(
