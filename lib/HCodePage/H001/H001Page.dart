@@ -308,6 +308,7 @@ class _H001PageState extends State<H001Page> {
                         padding: EdgeInsets.all(0),
                         onPressed: () {
                           model.inlineRanking = false;
+
                         },
                         child: Icon(ForutonaIcon.down_arrow, size: 10.sp)),
                   )

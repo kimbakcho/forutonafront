@@ -17,7 +17,7 @@ class H001ViewModel with ChangeNotifier {
   H001PageState currentState;
   String selectPosition = "로 딩 중";
   bool rankingAutoPlay = false;
-  bool inlineRanking = true;
+  bool _inlineRanking = true;
   int pageCount = 0;
   int ballPageLimitSize = 20;
   bool hasBall = true;
@@ -121,6 +121,10 @@ class H001ViewModel with ChangeNotifier {
     return selectPosition;
   }
 
+  bool get inlineRanking => _inlineRanking;
 
-
+  set inlineRanking(bool value) {
+    _inlineRanking = value;
+    notifyListeners();
+  }
 }

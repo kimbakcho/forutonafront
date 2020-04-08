@@ -109,12 +109,12 @@ class H005MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
   init()async {
-//    List<MultiSort> sortlist = new List<MultiSort>();
-//    sortlist.add(new MultiSort(
-//        "ballPower", QueryOrders.DESC));
-//    MultiSorts sorts = new MultiSorts(sortlist);
-//    this.onSearchTextCount(serachText,sorts,10,0);
-//    this.onSearchTagCount(serachText,sorts,10,0);
+    List<MultiSort> sortlist = new List<MultiSort>();
+    sortlist.add(new MultiSort(
+        "ballPower", QueryOrders.DESC));
+    MultiSorts sorts = new MultiSorts(sortlist);
+    this.onSearchTextCount(serachText,sorts,10,0);
+    this.onSearchTagCount(serachText,sorts,10,0);
 
   }
 }
