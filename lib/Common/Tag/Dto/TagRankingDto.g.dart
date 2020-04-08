@@ -11,7 +11,7 @@ TagRankingDto _$TagRankingDtoFromJson(Map<String, dynamic> json) {
     json['ranking'] as int,
     json['tagName'] as String,
     (json['tagPower'] as num)?.toDouble(),
-  );
+  )..tagBallPower = json['tagBallPower'] as int;
 }
 
 Map<String, dynamic> _$TagRankingDtoToJson(TagRankingDto instance) =>
@@ -19,4 +19,5 @@ Map<String, dynamic> _$TagRankingDtoToJson(TagRankingDto instance) =>
       'ranking': instance.ranking,
       'tagName': instance.tagName,
       'tagPower': instance.tagPower,
+      'tagBallPower': instance.tagBallPower,
     };

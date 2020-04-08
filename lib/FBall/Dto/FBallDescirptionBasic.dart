@@ -5,7 +5,6 @@ part 'FBallDescirptionBasic.g.dart';
 
 @JsonSerializable()
 class FBallDescirptionBasic {
-
   String text;
   List<FBallDesImagesDto> desimages;
 

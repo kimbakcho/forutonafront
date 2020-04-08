@@ -53,6 +53,10 @@ class H004MainPageViewModel extends ChangeNotifier{
     BallSearchbarHistroyDto saveReq = BallSearchbarHistroyDto(value,DateTime.now());
     searchHistorys = await _ballSearchBarHistoryRepository.saveHistory(saveReq);
   }
+  onSave(value) async {
+    BallSearchbarHistroyDto saveReq = BallSearchbarHistroyDto(value,DateTime.now());
+    searchHistorys = await _ballSearchBarHistoryRepository.saveHistory(saveReq);
+  }
   _loadSearchHistory() async {
     searchHistorys = await  _ballSearchBarHistoryRepository.loadHistroy();
     return searchHistorys;

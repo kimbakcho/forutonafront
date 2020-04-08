@@ -19,6 +19,4 @@ class SplashPageViewModel with ChangeNotifier {
       }
       return globalModel.fUserInfoDto;
   }
-
-
 }

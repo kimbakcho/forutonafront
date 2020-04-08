@@ -132,7 +132,7 @@ class _H004MainPageState extends State<H004MainPage> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
                 focusNode: model.searchFocusNode,
-                onSubmitted: (value) {
+                onSubmitted: (value) async {
                   if (value.length <= 1) {
                     Fluttertoast.showToast(
                         msg: "2글자 이상 입력해주세요",
@@ -145,6 +145,7 @@ class _H004MainPageState extends State<H004MainPage> {
 //                                      model.clearTextSearchText();
                     model.attckSearchFocus();
                   } else {
+                    await model.onSave(value);
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       return H005MainPage(value);

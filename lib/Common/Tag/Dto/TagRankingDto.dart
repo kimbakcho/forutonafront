@@ -8,6 +8,7 @@ class TagRankingDto {
   int ranking;
   String tagName;
   double tagPower;
+  int tagBallPower;
 
   TagRankingDto(this.ranking, this.tagName, this.tagPower);
 

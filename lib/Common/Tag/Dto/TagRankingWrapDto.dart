@@ -1,5 +1,5 @@
 
-import 'package:forutonafront/Common/TagRanking/TagRankingDto.dart';
+import 'package:forutonafront/Common/Tag/Dto/TagRankingDto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'TagRankingWrapDto.g.dart';

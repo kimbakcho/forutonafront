@@ -7,6 +7,8 @@ part 'FBallListUpWrapDto.g.dart';
 class FBallListUpWrapDto {
   DateTime searchTime;
   List<FBallResDto> balls;
+  //Ball의 전체 카운터 검색어 에서만 사용
+  int searchBallCount = 0;
 
   FBallListUpWrapDto(this.searchTime, this.balls);
 

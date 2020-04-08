@@ -39,7 +39,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     }
   }
   int getPicktureCount(){
-      return fBallDescriptionBasic.desimages.length;
+    return fBallDescriptionBasic.desimages.length;
   }
 
 

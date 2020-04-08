@@ -15,11 +15,12 @@ FBallListUpWrapDto _$FBallListUpWrapDtoFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : FBallResDto.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-  );
+  )..searchBallCount = json['searchBallCount'] as int;
 }
 
 Map<String, dynamic> _$FBallListUpWrapDtoToJson(FBallListUpWrapDto instance) =>
     <String, dynamic>{
       'searchTime': instance.searchTime?.toIso8601String(),
       'balls': instance.balls,
+      'searchBallCount': instance.searchBallCount,
     };

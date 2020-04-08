@@ -4,6 +4,7 @@ import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/Splash/SplashPage.dart';
 import 'package:provider/provider.dart';
 
+//flutter pub run build_runner watch
 
 void main() => runApp(
     ChangeNotifierProvider(

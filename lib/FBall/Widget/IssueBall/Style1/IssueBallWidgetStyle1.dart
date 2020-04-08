@@ -48,7 +48,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(model.ballResDto.ballLikes.toString(),
+                      Text(ballResDto.ballLikes.toString(),
                           style: TextStyle(
                             fontFamily: "Gibson",
                             fontWeight: FontWeight.w600,

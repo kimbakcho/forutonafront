@@ -22,7 +22,7 @@ class TimeDisplayUtil {
       }else if(difference.inDays.abs() < 7) {
         return difference.inDays.abs().toString()+"days ago";
       }else {
-        return DateFormat("yy.MM.dd").format(destTime.toLocal());
+        return DateFormat("yy.MM.dd").format(destTime);
       }
     }else {
       if(difference.inSeconds.abs() < 10){

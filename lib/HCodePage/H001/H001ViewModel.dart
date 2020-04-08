@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
-import 'package:forutonafront/Common/TagRanking/TagRankingRepository.dart';
-import 'package:forutonafront/Common/TagRanking/TagRankingReqDto.dart';
-import 'package:forutonafront/Common/TagRanking/TagRankingWrapDto.dart';
+import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
+import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
+import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 
 enum H001PageState { H001_01, H003_01 }
 
@@ -31,7 +32,7 @@ class H001ViewModel with ChangeNotifier {
   FBallListUpWrapDto fBallListUpWrapDto =
       new FBallListUpWrapDto(DateTime.now(), []);
 
-  TagRankingRepository _tagRankingRepository = new TagRankingRepository();
+  TagRepository _tagRepository = new TagRepository();
   GeolocationRepository _geolocationRepository = GeolocationRepository();
   FBallRepository _fBallRepository = new FBallRepository();
 
@@ -75,7 +76,7 @@ class H001ViewModel with ChangeNotifier {
   }
 
   Future getTagRanking(Position currentPosition) async {
-    rankingWrapDto = await _tagRankingRepository.getTagRanking(
+    rankingWrapDto = await _tagRepository.getTagRanking(
         new TagRankingReqDto(
             currentPosition.latitude, currentPosition.longitude, 10));
     rankingSwiperController.move(0);

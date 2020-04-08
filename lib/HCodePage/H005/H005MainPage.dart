@@ -62,68 +62,67 @@ class _H005MainPageState extends State<H005MainPage>
 
   Container topSerchBar(BuildContext context, H005MainPageViewModel model) {
     return Container(
-                        height: 60.h,
-                        width: 360.w,
-                        child: Stack(
-                          children: <Widget>[
-                            Row(children: <Widget>[
-                              BackButton(
-                                  color: Colors.black,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  }),
-                              Container(
-                                  height: 32.00.h,
-                                  width: 280.00.w,
-                                  margin: EdgeInsets.only(left: 8.w),
-                                  alignment: Alignment.center,
-                                  child: Text(model.getSearchTextDisplay(),
-                                      style: TextStyle(
-                                        fontFamily: "Noto Sans CJK KR",
-                                        fontSize: 14,
-                                        color: Color(0xff454f63),
-                                      )),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xfff9f9f9),
-                                    border: Border.all(
-                                      width: 1.00,
-                                      color: Color(0xfff6f6f6),
-                                    ),
-                                    borderRadius:
-                                        BorderRadius.circular(12.00),
-                                  ))
-                            ]),
-                            Positioned(
-                                right: 40.w,
-                                top: 15.h,
-                                child: Container(
-                                    height: 14.00.h,
-                                    width: 14.00.w,
-                                    child: FlatButton(
-                                      onPressed: () {
-                                        model.sethasClearFlag(true);
-                                      },
-                                      padding: EdgeInsets.all(0),
-                                      child: Icon(Icons.close,
-                                          size: 9.sp,
-                                          color: !model.hasClearFlag
-                                              ? Color(0xff454F63)
-                                              : Color(0xffCCCCCC)),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffffffff),
-                                      border: Border.all(
-                                        width: 1.00.w,
-                                        color: !model.hasClearFlag
-                                            ? Color(0xff454F63)
-                                            : Color(0xffcccccc),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    )))
-                          ],
-                        ),
-                        decoration: BoxDecoration(color: Colors.white),
-                      );
+      height: 60.h,
+      width: 360.w,
+      child: Stack(
+        children: <Widget>[
+          Row(children: <Widget>[
+            BackButton(
+                color: Colors.black,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            Container(
+                height: 32.00.h,
+                width: 280.00.w,
+                margin: EdgeInsets.only(left: 8.w),
+                alignment: Alignment.center,
+                child: Text(model.getSearchTextDisplay(),
+                    style: TextStyle(
+                      fontFamily: "Noto Sans CJK KR",
+                      fontSize: 14,
+                      color: Color(0xff454f63),
+                    )),
+                decoration: BoxDecoration(
+                  color: Color(0xfff9f9f9),
+                  border: Border.all(
+                    width: 1.00,
+                    color: Color(0xfff6f6f6),
+                  ),
+                  borderRadius: BorderRadius.circular(12.00),
+                ))
+          ]),
+          Positioned(
+              right: 40.w,
+              top: 15.h,
+              child: Container(
+                  height: 14.00.h,
+                  width: 14.00.w,
+                  child: FlatButton(
+                    onPressed: () {
+                      model.sethasClearFlag(true);
+                    },
+                    padding: EdgeInsets.all(0),
+                    child: Icon(Icons.close,
+                        size: 9.sp,
+                        color: !model.hasClearFlag
+                            ? Color(0xff454F63)
+                            : Color(0xffCCCCCC)),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xffffffff),
+                    border: Border.all(
+                      width: 1.00.w,
+                      color: !model.hasClearFlag
+                          ? Color(0xff454F63)
+                          : Color(0xffcccccc),
+                    ),
+                    shape: BoxShape.circle,
+                  )))
+        ],
+      ),
+      decoration: BoxDecoration(color: Colors.white),
+    );
   }
 
   Container topTabbar(H005MainPageViewModel model) {
@@ -144,9 +143,9 @@ class _H005MainPageState extends State<H005MainPage>
           controller: model.tabController,
           tabs: [
             Tab(
-              text: "Title",
+              text: model.getTitleText(),
             ),
-            Tab(text: "Tag"),
+            Tab(text: model.getTagText()),
           ]),
     );
   }
