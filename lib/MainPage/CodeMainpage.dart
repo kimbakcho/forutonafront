@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
+import 'package:forutonafront/ICodePage/ICodeMainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
-
 import 'package:provider/provider.dart';
-
-
 
 class CodeMainpage extends StatefulWidget {
   CodeMainpage({Key key}) : super(key: key);
@@ -16,14 +13,13 @@ class CodeMainpage extends StatefulWidget {
 }
 
 class _CodeMainpageState extends State<CodeMainpage> {
-
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<CodeMainViewModel>(create:(_)=> CodeMainViewModel()),
-        ChangeNotifierProvider<H001ViewModel>(create:(_)=> H001ViewModel())
+        ChangeNotifierProvider<CodeMainViewModel>(
+            create: (_) => CodeMainViewModel()),
+        ChangeNotifierProvider<H001ViewModel>(create: (_) => H001ViewModel())
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {
         return Scaffold(
@@ -31,13 +27,11 @@ class _CodeMainpageState extends State<CodeMainpage> {
           body: Stack(children: <Widget>[
             Container(
                 child: PageView(
-                  physics: NeverScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     controller: model.pageController,
                     children: <Widget>[
                   HCodeMainPage(),
-                  Container(
-                    child: Text("2"),
-                  ),
+                  ICodeMainPage(),
                   Container(
                     child: Text("3"),
                   ),

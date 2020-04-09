@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 class GeolocationRepository {
   Future<Position> getCurrentPhoneLocation() async {
     if (await isCanGPS()) {
-      var position = await Geolocator().getCurrentPosition();
+      var position = await Geolocator().getCurrentPosition().timeout(Duration(seconds: 5));
       if (position == null) {
         position = await Geolocator().getCurrentPosition();
       }

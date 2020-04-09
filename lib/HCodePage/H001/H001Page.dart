@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
-import 'package:forutonafront/FBall/Widget/IssueBall/Style1/IssueBallWidgetStyle1.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
+
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
@@ -68,7 +69,7 @@ class _H001PageState extends State<H001Page> {
               ? inlineRanking(model)
               : unInlineRaking(model);
         }
-        return selectBallWidget(model.fBallListUpWrapDto.balls[index - 1]);
+        return BallStyle1Support.selectBallWidget(model.fBallListUpWrapDto.balls[index - 1]);
       },
       controller: model.h001CenterListViewController,
       separatorBuilder: (context, index) {
@@ -127,15 +128,6 @@ class _H001PageState extends State<H001Page> {
         : Container();
   }
 
-  Widget selectBallWidget(FBallResDto resDto) {
-    if (resDto.ballType == FBallType.IssueBall) {
-      return IssueBallWidgetStyle1(resDto);
-    } else if (resDto.ballType == FBallType.QuestBall) {
-      return Container(child: Text("QuestBallType"));
-    } else {
-      return Container();
-    }
-  }
 
   Column unInlineRaking(H001ViewModel model) {
     return Column(children: <Widget>[

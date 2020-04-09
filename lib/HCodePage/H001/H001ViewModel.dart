@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
@@ -45,14 +46,27 @@ class H001ViewModel with ChangeNotifier {
   }
 
   init() async {
-    await getCurrentPositionFromGeoLocation();
-    var currentPosition =
-        await _geolocationRepository.getCurrentPhoneLocation();
-    getTagRanking(currentPosition);
-    fBallListUpWrapDto = new FBallListUpWrapDto(DateTime.now(), []);
-    getBallListUp(currentPosition, pageCount, ballPageLimitSize);
-    pageCount = 0;
-    notifyListeners();
+    try{
+      await getCurrentPositionFromGeoLocation();
+      var currentPosition =
+      await _geolocationRepository.getCurrentPhoneLocation();
+      getTagRanking(currentPosition);
+      fBallListUpWrapDto = new FBallListUpWrapDto(DateTime.now(), []);
+      getBallListUp(currentPosition, pageCount, ballPageLimitSize);
+      pageCount = 0;
+      notifyListeners();
+    }catch(Ex){
+      Fluttertoast.showToast(
+          msg: "GPS On을 해주세요.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
+    }
+
+
   }
 
   Future getBallListUp(Position currentPosition, int page, int size) async {

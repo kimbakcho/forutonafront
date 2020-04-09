@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:forutonafront/FBall/Widget/IssueBall/Style1/IssueBallWidgetStyle1.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallType.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
+
 import 'package:forutonafront/HCodePage/H005/H00501/H00501PageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +32,7 @@ class H00501Page extends StatelessWidget {
                           itemBuilder: (context, index) {
                             return Container(
                                 margin: EdgeInsets.fromLTRB(0.w, 0, 0.w, 16.h),
-                                child: IssueBallWidgetStyle1(model.listUpBalls[index]));
+                                child: BallStyle1Support.selectBallWidget(model.listUpBalls[index]));
                           }))
                 ],
               )),
@@ -37,6 +40,7 @@ class H00501Page extends StatelessWidget {
           ]);
         }));
   }
+
 
 
   Container selectOrderButton(H00501PageViewModel model) {

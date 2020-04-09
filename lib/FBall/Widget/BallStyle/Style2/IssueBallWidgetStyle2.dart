@@ -4,9 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Dto/UserBallResDto.dart';
-import 'package:forutonafront/FBall/Widget/IssueBall/Style2/IssueBallWidgetStyle2ViewModel.dart';
+
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
+
+import 'IssueBallWidgetStyle2ViewModel.dart';
 
 // ignore: must_be_immutable
 class IssueBallWidgetStyle2 extends StatelessWidget {
