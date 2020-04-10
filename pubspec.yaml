@@ -25,7 +25,7 @@ dependencies:
   url_launcher_macos: ^0.0.1+2
   firebase_analytics: ^5.0.2 # add dependency for Google Analytics for Firebase
   flutter_naver_login: ^1.0.1
-  firebase_auth: ^0.14.0+5
+  firebase_auth: ^0.15.5+3
   flutter_facebook_login: ^3.0.0
   http: ^0.12.0+2
   flutter_localizations: # add this
@@ -37,11 +37,10 @@ dependencies:
   async: ^2.3.0
   flutter_swiper: ^1.1.6
   google_maps_flutter: ^0.5.25+3
-  dotted_border: ^1.0.3
   geolocator: ^5.3.1
   flutter_google_places: ^0.2.3
   after_init: ^0.1.2
-  permission_handler: "^3.3.0"
+  permission_handler: ^3.3.0
   flutter_datetime_picker: ^1.2.8
   international_phone_input: ^1.0.2
   flutter_rating_bar: ^3.0.0+1
@@ -52,7 +51,7 @@ dependencies:
       url: https://github.com/kimbakcho/flutter_sms_receiver
   sliding_up_panel: ^0.3.6
   sliding_sheet: ^0.2.5
-  sticky_headers: "^0.1.8"
+  sticky_headers: ^0.1.8
   great_circle_distance2: ^1.0.1+1
   firebase_messaging: ^6.0.9
   multi_image_picker: ^4.6.0
@@ -83,6 +82,10 @@ dependencies:
   flutter_screenutil: ^1.0.2
   photo_view: ^0.9.2
   shared_preferences: ^0.5.6+3
+  location: ^3.0.2
+  flutter_svg: ^0.17.4
+
+
 
 dev_dependencies:
   flutter_test:

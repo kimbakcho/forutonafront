@@ -70,11 +70,13 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
             children: <TextSpan>[
               TextSpan(text: "    "),
               TextSpan(
-                  text: "${model.ballResDto.userLevel.toStringAsFixed(0)}  lv",style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w700,
-                fontSize: 9,
-                color:Color(0xff454f63).withOpacity(0.56),
-              )),
+                  text: "${model.ballResDto.userLevel.toStringAsFixed(0)}  lv",
+                  style: TextStyle(
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 9,
+                    color: Color(0xff454f63).withOpacity(0.56),
+                  )),
             ]),
       ),
     );
@@ -82,65 +84,64 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
 
   Container ballBottomBar(IssueBallWidgetStyle3ViewModel model) {
     return Container(
-      height: 48.00.h,
-      width: 328.00.w,
-      padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(ballResDto.ballLikes.toString(),
-              style: TextStyle(
-                fontFamily: "Gibson",
-                fontWeight: FontWeight.w600,
-                fontSize: 12.sp,
-                color: Color(0xff78849e),
-              )),
-          Padding(
-              padding: EdgeInsets.fromLTRB(5.w, 0, 0, 7.h),
-              child: Icon(ForutonaIcon.thumbsup,
-                  color: Color(0xff78849E), size: 17.sp)),
-          SizedBox(width: 19.w),
-          Text(model.ballResDto.ballDisLikes.toString(),
-              style: TextStyle(
-                fontFamily: "Gibson",
-                fontWeight: FontWeight.w600,
-                fontSize: 12.sp,
-                color: Color(0xff78849e),
-              )),
-          Padding(
-              padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
-              child: Icon(ForutonaIcon.thumbsdown,
-                  color: Color(0xff78849E), size: 17.sp)),
-          SizedBox(width: 19.w),
-          Text(model.ballResDto.commentCount.toString(),
-              style: TextStyle(
-                fontFamily: "Gibson",
-                fontWeight: FontWeight.w600,
-                fontSize: 12.sp,
-                color: Color(0xff78849e),
-              )),
-          Padding(
-              padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
-              child: Icon(ForutonaIcon.comment,
-                  color: Color(0xff78849E), size: 17.sp)),
-          SizedBox(width: 19.w),
-          Text(
-              TimeDisplayUtil.getRemainingToStrFromNow(
-                  model.ballResDto.activationTime),
-              style: TextStyle(
-                fontFamily: "Gibson",
-                fontWeight: FontWeight.w600,
-                fontSize: 12.sp,
-                color: Color(0xff78849e),
-              )),
-          Padding(
-              padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
-              child: Icon(ForutonaIcon.accesstime,
-                  color: Color(0xff78849E), size: 17.sp)),
-        ],
-      ),
-    );
+        height: 48.00.h,
+        width: 328.00.w,
+        padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(ballResDto.ballLikes.toString(),
+                style: TextStyle(
+                  fontFamily: "Gibson",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.sp,
+                  color: Color(0xff78849e),
+                )),
+            Padding(
+                padding: EdgeInsets.fromLTRB(5.w, 0, 0, 7.h),
+                child: Icon(ForutonaIcon.thumbsup,
+                    color: Color(0xff78849E), size: 17.sp)),
+            SizedBox(width: 19.w),
+            Text(model.ballResDto.ballDisLikes.toString(),
+                style: TextStyle(
+                  fontFamily: "Gibson",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.sp,
+                  color: Color(0xff78849e),
+                )),
+            Padding(
+                padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                child: Icon(ForutonaIcon.thumbsdown,
+                    color: Color(0xff78849E), size: 17.sp)),
+            SizedBox(width: 19.w),
+            Text(model.ballResDto.commentCount.toString(),
+                style: TextStyle(
+                  fontFamily: "Gibson",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.sp,
+                  color: Color(0xff78849e),
+                )),
+            Padding(
+                padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                child: Icon(ForutonaIcon.comment,
+                    color: Color(0xff78849E), size: 17.sp)),
+            SizedBox(width: 19.w),
+            Text(
+                TimeDisplayUtil.getRemainingToStrFromNow(
+                    model.ballResDto.activationTime),
+                style: TextStyle(
+                  fontFamily: "Gibson",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.sp,
+                  color: Color(0xff78849e),
+                )),
+            Padding(
+                padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                child: Icon(ForutonaIcon.accesstime,
+                    color: Color(0xff78849E), size: 17.sp)),
+          ],
+        ));
   }
 
   Container divider() {
@@ -187,7 +188,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
   Container questBallIcon() {
     return Container(
         padding: EdgeInsets.only(left: 1.sp, bottom: 1.sp),
-        child: Icon(ForutonaIcon.quest, size: 17.sp, color: Colors.white),
+        child: Icon(ForutonaIcon.quest, size: 13.sp, color: Colors.white),
         height: 30.00.h,
         width: 30.00.w,
         decoration: BoxDecoration(

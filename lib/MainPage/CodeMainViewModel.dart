@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:search_map_place/search_map_place.dart';
 
 enum HCodeState { HCDOE, ICODE, JCODE, KCODE, LCODE }
@@ -18,9 +20,10 @@ class CodeMainViewModel with ChangeNotifier {
     init();
   }
   init()async {
-    this.lastKnownPosition = await _geoLocator.getLastKnownPosition();
+    GeoLocationUtil.useGpsReq();
+    this.lastKnownPosition = await _geoLocator.getCurrentPosition();
     _geoLocator.getPositionStream().listen(changeGeolocationListen);
-    firstAddress = await _geolocationRepository.getCurrentPhoneAddress();
+      firstAddress = await _geolocationRepository.getCurrentPhoneAddress();
   }
 
   changeGeolocationListen(Position currentPosition){

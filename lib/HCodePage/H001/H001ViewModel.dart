@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
@@ -11,6 +12,7 @@ import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 
 enum H001PageState { H001_01, H003_01 }
 
@@ -36,7 +38,9 @@ class H001ViewModel with ChangeNotifier {
   TagRepository _tagRepository = new TagRepository();
   GeolocationRepository _geolocationRepository = GeolocationRepository();
   FBallRepository _fBallRepository = new FBallRepository();
-
+  Location location = new Location();
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
   H001ViewModel() {
     currentState = H001PageState.H001_01;
     rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
@@ -46,7 +50,6 @@ class H001ViewModel with ChangeNotifier {
   }
 
   init() async {
-    try{
       await getCurrentPositionFromGeoLocation();
       var currentPosition =
       await _geolocationRepository.getCurrentPhoneLocation();
@@ -55,18 +58,6 @@ class H001ViewModel with ChangeNotifier {
       getBallListUp(currentPosition, pageCount, ballPageLimitSize);
       pageCount = 0;
       notifyListeners();
-    }catch(Ex){
-      Fluttertoast.showToast(
-          msg: "GPS On을 해주세요.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIos: 1,
-          backgroundColor: Color(0xff454F63),
-          textColor: Colors.white,
-          fontSize: 12.0);
-    }
-
-
   }
 
   Future getBallListUp(Position currentPosition, int page, int size) async {

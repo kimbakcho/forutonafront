@@ -1,16 +1,21 @@
+
+
+import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 class GeolocationRepository {
+
   Future<Position> getCurrentPhoneLocation() async {
-    if (await isCanGPS()) {
-      var position = await Geolocator().getCurrentPosition().timeout(Duration(seconds: 5));
+//    if (await GeoLocationUtil.canUseGps()) {
+      var position = await Geolocator().getCurrentPosition();
       if (position == null) {
         position = await Geolocator().getCurrentPosition();
       }
       return position;
-    } else {
-      return null;
-    }
+//    } else {
+//      return null;
+//    }
   }
 
   Future<String> getCurrentPhoneAddress() async {
@@ -49,17 +54,6 @@ class GeolocationRepository {
     }else {
       return resultAddress;
     }
-
   }
 
-  Future<bool> isCanGPS() async {
-    Geolocator geoLocator = Geolocator()..forceAndroidLocationManager = true;
-    GeolocationStatus geolocationStatus =
-        await geoLocator.checkGeolocationPermissionStatus();
-    if (geolocationStatus.value == 2 || geolocationStatus.value == 3) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 }

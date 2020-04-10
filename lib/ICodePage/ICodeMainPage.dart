@@ -1,6 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/IssueBallStyle1MarkerWidget.dart';
+import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/QuestBallStyle1MarkerWidget.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3Support.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
@@ -24,6 +27,17 @@ class ICodeMainPage extends StatelessWidget {
                 body: Container(
                     key: model.mapContainerGlobalKey,
                     child: Stack(children: <Widget>[
+                      //해당 부분 마커에서 그림 파일에 캐쉬에 없어 초기에 못그려줘 일부러 여기서
+                      //그려줌 캐슁해주기 위해서 사용함.
+                      Positioned(
+                          top: 0,
+                          left: 0,
+                          child: Column(
+                            children: <Widget>[
+                              QuestBallStyle1MarkerWidget.selectBall(),
+                              IssueBallStyle1MarkerWidget.selectBall()
+                            ],
+                          )),
                       GoogleMap(
                         mapType: MapType.normal,
                         initialCameraPosition: model.initCameraPosition,
@@ -32,6 +46,7 @@ class ICodeMainPage extends StatelessWidget {
                         myLocationButtonEnabled: false,
                         indoorViewEnabled: true,
                         onCameraMove: model.onMoveMap,
+                        onCameraMoveStarted: model.onMoveStartMap,
                         markers: model.markers,
                       ),
                       Positioned(
@@ -57,8 +72,8 @@ class ICodeMainPage extends StatelessWidget {
                         bottom: 69.h,
                         left: 0.h,
                         child: bottomBallListUp(model),
-                      )
-                    ])..children.addAll(model.ballMakerWidget)))
+                      ),
+                    ])))
           ]);
         }));
   }
@@ -71,6 +86,7 @@ class ICodeMainPage extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           controller: model.bottomPageController,
+          onPageChanged: model.onBallListSelectChanged,
           itemCount: model.listUpBalls.length,
           itemBuilder: (context, index) {
             return Container(
@@ -81,10 +97,12 @@ class ICodeMainPage extends StatelessWidget {
     );
   }
 
-  Container ballReFreshButton(ICodeMainPageViewModel model) {
-    return Container(
-        height: 52.00.h,
-        width: 52.00.w,
+  AnimatedContainer ballReFreshButton(ICodeMainPageViewModel model) {
+    return AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        curve: model.reFreshBtnActive ? Curves.bounceOut : Curves.bounceIn,
+        height: model.reFreshBtnActive ? 52.00.h : 0,
+        width: model.reFreshBtnActive ? 52.00.w : 0,
         child: FlatButton(
           padding: EdgeInsets.fromLTRB(0, 0, 8.w, 0),
           onPressed: () {
@@ -92,7 +110,7 @@ class ICodeMainPage extends StatelessWidget {
           },
           child: Icon(
             ForutonaIcon.repost,
-            size: 10.sp,
+            size: model.reFreshBtnActive ? 10.sp : 0,
           ),
         ),
         decoration: BoxDecoration(
