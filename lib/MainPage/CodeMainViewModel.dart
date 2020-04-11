@@ -23,7 +23,7 @@ class CodeMainViewModel with ChangeNotifier {
     GeoLocationUtil.useGpsReq();
     this.lastKnownPosition = await _geoLocator.getCurrentPosition();
     _geoLocator.getPositionStream().listen(changeGeolocationListen);
-      firstAddress = await _geolocationRepository.getCurrentPhoneAddress();
+    firstAddress = await _geolocationRepository.getPositionAddress(lastKnownPosition);
   }
 
   changeGeolocationListen(Position currentPosition){

@@ -72,4 +72,5 @@ class ForutonaIcon {
   static const IconData wallet = const IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData anchor = const IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData joystick = const IconData(0xe832, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData searchbackbtn = const IconData(0xe833, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

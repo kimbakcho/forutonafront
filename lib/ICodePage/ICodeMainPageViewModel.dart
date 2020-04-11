@@ -19,12 +19,15 @@ import 'package:provider/provider.dart';
 
 class ICodeMainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
+
   CameraPosition initCameraPosition;
   CodeMainViewModel _codeMainViewModel;
-
   String currentAddress = "";
-  Completer<GoogleMapController> _googleMapController = Completer();
-
+  int _pageCount = 0;
+  int _ballPageLimitSize = 20;
+  FBallListUpWrapDto _fBallListUpWrapDto;
+  final Set<Marker> markers = {};
+  bool _moveFromMapBallSelect = false;
   GlobalKey mapContainerGlobalKey = GlobalKey();
   List<FBallResForMarkerDto> listUpBalls = [];
   CameraPosition _currentMapPosition;
@@ -34,11 +37,8 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   PageController bottomPageController =
       new PageController(initialPage: 0, keepPage: true, viewportFraction: 0.9);
-  int _pageCount = 0;
-  int _ballPageLimitSize = 20;
-  FBallListUpWrapDto _fBallListUpWrapDto;
-  final Set<Marker> markers = {};
-  bool _moveFromMapBallSelect = false;
+  Completer<GoogleMapController> _googleMapController = Completer();
+
 
   ICodeMainPageViewModel(this._context) {
     _codeMainViewModel = Provider.of<CodeMainViewModel>(_context);

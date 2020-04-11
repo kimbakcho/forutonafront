@@ -6,24 +6,13 @@ import 'package:location/location.dart';
 
 class GeolocationRepository {
 
-  Future<Position> getCurrentPhoneLocation() async {
-//    if (await GeoLocationUtil.canUseGps()) {
-      var position = await Geolocator().getCurrentPosition();
-      if (position == null) {
-        position = await Geolocator().getCurrentPosition();
-      }
-      return position;
-//    } else {
-//      return null;
-//    }
-  }
 
-  Future<String> getCurrentPhoneAddress() async {
-    var position = await getCurrentPhoneLocation();
+
+  Future<String> getPositionAddress(Position reqPosition) async {
     String resultAddress = "";
-    if (position != null) {
+    if (reqPosition != null) {
       var placeMarkList = await Geolocator()
-          .placemarkFromPosition(position, localeIdentifier: "ko");
+          .placemarkFromPosition(reqPosition, localeIdentifier: "ko");
       if (placeMarkList.length > 0) {
         resultAddress = "";
 

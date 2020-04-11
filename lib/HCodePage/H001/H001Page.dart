@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
-
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
+import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +67,8 @@ class _H001PageState extends State<H001Page> {
               ? inlineRanking(model)
               : unInlineRaking(model);
         }
-        return BallStyle1Support.selectBallWidget(model.fBallListUpWrapDto.balls[index - 1]);
+        return BallStyle1Support.selectBallWidget(
+            model.fBallListUpWrapDto.balls[index - 1]);
       },
       controller: model.h001CenterListViewController,
       separatorBuilder: (context, index) {
@@ -127,7 +126,6 @@ class _H001PageState extends State<H001Page> {
           )
         : Container();
   }
-
 
   Column unInlineRaking(H001ViewModel model) {
     return Column(children: <Widget>[
@@ -300,7 +298,6 @@ class _H001PageState extends State<H001Page> {
                         padding: EdgeInsets.all(0),
                         onPressed: () {
                           model.inlineRanking = false;
-
                         },
                         child: Icon(ForutonaIcon.down_arrow, size: 10.sp)),
                   )
@@ -330,8 +327,15 @@ class _H001PageState extends State<H001Page> {
               borderRadius: BorderRadius.circular(12.00.w),
             ),
             child: FlatButton(
-                onPressed: () {},
-                child: Text(model.selectPosition,
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      settings: RouteSettings(name: "H007"),
+                      builder: (_) => ChangeNotifierProvider.value(
+                          value: model,
+                          child: H007MainPage(model.currentPosition,
+                              model.selectPositionAddress))));
+                },
+                child: Text(model.selectPositionAddress,
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w700,
