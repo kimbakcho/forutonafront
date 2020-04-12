@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 
 class IssueBallStyle1MarkerWidget {

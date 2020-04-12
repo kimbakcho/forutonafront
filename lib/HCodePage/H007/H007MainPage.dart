@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class H007MainPage extends StatelessWidget {
-
   Position initPosition;
   String address;
 
   H007MainPage(this.initPosition, this.address);
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => H007MainPageViewModel(initPosition, address,context),
+        create: (_) => H007MainPageViewModel(initPosition, address, context),
         child: Consumer<H007MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -28,6 +25,7 @@ class H007MainPage extends StatelessWidget {
                 myLocationButtonEnabled: false,
                 onMapCreated: model.onMapCreate,
                 onCameraMove: model.onCameraMove,
+                onCameraIdle: model.onMapIdle,
               ),
               Positioned(
                 top: 0,
@@ -35,7 +33,7 @@ class H007MainPage extends StatelessWidget {
                 child: topGradiantEffect(),
               ),
               Positioned(
-                top: 28.h,
+                top: MediaQuery.of(context).padding.top + 2.h,
                 left: 16.w,
                 child: topAddressBar(model),
               ),
@@ -130,7 +128,7 @@ class H007MainPage extends StatelessWidget {
                   width: 24.w,
                   child: FlatButton(
                       padding: EdgeInsets.all(0),
-                      onPressed: () {},
+                      onPressed: model.onBackBtnClick,
                       child: Icon(ForutonaIcon.searchbackbtn)),
                 ),
                 Container(
@@ -142,14 +140,19 @@ class H007MainPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-                  child: Text(model.address,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
-                        fontSize: 14.sp,
-                        color: Color(0xff454f63),
-                      )),
+                  width: 241.w,
+                  margin: EdgeInsets.fromLTRB(16.w, 0, 0.w, 0),
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    onPressed: model.onPlaceSearchTap,
+                    child: Text(model.address,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontSize: 14.sp,
+                          color: Color(0xff454f63),
+                        )),
+                  ),
                 ),
               ],
             ),

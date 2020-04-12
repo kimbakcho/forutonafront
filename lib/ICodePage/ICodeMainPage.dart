@@ -47,10 +47,11 @@ class ICodeMainPage extends StatelessWidget {
                         indoorViewEnabled: true,
                         onCameraMove: model.onMoveMap,
                         onCameraMoveStarted: model.onMoveStartMap,
+                        onCameraIdle: model.onMapIdle,
                         markers: model.markers,
                       ),
                       Positioned(
-                        top: 40.h,
+                        top: MediaQuery.of(context).padding.top+23.h,
                         left: 16.w,
                         child: textMapSerachBar(model),
                       ),
@@ -162,7 +163,7 @@ class ICodeMainPage extends StatelessWidget {
                     fontSize: 14.sp,
                     color: Color(0xff454f63),
                   )),
-              onPressed: () {},
+              onPressed:model.onPlaceSearchTap,
             ),
             decoration: BoxDecoration(
               color: Color(0xffffffff).withOpacity(0.90),

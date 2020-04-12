@@ -5,7 +5,6 @@ import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.da
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
-import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +16,7 @@ class H001Page extends StatefulWidget {
 }
 
 class _H001PageState extends State<H001Page> {
+
   @override
   Widget build(BuildContext context) {
     var h001ViewModel = Provider.of<H001ViewModel>(context);
@@ -28,15 +28,15 @@ class _H001PageState extends State<H001Page> {
                   color: Color(0xfff2f0f1),
                   child: Consumer<H001ViewModel>(builder: (_, model, child) {
                     return Stack(children: <Widget>[
-                      model.hasBall
-                          ? Column(children: <Widget>[
-                              addressDisplay(model),
-                              Expanded(
-                                  child: Stack(children: <Widget>[
-                                buildListUpPanel(model),
-                              ]))
-                            ])
-                          : ballEmptyPanel(),
+                      Column(children: <Widget>[
+                        addressDisplay(model),
+                        Expanded(
+                            child: Stack(children: <Widget>[
+                          model.hasBall
+                              ? buildListUpPanel(model)
+                              : ballEmptyPanel(),
+                        ]))
+                      ]),
                       makeButton(model),
                     ]);
                   })))
@@ -273,37 +273,42 @@ class _H001PageState extends State<H001Page> {
 
   Container inlineRanking(H001ViewModel model) {
     return Container(
-        child: Swiper(
-          itemCount: model.rankingWrapDto.contents.length,
-          autoplay: model.rankingAutoPlay,
-          scrollDirection: Axis.vertical,
-          autoplayDelay: 2000,
-          controller: model.rankingSwiperController,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-                height: 40.h,
-                width: 320.w,
-                padding: EdgeInsets.fromLTRB(18.w, 0, 18.w, 0),
-                child: Row(children: <Widget>[
-                  Text("${model.rankingWrapDto.contents[index].ranking}."),
-                  SizedBox(width: 12.w),
-                  Text("#${model.rankingWrapDto.contents[index].tagName}"),
-                  Spacer(),
-                  Text(
-                      "${(model.rankingWrapDto.contents[index].tagPower).toStringAsFixed(1)}k"),
-                  SizedBox(width: 12.w),
-                  Container(
-                    width: 12.w,
-                    child: FlatButton(
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {
-                          model.inlineRanking = false;
-                        },
-                        child: Icon(ForutonaIcon.down_arrow, size: 10.sp)),
-                  )
-                ]));
-          },
-        ),
+        child: model.rankingWrapDto.contents.length != 0
+            ? Swiper(
+                itemCount: model.rankingWrapDto.contents.length,
+                autoplay: model.rankingAutoPlay,
+                scrollDirection: Axis.vertical,
+                autoplayDelay: 2000,
+                controller: model.rankingSwiperController,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                      height: 40.h,
+                      width: 320.w,
+                      padding: EdgeInsets.fromLTRB(18.w, 0, 18.w, 0),
+                      child: Row(children: <Widget>[
+                        Text(
+                            "${model.rankingWrapDto.contents[index].ranking}."),
+                        SizedBox(width: 12.w),
+                        Text(
+                            "#${model.rankingWrapDto.contents[index].tagName}"),
+                        Spacer(),
+                        Text(
+                            "${(model.rankingWrapDto.contents[index].tagPower).toStringAsFixed(1)}k"),
+                        SizedBox(width: 12.w),
+                        Container(
+                          width: 12.w,
+                          child: FlatButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {
+                                model.inlineRanking = false;
+                              },
+                              child:
+                                  Icon(ForutonaIcon.down_arrow, size: 10.sp)),
+                        )
+                      ]));
+                },
+              )
+            : Container(),
         margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
         height: model.rankingWrapDto.contents.length == 0 ? 0 : 40.h,
         width: 328.00.w,
@@ -327,14 +332,7 @@ class _H001PageState extends State<H001Page> {
               borderRadius: BorderRadius.circular(12.00.w),
             ),
             child: FlatButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      settings: RouteSettings(name: "H007"),
-                      builder: (_) => ChangeNotifierProvider.value(
-                          value: model,
-                          child: H007MainPage(model.currentPosition,
-                              model.selectPositionAddress))));
-                },
+                onPressed: model.moveToH007,
                 child: Text(model.selectPositionAddress,
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",

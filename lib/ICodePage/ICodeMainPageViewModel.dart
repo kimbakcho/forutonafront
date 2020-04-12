@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
+import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
@@ -13,32 +14,34 @@ import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.da
 import 'package:forutonafront/FBall/MarkerSupport/Style1/MakerSupportStyle1.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
+import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ICodeMainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
-
-  CameraPosition initCameraPosition;
-  CodeMainViewModel _codeMainViewModel;
-  String currentAddress = "";
+  bool _flagIdleIgore = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
   FBallListUpWrapDto _fBallListUpWrapDto;
-  final Set<Marker> markers = {};
   bool _moveFromMapBallSelect = false;
+  CameraPosition _currentMapPosition;
+  CodeMainViewModel _codeMainViewModel;
+  FBallRepository _fBallRepository = new FBallRepository();
+  GeolocationRepository _geolocationRepository = GeolocationRepository();
+
+  CameraPosition initCameraPosition;
+  String currentAddress = "";
+  final Set<Marker> markers = {};
   GlobalKey mapContainerGlobalKey = GlobalKey();
   List<FBallResForMarkerDto> listUpBalls = [];
-  CameraPosition _currentMapPosition;
   bool reFreshBtnActive = false;
-
-  FBallRepository _fBallRepository = new FBallRepository();
 
   PageController bottomPageController =
       new PageController(initialPage: 0, keepPage: true, viewportFraction: 0.9);
   Completer<GoogleMapController> _googleMapController = Completer();
-
 
   ICodeMainPageViewModel(this._context) {
     _codeMainViewModel = Provider.of<CodeMainViewModel>(_context);
@@ -48,6 +51,26 @@ class ICodeMainPageViewModel extends ChangeNotifier {
         zoom: 14.4746);
     currentAddress = _codeMainViewModel.firstAddress;
     bottomPageController.addListener(onPageContollerListner);
+  }
+
+  ///Return 으로는 MapSearchGeoDto 받는다.
+  onPlaceSearchTap() async {
+    MapSearchGeoDto mapSearchGeoDto = await Navigator.of(_context).push(
+        MaterialPageRoute(
+            settings: RouteSettings(name: "MapGeoSearchPage"),
+            builder: (_) => MapGeoSearchPage(
+                currentAddress,
+                Position(
+                    latitude: _currentMapPosition.target.latitude,
+                    longitude: _currentMapPosition.target.longitude))));
+    final GoogleMapController controller = await _googleMapController.future;
+    _flagIdleIgore = true;
+    currentAddress = mapSearchGeoDto.descriptionAddress;
+    await controller.moveCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: mapSearchGeoDto.latLng, zoom: 14)));
+    await onRefreshBall();
+    _flagIdleIgore = false;
+    notifyListeners();
   }
 
   onBallListSelectChanged(int index) async {
@@ -94,6 +117,15 @@ class ICodeMainPageViewModel extends ChangeNotifier {
     _currentMapPosition = value;
   }
 
+  onMapIdle() async {
+    if (!_flagIdleIgore) {
+      currentAddress = await _geolocationRepository.getPositionAddress(Position(
+          latitude: _currentMapPosition.target.latitude,
+          longitude: _currentMapPosition.target.longitude));
+      notifyListeners();
+    }
+  }
+
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
     GeoLocationUtil.useGpsReq();
@@ -104,19 +136,21 @@ class ICodeMainPageViewModel extends ChangeNotifier {
   }
 
   onCreateMap(GoogleMapController controller) async {
+    _flagIdleIgore = true;
     _googleMapController.complete(controller);
     reFreshBtnActive = false;
     await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
             _codeMainViewModel.lastKnownPosition.longitude),
         zoom: 14.4746)));
-    onRefreshBall();
+    await onRefreshBall();
+    _flagIdleIgore = false;
   }
 
   onRefreshBall() async {
     _pageCount = 0;
     reFreshBtnActive = false;
-    getBallListUp();
+    await getBallListUp();
   }
 
   Future getBallListUp() async {

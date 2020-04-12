@@ -19,7 +19,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
       providers: [
         ChangeNotifierProvider<CodeMainViewModel>(
             create: (_) => CodeMainViewModel()),
-        ChangeNotifierProvider<H001ViewModel>(create: (_) => H001ViewModel())
+        ChangeNotifierProvider<H001ViewModel>(create: (_) => H001ViewModel(context))
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {
         return Scaffold(

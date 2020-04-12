@@ -30,7 +30,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
             Scaffold(
                 body: Container(
                     color: Color(0xfff2f0f1),
-                    padding: EdgeInsets.fromLTRB(0, 22.h, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
                       // 태그 랭킹 펼칠시 숨기기
                       Consumer<H001ViewModel>(builder: (_, h001model, child) {

@@ -8,13 +8,15 @@ import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
+import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
+import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 enum H001PageState { H001_01, H003_01 }
 
 class H001ViewModel with ChangeNotifier {
+  final BuildContext _context;
   H001PageState currentState;
   String selectPositionAddress = "로 딩 중";
   Position currentPosition;
@@ -38,7 +40,7 @@ class H001ViewModel with ChangeNotifier {
   bool _serviceEnabled;
   PermissionStatus _permissionGranted;
 
-  H001ViewModel() {
+  H001ViewModel(this._context) {
     currentState = H001PageState.H001_01;
     rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
     h001CenterListViewController
@@ -51,15 +53,37 @@ class H001ViewModel with ChangeNotifier {
     await reFreshSearchBall(currentPosition);
   }
 
-  Future reFreshSearchBall(Position serachPosition) async {
-    selectPositionAddress = "로 딩 중";
-    selectPositionAddress = await geAddressFromGeoLocation(serachPosition);
+  moveToH007() async {
+
+    ///Navigator 는 검색 위치로 지정한 LatLng 이 나온다.
+    MapSearchGeoDto position = await Navigator.of(_context).push(MaterialPageRoute(
+        settings: RouteSettings(name: "H007"),
+        builder: (context)=> H007MainPage(currentPosition,
+            selectPositionAddress)
+    ));
+    if(position != null){
+      currentPosition = Position(latitude: position.latLng.latitude,longitude: position.latLng.longitude);
+      await reFreshSearchBall(currentPosition,address: position.descriptionAddress);
+    }
+
+  }
+
+  Future reFreshSearchBall(Position serachPosition,{String address}) async {
+    if(address == null){
+      selectPositionAddress = "로 딩 중";
+      selectPositionAddress = await geAddressFromGeoLocation(serachPosition);
+    }else {
+      selectPositionAddress = address;
+    }
     getTagRanking(serachPosition);
     fBallListUpWrapDto = new FBallListUpWrapDto(DateTime.now(), []);
-    getBallListUp(serachPosition, _pageCount, _ballPageLimitSize);
     _pageCount = 0;
+    getBallListUp(serachPosition, _pageCount, _ballPageLimitSize);
+
     notifyListeners();
   }
+
+
 
   Future getBallListUp(Position currentPosition, int page, int size) async {
     FBallListUpReqDto ballListUpReqDto = new FBallListUpReqDto(
@@ -75,6 +99,7 @@ class H001ViewModel with ChangeNotifier {
     fBallListUpWrapDto.balls.addAll(fBallListUpWrapDtoTemp.balls);
     if (fBallListUpWrapDto.balls.length == 0) {
       hasBall = false;
+      addressDisplayShowFlag = true;
     } else {
       hasBall = true;
     }
@@ -130,12 +155,5 @@ class H001ViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  ///H007의 하단 검색 버튼에서로부터의 검색 실행
-  onFromH007Serach(LatLng searchPosition) async{
-    Position position = new Position(
-      longitude: searchPosition.longitude,
-      latitude: searchPosition.latitude
-    );
-    await reFreshSearchBall(position);
-  }
+
 }

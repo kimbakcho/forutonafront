@@ -160,6 +160,7 @@ class _H004MainPageState extends State<H004MainPage> {
                     ? TextAlign.start
                     : TextAlign.center,
                 decoration: InputDecoration(
+                    filled: true,
                     fillColor: Color(0xffF9F9F9),
                     hintText: model.getSearchHintText(),
                     hintStyle: model.hasSearchTextFocus
