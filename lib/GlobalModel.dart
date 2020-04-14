@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 
 class GlobalModel with ChangeNotifier {
 
-  FUserInfoDto fUserInfoDto;
+  FUserInfoResDto fUserInfoDto;
 
 }

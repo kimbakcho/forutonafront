@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FUserInfoDto.dart';
+part of 'FUserInfoResDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FUserInfoDto _$FUserInfoDtoFromJson(Map<String, dynamic> json) {
-  return FUserInfoDto(
+FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
+  return FUserInfoResDto(
     json['uid'] as String,
     json['nickName'] as String,
     json['profilePicktureUrl'] as String,
     json['gender'] as int,
     json['ageDate'] == null ? null : DateTime.parse(json['ageDate'] as String),
     json['email'] as String,
-    json['forutonaAgree'] as bool,
-    json['privateAgree'] as bool,
-    json['positionAgree'] as bool,
-    json['martketingAgree'] as bool,
-    json['ageLimitAgree'] as bool,
+    json['forutonaAgree'] as int,
+    json['privateAgree'] as int,
+    json['positionAgree'] as int,
+    json['martketingAgree'] as int,
+    json['ageLimitAgree'] as int,
     json['snsService'] as String,
     json['phoneNumber'] as String,
     json['isoCode'] as String,
     (json['latitude'] as num)?.toDouble(),
-    (json['longitude'] as num)?.toDouble(),
+    (json['intitude'] as num)?.toDouble(),
     json['positionUpdateTime'] == null
         ? null
         : DateTime.parse(json['positionUpdateTime'] as String),
@@ -38,10 +38,26 @@ FUserInfoDto _$FUserInfoDtoFromJson(Map<String, dynamic> json) {
     json['lastBackOutTime'] == null
         ? null
         : DateTime.parse(json['lastBackOutTime'] as String),
+    json['selfIntroduction'] as String,
+    (json['cumulativeInfluence'] as num)?.toDouble(),
+    (json['uPoint'] as num)?.toDouble(),
+    (json['naPoint'] as num)?.toDouble(),
+    json['historyOpenAll'] as int,
+    json['historyOpenFollowSponsor'] as int,
+    json['historyOpenNoOpen'] as int,
+    json['sponsorHistoryOpenAll'] as int,
+    json['sponsorHistoryOpenSponAndFollowFromMe'] as int,
+    json['sponsorHistoryOpenSponNoOpen'] as int,
+    json['alarmChatMessage'] as int,
+    json['alarmContentReply'] as int,
+    json['alarmReplyAndReply'] as int,
+    json['alarmFollowNewContent'] as int,
+    json['alarmSponNewContent'] as int,
+    json['deactivation'] as int,
   );
 }
 
-Map<String, dynamic> _$FUserInfoDtoToJson(FUserInfoDto instance) =>
+Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'nickName': instance.nickName,
@@ -58,7 +74,7 @@ Map<String, dynamic> _$FUserInfoDtoToJson(FUserInfoDto instance) =>
       'phoneNumber': instance.phoneNumber,
       'isoCode': instance.isoCode,
       'latitude': instance.latitude,
-      'longitude': instance.longitude,
+      'intitude': instance.intitude,
       'positionUpdateTime': instance.positionUpdateTime?.toIso8601String(),
       'userLevel': instance.userLevel,
       'expPoint': instance.expPoint,
@@ -67,4 +83,21 @@ Map<String, dynamic> _$FUserInfoDtoToJson(FUserInfoDto instance) =>
       'followCount': instance.followCount,
       'backOut': instance.backOut,
       'lastBackOutTime': instance.lastBackOutTime?.toIso8601String(),
+      'selfIntroduction': instance.selfIntroduction,
+      'cumulativeInfluence': instance.cumulativeInfluence,
+      'uPoint': instance.uPoint,
+      'naPoint': instance.naPoint,
+      'historyOpenAll': instance.historyOpenAll,
+      'historyOpenFollowSponsor': instance.historyOpenFollowSponsor,
+      'historyOpenNoOpen': instance.historyOpenNoOpen,
+      'sponsorHistoryOpenAll': instance.sponsorHistoryOpenAll,
+      'sponsorHistoryOpenSponAndFollowFromMe':
+          instance.sponsorHistoryOpenSponAndFollowFromMe,
+      'sponsorHistoryOpenSponNoOpen': instance.sponsorHistoryOpenSponNoOpen,
+      'alarmChatMessage': instance.alarmChatMessage,
+      'alarmContentReply': instance.alarmContentReply,
+      'alarmReplyAndReply': instance.alarmReplyAndReply,
+      'alarmFollowNewContent': instance.alarmFollowNewContent,
+      'alarmSponNewContent': instance.alarmSponNewContent,
+      'deactivation': instance.deactivation,
     };

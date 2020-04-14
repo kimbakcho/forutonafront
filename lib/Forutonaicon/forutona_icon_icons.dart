@@ -73,4 +73,23 @@ class ForutonaIcon {
   static const IconData anchor = const IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData joystick = const IconData(0xe832, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData searchbackbtn = const IconData(0xe833, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData donate_heart = const IconData(0xe834, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData edit = const IconData(0xe835, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData envelope = const IconData(0xe836, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData gift = const IconData(0xe837, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData pencil = const IconData(0xe838, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData run = const IconData(0xe839, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData transfer_alt = const IconData(0xe83a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData undo = const IconData(0xe83b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData x = const IconData(0xe83c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData badge_1 = const IconData(0xe83d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData badge_chec = const IconData(0xe83e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData bell_1 = const IconData(0xe83f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData bell_off = const IconData(0xe840, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData bullseye = const IconData(0xe841, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData check = const IconData(0xe842, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData chevron_right = const IconData(0xe843, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData coin = const IconData(0xe844, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData coin_stack = const IconData(0xe845, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData credit_card = const IconData(0xe846, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

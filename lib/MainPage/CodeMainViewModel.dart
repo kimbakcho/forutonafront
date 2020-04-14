@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:search_map_place/search_map_place.dart';
 
-enum HCodeState { HCDOE, ICODE, JCODE, KCODE, LCODE }
+enum HCodeState { HCDOE, ICODE, JCODE, KCODE, GCODE }
 
 class CodeMainViewModel with ChangeNotifier {
   PageController pageController;
@@ -45,7 +45,7 @@ class CodeMainViewModel with ChangeNotifier {
       case HCodeState.KCODE:
         pageController.jumpToPage(3);
         break;
-      case HCodeState.LCODE:
+      case HCodeState.GCODE:
         pageController.jumpToPage(4);
         break;
     }

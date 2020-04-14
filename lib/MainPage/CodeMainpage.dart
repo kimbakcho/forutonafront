@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
 import 'package:forutonafront/ICodePage/ICodeMainPage.dart';
@@ -38,9 +39,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
                   Container(
                     child: Text("4"),
                   ),
-                  Container(
-                    child: Text("5"),
-                  )
+                  GCodeMainPage()
                 ]))
           ]),
         );
