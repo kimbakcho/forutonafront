@@ -1,44 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/GCodePage/G001/G001MainPage.dart';
 import 'package:forutonafront/GCodePage/GCodePageState.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:provider/provider.dart';
 
+import 'G001/G001MainPageViewModel.dart';
 import 'GCodeMainPageViewModel.dart';
 
 class GCodeMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => GCodeMainPageViewModel(),
-        child: Consumer<GCodeMainPageViewModel>(builder: (_, model, child) {
-          return Stack(children: <Widget>[
-            Scaffold(
-                body: Container(
-                  color: Color(0xfff2f0f1),
-                  padding: EdgeInsets.fromLTRB(0, MediaQuery.of(context).padding.top, 0, 0),
-                  child: Column(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<G001MainPageViewModel>(
+            create: (_) => G001MainPageViewModel()),
+        ChangeNotifierProxyProvider<G001MainPageViewModel,GCodeMainPageViewModel>(
+            update: (_,g001,__) => GCodeMainPageViewModel(context,g001),
+        ),
+      ],
+      child: Consumer<GCodeMainPageViewModel>(builder: (_, model, child) {
+        return Stack(children: <Widget>[
+          Scaffold(
+              body: Container(
+            color: Color(0xfff2f0f1),
+            padding: EdgeInsets.fromLTRB(
+                0, MediaQuery.of(context).padding.top, 0, 0),
+            child: Column(
               children: <Widget>[
-                  topNavibar(model),
-                  Expanded(
-                      child: PageView(
-                    controller: model.gCodePagecontroller,
-                    children: <Widget>[
-                      Container(
-                        child: Text("G001"),
-                      ),
-                      Container(
-                        child: Text("G002"),
-                      ),
-                    ],
-                  )),
-                  BottomNavigation(),
+                topNavibar(model),
+                Expanded(
+                    child: PageView(
+                  controller: model.gCodePagecontroller,
+                  children: <Widget>[
+                    G001MainPage(),
+                    Container(
+                      child: Text("G002"),
+                    ),
+                  ],
+                )),
+                BottomNavigation(),
               ],
             ),
-                ))
-          ]);
-        }));
+          ))
+        ]);
+      }),
+    );
   }
 
   Container topNavibar(GCodeMainPageViewModel model) {
@@ -56,7 +64,7 @@ class GCodeMainPage extends StatelessWidget {
               ),
               g003Button(model),
               Spacer(),
-              settingButton()
+              settingButton(model)
             ]));
   }
 
@@ -182,7 +190,7 @@ class GCodeMainPage extends StatelessWidget {
     ]);
   }
 
-  Container settingButton() {
+  Container settingButton(GCodeMainPageViewModel model) {
     return Container(
         alignment: Alignment.topCenter,
         height: 36.h,
@@ -193,7 +201,7 @@ class GCodeMainPage extends StatelessWidget {
         ),
         child: FlatButton(
             padding: EdgeInsets.all(0),
-            onPressed: () {},
+            onPressed: model.jumpToSettingPage,
             child: Icon(ForutonaIcon.cog)));
   }
 }

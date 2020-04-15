@@ -11,7 +11,7 @@ import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
+
 
 enum H001PageState { H001_01, H003_01 }
 
@@ -36,9 +36,7 @@ class H001ViewModel with ChangeNotifier {
   TagRepository _tagRepository = new TagRepository();
   GeolocationRepository _geolocationRepository = GeolocationRepository();
   FBallRepository _fBallRepository = new FBallRepository();
-  Location location = new Location();
-  bool _serviceEnabled;
-  PermissionStatus _permissionGranted;
+
 
   H001ViewModel(this._context) {
     currentState = H001PageState.H001_01;

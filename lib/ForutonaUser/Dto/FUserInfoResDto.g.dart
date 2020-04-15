@@ -10,7 +10,7 @@ FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
   return FUserInfoResDto(
     json['uid'] as String,
     json['nickName'] as String,
-    json['profilePicktureUrl'] as String,
+    json['profilePictureUrl'] as String,
     json['gender'] as int,
     json['ageDate'] == null ? null : DateTime.parse(json['ageDate'] as String),
     json['email'] as String,
@@ -61,7 +61,7 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'nickName': instance.nickName,
-      'profilePicktureUrl': instance.profilePicktureUrl,
+      'profilePictureUrl': instance.profilePictureUrl,
       'gender': instance.gender,
       'ageDate': instance.ageDate?.toIso8601String(),
       'email': instance.email,

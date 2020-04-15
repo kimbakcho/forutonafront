@@ -8,7 +8,7 @@ class FUserInfoResDto {
 
    String uid;
    String nickName;
-   String profilePicktureUrl;
+   String profilePictureUrl;
    int gender;
    DateTime ageDate;
    String email;
@@ -51,7 +51,7 @@ class FUserInfoResDto {
    FUserInfoResDto(
       this.uid,
       this.nickName,
-      this.profilePicktureUrl,
+      this.profilePictureUrl,
       this.gender,
       this.ageDate,
       this.email,

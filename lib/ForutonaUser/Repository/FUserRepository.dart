@@ -1,12 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
 
-
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/NickNameDuplicationCheckResDto.dart';
 
 class FUserRepository {
-
   Future<FUserInfoResDto> getForutonaGetMe() async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     var idToken = await firebaseUser.getIdToken();
@@ -15,5 +18,32 @@ class FUserRepository {
         queryParameters: FUserReqDto(firebaseUser.uid).toJson());
 
     return FUserInfoResDto.fromJson(response.data);
+  }
+
+  Future<NickNameDuplicationCheckResDto> checkNickNameDuplication(
+      String nickName) async {
+    FDio dio = FDio("none");
+    var response = await dio.get("/v1/ForutonaUser/checkNickNameDuplication",
+        queryParameters: {"nickName": nickName});
+    return NickNameDuplicationCheckResDto.fromJson(response.data);
+  }
+
+  Future<String> updateUserProfileImage(File file) async {
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    var idToken = await firebaseUser.getIdToken();
+    FDio dio = FDio(idToken.token);
+    FormData formData = FormData.fromMap({
+      "ProfileImage": await MultipartFile.fromFile(file.path)
+    });
+    var response = await dio.put("/v1/ForutonaUser/ProfileImage",data: formData);
+    return response.data;
+  }
+
+  Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto)async{
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    var idToken = await firebaseUser.getIdToken();
+    FDio dio = FDio(idToken.token);
+    var response = await dio.put("/v1/ForutonaUser/AccountUserInfo",data: reqDto.toJson());
+    return response.data;
   }
 }

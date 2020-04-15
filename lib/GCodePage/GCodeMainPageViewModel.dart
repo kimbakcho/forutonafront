@@ -1,13 +1,26 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:forutonafront/GCodePage/G001/G001MainPageViewModel.dart';
+import 'package:forutonafront/GCodePage/G009/G009MainPage.dart';
 import 'package:forutonafront/GCodePage/GCodePageState.dart';
 import 'package:forutonafront/HCodePage/HCodePageState.dart';
+import 'package:provider/provider.dart';
 
 class GCodeMainPageViewModel extends ChangeNotifier {
+  final BuildContext _context;
   GCodePageState currentState;
+  G001MainPageViewModel _g001mainPageViewModel;
   PageController gCodePagecontroller = new PageController();
-  GCodeMainPageViewModel(){
+  GCodeMainPageViewModel(this._context,this._g001mainPageViewModel){
     currentState = GCodePageState.G001Page;
     gCodePagecontroller.addListener(onhCodePageChangeListners);
+
+  }
+  void jumpToSettingPage()async {
+    await Navigator.of(_context).push(MaterialPageRoute(builder: (_)=>G009MainPage()));
+
+    _g001mainPageViewModel.reFreshUserInfo();
+    print("test");
 
   }
   void jumpTopPage(GCodePageState gcode) {

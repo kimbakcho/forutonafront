@@ -33,7 +33,7 @@ dependencies:
   flutter_cupertino_localizations: ^1.0.1
   date_util: ^0.1.4
   json_annotation:
-  image_picker: ^0.6.1+10
+  image_picker: ^0.6.5
   async: ^2.3.0
   flutter_swiper: ^1.1.6
   google_maps_flutter: ^0.5.25+3
@@ -55,9 +55,7 @@ dependencies:
   great_circle_distance2: ^1.0.1+1
   firebase_messaging: ^6.0.9
   multi_image_picker: ^4.6.0
-  flutter_kakao_login:
-    git:
-      url: https://github.com/kimbakcho/flutter_kakao_login
+  flutter_kakao_login: ^0.8.1
   # zefyr:
   #   git:
   #     url: https://github.com/kimbakcho/zefyr
