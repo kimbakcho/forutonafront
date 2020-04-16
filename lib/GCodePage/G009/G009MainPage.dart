@@ -154,17 +154,17 @@ class G009MainPage extends StatelessWidget {
         accountRowBtn(model),
         securityRowBtn(model),
         openScopeRowBtn(),
-        alarmRowbtn()
+        alarmRowbtn(model)
       ],
     );
   }
 
-  Container alarmRowbtn() {
+  Container alarmRowbtn(G009MainPageViewModel model) {
     return Container(
       width: 360.w,
       height: 48.h,
       child: FlatButton(
-          onPressed: () {},
+          onPressed: model.goAlramSettingPage,
           padding: EdgeInsets.all(0),
           child: Container(
               width: 360.w,

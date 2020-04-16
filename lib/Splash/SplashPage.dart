@@ -38,15 +38,27 @@ class _SplashPageState extends State<SplashPage> {
                           return A000LoginPageView();
                         }));
               } else {
-                await model.getFUserInfoDto();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        settings:
+                  try{
+                    await model.getFUserInfoDto();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            settings:
                             RouteSettings(isInitialRoute: true, name: "HCODE"),
-                        builder: (context) {
-                          return CodeMainpage();
-                        }));
+                            builder: (context) {
+                              return CodeMainpage();
+                            }));
+                  }catch (ex){
+                    _auth.signOut();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            settings: RouteSettings(name: "A000"),
+                            builder: (context) {
+                              return A000LoginPageView();
+                            }));
+                  }
+
               }
             });
           }),
