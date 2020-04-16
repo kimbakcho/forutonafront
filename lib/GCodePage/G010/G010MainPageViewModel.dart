@@ -14,6 +14,7 @@ class G010MainPageViewModel extends ChangeNotifier {
   FUserInfoResDto _fUserInfoResDto;
   CodeCountry _countryCode = new CodeCountry();
   File _currentPickProfileImage;
+  String _currentIsoCode;
 
   bool isChangeProfileImage = false;
   TextEditingController nickNameController = new TextEditingController();
@@ -22,7 +23,7 @@ class G010MainPageViewModel extends ChangeNotifier {
   int userIntroduceInputTextLength = 0;
   bool isCanNotUseNickNameDisPlay = false;
   ImageProvider currentProfileImage;
-  String _currentIsoCode;
+
 
 
 

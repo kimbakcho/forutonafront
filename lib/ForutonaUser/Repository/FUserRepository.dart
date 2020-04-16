@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
@@ -45,5 +46,13 @@ class FUserRepository {
     FDio dio = FDio(idToken.token);
     var response = await dio.put("/v1/ForutonaUser/AccountUserInfo",data: reqDto.toJson());
     return response.data;
+  }
+
+  Future<int> pWChange(FUserInfoPwChangeReqDto changePwReqDto)async{
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    var idToken = await firebaseUser.getIdToken();
+    FDio dio = FDio(idToken.token);
+    var response = await dio.put("/v1/ForutonaUser/PwChange",data: changePwReqDto.toJson());
+    return int.parse(response.data);
   }
 }

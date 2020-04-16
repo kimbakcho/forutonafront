@@ -29,7 +29,39 @@ class G009MainPage extends StatelessWidget {
                               versionInfoRowBtn(),
                               customerCenterRowBtn()
                             ],
-                          ))
+                          )),
+                      Positioned(
+                          bottom: 16.h,
+                          left: 16.w,
+                          child: Container(
+                              height: 52.00.h,
+                              width: 328.00.w,
+                              child: FlatButton(
+                                onPressed: model.logout,
+                                child: Text("로그아웃",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16.sp,
+                                      color: Color(0xffffffff),
+                                    )),
+                              ),
+                              decoration: BoxDecoration(
+                                  color: Color(0xff78849e),
+                                  border: Border.all(
+                                    width: 1.00.w,
+                                    color: Color(0xff454f63),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(0.00, 3.00.w),
+                                      color:
+                                          Color(0xff000000).withOpacity(0.16),
+                                      blurRadius: 6.w,
+                                    )
+                                  ],
+                                  borderRadius:
+                                      BorderRadius.circular(12.00.w))))
                     ])))
           ]);
         }));
@@ -120,7 +152,7 @@ class G009MainPage extends StatelessWidget {
     return Column(
       children: <Widget>[
         accountRowBtn(model),
-        securityRowBtn(),
+        securityRowBtn(model),
         openScopeRowBtn(),
         alarmRowbtn()
       ],
@@ -181,12 +213,12 @@ class G009MainPage extends StatelessWidget {
     );
   }
 
-  Container securityRowBtn() {
+  Container securityRowBtn(G009MainPageViewModel model) {
     return Container(
       width: 360.w,
       height: 48.h,
       child: FlatButton(
-          onPressed: () {},
+          onPressed: model.goSecurityPage,
           padding: EdgeInsets.all(0),
           child: Container(
               width: 360.w,
@@ -208,7 +240,7 @@ class G009MainPage extends StatelessWidget {
     );
   }
 
-  Container accountRowBtn(G009MainPageViewModel model ) {
+  Container accountRowBtn(G009MainPageViewModel model) {
     return Container(
       width: 360.w,
       height: 48.h,
