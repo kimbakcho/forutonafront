@@ -25,7 +25,7 @@ class G009MainPage extends StatelessWidget {
                           top: 265.h,
                           child: Column(
                             children: <Widget>[
-                              noticeRowBtn(),
+                              noticeRowBtn(model),
                               versionInfoRowBtn(),
                               customerCenterRowBtn()
                             ],
@@ -121,12 +121,12 @@ class G009MainPage extends StatelessWidget {
     );
   }
 
-  Container noticeRowBtn() {
+  Container noticeRowBtn(G009MainPageViewModel model) {
     return Container(
       width: 360.w,
       height: 48.h,
       child: FlatButton(
-          onPressed: () {},
+          onPressed: model.goNoticePage,
           padding: EdgeInsets.all(0),
           child: Container(
               width: 360.w,
@@ -164,7 +164,7 @@ class G009MainPage extends StatelessWidget {
       width: 360.w,
       height: 48.h,
       child: FlatButton(
-          onPressed: model.goAlramSettingPage,
+          onPressed: model.goAlarmSettingPage,
           padding: EdgeInsets.all(0),
           child: Container(
               width: 360.w,

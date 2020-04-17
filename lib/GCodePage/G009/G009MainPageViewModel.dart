@@ -7,6 +7,7 @@ import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/GCodePage/G010/G010MainPage.dart';
 import 'package:forutonafront/GCodePage/G011/G011MainPage.dart';
 import 'package:forutonafront/GCodePage/G015/G015MainPage.dart';
+import 'package:forutonafront/GCodePage/G016/G016MainPage.dart';
 
 class G009MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -44,8 +45,13 @@ class G009MainPageViewModel extends ChangeNotifier {
     Navigator.of(_context).popUntil(ModalRoute.withName('/'));
   }
 
-  void goAlramSettingPage() {
+  void goAlarmSettingPage() {
     Navigator.of(_context).push(MaterialPageRoute(
         builder: (_) => G015MainPage(), settings: RouteSettings(name: "G015")));
+  }
+
+  void goNoticePage() {
+    Navigator.of(_context).push(MaterialPageRoute(
+        builder: (_) => G016MainPage(), settings: RouteSettings(name: "G016")));
   }
 }

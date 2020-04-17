@@ -7,7 +7,7 @@ class Pageable{
 
   int page = 0;
   int size = 10;
-  List<List<String>> sort = new List<List<String>>();
+  String sort;
 
   Pageable(this.page, this.size, this.sort);
 

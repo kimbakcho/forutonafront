@@ -84,6 +84,7 @@ dependencies:
   location: ^3.0.2
   #AutoComPlete 기능을 위해 사용
   google_place: ^0.3.0
+  flutter_webview_plugin: ^0.3.11
 
 
 

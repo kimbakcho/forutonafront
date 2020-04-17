@@ -10,9 +10,7 @@ Pageable _$PageableFromJson(Map<String, dynamic> json) {
   return Pageable(
     json['page'] as int,
     json['size'] as int,
-    (json['sort'] as List)
-        ?.map((e) => (e as List)?.map((e) => e as String)?.toList())
-        ?.toList(),
+    json['sort'] as String,
   );
 }
 
