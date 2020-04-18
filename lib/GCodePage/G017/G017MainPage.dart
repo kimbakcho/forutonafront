@@ -26,18 +26,22 @@ class G017MainPage extends StatelessWidget {
                       Positioned(top: 0, left: 0, child: topBar(model)),
                       Positioned(top: 56.h, left: 0, child: topTitleBar(model)),
                       Positioned(
-                          top: 136.h,
-                          left: 0,
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-                            width: 328.w,
-                            height: 456.h,
-                            child: model.personaSettingNoticeResDto != null ? WebviewScaffold(url: model.htmlUrl) : Container(),
-                            decoration: BoxDecoration(color: Colors.white),
-                          ))
+                          top: 136.h, left: 0, child: noticeContentBar(model))
                     ])))
           ]);
         }));
+  }
+
+  Container noticeContentBar(G017MainPageViewModel model) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+      width: 328.w,
+      height: 456.h,
+      child: model.personaSettingNoticeResDto != null
+          ? WebviewScaffold(url: model.htmlUrl)
+          : Container(),
+      decoration: BoxDecoration(color: Colors.white),
+    );
   }
 
   Container topTitleBar(G017MainPageViewModel model) {

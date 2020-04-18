@@ -8,6 +8,7 @@ import 'package:forutonafront/GCodePage/G010/G010MainPage.dart';
 import 'package:forutonafront/GCodePage/G011/G011MainPage.dart';
 import 'package:forutonafront/GCodePage/G015/G015MainPage.dart';
 import 'package:forutonafront/GCodePage/G016/G016MainPage.dart';
+import 'package:forutonafront/GCodePage/G019/G019MainPage.dart';
 
 class G009MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -53,5 +54,10 @@ class G009MainPageViewModel extends ChangeNotifier {
   void goNoticePage() {
     Navigator.of(_context).push(MaterialPageRoute(
         builder: (_) => G016MainPage(), settings: RouteSettings(name: "G016")));
+  }
+
+  void goCustomCenter() {
+    Navigator.of(_context).push(MaterialPageRoute(
+        builder: (_) => G019MainPage(), settings: RouteSettings(name: "G019")));
   }
 }

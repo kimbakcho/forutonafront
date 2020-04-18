@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/PersonaSettingNotice/Dto/PersonaSettingNoticeResDto.dart';
-import 'package:forutonafront/Common/PersonaSettingNotice/Repository/PersonaSettingNoticeRepository.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
+import 'package:forutonafront/ForutonaUser/Repository/PersonaSettingNoticeRepository.dart';
+
 
 class G017MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -17,11 +18,15 @@ class G017MainPageViewModel extends ChangeNotifier {
   void init() async {
     personaSettingNoticeResDto =
         await _personaSettingNoticeRepository.getPersonaSettingNoticePage(_idx);
+    _loadHtml(personaSettingNoticeResDto.noticeContent);
+    notifyListeners();
+  }
+
+  void _loadHtml(String html) {
     htmlUrl = new Uri.dataFromString(
-            '<html><body>${personaSettingNoticeResDto.noticeContent}</body></html>',
+            '<html><body>${html}</body></html>',
             mimeType: 'text/html',parameters:{'charset': 'utf-8'} )
         .toString();
-    notifyListeners();
   }
 
   getNoticeName() {}

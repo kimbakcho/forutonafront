@@ -27,7 +27,7 @@ class G009MainPage extends StatelessWidget {
                             children: <Widget>[
                               noticeRowBtn(model),
                               versionInfoRowBtn(),
-                              customerCenterRowBtn()
+                              customerCenterRowBtn(model)
                             ],
                           )),
                       Positioned(
@@ -67,12 +67,12 @@ class G009MainPage extends StatelessWidget {
         }));
   }
 
-  Container customerCenterRowBtn() {
+  Container customerCenterRowBtn(G009MainPageViewModel model) {
     return Container(
       width: 360.w,
       height: 48.h,
       child: FlatButton(
-          onPressed: () {},
+          onPressed: model.goCustomCenter,
           padding: EdgeInsets.all(0),
           child: Container(
               width: 360.w,

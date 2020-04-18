@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
-import 'package:forutonafront/Common/PersonaSettingNotice/Dto/PersonaSettingNoticeResDto.dart';
-import 'package:forutonafront/Common/PersonaSettingNotice/Repository/PersonaSettingNoticeRepository.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
+import 'package:forutonafront/ForutonaUser/Repository/PersonaSettingNoticeRepository.dart';
+
 import 'package:forutonafront/GCodePage/G017/G017MainPage.dart';
 
 class G016MainPageViewModel extends ChangeNotifier {
