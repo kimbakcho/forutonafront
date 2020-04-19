@@ -16,7 +16,7 @@ class H002Page extends StatelessWidget {
     //Hero Animation Speed
     timeDilation = 1.5;
     return ChangeNotifierProvider(
-      create: (_) => H002PageViewModel(),
+      create: (_) => H002PageViewModel(context),
       child: Consumer<H002PageViewModel>(
         builder: (_, model, child) {
           return Hero(
@@ -29,7 +29,7 @@ class H002Page extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             headerBar(context),
-                            issueBallMakeButton(),
+                            issueBallMakeButton(model),
                             questBallMakeButton()
                           ],
                         )
@@ -41,7 +41,7 @@ class H002Page extends StatelessWidget {
     );
   }
 
-  Container issueBallMakeButton() {
+  Container issueBallMakeButton(H002PageViewModel model) {
     return Container(
         height: 130.h,
         width: 328.w,
@@ -114,7 +114,7 @@ class H002Page extends StatelessWidget {
               height: 130.h,
               width: 328.w,
               child: FlatButton(
-                onPressed: () {},
+                onPressed: model.goAddIssueBall,
                 child: Text(""),
               ),
             )

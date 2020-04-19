@@ -16,7 +16,10 @@ class G023MainPage extends StatelessWidget {
                 body: Container(
                     color: Color(0xfff2f0f1),
                     padding: EdgeInsets.fromLTRB(
-                        0, MediaQuery.of(context).padding.top, 0, 0),
+                        0, MediaQuery
+                        .of(context)
+                        .padding
+                        .top, 0, 0),
                     child: Stack(
                       children: <Widget>[
                         Positioned(top: 0, left: 0, child: topBar(model)),
@@ -30,9 +33,9 @@ class G023MainPage extends StatelessWidget {
                               color: Color(0xff454f63).withOpacity(0.30),
                             )),
                         Positioned(
-                            top: 390.h,
-                            left: 0,
-                            child: companyIntroduceBar(),
+                          top: 390.h,
+                          left: 0,
+                          child: companyIntroduceBar(),
                         ),
                       ],
                     )))
@@ -42,96 +45,96 @@ class G023MainPage extends StatelessWidget {
 
   Container companyIntroduceBar() {
     return Container(
-                            height: 200.00.h,
-                            width: 360.00.w,
-                            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Text("상호:",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff7a7a7a),
-                                    )),
-                                    Spacer(),
-                                    Text("(주)FORUTONA",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w700,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff454f63),
-                                    ))
-                                  ],
-                                ),
-                                SizedBox(height: 8,),
-                                Row(
-                                  children: <Widget>[
-                                    Text("대표:",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff7a7a7a),
-                                    )),
-                                    Spacer(),
-                                    Text("유호영",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w700,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff454f63),
-                                    ))
-                                  ],
-                                ),
-                                SizedBox(height: 8,),
-                                Row(
-                                  children: <Widget>[
-                                    Text("주소:",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff7a7a7a),
-                                    )),
-                                    Spacer(),
-                                    Text("경기도 시흥시 신천천동로 7, 403호",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w700,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff454f63),
-                                    ))
-                                  ],
-                                ),
-                                SizedBox(height: 8,),
-                                Row(
-                                  children: <Widget>[
-                                    Text("사업자등록 번호:",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff7a7a7a),
-                                    )),
-                                    Spacer(),
-                                    Text("",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w700,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff454f63),
-                                    ))
-                                  ],
-                                ),
-                                SizedBox(height: 8,),
-                                Row(
-                                  children: <Widget>[
-                                    Text("통신판매업신고번호:",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff7a7a7a),
-                                    )),
-                                    Spacer(),
-                                    Text("7470400107",style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w700,
-                                      fontSize: 14.sp,
-                                      color:Color(0xff454f63),
-                                    ))
-                                  ],
-                                )
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white
-                            ),
-                          );
+      height: 200.00.h,
+      width: 360.00.w,
+      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Text("상호:", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w500,
+                fontSize: 14.sp,
+                color: Color(0xff7a7a7a),
+              )),
+              Spacer(),
+              Text("(주)FORUTONA", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w700,
+                fontSize: 14.sp,
+                color: Color(0xff454f63),
+              ))
+            ],
+          ),
+          SizedBox(height: 8,),
+          Row(
+            children: <Widget>[
+              Text("대표:", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w500,
+                fontSize: 14.sp,
+                color: Color(0xff7a7a7a),
+              )),
+              Spacer(),
+              Text("유호영", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w700,
+                fontSize: 14.sp,
+                color: Color(0xff454f63),
+              ))
+            ],
+          ),
+          SizedBox(height: 8,),
+          Row(
+            children: <Widget>[
+              Text("주소:", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w500,
+                fontSize: 14.sp,
+                color: Color(0xff7a7a7a),
+              )),
+              Spacer(),
+              Text("경기도 시흥시 신천천동로 7, 403호", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w700,
+                fontSize: 14.sp,
+                color: Color(0xff454f63),
+              ))
+            ],
+          ),
+          SizedBox(height: 8,),
+          Row(
+            children: <Widget>[
+              Text("사업자등록 번호:", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w500,
+                fontSize: 14.sp,
+                color: Color(0xff7a7a7a),
+              )),
+              Spacer(),
+              Text("", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w700,
+                fontSize: 14.sp,
+                color: Color(0xff454f63),
+              ))
+            ],
+          ),
+          SizedBox(height: 8,),
+          Row(
+            children: <Widget>[
+              Text("통신판매업신고번호:", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w500,
+                fontSize: 14.sp,
+                color: Color(0xff7a7a7a),
+              )),
+              Spacer(),
+              Text("7470400107", style: TextStyle(
+                fontFamily: "Noto Sans CJK KR", fontWeight: FontWeight.w700,
+                fontSize: 14.sp,
+                color: Color(0xff454f63),
+              ))
+            ],
+          )
+        ],
+      ),
+      decoration: BoxDecoration(
+          color: Colors.white
+      ),
+    );
   }
 
   topBar(G023MainPageViewModel model) {

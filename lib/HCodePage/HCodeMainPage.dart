@@ -20,9 +20,9 @@ class HCodeMainPage extends StatefulWidget {
 class _HCodeMainPageState extends State<HCodeMainPage> {
   @override
   Widget build(BuildContext context) {
-    var statueBar = SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(statueBar);
+//    var statueBar = SystemUiOverlayStyle.light.copyWith(
+//        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+//    SystemChrome.setSystemUIOverlayStyle(statueBar);
     return ChangeNotifierProvider(
         create: (_) => HCodeMainPageViewModel(),
         child: Consumer<HCodeMainPageViewModel>(builder: (_, model, child) {

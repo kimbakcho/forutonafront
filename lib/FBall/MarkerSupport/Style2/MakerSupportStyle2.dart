@@ -1,25 +1,26 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:forutonafront/FBall/MarkerSupport/Style1/MarkerStyle1Util.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'FBallResForMarkerDto.dart';
+import 'FBallResForMarkerStyle2Dto.dart';
+import 'dart:ui' as ui;
+
+import 'MarkerStyle2Util.dart';
+
 
 
 /// This just adds overlay and builds [_MarkerHelper] on that overlay.
 /// [_MarkerHelper] does all the heavy work of creating and getting bitmaps
 /// 해당 객체는 BallList FBallResForMarkerDto 를 받고 결과로 GoogleMapMaker Completer 통해 리턴함
-class MakerSupportStyle1 {
+class MakerSupportStyle2 {
 //  final Function(List<Uint8List>) callback;
-  final List<FBallResForMarkerDto> ballList;
+  final List<FBallResForMarkerStyle2Dto> ballList;
   final Completer completer;
 
-  MakerSupportStyle1(this.ballList, this.completer);
+  MakerSupportStyle2(this.ballList, this.completer,);
 
   Future<void> generate(BuildContext context) {
     WidgetsBinding.instance
@@ -59,11 +60,15 @@ class MakerSupportStyle1 {
 /// 2) After painted access the repaint boundary with global key and converts it to uInt8List
 /// 3) Returns set of Uint8List (bitmaps) through callback
 class _MarkerHelper extends StatefulWidget {
-  final List<FBallResForMarkerDto> ballList;
+  final List<FBallResForMarkerStyle2Dto> ballList;
 
   final Completer completer;
 
-  const _MarkerHelper({Key key, this.ballList, this.completer})
+  final RenderRepaintBoundary widgetAnimation;
+
+  final LatLng widgetAnimationLatlng;
+
+  const _MarkerHelper({Key key, this.ballList, this.completer,this.widgetAnimation,this.widgetAnimationLatlng})
       : super(key: key);
 
   @override
@@ -79,15 +84,14 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
   void afterFirstLayout(BuildContext context) async {
     List<Uint8List> bitMapFromWidget = await _getBitmaps(context);
     Set<Marker> markers = new Set<Marker>();
-    for(int i=0;i<bitMapFromWidget.length;i++){
+    int ballMarkerLength =  bitMapFromWidget.length;
+    for(int i=0;i<ballMarkerLength;i++){
       markers.add(Marker(
         markerId: MarkerId(widget.ballList[i].ballUuid),
+        anchor: Offset(0.5,0.5),
         icon: BitmapDescriptor.fromBytes(bitMapFromWidget[i]),
-        anchor: widget.ballList[i].isSelectBall ? Offset(0,0) : Offset(0.5,0.5),
-        onTap: (){
-          widget.ballList[i].onTopEvent(widget.ballList[i]);
-        },
-        position: LatLng(widget.ballList[i].latitude,widget.ballList[i].longitude),
+        position: widget.ballList[i].target,
+        zIndex: 1
       ));
     }
     widget.completer.complete(markers);
@@ -97,8 +101,8 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
   Widget build(BuildContext context) {
     List<Widget> widgetBalls = [];
     for (var ball in widget.ballList) {
-      widgetBalls.add(MarkerStyle1Util.ballWidgetSelect(
-          ball.ballType, ball.isSelectBall));
+      widgetBalls.add(MarkerStyle1Uti2.ballWidgetSelect(
+          ball.ballType));
     }
 
     return Transform.translate(
@@ -114,7 +118,8 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
                   child: i,
                 );
               }).toList(),
-            )));
+            ))
+    );
   }
 
   Future<List<Uint8List>> _getBitmaps(BuildContext context) async {
@@ -122,9 +127,10 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
     return Future.wait(futures);
   }
 
+
   Future<Uint8List> _getUint8List(GlobalKey markerKey) async {
     RenderRepaintBoundary boundary =
-        markerKey.currentContext.findRenderObject();
+    markerKey.currentContext.findRenderObject();
     var image = await boundary.toImage(pixelRatio: 1.0);
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     return byteData.buffer.asUint8List();

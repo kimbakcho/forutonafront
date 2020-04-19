@@ -46,18 +46,8 @@ class G010MainPageViewModel extends ChangeNotifier {
 
   onCompleteTap() async {
     //자기 자신의 닉네임과 같을때는 체크 안함
-    if(_fUserInfoResDto.nickName != nickNameController.text){
-      var nickNameDuplicationCheckResDto = await _fUserRepository.checkNickNameDuplication(nickNameController.text);
-      //닉네임 중복 체크
-      if(nickNameDuplicationCheckResDto.haveNickName){
-        isCanNotUseNickNameDisPlay = true;
-      }else {
-        isCanNotUseNickNameDisPlay = false;
-      }
-      notifyListeners();
-      if(nickNameDuplicationCheckResDto.haveNickName){
-        return ;
-      }
+    if(onEditCompleteNickName()){
+      return ;
     }
 
     //프로필 이미지 변경 체크 및 업데이트
@@ -86,7 +76,11 @@ class G010MainPageViewModel extends ChangeNotifier {
   }
 
   onEditCompleteNickName() async {
-    if(_fUserInfoResDto.nickName != nickNameController.text){
+    RegExp regExp1 = new RegExp(r'^(?=.*?[!@#\$&*~\s])');
+    if(regExp1.hasMatch(nickNameController.text)){
+      isCanNotUseNickNameDisPlay = true;
+    }
+    if((_fUserInfoResDto.nickName != nickNameController.text) && !isCanNotUseNickNameDisPlay ){
       var nickNameDuplicationCheckResDto = await _fUserRepository.checkNickNameDuplication(nickNameController.text);
       if(nickNameDuplicationCheckResDto.haveNickName){
         isCanNotUseNickNameDisPlay = true;
@@ -95,7 +89,8 @@ class G010MainPageViewModel extends ChangeNotifier {
       }
       notifyListeners();
     }
-
+    notifyListeners();
+    return isCanNotUseNickNameDisPlay;
   }
 
   __onUserIntroduceControllerListener() {
