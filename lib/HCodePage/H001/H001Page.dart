@@ -90,17 +90,7 @@ class _H001PageState extends State<H001Page> {
                       color: Colors.white,
                     ),
                     padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              settings: RouteSettings(name: "/H002"),
-                              builder: (context) {
-                                return H002Page(
-                                  heroTag: "H001MakeButton",
-                                );
-                              }));
-                    },
+                    onPressed: model.goBallMakePage,
                   ),
                   height: 46.00.h,
                   width: 47.00.w,

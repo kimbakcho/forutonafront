@@ -67,8 +67,10 @@ class H002_01PageViewModel extends ChangeNotifier {
                 Position(
                     latitude: currentCameraPosition.target.latitude,
                     longitude: currentCameraPosition.target.longitude))));
-    await controller.moveCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: mapSearchGeoDto.latLng, zoom: 14.4746)));
+    if(mapSearchGeoDto != null ){
+      await controller.moveCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: mapSearchGeoDto.latLng, zoom: 14.4746)));
+    }
     notifyListeners();
   }
 

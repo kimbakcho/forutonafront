@@ -4,6 +4,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'TagSearchFromTextReqDto.g.dart';
 
+
+ ///검색된 Tag을 사용하여 Ball을 찾을때 사용
 @JsonSerializable()
 class TagSearchFromTextReqDto {
   String searchText;
@@ -11,6 +13,7 @@ class TagSearchFromTextReqDto {
   String sorts;
   int size;
   int page;
+  //거리순 정렬이 있기에 좌표 넘겨줌
   double latitude;
   double longitude;
   TagSearchFromTextReqDto(this.searchText, this.sorts, this.size, this.page,

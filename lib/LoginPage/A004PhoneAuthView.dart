@@ -59,13 +59,11 @@ class _A004PhoneAuthViewState extends State<A004PhoneAuthView> {
     currentuuid = uuid.v4();
     userinfomain.uid = currentuuid;
     _smsReceiver = SmsReceiver(onSmsReceived, onTimeout: onTimeout);
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        setState(() {
-          this.iskeyboardshow = visible;
-        });
-      },
-    );
+    KeyboardVisibility.onChange.listen((bool visible) {
+      setState(() {
+        iskeyboardshow = visible;
+      });
+    });
   }
 
   void onTimeout() {

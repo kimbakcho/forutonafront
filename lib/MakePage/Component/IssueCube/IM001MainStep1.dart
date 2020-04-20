@@ -98,13 +98,12 @@ class _IM001MainStep1State extends State<IM001MainStep1> with AfterLayoutMixin {
     contentnodefocus.addListener(() {
       setState(() {});
     });
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        setState(() {
-          this.iskeyboardshow = visible;
-        });
-      },
-    );
+    KeyboardVisibility.onChange.listen((bool visible) {
+      setState(() {
+        this.iskeyboardshow = visible;
+      });
+    });
+
     clipboardchecktimer = Timer.periodic(Duration(seconds: 2), (timer) async {
       ClipboardData clipboarddata = await Clipboard.getData("text/plain");
       currentclipboarddata = clipboarddata.text.trim();

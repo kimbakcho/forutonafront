@@ -108,8 +108,9 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
       this.timer = timer;
       setState(() {});
     });
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
+
+    KeyboardVisibility.onChange.listen((bool visible) {
+      setState(() {
         if (!visible) {
           replymode1 = false;
           replymode2 = false;
@@ -119,8 +120,9 @@ class _ID001CubeDetailPageState extends State<ID001CubeDetailPage>
         setState(() {
           this.iskeyboardshow = visible;
         });
-      },
-    );
+      });
+    });
+
     _listscrollcontroller = ScrollController();
     _listscrollcontroller.addListener(_onlistscrollListener);
     isactivetimeNegative = fcubeextender1.activationtime

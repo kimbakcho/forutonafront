@@ -8,6 +8,7 @@ import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
+import 'package:forutonafront/HCodePage/H002/H002Page.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
@@ -69,6 +70,7 @@ class H001ViewModel with ChangeNotifier {
   Future reFreshSearchBall(Position serachPosition,{String address}) async {
     if(address == null){
       selectPositionAddress = "로 딩 중";
+      notifyListeners();
       selectPositionAddress = await geAddressFromGeoLocation(serachPosition);
     }else {
       selectPositionAddress = address;
@@ -93,8 +95,13 @@ class H001ViewModel with ChangeNotifier {
         sort: "Influence,DESC");
     var fBallListUpWrapDtoTemp =
         await _fBallRepository.listUpBall(ballListUpReqDto);
+    if(page == 0){
+      fBallListUpWrapDto.balls.clear();
+      notifyListeners();
+    }
     fBallListUpWrapDto.searchTime = fBallListUpWrapDtoTemp.searchTime;
     fBallListUpWrapDto.balls.addAll(fBallListUpWrapDtoTemp.balls);
+
     if (fBallListUpWrapDto.balls.length == 0) {
       hasBall = false;
       addressDisplayShowFlag = true;
@@ -154,4 +161,18 @@ class H001ViewModel with ChangeNotifier {
   }
 
 
+
+  void goBallMakePage() async {
+    await Navigator.push(
+        _context,
+        MaterialPageRoute(
+            settings: RouteSettings(name: "/H002"),
+            builder: (context) {
+              return H002Page(
+                heroTag: "H001MakeButton",
+              );
+            }));
+      currentPosition = await Geolocator().getCurrentPosition();
+      reFreshSearchBall(currentPosition);
+  }
 }

@@ -7,7 +7,6 @@ import 'package:geolocator/geolocator.dart';
 class FBallPlayerRepository {
   Future<UserToPlayBallResWrapDto> getUserToPlayBallList(UserToPlayBallReqDto reqDto) async{
     FDio dio = new FDio("nonetoken");
-
     var response =
     await dio.get("/v1/FBallPlayer/UserToPlayBallList", queryParameters: reqDto.toJson());
     var userToPlayBallResWrapDto = UserToPlayBallResWrapDto.fromJson(response.data);

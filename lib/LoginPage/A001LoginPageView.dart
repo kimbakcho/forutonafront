@@ -26,13 +26,11 @@ class _A001LoginPageViewState extends State<A001LoginPageView> {
   @override
   void initState() {
     super.initState();
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        setState(() {
-          this.iskeyboardshow = visible;
-        });
-      },
-    );
+    KeyboardVisibility.onChange.listen((bool visible) {
+      setState(() {
+        iskeyboardshow = visible;
+      });
+    });
   }
 
   Future<void> snsLogin(String logintype) async {
