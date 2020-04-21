@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallDescirptionBasic.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 
 class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
-  FBallResDto ballResDto;
+  final BuildContext _context;
+  final FBallResDto ballResDto;
   FBallDescirptionBasic fBallDescriptionBasic;
-  IssueBallWidgetSyle1ViewModel(FBallResDto ballResDto) {
-    this.ballResDto = ballResDto;
+  IssueBallWidgetSyle1ViewModel(this.ballResDto,this._context) {
     this.fBallDescriptionBasic = FBallDescirptionBasic.fromJson(
         json.decode(this.ballResDto.description));
-
   }
 
   bool isAliveBall(){
@@ -44,4 +44,10 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
 
 
 
+
+  void goIssueDetailPage() {
+    Navigator.of(_context).push(MaterialPageRoute(
+      builder: (_)=>ID001MainPage(ballResDto)
+    ));
+  }
 }

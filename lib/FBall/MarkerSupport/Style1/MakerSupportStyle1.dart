@@ -83,7 +83,8 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
       markers.add(Marker(
         markerId: MarkerId(widget.ballList[i].ballUuid),
         icon: BitmapDescriptor.fromBytes(bitMapFromWidget[i]),
-        anchor: widget.ballList[i].isSelectBall ? Offset(0,0) : Offset(0.5,0.5),
+        anchor: widget.ballList[i].isSelectBall ? Offset(0.5,1) : Offset(0.5,0.5),
+        zIndex: widget.ballList[i].isSelectBall ? 2 : 1 ,
         onTap: (){
           widget.ballList[i].onTopEvent(widget.ballList[i]);
         },

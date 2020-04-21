@@ -30,78 +30,84 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => IssueBallWidgetSyle1ViewModel(this.ballResDto),
+        create: (_) => IssueBallWidgetSyle1ViewModel(this.ballResDto,this.context),
         child:
             Consumer<IssueBallWidgetSyle1ViewModel>(builder: (_, model, child) {
           return Container(
               margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-              child: Column(children: <Widget>[
-                ballHeader(model),
-                ballMainPickture(model),
-                ballProfileBar(model),
-                ballTextBar(model),
-                divider(),
-                Container(
-                  height: 48.00.h,
-                  width: 328.00.w,
-                  padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(ballResDto.ballLikes.toString(),
-                          style: TextStyle(
-                            fontFamily: "Gibson",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
-                            color: Color(0xff78849e),
-                          )),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(5.w, 0, 0, 7.h),
-                          child: Icon(ForutonaIcon.thumbsup,
-                              color: Color(0xff78849E), size: 17.sp)),
-                      SizedBox(width: 19.w),
-                      Text(model.ballResDto.ballDisLikes.toString(),
-                          style: TextStyle(
-                            fontFamily: "Gibson",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
-                            color: Color(0xff78849e),
-                          )),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
-                          child: Icon(ForutonaIcon.thumbsdown,
-                              color: Color(0xff78849E), size: 17.sp)),
-                      SizedBox(width: 19.w),
-                      Text(model.ballResDto.commentCount.toString(),
-                          style: TextStyle(
-                            fontFamily: "Gibson",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
-                            color: Color(0xff78849e),
-                          )),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
-                          child: Icon(ForutonaIcon.comment,
-                              color: Color(0xff78849E), size: 17.sp)),
-                      SizedBox(width: 19.w),
-                      Text(
-                          TimeDisplayUtil.getRemainingToStrFromNow(
-                              model.ballResDto.activationTime),
-                          style: TextStyle(
-                            fontFamily: "Gibson",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
-                            color: Color(0xff78849e),
-                          )),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
-                          child: Icon(ForutonaIcon.accesstime,
-                              color: Color(0xff78849E), size: 17.sp)),
-                    ],
-                  ),
-                )
-              ]),
+              child: FlatButton(
+                padding: EdgeInsets.all(0),
+                onPressed: model.goIssueDetailPage,
+                child:  Column(children: <Widget>[
+                  ballHeader(model),
+                  ballMainPickture(model),
+                  ballProfileBar(model),
+                  ballTextBar(model),
+                  divider(),
+                  Container(
+                    height: 48.00.h,
+                    width: 328.00.w,
+                    padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(ballResDto.ballLikes.toString(),
+                            style: TextStyle(
+                              fontFamily: "Gibson",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
+                              color: Color(0xff78849e),
+                            )),
+                        Padding(
+                            padding: EdgeInsets.fromLTRB(5.w, 0, 0, 7.h),
+                            child: Icon(ForutonaIcon.thumbsup,
+                                color: Color(0xff78849E), size: 17.sp)),
+                        SizedBox(width: 19.w),
+                        Text(model.ballResDto.ballDisLikes.toString(),
+                            style: TextStyle(
+                              fontFamily: "Gibson",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
+                              color: Color(0xff78849e),
+                            )),
+                        Padding(
+                            padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                            child: Icon(ForutonaIcon.thumbsdown,
+                                color: Color(0xff78849E), size: 17.sp)),
+                        SizedBox(width: 19.w),
+                        Text(model.ballResDto.commentCount.toString(),
+                            style: TextStyle(
+                              fontFamily: "Gibson",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
+                              color: Color(0xff78849e),
+                            )),
+                        Padding(
+                            padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                            child: Icon(ForutonaIcon.comment,
+                                color: Color(0xff78849E), size: 17.sp)),
+                        SizedBox(width: 19.w),
+                        Text(
+                            TimeDisplayUtil.getRemainingToStrFromNow(
+                                model.ballResDto.activationTime),
+                            style: TextStyle(
+                              fontFamily: "Gibson",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
+                              color: Color(0xff78849e),
+                            )),
+                        Padding(
+                            padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                            child: Icon(ForutonaIcon.accesstime,
+                                color: Color(0xff78849E), size: 17.sp)),
+                      ],
+                    ),
+                  )
+                ]),
+              ),
+
+
               width: 328.00.w,
               decoration: BoxDecoration(
                 color: Color(0xffffffff),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
@@ -48,8 +49,11 @@ class H001ViewModel with ChangeNotifier {
   }
 
   init() async {
-    currentPosition = await Geolocator().getCurrentPosition();
-    await reFreshSearchBall(currentPosition);
+    if(await GeoLocationUtil.permissionCheck()){
+      currentPosition = await Geolocator().getCurrentPosition();
+      await reFreshSearchBall(currentPosition);
+    }
+
   }
 
   moveToH007() async {

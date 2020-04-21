@@ -30,9 +30,9 @@ class GeoLocationUtil {
       Permit.PermissionGroup.location,
       Permit.PermissionGroup.locationAlways
     ]);
-    if ((permissition[Permit.PermissionGroup.location] ==
-            Permit.PermissionStatus.granted) &&
-        (permissition[Permit.PermissionGroup.locationAlways] ==
+    if ((permissition[Permit.PermissionGroup.locationAlways] ==
+            Permit.PermissionStatus.granted) ||
+        (permissition[Permit.PermissionGroup.location] ==
             Permit.PermissionStatus.granted)) {
       return true;
     } else {
