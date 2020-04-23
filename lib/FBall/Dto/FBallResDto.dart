@@ -14,6 +14,7 @@ class FBallResDto {
   FBallType ballType;
   FBallState ballState;
   String placeAddress;
+  int ballHits;
   int ballLikes;
   int ballDisLikes;
   int commentCount;
@@ -27,6 +28,7 @@ class FBallResDto {
   double userLevel;
   double distanceWithMapCenter;
   String distanceDisplayText;
+  int contributor;
 
 
   FBallResDto(
@@ -49,7 +51,9 @@ class FBallResDto {
       this.uid,
       this.userLevel,
       this.distanceWithMapCenter,
-      this.distanceDisplayText);
+      this.distanceDisplayText,
+      this.contributor
+      );
 
   factory FBallResDto.fromJson(Map<String, dynamic> json) =>
       _$FBallResDtoFromJson(json);

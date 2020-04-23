@@ -32,7 +32,8 @@ FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
     (json['userLevel'] as num)?.toDouble(),
     (json['distanceWithMapCenter'] as num)?.toDouble(),
     json['distanceDisplayText'] as String,
-  );
+    json['contributor'] as int,
+  )..ballHits = json['ballHits'] as int;
 }
 
 Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
@@ -44,6 +45,7 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'ballType': _$FBallTypeEnumMap[instance.ballType],
       'ballState': _$FBallStateEnumMap[instance.ballState],
       'placeAddress': instance.placeAddress,
+      'ballHits': instance.ballHits,
       'ballLikes': instance.ballLikes,
       'ballDisLikes': instance.ballDisLikes,
       'commentCount': instance.commentCount,
@@ -57,6 +59,7 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'userLevel': instance.userLevel,
       'distanceWithMapCenter': instance.distanceWithMapCenter,
       'distanceDisplayText': instance.distanceDisplayText,
+      'contributor': instance.contributor,
     };
 
 T _$enumDecode<T>(

@@ -55,4 +55,12 @@ class FUserRepository {
     var response = await dio.put("/v1/ForutonaUser/PwChange",data: changePwReqDto.toJson());
     return int.parse(response.data);
   }
+
+  ///클라이언트에서 개인 정보를 취득하는것을 막기위해 인증이 필요 없는 데이터만 가져 오기 위한 Simple 쿼리
+  Future<FUserInfoResDto> getUserInfoSimple1(FUserReqDto reqDto) async {
+    FDio dio = FDio("none");
+    var response = await dio.get("/v1/ForutonaUser/UserInfoSimple1",queryParameters: reqDto.toJson());
+    return FUserInfoResDto.fromJson(response.data) ;
+  }
+
 }

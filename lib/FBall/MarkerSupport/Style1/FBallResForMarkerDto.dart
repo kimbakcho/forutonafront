@@ -3,7 +3,7 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 class FBallResForMarkerDto extends FBallResDto {
   bool isSelectBall = false;
 
-  Function onTopEvent ;
+  Function onTopEvent;
 
   FBallResForMarkerDto(
       this.isSelectBall, this.onTopEvent, FBallResDto ballResDto)
@@ -27,5 +27,6 @@ class FBallResForMarkerDto extends FBallResDto {
             ballResDto.uid,
             ballResDto.userLevel,
             ballResDto.distanceWithMapCenter,
-            ballResDto.distanceDisplayText);
+            ballResDto.distanceDisplayText,
+            ballResDto.contributor);
 }
