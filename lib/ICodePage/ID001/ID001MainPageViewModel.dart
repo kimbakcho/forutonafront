@@ -1,12 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
+import 'package:forutonafront/Common/Tag/Dto/TagResDto.dart';
+import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
@@ -16,26 +22,45 @@ import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
 class ID001MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
+
+  ScrollController mainScrollController = new ScrollController();
+
   FUserRepository _fUserRepository = new FUserRepository();
-
-  GlobalKey makerAnimationKey = new GlobalKey();
-
-  List<FBallResForMarkerStyle2Dto> ballList;
   IssueBallDescriptionDto issueBallDescriptionDto;
-  CameraPosition initialCameraPosition;
-  Set<Marker> markers = Set<Marker>();
   final FBallResDto fBallResDto;
   bool showMoreDetailFlag = false;
   FUserInfoResDto makerUserInfo;
 
-  ScrollController mainScrollController = new ScrollController();
+  //googleMap 관련
+  CameraPosition initialCameraPosition;
+  Set<Marker> markers = Set<Marker>();
+  List<FBallResForMarkerStyle2Dto> ballList;
+  GlobalKey makerAnimationKey = new GlobalKey();
+
+  //Youtube 관련
+  Youtube.YoutubeExplode _youtubeExplode = Youtube.YoutubeExplode();
+  String currentYoutubeImage;
+  String currentYoutubeTitle;
+  String currentYoutubeAuthor;
+  int currentYoutubeView;
+  DateTime currentYoutubeUploadDate;
+
+  //Tag 관련
+  TagRepository _tagRepository = new TagRepository();
+  List<Chip> tagChips = [];
 
   //볼에 레이더 애니메이션을 주기위한 Ticker
   Ticker _ticker;
+
+  //댓글 관련
+  int replyCount = 0;
+  GlobalKey<ScaffoldState> scaffoldStateKey = new GlobalKey();
 
   ID001MainPageViewModel(this._context, this.fBallResDto) {
     initialCameraPosition = CameraPosition(
@@ -43,12 +68,15 @@ class ID001MainPageViewModel extends ChangeNotifier {
         zoom: 14.425);
     issueBallDescriptionDto =
         IssueBallDescriptionDto.fromJson(json.decode(fBallResDto.description));
-
     init();
   }
 
   init() async {
     this.ballList = new List<FBallResForMarkerStyle2Dto>();
+    if (issueBallDescriptionDto.youtubeVideoId != null) {
+      youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
+    }
+    tagLoad(fBallResDto.ballUuid);
     ballList.add(new FBallResForMarkerStyle2Dto(
         FBallType.IssueBall,
         LatLng(fBallResDto.latitude, fBallResDto.longitude),
@@ -64,6 +92,42 @@ class ID001MainPageViewModel extends ChangeNotifier {
     makerUserInfo =
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
 
+    notifyListeners();
+  }
+
+  youtubeLoad(String videoId) async {
+    var video = await _youtubeExplode.getVideo(videoId);
+    if (video.thumbnailSet.highResUrl != null) {
+      currentYoutubeImage = video.thumbnailSet.highResUrl;
+    } else if (video.thumbnailSet.mediumResUrl != null) {
+      currentYoutubeImage = video.thumbnailSet.mediumResUrl;
+    } else {
+      currentYoutubeImage = video.thumbnailSet.lowResUrl;
+    }
+    currentYoutubeTitle = video.title;
+    currentYoutubeAuthor = video.author;
+    currentYoutubeView = video.statistics.viewCount;
+    currentYoutubeUploadDate = video.uploadDate;
+    notifyListeners();
+  }
+
+  tagLoad(String ballUuid) async {
+    var tagResDtoWrap =
+        await _tagRepository.tagFromBallUuid(TagFromBallReqDto(ballUuid));
+    List<TagResDto> tags = tagResDtoWrap.tags;
+    tagChips.clear();
+    for (var o in tags) {
+      tagChips.add(Chip(
+        backgroundColor: Color(0xffCCCCCC),
+        label: Text("#${o.tagItem}",
+            style: TextStyle(
+              fontFamily: "Noto Sans CJK KR",
+              fontWeight: FontWeight.w500,
+              fontSize: 13.sp,
+              color: Color(0xff454f63),
+            )),
+      ));
+    }
     notifyListeners();
   }
 
@@ -458,18 +522,17 @@ class ID001MainPageViewModel extends ChangeNotifier {
                             height: 84.00.h,
                             width: 89.00.w,
                             child: FlatButton(
-                              onPressed: (){
-                                jumpToBallImageViewer(3);
-                              },
-                              child:Text(
-                                  "더 보기 +${issueBallDescriptionDto.desimages.length - 4}",
-                                  style: TextStyle(
-                                    fontFamily: "Noto Sans CJK KR",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 10.sp,
-                                    color: Color(0xfff2f0f1),
-                                  ))
-                            ),
+                                onPressed: () {
+                                  jumpToBallImageViewer(3);
+                                },
+                                child: Text(
+                                    "더 보기 +${issueBallDescriptionDto.desimages.length - 4}",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10.sp,
+                                      color: Color(0xfff2f0f1),
+                                    ))),
                             decoration: BoxDecoration(
                               color: Color(0xff454f63).withOpacity(0.90),
                               borderRadius: BorderRadius.only(
@@ -490,5 +553,97 @@ class ID001MainPageViewModel extends ChangeNotifier {
         }
         break;
     }
+  }
+
+  Future<void> goYoutubeIntent(String youtubeVideoId) async {
+    if (Platform.isAndroid) {
+      try {
+        AndroidIntent intent = AndroidIntent(
+            action: 'action_view', data: "vnd.youtube:$youtubeVideoId");
+        await intent.launch();
+      } catch (ex) {
+        AndroidIntent intent = AndroidIntent(
+            action: 'action_view',
+            data: "https://www.youtube.com/watch?v=$youtubeVideoId");
+        await intent.launch();
+      }
+    }
+  }
+  void popupInputDisplay() {
+    StreamSubscription keyboard ;
+    showGeneralDialog(
+        context: _context,
+        barrierDismissible: true,
+        transitionDuration: Duration(milliseconds: 300),
+        barrierColor: Colors.black.withOpacity(0.3),
+        barrierLabel:
+            MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+        pageBuilder:
+            (_context, Animation animation, Animation secondaryAnimation) {
+              keyboard = KeyboardVisibility.onChange.listen((value) {
+                if (!value) {
+                  keyboard.cancel();
+                  Navigator.of(_context).pop();
+                }
+              });
+          return Scaffold(
+            backgroundColor: Color(0x00000000),
+            body: Stack(
+              children: <Widget>[
+                Positioned(
+                    left: 0,
+                    bottom: 0,
+                    child: Container(
+                        color: Colors.white,
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                                color: Colors.white,
+                                padding:
+                                    EdgeInsets.fromLTRB(16.w, 13.h, 0.w, 13.h),
+                                alignment: Alignment.centerLeft,
+                                width: 297.00.w,
+                                child: TextField(
+                                    style: TextStyle(fontSize: 20.sp),
+                                    autofocus: true,
+                                    minLines: 1,
+                                    maxLines: 4,
+                                    decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.fromLTRB(
+                                            16.w, 4.h, 16.w, 4.h),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(12.w)),
+                                            borderSide: BorderSide(
+                                                color: Color(0xff3497FD),
+                                                width: 1.h))))),
+                            Container(
+                                width: 63.w,
+                                color: Colors.white,
+                                child: Container(
+                                    width: 30.w,
+                                    height: 30.h,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff3497FD),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: FlatButton(
+                                      shape: CircleBorder(),
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 0, 6.w, 0),
+                                      onPressed: (){},
+                                      child: Icon(
+                                        ForutonaIcon.replysendicon,
+                                        color: Colors.white,
+                                        size: 12.sp,
+                                      ),
+                                    )))
+                          ],
+                        )))
+              ],
+            ),
+          );
+        });
   }
 }

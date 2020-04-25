@@ -1,12 +1,15 @@
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
+import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
+import 'package:forutonafront/Common/Tag/Dto/TagResDtoWrap.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagSearchFromTextReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:geolocator/geolocator.dart';
 
 class TagRepository {
+
   Future<TagRankingWrapDto> getTagRanking(TagRankingReqDto reqDto) async {
     FDio dio = new FDio("nonetoken");
     var response = await dio.get("/v1/FTag/Ranking",
@@ -35,5 +38,11 @@ class TagRepository {
     await dio.get("/v1/FTag/tagSearchFromTextToTagRankings", queryParameters: reqDto.toJson());
     var tagRankingWrapDto = TagRankingWrapDto.fromJson(response.data);
     return tagRankingWrapDto;
+  }
+
+  Future<TagResDtoWrap> tagFromBallUuid(TagFromBallReqDto reqDto)async {
+    FDio dio = new FDio("nonetoken");
+    var response = await dio.get("/v1/FTag/tagFromBallUuid",queryParameters:reqDto.toJson());
+    return TagResDtoWrap.fromJson(response.data);
   }
 }

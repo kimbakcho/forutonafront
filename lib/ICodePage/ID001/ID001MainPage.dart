@@ -9,24 +9,27 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ID001MainPage extends StatelessWidget {
   final FBallResDto _fBallResDto;
 
-  ID001MainPage(this._fBallResDto);
+  ID001MainPage(this._fBallResDto) {
+    var statueBar = SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white.withOpacity(0.5),
+        statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(statueBar);
+  }
 
   @override
   Widget build(BuildContext context) {
-    var statueBar = SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white.withOpacity(0.6),
-        statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(statueBar);
     return ChangeNotifierProvider(
         create: (_) => ID001MainPageViewModel(context, _fBallResDto),
         child: Consumer<ID001MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
+              key: model.scaffoldStateKey,
                 body: Container(
                     color: Colors.white,
                     child: Stack(
@@ -62,7 +65,29 @@ class ID001MainPage extends StatelessWidget {
                                       makerProfileBar(model),
                                       didver(),
                                       issueTextContentBar(model),
-                                      model.getImageContentBar()
+                                      model.getImageContentBar(),
+                                      model.issueBallDescriptionDto.desimages
+                                                  .length !=
+                                              0
+                                          ? didver()
+                                          : Container(),
+                                      model.issueBallDescriptionDto
+                                                  .youtubeVideoId !=
+                                              null
+                                          ? youtubeBar(model)
+                                          : Container(),
+                                      model.issueBallDescriptionDto
+                                                  .youtubeVideoId !=
+                                              null
+                                          ? didver()
+                                          : Container(),
+                                      model.tagChips.length > 0
+                                          ? tagBar(model)
+                                          : Container(),
+                                      model.tagChips.length > 0
+                                          ? didver()
+                                          : Container(),
+                                      replyInputBar(model)
                                     ]))),
                         Positioned(
                             top: MediaQuery.of(context).padding.top,
@@ -72,6 +97,175 @@ class ID001MainPage extends StatelessWidget {
                     )))
           ]);
         }));
+  }
+
+  Container replyInputBar(ID001MainPageViewModel model) {
+    return Container(
+        width: 360.w,
+        height: 103.h,
+        decoration: BoxDecoration(color: Color(0xffF2F0F1)),
+        child: Stack(children: <Widget>[
+          Positioned(
+              top: 16.h,
+              left: 16.w,
+              child: Container(child: Text("댓글(${model.replyCount})"))),
+          Positioned(
+              top: 16.h,
+              right: 6.w,
+              child: Container(
+                  child: InkWell(
+                      onTap: () {},
+                      child: Text("댓글 페이지로 이동",
+                          style: TextStyle(
+                            fontFamily: "Noto Sans CJK KR",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12.sp,
+                            color: Color(0xff3497fd),
+                          ))))),
+          Positioned(
+              top: 47.h,
+              left: 16.w,
+              child: Container(
+                  height: 32.00.h,
+                  width: 280.00.w,
+                  child: FlatButton(
+                      onPressed: model.popupInputDisplay,
+                      padding: EdgeInsets.all(0),
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(left: 16.w),
+                          height: 32.00.h,
+                          width: 280.00.w,
+                          child: Text("의견을 남겨주세요.",
+                              style: TextStyle(
+                                fontFamily: "Noto Sans CJK KR",
+                                fontSize: 14.sp,
+                                color: Color(0xff78849e),
+                              )))),
+                  decoration: BoxDecoration(
+                      color: Color(0xfff9f9f9),
+                      borderRadius: BorderRadius.circular(12.00)))),
+          Positioned(
+              top: 47.h,
+              right: 16.h,
+              child: Container(
+                  width: 30.w,
+                  height: 30.h,
+                  child: FlatButton(
+                    padding: EdgeInsets.fromLTRB(0, 0, 6.w, 0),
+                    onPressed: () {},
+                    shape: CircleBorder(),
+                    child: Icon(ForutonaIcon.replysendicon,
+                        color: Color(0xffB1B1B1), size: 13.sp),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xffE4E7E8),
+                    shape: BoxShape.circle,
+                  )))
+        ]));
+  }
+
+  Container tagBar(ID001MainPageViewModel model) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+      child: Wrap(
+        direction: Axis.horizontal,
+        crossAxisAlignment: WrapCrossAlignment.start,
+        spacing: 10.w,
+        children: model.tagChips,
+      ),
+    );
+  }
+
+  Container youtubeBar(ID001MainPageViewModel model) {
+    return Container(
+        height: 122.h,
+        width: 360.w,
+        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+        child: Stack(children: <Widget>[
+          Positioned(
+              top: 0,
+              left: 0,
+              child: model.currentYoutubeImage != null
+                  ? Container(
+                      height: 90.00.h,
+                      width: 124.00.w,
+                      child: FlatButton(
+                          onPressed: () {
+                            model.goYoutubeIntent(
+                                model.issueBallDescriptionDto.youtubeVideoId);
+                          },
+                          padding: EdgeInsets.all(0),
+                          child: Container(
+                              height: 50.00.h,
+                              width: 50.00.w,
+                              child:
+                                  Icon(ForutonaIcon.yplay, color: Colors.white),
+                              decoration: BoxDecoration(
+                                color: Color(0xff454f63).withOpacity(0.3),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(0.00, 6.00),
+                                    color: Color(0xff321636).withOpacity(0.7),
+                                    blurRadius: 12.w,
+                                  )
+                                ],
+                                shape: BoxShape.circle,
+                              ))),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(model.currentYoutubeImage),
+                          ),
+                          borderRadius: BorderRadius.circular(12.00)))
+                  : Container(
+                      height: 90.00.h, width: 124.00.w, child: Text("로딩중"))),
+          Positioned(
+              top: 0,
+              left: 139.w,
+              child: Container(
+                  child: Column(children: <Widget>[
+                model.currentYoutubeTitle != null
+                    ? Container(
+                        child: Text(model.currentYoutubeTitle,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontWeight: FontWeight.w700,
+                              fontSize: 12.sp,
+                              color: Color(0xff454f63),
+                            )),
+                        width: 189.w,
+                        margin: EdgeInsets.only(bottom: 10.h),
+                      )
+                    : Container(),
+                model.currentYoutubeAuthor != null
+                    ? Container(
+                        width: 189.w,
+                        child: Text(model.currentYoutubeAuthor,
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontSize: 8.sp,
+                              color: Color(0xff78849e),
+                            )),
+                      )
+                    : Container(),
+                model.currentYoutubeView != null
+                    ? Container(
+                        width: 189.w,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            "조회수${model.currentYoutubeView}회•"
+                            "${DateFormat("yyyy.MM.dd").format(model.currentYoutubeUploadDate.toLocal())}",
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontSize: 8.sp,
+                              color: Color(0xff78849e),
+                            )),
+                      )
+                    : Container()
+              ])))
+        ]));
   }
 
   Container issueTextContentBar(ID001MainPageViewModel model) {
@@ -434,6 +628,7 @@ class ID001MainPage extends StatelessWidget {
                       alignment: Alignment.center,
                       animation: "animating",
                       fit: BoxFit.contain,
+
                     ),
                   ))),
           GoogleMap(

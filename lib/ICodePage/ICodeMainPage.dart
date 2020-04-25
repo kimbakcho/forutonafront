@@ -13,12 +13,15 @@ import 'package:provider/provider.dart';
 import 'ICodeMainPageViewModel.dart';
 
 class ICodeMainPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  ICodeMainPage(){
     var statueBar = SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white.withOpacity(0.6),
         statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(statueBar);
+  }
+  @override
+  Widget build(BuildContext context) {
+
     return ChangeNotifierProvider(
         create: (_) => ICodeMainPageViewModel(context),
         child: Consumer<ICodeMainPageViewModel>(builder: (_, model, child) {

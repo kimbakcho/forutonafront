@@ -12,6 +12,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagInsertReqDto.dart';
+import 'package:forutonafront/Common/YoutubeUtil/YoutubeIdParser.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
@@ -69,6 +70,9 @@ class IM001MainPageViewModel extends ChangeNotifier {
   //Repository
   FBallRepository _fBallRepository = FBallRepository();
 
+  Timer ballDrawTimer;
+  bool timerStopFlag = false;
+
   IM001MainPageViewModel(this._context, this._setUpPosition, this.address) {
     _ballUuid = new Uuid().v4();
     initCameraPosition =
@@ -93,11 +97,20 @@ class IM001MainPageViewModel extends ChangeNotifier {
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
-    _ticker = Ticker(onTickerDrawBall);
+    ballDrawTimer = Timer.periodic(Duration(milliseconds: 50), (ballDrawTimer){
+      if(timerStopFlag){
+        ballDrawTimer.cancel();
+      }
+      onTickerDrawBall();
+    });
+
+//    _ticker = Ticker(onTickerDrawBall);
     //개발중에는 애니메이션 효과 줄시 너무 느리므로 끔.
 //    _ticker.start();
     notifyListeners();
   }
+
+
 
   void ontextContentFocusNode() {
     notifyListeners();
@@ -116,15 +129,19 @@ class IM001MainPageViewModel extends ChangeNotifier {
   }
 
   //여기서 선택된 볼의 애니메이션을 같이 그려준다.
-  onTickerDrawBall(Duration duration) async {
+  onTickerDrawBall() async {
     Completer<Set<Marker>> _markerCompleter = Completer();
     RenderRepaintBoundary ballAnimation =
         makerAnimationKey.currentContext.findRenderObject();
+
     var ballAnimationImage = await ballAnimation.toImage(pixelRatio: 1.0);
     ByteData byteData =
         await ballAnimationImage.toByteData(format: ui.ImageByteFormat.png);
+    ballAnimationImage.dispose();
     Uint8List uint8BallAnimation = byteData.buffer.asUint8List();
-    MakerSupportStyle2(ballList, _markerCompleter).generate(_context);
+    var makerSupport = MakerSupportStyle2(ballList, _markerCompleter);
+    makerSupport.generate(_context);
+
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
@@ -140,10 +157,15 @@ class IM001MainPageViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    _ticker.dispose();
+//    _ticker.dispose();
     if (_clipBoardCheckTimer != null) {
       _clipBoardCheckTimer.cancel();
     }
+    timerStopFlag = true;
+    if(ballDrawTimer != null){
+      ballDrawTimer.cancel();
+    }
+
     super.dispose();
   }
 
@@ -182,7 +204,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
       issueBallDescriptionDto.desimages.add(FBallDesImagesDto.fromUrl(i, ballImageList[i].imageUrl));
     }
     if(validYoutubeLink != null){
-      issueBallDescriptionDto.youtubeVideoId = getIdFromUrl(validYoutubeLink);
+      issueBallDescriptionDto.youtubeVideoId = YoutubeIdParser.getIdFromUrl(validYoutubeLink);
     }
 
 
@@ -402,7 +424,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
   void addTagChips(String value) {
     if (tagChips.length == 10) {
       Fluttertoast.showToast(
-          msg: "이미지 20장을 모두 첨부하였습니다.",
+          msg: "태그가 10개 이상입니다.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1,

@@ -12,14 +12,16 @@ class H002_01Page extends StatelessWidget {
   Position initPosition;
   String address;
 
-  H002_01Page(this.initPosition, this.address);
-
-  @override
-  Widget build(BuildContext context) {
+  H002_01Page(this.initPosition, this.address){
     var statueBar = SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white.withOpacity(0),
         statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(statueBar);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
     return ChangeNotifierProvider(
         create: (_) => H002_01PageViewModel(initPosition, address, context),
         child: Consumer<H002_01PageViewModel>(builder: (_, model, child) {

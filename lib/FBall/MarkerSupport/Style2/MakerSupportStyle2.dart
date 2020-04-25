@@ -28,19 +28,21 @@ class MakerSupportStyle2 {
     return completer.future;
   }
 
+  MarkerHelper helper;
+
   void afterFirstLayout(BuildContext context) {
     addOverlay(context);
   }
 
   void addOverlay(BuildContext context) {
     OverlayState overlayState = Overlay.of(context);
-
+    helper = MarkerHelper(
+      ballList: ballList,
+      completer: completer,
+    );
     OverlayEntry entry = OverlayEntry(
         builder: (context) {
-          return _MarkerHelper(
-            ballList: ballList,
-            completer: completer,
-          );
+          return helper;
         },
         maintainState: true);
 
@@ -59,7 +61,7 @@ class MakerSupportStyle2 {
 /// 1) It draws marker widget to tree
 /// 2) After painted access the repaint boundary with global key and converts it to uInt8List
 /// 3) Returns set of Uint8List (bitmaps) through callback
-class _MarkerHelper extends StatefulWidget {
+class MarkerHelper extends StatefulWidget {
   final List<FBallResForMarkerStyle2Dto> ballList;
 
   final Completer completer;
@@ -68,8 +70,10 @@ class _MarkerHelper extends StatefulWidget {
 
   final LatLng widgetAnimationLatlng;
 
-  const _MarkerHelper({Key key, this.ballList, this.completer,this.widgetAnimation,this.widgetAnimationLatlng})
+
+  const MarkerHelper({Key key, this.ballList, this.completer,this.widgetAnimation,this.widgetAnimationLatlng})
       : super(key: key);
+
 
   @override
   _MarkerHelperState createState() {
@@ -77,8 +81,14 @@ class _MarkerHelper extends StatefulWidget {
   }
 }
 
-class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
+class _MarkerHelperState extends State<MarkerHelper> with AfterLayoutMixin {
   List<GlobalKey> globalKeys = List<GlobalKey>();
+  @override
+  void dispose() {
+
+    super.dispose();
+    print("MarkerHelperStateDisPose");
+  }
 
   @override
   void afterFirstLayout(BuildContext context) async {
@@ -95,6 +105,7 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
       ));
     }
     widget.completer.complete(markers);
+
   }
 
   @override
