@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagResDto.dart';
@@ -44,7 +43,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
   List<FBallResForMarkerStyle2Dto> ballList;
   GlobalKey makerAnimationKey = new GlobalKey();
   Set<Circle> circles = Set<Circle>();
-  MapAniCircleController googleMapCircleController = new MapAniCircleController();
+  MapAniCircleController googleMapCircleController =
+      new MapAniCircleController();
 
   //Youtube 관련
   Youtube.YoutubeExplode _youtubeExplode = Youtube.YoutubeExplode();
@@ -89,12 +89,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
-    _ticker = Ticker(onTickerDrawBall);
-    //개발중에는 애니메이션 효과 줄시 너무 느리므로 끔.
-//    _ticker.start();
+
     makerUserInfo =
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-
 
     notifyListeners();
     googleMapDarwRader();
@@ -102,38 +99,44 @@ class ID001MainPageViewModel extends ChangeNotifier {
 
   //Google Map에 레이더로 애니메이션을 그린다 .
   void googleMapDarwRader() {
-    var circleBack = Circle(circleId: CircleId("raderBack"),
-        zIndex: 0,center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
+    var circleBack = Circle(
+        circleId: CircleId("raderBack"),
+        zIndex: 0,
+        center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
         strokeWidth: 0,
         fillColor: Color(0xff39F999).withOpacity(0.17),
         radius: 200);
     circles.add(circleBack);
-    googleMapCircleController.aniController.addListener((){
-      var circle1 = Circle(circleId: CircleId("rader1"),
-          zIndex: 1,center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
+    googleMapCircleController.aniController.addListener(() {
+      var circle1 = Circle(
+          circleId: CircleId("rader1"),
+          zIndex: 1,
+          center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
           strokeWidth: 0,
           fillColor: Color(0xff39F999).withOpacity(0.3),
           radius: googleMapCircleController.circleRadius.value);
-      circles.removeWhere((value){
+      circles.removeWhere((value) {
         return value.circleId.value == "rader1";
       });
       circles.add(circle1);
       notifyListeners();
     });
-    googleMapCircleController.aniController2.addListener((){
-      var circle2 = Circle(circleId: CircleId("rader2"),
-          zIndex: 2,center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
+    googleMapCircleController.aniController2.addListener(() {
+      var circle2 = Circle(
+          circleId: CircleId("rader2"),
+          zIndex: 2,
+          center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
           strokeWidth: 0,
           fillColor: Color(0xff39F999).withOpacity(0.6),
           radius: googleMapCircleController.circleRadius2.value);
-      circles.removeWhere((value){
+      circles.removeWhere((value) {
         return value.circleId.value == "rader2";
       });
       circles.add(circle2);
       notifyListeners();
     });
     googleMapCircleController.aniController.forward();
-    Future.delayed(Duration(milliseconds: 500),(){
+    Future.delayed(Duration(milliseconds: 500), () {
       googleMapCircleController.aniController2.forward();
     });
   }
@@ -166,7 +169,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
             style: TextStyle(
               fontFamily: "Noto Sans CJK KR",
               fontWeight: FontWeight.w500,
-              fontSize: 13.sp,
+              fontSize: 13,
               color: Color(0xff454f63),
             )),
       ));
@@ -182,28 +185,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }
   }
 
-  //여기서 선택된 볼의 애니메이션을 같이 그려준다.
-  onTickerDrawBall(Duration duration) async {
-    Completer<Set<Marker>> _markerCompleter = Completer();
-    RenderRepaintBoundary ballAnimation =
-        makerAnimationKey.currentContext.findRenderObject();
-    var ballAnimationImage = await ballAnimation.toImage(pixelRatio: 1.0);
-    ByteData byteData =
-        await ballAnimationImage.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List uint8BallAnimation = byteData.buffer.asUint8List();
-    MakerSupportStyle2(ballList, _markerCompleter).generate(_context);
-    Set<Marker> markers = await _markerCompleter.future;
-    this.markers.clear();
-    this.markers.addAll(markers);
-    this.markers.add(Marker(
-        markerId: MarkerId("selectlader"),
-        position: LatLng(fBallResDto.latitude, fBallResDto.longitude),
-        anchor: Offset(0.5, 0.5),
-        zIndex: 0,
-
-        icon: BitmapDescriptor.fromBytes(uint8BallAnimation)));
-    notifyListeners();
-  }
 
   void onBackBtn() {
     Navigator.of(_context).pop();
@@ -232,7 +213,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }));
   }
 
-  Container getImageContentBar() {
+  Container getImageContentBar(BuildContext context) {
     switch (issueBallDescriptionDto.desimages.length) {
       case 0:
         {
@@ -242,10 +223,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
       case 1:
         {
           return Container(
-              height: 260.00.h,
-              width: 328.00.w,
-              margin: EdgeInsets.only(bottom: 24.h),
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0.h),
+              height: 260.00,
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.fromLTRB(16, 0, 16, 24),
               child: FlatButton(
                 onPressed: () {
                   jumpToBallImageViewer(0);
@@ -262,61 +242,51 @@ class ID001MainPageViewModel extends ChangeNotifier {
       case 2:
         {
           return Container(
-            height: 260.00.h,
-            width: 328.00.w,
-            margin: EdgeInsets.only(bottom: 24.h),
-            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0.h),
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: 0,
-                  left: 0,
+            height: 260.00,
+            margin: EdgeInsets.only(bottom: 24),
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: Row(children: <Widget>[
+              Expanded(
+                  flex: 1,
                   child: Container(
-                    height: 260.00.h,
-                    width: 162.00.w,
-                    child: FlatButton(
-                      onPressed: () {
-                        jumpToBallImageViewer(0);
-                      },
-                    ),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            issueBallDescriptionDto.desimages[0].src),
+                      margin: EdgeInsets.only(right: 1),
+                      height: 260.00,
+                      child: FlatButton(
+                        onPressed: () {
+                          jumpToBallImageViewer(0);
+                        },
                       ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12.00),
-                        bottomLeft: Radius.circular(12.00),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      height: 260.00.h,
-                      width: 162.00.w,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                                issueBallDescriptionDto.desimages[0].src),
+                          ),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.00),
+                            bottomLeft: Radius.circular(12.00),
+                          )))),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      margin: EdgeInsets.only(left: 1),
+                      height: 260.00,
                       child: FlatButton(
                         onPressed: () {
                           jumpToBallImageViewer(1);
                         },
                       ),
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                              issueBallDescriptionDto.desimages[1].src),
-                        ),
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(12.00),
-                          bottomRight: Radius.circular(12.00),
-                        ),
-                      ),
-                    ))
-              ],
-            ),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                                issueBallDescriptionDto.desimages[1].src),
+                          ),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(12.00),
+                            bottomRight: Radius.circular(12.00),
+                          ))))
+            ]),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.00),
             ),
@@ -326,18 +296,17 @@ class ID001MainPageViewModel extends ChangeNotifier {
       case 3:
         {
           return Container(
-              height: 260.00.h,
-              width: 328.00.w,
-              margin: EdgeInsets.only(bottom: 24.h),
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0.h),
-              child: Stack(
+              height: 260.00,
+              margin: EdgeInsets.only(bottom: 24),
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Positioned(
-                      top: 0,
-                      left: 0,
+                  Expanded(
+                      flex: 1,
                       child: Container(
-                          height: 260.00.h,
-                          width: 235.00.w,
+                          margin: EdgeInsets.only(right: 2),
+                          height: 260.00,
                           child: FlatButton(
                             onPressed: () {
                               jumpToBallImageViewer(0);
@@ -353,46 +322,46 @@ class ID001MainPageViewModel extends ChangeNotifier {
                                 topLeft: Radius.circular(12.00),
                                 bottomLeft: Radius.circular(12.00),
                               )))),
-                  Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                          height: 128.00.h,
-                          width: 89.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(1);
-                            },
-                          ),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    issueBallDescriptionDto.desimages[1].src),
-                              ),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(12.00),
-                              )))),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                          height: 128.00.h,
-                          width: 89.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(2);
-                            },
-                          ),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    issueBallDescriptionDto.desimages[2].src),
-                              ),
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(12.00),
-                              )))),
+                  Column(children: [
+                    Expanded(
+                        flex: 1,
+                        child: Container(
+                            margin: EdgeInsets.only(bottom: 1),
+                            child: FlatButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {
+                                jumpToBallImageViewer(1);
+                              },
+                            ),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      issueBallDescriptionDto.desimages[1].src),
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(12.00),
+                                )))),
+                    Expanded(
+                        flex: 1,
+                        child: Container(
+                            margin: EdgeInsets.only(top: 1),
+                            child: FlatButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {
+                                jumpToBallImageViewer(2);
+                              },
+                            ),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      issueBallDescriptionDto.desimages[2].src),
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(12.00),
+                                ))))
+                  ])
                 ],
               ));
         }
@@ -400,90 +369,86 @@ class ID001MainPageViewModel extends ChangeNotifier {
       case 4:
         {
           return Container(
-              height: 260.00.h,
-              width: 328.00.w,
-              margin: EdgeInsets.only(bottom: 24.h),
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0.h),
-              child: Stack(
+              height: 260.00,
+              margin: EdgeInsets.only(bottom: 24),
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Row(
                 children: <Widget>[
-                  Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Container(
-                          height: 260.00.h,
-                          width: 235.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(0);
-                            },
-                          ),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                  issueBallDescriptionDto.desimages[0].src),
-                            ),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12.00),
-                              bottomLeft: Radius.circular(12.00),
-                            ),
-                          ))),
-                  Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                          height: 84.00.h,
-                          width: 89.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(1);
-                            },
-                          ),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    issueBallDescriptionDto.desimages[1].src),
-                              ),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(12.00),
-                              )))),
-                  Positioned(
-                      top: 88.h,
-                      right: 0,
-                      child: Container(
-                          height: 84.00.h,
-                          width: 89.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(2);
-                            },
-                          ),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
+                  Expanded(
+                    child: Container(
+                        height: 260.00,
+                        margin: EdgeInsets.only(right: 2),
+                        child: FlatButton(
+                          onPressed: () {
+                            jumpToBallImageViewer(0);
+                          },
+                        ),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                issueBallDescriptionDto.desimages[2].src),
-                          )))),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                          height: 84.00.h,
-                          width: 89.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(3);
-                            },
+                                issueBallDescriptionDto.desimages[0].src),
                           ),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.00),
+                            bottomLeft: Radius.circular(12.00),
+                          ),
+                        )),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            margin: EdgeInsets.only(bottom: 1),
+                            child: FlatButton(onPressed: () {
+                              jumpToBallImageViewer(1);
+                            }),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage(issueBallDescriptionDto
-                                      .desimages[3].src)),
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(12.00),
-                              ))))
+                                  image: NetworkImage(
+                                      issueBallDescriptionDto.desimages[1].src),
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(12.00),
+                                ))),
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                              margin: EdgeInsets.only(bottom: 1, top: 1),
+                              child: FlatButton(
+                                onPressed: () {
+                                  jumpToBallImageViewer(2);
+                                },
+                              ),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    issueBallDescriptionDto.desimages[2].src),
+                              )))),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                              margin: EdgeInsets.only(top: 1),
+                              child: FlatButton(
+                                onPressed: () {
+                                  jumpToBallImageViewer(3);
+                                },
+                              ),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          issueBallDescriptionDto
+                                              .desimages[3].src)),
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(12.00),
+                                  ))))
+                    ],
+                  ),
                 ],
               ));
         }
@@ -491,107 +456,104 @@ class ID001MainPageViewModel extends ChangeNotifier {
       default:
         {
           return Container(
-              height: 260.00.h,
-              width: 328.00.w,
-              margin: EdgeInsets.only(bottom: 24.h),
-              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0.h),
-              child: Stack(
+              height: 260.00,
+              margin: EdgeInsets.only(bottom: 24),
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Row(
                 children: <Widget>[
-                  Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Container(
-                          height: 260.00.h,
-                          width: 235.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(0);
-                            },
-                          ),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                  issueBallDescriptionDto.desimages[0].src),
-                            ),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12.00),
-                              bottomLeft: Radius.circular(12.00),
-                            ),
-                          ))),
-                  Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                          height: 84.00.h,
-                          width: 89.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(1);
-                            },
-                          ),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    issueBallDescriptionDto.desimages[1].src),
-                              ),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(12.00),
-                              )))),
-                  Positioned(
-                      top: 88.h,
-                      right: 0,
-                      child: Container(
-                          height: 84.00.h,
-                          width: 89.00.w,
-                          child: FlatButton(
-                            onPressed: () {
-                              jumpToBallImageViewer(2);
-                            },
-                          ),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
+                  Expanded(
+                    child: Container(
+                        height: 260.00,
+                        margin: EdgeInsets.only(right: 2),
+                        child: FlatButton(
+                          onPressed: () {
+                            jumpToBallImageViewer(0);
+                          },
+                        ),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                issueBallDescriptionDto.desimages[2].src),
-                          )))),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                          height: 84.00.h,
-                          width: 89.00.w,
-                          child: Container(
-                            height: 84.00.h,
-                            width: 89.00.w,
-                            child: FlatButton(
-                                onPressed: () {
-                                  jumpToBallImageViewer(3);
-                                },
-                                child: Text(
-                                    "더 보기 +${issueBallDescriptionDto.desimages.length - 4}",
-                                    style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 10.sp,
-                                      color: Color(0xfff2f0f1),
-                                    ))),
-                            decoration: BoxDecoration(
-                              color: Color(0xff454f63).withOpacity(0.90),
-                              borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(12.00)),
-                            ),
+                                issueBallDescriptionDto.desimages[0].src),
                           ),
-                          decoration: BoxDecoration(
-                              color: Color(0xff454f63).withOpacity(0.90),
-                              image: DecorationImage(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.00),
+                            bottomLeft: Radius.circular(12.00),
+                          ),
+                        )),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            margin: EdgeInsets.only(bottom: 1),
+                            child: FlatButton(
+                              onPressed: () {
+                                jumpToBallImageViewer(1);
+                              },
+                            ),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage(issueBallDescriptionDto
-                                      .desimages[3].src)),
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(12.00),
-                              ))))
+                                  image: NetworkImage(
+                                      issueBallDescriptionDto.desimages[1].src),
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(12.00),
+                                ))),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            margin: EdgeInsets.only(top: 1, bottom: 1),
+                            child: FlatButton(
+                              onPressed: () {
+                                jumpToBallImageViewer(2);
+                              },
+                            ),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                  issueBallDescriptionDto.desimages[2].src),
+                            ))),
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                              margin: EdgeInsets.only(top: 1),
+                              child: Container(
+                                child: FlatButton(
+                                    onPressed: () {
+                                      jumpToBallImageViewer(3);
+                                    },
+                                    child: Text(
+                                        "더 보기 +${issueBallDescriptionDto.desimages.length - 4}",
+                                        style: TextStyle(
+                                          fontFamily: "Noto Sans CJK KR",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 10,
+                                          color: Color(0xfff2f0f1),
+                                        ))),
+                                decoration: BoxDecoration(
+                                  color: Color(0xff454f63).withOpacity(0.90),
+                                  borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(12.00)),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                  color: Color(0xff454f63).withOpacity(0.90),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          issueBallDescriptionDto
+                                              .desimages[3].src)),
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(12.00),
+                                  ))))
+                    ],
+                  )
                 ],
               ));
         }
@@ -613,8 +575,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
       }
     }
   }
+
   void popupInputDisplay() {
-    StreamSubscription keyboard ;
+    StreamSubscription keyboard;
     showGeneralDialog(
         context: _context,
         barrierDismissible: true,
@@ -624,12 +587,12 @@ class ID001MainPageViewModel extends ChangeNotifier {
             MaterialLocalizations.of(_context).modalBarrierDismissLabel,
         pageBuilder:
             (_context, Animation animation, Animation secondaryAnimation) {
-              keyboard = KeyboardVisibility.onChange.listen((value) {
-                if (!value) {
-                  keyboard.cancel();
-                  Navigator.of(_context).pop();
-                }
-              });
+          keyboard = KeyboardVisibility.onChange.listen((value) {
+            if (!value) {
+              keyboard.cancel();
+              Navigator.of(_context).pop();
+            }
+          });
           return Scaffold(
             backgroundColor: Color(0x00000000),
             body: Stack(
@@ -638,51 +601,56 @@ class ID001MainPageViewModel extends ChangeNotifier {
                     left: 0,
                     bottom: 0,
                     child: Container(
+                        height: 56,
+                        width: MediaQuery.of(_context).size.width,
                         color: Colors.white,
                         child: Row(
                           children: <Widget>[
-                            Container(
-                                color: Colors.white,
-                                padding:
-                                    EdgeInsets.fromLTRB(16.w, 13.h, 0.w, 13.h),
-                                alignment: Alignment.centerLeft,
-                                width: 297.00.w,
-                                child: TextField(
-                                    style: TextStyle(fontSize: 20.sp),
-                                    autofocus: true,
-                                    minLines: 1,
-                                    maxLines: 4,
-                                    decoration: InputDecoration(
-                                        isDense: true,
-                                        contentPadding: EdgeInsets.fromLTRB(
-                                            16.w, 4.h, 16.w, 4.h),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(12.w)),
-                                            borderSide: BorderSide(
-                                                color: Color(0xff3497FD),
-                                                width: 1.h))))),
-                            Container(
-                                width: 63.w,
-                                color: Colors.white,
+                            Expanded(
                                 child: Container(
-                                    width: 30.w,
-                                    height: 30.h,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xff3497FD),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: FlatButton(
-                                      shape: CircleBorder(),
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 0, 6.w, 0),
-                                      onPressed: (){},
-                                      child: Icon(
-                                        ForutonaIcon.replysendicon,
-                                        color: Colors.white,
-                                        size: 12.sp,
-                                      ),
-                                    )))
+                                    color: Colors.white,
+                                    padding: EdgeInsets.fromLTRB(16, 13, 0, 13),
+                                    alignment: Alignment.centerLeft,
+                                    margin: EdgeInsets.only(right: 16),
+                                    child: TextField(
+                                        style: TextStyle(fontSize: 20),
+                                        autofocus: true,
+                                        minLines: 1,
+                                        maxLines: 4,
+                                        decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.fromLTRB(
+                                                16, 4, 16, 4),
+                                            enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(12)),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xff3497FD),
+                                                    width: 1)),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(12)),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xff3497FD),
+                                                    width: 1)))))),
+                            Container(
+                                width: 30,
+                                height: 30,
+                                margin: EdgeInsets.only(right: 16),
+                                decoration: BoxDecoration(
+                                  color: Color(0xff3497FD),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: FlatButton(
+                                  shape: CircleBorder(),
+                                  padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
+                                  onPressed: () {},
+                                  child: Icon(
+                                    ForutonaIcon.replysendicon,
+                                    color: Colors.white,
+                                    size: 12,
+                                  ),
+                                ))
                           ],
                         )))
               ],

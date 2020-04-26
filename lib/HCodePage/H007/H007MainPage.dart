@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
 import 'package:geolocator/geolocator.dart';
@@ -33,24 +32,25 @@ class H007MainPage extends StatelessWidget {
                 child: topGradiantEffect(),
               ),
               Positioned(
-                top: MediaQuery.of(context).padding.top + 2.h,
-                left: 16.w,
+                top: MediaQuery.of(context).padding.top + 2,
+                width: MediaQuery.of(context).size.width,
                 child: topAddressBar(model),
               ),
               Positioned(
-                top: 96.h,
-                right: 16.w,
+                top: 96,
+                right: 16,
                 child: myLocationBtn(model),
               ),
               Center(
                 child: Icon(
                   ForutonaIcon.anchor,
                   color: Color(0xff454F63),
-                  size: 22.sp,
+                  size: 22,
                 ),
               ),
               Positioned(
-                bottom: 24.h,
+                bottom: 24,
+                width: MediaQuery.of(context).size.width,
                 child: bottomSerarchBtn(model),
               )
             ]))
@@ -60,9 +60,9 @@ class H007MainPage extends StatelessWidget {
 
   Container bottomSerarchBtn(H007MainPageViewModel model) {
     return Container(
-        margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-        height: 52.00.h,
-        width: 328.00.w,
+        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        height: 52.00,
+
         child: FlatButton(
           onPressed: () {
             model.onMapBallSearch(model.currentCameraPosition.target);
@@ -71,7 +71,7 @@ class H007MainPage extends StatelessWidget {
               style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",
                 fontWeight: FontWeight.w500,
-                fontSize: 16.sp,
+                fontSize: 16,
                 color: Color(0xfff9f9f9),
               )),
           padding: EdgeInsets.all(0),
@@ -79,23 +79,23 @@ class H007MainPage extends StatelessWidget {
         decoration: BoxDecoration(
             color: Color(0xff3497fd),
             border: Border.all(
-              width: 1.00.w,
+              width: 1.00,
               color: Color(0xff4f72ff),
             ),
             boxShadow: [
               BoxShadow(
-                offset: Offset(0.00, 3.00.w),
+                offset: Offset(0.00, 3.00),
                 color: Color(0xff000000).withOpacity(0.16),
                 blurRadius: 6,
               )
             ],
-            borderRadius: BorderRadius.circular(12.00.w)));
+            borderRadius: BorderRadius.circular(12.00)));
   }
 
   Container myLocationBtn(H007MainPageViewModel model) {
     return Container(
-        height: 52.00.h,
-        width: 52.00.w,
+        height: 52.00,
+        width: 52.00,
         child: FlatButton(
           onPressed: () {
             model.onMyLocation();
@@ -106,52 +106,53 @@ class H007MainPage extends StatelessWidget {
           color: Color(0xffffffff),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0.00, 12.00.w),
+              offset: Offset(0.00, 12.00),
               color: Color(0xff455b63).withOpacity(0.10),
-              blurRadius: 16.w,
+              blurRadius: 16,
             ),
           ],
-          borderRadius: BorderRadius.circular(12.00.w),
+          borderRadius: BorderRadius.circular(12.00),
         ));
   }
 
   Container topAddressBar(H007MainPageViewModel model) {
     return Container(
         child: Container(
-            height: 52.00.h,
-            width: 328.00.w,
+          margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            height: 52.00,
             child: Row(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-                  height: 24.h,
-                  width: 24.w,
+                  margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                  height: 24,
+                  width: 24,
                   child: FlatButton(
                       padding: EdgeInsets.all(0),
                       onPressed: model.onBackBtnClick,
                       child: Icon(ForutonaIcon.searchbackbtn)),
                 ),
                 Container(
-                  height: 24.00.h,
-                  width: 1.00.w,
+                  height: 24.00,
+                  width: 1.00,
                   decoration: BoxDecoration(
                     color: Color(0xfff4f4f6),
-                    borderRadius: BorderRadius.circular(1.00.w),
+                    borderRadius: BorderRadius.circular(1.00),
                   ),
                 ),
-                Container(
-                  width: 241.w,
-                  margin: EdgeInsets.fromLTRB(16.w, 0, 0.w, 0),
+                Expanded(
                   child: FlatButton(
-                    padding: EdgeInsets.all(0),
+                    padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                     onPressed: model.onPlaceSearchTap,
-                    child: Text(model.address,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontSize: 14.sp,
-                          color: Color(0xff454f63),
-                        )),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(model.address,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: "Noto Sans CJK KR",
+                            fontSize: 14,
+                            color: Color(0xff454f63),
+                          )),
+                    ),
                   ),
                 ),
               ],
@@ -160,20 +161,20 @@ class H007MainPage extends StatelessWidget {
               color: Color(0xffffffff),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0.00, 12.00.w),
+                  offset: Offset(0.00, 12.00),
                   color: Color(0xff455b63).withOpacity(0.08),
-                  blurRadius: 16.w,
+                  blurRadius: 16,
                 ),
               ],
-              borderRadius: BorderRadius.circular(12.00.w),
+              borderRadius: BorderRadius.circular(12.00),
             )));
   }
 
   IgnorePointer topGradiantEffect() {
     return IgnorePointer(
         child: Container(
-            height: 165.h,
-            width: 360.w,
+            height: 165,
+
             decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,

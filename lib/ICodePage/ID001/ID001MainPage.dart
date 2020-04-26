@@ -1,9 +1,7 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAni.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -41,15 +39,14 @@ class ID001MainPage extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 0,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
                             child: Container(
-                                width: 360.w,
-                                height: 640.h,
                                 child: ListView(
                                     controller: model.mainScrollController,
                                     shrinkWrap: true,
                                     padding: EdgeInsets.all(0),
                                     children: <Widget>[
-
                                       googleMapBar(model),
                                       issueBallNameBar(),
                                       issueBallTitleBar(model),
@@ -70,7 +67,7 @@ class ID001MainPage extends StatelessWidget {
                                       makerProfileBar(model),
                                       didver(),
                                       issueTextContentBar(model),
-                                      model.getImageContentBar(),
+                                      model.getImageContentBar(context),
                                       model.issueBallDescriptionDto.desimages
                                                   .length !=
                                               0
@@ -79,7 +76,7 @@ class ID001MainPage extends StatelessWidget {
                                       model.issueBallDescriptionDto
                                                   .youtubeVideoId !=
                                               null
-                                          ? youtubeBar(model)
+                                          ? youtubeBar(model,context)
                                           : Container(),
                                       model.issueBallDescriptionDto
                                                   .youtubeVideoId !=
@@ -92,13 +89,13 @@ class ID001MainPage extends StatelessWidget {
                                       model.tagChips.length > 0
                                           ? didver()
                                           : Container(),
-                                      replyInputBar(model),
+                                      replyInputBar(model,context),
 
                                     ]))),
                         Positioned(
                             top: MediaQuery.of(context).padding.top,
                             left: 0,
-                            child: topHeaderBar(model))
+                            child: topHeaderBar(model,context))
 
                       ],
                     )))
@@ -106,19 +103,18 @@ class ID001MainPage extends StatelessWidget {
         }));
   }
 
-  Container replyInputBar(ID001MainPageViewModel model) {
+  Container replyInputBar(ID001MainPageViewModel model,BuildContext context) {
     return Container(
-        width: 360.w,
-        height: 103.h,
+        height: 103,
         decoration: BoxDecoration(color: Color(0xffF2F0F1)),
         child: Stack(children: <Widget>[
           Positioned(
-              top: 16.h,
-              left: 16.w,
+              top: 16,
+              left: 16,
               child: Container(child: Text("댓글(${model.replyCount})"))),
           Positioned(
-              top: 16.h,
-              right: 6.w,
+              top: 16,
+              right: 6,
               child: Container(
                   child: InkWell(
                       onTap: () {},
@@ -126,44 +122,43 @@ class ID001MainPage extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontWeight: FontWeight.w700,
-                            fontSize: 12.sp,
+                            fontSize: 12,
                             color: Color(0xff3497fd),
                           ))))),
           Positioned(
-              top: 47.h,
-              left: 16.w,
+              top: 47,
+              width: MediaQuery.of(context).size.width,
               child: Container(
-                  height: 32.00.h,
-                  width: 280.00.w,
+                  height: 32.00,
+                  margin: EdgeInsets.fromLTRB(16, 0, 63, 0),
                   child: FlatButton(
                       onPressed: model.popupInputDisplay,
                       padding: EdgeInsets.all(0),
                       child: Container(
                           alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.only(left: 16.w),
-                          height: 32.00.h,
-                          width: 280.00.w,
+                          padding: EdgeInsets.only(left: 16),
+                          height: 32.00,
                           child: Text("의견을 남겨주세요.",
                               style: TextStyle(
                                 fontFamily: "Noto Sans CJK KR",
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 color: Color(0xff78849e),
                               )))),
                   decoration: BoxDecoration(
                       color: Color(0xfff9f9f9),
                       borderRadius: BorderRadius.circular(12.00)))),
           Positioned(
-              top: 47.h,
-              right: 16.h,
+              top: 47,
+              right: 16,
               child: Container(
-                  width: 30.w,
-                  height: 30.h,
+                  width: 30,
+                  height: 30,
                   child: FlatButton(
-                    padding: EdgeInsets.fromLTRB(0, 0, 6.w, 0),
+                    padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
                     onPressed: () {},
                     shape: CircleBorder(),
                     child: Icon(ForutonaIcon.replysendicon,
-                        color: Color(0xffB1B1B1), size: 13.sp),
+                        color: Color(0xffB1B1B1), size: 13),
                   ),
                   decoration: BoxDecoration(
                     color: Color(0xffE4E7E8),
@@ -174,29 +169,28 @@ class ID001MainPage extends StatelessWidget {
 
   Container tagBar(ID001MainPageViewModel model) {
     return Container(
-      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
       child: Wrap(
         direction: Axis.horizontal,
         crossAxisAlignment: WrapCrossAlignment.start,
-        spacing: 10.w,
+        spacing: 10,
         children: model.tagChips,
       ),
     );
   }
 
-  Container youtubeBar(ID001MainPageViewModel model) {
+  Container youtubeBar(ID001MainPageViewModel model,BuildContext context) {
     return Container(
-        height: 122.h,
-        width: 360.w,
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+        height: 122,
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
         child: Stack(children: <Widget>[
           Positioned(
               top: 0,
               left: 0,
               child: model.currentYoutubeImage != null
                   ? Container(
-                      height: 90.00.h,
-                      width: 124.00.w,
+                      height: 90.00,
+                      width: 124.00,
                       child: FlatButton(
                           onPressed: () {
                             model.goYoutubeIntent(
@@ -204,8 +198,8 @@ class ID001MainPage extends StatelessWidget {
                           },
                           padding: EdgeInsets.all(0),
                           child: Container(
-                              height: 50.00.h,
-                              width: 50.00.w,
+                              height: 50.00,
+                              width: 50.00,
                               child:
                                   Icon(ForutonaIcon.yplay, color: Colors.white),
                               decoration: BoxDecoration(
@@ -214,7 +208,7 @@ class ID001MainPage extends StatelessWidget {
                                   BoxShadow(
                                     offset: Offset(0.00, 6.00),
                                     color: Color(0xff321636).withOpacity(0.7),
-                                    blurRadius: 12.w,
+                                    blurRadius: 12,
                                   )
                                 ],
                                 shape: BoxShape.circle,
@@ -225,12 +219,15 @@ class ID001MainPage extends StatelessWidget {
                           ),
                           borderRadius: BorderRadius.circular(12.00)))
                   : Container(
-                      height: 90.00.h, width: 124.00.w, child: Text("로딩중"))),
+                      height: 90.00, width: 124.00, child: Text("로딩중"))),
           Positioned(
               top: 0,
-              left: 139.w,
+              left: 139,
               child: Container(
-                  child: Column(children: <Widget>[
+                width: MediaQuery.of(context).size.width-165,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
                 model.currentYoutubeTitle != null
                     ? Container(
                         child: Text(model.currentYoutubeTitle,
@@ -239,34 +236,34 @@ class ID001MainPage extends StatelessWidget {
                             style: TextStyle(
                               fontFamily: "Noto Sans CJK KR",
                               fontWeight: FontWeight.w700,
-                              fontSize: 12.sp,
+                              fontSize: 12,
                               color: Color(0xff454f63),
                             )),
-                        width: 189.w,
-                        margin: EdgeInsets.only(bottom: 10.h),
+
+                        margin: EdgeInsets.only(bottom: 10),
                       )
                     : Container(),
                 model.currentYoutubeAuthor != null
                     ? Container(
-                        width: 189.w,
+
                         child: Text(model.currentYoutubeAuthor,
                             style: TextStyle(
                               fontFamily: "Noto Sans CJK KR",
-                              fontSize: 8.sp,
+                              fontSize: 8,
                               color: Color(0xff78849e),
                             )),
                       )
                     : Container(),
                 model.currentYoutubeView != null
                     ? Container(
-                        width: 189.w,
+
                         alignment: Alignment.centerLeft,
                         child: Text(
                             "조회수${model.currentYoutubeView}회•"
                             "${DateFormat("yyyy.MM.dd").format(model.currentYoutubeUploadDate.toLocal())}",
                             style: TextStyle(
                               fontFamily: "Noto Sans CJK KR",
-                              fontSize: 8.sp,
+                              fontSize: 8,
                               color: Color(0xff78849e),
                             )),
                       )
@@ -277,11 +274,11 @@ class ID001MainPage extends StatelessWidget {
 
   Container issueTextContentBar(ID001MainPageViewModel model) {
     return Container(
-      padding: EdgeInsets.fromLTRB(16.w, 23.h, 16.w, 24.h),
+      padding: EdgeInsets.fromLTRB(16, 23, 16, 24),
       child: Text(model.issueBallDescriptionDto.text,
           style: TextStyle(
             fontFamily: "Noto Sans CJK KR",
-            fontSize: 14.sp,
+            fontSize: 14,
             color: Color(0xff454f63),
           )),
     );
@@ -289,17 +286,17 @@ class ID001MainPage extends StatelessWidget {
 
   Container makerProfileBar(ID001MainPageViewModel model) {
     return Container(
-        height: 62.h,
-        width: 360.w,
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+        height: 62,
+        width: 360,
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
         child: Stack(
           children: <Widget>[
             Positioned(
                 top: 0,
                 left: 0,
                 child: Container(
-                  height: 32.00.h,
-                  width: 32.00.w,
+                  height: 32.00,
+                  width: 32.00,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.cover,
@@ -309,20 +306,20 @@ class ID001MainPage extends StatelessWidget {
                 )),
             Positioned(
               top: 0,
-              left: 44.w,
+              left: 44,
               child: Container(
                 child: Text(model.getMakerUserNickName(),
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w500,
-                      fontSize: 12.sp,
+                      fontSize: 12,
                       color: Color(0xff454f63),
                     )),
               ),
             ),
             Positioned(
-              top: 16.h,
-              left: 44.w,
+              top: 16,
+              left: 44,
               child: Container(
                   child: model.makerUserInfo != null
                       ? Text(
@@ -330,7 +327,7 @@ class ID001MainPage extends StatelessWidget {
                           "팔로워 ${model.makerUserInfo.followCount}명",
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
-                            fontSize: 10.sp,
+                            fontSize: 10,
                             color: Color(0xff78849e),
                           ))
                       : Container()),
@@ -341,8 +338,8 @@ class ID001MainPage extends StatelessWidget {
 
   Container didver() {
     return Container(
-      height: 2.00.h,
-      width: 360.00.w,
+      height: 2.00,
+      width: 360.00,
       decoration: BoxDecoration(
         color: Color(0xfff4f4f6),
         borderRadius: BorderRadius.circular(1.00),
@@ -352,74 +349,74 @@ class ID001MainPage extends StatelessWidget {
 
   Container issueBallNameBar() {
     return Container(
-        padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-        margin: EdgeInsets.only(bottom: 8.h, top: 16.h),
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        margin: EdgeInsets.only(bottom: 8, top: 16),
         child: Text("이슈볼",
             style: TextStyle(
               fontFamily: "Noto Sans CJK KR",
-              fontSize: 12.sp,
+              fontSize: 12,
               color: Color(0xffff4f9a),
             )));
   }
 
   Container conditionStatueBar(ID001MainPageViewModel model) {
     return Container(
-        margin: EdgeInsets.only(top: 8.h, left: 16.w, bottom: 31.h),
+        margin: EdgeInsets.only(top: 8, left: 16, bottom: 31),
         child: Row(children: <Widget>[
           Container(
-            width: 11.w,
-            height: 11.h,
+            width: 11,
+            height: 11,
             child: Icon(
               ForutonaIcon.thumbsup,
               color: Color(0xff78849e),
-              size: 11.sp,
+              size: 11,
             ),
           ),
           Container(
-              margin: EdgeInsets.only(left: 4.w),
+              margin: EdgeInsets.only(left: 4),
               child: Text("${model.fBallResDto.ballLikes}회",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w500,
-                    fontSize: 10.sp,
+                    fontSize: 10,
                     color: Color(0xff78849e),
                   ))),
           Container(
-            width: 11.w,
-            height: 11.h,
-            margin: EdgeInsets.only(left: 8.w),
+            width: 11,
+            height: 11,
+            margin: EdgeInsets.only(left: 8),
             child: Icon(
               ForutonaIcon.thumbsdown,
               color: Color(0xff78849e),
-              size: 11.sp,
+              size: 11,
             ),
           ),
           Container(
-              margin: EdgeInsets.only(left: 4.w),
+              margin: EdgeInsets.only(left: 4),
               child: Text("${model.fBallResDto.ballDisLikes}회",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w500,
-                    fontSize: 10.sp,
+                    fontSize: 10,
                     color: Color(0xff78849e),
                   ))),
           Container(
-            width: 11.w,
-            height: 11.h,
-            margin: EdgeInsets.only(left: 8.w),
+            width: 11,
+            height: 11,
+            margin: EdgeInsets.only(left: 8),
             child: Icon(
               ForutonaIcon.visibility,
               color: Color(0xff78849e),
-              size: 11.sp,
+              size: 11,
             ),
           ),
           Container(
-              margin: EdgeInsets.only(left: 4.w),
+              margin: EdgeInsets.only(left: 4),
               child: Text("${model.fBallResDto.ballHits}회",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w500,
-                    fontSize: 10.sp,
+                    fontSize: 10,
                     color: Color(0xff78849e),
                   )))
         ]));
@@ -430,22 +427,22 @@ class ID001MainPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Container(
-              padding: EdgeInsets.only(left: 16.w, right: 48.w),
+              padding: EdgeInsets.only(left: 16, right: 48),
               child: Text(model.fBallResDto.ballName,
                   overflow: TextOverflow.ellipsis,
                   maxLines: model.showMoreDetailFlag ? 3 : 2,
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w700,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     color: Color(0xff000000),
                   ))),
           Positioned(
-              top: 0.h,
-              right: 18.w,
+              top: 0,
+              right: 18,
               child: Container(
-                  width: 20.w,
-                  height: 20.h,
+                  width: 20,
+                  height: 20,
                   child: FlatButton(
                       onPressed: model.showMoreDetailToggle,
                       padding: EdgeInsets.all(0),
@@ -462,21 +459,21 @@ class ID001MainPage extends StatelessWidget {
 
   Container contributorBar(ID001MainPageViewModel model) {
     return Container(
-        height: 60.h,
-        width: 360.w,
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 9.h),
+        height: 60,
+
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 9),
         child: Stack(
           children: <Widget>[
             Positioned(
                 top: 0,
                 left: 0,
                 child: Container(
-                  height: 32.00.h,
-                  width: 32.00.w,
+                  height: 32.00,
+                  width: 32.00,
                   child: Icon(
                     ForutonaIcon.contributor,
                     color: Color(0xff707070),
-                    size: 15.sp,
+                    size: 15,
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -485,25 +482,25 @@ class ID001MainPage extends StatelessWidget {
                 )),
             Positioned(
               top: 0,
-              left: 44.w,
+              left: 44,
               child: Text("기여자",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     color: Color(0xff454f63),
                   )),
             ),
             Positioned(
               top: 21,
-              left: 44.w,
+              left: 44,
               child: Container(
-                width: 251.w,
+                width: 251,
                 child: Text('${model.fBallResDto.contributor}명이 반응 하였습니다.',
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
-                      fontSize: 11.sp,
+                      fontSize: 11,
                       color: Color(0xff78849e),
                     )),
               ),
@@ -514,21 +511,21 @@ class ID001MainPage extends StatelessWidget {
 
   Container activeTimeBar(ID001MainPageViewModel model) {
     return Container(
-        height: 60.h,
-        width: 360.w,
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 9.h),
+        height: 60,
+
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 9),
         child: Stack(
           children: <Widget>[
             Positioned(
                 top: 0,
                 left: 0,
                 child: Container(
-                  height: 32.00.h,
-                  width: 32.00.w,
+                  height: 32.00,
+                  width: 32.00,
                   child: Icon(
                     ForutonaIcon.whatshot,
                     color: Color(0xff707070),
-                    size: 15.sp,
+                    size: 15,
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -537,27 +534,27 @@ class ID001MainPage extends StatelessWidget {
                 )),
             Positioned(
               top: 0,
-              left: 44.w,
+              left: 44,
               child: Text("남은 시간",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     color: Color(0xff454f63),
                   )),
             ),
             Positioned(
               top: 21,
-              left: 44.w,
+              left: 44,
               child: Container(
-                width: 251.w,
+                width: 251,
                 child: Text(
                     TimeDisplayUtil.getRemainingToStrFromNow(
                         model.fBallResDto.activationTime),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
-                      fontSize: 11.sp,
+                      fontSize: 11,
                       color: Color(0xff78849e),
                     )),
               ),
@@ -568,21 +565,21 @@ class ID001MainPage extends StatelessWidget {
 
   Container placeAddressBar(ID001MainPageViewModel model) {
     return Container(
-        height: 60.h,
-        width: 360.w,
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 9.h),
+        height: 60,
+
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 9),
         child: Stack(
           children: <Widget>[
             Positioned(
                 top: 0,
                 left: 0,
                 child: Container(
-                  height: 32.00.h,
-                  width: 32.00.w,
+                  height: 32.00,
+                  width: 32.00,
                   child: Icon(
                     Icons.location_on,
                     color: Color(0xff707070),
-                    size: 15.sp,
+                    size: 15,
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -591,25 +588,25 @@ class ID001MainPage extends StatelessWidget {
                 )),
             Positioned(
               top: 0,
-              left: 44.w,
+              left: 44,
               child: Text("설치 장소",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     color: Color(0xff454f63),
                   )),
             ),
             Positioned(
               top: 21,
-              left: 44.w,
+              left: 44,
               child: Container(
-                width: 251.w,
+                width: 251,
                 child: Text(model.fBallResDto.placeAddress,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
-                      fontSize: 11.sp,
+                      fontSize: 11,
                       color: Color(0xff78849e),
                     )),
               ),
@@ -636,57 +633,57 @@ class ID001MainPage extends StatelessWidget {
           )
         ],
       ),
-      width: 360.w,
-      height: 323.h,
+
+      height: 323,
     );
   }
 
-  Container topHeaderBar(ID001MainPageViewModel model) {
+  Container topHeaderBar(ID001MainPageViewModel model,BuildContext context) {
     return Container(
-      height: 56.h,
-      width: 360.w,
+      height: 56,
+      width: MediaQuery.of(context).size.width,
       child: Row(children: <Widget>[
         Container(
-          width: 32.w,
-          height: 32.h,
-          padding: EdgeInsets.only(left: 8.w),
+          width: 32,
+          height: 32,
+          padding: EdgeInsets.only(left: 8),
           child: FlatButton(
               padding: EdgeInsets.all(0),
               onPressed: model.onBackBtn,
               child: Icon(
                 Icons.arrow_back,
                 color: Colors.black,
-                size: 18.sp,
+                size: 18,
               )),
           alignment: Alignment.center,
         ),
         Spacer(),
         Container(
-          width: 32.w,
-          height: 32.h,
-          padding: EdgeInsets.only(left: 8.w),
+          width: 32,
+          height: 32,
+          padding: EdgeInsets.only(left: 8),
           child: FlatButton(
               padding: EdgeInsets.all(0),
               onPressed: () {},
               child: Icon(
                 ForutonaIcon.share,
                 color: Colors.black,
-                size: 18.sp,
+                size: 18,
               )),
           alignment: Alignment.center,
         ),
         Container(
-          width: 32.w,
-          height: 32.h,
-          margin: EdgeInsets.only(right: 16.w),
-          padding: EdgeInsets.only(left: 8.w),
+          width: 32,
+          height: 32,
+          margin: EdgeInsets.only(right: 16),
+          padding: EdgeInsets.only(left: 8),
           child: FlatButton(
               padding: EdgeInsets.all(0),
               onPressed: () {},
               child: Icon(
                 ForutonaIcon.setting,
                 color: Colors.black,
-                size: 18.sp,
+                size: 18,
               )),
           alignment: Alignment.center,
         )

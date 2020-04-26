@@ -9,7 +9,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagInsertReqDto.dart';
 import 'package:forutonafront/Common/YoutubeUtil/YoutubeIdParser.dart';
@@ -322,39 +321,39 @@ class IM001MainPageViewModel extends ChangeNotifier {
             (_context, Animation animation, Animation secondaryAnimation) {
           return Stack(children: <Widget>[
             Positioned(
-                top: 494.h,
-                left: 37.w,
+                bottom: 76,
+                left: 37,
                 child: Container(
-                    width: 180.w,
-                    height: 70.h,
+                    width: 180,
+                    height: 70,
                     child: Row(children: <Widget>[
                       Container(
-                          width: 88.w,
-                          height: 70.h,
+                          width: 88,
+                          height: 70,
                           child: FlatButton(
                             onPressed: onCameraPick,
                             child: Text("카메라",
                                 style: TextStyle(
                                   fontFamily: "Noto Sans CJK KR",
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 13.sp,
+                                  fontSize: 13,
                                   color: Color(0xffc1549a),
                                 )),
                           ),
                           decoration: BoxDecoration(
                               border: Border(
                                   right: BorderSide(
-                                      color: Color(0xffc1549a), width: 1.w)))),
+                                      color: Color(0xffc1549a), width: 1)))),
                       Container(
-                          width: 88.w,
-                          height: 70.h,
+                          width: 88,
+                          height: 70,
                           child: FlatButton(
                             onPressed: onImagePicker,
                             child: Text("사진 선택",
                                 style: TextStyle(
                                   fontFamily: "Noto Sans CJK KR",
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 13.sp,
+                                  fontSize: 13,
                                   color: Color(0xffc1549a),
                                 )),
                           ))
@@ -363,7 +362,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.00),
                         border:
-                            Border.all(color: Color(0xffC1549A), width: 1.w))))
+                            Border.all(color: Color(0xffC1549A), width: 1))))
           ]);
         });
     print(result);

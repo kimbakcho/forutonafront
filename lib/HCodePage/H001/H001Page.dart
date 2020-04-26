@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -47,7 +46,7 @@ class _H001PageState extends State<H001Page> {
             child: Text("아쉽지만\n검색하신 지역에 컨텐츠가 없습니다.",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
-                  fontSize: 14.sp,
+                  fontSize: 14,
                   color: Color(0xffb1b1b1),
                 ),
                 textAlign: TextAlign.center)));
@@ -103,14 +102,14 @@ class _H001PageState extends State<H001Page> {
                       shape: BoxShape.circle),
                   duration: Duration(milliseconds: 500),
                   margin: EdgeInsets.only(
-                      top: model.makeButtonDisplayShowFlag ? 0 : 120.h),
+                      top: model.makeButtonDisplayShowFlag ? 0 : 120),
                 ),
-                height: 120.h,
+                height: 120,
                 alignment: Alignment.topCenter,
               ),
             ),
-            bottom: 0.h,
-            right: 16.w,
+            bottom: 0,
+            right: 16,
           )
         : Container();
   }
@@ -118,16 +117,16 @@ class _H001PageState extends State<H001Page> {
   Column unInlineRaking(H001ViewModel model) {
     return Column(children: <Widget>[
       Container(
-          margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+          margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: ListView.builder(
               padding: EdgeInsets.all(0),
               shrinkWrap: true,
               itemCount: model.rankingWrapDto.contents.length,
               itemBuilder: (builder, index) {
                 return Container(
-                    height: 40.h,
-                    width: 320.w,
-                    padding: EdgeInsets.fromLTRB(18.w, 0, 18.w, 0),
+                    height: 40,
+                    width: 320,
+                    padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                     decoration: BoxDecoration(
                       border: Border(
                           bottom:
@@ -135,34 +134,34 @@ class _H001PageState extends State<H001Page> {
                     ),
                     child: Row(children: <Widget>[
                       Text("${model.rankingWrapDto.contents[index].ranking}."),
-                      SizedBox(width: 12.w),
+                      SizedBox(width: 12),
                       Text("#${model.rankingWrapDto.contents[index].tagName}"),
                       Spacer(),
                       Text(
                           "${(model.rankingWrapDto.contents[index].tagPower).toStringAsFixed(1)}k"),
-                      SizedBox(width: 12.w),
+                      SizedBox(width: 12),
                       Container(
-                        width: 12.w,
+                        width: 12,
                         child: FlatButton(
                             padding: EdgeInsets.all(0),
                             onPressed: () {
                               model.inlineRanking = false;
                             },
-                            child: Icon(ForutonaIcon.down_arrow, size: 10.sp)),
+                            child: Icon(ForutonaIcon.down_arrow, size: 10)),
                       )
                     ]));
               }),
-          height: 406.00.h,
-          width: 328.00.w,
+          height: 406.00,
+          width: 328.00,
           decoration: BoxDecoration(
               color: Color(0xffe9faff),
               border: Border.all(
-                width: 1.00.w,
+                width: 1.00,
                 color: Color(0xff38caf5),
               ),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.00.w),
-                topRight: Radius.circular(10.00.w),
+                topLeft: Radius.circular(10.00),
+                topRight: Radius.circular(10.00),
               ))),
       Container(
           child: FlatButton(
@@ -170,23 +169,23 @@ class _H001PageState extends State<H001Page> {
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w700,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     color: Color(0xffffffff),
                   )),
               onPressed: () {
                 model.inlineRanking = true;
               }),
-          height: 54.00.h,
-          width: 328.00.w,
+          height: 54.00,
+          width: 328.00,
           decoration: BoxDecoration(
               color: Color(0xff454f63),
               border: Border.all(
-                width: 1.00.w,
+                width: 1.00,
                 color: Color(0xff454f63),
               ),
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(12.00.w),
-                bottomRight: Radius.circular(12.00.w),
+                bottomLeft: Radius.circular(12.00),
+                bottomRight: Radius.circular(12.00),
               )))
     ]);
   }
@@ -289,8 +288,7 @@ class _H001PageState extends State<H001Page> {
                               onPressed: () {
                                 model.inlineRanking = false;
                               },
-                              child:
-                                  Icon(ForutonaIcon.down_arrow, size: 10)),
+                              child: Icon(ForutonaIcon.down_arrow, size: 10)),
                         )
                       ]));
                 },
@@ -311,26 +309,27 @@ class _H001PageState extends State<H001Page> {
       height: model.addressDisplayShowFlag ? 73 : 0,
       padding: EdgeInsets.fromLTRB(16, 11, 16, 16),
       alignment: Alignment.centerLeft,
-      child: Row(
-        children: <Widget>[
-          Expanded(
-              child: Container(
-                  height: 46.00,
-                  decoration: BoxDecoration(
-                    color: Color(0xfff6f6f6),
-                    borderRadius: BorderRadius.circular(12.00),
-                  ),
-                  child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      onPressed: model.moveToH007,
-                      child: Text(model.selectPositionAddress,
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13,
-                            color: Color(0xff454f63),
-                          ))))),
-        ],
+      child: Container(
+        height: 46.00,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Color(0xfff6f6f6),
+          borderRadius: BorderRadius.circular(12.00),
+        ),
+        child: FlatButton(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            onPressed: model.moveToH007,
+            child: Container(
+              alignment: Alignment.center,
+              child: Text(model.selectPositionAddress,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                    color: Color(0xff454f63),
+                  )),
+            )),
       ),
     );
   }

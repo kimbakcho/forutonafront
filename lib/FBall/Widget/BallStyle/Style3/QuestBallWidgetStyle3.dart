@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style3/IssueBallWidgetStyle3ViewModel.dart';
@@ -19,25 +18,25 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
         child: Consumer<IssueBallWidgetStyle3ViewModel>(
             builder: (_, model, child) {
           return Container(
-              height: 90.00.h,
-              width: 312.00.w,
+              height: 90.00,
+              width: MediaQuery.of(context).size.width-48,
               child: FlatButton(
                 padding: EdgeInsets.all(0),
                 child: Stack(
                   children: <Widget>[
                     Positioned(
-                      top: 11.h,
-                      left: 11.h,
+                      top: 11,
+                      left: 11,
                       child: questBallIcon(),
                     ),
                     Positioned(
-                        top: 11.h, left: 54.w, child: ballNameText(model)),
+                        top: 11, left: 54, child: ballNameText(model,context)),
                     Positioned(
-                        top: 31.h, left: 54.w, child: makerInfoBar(model)),
+                        top: 31, left: 54, child: makerInfoBar(model)),
                     Positioned(
-                        right: 0.w, top: 0.h, child: ballMainimageBox(model)),
-                    Positioned(top: 54.h, left: 0, child: divider()),
-                    Positioned(top: 50.h, right: 0, child: ballBottomBar(model))
+                        right: 0, top: 0, child: ballMainimageBox(model)),
+                    Positioned(top: 54, left: 0, child: divider(context)),
+                    Positioned(top: 50, right: 0, child: ballBottomBar(model,context))
                   ],
                 ),
                 onPressed: () {},
@@ -46,25 +45,25 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
                   color: Color(0xffffffff),
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(0.00, 3.00.w),
+                      offset: Offset(0.00, 3.00),
                       color: Color(0xff000000).withOpacity(0.16),
-                      blurRadius: 6.w,
+                      blurRadius: 6,
                     )
                   ],
-                  borderRadius: BorderRadius.circular(12.00.w)));
+                  borderRadius: BorderRadius.circular(12.00)));
         }));
   }
 
   Container makerInfoBar(IssueBallWidgetStyle3ViewModel model) {
     return Container(
-      width: model.isMainPicture() ? 178.w : 252.w,
+      width: model.isMainPicture() ? 178 : 252,
       child: RichText(
         text: TextSpan(
             text: model.ballResDto.nickName,
             style: TextStyle(
               fontFamily: "Noto Sans CJK KR",
               fontWeight: FontWeight.w700,
-              fontSize: 10.sp,
+              fontSize: 10,
               color: Color(0xff78849e),
             ),
             children: <TextSpan>[
@@ -82,11 +81,11 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
     );
   }
 
-  Container ballBottomBar(IssueBallWidgetStyle3ViewModel model) {
+  Container ballBottomBar(IssueBallWidgetStyle3ViewModel model,BuildContext context) {
     return Container(
-        height: 48.00.h,
-        width: 328.00.w,
-        padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 0),
+        height: 48.00,
+        width: MediaQuery.of(context).size.width-48,
+        padding: EdgeInsets.fromLTRB(14, 0, 14, 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,59 +94,59 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff78849e),
                 )),
             Padding(
-                padding: EdgeInsets.fromLTRB(5.w, 0, 0, 7.h),
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 7),
                 child: Icon(ForutonaIcon.thumbsup,
-                    color: Color(0xff78849E), size: 17.sp)),
-            SizedBox(width: 19.w),
+                    color: Color(0xff78849E), size: 17)),
+            SizedBox(width: 19),
             Text(model.ballResDto.ballDisLikes.toString(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff78849e),
                 )),
             Padding(
-                padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 3),
                 child: Icon(ForutonaIcon.thumbsdown,
-                    color: Color(0xff78849E), size: 17.sp)),
-            SizedBox(width: 19.w),
+                    color: Color(0xff78849E), size: 17)),
+            SizedBox(width: 19),
             Text(model.ballResDto.commentCount.toString(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff78849e),
                 )),
             Padding(
-                padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 3),
                 child: Icon(ForutonaIcon.comment,
-                    color: Color(0xff78849E), size: 17.sp)),
-            SizedBox(width: 19.w),
+                    color: Color(0xff78849E), size: 17)),
+            SizedBox(width: 19),
             Text(
                 TimeDisplayUtil.getRemainingToStrFromNow(
                     model.ballResDto.activationTime),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff78849e),
                 )),
             Padding(
-                padding: EdgeInsets.fromLTRB(5.w, 0, 0, 3.h),
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 3),
                 child: Icon(ForutonaIcon.accesstime,
-                    color: Color(0xff78849E), size: 17.sp)),
+                    color: Color(0xff78849E), size: 17)),
           ],
         ));
   }
 
-  Container divider() {
+  Container divider(BuildContext context) {
     return Container(
-      height: 0.50.h,
-      width: 312.00.w,
+      height: 0.50,
+      width: MediaQuery.of(context).size.width-48,
       color: Color(0xffe4e4e4),
     );
   }
@@ -155,8 +154,8 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
   Container ballMainimageBox(IssueBallWidgetStyle3ViewModel model) {
     return model.isMainPicture()
         ? Container(
-            height: 54.00.h,
-            width: 80.00.w,
+            height: 54.00,
+            width: 80.00,
             decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.fill,
@@ -170,16 +169,16 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
         : Container();
   }
 
-  Container ballNameText(IssueBallWidgetStyle3ViewModel model) {
+  Container ballNameText(IssueBallWidgetStyle3ViewModel model,BuildContext context) {
     return Container(
-      width: model.isMainPicture() ? 178.w : 252.w,
-      height: 18.h,
+      width: model.isMainPicture() ? MediaQuery.of(context).size.width-182 : MediaQuery.of(context).size.width-108,
+      height: 18,
       child: Text(model.ballResDto.ballName,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontFamily: "Noto Sans CJK KR",
             fontWeight: FontWeight.w700,
-            fontSize: 13.sp,
+            fontSize: 13,
             color: Color(0xff454f63),
           )),
     );
@@ -187,10 +186,10 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
 
   Container questBallIcon() {
     return Container(
-        padding: EdgeInsets.only(left: 1.sp, bottom: 1.sp),
-        child: Icon(ForutonaIcon.quest, size: 13.sp, color: Colors.white),
-        height: 30.00.h,
-        width: 30.00.w,
+        padding: EdgeInsets.only(left: 1, bottom: 1),
+        child: Icon(ForutonaIcon.quest, size: 13, color: Colors.white),
+        height: 30.00,
+        width: 30.00,
         decoration: BoxDecoration(
           color: Color(0xff4F72FF),
           shape: BoxShape.circle,

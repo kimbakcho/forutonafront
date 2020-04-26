@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
@@ -22,16 +22,16 @@ class MapGeoSearchPage extends StatelessWidget {
                 body: Stack(children: <Widget>[
                   Positioned(
                       top: MediaQuery.of(context).padding.top,
+                      width: MediaQuery.of(context).size.width,
                       child: Column(children: <Widget>[
                         topSearchBar(context, model),
                         Container(
                           height: 1,
-                          width: 360.00,
                           color: Color(0xffe4e7e8),
                         ),
                         AnimatedContainer(
-                          height: model.predictions.length * 52.h,
-                          width: 360.w,
+                          height: model.predictions.length * 52.0,
+
                           padding: EdgeInsets.all(0),
                           margin: EdgeInsets.all(0),
                           duration: Duration(milliseconds: 500),
@@ -40,32 +40,30 @@ class MapGeoSearchPage extends StatelessWidget {
                               padding: EdgeInsets.all(0),
                               itemBuilder: (_, index) {
                                 return Container(
-                                    height: 52.h,
-                                    width: 360.w,
+                                    height: 52,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         border: Border(
                                             bottom: BorderSide(
                                                 color: Color(0xffE4E7E8),
-                                                width: 1.h))),
+                                                width: 1))),
                                     child: FlatButton(
                                         padding: EdgeInsets.all(0),
                                         onPressed: () {
                                           model.onPredictionTab(model.predictions[index]);
                                         },
                                         child: Container(
-                                          height: 52.h,
-                                          width: 360.w,
+                                          height: 52,
                                           alignment: Alignment.centerLeft,
                                           padding: EdgeInsets.fromLTRB(
-                                              16.w, 0, 16.w, 0),
+                                              16, 0, 16, 0),
                                           child: Text(
                                               model.predictions[index]
                                                   .description,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontFamily: "Noto Sans CJK KR",
-                                                fontSize: 14.sp,
+                                                fontSize: 14,
                                                 color: Color(0xff454f63),
                                               )),
                                         )));
@@ -81,19 +79,18 @@ class MapGeoSearchPage extends StatelessWidget {
       BuildContext context, MapGeoSearchPageViewModel model) {
     return Container(
         color: Colors.white,
-        height: 68.h,
-        width: 360.w,
+        height: 68,
         child: Stack(children: <Widget>[
           Positioned(
-              left: 16.w,
+              left: 16,
               child: Container(
-                height: 68.h,
-                width: 32.w,
+                height: 68,
+                width: 32,
                 child: FlatButton(
                   padding: EdgeInsets.all(0),
                   child: Icon(
                     Icons.arrow_back,
-                    size: 24.sp,
+                    size: 24,
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -101,12 +98,12 @@ class MapGeoSearchPage extends StatelessWidget {
                 ),
               )),
           Positioned(
-            left: 48.w,
-            top: 16.h,
+            left: 48,
+            top: 16,
+            width: MediaQuery.of(context).size.width-54,
             child: Container(
-                margin: EdgeInsets.only(left: 8.w),
-                width: 280.w,
-                height: 32.h,
+                margin: EdgeInsets.only(left: 8,right: 16),
+                height: 32,
                 child: TextField(
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.search,
@@ -125,33 +122,33 @@ class MapGeoSearchPage extends StatelessWidget {
                       hintStyle: model.hasSearchTextFocus
                           ? TextStyle(
                               fontFamily: "Noto Sans CJK KR",
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               color: Color(0xffcccccc))
                           : TextStyle(
                               fontFamily: "Noto Sans CJK KR",
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               color: Color(0xff454f63),
                             ),
-                      contentPadding: EdgeInsets.fromLTRB(15.w, 0, 15.w, 0),
+                      contentPadding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color: Color(0xff3497FD), width: 1.5.w),
+                              color: Color(0xff3497FD), width: 1.5),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(12.w))),
+                              BorderRadius.all(Radius.circular(12))),
                       enabledBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Color(0xffF9F9F9), width: 0),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(12.w)))),
+                              BorderRadius.all(Radius.circular(12)))),
                 )),
           ),
           Positioned(
-              right: 40.w,
-              top: 25.h,
+              right: 32,
+              top: 25,
               child: model.isClearButtonShow()
                   ? Container(
-                      height: 14.00.h,
-                      width: 14.00.w,
+                      height: 14.00,
+                      width: 14.00,
                       child: FlatButton(
                         onPressed: model.isClearButtonActive()
                             ? () {
@@ -160,7 +157,7 @@ class MapGeoSearchPage extends StatelessWidget {
                             : null,
                         padding: EdgeInsets.all(0),
                         child: Icon(Icons.close,
-                            size: 9.sp,
+                            size: 9,
                             color: model.isClearButtonActive()
                                 ? Color(0xff454F63)
                                 : Color(0xffCCCCCC)),
@@ -168,7 +165,7 @@ class MapGeoSearchPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Color(0xffffffff),
                         border: Border.all(
-                          width: 1.00.w,
+                          width: 1.00,
                           color: model.isClearButtonActive()
                               ? Color(0xff454F63)
                               : Color(0xffcccccc),

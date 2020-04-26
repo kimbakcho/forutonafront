@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/IssueBallStyle1MarkerWidget.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/QuestBallStyle1MarkerWidget.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3Support.dart';
@@ -56,38 +55,39 @@ class ICodeMainPage extends StatelessWidget {
                         markers: model.markers,
                       ),
                       Positioned(
-                        top: MediaQuery.of(context).padding.top+23.h,
-                        left: 16.w,
-                        child: textMapSerachBar(model),
+                        top: MediaQuery.of(context).padding.top+5,
+                        left: 0,
+                        width: MediaQuery.of(context).size.width,
+                        child: textMapSerachBar(model,context),
                       ),
                       Positioned(
-                          top: 108.h,
-                          right: 16.w,
+                          top: 108,
+                          right: 16,
                           child: myLocationButton(model)),
                       Positioned(
-                          top: 176.h,
-                          right: 16.w,
+                          top: 176,
+                          right: 16,
                           child: ballReFreshButton(model)),
                       Positioned(
                         bottom: 0,
-                        width: 360.w,
-                        height: 52.h,
+                        width: MediaQuery.of(context).size.width,
+                        height: 52,
                         child: BottomNavigation(),
                       ),
                       Positioned(
-                        bottom: 69.h,
-                        left: 0.h,
-                        child: bottomBallListUp(model),
+                        bottom: 69,
+                        left: 0,
+                        child: bottomBallListUp(model,context),
                       ),
                     ])))
           ]);
         }));
   }
 
-  Container bottomBallListUp(ICodeMainPageViewModel model) {
+  Container bottomBallListUp(ICodeMainPageViewModel model,BuildContext context) {
     return Container(
-      height: 90.h,
-      width: 360.w,
+      height: 90,
+      width: MediaQuery.of(context).size.width,
       child: PageView.builder(
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
@@ -96,7 +96,7 @@ class ICodeMainPage extends StatelessWidget {
           itemCount: model.listUpBalls.length,
           itemBuilder: (context, index) {
             return Container(
-                margin: EdgeInsets.only(right: 7.w),
+                margin: EdgeInsets.only(right: 7),
                 child: BallStyle3Support.selectBallWidget(
                     model.listUpBalls[index]));
           }),
@@ -107,83 +107,89 @@ class ICodeMainPage extends StatelessWidget {
     return AnimatedContainer(
         duration: Duration(milliseconds: 500),
         curve: model.reFreshBtnActive ? Curves.bounceOut : Curves.bounceIn,
-        height: model.reFreshBtnActive ? 52.00.h : 0,
-        width: model.reFreshBtnActive ? 52.00.w : 0,
+        height: model.reFreshBtnActive ? 52.00 : 0,
+        width: model.reFreshBtnActive ? 52.00 : 0,
         child: FlatButton(
-          padding: EdgeInsets.fromLTRB(0, 0, 8.w, 0),
+          padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
           onPressed: () {
             model.onRefreshBall();
           },
           child: Icon(
             ForutonaIcon.repost,
-            size: model.reFreshBtnActive ? 10.sp : 0,
+            size: model.reFreshBtnActive ? 10 : 0,
           ),
         ),
         decoration: BoxDecoration(
           color: Color(0xffffffff),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0.00, 12.00.w),
+              offset: Offset(0.00, 12.00),
               color: Color(0xff455b63).withOpacity(0.10),
-              blurRadius: 16.w,
+              blurRadius: 16,
             )
           ],
-          borderRadius: BorderRadius.circular(12.00.w),
+          borderRadius: BorderRadius.circular(12.00),
         ));
   }
 
   Container myLocationButton(ICodeMainPageViewModel model) {
     return Container(
-      height: 52.00.h,
-      width: 52.00.w,
+      height: 52.00,
+      width: 52.00,
       child: FlatButton(
         onPressed: model.onMyLocation,
-        child: Icon(Icons.my_location, color: Color(0xff454F63), size: 18.sp),
+        child: Icon(Icons.my_location, color: Color(0xff454F63), size: 18),
       ),
       decoration: BoxDecoration(
         color: Color(0xffffffff),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0.00, 12.00.w),
+            offset: Offset(0.00, 12.00),
             color: Color(0xff455b63).withOpacity(0.10),
-            blurRadius: 16.w,
+            blurRadius: 16,
           ),
         ],
-        borderRadius: BorderRadius.circular(12.00.w),
+        borderRadius: BorderRadius.circular(12.00),
       ),
     );
   }
 
-  Stack textMapSerachBar(ICodeMainPageViewModel model) {
+  Stack textMapSerachBar(ICodeMainPageViewModel model,BuildContext context) {
     return Stack(
       children: <Widget>[
         Container(
-            height: 52.00.h,
-            width: 328.00.w,
+            height: 52.00,
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: FlatButton(
-              child: Text(model.currentAddress,
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14.sp,
-                    color: Color(0xff454f63),
-                  )),
+              padding: EdgeInsets.fromLTRB(16, 0, 35, 0),
+              child: Container(
+                alignment: Alignment.center,
+                child: Text(model.currentAddress,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: "Noto Sans CJK KR",
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: Color(0xff454f63),
+                    )),
+              ),
               onPressed:model.onPlaceSearchTap,
             ),
             decoration: BoxDecoration(
               color: Color(0xffffffff).withOpacity(0.90),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0.00, 3.00.w),
+                  offset: Offset(0.00, 3.00),
                   color: Color(0xff455b63).withOpacity(0.45),
-                  blurRadius: 6.w,
+                  blurRadius: 6,
                 )
               ],
-              borderRadius: BorderRadius.circular(12.00.w),
+              borderRadius: BorderRadius.circular(12.00),
             )),
         Positioned(
-          right: 14.w,
-          top: 16.h,
+          right: 32,
+          top: 16,
           child: Icon(ForutonaIcon.search),
         )
       ],

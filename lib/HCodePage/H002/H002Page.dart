@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H002/H002PageViewModel.dart';
 import 'package:provider/provider.dart';
@@ -16,52 +15,47 @@ class H002Page extends StatelessWidget {
     //Hero Animation Speed
     timeDilation = 1.5;
     return ChangeNotifierProvider(
-      create: (_) => H002PageViewModel(context),
-      child: Consumer<H002PageViewModel>(
-        builder: (_, model, child) {
+        create: (_) => H002PageViewModel(context),
+        child: Consumer<H002PageViewModel>(builder: (_, model, child) {
           return Hero(
-            tag: this.heroTag,
-            child: Stack(children: <Widget>[
-              Scaffold(
-                  body: Container(
-                      margin: EdgeInsets.fromLTRB(0, 22.h, 0, 0),
-                      child: Stack(children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            headerBar(context),
-                            issueBallMakeButton(model),
-                            questBallMakeButton()
-                          ],
-                        )
-                      ])))
-            ]),
-          );
-        },
-      ),
-    );
+              tag: this.heroTag,
+              child: Stack(children: <Widget>[
+                Scaffold(
+                    body: Container(
+                        margin: EdgeInsets.fromLTRB(0, 22, 0, 0),
+                        child: Stack(children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              headerBar(context),
+                              issueBallMakeButton(model,context),
+                              questBallMakeButton(context)
+                            ],
+                          )
+                        ])))
+              ]));
+        }));
   }
 
-  Container issueBallMakeButton(H002PageViewModel model) {
+  Container issueBallMakeButton(H002PageViewModel model,BuildContext context) {
     return Container(
-        height: 130.h,
-        width: 328.w,
-        margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+        height: 130,
+        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
             offset: Offset(0.00, 4.00),
             color: Color(0xff455b63).withOpacity(0.08),
             blurRadius: 16,
           ),
-        ], color: Colors.white, borderRadius: BorderRadius.circular(8.00.w)),
+        ], color: Colors.white, borderRadius: BorderRadius.circular(8.00)),
         child: Stack(
           children: <Widget>[
             Positioned(
               child: Container(
-                  height: 62.h,
+                  height: 62,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8.00.w),
-                        topRight: Radius.circular(8.00.w)),
+                        topLeft: Radius.circular(8.00),
+                        topRight: Radius.circular(8.00)),
                     color: Color(0xffF9E3E3),
                     image: DecorationImage(
                         image: AssetImage(
@@ -70,16 +64,16 @@ class H002Page extends StatelessWidget {
                   )),
             ),
             Positioned(
-              top: 14.h,
-              left: 16.w,
-              child: new Container(
-                padding: EdgeInsets.fromLTRB(1.w, 1.w, 0, 0),
-                height: 30.00.h,
-                width: 30.00.w,
+              top: 14,
+              left: 16,
+              child:  Container(
+                padding: EdgeInsets.fromLTRB(1, 1, 0, 0),
+                height: 30.00,
+                width: 30.00,
                 child: Icon(
                   ForutonaIcon.issue,
                   color: Colors.white,
-                  size: 18.sp,
+                  size: 18,
                 ),
                 decoration: BoxDecoration(
                   color: Color(0xffdc3e57),
@@ -88,32 +82,36 @@ class H002Page extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 14.h,
-              left: 62.w,
+              top: 14,
+              left: 62,
               child: Text("이슈볼",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w700,
-                    fontSize: 17.sp,
+                    fontSize: 17,
                     color: Color(0xff454f63),
                   )),
             ),
             Positioned(
-              top: 79.h,
-              left: 16.w,
-              child: Text(
-                  "실제 세상에서 일어나는 크고 작은 소식들을 지도 "
-                  "위에 \n표시하고 공유할 수 있어요",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontSize: 12.sp,
-                    color: Color(0xff454f63),
-                  )),
+              top: 79,
+              left: 16,
+              child: Container(
+                width: MediaQuery.of(context).size.width-32,
+                child: Text(
+                    "실제 세상에서 일어나는 크고 작은 소식들을 지도 "
+                    "위에 표시하고 공유할 수 있어요",
+                    style: TextStyle(
+                      fontFamily: "Noto Sans CJK KR",
+                      fontSize: 12,
+                      color: Color(0xff454f63),
+                    )),
+              ),
             ),
             Container(
-              height: 130.h,
-              width: 328.w,
+              height: 130,
+              width: MediaQuery.of(context).size.width,
               child: FlatButton(
+                padding: EdgeInsets.all(0),
                 onPressed: model.goAddIssueBall,
                 child: Text(""),
               ),
@@ -122,27 +120,26 @@ class H002Page extends StatelessWidget {
         ));
   }
 
-  Container questBallMakeButton() {
+  Container questBallMakeButton(BuildContext context) {
     return Container(
-        height: 130.h,
-        width: 328.w,
-        margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+        height: 130,
+        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
             offset: Offset(0.00, 4.00),
             color: Color(0xff455b63).withOpacity(0.08),
             blurRadius: 16,
           ),
-        ], color: Colors.white, borderRadius: BorderRadius.circular(8.00.w)),
+        ], color: Colors.white, borderRadius: BorderRadius.circular(8.00)),
         child: Stack(
           children: <Widget>[
             Positioned(
               child: Container(
-                  height: 62.h,
+                  height: 62,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8.00.w),
-                        topRight: Radius.circular(8.00.w)),
+                        topLeft: Radius.circular(8.00),
+                        topRight: Radius.circular(8.00)),
                     color: Color(0xffE5EAFF),
                     image: DecorationImage(
                         image: AssetImage(
@@ -151,16 +148,16 @@ class H002Page extends StatelessWidget {
                   )),
             ),
             Positioned(
-              top: 14.h,
-              left: 16.w,
-              child: new Container(
-                padding: EdgeInsets.fromLTRB(1.w, 1.w, 0, 0),
-                height: 30.00.h,
-                width: 30.00.w,
+              top: 14,
+              left: 16,
+              child:  Container(
+                padding: EdgeInsets.fromLTRB(1, 1, 0, 0),
+                height: 30.00,
+                width: 30.00,
                 child: Icon(
                   ForutonaIcon.quest,
                   color: Colors.white,
-                  size: 13.sp,
+                  size: 13,
                 ),
                 decoration: BoxDecoration(
                   color: Color(0xff4F72FF),
@@ -169,31 +166,34 @@ class H002Page extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 14.h,
-              left: 62.w,
+              top: 14,
+              left: 62,
               child: Text("퀘스트 볼",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w700,
-                    fontSize: 17.sp,
+                    fontSize: 17,
                     color: Color(0xff454f63),
                   )),
             ),
             Positioned(
-              top: 79.h,
-              left: 16.w,
-              child: Text(
-                  "현실에서 해결해야할 임무가 있으신가요? 보상을 건 "
-                  "퀘\n스트를 만들어 세상에 도움을 청해보세요.",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontSize: 12.sp,
-                    color: Color(0xff454f63),
-                  )),
+              top: 79,
+              width: MediaQuery.of(context).size.width-32,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: Text(
+                    "현실에서 해결해야할 임무가 있으신가요? 보상을 건 "
+                    "퀘스트를 만들어 세상에 도움을 청해보세요.",
+                    style: TextStyle(
+                      fontFamily: "Noto Sans CJK KR",
+                      fontSize: 12,
+                      color: Color(0xff454f63),
+                    )),
+              ),
             ),
             Container(
-              height: 130.h,
-              width: 328.w,
+              height: 130,
+              width: MediaQuery.of(context).size.width,
               child: FlatButton(
                 onPressed: () {},
                 child: Text(""),
@@ -212,7 +212,7 @@ class H002Page extends StatelessWidget {
           blurRadius: 6,
         )
       ]),
-      height: 56.h,
+      height: 56,
       child: Row(
         children: <Widget>[
           BackButton(
@@ -224,7 +224,7 @@ class H002Page extends StatelessWidget {
               style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",
                 fontWeight: FontWeight.w700,
-                fontSize: 20.sp,
+                fontSize: 20,
                 color: Color(0xff454f63),
               ))
         ],

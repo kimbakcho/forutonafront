@@ -130,7 +130,8 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
 
   Container ballTextBar(IssueBallWidgetSyle1ViewModel model) {
     return Container(
-      padding: EdgeInsets.fromLTRB(14, 0, 14, 23),
+      width: MediaQuery.of(context).size.width - 64,
+      padding: EdgeInsets.only(bottom: 23),
       child: Text(model.fBallDescriptionBasic.text,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
