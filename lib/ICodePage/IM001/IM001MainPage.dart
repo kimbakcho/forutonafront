@@ -1,4 +1,3 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,8 @@ import 'package:forutonafront/ICodePage/IM001/IM001MainPageViewModel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../../Common/GoogleMapSupport/MapCircleAni.dart';
 import 'BallImageItemDto.dart';
-
-
 
 class IM001MainPage extends StatelessWidget {
   final LatLng setUpPosition;
@@ -35,6 +33,11 @@ class IM001MainPage extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        child: MapCircleAni(model.circleController),
+                      ),
                       Column(children: <Widget>[
                         topBar(model),
                         Expanded(
@@ -52,34 +55,37 @@ class IM001MainPage extends StatelessWidget {
                               contentDivder(),
                               imageListBar(model),
                               youtubeBar(model),
-                              tagBar(model)
+                              tagBar(model),
                             ]))
                       ]),
                       Positioned(
                         bottom: 0,
                         left: 0,
                         child: bottomBar(model),
-                      )
+                      ),
+
                     ])))
           ]);
         }));
   }
 
   Container tagBar(IM001MainPageViewModel model) {
-    return model.tagBarVisibility ? Container(
-        child: Column(children: <Widget>[
-      tagTopLabelBar(model),
-      tagEditTextBar(model),
-      Container(
-          width: 360.w,
-          margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-          child: Wrap(
-            direction: Axis.horizontal,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            spacing: 10.w,
-            children: model.tagChips,
-          ))
-    ])):Container();
+    return model.tagBarVisibility
+        ? Container(
+            child: Column(children: <Widget>[
+            tagTopLabelBar(model),
+            tagEditTextBar(model),
+            Container(
+                width: 360.w,
+                margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  spacing: 10.w,
+                  children: model.tagChips,
+                ))
+          ]))
+        : Container();
   }
 
   Container tagEditTextBar(IM001MainPageViewModel model) {
@@ -566,21 +572,21 @@ class IM001MainPage extends StatelessWidget {
         width: 360.w,
         child: Stack(children: <Widget>[
           //Ball 레이더 애니메이션 뒤로 숨김
-          Positioned(
-              top: 0,
-              left: 0,
-              child: RepaintBoundary(
-                  key: model.makerAnimationKey,
-                  child: Container(
-                    width: 240.w,
-                    height: 240.h,
-                    child: FlareActor(
-                      "assets/Rive/radar.flr",
-                      alignment: Alignment.center,
-                      animation: "animating",
-                      fit: BoxFit.contain,
-                    ),
-                  ))),
+//          Positioned(
+//              top: 0,
+//              left: 0,
+//              child: RepaintBoundary(
+//                  key: model.makerAnimationKey,
+//                  child: Container(
+//                    width: 240.w,
+//                    height: 240.h,
+//                    child: FlareActor(
+//                      "assets/Rive/radar.flr",
+//                      alignment: Alignment.center,
+//                      animation: "animating",
+//                      fit: BoxFit.contain,
+//                    ),
+//                  ))),
           GoogleMap(
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
               new Factory<OneSequenceGestureRecognizer>(
@@ -588,6 +594,8 @@ class IM001MainPage extends StatelessWidget {
               ),
             ].toSet(),
             mapType: MapType.normal,
+            onMapCreated: model.onMapCreated,
+            circles: model.circles,
             initialCameraPosition: model.initCameraPosition,
             myLocationEnabled: false,
             myLocationButtonEnabled: false,

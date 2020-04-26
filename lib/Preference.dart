@@ -1,8 +1,12 @@
 import 'dart:core';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class Preference {
   static String kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";
-
+  static LatLng initPosition = LatLng(37.550982, 126.990889);
+  
+  
   //testDebug
 //  static String baseBackEndUrl = "http://121.136.211.241:8443";
 //  static Uri httpurlbase(String authority, String unencodedPath) {

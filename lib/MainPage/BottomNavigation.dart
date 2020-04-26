@@ -15,7 +15,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Consumer<CodeMainViewModel>(builder: (_, model, child) {
       return Container(
           color: Colors.white,
-          height: 52.h,
+          height: 52,
           child: Row(children: <Widget>[
             Expanded(
                 flex: 1,

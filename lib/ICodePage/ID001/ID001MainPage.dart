@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAni.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -14,14 +15,12 @@ import 'package:provider/provider.dart';
 
 class ID001MainPage extends StatelessWidget {
   final FBallResDto _fBallResDto;
-
   ID001MainPage(this._fBallResDto) {
     var statueBar = SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white.withOpacity(0.5),
         statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(statueBar);
   }
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -35,6 +34,11 @@ class ID001MainPage extends StatelessWidget {
                     child: Stack(
                       children: <Widget>[
                         Positioned(
+                          bottom: 0,
+                          left: 0,
+                          child: MapCircleAni(model.googleMapCircleController),
+                        ),
+                        Positioned(
                             top: 0,
                             left: 0,
                             child: Container(
@@ -45,6 +49,7 @@ class ID001MainPage extends StatelessWidget {
                                     shrinkWrap: true,
                                     padding: EdgeInsets.all(0),
                                     children: <Widget>[
+
                                       googleMapBar(model),
                                       issueBallNameBar(),
                                       issueBallTitleBar(model),
@@ -87,12 +92,14 @@ class ID001MainPage extends StatelessWidget {
                                       model.tagChips.length > 0
                                           ? didver()
                                           : Container(),
-                                      replyInputBar(model)
+                                      replyInputBar(model),
+
                                     ]))),
                         Positioned(
                             top: MediaQuery.of(context).padding.top,
                             left: 0,
                             child: topHeaderBar(model))
+
                       ],
                     )))
           ]);
@@ -615,22 +622,6 @@ class ID001MainPage extends StatelessWidget {
     return Container(
       child: Stack(
         children: <Widget>[
-          Positioned(
-              top: 0,
-              left: 0,
-              child: RepaintBoundary(
-                  key: model.makerAnimationKey,
-                  child: Container(
-                    width: 240.w,
-                    height: 240.h,
-                    child: FlareActor(
-                      "assets/Rive/radar.flr",
-                      alignment: Alignment.center,
-                      animation: "animating",
-                      fit: BoxFit.contain,
-
-                    ),
-                  ))),
           GoogleMap(
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
               new Factory<OneSequenceGestureRecognizer>(
@@ -641,6 +632,7 @@ class ID001MainPage extends StatelessWidget {
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
             markers: model.markers,
+            circles: model.circles,
           )
         ],
       ),

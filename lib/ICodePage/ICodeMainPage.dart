@@ -35,6 +35,8 @@ class ICodeMainPage extends StatelessWidget {
                       Positioned(
                           top: 0,
                           left: 0,
+                          width: 1,
+                          height: 1,
                           child: Column(
                             children: <Widget>[
                               QuestBallStyle1MarkerWidget.selectBall(),

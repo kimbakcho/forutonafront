@@ -20,6 +20,7 @@ import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/MakerSupportStyle2.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -45,6 +46,9 @@ class IM001MainPageViewModel extends ChangeNotifier {
   //googleMap
   CameraPosition initCameraPosition;
   Set<Marker> markers = Set<Marker>();
+  Completer<GoogleMapController> _googleMapController = Completer();
+  Set<Circle> circles = Set<Circle>();
+  MapAniCircleController circleController = new MapAniCircleController();
 
   //Focus
   FocusNode tagEditFocusNode = FocusNode();
@@ -70,8 +74,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
   //Repository
   FBallRepository _fBallRepository = FBallRepository();
 
-  Timer ballDrawTimer;
-  bool timerStopFlag = false;
+
 
   IM001MainPageViewModel(this._context, this._setUpPosition, this.address) {
     _ballUuid = new Uuid().v4();
@@ -97,19 +100,49 @@ class IM001MainPageViewModel extends ChangeNotifier {
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
-    ballDrawTimer = Timer.periodic(Duration(milliseconds: 50), (ballDrawTimer){
-      if(timerStopFlag){
-        ballDrawTimer.cancel();
-      }
-      onTickerDrawBall();
-    });
-
-//    _ticker = Ticker(onTickerDrawBall);
-    //개발중에는 애니메이션 효과 줄시 너무 느리므로 끔.
-//    _ticker.start();
     notifyListeners();
+
+    //MapAniMaction을 그려 준다.
+    googleMapDarwRader();
   }
 
+  //Google Map에 레이더로 애니메이션을 그린다 .
+  void googleMapDarwRader() {
+    var circleBack = Circle(circleId: CircleId("raderBack"),
+        zIndex: 0,center: _setUpPosition,
+        strokeWidth: 0,
+        fillColor: Color(0xff39F999).withOpacity(0.17),
+        radius: 200);
+    circles.add(circleBack);
+    circleController.aniController.addListener((){
+      var circle1 = Circle(circleId: CircleId("rader1"),
+          zIndex: 1,center: _setUpPosition,
+      strokeWidth: 0,
+      fillColor: Color(0xff39F999).withOpacity(0.3),
+          radius: circleController.circleRadius.value);
+      circles.removeWhere((value){
+        return value.circleId.value == "rader1";
+      });
+      circles.add(circle1);
+      notifyListeners();
+    });
+    circleController.aniController2.addListener((){
+      var circle2 = Circle(circleId: CircleId("rader2"),
+          zIndex: 2,center: _setUpPosition,
+          strokeWidth: 0,
+          fillColor: Color(0xff39F999).withOpacity(0.6),
+          radius: circleController.circleRadius2.value);
+      circles.removeWhere((value){
+        return value.circleId.value == "rader2";
+      });
+      circles.add(circle2);
+      notifyListeners();
+    });
+    circleController.aniController.forward();
+    Future.delayed(Duration(milliseconds: 500),(){
+      circleController.aniController2.forward();
+    });
+  }
 
 
   void ontextContentFocusNode() {
@@ -141,7 +174,6 @@ class IM001MainPageViewModel extends ChangeNotifier {
     Uint8List uint8BallAnimation = byteData.buffer.asUint8List();
     var makerSupport = MakerSupportStyle2(ballList, _markerCompleter);
     makerSupport.generate(_context);
-
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
@@ -151,7 +183,6 @@ class IM001MainPageViewModel extends ChangeNotifier {
         anchor: Offset(0.5, 0.5),
         zIndex: 0,
         icon: BitmapDescriptor.fromBytes(uint8BallAnimation)));
-
     notifyListeners();
   }
 
@@ -161,10 +192,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
     if (_clipBoardCheckTimer != null) {
       _clipBoardCheckTimer.cancel();
     }
-    timerStopFlag = true;
-    if(ballDrawTimer != null){
-      ballDrawTimer.cancel();
-    }
+
 
     super.dispose();
   }
@@ -186,49 +214,49 @@ class IM001MainPageViewModel extends ChangeNotifier {
     List<Uint8List> images = [];
     List<BallImageItemDto> uploadListImageItemDto = [];
     for (var o in ballImageList) {
-      if(o.imageByte != null){
+      if (o.imageByte != null) {
         images.add(o.imageByte);
         uploadListImageItemDto.add(o);
       }
     }
     //이미지 업로드 해서 URL 가져옴
     var fBallImageUploadResDto = await _fBallRepository.ballImageUpload(images);
-    for(int i=0;i<fBallImageUploadResDto.urls.length;i++){
+    for (int i = 0; i < fBallImageUploadResDto.urls.length; i++) {
       uploadListImageItemDto[i].imageUrl = fBallImageUploadResDto.urls[i];
     }
 
-    
     IssueBallDescriptionDto issueBallDescriptionDto = IssueBallDescriptionDto();
     issueBallDescriptionDto.text = textContentEditController.text;
-    for(int i=0;i<ballImageList.length;i++){
-      issueBallDescriptionDto.desimages.add(FBallDesImagesDto.fromUrl(i, ballImageList[i].imageUrl));
+    for (int i = 0; i < ballImageList.length; i++) {
+      issueBallDescriptionDto.desimages
+          .add(FBallDesImagesDto.fromUrl(i, ballImageList[i].imageUrl));
     }
-    if(validYoutubeLink != null){
-      issueBallDescriptionDto.youtubeVideoId = YoutubeIdParser.getIdFromUrl(validYoutubeLink);
+    if (validYoutubeLink != null) {
+      issueBallDescriptionDto.youtubeVideoId =
+          YoutubeIdParser.getIdFromUrl(validYoutubeLink);
     }
-
 
     FBallInsertReqDto ballInsertReqDto = FBallInsertReqDto();
     ballInsertReqDto.ballType = FBallType.IssueBall;
     //JSON 으로 넣어 준 다음 다음에 다시 JSON 으로 파서 해서 사용
-    ballInsertReqDto.description = json.encode(issueBallDescriptionDto.toJson());
+    ballInsertReqDto.description =
+        json.encode(issueBallDescriptionDto.toJson());
     ballInsertReqDto.longitude = _setUpPosition.longitude;
     ballInsertReqDto.latitude = _setUpPosition.latitude;
     ballInsertReqDto.ballUuid = Uuid().v4();
     ballInsertReqDto.ballName = titleEditController.text;
     ballInsertReqDto.placeAddress = address;
-    List<TagInsertReqDto> tags =[];
-    for( var chip in tagChips){
+    List<TagInsertReqDto> tags = [];
+    for (var chip in tagChips) {
       Text textWidget = chip.label as Text;
-      tags.add(TagInsertReqDto(ballInsertReqDto.ballUuid,textWidget.data));
+      tags.add(TagInsertReqDto(ballInsertReqDto.ballUuid, textWidget.data));
     }
     ballInsertReqDto.tags = tags;
 
     var result = await _fBallRepository.insertBall(ballInsertReqDto);
-    if(result == 1){
+    if (result == 1) {
       Navigator.of(_context).popUntil(ModalRoute.withName('HCODE'));
     }
-
   }
 
   //이미지 추가를 눌렀을때
@@ -256,7 +284,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
           useDetailsView: false,
           selectCircleStrokeColor: "#000000",
         ));
-    if(images != null){
+    if (images != null) {
       for (var i in images) {
         ByteData imageData = await i.getByteData();
 
@@ -468,5 +496,10 @@ class IM001MainPageViewModel extends ChangeNotifier {
       moveToBottomScroller();
     }
     notifyListeners();
+  }
+
+  void onMapCreated(GoogleMapController controller) async {
+    _googleMapController.complete(controller);
+    GoogleMapController controllerTemp = await _googleMapController.future;
   }
 }

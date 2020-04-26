@@ -4,7 +4,6 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
-import 'package:forutonafront/HCodePage/H002/H002Page.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,6 @@ class H001Page extends StatefulWidget {
 }
 
 class _H001PageState extends State<H001Page> {
-
   @override
   Widget build(BuildContext context) {
     var h001ViewModel = Provider.of<H001ViewModel>(context);
@@ -57,7 +55,7 @@ class _H001PageState extends State<H001Page> {
 
   ListView buildListUpPanel(H001ViewModel model) {
     return ListView.separated(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 65.h),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 65),
       physics: BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: model.fBallListUpWrapDto.balls.length + 1,
@@ -72,7 +70,7 @@ class _H001PageState extends State<H001Page> {
       },
       controller: model.h001CenterListViewController,
       separatorBuilder: (context, index) {
-        return SizedBox(height: 16.h);
+        return SizedBox(height: 16);
       },
     );
   }
@@ -92,8 +90,8 @@ class _H001PageState extends State<H001Page> {
                     padding: EdgeInsets.all(0),
                     onPressed: model.goBallMakePage,
                   ),
-                  height: 46.00.h,
-                  width: 47.00.w,
+                  height: 46.00,
+                  width: 47.00,
                   decoration: BoxDecoration(
                       color: Color(0xff3497fd),
                       boxShadow: [
@@ -196,7 +194,7 @@ class _H001PageState extends State<H001Page> {
   Container bottomNavigation(CodeMainViewModel model) {
     return Container(
         color: Colors.white,
-        height: 52.h,
+        height: 52,
         child: Row(children: <Widget>[
           Expanded(
               flex: 1,
@@ -272,63 +270,68 @@ class _H001PageState extends State<H001Page> {
                 controller: model.rankingSwiperController,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                      height: 40.h,
-                      width: 320.w,
-                      padding: EdgeInsets.fromLTRB(18.w, 0, 18.w, 0),
+                      height: 40,
+                      padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       child: Row(children: <Widget>[
                         Text(
                             "${model.rankingWrapDto.contents[index].ranking}."),
-                        SizedBox(width: 12.w),
+                        SizedBox(width: 12),
                         Text(
                             "#${model.rankingWrapDto.contents[index].tagName}"),
                         Spacer(),
                         Text(
                             "${(model.rankingWrapDto.contents[index].tagPower).toStringAsFixed(1)}k"),
-                        SizedBox(width: 12.w),
+                        SizedBox(width: 12),
                         Container(
-                          width: 12.w,
+                          width: 12,
                           child: FlatButton(
                               padding: EdgeInsets.all(0),
                               onPressed: () {
                                 model.inlineRanking = false;
                               },
                               child:
-                                  Icon(ForutonaIcon.down_arrow, size: 10.sp)),
+                                  Icon(ForutonaIcon.down_arrow, size: 10)),
                         )
                       ]));
                 },
               )
             : Container(),
-        margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-        height: model.rankingWrapDto.contents.length == 0 ? 0 : 40.h,
-        width: 328.00.w,
+        margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
+        height: model.rankingWrapDto.contents.length == 0 ? 0 : 40,
         decoration: BoxDecoration(
             color: Color(0xffe9faff),
-            border: Border.all(width: 1.00.w, color: Color(0xff38caf5)),
-            borderRadius: BorderRadius.circular(10.00.w)));
+            border: Border.all(width: 1.00, color: Color(0xff38caf5)),
+            borderRadius: BorderRadius.circular(10.00)));
   }
 
   AnimatedContainer addressDisplay(H001ViewModel model) {
     return AnimatedContainer(
-        duration: Duration(milliseconds: 500),
-        color: Colors.white,
-        height: model.addressDisplayShowFlag ? 73.h : 0.h,
-        padding: EdgeInsets.fromLTRB(16.w, 11.h, 16.w, 16.h),
-        child: Container(
-            height: 46.00.h,
-            width: 328.00.w,
-            decoration: BoxDecoration(
-              color: Color(0xfff6f6f6),
-              borderRadius: BorderRadius.circular(12.00.w),
-            ),
-            child: FlatButton(
-                onPressed: model.moveToH007,
-                child: Text(model.selectPositionAddress,
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14.sp,
-                      color: Color(0xff454f63),
-                    )))));
+      duration: Duration(milliseconds: 500),
+      color: Colors.white,
+      height: model.addressDisplayShowFlag ? 73 : 0,
+      padding: EdgeInsets.fromLTRB(16, 11, 16, 16),
+      alignment: Alignment.centerLeft,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+              child: Container(
+                  height: 46.00,
+                  decoration: BoxDecoration(
+                    color: Color(0xfff6f6f6),
+                    borderRadius: BorderRadius.circular(12.00),
+                  ),
+                  child: FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: model.moveToH007,
+                      child: Text(model.selectPositionAddress,
+                          style: TextStyle(
+                            fontFamily: "Noto Sans CJK KR",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                            color: Color(0xff454f63),
+                          ))))),
+        ],
+      ),
+    );
   }
 }

@@ -10,6 +10,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagResDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
@@ -42,6 +43,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
   Set<Marker> markers = Set<Marker>();
   List<FBallResForMarkerStyle2Dto> ballList;
   GlobalKey makerAnimationKey = new GlobalKey();
+  Set<Circle> circles = Set<Circle>();
+  MapAniCircleController googleMapCircleController = new MapAniCircleController();
 
   //Youtube 관련
   Youtube.YoutubeExplode _youtubeExplode = Youtube.YoutubeExplode();
@@ -92,7 +95,47 @@ class ID001MainPageViewModel extends ChangeNotifier {
     makerUserInfo =
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
 
+
     notifyListeners();
+    googleMapDarwRader();
+  }
+
+  //Google Map에 레이더로 애니메이션을 그린다 .
+  void googleMapDarwRader() {
+    var circleBack = Circle(circleId: CircleId("raderBack"),
+        zIndex: 0,center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
+        strokeWidth: 0,
+        fillColor: Color(0xff39F999).withOpacity(0.17),
+        radius: 200);
+    circles.add(circleBack);
+    googleMapCircleController.aniController.addListener((){
+      var circle1 = Circle(circleId: CircleId("rader1"),
+          zIndex: 1,center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
+          strokeWidth: 0,
+          fillColor: Color(0xff39F999).withOpacity(0.3),
+          radius: googleMapCircleController.circleRadius.value);
+      circles.removeWhere((value){
+        return value.circleId.value == "rader1";
+      });
+      circles.add(circle1);
+      notifyListeners();
+    });
+    googleMapCircleController.aniController2.addListener((){
+      var circle2 = Circle(circleId: CircleId("rader2"),
+          zIndex: 2,center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
+          strokeWidth: 0,
+          fillColor: Color(0xff39F999).withOpacity(0.6),
+          radius: googleMapCircleController.circleRadius2.value);
+      circles.removeWhere((value){
+        return value.circleId.value == "rader2";
+      });
+      circles.add(circle2);
+      notifyListeners();
+    });
+    googleMapCircleController.aniController.forward();
+    Future.delayed(Duration(milliseconds: 500),(){
+      googleMapCircleController.aniController2.forward();
+    });
   }
 
   youtubeLoad(String videoId) async {
@@ -157,6 +200,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
         position: LatLng(fBallResDto.latitude, fBallResDto.longitude),
         anchor: Offset(0.5, 0.5),
         zIndex: 0,
+
         icon: BitmapDescriptor.fromBytes(uint8BallAnimation)));
     notifyListeners();
   }

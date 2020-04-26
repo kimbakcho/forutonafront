@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/Splash/SplashPage.dart';
 import 'package:provider/provider.dart';

@@ -19,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, width: 360, height: 640, allowFontScaling: false);
+
     return ChangeNotifierProvider(
         create: (_) => SplashPageViewModel(context),
         child: Container(

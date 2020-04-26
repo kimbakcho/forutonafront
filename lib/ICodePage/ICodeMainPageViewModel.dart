@@ -16,6 +16,7 @@ import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -45,11 +46,20 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   ICodeMainPageViewModel(this._context) {
     _codeMainViewModel = Provider.of<CodeMainViewModel>(_context);
-    initCameraPosition = CameraPosition(
-        target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
-            _codeMainViewModel.lastKnownPosition.longitude),
-        zoom: 14.4746);
-    currentAddress = _codeMainViewModel.firstAddress;
+    if(_codeMainViewModel != null && _codeMainViewModel.lastKnownPosition != null  ){
+      _codeMainViewModel = Provider.of<CodeMainViewModel>(_context);
+      initCameraPosition = CameraPosition(
+          target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
+              _codeMainViewModel.lastKnownPosition.longitude),
+          zoom: 14.4746);
+      currentAddress = _codeMainViewModel.firstAddress;
+
+    }else {
+      initCameraPosition= CameraPosition(
+        target:Preference.initPosition,zoom:14.4746
+      );
+      currentAddress = "남산 공원";
+    }
     bottomPageController.addListener(onPageContollerListner);
   }
 
@@ -139,12 +149,26 @@ class ICodeMainPageViewModel extends ChangeNotifier {
     _flagIdleIgore = true;
     _googleMapController.complete(controller);
     reFreshBtnActive = false;
-    await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
-            _codeMainViewModel.lastKnownPosition.longitude),
-        zoom: 14.4746)));
-    await onRefreshBall();
-    _flagIdleIgore = false;
+    if(_codeMainViewModel != null && _codeMainViewModel.lastKnownPosition != null){
+      await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
+              _codeMainViewModel.lastKnownPosition.longitude),
+          zoom: 14.4746)));
+      await onRefreshBall();
+      _flagIdleIgore = false;
+    }else {
+      var position = await Geolocator().getLastKnownPosition();
+      var positionAddress = await _geolocationRepository.getPositionAddress(position);
+      currentAddress = positionAddress;
+      await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(position.latitude,position.longitude),
+        zoom: 14.4746
+      )));
+      await onRefreshBall();
+      _flagIdleIgore = false;
+
+    }
+
   }
 
   onRefreshBall() async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001Page.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
@@ -27,6 +27,11 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, width: 360, height: 640, allowFontScaling: true);
+    print(ScreenUtil.screenWidth);
+    print(ScreenUtil.screenHeight);
+    print(MediaQuery.of(context).size.width);
+
     return ChangeNotifierProvider(
         create: (_) => HCodeMainPageViewModel(),
         child: Consumer<HCodeMainPageViewModel>(builder: (_, model, child) {
@@ -42,8 +47,8 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                         return !h001model.inlineRanking
                             ? Positioned(
                                 bottom: 0,
-                                width: 360.w,
-                                height: 52.h,
+                                width: 360,
+                                height: 52,
                                 child: BottomNavigation(),
                               )
                             : Container();
@@ -63,9 +68,11 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                         return h001model.inlineRanking
                             ? Positioned(
                                 bottom: 0,
-                                width: 360.w,
-                                height: 52.h,
-                                child: BottomNavigation(),
+                                left: 0,
+                                width: MediaQuery.of(context).size.width,
+                                child: Container(
+                                  child : BottomNavigation()
+                                )
                               )
                             : Container();
                       }),
@@ -77,15 +84,15 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
   Container topNavibar(HCodeMainPageViewModel model) {
     return Container(
         color: Colors.white,
-        padding: EdgeInsets.fromLTRB(16.w, 7.h, 16.w, 0.h),
-        height: 63.h,
+        padding: EdgeInsets.fromLTRB(16, 7, 16, 0),
+        height: 64,
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               h001Button(model),
               SizedBox(
-                width: 16.w,
+                width: 16,
               ),
               h003Button(model),
               Spacer(),
@@ -96,8 +103,8 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
   Container searchButton() {
     return Container(
         alignment: Alignment.topCenter,
-        height: 36.h,
-        width: 36.w,
+        height: 36,
+        width: 36,
         decoration: BoxDecoration(
           color: Color(0xfff6f6f6),
           borderRadius: BorderRadius.circular(8.00),
@@ -118,33 +125,33 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
     return Column(children: <Widget>[
       model.currentState == HCodePageState.H001Page
           ? Container(
-              height: 36.00.h,
-              width: 36.00.w,
+              height: 36.00,
+              width: 36.00,
               child: FlatButton(
                 onPressed: () {
                   model.jumpTopPage(HCodePageState.H001Page);
                 },
-                padding: EdgeInsets.fromLTRB(0, 0, 6.w, 0),
+                padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
                 child: Icon(
                   ForutonaIcon.joystick,
                   color: Color(0xff454F63),
-                  size: 17.sp,
+                  size: 17,
                 ),
               ),
               decoration: BoxDecoration(
                 color: Color(0xff88d4f1),
                 border: Border.all(
-                  width: 2.00.w,
+                  width: 2.00,
                   color: Color(0xff454f63),
                 ),
-                borderRadius: BorderRadius.circular(8.00.w),
+                borderRadius: BorderRadius.circular(8),
               ))
           : Container(
-              height: 36.00.h,
-              width: 36.00.w,
+              height: 36.00,
+              width: 36.00,
               decoration: BoxDecoration(
                 color: Color(0xfff6f6f6),
-                borderRadius: BorderRadius.circular(8.00.w),
+                borderRadius: BorderRadius.circular(8.00),
               ),
               child: FlatButton(
                 onPressed: () {
@@ -152,23 +159,23 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                     model.jumpTopPage(HCodePageState.H001Page);
                   });
                 },
-                padding: EdgeInsets.fromLTRB(0, 0, 6.w, 0),
+                padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
                 child: Icon(
                   ForutonaIcon.joystick,
                   color: Color(0xffB1B1B1),
-                  size: 17.sp,
+                  size: 17,
                 ),
               ),
             ),
       model.currentState == HCodePageState.H001Page
           ? Container(
-              margin: EdgeInsets.fromLTRB(0, 6.sp, 0, 0),
-              height: 4.00.h,
-              width: 4.00.w,
+              margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
+              height: 4.00,
+              width: 4.00,
               decoration: BoxDecoration(
                 color: Color(0xff454f63),
                 border: Border.all(
-                  width: 1.00.w,
+                  width: 1.00,
                   color: Color(0xff454f63),
                 ),
                 shape: BoxShape.circle,
@@ -181,8 +188,8 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
     return Column(children: <Widget>[
       model.currentState == HCodePageState.H003Page
           ? Container(
-              height: 36.h,
-              width: 36.w,
+              height: 36,
+              width: 36,
               child: FlatButton(
                 onPressed: () {
                   model.jumpTopPage(HCodePageState.H003Page);
@@ -191,23 +198,23 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                 child: Icon(
                   ForutonaIcon.h003top,
                   color: Color(0xff454F63),
-                  size: 17.sp,
+                  size: 17,
                 ),
               ),
               decoration: BoxDecoration(
                 color: Color(0xffff9edb),
                 border: Border.all(
-                  width: 2.00.w,
+                  width: 2.00,
                   color: Color(0xff454f63),
                 ),
-                borderRadius: BorderRadius.circular(8.00.w),
+                borderRadius: BorderRadius.circular(8.00),
               ))
           : Container(
               height: 36.00,
               width: 36.00,
               decoration: BoxDecoration(
                 color: Color(0xfff6f6f6),
-                borderRadius: BorderRadius.circular(8.00.w),
+                borderRadius: BorderRadius.circular(8.00),
               ),
               child: FlatButton(
                 onPressed: () {
@@ -217,19 +224,19 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                 child: Icon(
                   ForutonaIcon.h003top,
                   color: Color(0xffB1B1B1),
-                  size: 17.sp,
+                  size: 17,
                 ),
               ),
             ),
       model.currentState == HCodePageState.H003Page
           ? Container(
               margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-              height: 4.00.h,
-              width: 4.00.w,
+              height: 4.00,
+              width: 4.00,
               decoration: BoxDecoration(
                 color: Color(0xff454f63),
                 border: Border.all(
-                  width: 1.00.w,
+                  width: 1.00,
                   color: Color(0xff454f63),
                 ),
                 shape: BoxShape.circle,
