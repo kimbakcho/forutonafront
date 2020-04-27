@@ -46,9 +46,9 @@ class G010MainPageViewModel extends ChangeNotifier {
 
   onCompleteTap() async {
     //자기 자신의 닉네임과 같을때는 체크 안함
-    if(onEditCompleteNickName()){
-      return ;
-    }
+//    if(await onEditCompleteNickName()){
+//      return ;
+//    }
 
     //프로필 이미지 변경 체크 및 업데이트
     if(isChangeProfileImage && _currentPickProfileImage != null){

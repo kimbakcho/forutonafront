@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
 
 import 'package:forutonafront/HCodePage/H005/H00502/H00502pageViewModel.dart';
@@ -17,9 +17,10 @@ class H00502Page extends StatelessWidget {
         return Stack(children: <Widget>[
           Scaffold(
               body: Container(
+                width: MediaQuery.of(context).size.width,
                   child: Column(
                       children: <Widget>[
-                        relationTagRankingList(model),
+                        relationTagRankingList(model,context),
                         selectOrderButton(model),
                         Expanded(
                             child: ListView.builder(
@@ -30,7 +31,7 @@ class H00502Page extends StatelessWidget {
                                 itemCount: model.listUpBalls.length,
                                 itemBuilder: (context, index) {
                                   return Container(
-                                      margin: EdgeInsets.fromLTRB(0.w, 0, 0.w, 16.h),
+                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
                                       child: BallStyle1Support.selectBallWidget(model.listUpBalls[index]));
                                 }))
 
@@ -42,18 +43,18 @@ class H00502Page extends StatelessWidget {
 
   Container selectOrderButton(H00502pageViewModel model) {
     return Container(
-        height: 58.h,
-        padding: EdgeInsets.only(right: 16.w),
+        height: 58,
+        padding: EdgeInsets.only(right: 16),
         alignment: Alignment.centerRight,
         child: Container(
-            height: 29.00.h,
-            width: 91.00.w,
+            height: 29.00,
+            width: 91.00,
             child: DropdownButton<H00502DropdownItemType>(
               isExpanded: true,
               style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",
                 fontWeight: FontWeight.w500,
-                fontSize: 13.sp,
+                fontSize: 13,
                 color: Color(0xff454f63),
               ),
               value: model.selectOrder,
@@ -77,19 +78,19 @@ class H00502Page extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.00))));
   }
 
-  Container relationTagRankingList(H00502pageViewModel model) {
+  Container relationTagRankingList(H00502pageViewModel model,BuildContext context) {
     return Container(
-        height: 54.h,
-        width: 360.w,
+        height: 54,
+        width: MediaQuery.of(context).size.width,
         child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: model.tagRankings.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                  height: 26.h,
-                  padding: EdgeInsets.fromLTRB(8.w, 4.h, 8.w, 4.h),
-                  margin: EdgeInsets.fromLTRB(16.w, 14.h, 0, 14.h),
+                  height: 26,
+                  padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                  margin: EdgeInsets.fromLTRB(16, 14, 0, 14),
                   child: InkWell(
                       onTap: () {},
                       child: Text(model.tagRankings[index].tagName,

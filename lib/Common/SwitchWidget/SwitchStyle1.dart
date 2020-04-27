@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class SwitchStyle1Controller {
   Function(bool) moveSwitch;
@@ -69,14 +69,14 @@ class _SwitchStyle1State extends State<SwitchStyle1>
                     : widget.onChanged(false);
               },
               child: Container(
-                height: 25.00.h,
-                width: 56.00.w,
+                height: 25.00,
+                width: 56.00,
                 alignment: _circleAnimation.value,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(2.w, 2.h, 2.w, 2.h),
+                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
                   child: Container(
-                    height: 21.00.h,
-                    width: 21.00.w,
+                    height: 21.00,
+                    width: 21.00,
                     decoration: BoxDecoration(
                       color: Color(0xffffffff),
                       border: Border.all(
@@ -87,7 +87,7 @@ class _SwitchStyle1State extends State<SwitchStyle1>
                         BoxShadow(
                           offset: Offset(0.00, 3.00),
                           color: Color(0xff000000).withOpacity(0.16),
-                          blurRadius: 6.w,
+                          blurRadius: 6,
                         ),
                       ],
                       shape: BoxShape.circle,

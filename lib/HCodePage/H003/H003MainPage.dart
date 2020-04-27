@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/HCodePage/H003/H003MainPageModel.dart';
 import 'package:forutonafront/HCodePage/H003/H003PageState.dart';
 import 'package:forutonafront/HCodePage/H003/H003_01/H00301Page.dart';
@@ -14,9 +13,12 @@ class H003MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<H003MainPageModel>(create: (_)=> H003MainPageModel()),
-          ChangeNotifierProvider<H00301PageViewModel>(create: (_)=> H00301PageViewModel(context)),
-          ChangeNotifierProvider<H00302PageViewModel>(create: (_)=> H00302PageViewModel(context)),
+          ChangeNotifierProvider<H003MainPageModel>(
+              create: (_) => H003MainPageModel()),
+          ChangeNotifierProvider<H00301PageViewModel>(
+              create: (_) => H00301PageViewModel(context)),
+          ChangeNotifierProvider<H00302PageViewModel>(
+              create: (_) => H00302PageViewModel(context)),
         ],
         child: Consumer<H003MainPageModel>(builder: (_, model, child) {
           return Scaffold(
@@ -27,10 +29,7 @@ class H003MainPage extends StatelessWidget {
                 child: PageView(
                   controller: model.pageController,
                   physics: NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    H00301Page(),
-                    H00302Page()
-                  ],
+                  children: <Widget>[H00301Page(), H00302Page()],
                 ),
               )
             ])
@@ -40,22 +39,22 @@ class H003MainPage extends StatelessWidget {
 
   Container headerBar(H003MainPageModel model) {
     return Container(
-              height: 82.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  playButton(model.currentState == H003PageState.H003_01Page,model),
-                  SizedBox(
-                    width: 17.w,
-                  ),
-                  makeButton(model.currentState == H003PageState.H003_02Page,model)
-                ],
-              ),
-              decoration: BoxDecoration(color: Colors.white),
-            );
+      height: 82,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          playButton(model.currentState == H003PageState.H003_01Page, model),
+          SizedBox(
+            width: 17,
+          ),
+          makeButton(model.currentState == H003PageState.H003_02Page, model)
+        ],
+      ),
+      decoration: BoxDecoration(color: Colors.white),
+    );
   }
 
-  Container playButton(bool selected,H003MainPageModel model) {
+  Container playButton(bool selected, H003MainPageModel model) {
     return Container(
         child: selected
             ? FlatButton(
@@ -64,7 +63,7 @@ class H003MainPage extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w700,
-                      fontSize: 14.sp,
+                      fontSize: 14,
                       color: Color(0xff454f63),
                     )),
                 padding: EdgeInsets.all(0),
@@ -77,29 +76,29 @@ class H003MainPage extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w700,
-                      fontSize: 14.sp,
+                      fontSize: 14,
                       color: Color(0xffcccccc),
                     )),
                 padding: EdgeInsets.all(0),
               ),
-        height: 36.00.h,
-        width: 84.00.w,
+        height: 36.00,
+        width: 84.00,
         decoration: selected
             ? BoxDecoration(
                 color: Color(0xfff9f9f9),
                 border: Border.all(
-                  width: 2.00.w,
+                  width: 2.00,
                   color: Color(0xff454f63),
                 ),
-                borderRadius: BorderRadius.circular(20.00.w),
+                borderRadius: BorderRadius.circular(20.00),
               )
             : BoxDecoration(
                 color: Color(0xfff6f6f6),
-                borderRadius: BorderRadius.circular(20.00.w),
+                borderRadius: BorderRadius.circular(20.00),
               ));
   }
 
-  Container makeButton(bool selected,H003MainPageModel model) {
+  Container makeButton(bool selected, H003MainPageModel model) {
     return Container(
         child: selected
             ? FlatButton(
@@ -108,7 +107,7 @@ class H003MainPage extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w700,
-                      fontSize: 14.sp,
+                      fontSize: 14,
                       color: Color(0xff454f63),
                     )),
                 padding: EdgeInsets.all(0),
@@ -121,24 +120,24 @@ class H003MainPage extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w700,
-                      fontSize: 14.sp,
+                      fontSize: 14,
                       color: Color(0xffcccccc),
                     )),
                 padding: EdgeInsets.all(0)),
-        height: 36.00.h,
-        width: 84.00.w,
+        height: 36.00,
+        width: 84.00,
         decoration: selected
             ? BoxDecoration(
                 color: Color(0xfff9f9f9),
                 border: Border.all(
-                  width: 2.00.w,
+                  width: 2.00,
                   color: Color(0xff454f63),
                 ),
-                borderRadius: BorderRadius.circular(20.00.w),
+                borderRadius: BorderRadius.circular(20.00),
               )
             : BoxDecoration(
                 color: Color(0xfff6f6f6),
-                borderRadius: BorderRadius.circular(20.00.w),
+                borderRadius: BorderRadius.circular(20.00),
               ));
   }
 }

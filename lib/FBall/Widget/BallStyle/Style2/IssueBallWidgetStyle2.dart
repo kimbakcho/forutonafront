@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Dto/UserBallResDto.dart';
@@ -23,30 +22,30 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
         child: Consumer<IssueBallWidgetStyle2ViewModel>(
             builder: (_, model, child) {
           return Container(
-              margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0.h),
-              height: 133.h,
-              width: 328.w,
+              margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+              height: 133,
+
               child: Stack(
                 children: <Widget>[
                   FlatButton(
-                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                       onPressed: () {},
                       child: Stack(children: <Widget>[
                         Positioned(
-                          top: 0.h,
-                          left: 0.h,
+                          top: 0,
+                          left: 0,
                           child: ballIcon(),
                         ),
                         Positioned(
-                            top: 0, left: 46.w, child: titleAndAddress(model)),
+                            top: 0, left: 46, child: titleAndAddress(model,context)),
                         Positioned(
-                          bottom: 31.h,
-                          child: divider(),
+                          bottom: 31,
+                          child: divider(context),
                         ),
                         Positioned(
                             right: 0, bottom: 0, child: valueBottomBar(model)),
                         Positioned(
-                          bottom: 47.h,
+                          bottom: 47,
                           right: 0,
                           child: Container(
                             child: Text(model.resDto.distanceDisplayText,
@@ -58,16 +57,16 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                           ),
                         ),
                       ])),
-                  Positioned(right: 4.w, top: 10.h, child: pointDashButton())
+                  Positioned(right: 4, top: 10, child: pointDashButton())
                 ],
               ),
               decoration: BoxDecoration(
                   color: model.isAlive ? Color(0xffffffff) :  Color(0xffF6F6F6),
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(0.00, 3.00.w),
+                      offset: Offset(0.00, 3.00),
                       color:  Color(0xff000000).withOpacity(0.16),
-                      blurRadius: 6.w,
+                      blurRadius: 6,
                     )
                   ],
                   borderRadius: BorderRadius.circular(12.00)));
@@ -76,15 +75,15 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
 
   Container pointDashButton() {
     return Container(
-        height: 30.h,
-        width: 30.w,
+        height: 30,
+        width: 30,
         child: FlatButton(
           padding: EdgeInsets.all(0),
           onPressed: () {},
           shape: CircleBorder(),
           child: Icon(
             ForutonaIcon.pointdash,
-            size: 16.sp,
+            size: 16,
           ),
         ));
   }
@@ -100,18 +99,18 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff78849e),
                 )),
-            margin: EdgeInsets.only(right: 6.w),
+            margin: EdgeInsets.only(right: 6),
           ),
           Container(
             child: Icon(
               ForutonaIcon.thumbsup,
-              size: 15.sp,
+              size: 15,
               color: Color(0xff78849e),
             ),
-            margin: EdgeInsets.only(right: 19.w),
+            margin: EdgeInsets.only(right: 19),
           ),
           Container(
             child: Text(
@@ -120,18 +119,18 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff78849e),
                 )),
-            margin: EdgeInsets.only(right: 6.w),
+            margin: EdgeInsets.only(right: 6),
           ),
           Container(
             child: Icon(
               ForutonaIcon.thumbsdown,
-              size: 15.sp,
+              size: 15,
               color: Color(0xff78849e),
             ),
-            margin: EdgeInsets.only(right: 19.w),
+            margin: EdgeInsets.only(right: 19),
           ),
           Container(
             child: Text(
@@ -140,18 +139,18 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff78849e),
                 )),
-            margin: EdgeInsets.only(right: 6.w),
+            margin: EdgeInsets.only(right: 6),
           ),
           Container(
             child: Icon(
               ForutonaIcon.comment,
-              size: 15.sp,
+              size: 15,
               color: Color(0xff78849e),
             ),
-            margin: EdgeInsets.only(right: 19.w),
+            margin: EdgeInsets.only(right: 19),
           ),
           Container(
             child: Text(
@@ -160,15 +159,15 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff78849e),
                 )),
-            margin: EdgeInsets.only(right: 6.w),
+            margin: EdgeInsets.only(right: 6),
           ),
           Container(
             child: Icon(
               ForutonaIcon.accesstime,
-              size: 15.sp,
+              size: 15,
               color: Color(0xff78849e),
             ),
           )
@@ -177,30 +176,30 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
     );
   }
 
-  Container divider() {
+  Container divider(BuildContext context) {
     return Container(
-      height: 0.50.h,
-      width: 294.00.w,
+      height: 1,
+      width: MediaQuery.of(context).size.width-64,
       color: Color(0xffe4e7e8),
     );
   }
 
   Container ballIcon() {
     return Container(
-      height: 30.h,
-      width: 30.w,
+      height: 30,
+      width: 30,
       decoration: BoxDecoration(
         color: Color(0xffDC3E57),
         shape: BoxShape.circle,
       ),
-      padding: EdgeInsets.only(left: 1.w, bottom: 1.h),
-      child: Icon(ForutonaIcon.issue, color: Colors.white, size: 17.sp),
+      padding: EdgeInsets.only(left: 1, bottom: 1),
+      child: Icon(ForutonaIcon.issue, color: Colors.white, size: 17),
     );
   }
 
-  Container titleAndAddress(IssueBallWidgetStyle2ViewModel model) {
+  Container titleAndAddress(IssueBallWidgetStyle2ViewModel model,BuildContext context) {
     return Container(
-        width: 210.w,
+        width: MediaQuery.of(context).size.width-120,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -210,7 +209,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
-                  fontSize: 13.sp,
+                  fontSize: 13,
                   color: model.isAlive ? Color(0xff454f63):Color(0xff454F63).withOpacity(0.7),
                 )),
             Text(model.resDto.ballPlaceAddress,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H004/H004MainPageViewModel.dart';
@@ -26,16 +25,18 @@ class _H004MainPageState extends State<H004MainPage> {
           return Stack(children: <Widget>[
             Scaffold(
                 body: Container(
+                    width: MediaQuery.of(context).size.width,
                     color: Color(0xfff2f0f1),
-                    padding: EdgeInsets.fromLTRB(0, 22.h, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 22, 0, 0),
                     child: Stack(
                       children: <Widget>[
                         Column(children: <Widget>[
                           searchBar(context, model),
                         ]),
                         Positioned(
-                            top: 59.h,
+                            top: 59,
                             left: 0,
+                            width: MediaQuery.of(context).size.width,
                             child: searchHistoryDrawer(model))
                       ],
                     )))
@@ -47,17 +48,17 @@ class _H004MainPageState extends State<H004MainPage> {
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
       height: model.isClearButtonActive()
-          ? 0
-          : (52.h * model.searchHistorys.length),
-      width: 360.w,
+          ? 0.0
+          : (52.0 * model.searchHistorys.length),
+
       child: ListView.builder(
           padding: EdgeInsets.all(0),
           shrinkWrap: true,
           itemCount: model.searchHistorys.length,
           itemBuilder: (context, index) {
             return Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 16.w, 0),
-              height: 52.h,
+              padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
+              height: 52,
               child: FlatButton(
                   onPressed: () {
                     Navigator.of(context)
@@ -67,15 +68,16 @@ class _H004MainPageState extends State<H004MainPage> {
                     }));
                   },
                   child: Row(children: <Widget>[
-                    Container(
-                      width: 240.w,
-                      child: Text(model.searchHistorys[index].searchText,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontSize: 14.sp,
-                            color: Color(0xff454f63),
-                          )),
+                    Expanded (
+                      child: Container(
+                        child: Text(model.searchHistorys[index].searchText,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontSize: 14,
+                              color: Color(0xff454f63),
+                            )),
+                      ),
                     ),
                     Container(
                       child: Text(
@@ -83,12 +85,12 @@ class _H004MainPageState extends State<H004MainPage> {
                               model.searchHistorys[index].searchTime.toLocal()),
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             color: Color(0xffcccccc),
                           )),
                     ),
                     Container(
-                        width: 18.w,
+                        width: 18,
                         child: IconButton(
                             onPressed: () {
                               model.removeSearchText(
@@ -96,7 +98,7 @@ class _H004MainPageState extends State<H004MainPage> {
                             },
                             icon: Icon(
                               ForutonaIcon.removepath,
-                              size: 14.sp,
+                              size: 14,
                               color: Color(0xff78849E),
                             )))
                   ])),
@@ -105,7 +107,7 @@ class _H004MainPageState extends State<H004MainPage> {
                   border: Border(
                       bottom: BorderSide(
                           color: Color(0xffE4E7E8),
-                          width: 0.5.w,
+                          width: 0.5,
                           style: BorderStyle.solid))),
             );
           }),
@@ -114,8 +116,7 @@ class _H004MainPageState extends State<H004MainPage> {
 
   Container searchBar(BuildContext context, H004MainPageViewModel model) {
     return Container(
-      height: 60.h,
-      width: 360.w,
+      height: 60,
       child: Stack(children: <Widget>[
         Row(children: <Widget>[
           BackButton(
@@ -125,9 +126,9 @@ class _H004MainPageState extends State<H004MainPage> {
             color: Color(0xff454F63),
           ),
           Container(
-              margin: EdgeInsets.only(left: 8.w),
-              width: 280.w,
-              height: 32.h,
+              margin: EdgeInsets.only(left: 8),
+              width: MediaQuery.of(context).size.width-80,
+              height: 32,
               child: TextField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
@@ -166,31 +167,31 @@ class _H004MainPageState extends State<H004MainPage> {
                     hintStyle: model.hasSearchTextFocus
                         ? TextStyle(
                             fontFamily: "Noto Sans CJK KR",
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             color: Color(0xffcccccc))
                         : TextStyle(
                             fontFamily: "Noto Sans CJK KR",
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             color: Color(0xff454f63),
                           ),
-                    contentPadding: EdgeInsets.fromLTRB(15.w, 0, 15.w, 0),
+                    contentPadding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                     focusedBorder: OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: Color(0xff3497FD), width: 1.5.w),
-                        borderRadius: BorderRadius.all(Radius.circular(12.w))),
+                            BorderSide(color: Color(0xff3497FD), width: 1.5),
+                        borderRadius: BorderRadius.all(Radius.circular(12))),
                     enabledBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Color(0xffF9F9F9), width: 0),
-                        borderRadius: BorderRadius.all(Radius.circular(12.w)))),
+                        borderRadius: BorderRadius.all(Radius.circular(12)))),
               ))
         ]),
         Positioned(
-            right: 40.w,
-            top: 15.h,
+            right: 40,
+            top: 13,
             child: model.isClearButtonShow()
                 ? Container(
-                    height: 14.00.h,
-                    width: 14.00.w,
+                    height: 20.00,
+                    width: 20.00,
                     child: FlatButton(
                       onPressed: model.isClearButtonActive()
                           ? () {
@@ -199,7 +200,7 @@ class _H004MainPageState extends State<H004MainPage> {
                           : null,
                       padding: EdgeInsets.all(0),
                       child: Icon(Icons.close,
-                          size: 9.sp,
+                          size: 14,
                           color: model.isClearButtonActive()
                               ? Color(0xff454F63)
                               : Color(0xffCCCCCC)),
@@ -207,7 +208,7 @@ class _H004MainPageState extends State<H004MainPage> {
                     decoration: BoxDecoration(
                       color: Color(0xffffffff),
                       border: Border.all(
-                        width: 1.00.w,
+                        width: 1.00,
                         color: model.isClearButtonActive()
                             ? Color(0xff454F63)
                             : Color(0xffcccccc),

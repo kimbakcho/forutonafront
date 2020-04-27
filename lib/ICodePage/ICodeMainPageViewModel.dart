@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
@@ -183,9 +183,9 @@ class ICodeMainPageViewModel extends ChangeNotifier {
         mapContainerGlobalKey.currentContext.findRenderObject();
     _currentMapPosition = initCameraPosition;
     var southwestPoint = await getWidgetOffsetPositionToLatLngFromMap(
-        mapRenderBoxRed, controller, 16.w, 465.h);
+        mapRenderBoxRed, controller, 16, 465);
     var northeastPoint = await getWidgetOffsetPositionToLatLngFromMap(
-        mapRenderBoxRed, controller, 344.w, 108.h);
+        mapRenderBoxRed, controller, 344, 108);
     List<MultiSort> sortList = [];
     sortList.add(MultiSort("ballPower", QueryOrders.DESC));
     MultiSorts sorts = MultiSorts(sortList);

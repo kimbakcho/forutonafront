@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:forutonafront/FBall/Dto/FBallType.dart';
-import 'package:forutonafront/FBall/Dto/UserToPlayBallResDto.dart';
+
 import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Support.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/IssueBallWidgetStyle2.dart';
+
 import 'package:forutonafront/HCodePage/H003/H003_01/H00301PageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +13,7 @@ class H00301Page extends StatelessWidget {
         value: viewModel,
         child: Consumer<H00301PageViewModel>(builder: (_, model, child) {
           return Container(
-            margin: EdgeInsets.only(bottom: 53.h),
+            margin: EdgeInsets.only(bottom: 53),
               child: Stack(children: <Widget>[
             ListView.builder(
               controller: model.scrollController,

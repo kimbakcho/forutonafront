@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'CountryItem.dart';
 
 /**
@@ -26,7 +25,7 @@ class CountrySelectPageViewModel extends ChangeNotifier{
     }
     notifyListeners();
     Future.delayed(Duration(milliseconds: 100),(){
-      listViewScroller.jumpTo(49.h*selectCountryIndex-(49.h*6));
+      listViewScroller.jumpTo(49.0*selectCountryIndex-(49*6));
       notifyListeners();
     });
   }

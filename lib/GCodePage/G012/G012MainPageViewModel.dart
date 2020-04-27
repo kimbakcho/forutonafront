@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
@@ -134,7 +133,12 @@ class G012MainPageViewModel extends ChangeNotifier {
     _isCheckTry = true;
     _isCurrentPwTry = true;
     _isNewPwTry = true;
-    await onCurrentPwEditComplete();
+
+    if (!await onCurrentPwEditComplete()) {
+      notifyListeners();
+      return;
+    }
+
     if (!isCurrentPasswordError() &&
         !isNewPasswordError() &&
         !isCheckPasswordError()) {
@@ -169,13 +173,12 @@ class G012MainPageViewModel extends ChangeNotifier {
         child: AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
-              Radius.circular(12.w),
+              Radius.circular(12),
             )),
             contentPadding: EdgeInsets.all(0),
             content: Container(
-                height: 182.00.h,
-                width: 332.00.w,
-                padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                height: 182.00,
+                padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                 child: Column(children: <Widget>[
                   Container(
                       alignment: Alignment.centerLeft,
@@ -183,24 +186,24 @@ class G012MainPageViewModel extends ChangeNotifier {
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontWeight: FontWeight.w700,
-                            fontSize: 20.sp,
+                            fontSize: 20,
                             color: Color(0xff000000),
                           ))),
                   Container(
-                    margin: EdgeInsets.fromLTRB(0, 15.h, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
                     alignment: Alignment.centerLeft,
                     child: Text("패스워드를 변경하였습니다.",
                         style: TextStyle(
                           fontFamily: "Noto Sans CJK KR",
                           fontWeight: FontWeight.w300,
-                          fontSize: 14.sp,
+                          fontSize: 14,
                           color: Color(0xff454f63),
                         )),
                   ),
+                  Spacer(),
                   Container(
-                      height: 32.00.h,
-                      width: 299.00.w,
-                      margin: EdgeInsets.fromLTRB(0, 48.h, 0, 0),
+                      height: 32.00,
+                      width: MediaQuery.of(_context).size.width,
                       child: FlatButton(
                         padding: EdgeInsets.all(0),
                         onPressed: () {
@@ -210,24 +213,24 @@ class G012MainPageViewModel extends ChangeNotifier {
                             style: TextStyle(
                               fontFamily: "Noto Sans CJK KR",
                               fontWeight: FontWeight.w700,
-                              fontSize: 13.sp,
+                              fontSize: 13,
                               color: Color(0xff3497fd),
                             )),
                       ),
                       decoration: BoxDecoration(
                         color: Color(0xffffffff),
                         border: Border.all(
-                          width: 1.00.w,
+                          width: 1.00,
                           color: Color(0xff454f63),
                         ),
                         boxShadow: [
                           BoxShadow(
                             offset: Offset(0.00, 12.00),
                             color: Color(0xff455b63).withOpacity(0.08),
-                            blurRadius: 16.w,
+                            blurRadius: 16,
                           ),
                         ],
-                        borderRadius: BorderRadius.circular(5.00.w),
+                        borderRadius: BorderRadius.circular(5.00),
                       ))
                 ]))));
   }

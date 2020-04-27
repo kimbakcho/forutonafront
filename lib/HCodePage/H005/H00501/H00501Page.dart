@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
@@ -19,6 +18,7 @@ class H00501Page extends StatelessWidget {
           return Stack(children: <Widget>[
             Scaffold(
               body: Container(
+                width: MediaQuery.of(context).size.width,
                   child: Column(
                 children: <Widget>[
                   selectOrderButton(model),
@@ -31,7 +31,7 @@ class H00501Page extends StatelessWidget {
                           itemCount: model.listUpBalls.length,
                           itemBuilder: (context, index) {
                             return Container(
-                                margin: EdgeInsets.fromLTRB(0.w, 0, 0.w, 16.h),
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
                                 child: BallStyle1Support.selectBallWidget(model.listUpBalls[index]));
                           }))
                 ],
@@ -45,18 +45,18 @@ class H00501Page extends StatelessWidget {
 
   Container selectOrderButton(H00501PageViewModel model) {
     return Container(
-        height: 58.h,
-        padding: EdgeInsets.only(right: 16.w),
+        height: 58,
+        padding: EdgeInsets.only(right: 16),
         alignment: Alignment.centerRight,
         child: Container(
-            height: 29.00.h,
-            width: 91.00.w,
+            height: 29.00,
+            width: 91.00,
             child: DropdownButton<H00501DropdownItemType>(
               isExpanded: true,
               style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",
                 fontWeight: FontWeight.w500,
-                fontSize: 13.sp,
+                fontSize: 13,
                 color: Color(0xff454f63),
               ),
               value: model.selectOrder,

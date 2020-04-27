@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/GCodePage/G016/G016MainPageViewModel.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -20,17 +19,17 @@ class G016MainPage extends StatelessWidget {
                     child: Column(children: <Widget>[
                       topBar(model),
                       SizedBox(
-                        height: 8.h,
+                        height: 8,
                       ),
                       Expanded(
-                        child: noticeListView(model),
+                        child: noticeListView(model,context),
                       )
                     ])))
           ]);
         }));
   }
 
-  ListView noticeListView(G016MainPageViewModel model) {
+  ListView noticeListView(G016MainPageViewModel model,BuildContext context) {
     return ListView.builder(
         controller: model.mainScrollController,
         shrinkWrap: true,
@@ -39,16 +38,16 @@ class G016MainPage extends StatelessWidget {
         itemCount: model.notice.length,
         itemBuilder: (_, index) {
           return Container(
-            height: 64.h,
-            width: 360.w,
+            height: 64,
+
             child: FlatButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {
                   model.goNoticePageInner(model.notice[index].idx);
                 },
                 child: Container(
-                    padding: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
-                    width: 360.w,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +56,7 @@ class G016MainPage extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: "Noto Sans CJK KR",
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 color: Color(0xff454f63),
                               )),
                           Text(
@@ -66,7 +65,7 @@ class G016MainPage extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: "Noto Sans CJK KR",
                                 fontWeight: FontWeight.w300,
-                                fontSize: 10.sp,
+                                fontSize: 10,
                                 color: Color(0xff454f63),
                               ))
                         ]))),
@@ -80,8 +79,8 @@ class G016MainPage extends StatelessWidget {
 
   Container topBar(G016MainPageViewModel model) {
     return Container(
-      width: 360.w,
-      height: 56.h,
+
+      height: 56,
       color: Colors.white,
       child: Row(children: [
         Container(
@@ -89,13 +88,13 @@ class G016MainPage extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 onPressed: model.onBackTap,
                 child: Icon(Icons.arrow_back)),
-            width: 48.w),
+            width: 48),
         Container(
             child: Text("공지사항",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
-                  fontSize: 20.sp,
+                  fontSize: 20,
                   color: Color(0xff454f63),
                 )))
       ]),

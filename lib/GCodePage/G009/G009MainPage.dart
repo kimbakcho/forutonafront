@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:forutonafront/GCodePage/G009/G009MainPageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -16,13 +16,17 @@ class G009MainPage extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
-                      Positioned(top: 0, child: topBar(model)),
+                      Positioned(top: 0,
+                          width: MediaQuery.of(context).size.width,
+                          child: topBar(model)),
                       Positioned(
-                        top: 64.h,
+                        top: 64,
+                        width: MediaQuery.of(context).size.width,
                         child: accountColumn(model),
                       ),
                       Positioned(
-                          top: 265.h,
+                          top: 265,
+                          width: MediaQuery.of(context).size.width,
                           child: Column(
                             children: <Widget>[
                               noticeRowBtn(model),
@@ -31,37 +35,38 @@ class G009MainPage extends StatelessWidget {
                             ],
                           )),
                       Positioned(
-                          bottom: 16.h,
-                          left: 16.w,
+                          bottom: 16,
+                          width: MediaQuery.of(context).size.width,
                           child: Container(
-                              height: 52.00.h,
-                              width: 328.00.w,
+                            margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                              height: 52.00,
+
                               child: FlatButton(
                                 onPressed: model.logout,
                                 child: Text("로그아웃",
                                     style: TextStyle(
                                       fontFamily: "Noto Sans CJK KR",
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 16.sp,
+                                      fontSize: 16,
                                       color: Color(0xffffffff),
                                     )),
                               ),
                               decoration: BoxDecoration(
                                   color: Color(0xff78849e),
                                   border: Border.all(
-                                    width: 1.00.w,
+                                    width: 1.00,
                                     color: Color(0xff454f63),
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      offset: Offset(0.00, 3.00.w),
+                                      offset: Offset(0.00, 3.00),
                                       color:
                                           Color(0xff000000).withOpacity(0.16),
-                                      blurRadius: 6.w,
+                                      blurRadius: 6,
                                     )
                                   ],
                                   borderRadius:
-                                      BorderRadius.circular(12.00.w))))
+                                      BorderRadius.circular(12.00))))
                     ])))
           ]);
         }));
@@ -69,82 +74,82 @@ class G009MainPage extends StatelessWidget {
 
   Container customerCenterRowBtn(G009MainPageViewModel model) {
     return Container(
-      width: 360.w,
-      height: 48.h,
+
+      height: 48,
       child: FlatButton(
           onPressed: model.goCustomCenter,
           padding: EdgeInsets.all(0),
           child: Container(
-              width: 360.w,
-              height: 48.h,
+
+              height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
-                  padding: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.only(left: 16),
                   child: Text("고객센터",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63),
                       ))))),
       decoration: BoxDecoration(
           color: Colors.white,
           border:
-              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1.h))),
+              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
     );
   }
 
   Container versionInfoRowBtn() {
     return Container(
-      width: 360.w,
-      height: 48.h,
+
+      height: 48,
       child: FlatButton(
           onPressed: () {},
           padding: EdgeInsets.all(0),
           child: Container(
-              width: 360.w,
-              height: 48.h,
+
+              height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
-                  padding: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.only(left: 16),
                   child: Text("버전정보",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63),
                       ))))),
       decoration: BoxDecoration(
           color: Colors.white,
           border:
-              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1.h))),
+              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
     );
   }
 
   Container noticeRowBtn(G009MainPageViewModel model) {
     return Container(
-      width: 360.w,
-      height: 48.h,
+
+      height: 48,
       child: FlatButton(
           onPressed: model.goNoticePage,
           padding: EdgeInsets.all(0),
           child: Container(
-              width: 360.w,
-              height: 48.h,
+
+              height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
-                  padding: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.only(left: 16),
                   child: Text("공지사항",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63),
                       ))))),
       decoration: BoxDecoration(
           color: Colors.white,
           border:
-              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1.h))),
+              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
     );
   }
 
@@ -161,116 +166,115 @@ class G009MainPage extends StatelessWidget {
 
   Container alarmRowbtn(G009MainPageViewModel model) {
     return Container(
-      width: 360.w,
-      height: 48.h,
+
+      height: 48,
       child: FlatButton(
           onPressed: model.goAlarmSettingPage,
           padding: EdgeInsets.all(0),
           child: Container(
-              width: 360.w,
-              height: 48.h,
+
+              height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
-                  padding: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.only(left: 16),
                   child: Text("알림",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63),
                       ))))),
       decoration: BoxDecoration(
           color: Colors.white,
           border:
-              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1.h))),
+              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
     );
   }
 
   Container openScopeRowBtn() {
     return Container(
-      width: 360.w,
-      height: 48.h,
+
+      height: 48,
       child: FlatButton(
           onPressed: () {},
           padding: EdgeInsets.all(0),
           child: Container(
-              width: 360.w,
-              height: 48.h,
+
+              height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
-                  padding: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.only(left: 16),
                   child: Text("공개 범위",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63),
                       ))))),
       decoration: BoxDecoration(
           color: Colors.white,
           border:
-              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1.h))),
+              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
     );
   }
 
   Container securityRowBtn(G009MainPageViewModel model) {
     return Container(
-      width: 360.w,
-      height: 48.h,
+
+      height: 48,
       child: FlatButton(
           onPressed: model.goSecurityPage,
           padding: EdgeInsets.all(0),
           child: Container(
-              width: 360.w,
-              height: 48.h,
+
+              height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
-                  padding: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.only(left: 16),
                   child: Text("보안",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63),
                       ))))),
       decoration: BoxDecoration(
           color: Colors.white,
           border:
-              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1.h))),
+              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
     );
   }
 
   Container accountRowBtn(G009MainPageViewModel model) {
     return Container(
-      width: 360.w,
-      height: 48.h,
+
+      height: 48,
       child: FlatButton(
           onPressed: model.goAccountSettingPage,
           padding: EdgeInsets.all(0),
           child: Container(
-              width: 360.w,
-              height: 48.h,
+
+              height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
-                  padding: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.only(left: 16),
                   child: Text("계정",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63),
                       ))))),
       decoration: BoxDecoration(
           color: Colors.white,
           border:
-              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1.h))),
+              Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
     );
   }
 
   Container topBar(G009MainPageViewModel model) {
     return Container(
-      width: 360.w,
-      height: 56.h,
+      height: 56,
       color: Colors.white,
       child: Row(children: [
         Container(
@@ -278,13 +282,13 @@ class G009MainPage extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 onPressed: model.onBackTap,
                 child: Icon(Icons.arrow_back)),
-            width: 48.w),
+            width: 48),
         Container(
             child: Text("설정",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
-                  fontSize: 20.sp,
+                  fontSize: 20,
                   color: Color(0xff454f63),
                 )))
       ]),

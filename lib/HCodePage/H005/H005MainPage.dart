@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +40,7 @@ class _H005MainPageState extends State<H005MainPage>
             Scaffold(
                 body: Container(
                     color: Color(0xfff2f0f1),
-                    padding: EdgeInsets.fromLTRB(0, 22.h, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 22, 0, 0),
                     child: Stack(children: <Widget>[
                       Column(children: <Widget>[
                         topSerchBar(context, model),
@@ -62,8 +62,7 @@ class _H005MainPageState extends State<H005MainPage>
 
   Container topSerchBar(BuildContext context, H005MainPageViewModel model) {
     return Container(
-      height: 60.h,
-      width: 360.w,
+      height: 60,
       child: Stack(
         children: <Widget>[
           Row(children: <Widget>[
@@ -73,9 +72,9 @@ class _H005MainPageState extends State<H005MainPage>
                   Navigator.of(context).pop();
                 }),
             Container(
-                height: 32.00.h,
-                width: 280.00.w,
-                margin: EdgeInsets.only(left: 8.w),
+                height: 32.00,
+                width: MediaQuery.of(context).size.width-80,
+                margin: EdgeInsets.only(left: 8),
                 alignment: Alignment.center,
                 child: Text(model.getSearchTextDisplay(),
                     style: TextStyle(
@@ -93,18 +92,18 @@ class _H005MainPageState extends State<H005MainPage>
                 ))
           ]),
           Positioned(
-              right: 40.w,
-              top: 15.h,
+              right: 40,
+              top: 13,
               child: Container(
-                  height: 14.00.h,
-                  width: 14.00.w,
+                  height: 20.00,
+                  width: 20.00,
                   child: FlatButton(
                     onPressed: () {
                       model.sethasClearFlag(true);
                     },
                     padding: EdgeInsets.all(0),
                     child: Icon(Icons.close,
-                        size: 9.sp,
+                        size: 13,
                         color: !model.hasClearFlag
                             ? Color(0xff454F63)
                             : Color(0xffCCCCCC)),
@@ -112,7 +111,7 @@ class _H005MainPageState extends State<H005MainPage>
                   decoration: BoxDecoration(
                     color: Color(0xffffffff),
                     border: Border.all(
-                      width: 1.00.w,
+                      width: 1.00,
                       color: !model.hasClearFlag
                           ? Color(0xff454F63)
                           : Color(0xffcccccc),
@@ -137,7 +136,7 @@ class _H005MainPageState extends State<H005MainPage>
           labelColor: Color(0xff454F63),
           labelStyle: TextStyle(
             fontFamily: "Noto Sans CJK KR",
-            fontSize: 14.sp,
+            fontSize: 14,
             color: Color(0xff454f63),
           ),
           controller: model.tabController,

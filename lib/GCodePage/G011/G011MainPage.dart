@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'G011MainPageViewModel.dart';
@@ -19,7 +18,7 @@ class G011MainPage extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         topBar(model),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 8),
                         resetPwBar(model),
                         secondSecurity(model)
                       ],
@@ -30,21 +29,19 @@ class G011MainPage extends StatelessWidget {
 
   Container secondSecurity(G011MainPageViewModel model) {
     return Container(
-        height: 48.h,
-        width: 360.w,
+        height: 48,
         child: FlatButton(
             padding: EdgeInsets.all(0),
-            onPressed: (){},
+            onPressed: () {},
             child: Container(
-                height: 48.h,
-                width: 360.w,
+                height: 48,
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: Text("2차 보안 (휴대폰 번호)",
                     style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63))))),
         decoration: BoxDecoration(
             color: Colors.white,
@@ -54,21 +51,19 @@ class G011MainPage extends StatelessWidget {
 
   Container resetPwBar(G011MainPageViewModel model) {
     return Container(
-        height: 48.h,
-        width: 360.w,
+        height: 48,
         child: FlatButton(
             padding: EdgeInsets.all(0),
             onPressed: model.goResetPwPage,
             child: Container(
-                height: 48.h,
-                width: 360.w,
+                height: 48,
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: Text("패스워드 재설정",
                     style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: Color(0xff454f63))))),
         decoration: BoxDecoration(
             color: Colors.white,
@@ -78,8 +73,7 @@ class G011MainPage extends StatelessWidget {
 
   Container topBar(G011MainPageViewModel model) {
     return Container(
-      width: 360.w,
-      height: 56.h,
+      height: 56,
       color: Colors.white,
       child: Row(children: [
         Container(
@@ -87,13 +81,13 @@ class G011MainPage extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 onPressed: model.onBackBtnTap,
                 child: Icon(Icons.arrow_back)),
-            width: 48.w),
+            width: 48),
         Container(
             child: Text("보안",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
-                  fontSize: 20.sp,
+                  fontSize: 20,
                   color: Color(0xff454f63),
                 ))),
       ]),

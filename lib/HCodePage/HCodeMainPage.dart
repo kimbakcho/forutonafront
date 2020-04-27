@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/screenutil.dart';
+
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001Page.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
@@ -27,9 +27,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, width: 360, height: 640, allowFontScaling: true);
-    print(ScreenUtil.screenWidth);
-    print(ScreenUtil.screenHeight);
+
     print(MediaQuery.of(context).size.width);
 
     return ChangeNotifierProvider(

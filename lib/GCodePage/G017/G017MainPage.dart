@@ -1,5 +1,5 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:forutonafront/GCodePage/G017/G017MainPageViewModel.dart';
 import 'package:intl/intl.dart';
@@ -23,20 +23,21 @@ class G017MainPage extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
-                      Positioned(top: 0, left: 0, child: topBar(model)),
-                      Positioned(top: 56.h, left: 0, child: topTitleBar(model)),
+                      Positioned(top: 0, left: 0, child: topBar(model,context)),
+                      Positioned(top: 56, left: 0, child: topTitleBar(model,context)),
                       Positioned(
-                          top: 136.h, left: 0, child: noticeContentBar(model))
+                          top: 136, left: 0, child: noticeContentBar(model,context))
                     ])))
           ]);
         }));
   }
 
-  Container noticeContentBar(G017MainPageViewModel model) {
+  Container noticeContentBar(G017MainPageViewModel model,BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-      width: 328.w,
-      height: 456.h,
+      width: MediaQuery.of(context).size.width-32,
+      height: MediaQuery.of(context).size.height - 180,
+      margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+
       child: model.personaSettingNoticeResDto != null
           ? WebviewScaffold(url: model.htmlUrl)
           : Container(),
@@ -44,11 +45,11 @@ class G017MainPage extends StatelessWidget {
     );
   }
 
-  Container topTitleBar(G017MainPageViewModel model) {
+  Container topTitleBar(G017MainPageViewModel model,BuildContext context) {
     return Container(
-      height: 64.h,
-      width: 360.w,
-      padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+      height: 64,
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
       color: Colors.white,
       child: model.personaSettingNoticeResDto != null
           ? Column(
@@ -57,7 +58,7 @@ class G017MainPage extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w500,
-                      fontSize: 14.sp,
+                      fontSize: 14,
                       color: Color(0xff454f63),
                       shadows: [
                         Shadow(
@@ -73,7 +74,7 @@ class G017MainPage extends StatelessWidget {
                     style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w300,
-                        fontSize: 10.sp,
+                        fontSize: 10,
                         color: Color(0xff454f63),
                         shadows: [
                           Shadow(
@@ -90,10 +91,10 @@ class G017MainPage extends StatelessWidget {
     );
   }
 
-  Container topBar(G017MainPageViewModel model) {
+  Container topBar(G017MainPageViewModel model,BuildContext context) {
     return Container(
-      width: 360.w,
-      height: 56.h,
+      width: MediaQuery.of(context).size.width,
+      height: 56,
       color: Colors.white,
       child: Row(children: [
         Container(
@@ -101,13 +102,13 @@ class G017MainPage extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 onPressed: model.onBackTap,
                 child: Icon(Icons.arrow_back)),
-            width: 48.w),
+            width: 48),
         Container(
             child: Text("내용",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
-                  fontSize: 20.sp,
+                  fontSize: 20,
                   color: Color(0xff454f63),
                 )))
       ]),

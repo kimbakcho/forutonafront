@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -17,21 +16,22 @@ class CountrySelectPage extends StatelessWidget {
           return Stack(children: <Widget>[
             Scaffold(
                 body: Container(
+                  width: MediaQuery.of(context).size.width,
                     color: Color(0xfff2f0f1),
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Column(children: <Widget>[
                       topBar(model),
                       SizedBox(
-                        height: 8.h,
+                        height: 8,
                       ),
-                      Expanded(child: countryListView(model))
+                      Expanded(child: countryListView(model,context))
                     ])))
           ]);
         }));
   }
 
-  ListView countryListView(CountrySelectPageViewModel model) {
+  ListView countryListView(CountrySelectPageViewModel model,BuildContext context) {
     return ListView.builder(
         padding: EdgeInsets.all(0),
         controller: model.listViewScroller,
@@ -39,22 +39,22 @@ class CountrySelectPage extends StatelessWidget {
         itemCount: model.countryList.length,
         itemBuilder: (_, index) {
           return Container(
-            height: 49.h,
-            width: 360.w,
-            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+            height: 49,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: FlatButton(
               onPressed: () {
                 model.onSelectCountry(index);
               },
               child: Container(
-                  height: 49.h,
-                  width: 360.w,
+                  height: 49,
+                  width: MediaQuery.of(context).size.width,
                   alignment: Alignment.centerLeft,
                   child: Text(model.countryList[index].name,
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                         color: index == model.selectCountryIndex
                             ? Color(0xff3497FD)
                             : Color(0xff454f63),
@@ -63,7 +63,7 @@ class CountrySelectPage extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border(
-                    bottom: BorderSide(color: Color(0xffF2F0F1), width: 1.h))),
+                    bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
           );
         });
   }
@@ -78,8 +78,8 @@ class CountrySelectPage extends StatelessWidget {
               onPressed: model.onBackBtnClick,
               padding: EdgeInsets.all(0),
             ),
-            width: 41.w,
-            height: 41.h,
+            width: 41,
+            height: 41,
           ),
           Container(
               child: Text("국가",

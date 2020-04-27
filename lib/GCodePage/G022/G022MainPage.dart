@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:provider/provider.dart';
 
@@ -25,18 +24,22 @@ class G022MainPage extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
-                      Positioned(top: 0, left: 0, child: topBar(model)),
                       Positioned(
-                          top: 71.h, left: 16.w, child: contentBar(model)),
+                          top: 0, left: 0, child: topBar(model, context)),
+                      Positioned(
+                          width: MediaQuery.of(context).size.width,
+                          top: 71,
+                          left: 0,
+                          child: contentBar(model, context)),
                     ])))
           ]);
         }));
   }
 
-  Container contentBar(G022MainPageViewModel model) {
+  Container contentBar(G022MainPageViewModel model, BuildContext context) {
     return Container(
-        height: 530.00.h,
-        width: 328.00.w,
+        height: MediaQuery.of(context).size.height - 100,
+        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
         child: model.userPolicyResDto != null
             ? WebviewScaffold(url: model.htmlUrl)
             : Container(),
@@ -46,16 +49,16 @@ class G022MainPage extends StatelessWidget {
             BoxShadow(
                 offset: Offset(0.00, 4.00),
                 color: Color(0xff455b63).withOpacity(0.08),
-                blurRadius: 16.w)
+                blurRadius: 16)
           ],
-          borderRadius: BorderRadius.circular(12.00.w),
+          borderRadius: BorderRadius.circular(12.00),
         ));
   }
 
-  topBar(G022MainPageViewModel model) {
+  topBar(G022MainPageViewModel model, BuildContext context) {
     return Container(
-      width: 360.w,
-      height: 56.h,
+      width: MediaQuery.of(context).size.width,
+      height: 56,
       color: Colors.white,
       child: Row(children: [
         Container(
@@ -63,13 +66,13 @@ class G022MainPage extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 onPressed: model.onBackTap,
                 child: Icon(Icons.arrow_back)),
-            width: 48.w),
+            width: 48),
         Container(
             child: Text(model.policyTitle,
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
-                  fontSize: 20.sp,
+                  fontSize: 20,
                   color: Color(0xff454f63),
                 )))
       ]),
