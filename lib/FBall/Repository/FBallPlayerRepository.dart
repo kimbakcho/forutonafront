@@ -1,7 +1,8 @@
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
-import 'package:forutonafront/FBall/Dto/UserToPlayBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserToPlayBallResWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallResWrapDto.dart';
+
 import 'package:geolocator/geolocator.dart';
 
 class FBallPlayerRepository {

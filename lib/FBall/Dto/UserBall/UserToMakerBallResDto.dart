@@ -1,13 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-
-import 'FBallType.dart';
 import 'UserBallResDto.dart';
+import '../FBallType.dart';
 
 part 'UserToMakerBallResDto.g.dart';
 
 @JsonSerializable()
 class UserToMakerBallResDto extends UserBallResDto {
-
 
   factory UserToMakerBallResDto.fromJson(Map<String, dynamic> json) => _$UserToMakerBallResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$UserToMakerBallResDtoToJson(this);

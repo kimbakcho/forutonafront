@@ -13,12 +13,14 @@ import 'package:provider/provider.dart';
 
 class ID001MainPage extends StatelessWidget {
   final FBallResDto _fBallResDto;
+
   ID001MainPage(this._fBallResDto) {
     var statueBar = SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white.withOpacity(0.5),
         statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(statueBar);
   }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -26,7 +28,7 @@ class ID001MainPage extends StatelessWidget {
         child: Consumer<ID001MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
-              key: model.scaffoldStateKey,
+                key: model.scaffoldStateKey,
                 body: Container(
                     color: Colors.white,
                     child: Stack(
@@ -42,6 +44,7 @@ class ID001MainPage extends StatelessWidget {
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height,
                             child: Container(
+                                width: MediaQuery.of(context).size.width,
                                 child: ListView(
                                     controller: model.mainScrollController,
                                     shrinkWrap: true,
@@ -76,7 +79,7 @@ class ID001MainPage extends StatelessWidget {
                                       model.issueBallDescriptionDto
                                                   .youtubeVideoId !=
                                               null
-                                          ? youtubeBar(model,context)
+                                          ? youtubeBar(model, context)
                                           : Container(),
                                       model.issueBallDescriptionDto
                                                   .youtubeVideoId !=
@@ -89,21 +92,95 @@ class ID001MainPage extends StatelessWidget {
                                       model.tagChips.length > 0
                                           ? didver()
                                           : Container(),
-                                      replyInputBar(model,context),
-
+                                      replyInputBar(model, context),
+                                      ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        padding: EdgeInsets.all(0),
+                                        itemCount: model.fBallReplyResWrapDto.contents.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return replyContentBar(
+                                              context, model, index);
+                                        },
+                                      )
                                     ]))),
                         Positioned(
                             top: MediaQuery.of(context).padding.top,
                             left: 0,
-                            child: topHeaderBar(model,context))
-
+                            child: topHeaderBar(model, context))
                       ],
                     )))
           ]);
         }));
   }
 
-  Container replyInputBar(ID001MainPageViewModel model,BuildContext context) {
+  Container replyContentBar(
+      BuildContext context, ID001MainPageViewModel model, int index) {
+    return     Container(
+        width: MediaQuery.of(context).size.width,
+        height: 61,
+        padding: EdgeInsets.fromLTRB(16, 15, 16, 13),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(width: 1,color: Color(0xffF2F0F1)))
+        ),
+        child: Stack(children: <Widget>[
+          Positioned(
+            left: 0,
+            top: 0,
+            width: 32,
+            height: 32,
+            child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: NetworkImage(model.fBallReplyResWrapDto
+                          .contents[index].userProfilePictureUrl))),
+            ),
+          ),
+          Positioned(
+              top: 0,
+              left: 44,
+              child: RichText(
+                  text: TextSpan(
+                      text: model
+                          .fBallReplyResWrapDto.contents[index].userNickName,
+                      style: TextStyle(
+                        fontFamily: "Noto Sans CJK KR",
+                        fontWeight: FontWeight.w700,
+                        fontSize: 11,
+                        color: Color(0xff454f63),
+                      ),
+                      children: [
+                        TextSpan(
+                            text: "   " +
+                                TimeDisplayUtil.getRemainingToStrFromNow(model
+                                    .fBallReplyResWrapDto
+                                    .contents[index]
+                                    .replyUploadDateTime),
+                            style: TextStyle(
+                              fontFamily: "Noto Sans CJK KR",
+                              fontSize: 9,
+                              color: Color(0xffb1b1b1),
+                            ))
+                      ]))),
+          Positioned(
+              left: 44,
+              bottom: 0,
+              width: MediaQuery.of(context).size.width - 76,
+              child: Container(
+                  child: Text(
+                    model.fBallReplyResWrapDto.contents[index].replyText,
+                    style: TextStyle(
+                      fontFamily: "Noto Sans CJK KR",
+                      fontSize: 10,
+                      color: Color(0xff454f63),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  )))
+        ]));
+  }
+
+  Container replyInputBar(ID001MainPageViewModel model, BuildContext context) {
     return Container(
         height: 103,
         decoration: BoxDecoration(color: Color(0xffF2F0F1)),
@@ -111,13 +188,14 @@ class ID001MainPage extends StatelessWidget {
           Positioned(
               top: 16,
               left: 16,
-              child: Container(child: Text("댓글(${model.replyCount})"))),
+              child: Container(child: Text("댓글(${model.fBallReplyResWrapDto.replyTotalCount})"))),
           Positioned(
-              top: 16,
+              top: 4,
               right: 6,
               child: Container(
-                  child: InkWell(
-                      onTap: () {},
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                      onPressed: model.popDetailReply,
                       child: Text("댓글 페이지로 이동",
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -179,7 +257,7 @@ class ID001MainPage extends StatelessWidget {
     );
   }
 
-  Container youtubeBar(ID001MainPageViewModel model,BuildContext context) {
+  Container youtubeBar(ID001MainPageViewModel model, BuildContext context) {
     return Container(
         height: 122,
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
@@ -224,51 +302,48 @@ class ID001MainPage extends StatelessWidget {
               top: 0,
               left: 139,
               child: Container(
-                width: MediaQuery.of(context).size.width-165,
+                  width: MediaQuery.of(context).size.width - 165,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                model.currentYoutubeTitle != null
-                    ? Container(
-                        child: Text(model.currentYoutubeTitle,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 12,
-                              color: Color(0xff454f63),
-                            )),
-
-                        margin: EdgeInsets.only(bottom: 10),
-                      )
-                    : Container(),
-                model.currentYoutubeAuthor != null
-                    ? Container(
-
-                        child: Text(model.currentYoutubeAuthor,
-                            style: TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
-                              fontSize: 8,
-                              color: Color(0xff78849e),
-                            )),
-                      )
-                    : Container(),
-                model.currentYoutubeView != null
-                    ? Container(
-
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                            "조회수${model.currentYoutubeView}회•"
-                            "${DateFormat("yyyy.MM.dd").format(model.currentYoutubeUploadDate.toLocal())}",
-                            style: TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
-                              fontSize: 8,
-                              color: Color(0xff78849e),
-                            )),
-                      )
-                    : Container()
-              ])))
+                        model.currentYoutubeTitle != null
+                            ? Container(
+                                child: Text(model.currentYoutubeTitle,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                      color: Color(0xff454f63),
+                                    )),
+                                margin: EdgeInsets.only(bottom: 10),
+                              )
+                            : Container(),
+                        model.currentYoutubeAuthor != null
+                            ? Container(
+                                child: Text(model.currentYoutubeAuthor,
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontSize: 8,
+                                      color: Color(0xff78849e),
+                                    )),
+                              )
+                            : Container(),
+                        model.currentYoutubeView != null
+                            ? Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                    "조회수${model.currentYoutubeView}회•"
+                                    "${DateFormat("yyyy.MM.dd").format(model.currentYoutubeUploadDate.toLocal())}",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontSize: 8,
+                                      color: Color(0xff78849e),
+                                    )),
+                              )
+                            : Container()
+                      ])))
         ]));
   }
 
@@ -460,7 +535,6 @@ class ID001MainPage extends StatelessWidget {
   Container contributorBar(ID001MainPageViewModel model) {
     return Container(
         height: 60,
-
         padding: EdgeInsets.fromLTRB(16, 16, 16, 9),
         child: Stack(
           children: <Widget>[
@@ -512,7 +586,6 @@ class ID001MainPage extends StatelessWidget {
   Container activeTimeBar(ID001MainPageViewModel model) {
     return Container(
         height: 60,
-
         padding: EdgeInsets.fromLTRB(16, 16, 16, 9),
         child: Stack(
           children: <Widget>[
@@ -566,7 +639,6 @@ class ID001MainPage extends StatelessWidget {
   Container placeAddressBar(ID001MainPageViewModel model) {
     return Container(
         height: 60,
-
         padding: EdgeInsets.fromLTRB(16, 16, 16, 9),
         child: Stack(
           children: <Widget>[
@@ -633,12 +705,11 @@ class ID001MainPage extends StatelessWidget {
           )
         ],
       ),
-
       height: 323,
     );
   }
 
-  Container topHeaderBar(ID001MainPageViewModel model,BuildContext context) {
+  Container topHeaderBar(ID001MainPageViewModel model, BuildContext context) {
     return Container(
       height: 56,
       width: MediaQuery.of(context).size.width,

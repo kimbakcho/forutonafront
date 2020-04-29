@@ -1,11 +1,13 @@
 
 
+import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'FBallType.dart';
 import 'UserBallResDto.dart';
 
 part 'UserToPlayBallResDto.g.dart';
+
+
 
 @JsonSerializable()
 class UserToPlayBallResDto extends UserBallResDto{

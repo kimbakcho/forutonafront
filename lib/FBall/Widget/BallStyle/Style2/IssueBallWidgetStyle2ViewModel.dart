@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Dto/UserBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
+
 
 class IssueBallWidgetStyle2ViewModel extends ChangeNotifier{
   UserBallResDto resDto;

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Dto/UserToMakerBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserToMakerBallResWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallReqDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallResWrapDto.dart';
+
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:provider/provider.dart';
 

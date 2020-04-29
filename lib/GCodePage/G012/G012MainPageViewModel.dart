@@ -130,6 +130,7 @@ class G012MainPageViewModel extends ChangeNotifier {
   }
 
   void onPwChangeComplete() async {
+
     _isCheckTry = true;
     _isCurrentPwTry = true;
     _isNewPwTry = true;

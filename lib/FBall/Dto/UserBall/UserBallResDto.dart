@@ -1,7 +1,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'FBallType.dart';
+import '../FBallType.dart';
 
 part 'UserBallResDto.g.dart';
 

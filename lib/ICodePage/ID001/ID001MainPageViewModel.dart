@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +11,26 @@ import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dar
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagResDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/MakerSupportStyle2.dart';
+import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ICodePage/ID001/ID001DetailReplyView.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
+
+import 'ID001InputReplyView.dart';
+import 'ID001InputReplyViewModel.dart';
 
 class ID001MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -65,6 +71,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
   int replyCount = 0;
   GlobalKey<ScaffoldState> scaffoldStateKey = new GlobalKey();
 
+  FBallReplyRepository _fBallReplyRepository = new FBallReplyRepository();
+  FBallReplyResWrapDto fBallReplyResWrapDto = new FBallReplyResWrapDto();
+
   ID001MainPageViewModel(this._context, this.fBallResDto) {
     initialCameraPosition = CameraPosition(
         target: LatLng(fBallResDto.latitude, fBallResDto.longitude),
@@ -75,11 +84,36 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   init() async {
-    this.ballList = new List<FBallResForMarkerStyle2Dto>();
     if (issueBallDescriptionDto.youtubeVideoId != null) {
       youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
     }
     tagLoad(fBallResDto.ballUuid);
+    await ballMarkerLoad();
+    makerUserInfo =
+        await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
+    replyLoad();
+
+    notifyListeners();
+  }
+
+  Future<void> replyLoad() async {
+    FBallReplyReqDto reqDto = new FBallReplyReqDto();
+    reqDto.ballUuid = fBallResDto.ballUuid;
+    reqDto.detail = false;
+    reqDto.size = 3;
+    reqDto.page = 0;
+    if(reqDto.page == 0){
+      this.fBallReplyResWrapDto.contents.clear();
+      notifyListeners();
+    }
+    this.fBallReplyResWrapDto =
+        await _fBallReplyRepository.getFBallReply(reqDto);
+
+    notifyListeners();
+  }
+
+  Future ballMarkerLoad() async {
+    this.ballList = new List<FBallResForMarkerStyle2Dto>();
     ballList.add(new FBallResForMarkerStyle2Dto(
         FBallType.IssueBall,
         LatLng(fBallResDto.latitude, fBallResDto.longitude),
@@ -89,11 +123,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
-
-    makerUserInfo =
-        await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-
-    notifyListeners();
     googleMapDarwRader();
   }
 
@@ -184,7 +213,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
       return AssetImage("assets/basicprofileimage.png");
     }
   }
-
 
   void onBackBtn() {
     Navigator.of(_context).pop();
@@ -576,9 +604,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }
   }
 
-  void popupInputDisplay() {
-    StreamSubscription keyboard;
-    showGeneralDialog(
+  void popupInputDisplay() async {
+    ID001InputReplyViewResult result = await showGeneralDialog(
         context: _context,
         barrierDismissible: true,
         transitionDuration: Duration(milliseconds: 300),
@@ -587,75 +614,40 @@ class ID001MainPageViewModel extends ChangeNotifier {
             MaterialLocalizations.of(_context).modalBarrierDismissLabel,
         pageBuilder:
             (_context, Animation animation, Animation secondaryAnimation) {
-          keyboard = KeyboardVisibility.onChange.listen((value) {
-            if (!value) {
-              keyboard.cancel();
-              Navigator.of(_context).pop();
-            }
-          });
-          return Scaffold(
-            backgroundColor: Color(0x00000000),
-            body: Stack(
-              children: <Widget>[
-                Positioned(
-                    left: 0,
-                    bottom: 0,
-                    child: Container(
-                        height: 56,
-                        width: MediaQuery.of(_context).size.width,
-                        color: Colors.white,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                                child: Container(
-                                    color: Colors.white,
-                                    padding: EdgeInsets.fromLTRB(16, 13, 0, 13),
-                                    alignment: Alignment.centerLeft,
-                                    margin: EdgeInsets.only(right: 16),
-                                    child: TextField(
-                                        style: TextStyle(fontSize: 20),
-                                        autofocus: true,
-                                        minLines: 1,
-                                        maxLines: 4,
-                                        decoration: InputDecoration(
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.fromLTRB(
-                                                16, 4, 16, 4),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(12)),
-                                                borderSide: BorderSide(
-                                                    color: Color(0xff3497FD),
-                                                    width: 1)),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(12)),
-                                                borderSide: BorderSide(
-                                                    color: Color(0xff3497FD),
-                                                    width: 1)))))),
-                            Container(
-                                width: 30,
-                                height: 30,
-                                margin: EdgeInsets.only(right: 16),
-                                decoration: BoxDecoration(
-                                  color: Color(0xff3497FD),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: FlatButton(
-                                  shape: CircleBorder(),
-                                  padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
-                                  onPressed: () {},
-                                  child: Icon(
-                                    ForutonaIcon.replysendicon,
-                                    color: Colors.white,
-                                    size: 12,
-                                  ),
-                                ))
-                          ],
-                        )))
-              ],
-            ),
-          );
+              FBallReplyInsertReqDto reqDto = new FBallReplyInsertReqDto();
+              reqDto.ballUuid = fBallResDto.ballUuid;
+          return ID001InputReplyView(reqDto);
         });
+    if(result != null){
+      await replyLoad();
+      mainScrollController.animateTo(
+          mainScrollController.position.maxScrollExtent +
+              100,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.linear);
+    }
+
+  }
+
+
+
+  void popDetailReply()  async {
+    await showGeneralDialog(
+        context: _context,
+        barrierDismissible: true,
+        transitionDuration: Duration(milliseconds: 300),
+        barrierColor: Colors.black.withOpacity(0.3),
+        barrierLabel:
+        MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+      pageBuilder:(_context, Animation animation, Animation secondaryAnimation) {
+        return ID001DetailReplyView(fBallResDto.ballUuid);
+      }
+    );
+    await replyLoad();
+    mainScrollController.animateTo(
+        mainScrollController.position.maxScrollExtent +
+            100,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.linear);
   }
 }

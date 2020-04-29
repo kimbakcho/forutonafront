@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
-import 'package:forutonafront/FBall/Dto/UserBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
+
 
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
