@@ -83,7 +83,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
   static Future<Map<FcubeplayercontentType, FcubeplayercontentExtender1>>
       getFcubeplayercontent(FcubeplayercontentSelector selector) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getFcubeplayercontent");
     var response = await http
@@ -106,7 +106,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
   static Future<List<FcubeplayercontentExtender1>>
       getFcubeplayercontentTypeList(FcubeplayercontentSelector selector) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getFcubeplayercontent");
     var response = await http
@@ -122,7 +122,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
 
   Future<int> makeFcubeplayercontent() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/makeFcubeplayercontent");
     var response =
@@ -137,7 +137,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
       List<FcubeplayercontentExtender1> contents) async {
     int sendresult = 0;
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     for (int i = 0; i < contents.length; i++) {
       try {
         var url = Preference.httpurlbase(
@@ -159,7 +159,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
 
   Future<int> updateFcubeplayercontent() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/updateFcubeplayercontent");
     var response =
@@ -172,7 +172,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
 
   Future<int> deleteFcubeplayercontent() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/deleteFcubeplayercontent");
     var response =
@@ -185,7 +185,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
 
   static Future<String> uploadAuthimage(List<int> image) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var uploadurl = Preference.httpurlbase(
         Preference.baseBackEndUrl, '/api/v1/Fcube/uploadAuthForImage');
     var request = new http.MultipartRequest("POST", uploadurl);
@@ -210,7 +210,7 @@ class FcubeplayercontentExtender1 extends FcubePlayerContent {
 
   static Future<int> deleteAuthimage(String urlpath) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurloption(Preference.baseBackEndUrl,
         "/api/v1/Fcube/deleteAuthForImage", {"url": urlpath, "uid": user.uid});
     var response = await http.post(url,

@@ -118,7 +118,7 @@ class _GlobalStateContainerState extends State<GlobalStateContainer> {
     state.currentposition = position;
     if (state.userInfoMain != null) {
       FirebaseUser user = await FirebaseAuth.instance.currentUser();
-      IdTokenResult token = await user.getIdToken();
+      IdTokenResult token = await user.getIdToken(refresh: true);
       state.userInfoMain.latitude = position.latitude;
       state.userInfoMain.longitude = position.longitude;
       Uri url = Preference.httpurlbase(

@@ -63,7 +63,7 @@ class FcubeplayerExtender1 extends Fcubeplayer {
   static Future<List<FcubeplayerExtender1>> selectPlayers(
       Fcubeplayer player) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var queryParameters = {"cubeuuid": player.cubeuuid, "uid": player.uid};
     Uri uri = Preference.httpurloption(Preference.baseBackEndUrl,
         "/api/v1/Fcube/SelectPlayers", queryParameters);

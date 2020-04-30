@@ -170,7 +170,7 @@ class Fcubetagextender1 extends Fcubetag {
     Uri url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getFcubetagSearch");
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     Response response = await dio.get(url.toString(),
         queryParameters: search.toJson(),
         options: Options(headers: {

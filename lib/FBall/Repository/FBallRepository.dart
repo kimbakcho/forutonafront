@@ -20,7 +20,7 @@ class FBallRepository {
 
   Future<FBallImageUploadResDto> ballImageUpload(List<Uint8List> images)async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     List<MultipartFile> imageFiles = [];
     for (var image in images) {
@@ -35,7 +35,7 @@ class FBallRepository {
 
   Future<int> insertBall(FBallInsertReqDto reqDto)async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     var response = await dio.post("/v1/FBall/Insert",data: reqDto.toJson());
     return int.parse(response.data);

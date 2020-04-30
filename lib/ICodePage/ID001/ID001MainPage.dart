@@ -28,7 +28,6 @@ class ID001MainPage extends StatelessWidget {
         child: Consumer<ID001MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
-                key: model.scaffoldStateKey,
                 body: Container(
                     color: Colors.white,
                     child: Stack(
@@ -93,16 +92,8 @@ class ID001MainPage extends StatelessWidget {
                                           ? didver()
                                           : Container(),
                                       replyInputBar(model, context),
-                                      ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        padding: EdgeInsets.all(0),
-                                        itemCount: model.fBallReplyResWrapDto.contents.length,
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return replyContentBar(
-                                              context, model, index);
-                                        },
-                                      )
+                                      replyTopBar(model),
+                                      ballValuationBar(model)
                                     ]))),
                         Positioned(
                             top: MediaQuery.of(context).padding.top,
@@ -114,15 +105,156 @@ class ID001MainPage extends StatelessWidget {
         }));
   }
 
+  Container ballValuationBar(ID001MainPageViewModel model) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Text("평가하기",
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                  color: Color(0xff454f63),
+                )),
+            margin: EdgeInsets.only(bottom: 8),
+          ),
+          Container(
+              child: RichText(
+                  text: TextSpan(
+                      text: model.userNickName,
+                      style: TextStyle(
+                        fontFamily: "Noto Sans CJK KR",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Color(0xff3497FD),
+                      ),
+                      children: [
+                TextSpan(
+                    text: "님, 이슈볼을 평가해주세요!",
+                    style: TextStyle(
+                      fontFamily: "Noto Sans CJK KR",
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Color(0xff454f63),
+                    )),
+              ]))),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Row(
+              children: <Widget>[
+                Container(
+                    height: 32.00,
+                    width: 70.00,
+                    child: FlatButton(
+                        onPressed: model.onPlusBtn,
+                        padding: EdgeInsets.all(0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              ForutonaIcon.thumbsup,
+                              color: model.isPlusStatue() ? Colors.white: Colors.black,
+                              size: 15,
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(left: 12),
+                                child: Text("+1",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: model.isPlusStatue() ? Colors.white: Colors.black,
+                                    )))
+                          ],
+                        )),
+                    decoration: BoxDecoration(
+                      color:  model.isPlusStatue() ?  Color(0xff4F72FF):  Color(0xffffffff),
+                      border: Border.all(
+                        width: 2.00,
+                        color: model.isPlusStatue() ?  Color(0xff4F72FF):  Color(0xff454f63),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.00, 3.00),
+                          color: Color(0xff455b63).withOpacity(0.10),
+                          blurRadius: 6,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10.00),
+                    )),
+                Container(
+                    height: 32.00,
+                    width: 70.00,
+                    margin: EdgeInsets.only(left: 16),
+                    child: FlatButton(
+                        onPressed: model.onMinusBtn,
+                        padding: EdgeInsets.all(0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              ForutonaIcon.thumbsdown,
+                              color: model.isMinusStatue() ? Colors.white: Colors.black,
+                              size: 15,
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(left: 12),
+                                child: Text("-1",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: model.isMinusStatue() ? Colors.white: Colors.black,
+                                    )))
+                          ],
+                        )),
+                    decoration: BoxDecoration(
+                      color: model.isMinusStatue() ?  Color(0xff4F72FF):  Color(0xffffffff),
+                      border: Border.all(
+                        width: 2.00,
+                        color: model.isMinusStatue() ?  Color(0xff4F72FF):  Color(0xff454f63),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.00, 3.00),
+                          color: Color(0xff455b63).withOpacity(0.10),
+                          blurRadius: 6,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10.00),
+                    ))
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  ListView replyTopBar(ID001MainPageViewModel model) {
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.all(0),
+      itemCount: model.fBallReplyResWrapDto.contents.length,
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return replyContentBar(context, model, index);
+      },
+    );
+  }
+
   Container replyContentBar(
       BuildContext context, ID001MainPageViewModel model, int index) {
-    return     Container(
+    return Container(
         width: MediaQuery.of(context).size.width,
         height: 61,
         padding: EdgeInsets.fromLTRB(16, 15, 16, 13),
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(width: 1,color: Color(0xffF2F0F1)))
-        ),
+            border:
+                Border(bottom: BorderSide(width: 1, color: Color(0xffF2F0F1)))),
         child: Stack(children: <Widget>[
           Positioned(
             left: 0,
@@ -151,32 +283,32 @@ class ID001MainPage extends StatelessWidget {
                         color: Color(0xff454f63),
                       ),
                       children: [
-                        TextSpan(
-                            text: "   " +
-                                TimeDisplayUtil.getRemainingToStrFromNow(model
-                                    .fBallReplyResWrapDto
-                                    .contents[index]
-                                    .replyUploadDateTime),
-                            style: TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
-                              fontSize: 9,
-                              color: Color(0xffb1b1b1),
-                            ))
-                      ]))),
+                    TextSpan(
+                        text: "   " +
+                            TimeDisplayUtil.getRemainingToStrFromNow(model
+                                .fBallReplyResWrapDto
+                                .contents[index]
+                                .replyUploadDateTime),
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontSize: 9,
+                          color: Color(0xffb1b1b1),
+                        ))
+                  ]))),
           Positioned(
               left: 44,
               bottom: 0,
               width: MediaQuery.of(context).size.width - 76,
               child: Container(
                   child: Text(
-                    model.fBallReplyResWrapDto.contents[index].replyText,
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
-                      fontSize: 10,
-                      color: Color(0xff454f63),
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  )))
+                model.fBallReplyResWrapDto.contents[index].replyText,
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontSize: 10,
+                  color: Color(0xff454f63),
+                ),
+                overflow: TextOverflow.ellipsis,
+              )))
         ]));
   }
 
@@ -188,13 +320,15 @@ class ID001MainPage extends StatelessWidget {
           Positioned(
               top: 16,
               left: 16,
-              child: Container(child: Text("댓글(${model.fBallReplyResWrapDto.replyTotalCount})"))),
+              child: Container(
+                  child: Text(
+                      "댓글(${model.fBallReplyResWrapDto.replyTotalCount})"))),
           Positioned(
               top: 4,
               right: 6,
               child: Container(
                   child: FlatButton(
-                    padding: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
                       onPressed: model.popDetailReply,
                       child: Text("댓글 페이지로 이동",
                           style: TextStyle(

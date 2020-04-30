@@ -103,11 +103,11 @@ class UserInfoMain {
         AuthResult reslut = await _auth.createUserWithEmailAndPassword(
             email: item.email, password: item.password);
         item.uid = reslut.user.uid;
-        token = await reslut.user.getIdToken();
+        token = await reslut.user.getIdToken(refresh: true);
       } catch (ex) {
         AuthResult reslut = await _auth.signInWithEmailAndPassword(
             email: item.email, password: item.password);
-        token = await reslut.user.getIdToken();
+        token = await reslut.user.getIdToken(refresh: true);
       }
 
       var response =
@@ -213,7 +213,7 @@ class UserInfoMain {
   }
 
   static Future<UserInfoMain> getUserInfoMain(FirebaseUser firebaseUser) async {
-    IdTokenResult token = await firebaseUser.getIdToken();
+    IdTokenResult token = await firebaseUser.getIdToken(refresh: true);
 
     var geturl = Preference.httpurloption(Preference.baseBackEndUrl,
         "/api/v1/Auth/GetUserInfoMain", {"uid": firebaseUser.uid});
@@ -304,7 +304,7 @@ class UserInfoMain {
 
   Future<int> updateFCMtoken() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Auth/updateFCMtoken");
     var response =

@@ -113,7 +113,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
   static Future<List<FcubeQuestSuccessExtender1>> getQuestReqList(
       FcubeQuestSuccessExtender1 finditem) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getQuestReqList");
     var response =
@@ -128,7 +128,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
 
   Future<int> updateQuestReq() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/updateQuestReq");
     var response = await http.post(posturl, body: toRawJson(), headers: {
@@ -140,7 +140,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
 
   Future<int> updateQuesttoplayercomment() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/updateQuesttoplayercomment");
     var response = await http.post(posturl, body: toRawJson(), headers: {
@@ -153,7 +153,7 @@ class FcubeQuestSuccessExtender1 extends FcubeQuestSuccess {
   static Future<List<FcubeQuestSuccessExtender1>> getPlayerQuestSuccessList(
       FcubeQuestSuccessExtender1 finditem) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getPlayerQuestSuccessList");
     var response =

@@ -58,7 +58,7 @@ class Fcubereply {
   Future<Fcubereply> makereply() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     this.uid = user.uid;
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     Uri url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/InsertCubeReply");
     var response = await http.post(url,
@@ -76,7 +76,7 @@ class Fcubereply {
     Uri url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getReplyCount");
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
 
     Response response = await dio.get(url.toString(),
         queryParameters: serach.toJson(),

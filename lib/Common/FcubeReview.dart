@@ -64,7 +64,7 @@ class FcubeReview {
   static Future<List<FcubeReview>> getFcubeReviews(
       String cubeuuid, String uid) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var geturl = Preference.httpurloption(Preference.baseBackEndUrl,
         "/api/v1/Fcube/getFcubeReview", {"cubeuuid": cubeuuid, "uid": uid});
     var response = await http.get(geturl, headers: {
@@ -77,7 +77,7 @@ class FcubeReview {
 
   Future<int> insertFcubeReview() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/insertFcubeReview");
     var response = await http.post(posturl, body: toRawJson(), headers: {
@@ -89,7 +89,7 @@ class FcubeReview {
 
   Future<int> insertFcubeReviewExpPoint() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/insertFcubeReviewExpPoint");
     var response = await http.post(posturl, body: toRawJson(), headers: {

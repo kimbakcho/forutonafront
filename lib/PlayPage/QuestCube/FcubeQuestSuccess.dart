@@ -110,7 +110,7 @@ class FcubeQuestSuccess {
 
   Future<int> requestFcubeQuestSuccess() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/requestFcubeQuestSuccess");
     var response = await http.post(posturl, body: toRawJson(), headers: {

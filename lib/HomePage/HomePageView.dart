@@ -22,7 +22,7 @@ class _HomePageViewState extends State<HomePageView> {
 
   inits() async {
     user = await FirebaseAuth.instance.currentUser();
-    token = await user.getIdToken();
+    token = await user.getIdToken(refresh: true);
   }
 
   @override

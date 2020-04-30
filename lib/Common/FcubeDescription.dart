@@ -77,7 +77,7 @@ class FcubeDescription {
       };
   static Future<String> cuberelationimageupload(List<int> image) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var uploadurl = Preference.httpurlbase(
         Preference.baseBackEndUrl, '/api/v1/Fcube/cuberelationimageupload');
     var formData = FormData.fromMap({

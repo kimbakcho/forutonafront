@@ -64,7 +64,7 @@ class Fcubecontent {
   static Future<Map<FcubecontentType, Fcubecontent>> getFcubecontent(
       FcubeContentSelector selector) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var posturl = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getFcubecontent");
     var response =
@@ -86,7 +86,7 @@ class Fcubecontent {
 
   Future<int> makecubecontent() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/makecubecontent");
     var response =
@@ -100,7 +100,7 @@ class Fcubecontent {
   static Future<int> makecubecontents(List<Fcubecontent> contents) async {
     int sendresult = 0;
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     for (int i = 0; i < contents.length; i++) {
       try {
         var url = Preference.httpurlbase(

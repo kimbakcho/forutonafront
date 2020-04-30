@@ -15,66 +15,61 @@ class ID001DetailReplyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => ID001DetailReplyViewModel(ballUuid,context),
+        create: (_) => ID001DetailReplyViewModel(ballUuid, context),
         child: Consumer<ID001DetailReplyViewModel>(builder: (_, model, child) {
           return Scaffold(
+              key: model.scaffold,
               backgroundColor: Colors.transparent,
-              body: Stack(children: <Widget>[
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height - 139,
-                  child: Container(
-                    child: Column(children: <Widget>[
-                      Container(
-                          color: Color(0xffF2F0F1),
-                          width: MediaQuery.of(context).size.width,
-                          height: 38,
-                          padding: EdgeInsets.fromLTRB(16, 12, 16, 10),
-                          child: Text(
-                              model.fBallReplyResWrapDto.replyTotalCount != null
-                                  ? "댓글( ${model.fBallReplyResWrapDto.replyTotalCount} )"
-                                  : "로딩중",
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
-                                color: Color(0xff454f63),
-                              ))),
-                      Expanded(
-                          child: Container(
-                        child: ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                            controller: model.replyScrollerController,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(0),
-                            itemCount: model.detailReply.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                child: Column(children: <Widget>[
-                                  mainReplyBar(model, index, context),
-                                  subReplyToggleBar(model, index),
-                                  model.detailReply[index].replyOpenFlag
-                                      ? subReplyBar(model, index)
-                                      : Container()
-                                ]),
-                                padding: EdgeInsets.only(bottom: 16, top: 16),
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            width: 1,
-                                            color: Color(0xffF2F0F1)))),
-                              );
-                            }),
-                      ))
-                    ]),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              ]));
+              body: Container(
+                margin: EdgeInsets.only(top: 140),
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Column(children: <Widget>[
+                  Container(
+                      color: Color(0xffF2F0F1),
+                      width: MediaQuery.of(context).size.width,
+                      height: 38,
+                      padding: EdgeInsets.fromLTRB(16, 12, 16, 10),
+                      child: Text(
+                          model.fBallReplyResWrapDto.replyTotalCount != null
+                              ? "댓글( ${model.fBallReplyResWrapDto.replyTotalCount} )"
+                              : "로딩중",
+                          style: TextStyle(
+                            fontFamily: "Noto Sans CJK KR",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12,
+                            color: Color(0xff454f63),
+                          ))),
+                  Expanded(
+                      child: Container(
+                    child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        controller: model.replyScrollerController,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(0),
+                        itemCount: model.detailReply.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: Column(children: <Widget>[
+                              mainReplyBar(model, index, context),
+                              subReplyToggleBar(model, index),
+                              model.detailReply[index].replyOpenFlag
+                                  ? subReplyBar(model, index)
+                                  : Container()
+                            ]),
+                            padding: EdgeInsets.only(bottom: 16, top: 16),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: 1, color: Color(0xffF2F0F1)))),
+                          );
+                        }),
+                  ))
+                ]),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+              ));
         }));
   }
 
@@ -122,16 +117,21 @@ class ID001DetailReplyView extends StatelessWidget {
                           height: 12,
                           child: FlatButton(
                             onPressed: () async {
-                              if(model.detailReply[index].subReply[subIndex].deleteFlag){
-                                return ;
+                              if (model.detailReply[index].subReply[subIndex]
+                                  .deleteFlag) {
+                                return;
                               }
-                              var firebaseUser = await FirebaseAuth.instance.currentUser();
-                              if(model.detailReply[index].subReply[subIndex].uid == firebaseUser.uid){
-                                model.modifyPopup(model.detailReply[index].subReply[subIndex]);
-                              }else {
-                                model.reportPopup(model.detailReply[index].subReply[subIndex]);
+                              var firebaseUser =
+                                  await FirebaseAuth.instance.currentUser();
+                              if (model.detailReply[index].subReply[subIndex]
+                                      .uid ==
+                                  firebaseUser.uid) {
+                                model.modifyPopup(model
+                                    .detailReply[index].subReply[subIndex]);
+                              } else {
+                                model.reportPopup(model
+                                    .detailReply[index].subReply[subIndex]);
                               }
-
                             },
                             padding: EdgeInsets.all(0),
                             child: Icon(
@@ -247,22 +247,21 @@ class ID001DetailReplyView extends StatelessWidget {
                         Container(
                             width: 20,
                             height: 20,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle
-                            ),
+                            decoration: BoxDecoration(shape: BoxShape.circle),
                             child: FlatButton(
                               padding: EdgeInsets.all(0),
                               shape: CircleBorder(),
                               onPressed: () async {
-                                if(model.detailReply[index].deleteFlag){
-                                  return ;
+                                if (model.detailReply[index].deleteFlag) {
+                                  return;
                                 }
-                                var firebaseUser = await FirebaseAuth.instance.currentUser();
-                                if(model.detailReply[index].uid == firebaseUser.uid){
+                                var firebaseUser =
+                                    await FirebaseAuth.instance.currentUser();
+                                if (model.detailReply[index].uid ==
+                                    firebaseUser.uid) {
                                   model.modifyPopup(model.detailReply[index]);
-                                }else {
+                                } else {
                                   model.reportPopup(model.detailReply[index]);
-
                                 }
                               },
                               child: Icon(

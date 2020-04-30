@@ -59,7 +59,7 @@ class Fcubeplayer {
 
   Future<int> insertFcubePlayer() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/insertFcubePlayer");
     var response =

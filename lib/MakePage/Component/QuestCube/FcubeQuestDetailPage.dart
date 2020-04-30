@@ -1067,7 +1067,7 @@ class _FcubeQuestDetailPageState extends State<FcubeQuestDetailPage>
           Preference.baseBackEndUrl, "/api/v1/Auth/updateCurrentPosition");
       args.add(uri.toString());
       args.add(_currentuser.uid);
-      IdTokenResult token = await _currentuser.getIdToken();
+      IdTokenResult token = await _currentuser.getIdToken(refresh: true);
       args.add(token.token);
       await platform.invokeMethod<void>('startLocationManager', args);
     } catch (ex) {

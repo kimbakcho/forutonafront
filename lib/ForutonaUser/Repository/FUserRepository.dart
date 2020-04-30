@@ -13,7 +13,7 @@ import 'package:forutonafront/ForutonaUser/Dto/NickNameDuplicationCheckResDto.da
 class FUserRepository {
   Future<FUserInfoResDto> getForutonaGetMe() async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     var response = await dio.get("/v1/ForutonaUser/Me",
         queryParameters: FUserReqDto(firebaseUser.uid).toJson());
@@ -31,7 +31,7 @@ class FUserRepository {
 
   Future<String> updateUserProfileImage(File file) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     FormData formData = FormData.fromMap({
       "ProfileImage": await MultipartFile.fromFile(file.path)
@@ -42,7 +42,7 @@ class FUserRepository {
 
   Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto)async{
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     var response = await dio.put("/v1/ForutonaUser/AccountUserInfo",data: reqDto.toJson());
     return response.data;
@@ -50,7 +50,7 @@ class FUserRepository {
 
   Future<int> pWChange(FUserInfoPwChangeReqDto changePwReqDto)async{
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     print(idToken.token);
     print(changePwReqDto.toJson());

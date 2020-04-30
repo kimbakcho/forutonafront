@@ -171,7 +171,7 @@ class Fcube {
 
   Future<int> makecube() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     this.uid = user.uid;
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/makecube");
@@ -185,7 +185,7 @@ class Fcube {
 
   Future<int> deletecube() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/deletecube");
     var response =
@@ -212,7 +212,7 @@ class Fcube {
 
   Future<int> updateCubeState() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/updateCubeState");
     var response =

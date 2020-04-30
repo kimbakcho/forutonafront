@@ -208,7 +208,7 @@ class Pleyerjoincube {
       double latitude,
       double longitude) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     Dio dio = new Dio();
 
     Uri url = Preference.httpurloption(

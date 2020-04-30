@@ -63,7 +63,7 @@ class FcubeQuestSuccessCheck {
       };
   Future<int> insertFcubeQuestSuccessCheck() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(Preference.baseBackEndUrl,
         "/api/v1/Fcube/insertFcubeQuestSuccessCheck");
     var response = await http.post(url, body: toRawJson(), headers: {
@@ -75,7 +75,7 @@ class FcubeQuestSuccessCheck {
 
   Future<int> updatetoMakerComment() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/updatetoMakerComment");
     var response = await http.post(url, body: toRawJson(), headers: {

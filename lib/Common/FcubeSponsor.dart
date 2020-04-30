@@ -79,7 +79,7 @@ class FcubeSponsor {
     Uri url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getCubeSponsorSumPointValue");
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     Response response = await dio.get(url.toString(),
         queryParameters: search.toJson(),
         options: Options(headers: {
@@ -94,7 +94,7 @@ class FcubeSponsor {
     Uri url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getCubeSponsorCount");
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
 
     Response response = await dio.get(url.toString(),
         queryParameters: search.toJson(),

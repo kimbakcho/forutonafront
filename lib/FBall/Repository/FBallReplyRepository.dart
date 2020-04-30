@@ -8,7 +8,7 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 class FBallReplyRepository {
   Future<int> insertFBallReply(FBallReplyInsertReqDto reqDto) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     var response = await dio.post("/v1/FBallReply", data: reqDto.toJson());
     return response.data;
@@ -29,7 +29,7 @@ class FBallReplyRepository {
 
   Future<int> updateFBallReply(FBallReplyInsertReqDto reqDto) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     var response = await dio.put("/v1/FBallReply", data: reqDto.toJson());
     return response.data;
@@ -37,7 +37,7 @@ class FBallReplyRepository {
 
   Future<int> deleteFBallReply(int idx) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
     var response = await dio.delete("/v1/FBallReply/"+idx.toString());
     return response.data;

@@ -119,7 +119,7 @@ class FcubeExtender1 extends Fcube {
 
   static Future<List<FcubeExtender1>> getusercubes(FcubeSearch search) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurloption(
         Preference.baseBackEndUrl, "/api/v1/Fcube/getusercubes", {
       "limit": search.limit.toString(),
@@ -136,7 +136,7 @@ class FcubeExtender1 extends Fcube {
 
   static Future<FcubeExtender1> getFcubeExtender1(String cubeuuid) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurloption(Preference.baseBackEndUrl,
         "/api/v1/Fcube/getFcubeExtender1", {"cubeuuid": cubeuuid});
     var response = await http.get(url,
@@ -147,7 +147,7 @@ class FcubeExtender1 extends Fcube {
   static Future<List<FcubeExtender1>> findNearDistanceCube(
       FCubeGeoSearchUtil searchitem) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    IdTokenResult token = await user.getIdToken();
+    IdTokenResult token = await user.getIdToken(refresh: true);
     var url = Preference.httpurlbase(
         Preference.baseBackEndUrl, "/api/v1/Fcube/findNearDistanceCube");
     var response =

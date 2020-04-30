@@ -79,7 +79,7 @@ class UserExpPointHistroy {
   // static Future<List<UserExpPointHistroy>> getUserExpPointHistroy(
   //     UserExpPointHistroy finditem) async {
   //   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  //   IdTokenResult token = await user.getIdToken();
+  //   IdTokenResult token = await user.getIdToken(refresh: true);
   //   var geturl = Preference.httpurloption(Preference.baseBackEndUrl,
   //       "/api/v1/Fcube/getFcubeReview", finditem.toJson());
   // }

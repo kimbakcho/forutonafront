@@ -19,6 +19,7 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
   BuildContext _context;
   int _currentPage = 0;
   int _sizeLimit = 20;
+  GlobalKey<ScaffoldState> scaffold = GlobalKey();
 
   ID001DetailReplyViewModel(this.ballUuid, this._context) {
     replyScrollerController.addListener(_onlistscrollListener);
@@ -27,6 +28,7 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
 
   init() async {
     loadDetailReply(_currentPage, _sizeLimit);
+
   }
 
   _onlistscrollListener() {
@@ -105,8 +107,8 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
 
   void insertSubReply(FBallSubReplyResDto detailReply) async {
     var subReplyItem = await showGeneralDialog(
-        context: _context,
-        barrierDismissible: true,
+        context: scaffold.currentState.context,
+        barrierDismissible: false,
         transitionDuration: Duration(milliseconds: 300),
         barrierColor: Colors.black.withOpacity(0.3),
         barrierLabel:
