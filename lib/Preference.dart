@@ -8,24 +8,24 @@ class Preference {
   
   
   //testDebug
-  static String baseBackEndUrl = "http://192.168.0.87:8443";
-  static Uri httpurlbase(String authority, String unencodedPath) {
-    return Uri.http(authority, unencodedPath);
-  }
-
-  static Uri httpurloption(String authority, String unencodedPath,
-      [Map<String, String> queryParameters]) {
-    return Uri.http(authority, unencodedPath, queryParameters);
-  }
+//  static String baseBackEndUrl = "http://192.168.0.87:8443";
+//  static Uri httpurlbase(String authority, String unencodedPath) {
+//    return Uri.http(authority, unencodedPath);
+//  }
+//
+//  static Uri httpurloption(String authority, String unencodedPath,
+//      [Map<String, String> queryParameters]) {
+//    return Uri.http(authority, unencodedPath, queryParameters);
+//  }
 
 //  // relese
-//   static String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
-//   static Uri httpurlbase(String authority, String unencodedPath) {
-//     return Uri.https("forutona.thkomeet.com:8443", "/forutonabeta/" + unencodedPath);
-//   }
-//
-//   static Uri httpurloption(String authority, String unencodedPath,
-//       [Map<String, String> queryParameters]) {
-//     return Uri.https("forutona.thkomeet.com:8443", "/forutonabeta/" + unencodedPath, queryParameters);
-//   }
+   static String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
+   static Uri httpurlbase(String authority, String unencodedPath) {
+     return Uri.https("forutona.thkomeet.com:8443", "/forutonabeta/" + unencodedPath);
+   }
+
+   static Uri httpurloption(String authority, String unencodedPath,
+       [Map<String, String> queryParameters]) {
+     return Uri.https("forutona.thkomeet.com:8443", "/forutonabeta/" + unencodedPath, queryParameters);
+   }
 }

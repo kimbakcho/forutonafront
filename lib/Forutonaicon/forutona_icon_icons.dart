@@ -94,4 +94,6 @@ class ForutonaIcon {
   static const IconData credit_card = IconData(0xe846, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData up_arrow = IconData(0xe847, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData replysendicon = IconData(0xe848, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dislike = IconData(0xe849, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData like = IconData(0xe84a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

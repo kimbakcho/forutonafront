@@ -107,131 +107,126 @@ class ID001MainPage extends StatelessWidget {
 
   Container ballValuationBar(ID001MainPageViewModel model) {
     return Container(
-      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            child: Text("평가하기",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15,
-                  color: Color(0xff454f63),
-                )),
-            margin: EdgeInsets.only(bottom: 8),
-          ),
-          Container(
-              child: RichText(
-                  text: TextSpan(
-                      text: model.userNickName,
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: Color(0xff3497FD),
-                      ),
-                      children: [
-                TextSpan(
-                    text: "님, 이슈볼을 평가해주세요!",
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Text("평가하기",
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
                       color: Color(0xff454f63),
                     )),
-              ]))),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            child: Row(
-              children: <Widget>[
-                Container(
-                    height: 32.00,
-                    width: 70.00,
-                    child: FlatButton(
-                        onPressed: model.onPlusBtn,
-                        padding: EdgeInsets.all(0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              ForutonaIcon.thumbsup,
-                              color: model.isPlusStatue() ? Colors.white: Colors.black,
-                              size: 15,
-                            ),
-                            Container(
-                                margin: EdgeInsets.only(left: 12),
-                                child: Text("+1",
-                                    style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: model.isPlusStatue() ? Colors.white: Colors.black,
-                                    )))
-                          ],
+                margin: EdgeInsets.only(bottom: 8),
+              ),
+              Container(
+                  child: RichText(
+                      text: TextSpan(
+                          text: model.userNickName,
+                          style: TextStyle(
+                            fontFamily: "Noto Sans CJK KR",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: Color(0xff3497FD),
+                          ),
+                          children: [
+                    TextSpan(
+                        text: model.getFBallValuationText(),
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Color(0xff454f63),
                         )),
-                    decoration: BoxDecoration(
-                      color:  model.isPlusStatue() ?  Color(0xff4F72FF):  Color(0xffffffff),
-                      border: Border.all(
-                        width: 2.00,
-                        color: model.isPlusStatue() ?  Color(0xff4F72FF):  Color(0xff454f63),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0.00, 3.00),
-                          color: Color(0xff455b63).withOpacity(0.10),
-                          blurRadius: 6,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10.00),
-                    )),
-                Container(
-                    height: 32.00,
-                    width: 70.00,
-                    margin: EdgeInsets.only(left: 16),
-                    child: FlatButton(
-                        onPressed: model.onMinusBtn,
-                        padding: EdgeInsets.all(0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              ForutonaIcon.thumbsdown,
-                              color: model.isMinusStatue() ? Colors.white: Colors.black,
-                              size: 15,
+                  ]))),
+              Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Row(children: <Widget>[
+                    Container(
+                        height: 32.00,
+                        width: 70.00,
+                        child: FlatButton(
+                            onPressed: model.onPlusBtn,
+                            padding: EdgeInsets.all(0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  ForutonaIcon.like,
+                                  color: model.getValuationIconAndTextColor(FBallValuationState.Like),
+                                  size: 15,
+                                ),
+                                Container(
+                                    margin: EdgeInsets.only(left: 12),
+                                    child: Text("+1",
+                                        style: TextStyle(
+                                          fontFamily: "Noto Sans CJK KR",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14,
+                                          color: model.getValuationIconAndTextColor(FBallValuationState.Like),
+                                        )))
+                              ],
+                            )),
+                        decoration: BoxDecoration(
+                          color: model.getValuationBoxColor(FBallValuationState.Like),
+                          border: Border.all(
+                            width: 2.00,
+                            color: model.getValuationBorderColor(FBallValuationState.Like),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0.00, 3.00),
+                              color: Color(0xff455b63).withOpacity(0.10),
+                              blurRadius: 6,
                             ),
-                            Container(
-                                margin: EdgeInsets.only(left: 12),
-                                child: Text("-1",
-                                    style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: model.isMinusStatue() ? Colors.white: Colors.black,
-                                    )))
                           ],
+                          borderRadius: BorderRadius.circular(10.00),
                         )),
-                    decoration: BoxDecoration(
-                      color: model.isMinusStatue() ?  Color(0xff4F72FF):  Color(0xffffffff),
-                      border: Border.all(
-                        width: 2.00,
-                        color: model.isMinusStatue() ?  Color(0xff4F72FF):  Color(0xff454f63),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0.00, 3.00),
-                          color: Color(0xff455b63).withOpacity(0.10),
-                          blurRadius: 6,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10.00),
-                    ))
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+                    Container(
+                        height: 32.00,
+                        width: 70.00,
+                        margin: EdgeInsets.only(left: 16),
+                        child: FlatButton(
+                            onPressed: model.onMinusBtn,
+                            padding: EdgeInsets.all(0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  ForutonaIcon.dislike,
+                                  color: model.getValuationIconAndTextColor(FBallValuationState.DisLike),
+                                  size: 15,
+                                ),
+                                Container(
+                                    margin: EdgeInsets.only(left: 12),
+                                    child: Text("-1",
+                                        style: TextStyle(
+                                          fontFamily: "Noto Sans CJK KR",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14,
+                                          color: model.getValuationIconAndTextColor(FBallValuationState.DisLike),
+                                        )))
+                              ],
+                            )),
+                        decoration: BoxDecoration(
+                          color: model.getValuationBoxColor(FBallValuationState.DisLike),
+                          border: Border.all(
+                            width: 2.00,
+                            color: model.getValuationBorderColor(FBallValuationState.DisLike),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0.00, 3.00),
+                              color: Color(0xff455b63).withOpacity(0.10),
+                              blurRadius: 6,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(10.00),
+                        ))
+                  ]))
+            ]));
   }
 
   ListView replyTopBar(ID001MainPageViewModel model) {
@@ -483,14 +478,13 @@ class ID001MainPage extends StatelessWidget {
 
   Container issueTextContentBar(ID001MainPageViewModel model) {
     return Container(
-      padding: EdgeInsets.fromLTRB(16, 23, 16, 24),
-      child: Text(model.issueBallDescriptionDto.text,
-          style: TextStyle(
-            fontFamily: "Noto Sans CJK KR",
-            fontSize: 14,
-            color: Color(0xff454f63),
-          )),
-    );
+        padding: EdgeInsets.fromLTRB(16, 23, 16, 24),
+        child: Text(model.issueBallDescriptionDto.text,
+            style: TextStyle(
+              fontFamily: "Noto Sans CJK KR",
+              fontSize: 14,
+              color: Color(0xff454f63),
+            )));
   }
 
   Container makerProfileBar(ID001MainPageViewModel model) {
@@ -498,22 +492,21 @@ class ID001MainPage extends StatelessWidget {
         height: 62,
         width: 360,
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-                top: 0,
-                left: 0,
-                child: Container(
-                  height: 32.00,
-                  width: 32.00,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: model.getMakerUserImage(),
-                      ),
-                      shape: BoxShape.circle),
-                )),
-            Positioned(
+        child: Stack(children: <Widget>[
+          Positioned(
+              top: 0,
+              left: 0,
+              child: Container(
+                height: 32.00,
+                width: 32.00,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: model.getMakerUserImage(),
+                    ),
+                    shape: BoxShape.circle),
+              )),
+          Positioned(
               top: 0,
               left: 44,
               child: Container(
@@ -524,25 +517,23 @@ class ID001MainPage extends StatelessWidget {
                       fontSize: 12,
                       color: Color(0xff454f63),
                     )),
-              ),
-            ),
-            Positioned(
-              top: 16,
-              left: 44,
-              child: Container(
-                  child: model.makerUserInfo != null
-                      ? Text(
-                          "유저영향력 ${model.makerUserInfo.cumulativeInfluence}BP • "
-                          "팔로워 ${model.makerUserInfo.followCount}명",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontSize: 10,
-                            color: Color(0xff78849e),
-                          ))
-                      : Container()),
-            )
-          ],
-        ));
+              )),
+          Positioned(
+            top: 16,
+            left: 44,
+            child: Container(
+                child: model.makerUserInfo != null
+                    ? Text(
+                        "유저영향력 ${model.makerUserInfo.cumulativeInfluence}BP • "
+                        "팔로워 ${model.makerUserInfo.followCount}명",
+                        style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontSize: 10,
+                          color: Color(0xff78849e),
+                        ))
+                    : Container()),
+          )
+        ]));
   }
 
   Container didver() {
@@ -576,7 +567,7 @@ class ID001MainPage extends StatelessWidget {
             width: 11,
             height: 11,
             child: Icon(
-              ForutonaIcon.thumbsup,
+              ForutonaIcon.dislike,
               color: Color(0xff78849e),
               size: 11,
             ),
@@ -591,15 +582,14 @@ class ID001MainPage extends StatelessWidget {
                     color: Color(0xff78849e),
                   ))),
           Container(
-            width: 11,
-            height: 11,
-            margin: EdgeInsets.only(left: 8),
-            child: Icon(
-              ForutonaIcon.thumbsdown,
-              color: Color(0xff78849e),
-              size: 11,
-            ),
-          ),
+              width: 11,
+              height: 11,
+              margin: EdgeInsets.only(left: 8),
+              child: Icon(
+                ForutonaIcon.thumbsdown,
+                color: Color(0xff78849e),
+                size: 11,
+              )),
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text("${model.fBallResDto.ballDisLikes}회",
@@ -610,15 +600,14 @@ class ID001MainPage extends StatelessWidget {
                     color: Color(0xff78849e),
                   ))),
           Container(
-            width: 11,
-            height: 11,
-            margin: EdgeInsets.only(left: 8),
-            child: Icon(
-              ForutonaIcon.visibility,
-              color: Color(0xff78849e),
-              size: 11,
-            ),
-          ),
+              width: 11,
+              height: 11,
+              margin: EdgeInsets.only(left: 8),
+              child: Icon(
+                ForutonaIcon.visibility,
+                color: Color(0xff78849e),
+                size: 11,
+              )),
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text("${model.fBallResDto.ballHits}회",
@@ -633,37 +622,34 @@ class ID001MainPage extends StatelessWidget {
 
   Container issueBallTitleBar(ID001MainPageViewModel model) {
     return Container(
-      child: Stack(
-        children: <Widget>[
-          Container(
-              padding: EdgeInsets.only(left: 16, right: 48),
-              child: Text(model.fBallResDto.ballName,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: model.showMoreDetailFlag ? 3 : 2,
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                    color: Color(0xff000000),
-                  ))),
-          Positioned(
-              top: 0,
-              right: 18,
-              child: Container(
-                  width: 20,
-                  height: 20,
-                  child: FlatButton(
-                      onPressed: model.showMoreDetailToggle,
-                      padding: EdgeInsets.all(0),
-                      child: Icon(
-                        model.showMoreDetailFlag
-                            ? ForutonaIcon.up_arrow
-                            : ForutonaIcon.down_arrow,
-                        color: Color(0xff454F63),
-                      ))))
-        ],
-      ),
-    );
+        child: Stack(children: <Widget>[
+      Container(
+          padding: EdgeInsets.only(left: 16, right: 48),
+          child: Text(model.fBallResDto.ballName,
+              overflow: TextOverflow.ellipsis,
+              maxLines: model.showMoreDetailFlag ? 3 : 2,
+              style: TextStyle(
+                fontFamily: "Noto Sans CJK KR",
+                fontWeight: FontWeight.w700,
+                fontSize: 14,
+                color: Color(0xff000000),
+              ))),
+      Positioned(
+          top: 0,
+          right: 18,
+          child: Container(
+              width: 20,
+              height: 20,
+              child: FlatButton(
+                  onPressed: model.showMoreDetailToggle,
+                  padding: EdgeInsets.all(0),
+                  child: Icon(
+                    model.showMoreDetailFlag
+                        ? ForutonaIcon.up_arrow
+                        : ForutonaIcon.down_arrow,
+                    color: Color(0xff454F63),
+                  ))))
+    ]));
   }
 
   Container contributorBar(ID001MainPageViewModel model) {
@@ -700,19 +686,18 @@ class ID001MainPage extends StatelessWidget {
                   )),
             ),
             Positioned(
-              top: 21,
-              left: 44,
-              child: Container(
-                width: 251,
-                child: Text('${model.fBallResDto.contributor}명이 반응 하였습니다.',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
-                      fontSize: 11,
-                      color: Color(0xff78849e),
-                    )),
-              ),
-            )
+                top: 21,
+                left: 44,
+                child: Container(
+                  width: 251,
+                  child: Text('${model.fBallResDto.contributor}명이 반응 하였습니다.',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: "Noto Sans CJK KR",
+                        fontSize: 11,
+                        color: Color(0xff78849e),
+                      )),
+                ))
           ],
         ));
   }
@@ -721,36 +706,35 @@ class ID001MainPage extends StatelessWidget {
     return Container(
         height: 60,
         padding: EdgeInsets.fromLTRB(16, 16, 16, 9),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-                top: 0,
-                left: 0,
-                child: Container(
-                  height: 32.00,
-                  width: 32.00,
-                  child: Icon(
-                    ForutonaIcon.whatshot,
-                    color: Color(0xff707070),
-                    size: 15,
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xffe4e7e8),
-                  ),
-                )),
-            Positioned(
+        child: Stack(children: <Widget>[
+          Positioned(
               top: 0,
-              left: 44,
-              child: Text("남은 시간",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: Color(0xff454f63),
-                  )),
-            ),
-            Positioned(
+              left: 0,
+              child: Container(
+                height: 32.00,
+                width: 32.00,
+                child: Icon(
+                  ForutonaIcon.whatshot,
+                  color: Color(0xff707070),
+                  size: 15,
+                ),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xffe4e7e8),
+                ),
+              )),
+          Positioned(
+            top: 0,
+            left: 44,
+            child: Text("남은 시간",
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  color: Color(0xff454f63),
+                )),
+          ),
+          Positioned(
               top: 21,
               left: 44,
               child: Container(
@@ -764,46 +748,43 @@ class ID001MainPage extends StatelessWidget {
                       fontSize: 11,
                       color: Color(0xff78849e),
                     )),
-              ),
-            )
-          ],
-        ));
+              ))
+        ]));
   }
 
   Container placeAddressBar(ID001MainPageViewModel model) {
     return Container(
         height: 60,
         padding: EdgeInsets.fromLTRB(16, 16, 16, 9),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-                top: 0,
-                left: 0,
-                child: Container(
-                  height: 32.00,
-                  width: 32.00,
-                  child: Icon(
-                    Icons.location_on,
-                    color: Color(0xff707070),
-                    size: 15,
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xffe4e7e8),
-                  ),
-                )),
-            Positioned(
+        child: Stack(children: <Widget>[
+          Positioned(
               top: 0,
-              left: 44,
-              child: Text("설치 장소",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: Color(0xff454f63),
-                  )),
-            ),
-            Positioned(
+              left: 0,
+              child: Container(
+                height: 32.00,
+                width: 32.00,
+                child: Icon(
+                  Icons.location_on,
+                  color: Color(0xff707070),
+                  size: 15,
+                ),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xffe4e7e8),
+                ),
+              )),
+          Positioned(
+            top: 0,
+            left: 44,
+            child: Text("설치 장소",
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  color: Color(0xff454f63),
+                )),
+          ),
+          Positioned(
               top: 21,
               left: 44,
               child: Container(
@@ -815,16 +796,13 @@ class ID001MainPage extends StatelessWidget {
                       fontSize: 11,
                       color: Color(0xff78849e),
                     )),
-              ),
-            )
-          ],
-        ));
+              ))
+        ]));
   }
 
   Container googleMapBar(ID001MainPageViewModel model) {
     return Container(
-      child: Stack(
-        children: <Widget>[
+        child: Stack(children: <Widget>[
           GoogleMap(
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
               new Factory<OneSequenceGestureRecognizer>(
@@ -837,10 +815,8 @@ class ID001MainPage extends StatelessWidget {
             markers: model.markers,
             circles: model.circles,
           )
-        ],
-      ),
-      height: 323,
-    );
+        ]),
+        height: 323);
   }
 
   Container topHeaderBar(ID001MainPageViewModel model, BuildContext context) {

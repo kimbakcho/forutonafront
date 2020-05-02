@@ -18,7 +18,6 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
         create: (_) => SplashPageViewModel(context),
         child: Container(
@@ -27,39 +26,15 @@ class _SplashPageState extends State<SplashPage> {
             return FlareActor("assets/Rive/KvuSplash.flr",
                 alignment: Alignment.center,
                 animation: "initAni", callback: (value) async {
-              FirebaseUser user = await _auth.currentUser();
-              if (user == null) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        settings: RouteSettings(name: "A000"),
-                        builder: (context) {
-                          return A000LoginPageView();
-                        }));
-              } else {
-                  try{
-                    await model.getFUserInfoDto();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            settings:
-                            RouteSettings(isInitialRoute: true, name: "HCODE"),
-                            builder: (context) {
-                              return CodeMainpage();
-                            }));
-                  }catch (ex){
-                    _auth.signOut();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            settings: RouteSettings(name: "A000"),
-                            builder: (context) {
-                              return A000LoginPageView();
-                            }));
-                  }
-
-              }
-            });
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          settings:
+                          RouteSettings(isInitialRoute: true, name: "HCODE"),
+                          builder: (context) {
+                            return CodeMainpage();
+                          }));
+                });
           }),
         ));
   }

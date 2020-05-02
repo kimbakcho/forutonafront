@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:android_intent/android_intent.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -79,7 +78,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
 
   //UnAndDown 관련
   String userNickName = "로 딩 중";
-  FBallValuationRepository _fBallValuationRepository = FBallValuationRepository();
+  FBallValuationRepository _fBallValuationRepository =
+      FBallValuationRepository();
   FBallValuationResDto fBallValuationResDto;
 
   ID001MainPageViewModel(this._context, this.fBallResDto) {
@@ -92,7 +92,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   init() async {
-
     if (issueBallDescriptionDto.youtubeVideoId != null) {
       youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
     }
@@ -107,12 +106,15 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void loadFBallValuation() async {
-    userNickName = Provider.of<GlobalModel>(_context,listen: false).fUserInfoDto.nickName;
+    userNickName =
+        Provider.of<GlobalModel>(_context, listen: false).fUserInfoDto.nickName;
     FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
     valuationReqDto.ballUuid = fBallResDto.ballUuid;
-    valuationReqDto.uid = Provider.of<GlobalModel>(_context,listen: false).fUserInfoDto.uid;
-    var fBallValuationWrapResDto = await _fBallValuationRepository.getFBallValuation(valuationReqDto);
-    if(fBallValuationWrapResDto.count == 1){
+    valuationReqDto.uid =
+        Provider.of<GlobalModel>(_context, listen: false).fUserInfoDto.uid;
+    var fBallValuationWrapResDto =
+        await _fBallValuationRepository.getFBallValuation(valuationReqDto);
+    if (fBallValuationWrapResDto.count == 1) {
       fBallValuationResDto = fBallValuationWrapResDto.contents[0];
     }
   }
@@ -647,6 +649,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
           curve: Curves.linear);
     }
   }
+
   void popDetailReply() async {
     await showGeneralDialog(
         context: _context,
@@ -668,40 +671,59 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   isPlusStatue() {
-    if(fBallValuationResDto != null && fBallValuationResDto.upAndDown > 0){
+    if (fBallValuationResDto != null && fBallValuationResDto.upAndDown > 0) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
 
   isMinusStatue() {
-    if(fBallValuationResDto != null && fBallValuationResDto.upAndDown < 0){
+    if (fBallValuationResDto != null && fBallValuationResDto.upAndDown < 0) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
 
   void onPlusBtn() async {
-    if(isPlusStatue()){
-      await _fBallValuationRepository.deleteFBallValuation(fBallValuationResDto.idx);
+    if(fBallResDto.activationTime.isBefore(DateTime.now())){
+      return ;
+    }
+
+    if (isPlusStatue()) {
+      await _fBallValuationRepository
+          .deleteFBallValuation(fBallValuationResDto.idx);
       fBallValuationResDto = null;
       notifyListeners();
-    }else {
+    } else if (isMinusStatue()) {
+      await _fBallValuationRepository
+          .deleteFBallValuation(fBallValuationResDto.idx);
+
+      await onFBallValuation(1);
+      notifyListeners();
+    } else {
       await onFBallValuation(1);
     }
     notifyListeners();
   }
 
-
-
   void onMinusBtn() async {
-    if(isMinusStatue()){
-      await _fBallValuationRepository.deleteFBallValuation(fBallValuationResDto.idx);
+    if(fBallResDto.activationTime.isBefore(DateTime.now())){
+      return ;
+    }
+    if (isMinusStatue()) {
+      await _fBallValuationRepository
+          .deleteFBallValuation(fBallValuationResDto.idx);
       fBallValuationResDto = null;
       notifyListeners();
-    }else {
+    } else if (isPlusStatue()) {
+      await _fBallValuationRepository
+          .deleteFBallValuation(fBallValuationResDto.idx);
+
+      await onFBallValuation(-1);
+      notifyListeners();
+    } else {
       await onFBallValuation(-1);
     }
     notifyListeners();
@@ -710,17 +732,104 @@ class ID001MainPageViewModel extends ChangeNotifier {
   Future onFBallValuation(int unAndDown) async {
     FBallValuationInsertReqDto reqDto = FBallValuationInsertReqDto();
     reqDto.ballUuid = fBallResDto.ballUuid;
-    reqDto.uid = Provider.of<GlobalModel>(_context,listen: false).fUserInfoDto.uid;
-    reqDto.unAndDown = 1;
+    reqDto.uid =
+        Provider.of<GlobalModel>(_context, listen: false).fUserInfoDto.uid;
+    reqDto.unAndDown = unAndDown;
     var idx = await _fBallValuationRepository.insertFBallValuation(reqDto);
-    if(idx>=0){
+    if (idx >= 0) {
       fBallValuationResDto = FBallValuationResDto();
-      fBallValuationResDto.uid =  reqDto.uid;
+      fBallValuationResDto.uid = reqDto.uid;
       fBallValuationResDto.ballUuid = fBallResDto.ballUuid;
       fBallValuationResDto.upAndDown = unAndDown;
       fBallValuationResDto.idx = idx;
-    }else {
+    } else {
       fBallValuationResDto = null;
     }
   }
+
+  getFBallValuationText() {
+    if (fBallResDto.activationTime.isBefore(DateTime.now())) {
+      return "평가 시간이 완료 되었습니다.";
+    } else if (fBallValuationResDto == null) {
+      return "님 평가를 해주세요.";
+    } else if (fBallValuationResDto != null) {
+      return "님 평가해 주셔서 감사합니다.";
+    } else {
+      return "";
+    }
+  }
+
+  getValuationIconAndTextColor(FBallValuationState state) {
+    if (state == FBallValuationState.Like) {
+      if (fBallValuationResDto == null) {
+        return Color(0xff454F63);
+      } else if (isPlusStatue()) {
+        return Colors.white;
+      } else if (isMinusStatue()) {
+        return Color(0xffB1B1B1);
+      } else {
+        return Color(0xff454F63);
+      }
+    } else {
+      if (fBallValuationResDto == null) {
+        return Color(0xff454F63);
+      } else if (isPlusStatue()) {
+        return Color(0xffB1B1B1);
+      } else if (isMinusStatue()) {
+        return Colors.white;
+      } else {
+        return Color(0xff454F63);
+      }
+    }
+  }
+
+  getValuationBorderColor(FBallValuationState state) {
+    if (state == FBallValuationState.Like) {
+      if (fBallValuationResDto == null) {
+        return Color(0xff454F63);
+      } else if (isPlusStatue()) {
+        return Color(0xff4F72FF);
+      } else if (isMinusStatue()) {
+        return Color(0xffC1C2C2);
+      } else {
+        return Color(0xff454F63);
+      }
+    } else {
+      if (fBallValuationResDto == null) {
+        return Color(0xff454F63);
+      } else if (isPlusStatue()) {
+        return Color(0xffC1C2C2);
+      } else if (isMinusStatue()) {
+        return Color(0xff4F72FF);
+      } else {
+        return Color(0xff454F63);
+      }
+    }
+  }
+
+  getValuationBoxColor(FBallValuationState state) {
+    if (state == FBallValuationState.Like) {
+      if (fBallValuationResDto == null) {
+        return Colors.white;
+      } else if (isPlusStatue()) {
+        return Color(0xff4F72FF);
+      } else if (isMinusStatue()) {
+        return Colors.white;
+      } else {
+        return Colors.white;
+      }
+    } else {
+      if (fBallValuationResDto == null) {
+        return Colors.white;
+      } else if (isPlusStatue()) {
+        return Colors.white;
+      } else if (isMinusStatue()) {
+        return Color(0xff4F72FF);
+      } else {
+        return Colors.white;
+      }
+    }
+  }
 }
+
+enum FBallValuationState { Like, DisLike }

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -67,8 +69,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
             Expanded(
                 flex: 1,
                 child: FlatButton(
-                    onPressed: () {
-                      model.jumpToPage(HCodeState.GCODE);
+                    onPressed: () async {
+                      var currentUser = await FirebaseAuth.instance.currentUser();
+                      if(currentUser != null){
+                        await currentUser.getIdToken(refresh: true);
+                        model.jumpToPage(HCodeState.GCODE);
+                      }else {
+                        await Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_){
+                            return J001View();
+                          }
+                        ));
+                        var currentUser = await FirebaseAuth.instance.currentUser();
+                        if(currentUser!=null){
+                          model.jumpToPage(HCodeState.GCODE);
+                        }
+                      }
                     },
                     child: Icon(
                       ForutonaIcon.user,

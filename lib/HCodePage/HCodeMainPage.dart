@@ -45,7 +45,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                         return !h001model.inlineRanking
                             ? Positioned(
                                 bottom: 0,
-                                width: 360,
+                                width: MediaQuery.of(context).size.width,
                                 height: 52,
                                 child: BottomNavigation(),
                               )

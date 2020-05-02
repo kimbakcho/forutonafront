@@ -125,7 +125,7 @@ class _H001PageState extends State<H001Page> {
               itemBuilder: (builder, index) {
                 return Container(
                     height: 40,
-                    width: 320,
+                    width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                     decoration: BoxDecoration(
                       border: Border(
@@ -151,8 +151,8 @@ class _H001PageState extends State<H001Page> {
                       )
                     ]));
               }),
-          height: 406.00,
-          width: 328.00,
+          height: MediaQuery.of(context).size.height - 240,
+          width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               color: Color(0xffe9faff),
               border: Border.all(
@@ -176,7 +176,8 @@ class _H001PageState extends State<H001Page> {
                 model.inlineRanking = true;
               }),
           height: 54.00,
-          width: 328.00,
+          margin: EdgeInsets.fromLTRB(18, 0, 18, 0),
+          width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               color: Color(0xff454f63),
               border: Border.all(
