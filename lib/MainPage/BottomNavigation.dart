@@ -78,7 +78,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         await Navigator.of(context).push(MaterialPageRoute(
                           builder: (_){
                             return J001View();
-                          }
+                          }, settings: RouteSettings(name: "/J001")
                         ));
                         var currentUser = await FirebaseAuth.instance.currentUser();
                         if(currentUser!=null){

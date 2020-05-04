@@ -7,6 +7,8 @@ import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/NickNameDuplicationCheckResDto.dart';
 
@@ -66,6 +68,12 @@ class FUserRepository {
     FDio dio = FDio("none");
     var response = await dio.get("/v1/ForutonaUser/UserInfoSimple1",queryParameters: reqDto.toJson());
     return FUserInfoResDto.fromJson(response.data) ;
+  }
+
+  Future<FUserSnsCheckJoinResDto> getSnsUserJoinCheckInfo(FUserSnSLoginReqDto reqDto) async{
+    FDio dio = FDio("none");
+    var response = await dio.get("/v1/ForutonaUser/SnsUserJoinCheckInfo",queryParameters: reqDto.toJson());
+    return FUserSnsCheckJoinResDto.fromJson(response.data);
   }
 
 }

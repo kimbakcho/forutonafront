@@ -37,12 +37,12 @@ class J001View extends StatelessWidget {
                     child: closeBar(context),
                   ),
                   Positioned(
-                      bottom: 52,
+                      top:MediaQuery.of(context).size.height - 167,
                       left: 0,
                       child: Column(
                         children: <Widget>[
                           orBar(context),
-                          snsLogInBtnBar(context),
+                          snsLogInBtnBar(context,model),
                           joinBtnBar(context)
                         ],
                       ))
@@ -55,42 +55,38 @@ class J001View extends StatelessWidget {
 
   Container joinBtnBar(BuildContext context) {
     return Container(
-                          margin: EdgeInsets.only(top: 22),
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.fromLTRB(36, 0, 36, 0),
-                          child: FlatButton(
-                            onPressed: (){
-
-                            },
-                            child: RichText(
-                              text: TextSpan(
-                                  text: "아직 회원이 아니신가요?",
-                                  style: TextStyle(
-                                    fontFamily: "Noto Sans CJK KR",
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: Color(0xff78849E),
-                                    decoration: TextDecoration.underline,
-                                  ),
-                              children: [
-                                TextSpan(
-                                  text: "가입하기",
-                                    style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: Color(0xff3497FD),
-                                      decoration: TextDecoration.underline,
-                                    )
-                                )
-                              ]
-                              ),
-                            ),
-                          ),
-                        );
+      margin: EdgeInsets.only(top: 22),
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.fromLTRB(36, 0, 36, 0),
+      child: FlatButton(
+        onPressed: () {},
+        child: RichText(
+          text: TextSpan(
+              text: "아직 회원이 아니신가요?",
+              style: TextStyle(
+                fontFamily: "Noto Sans CJK KR",
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+                color: Color(0xff78849E),
+                decoration: TextDecoration.underline,
+              ),
+              children: [
+                TextSpan(
+                    text: "가입하기",
+                    style: TextStyle(
+                      fontFamily: "Noto Sans CJK KR",
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                      color: Color(0xff3497FD),
+                      decoration: TextDecoration.underline,
+                    ))
+              ]),
+        ),
+      ),
+    );
   }
 
-  Container snsLogInBtnBar(BuildContext context) {
+  Container snsLogInBtnBar(BuildContext context,J001ViewModel model) {
     return Container(
       margin: EdgeInsets.only(top: 23),
       width: MediaQuery.of(context).size.width,
@@ -101,7 +97,7 @@ class J001View extends StatelessWidget {
             height: 36.00,
             width: 36.00,
             child: FlatButton(
-              onPressed: () {},
+              onPressed: model.onFaceBookLogin,
               padding: EdgeInsets.all(0),
             ),
             margin: EdgeInsets.only(right: 30),
@@ -205,7 +201,7 @@ class J001View extends StatelessWidget {
     return Container(
       height: 39.00,
       child: FlatButton(
-          onPressed: model.isActiveButton() ? () {} : null,
+          onPressed: model.isActiveButton() ? model.onLoginBtnClick : null,
           child: Text("로그인",
               style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",

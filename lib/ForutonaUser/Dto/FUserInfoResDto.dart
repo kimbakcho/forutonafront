@@ -12,11 +12,11 @@ class FUserInfoResDto {
    int gender;
    DateTime ageDate;
    String email;
-   int forutonaAgree;
-   int privateAgree;
-   int positionAgree;
-   int martketingAgree;
-   int ageLimitAgree;
+   bool forutonaAgree;
+   bool privateAgree;
+   bool positionAgree;
+   bool martketingAgree;
+   bool ageLimitAgree;
    String snsService;
    String phoneNumber;
    String isoCode;
@@ -48,47 +48,7 @@ class FUserInfoResDto {
    int deactivation;
 
 
-   FUserInfoResDto(
-      this.uid,
-      this.nickName,
-      this.profilePictureUrl,
-      this.gender,
-      this.ageDate,
-      this.email,
-      this.forutonaAgree,
-      this.privateAgree,
-      this.positionAgree,
-      this.martketingAgree,
-      this.ageLimitAgree,
-      this.snsService,
-      this.phoneNumber,
-      this.isoCode,
-      this.latitude,
-      this.intitude,
-      this.positionUpdateTime,
-      this.userLevel,
-      this.expPoint,
-      this.fCMtoken,
-      this.joinTime,
-      this.followCount,
-      this.backOut,
-      this.lastBackOutTime,
-      this.selfIntroduction,
-      this.cumulativeInfluence,
-      this.uPoint,
-      this.naPoint,
-      this.historyOpenAll,
-      this.historyOpenFollowSponsor,
-      this.historyOpenNoOpen,
-      this.sponsorHistoryOpenAll,
-      this.sponsorHistoryOpenSponAndFollowFromMe,
-      this.sponsorHistoryOpenSponNoOpen,
-      this.alarmChatMessage,
-      this.alarmContentReply,
-      this.alarmReplyAndReply,
-      this.alarmFollowNewContent,
-      this.alarmSponNewContent,
-      this.deactivation);
+   FUserInfoResDto();
 
   factory FUserInfoResDto.fromJson(Map<String, dynamic> json) => _$FUserInfoResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FUserInfoResDtoToJson(this);
