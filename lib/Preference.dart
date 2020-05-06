@@ -8,7 +8,7 @@ class Preference {
   
   
   //testDebug
-  static String baseBackEndUrl = "http://192.168.0.6:8443";
+  static String baseBackEndUrl = "http://121.136.211.241:8443";
   static Uri httpurlbase(String authority, String unencodedPath) {
     return Uri.http(authority, unencodedPath);
   }

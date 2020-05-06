@@ -1,47 +1,47 @@
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
+
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
 
+import 'NotJoinException.dart';
 import 'SnsLoginService.dart';
 
-class FaceBookLoginService implements SnsLoginService{
+class NaverLoginService implements SnsLoginService {
 
   FUserSnSLoginReqDto _reqDto = FUserSnSLoginReqDto();
   FUserRepository _fUserRepository = FUserRepository();
 
   @override
-  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto reqDto) async{
+  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto reqDto) async {
     FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto = await _fUserRepository.getSnsUserJoinCheckInfo(reqDto);
     return fUserSnsCheckJoinResDto;
   }
 
   @override
   Future<bool> tryLogin() async {
-    final facebookLogin = FacebookLogin();
-    final result = await facebookLogin.logIn(['email']);
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        _reqDto.accessToken = result.accessToken.token;
-        _reqDto.snsService = SnsSupportService.FaceBook;
-        _reqDto.fUserUid  = "${SnsSupportService.FaceBook}${result.accessToken.userId}";
-        _reqDto.snsUid = result.accessToken.userId;
+    NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
+    switch(naverLoginResult.status) {
+      case NaverLoginStatus.loggedIn:
+        var currentAccessToken =  await FlutterNaverLogin.currentAccessToken;
+        _reqDto.accessToken = currentAccessToken.accessToken;
+        _reqDto.snsService = SnsSupportService.Naver;
+        _reqDto.fUserUid = "${SnsSupportService.Naver}${naverLoginResult.account.id}";
+        _reqDto.snsUid = naverLoginResult.account.id;
         var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
         if(!fUserSnsCheckJoinResDto.join){
           throw new NotJoinException("not Join");
         }
         break;
-      case FacebookLoginStatus.cancelledByUser:
-        throw("cancelledByUser");
+      case NaverLoginStatus.cancelledByUser:
+        throw ("cancelledByUser");
         break;
-      case FacebookLoginStatus.error:
-        throw(result.errorMessage);
+      case NaverLoginStatus.error:
+        throw (naverLoginResult.errorMessage);
         break;
     }
     return true;
-
   }
 
 }

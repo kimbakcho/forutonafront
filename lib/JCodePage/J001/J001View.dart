@@ -115,7 +115,7 @@ class J001View extends StatelessWidget {
             height: 36.00,
             width: 36.00,
             child: FlatButton(
-              onPressed: () {},
+              onPressed: model.onKakaoLogin,
               padding: EdgeInsets.all(0),
             ),
             margin: EdgeInsets.only(right: 30),
@@ -133,7 +133,7 @@ class J001View extends StatelessWidget {
             height: 36.00,
             width: 36.00,
             child: FlatButton(
-              onPressed: () {},
+              onPressed: model.onNaverLogin,
               padding: EdgeInsets.all(0),
             ),
             decoration: BoxDecoration(

@@ -3,11 +3,11 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 
 class SnsLoginService {
 
-  tryLogin() async{
+  Future<bool> tryLogin() async{
     print("tryLogin");
   }
 
-  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto accessToken){
+  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto accessToken) async{
     print("checkSnsUidJoinCheck");
   }
 }

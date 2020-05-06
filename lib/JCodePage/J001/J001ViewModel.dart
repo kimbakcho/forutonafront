@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/ForutonaUser/Service/FaceBookLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
 import 'package:forutonafront/JCodePage/JCodeMainPageViewModel.dart';
@@ -91,32 +94,42 @@ class J001ViewModel extends ChangeNotifier {
 
   void onFaceBookLogin() async{
     SnsLoginService snsLoginService = new FaceBookLoginService();
+    await snsLoginLogic(snsLoginService);
+
+  }
+
+  void onKakaoLogin() async {
+    SnsLoginService snsLoginService = new KakaoLoginService();
+    await snsLoginLogic(snsLoginService);
+  }
+  void onNaverLogin() async{
+    SnsLoginService snsLoginService = new NaverLoginService();
+    await snsLoginLogic(snsLoginService);
+  }
+
+  Future snsLoginLogic(SnsLoginService snsLoginService) async {
     try{
       await snsLoginService.tryLogin();
-    }catch(value){
-      if(value == "not join User"){
-        print("가입하지 않은 유저");
+    } on NotJoinException catch(e) {
         Navigator.of(_context).push(MaterialPageRoute(
           builder: (context){
             return J002View();
           },
           settings: RouteSettings(name: "/J002")
         ));
-
-      }else {
-        Fluttertoast.showToast(
-            msg: value.toString(),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Color(0xff454F63),
-            textColor: Colors.white,
-            fontSize: 12.0);
-      }
+    } catch (e){
+      Fluttertoast.showToast(
+          msg: e.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
     }
-
-
   }
+
+
 
 
 }

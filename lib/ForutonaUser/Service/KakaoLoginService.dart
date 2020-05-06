@@ -1,13 +1,14 @@
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
+
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
 
+import 'NotJoinException.dart';
 import 'SnsLoginService.dart';
 
-class FaceBookLoginService implements SnsLoginService{
+class KakaoLoginService implements SnsLoginService {
 
   FUserSnSLoginReqDto _reqDto = FUserSnSLoginReqDto();
   FUserRepository _fUserRepository = FUserRepository();
@@ -19,29 +20,32 @@ class FaceBookLoginService implements SnsLoginService{
   }
 
   @override
-  Future<bool> tryLogin() async {
-    final facebookLogin = FacebookLogin();
-    final result = await facebookLogin.logIn(['email']);
+  Future<bool>  tryLogin() async {
+    FlutterKakaoLogin kakaoSignIn = FlutterKakaoLogin();
+    KakaoLoginResult result;
+    result = await kakaoSignIn.logIn();
     switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        _reqDto.accessToken = result.accessToken.token;
-        _reqDto.snsService = SnsSupportService.FaceBook;
-        _reqDto.fUserUid  = "${SnsSupportService.FaceBook}${result.accessToken.userId}";
-        _reqDto.snsUid = result.accessToken.userId;
+      case KakaoLoginStatus.loggedIn:
+        result = await kakaoSignIn.getUserMe();
+        KakaoAccessToken token =await kakaoSignIn.currentAccessToken;
+        _reqDto.accessToken = token.token;
+        _reqDto.snsService = SnsSupportService.Kakao;
+        _reqDto.fUserUid  = "${SnsSupportService.Kakao}${result.account.userID}";
+        _reqDto.snsUid = result.account.userID;
         var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
         if(!fUserSnsCheckJoinResDto.join){
           throw new NotJoinException("not Join");
         }
         break;
-      case FacebookLoginStatus.cancelledByUser:
-        throw("cancelledByUser");
+      case KakaoLoginStatus.loggedOut:
+        throw("loggedOut");
         break;
-      case FacebookLoginStatus.error:
+      case KakaoLoginStatus.error:
         throw(result.errorMessage);
         break;
     }
-    return true;
 
+    return true;
   }
 
 }
