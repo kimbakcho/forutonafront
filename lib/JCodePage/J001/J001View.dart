@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/JCodePage/J001/J001ViewModel.dart';
-import 'package:forutonafront/JCodePage/JCodeMainPageViewModel.dart';
 import 'package:provider/provider.dart';
 
 class J001View extends StatelessWidget {
@@ -9,11 +8,9 @@ class J001View extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (_) => JCodeMainPageViewModel(),
-          ),
-          ChangeNotifierProvider<J001ViewModel>(
             create: (_) => J001ViewModel(context),
-          )
+          ),
+
         ],
         child: Consumer<J001ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
@@ -343,4 +340,6 @@ class J001View extends StatelessWidget {
           )),
     );
   }
+
+
 }

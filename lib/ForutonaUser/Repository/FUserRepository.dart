@@ -42,6 +42,15 @@ class FUserRepository {
     return response.data;
   }
 
+  Future<String> joinProfileImage(File file) async {
+    FDio dio = FDio("none");
+    FormData formData = FormData.fromMap({
+      "ProfileImage": await MultipartFile.fromFile(file.path)
+    });
+    var response = await dio.put("/v1/ForutonaUser/JoinProfileImage",data: formData);
+    return response.data;
+  }
+
   Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto)async{
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     var idToken = await firebaseUser.getIdToken(refresh: true);

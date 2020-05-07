@@ -45,10 +45,10 @@ class G010MainPageViewModel extends ChangeNotifier {
   }
 
   onCompleteTap() async {
-    //자기 자신의 닉네임과 같을때는 체크 안함
-//    if(await onEditCompleteNickName()){
-//      return ;
-//    }
+    //닉네임 중복 체크
+    if(await onEditCompleteNickName()){
+      return ;
+    }
 
     //프로필 이미지 변경 체크 및 업데이트
     if(isChangeProfileImage && _currentPickProfileImage != null){
@@ -79,11 +79,15 @@ class G010MainPageViewModel extends ChangeNotifier {
     RegExp regExp1 = new RegExp(r'^(?=.*?[!@#\$&*~\s])');
     if(regExp1.hasMatch(nickNameController.text)){
       isCanNotUseNickNameDisPlay = true;
+      notifyListeners();
+      return isCanNotUseNickNameDisPlay;
     }
     if((_fUserInfoResDto.nickName != nickNameController.text) && !isCanNotUseNickNameDisPlay ){
       var nickNameDuplicationCheckResDto = await _fUserRepository.checkNickNameDuplication(nickNameController.text);
       if(nickNameDuplicationCheckResDto.haveNickName){
         isCanNotUseNickNameDisPlay = true;
+        notifyListeners();
+        return isCanNotUseNickNameDisPlay;
       }else {
         isCanNotUseNickNameDisPlay = false;
       }

@@ -1,4 +1,7 @@
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
+
 class NotJoinException implements Exception {
   String cause;
-  NotJoinException(this.cause);
+  FUserSnsCheckJoinResDto snsCheckJoinResDto;
+  NotJoinException(this.cause,this.snsCheckJoinResDto);
 }

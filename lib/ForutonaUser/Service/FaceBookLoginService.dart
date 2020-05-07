@@ -12,6 +12,9 @@ class FaceBookLoginService implements SnsLoginService{
   FUserSnSLoginReqDto _reqDto = FUserSnSLoginReqDto();
   FUserRepository _fUserRepository = FUserRepository();
 
+
+
+
   @override
   Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto reqDto) async{
     FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto = await _fUserRepository.getSnsUserJoinCheckInfo(reqDto);
@@ -30,7 +33,7 @@ class FaceBookLoginService implements SnsLoginService{
         _reqDto.snsUid = result.accessToken.userId;
         var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
         if(!fUserSnsCheckJoinResDto.join){
-          throw new NotJoinException("not Join");
+          throw new NotJoinException("not Join",fUserSnsCheckJoinResDto);
         }
         break;
       case FacebookLoginStatus.cancelledByUser:
@@ -42,6 +45,16 @@ class FaceBookLoginService implements SnsLoginService{
     }
     return true;
 
+  }
+
+  @override
+  SnsSupportService getSupportSnsService() {
+    return SnsSupportService.FaceBook;
+  }
+
+  @override
+  String getToken() {
+    return _reqDto.accessToken;
   }
 
 }

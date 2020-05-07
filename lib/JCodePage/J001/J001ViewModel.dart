@@ -10,12 +10,13 @@ import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
+import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
-import 'package:forutonafront/JCodePage/JCodeMainPageViewModel.dart';
+
+import 'package:provider/provider.dart';
 
 class J001ViewModel extends ChangeNotifier {
   BuildContext _context;
-  JCodeMainPageViewModel _jCodeMainPageViewModel;
   TextEditingController idTextFieldController = TextEditingController();
   TextEditingController pwTextFieldController = TextEditingController();
   FocusNode idTextFocusNode = FocusNode();
@@ -111,11 +112,18 @@ class J001ViewModel extends ChangeNotifier {
     try{
       await snsLoginService.tryLogin();
     } on NotJoinException catch(e) {
-        Navigator.of(_context).push(MaterialPageRoute(
+      GlobalModel globalModel = Provider.of<GlobalModel>(_context,listen: false);
+      globalModel.fUserInfoJoinReqDto.nickName = e.snsCheckJoinResDto.userSnsName;
+      globalModel.fUserInfoJoinReqDto.email = e.snsCheckJoinResDto.email;
+      globalModel.fUserInfoJoinReqDto.userProfileImageUrl = e.snsCheckJoinResDto.pictureUrl;
+      globalModel.fUserInfoJoinReqDto.snsSupportService = snsLoginService.getSupportSnsService();
+      globalModel.fUserInfoJoinReqDto.snsToken = snsLoginService.getToken();
+        await Navigator.of(_context).push(MaterialPageRoute(
           builder: (context){
             return J002View();
           },
-          settings: RouteSettings(name: "/J002")
+          settings: RouteSettings(name: "/J002"),
+
         ));
     } catch (e){
       Fluttertoast.showToast(

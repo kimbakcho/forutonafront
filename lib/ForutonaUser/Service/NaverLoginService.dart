@@ -31,7 +31,7 @@ class NaverLoginService implements SnsLoginService {
         _reqDto.snsUid = naverLoginResult.account.id;
         var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
         if(!fUserSnsCheckJoinResDto.join){
-          throw new NotJoinException("not Join");
+          throw new NotJoinException("not Join",fUserSnsCheckJoinResDto);
         }
         break;
       case NaverLoginStatus.cancelledByUser:
@@ -44,4 +44,12 @@ class NaverLoginService implements SnsLoginService {
     return true;
   }
 
+  @override
+  SnsSupportService getSupportSnsService() {
+    return SnsSupportService.Naver;
+  }
+  @override
+  String getToken() {
+    return _reqDto.accessToken;
+  }
 }

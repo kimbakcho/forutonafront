@@ -22,7 +22,7 @@ class G010MainPage extends StatelessWidget {
                           child: ListView(
                               padding: EdgeInsets.all(0),
                               children: <Widget>[
-                            userProfileImageBar(model, context),
+                            userProfileImageBar(model),
                             userCountrySelectRowBar(model),
                             nickNameEditor(model, context),
                             userIntroduceEditor(model, context)
@@ -170,19 +170,56 @@ class G010MainPage extends StatelessWidget {
                 bottom: BorderSide(color: Color(0xffE4E7E8), width: 1))));
   }
 
-  Container userProfileImageBar(
-      G010MainPageViewModel model, BuildContext context) {
+  Container userProfileImageBar(G010MainPageViewModel model) {
     return Container(
-        height: 145,
-        child: Stack(
-          children: <Widget>[
+      height: 145,
+      child: Center(
+          child : Stack(alignment: Alignment.bottomRight, children: <Widget>[
+            Container(
+                height: 69.00,
+                width: 69.00,
+                child: FlatButton(
+                  shape: CircleBorder(),
+                  padding: EdgeInsets.all(0),
+                  onPressed: model.onChangeProfileImageTab,
+                ),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fitWidth,
+                      image: model.currentProfileImage,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0.00, 3.00),
+                        color: Color(0xff000000).withOpacity(0.16),
+                        blurRadius: 6,
+                      ),
+                    ],
+                    shape: BoxShape.circle)),
             Positioned(
-              top: 36,
-              width: MediaQuery.of(context).size.width,
-              child: userProfileImage(model),
-            ),
-          ],
-        ));
+                child: Container(
+                    height: 21.00,
+                    width: 21.00,
+                    child: FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: model.onChangeProfileImageTab,
+                      child: Icon(
+                        ForutonaIcon.pencil,
+                        color: Colors.white,
+                        size: 10,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Color(0xffb1b1b1),
+                      border: Border.all(
+                        width: 1.00,
+                        color: Color(0xfff2f0f1),
+                      ),
+                      shape: BoxShape.circle,
+                    )))
+          ]
+          )),
+    );
   }
 
   Container userCountrySelectRowBar(G010MainPageViewModel model) {
@@ -223,49 +260,7 @@ class G010MainPage extends StatelessWidget {
     );
   }
 
-  Row userProfileImage(G010MainPageViewModel model) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      Stack(alignment: Alignment.bottomRight, children: <Widget>[
-        Container(
-            height: 69.00,
-            width: 69.00,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fitWidth,
-                  image: model.currentProfileImage,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0.00, 3.00),
-                    color: Color(0xff000000).withOpacity(0.16),
-                    blurRadius: 6,
-                  ),
-                ],
-                shape: BoxShape.circle)),
-        Positioned(
-            child: Container(
-                height: 21.00,
-                width: 21.00,
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: model.onChangeProfileImageTab,
-                  child: Icon(
-                    ForutonaIcon.pencil,
-                    color: Colors.white,
-                    size: 10,
-                  ),
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xffb1b1b1),
-                  border: Border.all(
-                    width: 1.00,
-                    color: Color(0xfff2f0f1),
-                  ),
-                  shape: BoxShape.circle,
-                )))
-      ])
-    ]);
-  }
+
 
   Container topBar(G010MainPageViewModel model) {
     return Container(

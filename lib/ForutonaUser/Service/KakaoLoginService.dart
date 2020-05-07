@@ -34,7 +34,7 @@ class KakaoLoginService implements SnsLoginService {
         _reqDto.snsUid = result.account.userID;
         var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
         if(!fUserSnsCheckJoinResDto.join){
-          throw new NotJoinException("not Join");
+          throw new NotJoinException("not Join",fUserSnsCheckJoinResDto);
         }
         break;
       case KakaoLoginStatus.loggedOut:
@@ -48,4 +48,13 @@ class KakaoLoginService implements SnsLoginService {
     return true;
   }
 
+  @override
+  SnsSupportService getSupportSnsService() {
+
+    return SnsSupportService.Kakao;
+  }
+  @override
+  String getToken() {
+    return _reqDto.accessToken;
+  }
 }
