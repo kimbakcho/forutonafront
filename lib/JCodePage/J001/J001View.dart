@@ -40,7 +40,7 @@ class J001View extends StatelessWidget {
                         children: <Widget>[
                           orBar(context),
                           snsLogInBtnBar(context,model),
-                          joinBtnBar(context)
+                          joinBtnBar(context,model)
                         ],
                       ))
                 ],
@@ -50,13 +50,13 @@ class J001View extends StatelessWidget {
         }));
   }
 
-  Container joinBtnBar(BuildContext context) {
+  Container joinBtnBar(BuildContext context,J001ViewModel model) {
     return Container(
       margin: EdgeInsets.only(top: 22),
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.fromLTRB(36, 0, 36, 0),
       child: FlatButton(
-        onPressed: () {},
+        onPressed: model.jumpToJ004,
         child: RichText(
           text: TextSpan(
               text: "아직 회원이 아니신가요?",

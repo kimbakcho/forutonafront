@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
                       context,
                       MaterialPageRoute(
                           settings:
-                          RouteSettings(isInitialRoute: true, name: "HCODE"),
+                          RouteSettings(name: "HCODE"),
                           builder: (context) {
                             return CodeMainpage();
                           }));

@@ -6,12 +6,13 @@ import 'package:provider/provider.dart';
 
 //flutter pub run build_runner watch
 
-void main() => runApp(
+void main() {
+  runApp(
     ChangeNotifierProvider(
-      create: (_) => GlobalModel(),
-      child: MyApp()),
-);
-
+        create: (_) => GlobalModel(),
+        child: MyApp()),
+  );
+}
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          primaryColor: Color(0xFF39F999),
+          primaryColor: Color(0xff3497FD),
           unselectedWidgetColor: Colors.grey),
 
       // home: MainPage()

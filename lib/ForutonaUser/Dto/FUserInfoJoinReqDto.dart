@@ -5,7 +5,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'FUserInfoJoinReqDto.g.dart';
 
 @JsonSerializable()
-
 class FUserInfoJoinReqDto {
 
   bool forutonaAgree;
@@ -22,6 +21,8 @@ class FUserInfoJoinReqDto {
   String snsToken;
   String userIntroduce;
 
+  factory FUserInfoJoinReqDto.fromJson(Map<String, dynamic> json) => _$FUserInfoJoinReqDtoFromJson(json);
+  Map<String, dynamic> toJson() => _$FUserInfoJoinReqDtoToJson(this);
 
   FUserInfoJoinReqDto();
 }

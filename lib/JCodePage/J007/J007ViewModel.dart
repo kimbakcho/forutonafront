@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,18 +28,23 @@ class J007ViewModel extends ChangeNotifier {
   TextEditingController userIntroduceController = new TextEditingController();
   int userIntroduceInputTextLength = 0;
 
+
+
   J007ViewModel(this._context) {
-    currentProfileImage = AssetImage("assets/basicprofileimage.png");
+    GlobalModel globalModel = Provider.of(_context,listen: false);
     _globalModel = Provider.of(_context, listen: false);
     if (_globalModel.fUserInfoJoinReqDto.countryCode != null) {
       currentCountryCode = _globalModel.fUserInfoJoinReqDto.countryCode;
     }
-    if (_globalModel.fUserInfoJoinReqDto.userProfileImageUrl != null) {
-      currentProfileImage =
-          NetworkImage(_globalModel.fUserInfoJoinReqDto.userProfileImageUrl);
+    if(globalModel.fUserInfoJoinReqDto.userProfileImageUrl == null){
+      globalModel.fUserInfoJoinReqDto.userProfileImageUrl = "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
     }
+    currentProfileImage =
+        NetworkImage(_globalModel.fUserInfoJoinReqDto.userProfileImageUrl);
+
     if (_globalModel.fUserInfoJoinReqDto.nickName != null) {
       nickNameController.text = _globalModel.fUserInfoJoinReqDto.nickName;
+      nickNameInputTextLength = nickNameController.text.length;
     }
     nickNameController.addListener(_onNickNameControllerListener);
     userIntroduceController.addListener(__onUserIntroduceControllerListener);
@@ -88,7 +95,7 @@ class J007ViewModel extends ChangeNotifier {
 
   void onCompeleteBtnClick() async {
     //닉네임 중복 체크
-    if(onEditCompleteNickName()){
+    if(await onEditCompleteNickName()){
       return ;
     }
     GlobalModel globalModel = Provider.of(_context,listen: false);
@@ -97,14 +104,14 @@ class J007ViewModel extends ChangeNotifier {
     if(isChangeProfileImage){
       if(_currentPickProfileImage == null){
         globalModel.fUserInfoJoinReqDto.userProfileImageUrl = "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
-      }else {
-        String imageUrl = await _fUserRepository.joinProfileImage(_currentPickProfileImage);
-        globalModel.fUserInfoJoinReqDto.userProfileImageUrl = imageUrl;
       }
     }
-    return null;
-
-
+    FUserInfoJoinResDto resDto = await _fUserRepository.joinUser(globalModel.fUserInfoJoinReqDto);
+    AuthResult authResult = await FirebaseAuth.instance.signInWithCustomToken(token: resDto.customToken);
+    if(_currentPickProfileImage!=null){
+      await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
+    }
+    Navigator.of(_context).popUntil(ModalRoute.withName('/'));
   }
 
   String getCountryName(String isoCode) {

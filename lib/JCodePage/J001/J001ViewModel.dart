@@ -1,9 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/ForutonaUser/Service/FaceBookLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
@@ -12,7 +10,7 @@ import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
-
+import 'package:forutonafront/JCodePage/J004/J004View.dart';
 import 'package:provider/provider.dart';
 
 class J001ViewModel extends ChangeNotifier {
@@ -63,6 +61,7 @@ class J001ViewModel extends ChangeNotifier {
               email: idTextFieldController.text,
               password: pwTextFieldController.text);
       var idTokenResult = await authResult.user.getIdToken(refresh: true);
+      Navigator.of(_context).popUntil(ModalRoute.withName('/'));
     } catch (value) {
       errorCheck = true;
       PlatformException exCode = value as PlatformException;
@@ -93,39 +92,42 @@ class J001ViewModel extends ChangeNotifier {
     }
   }
 
-  void onFaceBookLogin() async{
+  void onFaceBookLogin() async {
     SnsLoginService snsLoginService = new FaceBookLoginService();
     await snsLoginLogic(snsLoginService);
-
   }
 
   void onKakaoLogin() async {
     SnsLoginService snsLoginService = new KakaoLoginService();
     await snsLoginLogic(snsLoginService);
   }
-  void onNaverLogin() async{
+
+  void onNaverLogin() async {
     SnsLoginService snsLoginService = new NaverLoginService();
     await snsLoginLogic(snsLoginService);
   }
 
   Future snsLoginLogic(SnsLoginService snsLoginService) async {
-    try{
+    try {
       await snsLoginService.tryLogin();
-    } on NotJoinException catch(e) {
-      GlobalModel globalModel = Provider.of<GlobalModel>(_context,listen: false);
-      globalModel.fUserInfoJoinReqDto.nickName = e.snsCheckJoinResDto.userSnsName;
+    } on NotJoinException catch (e) {
+      GlobalModel globalModel =
+          Provider.of<GlobalModel>(_context, listen: false);
+      globalModel.fUserInfoJoinReqDto.nickName =
+          e.snsCheckJoinResDto.userSnsName;
       globalModel.fUserInfoJoinReqDto.email = e.snsCheckJoinResDto.email;
-      globalModel.fUserInfoJoinReqDto.userProfileImageUrl = e.snsCheckJoinResDto.pictureUrl;
-      globalModel.fUserInfoJoinReqDto.snsSupportService = snsLoginService.getSupportSnsService();
+      globalModel.fUserInfoJoinReqDto.userProfileImageUrl =
+          e.snsCheckJoinResDto.pictureUrl;
+      globalModel.fUserInfoJoinReqDto.snsSupportService =
+          snsLoginService.getSupportSnsService();
       globalModel.fUserInfoJoinReqDto.snsToken = snsLoginService.getToken();
-        await Navigator.of(_context).push(MaterialPageRoute(
-          builder: (context){
-            return J002View();
-          },
-          settings: RouteSettings(name: "/J002"),
-
-        ));
-    } catch (e){
+      await Navigator.of(_context).push(MaterialPageRoute(
+        builder: (context) {
+          return J002View();
+        },
+        settings: RouteSettings(name: "/J002"),
+      ));
+    } catch (e) {
       Fluttertoast.showToast(
           msg: e.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -137,7 +139,7 @@ class J001ViewModel extends ChangeNotifier {
     }
   }
 
-
-
-
+  void jumpToJ004() {
+    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => J004View()));
+  }
 }

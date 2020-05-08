@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
@@ -42,14 +44,6 @@ class FUserRepository {
     return response.data;
   }
 
-  Future<String> joinProfileImage(File file) async {
-    FDio dio = FDio("none");
-    FormData formData = FormData.fromMap({
-      "ProfileImage": await MultipartFile.fromFile(file.path)
-    });
-    var response = await dio.put("/v1/ForutonaUser/JoinProfileImage",data: formData);
-    return response.data;
-  }
 
   Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto)async{
     var firebaseUser = await FirebaseAuth.instance.currentUser();
@@ -84,5 +78,12 @@ class FUserRepository {
     var response = await dio.get("/v1/ForutonaUser/SnsUserJoinCheckInfo",queryParameters: reqDto.toJson());
     return FUserSnsCheckJoinResDto.fromJson(response.data);
   }
+
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto)async{
+    FDio dio = FDio("none");
+    var response = await dio.post("/v1/ForutonaUser/JoinUser",data:reqDto.toJson());
+    return FUserInfoJoinResDto.fromJson(response.data);
+  }
+
 
 }
