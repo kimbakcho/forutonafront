@@ -7,5 +7,6 @@ class PhoneAuthRepository {
     FDio dio = FDio("none");
     var response = await dio.post("/v1/PhoneAuth/Req",data: reqDto.toJson());
     return PhoneAuthResDto.fromJson(response.data);
+
   }
 }
