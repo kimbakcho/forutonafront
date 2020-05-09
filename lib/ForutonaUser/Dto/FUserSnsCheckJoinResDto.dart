@@ -10,6 +10,8 @@ class FUserSnsCheckJoinResDto {
   String userSnsName;
   //회원 가입 여부
   bool join;
+  //기존 유저시 토큰 부여
+  String firebaseCustomToken;
 
   FUserSnsCheckJoinResDto();
   factory FUserSnsCheckJoinResDto.fromJson(Map<String, dynamic> json) => _$FUserSnsCheckJoinResDtoFromJson(json);

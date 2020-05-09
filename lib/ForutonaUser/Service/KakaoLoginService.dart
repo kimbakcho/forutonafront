@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
 
@@ -35,6 +36,8 @@ class KakaoLoginService implements SnsLoginService {
         var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
         if(!fUserSnsCheckJoinResDto.join){
           throw new NotJoinException("not Join",fUserSnsCheckJoinResDto);
+        }else {
+          await FirebaseAuth.instance.signInWithCustomToken(token: fUserSnsCheckJoinResDto.firebaseCustomToken);
         }
         break;
       case KakaoLoginStatus.loggedOut:

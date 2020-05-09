@@ -67,10 +67,6 @@ dependencies:
   #사진을 여러장 선택 할 필요가 있을때 사용
   multi_image_picker: ^4.6.0
   flutter_kakao_login: ^0.8.1
-  clustering_google_maps:
-    path: ./extlib/clustering_google_maps/
-  search_map_place:
-    path: ./extlib/search_map_place/
   flutter_local_notifications: ^0.9.0+1
   #큐브의 에니메이션 효과등 복잡한 애니메이션을 Flare를 사용하여 처리기위해서 사용
   flare_flutter: ^1.8.3

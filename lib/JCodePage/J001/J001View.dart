@@ -29,9 +29,9 @@ class J001View extends StatelessWidget {
                     ]),
                   ),
                   Positioned(
-                    top: 0,
+                    top: MediaQuery.of(context).padding.top+10,
                     left: 0,
-                    child: closeBar(context),
+                    child: closeBar(context,model),
                   ),
                   Positioned(
                       top:MediaQuery.of(context).size.height - 167,
@@ -56,7 +56,7 @@ class J001View extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.fromLTRB(36, 0, 36, 0),
       child: FlatButton(
-        onPressed: model.jumpToJ004,
+        onPressed: model.jumpToJ002,
         child: RichText(
           text: TextSpan(
               text: "아직 회원이 아니신가요?",
@@ -318,7 +318,7 @@ class J001View extends StatelessWidget {
     );
   }
 
-  Container closeBar(BuildContext context) {
+  Container closeBar(BuildContext context,J001ViewModel model) {
     return Container(
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.centerRight,
@@ -326,7 +326,14 @@ class J001View extends StatelessWidget {
           margin: EdgeInsets.only(top: 16, right: 16),
           height: 23.00,
           width: 23.00,
-          child: Icon(Icons.clear, color: Colors.white, size: 15),
+
+          child: FlatButton(
+            padding: EdgeInsets.all(0),
+            onPressed: model.onClose,
+            child: Icon(Icons.clear, color: Colors.white, size: 15)
+          ) ,
+
+
           decoration: BoxDecoration(
             color: Color(0xff454f63),
             boxShadow: [

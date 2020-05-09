@@ -103,7 +103,7 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
     }
 
     return Transform.translate(
-        offset: Offset(MediaQuery.of(context).size.width, 0),
+        offset: Offset(MediaQuery.of(context).size.width+100, 0),
         child: Material(
             type: MaterialType.transparency,
             child: Stack(

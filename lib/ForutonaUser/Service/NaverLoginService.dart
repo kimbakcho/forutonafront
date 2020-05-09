@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
 
@@ -32,6 +33,8 @@ class NaverLoginService implements SnsLoginService {
         var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
         if(!fUserSnsCheckJoinResDto.join){
           throw new NotJoinException("not Join",fUserSnsCheckJoinResDto);
+        }else {
+          await FirebaseAuth.instance.signInWithCustomToken(token: fUserSnsCheckJoinResDto.firebaseCustomToken);
         }
         break;
       case NaverLoginStatus.cancelledByUser:

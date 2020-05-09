@@ -31,7 +31,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:search_map_place/search_map_place.dart';
 
 import 'dart:ui' as ui;
 
@@ -1487,27 +1486,6 @@ class _D001PlayPageViewState extends State<D001PlayPageView>
               onTapDown: (value) async {},
               child: googleMap,
             ),
-            Positioned(
-                top: 30,
-                child: Container(
-                    padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                    width: MediaQuery.of(context).size.width,
-                    child: SearchMapPlaceWidget(
-                        backgroundcolor: mapOpacityflag
-                            ? Colors.white.withOpacity(0.4)
-                            : Colors.white,
-                        apiKey: Preference.kGoogleApiKey,
-                        location: _kInitialPosition.target,
-                        language: "ko",
-                        radius: 30000,
-                        onSelected: (place) async {
-                          final geolocation = await place.geolocation;
-                          mapcontroller.animateCamera(
-                              CameraUpdate.newLatLng(geolocation.coordinates));
-                          mapcontroller.animateCamera(
-                              CameraUpdate.newLatLngBounds(
-                                  geolocation.bounds, 0));
-                        }))),
             Positioned(
                 top: 100,
                 right: 30,

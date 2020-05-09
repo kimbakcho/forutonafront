@@ -17,12 +17,17 @@ import 'package:forutonafront/ForutonaUser/Dto/NickNameDuplicationCheckResDto.da
 class FUserRepository {
   Future<FUserInfoResDto> getForutonaGetMe() async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken(refresh: true);
-    FDio dio = FDio(idToken.token);
-    var response = await dio.get("/v1/ForutonaUser/Me",
-        queryParameters: FUserReqDto(firebaseUser.uid).toJson());
+    if(firebaseUser != null ){
+      var idToken = await firebaseUser.getIdToken(refresh: true);
+      FDio dio = FDio(idToken.token);
+      var response = await dio.get("/v1/ForutonaUser/Me",
+          queryParameters: FUserReqDto(firebaseUser.uid).toJson());
 
-    return FUserInfoResDto.fromJson(response.data);
+      return FUserInfoResDto.fromJson(response.data);
+    }else {
+      return null;
+    }
+
   }
 
   Future<NickNameDuplicationCheckResDto> checkNickNameDuplication(

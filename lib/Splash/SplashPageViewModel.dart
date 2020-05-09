@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
@@ -12,6 +13,7 @@ class SplashPageViewModel with ChangeNotifier {
 
   SplashPageViewModel(this.context){
     this.globalModel = Provider.of<GlobalModel>(context);
+
   }
   Future<FUserInfoResDto> getFUserInfoDto() async {
       if(globalModel != null){

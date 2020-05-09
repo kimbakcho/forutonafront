@@ -12,7 +12,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading/indicator/ball_scale_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:search_map_place/search_map_place.dart';
 
 class C003GoogleMapMakeView extends StatefulWidget {
   C003GoogleMapMakeView({this.selectFcube, Key key}) : super(key: key);
@@ -158,27 +157,6 @@ class _C003GoogleMapMakeViewState extends State<C003GoogleMapMakeView>
                           borderRadius: BorderRadius.circular(12.00),
                         ),
                       )),
-                  Positioned(
-                    top: 30,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                      width: MediaQuery.of(context).size.width,
-                      child: SearchMapPlaceWidget(
-                        apiKey: Preference.kGoogleApiKey,
-                        location: _kInitialPosition.target,
-                        language: "ko",
-                        radius: 30000,
-                        onSelected: (place) async {
-                          final geolocation = await place.geolocation;
-                          googleMapController.animateCamera(
-                              CameraUpdate.newLatLng(geolocation.coordinates));
-                          googleMapController.animateCamera(
-                              CameraUpdate.newLatLngBounds(
-                                  geolocation.bounds, 0));
-                        },
-                      ),
-                    ),
-                  ),
                   Positioned(
                       bottom: 16,
                       child: Container(

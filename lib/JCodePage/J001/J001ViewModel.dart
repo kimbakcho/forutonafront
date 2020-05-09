@@ -8,9 +8,11 @@ import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
+import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
 import 'package:forutonafront/JCodePage/J004/J004View.dart';
+import 'package:forutonafront/MainPage/CodeMainpage.dart';
 import 'package:provider/provider.dart';
 
 class J001ViewModel extends ChangeNotifier {
@@ -61,7 +63,9 @@ class J001ViewModel extends ChangeNotifier {
               email: idTextFieldController.text,
               password: pwTextFieldController.text);
       var idTokenResult = await authResult.user.getIdToken(refresh: true);
+
       Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+
     } catch (value) {
       errorCheck = true;
       PlatformException exCode = value as PlatformException;
@@ -109,7 +113,9 @@ class J001ViewModel extends ChangeNotifier {
 
   Future snsLoginLogic(SnsLoginService snsLoginService) async {
     try {
-      await snsLoginService.tryLogin();
+      if(await snsLoginService.tryLogin()){
+        Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+      }
     } on NotJoinException catch (e) {
       GlobalModel globalModel =
           Provider.of<GlobalModel>(_context, listen: false);
@@ -139,7 +145,11 @@ class J001ViewModel extends ChangeNotifier {
     }
   }
 
-  void jumpToJ004() {
-    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => J004View()));
+  void jumpToJ002() {
+    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => J002View()));
+  }
+
+  void onClose() {
+    Navigator.of(_context).pop();
   }
 }

@@ -32,10 +32,10 @@ class ICodeMainPage extends StatelessWidget {
                       //해당 부분 마커에서 그림 파일에 캐쉬에 없어 초기에 못그려줘 일부러 여기서
                       //그려줌 캐슁해주기 위해서 사용함.
                       Positioned(
-                          top: 0,
-                          left: 0,
-                          width: 1,
-                          height: 1,
+                          top: -200,
+                          left: -200,
+                          width: 200,
+                          height: 200,
                           child: Column(
                             children: <Widget>[
                               QuestBallStyle1MarkerWidget.selectBall(),
@@ -43,7 +43,6 @@ class ICodeMainPage extends StatelessWidget {
                             ],
                           )),
                       GoogleMap(
-                        mapType: MapType.normal,
                         initialCameraPosition: model.initCameraPosition,
                         onMapCreated: model.onCreateMap,
                         myLocationEnabled: true,

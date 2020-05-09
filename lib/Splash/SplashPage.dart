@@ -26,14 +26,13 @@ class _SplashPageState extends State<SplashPage> {
             return FlareActor("assets/Rive/KvuSplash.flr",
                 alignment: Alignment.center,
                 animation: "initAni", callback: (value) async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          settings:
-                          RouteSettings(name: "HCODE"),
-                          builder: (context) {
-                            return CodeMainpage();
-                          }));
+
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                        settings:
+                        RouteSettings(name: "/"),
+                        builder: (context) {
+                          return CodeMainpage();
+                        }));
                 });
           }),
         ));

@@ -13,7 +13,8 @@ FUserSnsCheckJoinResDto _$FUserSnsCheckJoinResDtoFromJson(
     ..pictureUrl = json['pictureUrl'] as String
     ..email = json['email'] as String
     ..userSnsName = json['userSnsName'] as String
-    ..join = json['join'] as bool;
+    ..join = json['join'] as bool
+    ..firebaseCustomToken = json['firebaseCustomToken'] as String;
 }
 
 Map<String, dynamic> _$FUserSnsCheckJoinResDtoToJson(
@@ -24,4 +25,5 @@ Map<String, dynamic> _$FUserSnsCheckJoinResDtoToJson(
       'email': instance.email,
       'userSnsName': instance.userSnsName,
       'join': instance.join,
+      'firebaseCustomToken': instance.firebaseCustomToken,
     };

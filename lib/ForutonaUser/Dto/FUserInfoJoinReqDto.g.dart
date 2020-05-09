@@ -21,7 +21,9 @@ FUserInfoJoinReqDto _$FUserInfoJoinReqDtoFromJson(Map<String, dynamic> json) {
         _$SnsSupportServiceEnumMap, json['snsSupportService'])
     ..countryCode = json['countryCode'] as String
     ..snsToken = json['snsToken'] as String
-    ..userIntroduce = json['userIntroduce'] as String;
+    ..userIntroduce = json['userIntroduce'] as String
+    ..phoneNumber = json['phoneNumber'] as String
+    ..phoneAuthToken = json['phoneAuthToken'] as String;
 }
 
 Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
@@ -41,6 +43,8 @@ Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
       'countryCode': instance.countryCode,
       'snsToken': instance.snsToken,
       'userIntroduce': instance.userIntroduce,
+      'phoneNumber': instance.phoneNumber,
+      'phoneAuthToken': instance.phoneAuthToken,
     };
 
 T _$enumDecode<T>(

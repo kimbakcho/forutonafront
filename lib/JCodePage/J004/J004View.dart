@@ -28,7 +28,7 @@ class J004View extends StatelessWidget {
                               phoneInputBar(model),
                               phoneAuthNumberInputBar(model),
                               remindTimeDisplayBar(model),
-                              authTryBtnBar(context)
+                              authTryBtnBar(context, model)
                             ],
                           ),
                         )
@@ -53,25 +53,30 @@ class J004View extends StatelessWidget {
         }));
   }
 
-  Container authTryBtnBar(BuildContext context) {
+  Container authTryBtnBar(BuildContext context, J004ViewModel model) {
     return Container(
       height: 50.00,
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.fromLTRB(16, 50, 16, 16),
       child: FlatButton(
+        onPressed: model.reqNumberAuthReq,
         child: Text("인증번호 확인",
             style: GoogleFonts.notoSans(
               locale: Locale("ko"),
               fontWeight: FontWeight.w500,
               fontSize: 16,
-              color: Color(0xff7a7a7a),
+              color:
+                  model.isCanAuthNumberReq() ? Colors.white : Color(0xff7a7a7a),
             )),
       ),
       decoration: BoxDecoration(
-        color: Color(0xffd4d4d4),
+        color:
+            model.isCanAuthNumberReq() ? Color(0xff3497FD) : Color(0xffd4d4d4),
         border: Border.all(
           width: 1.00,
-          color: Color(0xffb1b1b1),
+          color: model.isCanAuthNumberReq()
+              ? Color(0xff4F72FF)
+              : Color(0xffb1b1b1),
         ),
         boxShadow: [
           BoxShadow(
@@ -99,7 +104,7 @@ class J004View extends StatelessWidget {
             ),
             children: [
               TextSpan(
-                  text: "${model.remindTimeSec}초 ",
+                  text: "${model.isReqRemindTimeSec()}초 ",
                   style: GoogleFonts.notoSans(
                     locale: Locale("ko"),
                     fontWeight: FontWeight.w300,
@@ -128,6 +133,7 @@ class J004View extends StatelessWidget {
                 child: Container(
                     height: 50,
                     child: TextField(
+                        controller: model.authNumberEditingController,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                             hintText: "인증번호 입력",
@@ -218,36 +224,7 @@ class J004View extends StatelessWidget {
                   fontSize: 20,
                   color: Color(0xff454f63),
                 ))),
-        Spacer(),
-        Container(
-          height: 32.00,
-          width: 75.00,
-          margin: EdgeInsets.only(right: 16),
-          child: FlatButton(
-            onPressed: model.nextBtnFlag() ? model.onNextBtnClick : null,
-            child: Text("다음",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13,
-                  color: model.nextBtnFlag() ? Colors.black : Color(0xffb1b1b1),
-                )),
-          ),
-          decoration: BoxDecoration(
-            color: model.nextBtnFlag() ? Colors.white : Color(0xffd4d4d4),
-            boxShadow: [
-              BoxShadow(
-                offset: Offset(0.00, 12.00),
-                color: Color(0xff455b63).withOpacity(0.08),
-                blurRadius: 16,
-              ),
-            ],
-            border: model.nextBtnFlag()
-                ? Border.all(color: Colors.black, width: 1)
-                : null,
-            borderRadius: BorderRadius.circular(5.00),
-          ),
-        )
+        Spacer()
       ]),
     );
   }
