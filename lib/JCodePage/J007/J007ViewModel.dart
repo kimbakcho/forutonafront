@@ -2,10 +2,17 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/Service/FaceBookLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/ForutonaLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -106,12 +113,34 @@ class J007ViewModel extends ChangeNotifier {
         globalModel.fUserInfoJoinReqDto.userProfileImageUrl = "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
       }
     }
-    FUserInfoJoinResDto resDto = await _fUserRepository.joinUser(globalModel.fUserInfoJoinReqDto);
-    AuthResult authResult = await FirebaseAuth.instance.signInWithCustomToken(token: resDto.customToken);
-    if(_currentPickProfileImage!=null){
-      await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
+    SnsLoginService snsLoginService;
+    if(globalModel.fUserInfoJoinReqDto.snsSupportService == SnsSupportService.FaceBook){
+      snsLoginService = FaceBookLoginService();
+    }else if(globalModel.fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Naver){
+      snsLoginService = NaverLoginService();
+    }else if(globalModel.fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Kakao){
+      snsLoginService = KakaoLoginService();
+    }else if(globalModel.fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Forutona){
+      snsLoginService = ForutonaLoginService();
+    }else {
+      snsLoginService = ForutonaLoginService();
     }
-    Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+    var fUserInfoJoinResDto = await snsLoginService.joinUser(globalModel.fUserInfoJoinReqDto);
+    if(fUserInfoJoinResDto.joinComplete){
+      if(_currentPickProfileImage!=null){
+        await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
+      }
+      Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+    }else {
+      Fluttertoast.showToast(
+          msg: "가입 실패",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
+    }
   }
 
   String getCountryName(String isoCode) {

@@ -22,8 +22,11 @@ FUserInfoJoinReqDto _$FUserInfoJoinReqDtoFromJson(Map<String, dynamic> json) {
     ..countryCode = json['countryCode'] as String
     ..snsToken = json['snsToken'] as String
     ..userIntroduce = json['userIntroduce'] as String
-    ..phoneNumber = json['phoneNumber'] as String
-    ..phoneAuthToken = json['phoneAuthToken'] as String;
+    ..internationalizedPhoneNumber =
+        json['internationalizedPhoneNumber'] as String
+    ..phoneAuthToken = json['phoneAuthToken'] as String
+    ..password = json['password'] as String
+    ..emailUserUid = json['emailUserUid'] as String;
 }
 
 Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
@@ -43,8 +46,10 @@ Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
       'countryCode': instance.countryCode,
       'snsToken': instance.snsToken,
       'userIntroduce': instance.userIntroduce,
-      'phoneNumber': instance.phoneNumber,
+      'internationalizedPhoneNumber': instance.internationalizedPhoneNumber,
       'phoneAuthToken': instance.phoneAuthToken,
+      'password': instance.password,
+      'emailUserUid': instance.emailUserUid,
     };
 
 T _$enumDecode<T>(
@@ -83,4 +88,5 @@ const _$SnsSupportServiceEnumMap = {
   SnsSupportService.FaceBook: 'FaceBook',
   SnsSupportService.Naver: 'Naver',
   SnsSupportService.Kakao: 'Kakao',
+  SnsSupportService.Forutona: 'Forutona',
 };

@@ -1,30 +1,36 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/PhoneAuthRepository.dart';
-import 'package:forutonafront/GlobalModel.dart';
-import 'package:forutonafront/JCodePage/J006/J006View.dart';
+import 'package:forutonafront/JCodePage/J011/J011View.dart';
 import 'package:provider/provider.dart';
 
-class J004ViewModel extends ChangeNotifier {
+import '../../GlobalModel.dart';
+
+class J010ViewModel extends ChangeNotifier{
   final BuildContext _context;
+
 
   String _currentPhoneNumber;
   String _currentInternationalizedPhoneNumber;
   String _currentIsoCode;
   int remindTimeSec = 120;
   PhoneAuthRepository _phoneAuthRepository = new PhoneAuthRepository();
-  PhoneAuthResDto resPhoneAuth;
+  PwFindPhoneAuthResDto resPhoneAuth;
 
   TextEditingController authNumberEditingController = TextEditingController();
   Timer secTick;
 
-  J004ViewModel(this._context) {
+  J010ViewModel(this._context) {
     secTick = Timer.periodic(Duration(seconds: 1), (timer) {
       secTick = timer;
       notifyListeners();
@@ -42,7 +48,6 @@ class J004ViewModel extends ChangeNotifier {
   }
 
 
-
   void onPhoneNumberChange(
       String phoneNumber, String internationalizedPhoneNumber, String isoCode) {
     _currentPhoneNumber = phoneNumber;
@@ -51,11 +56,26 @@ class J004ViewModel extends ChangeNotifier {
   }
 
   reqPhoneAuth() async {
-    PhoneAuthReqDto reqDto = PhoneAuthReqDto();
-    reqDto.isoCode = _currentIsoCode;
-    reqDto.phoneNumber = _currentPhoneNumber;
-    reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
-    resPhoneAuth = await _phoneAuthRepository.reqPhoneAuth(reqDto);
+    GlobalModel globalModel = Provider.of(_context,listen: false);
+    globalModel.pwFindPhoneAuthReqDto.isoCode = _currentIsoCode;
+    globalModel.pwFindPhoneAuthReqDto.phoneNumber = _currentPhoneNumber;
+    globalModel.pwFindPhoneAuthReqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
+    resPhoneAuth = await _phoneAuthRepository.reqPwFindPhoneAuth(globalModel.pwFindPhoneAuthReqDto);
+    if(resPhoneAuth.error){
+      if(resPhoneAuth.cause == "MissMatchEmailAndPhone" ){
+        Fluttertoast.showToast(
+            msg: "입력하신 정보와 일치하는 계정이 없습니다.\n"
+            "휴대폰 번호를 변경하셨다면, 이메일 인증으로 패스워드를 찾아주세요.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 4,
+            backgroundColor: Color(0xff454F63),
+            textColor: Colors.white,
+            fontSize: 12.0);
+        resPhoneAuth = null;
+      }
+
+    }
     notifyListeners();
   }
 
@@ -99,13 +119,15 @@ class J004ViewModel extends ChangeNotifier {
   }
 
   void reqNumberAuthReq() async {
-    PhoneAuthNumberReqDto reqDto = PhoneAuthNumberReqDto();
+    GlobalModel globalModel = Provider.of(_context,listen: false);
+    PwFindPhoneAuthNumberReqDto reqDto = PwFindPhoneAuthNumberReqDto();
     reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.isoCode = _currentIsoCode;
     reqDto.authNumber = authNumberEditingController.text;
-    PhoneAuthNumberResDto resDto =
-        await _phoneAuthRepository.reqNumberAuthReq(reqDto);
+    reqDto.email = globalModel.pwFindPhoneAuthReqDto.email;
+    PwFindPhoneAuthNumberResDto resDto =
+    await _phoneAuthRepository.reqPwFindNumberAuth(reqDto);
     if (resDto.errorFlag) {
       Fluttertoast.showToast(
           msg: resDto.errorCause,
@@ -117,11 +139,11 @@ class J004ViewModel extends ChangeNotifier {
           fontSize: 12.0);
     } else {
       GlobalModel globalModel = Provider.of(_context,listen: false);
-      globalModel.fUserInfoJoinReqDto.internationalizedPhoneNumber =
+      globalModel.pwFindPhoneAuthReqDto.internationalizedPhoneNumber =
           resDto.internationalizedPhoneNumber;
-      globalModel.fUserInfoJoinReqDto.phoneAuthToken = resDto.phoneAuthToken;
+      globalModel.pwFindPhoneAuthReqDto.emailPhoneAuthToken = resDto.emailPhoneAuthToken;
       Navigator.of(_context)
-          .push(MaterialPageRoute(builder: (_) => J006View()));
+          .push(MaterialPageRoute(builder: (_) => J011View()));
     }
   }
 }

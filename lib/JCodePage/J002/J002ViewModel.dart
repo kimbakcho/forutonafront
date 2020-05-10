@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/GCodePage/G022/G022MainPage.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J004/J004View.dart';
@@ -116,7 +117,7 @@ class J002ViewModel extends ChangeNotifier {
 
     Navigator.of(_context).push(MaterialPageRoute(
       builder: (context){
-        if(globalModel.fUserInfoJoinReqDto.snsSupportService != null){
+        if(globalModel.fUserInfoJoinReqDto.snsSupportService != SnsSupportService.Forutona){
           return J007View();
         }else {
           return J004View();

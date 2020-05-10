@@ -60,4 +60,5 @@ const _$SnsSupportServiceEnumMap = {
   SnsSupportService.FaceBook: 'FaceBook',
   SnsSupportService.Naver: 'Naver',
   SnsSupportService.Kakao: 'Kakao',
+  SnsSupportService.Forutona: 'Forutona',
 };

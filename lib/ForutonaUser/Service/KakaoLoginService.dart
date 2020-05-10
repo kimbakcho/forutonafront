@@ -9,7 +9,7 @@ import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'NotJoinException.dart';
 import 'SnsLoginService.dart';
 
-class KakaoLoginService implements SnsLoginService {
+class KakaoLoginService extends SnsLoginService {
 
   FUserSnSLoginReqDto _reqDto = FUserSnSLoginReqDto();
   FUserRepository _fUserRepository = FUserRepository();

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/JCodePage/J010/J010ViewModel.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:provider/provider.dart';
 
-import 'J004ViewModel.dart';
-
-class J004View extends StatelessWidget {
+class J010View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => J004ViewModel(context),
-        child: Consumer<J004ViewModel>(builder: (_, model, child) {
+      create: (_)=>J010ViewModel(context),
+      child: Consumer<J010ViewModel>(
+        builder: (_,model,child){
           return Stack(children: <Widget>[
             Scaffold(
                 backgroundColor: Color(0xffF2F0F1),
@@ -36,7 +37,9 @@ class J004View extends StatelessWidget {
                       joinProgressBar(context)
                     ])))
           ]);
-        }));
+        },
+      ),
+    );
   }
 
   Positioned joinProgressBar(BuildContext context) {
@@ -48,7 +51,7 @@ class J004View extends StatelessWidget {
       child: Container(
         height: 10,
         child: LinearProgressIndicator(
-          value: 0.5,
+          value: 0.66,
           backgroundColor: Color(0xffCCCCCC),
           valueColor: AlwaysStoppedAnimation<Color>(Color(0xff3497FD)),
         ),
@@ -56,7 +59,7 @@ class J004View extends StatelessWidget {
     );
   }
 
-  Container authTryBtnBar(BuildContext context, J004ViewModel model) {
+  Container authTryBtnBar(BuildContext context, J010ViewModel model) {
     return Container(
       height: 50.00,
       width: MediaQuery.of(context).size.width,
@@ -69,12 +72,12 @@ class J004View extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: 16,
               color:
-                  model.isCanAuthNumberReq() ? Colors.white : Color(0xff7a7a7a),
+              model.isCanAuthNumberReq() ? Colors.white : Color(0xff7a7a7a),
             )),
       ),
       decoration: BoxDecoration(
         color:
-            model.isCanAuthNumberReq() ? Color(0xff3497FD) : Color(0xffd4d4d4),
+        model.isCanAuthNumberReq() ? Color(0xff3497FD) : Color(0xffd4d4d4),
         border: Border.all(
           width: 1.00,
           color: model.isCanAuthNumberReq()
@@ -93,7 +96,7 @@ class J004View extends StatelessWidget {
     );
   }
 
-  Container remindTimeDisplayBar(J004ViewModel model) {
+  Container remindTimeDisplayBar(J010ViewModel model) {
     return Container(
       margin: EdgeInsets.only(left: 16),
       child: RichText(
@@ -127,7 +130,7 @@ class J004View extends StatelessWidget {
     );
   }
 
-  Container phoneAuthNumberInputBar(J004ViewModel model) {
+  Container phoneAuthNumberInputBar(J010ViewModel model) {
     return Container(
         margin: EdgeInsets.fromLTRB(16, 0, 16, 10),
         child: Row(
@@ -151,12 +154,12 @@ class J004View extends StatelessWidget {
                                 borderSide: BorderSide(
                                     width: 0, color: Color(0xffF2F0F1)),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
+                                BorderRadius.all(Radius.circular(12))),
                             focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     width: 0, color: Color(0xff3497FD)),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(12))))))),
+                                BorderRadius.all(Radius.circular(12))))))),
             Container(
                 margin: EdgeInsets.only(left: 16),
                 width: 111,
@@ -185,7 +188,7 @@ class J004View extends StatelessWidget {
         ));
   }
 
-  Container phoneInputBar(J004ViewModel model) {
+  Container phoneInputBar(J010ViewModel model) {
     return Container(
         margin: EdgeInsets.fromLTRB(16, 16, 16, 21),
         child: InternationalPhoneInput(
@@ -208,7 +211,7 @@ class J004View extends StatelessWidget {
         ));
   }
 
-  Container topBar(J004ViewModel model) {
+  Container topBar(J010ViewModel model) {
     return Container(
       height: 56,
       color: Colors.white,

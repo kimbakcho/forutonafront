@@ -3,16 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Service/FaceBookLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
-import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
-import 'package:forutonafront/JCodePage/J004/J004View.dart';
-import 'package:forutonafront/MainPage/CodeMainpage.dart';
+import 'package:forutonafront/JCodePage/J008/J008View.dart';
 import 'package:provider/provider.dart';
 
 class J001ViewModel extends ChangeNotifier {
@@ -23,6 +23,9 @@ class J001ViewModel extends ChangeNotifier {
   FocusNode pwTextFocusNode = FocusNode();
 
   J001ViewModel(this._context) {
+    GlobalModel globalModel = Provider.of<GlobalModel>(_context, listen: false);
+    //초기화
+    globalModel.fUserInfoJoinReqDto = FUserInfoJoinReqDto();
     idTextFieldController.addListener(onIdTextFieldController);
     pwTextFieldController.addListener(onPwTextFieldController);
     idTextFocusNode.addListener(onIdTextFocusNode);
@@ -63,9 +66,7 @@ class J001ViewModel extends ChangeNotifier {
               email: idTextFieldController.text,
               password: pwTextFieldController.text);
       var idTokenResult = await authResult.user.getIdToken(refresh: true);
-
       Navigator.of(_context).popUntil(ModalRoute.withName('/'));
-
     } catch (value) {
       errorCheck = true;
       PlatformException exCode = value as PlatformException;
@@ -113,7 +114,7 @@ class J001ViewModel extends ChangeNotifier {
 
   Future snsLoginLogic(SnsLoginService snsLoginService) async {
     try {
-      if(await snsLoginService.tryLogin()){
+      if (await snsLoginService.tryLogin()) {
         Navigator.of(_context).popUntil(ModalRoute.withName('/'));
       }
     } on NotJoinException catch (e) {
@@ -146,10 +147,17 @@ class J001ViewModel extends ChangeNotifier {
   }
 
   void jumpToJ002() {
+    GlobalModel globalModel = Provider.of(_context, listen: false);
+    globalModel.fUserInfoJoinReqDto.snsSupportService =
+        SnsSupportService.Forutona;
     Navigator.of(_context).push(MaterialPageRoute(builder: (_) => J002View()));
   }
 
   void onClose() {
     Navigator.of(_context).pop();
+  }
+
+  void jumpToJ008Page() {
+    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => J008View()));
   }
 }

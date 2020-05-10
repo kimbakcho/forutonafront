@@ -8,12 +8,10 @@ import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
 
 import 'SnsLoginService.dart';
 
-class FaceBookLoginService implements SnsLoginService{
+class FaceBookLoginService extends SnsLoginService{
 
   FUserSnSLoginReqDto _reqDto = FUserSnSLoginReqDto();
   FUserRepository _fUserRepository = FUserRepository();
-
-
 
 
   @override
@@ -47,7 +45,6 @@ class FaceBookLoginService implements SnsLoginService{
         break;
     }
     return true;
-
   }
 
   @override

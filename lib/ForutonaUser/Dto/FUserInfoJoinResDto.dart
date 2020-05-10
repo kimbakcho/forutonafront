@@ -8,6 +8,7 @@ part 'FUserInfoJoinResDto.g.dart';
 
 class FUserInfoJoinResDto {
   String customToken;
+  bool joinComplete;
 
   FUserInfoJoinResDto();
 

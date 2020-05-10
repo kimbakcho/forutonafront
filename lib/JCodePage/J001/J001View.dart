@@ -25,7 +25,7 @@ class J001View extends StatelessWidget {
                       idTextFieldBar(model),
                       pwTextFieldBar(model),
                       logInBtnBar(model, context),
-                      pwFindBar(),
+                      pwFindBar(model),
                     ]),
                   ),
                   Positioned(
@@ -177,13 +177,13 @@ class J001View extends StatelessWidget {
     );
   }
 
-  Container pwFindBar() {
+  Container pwFindBar(J001ViewModel model) {
     return Container(
       height: 14,
       margin: EdgeInsets.fromLTRB(32, 24, 16, 0),
       alignment: Alignment.centerRight,
       child: FlatButton(
-          onPressed: () {},
+          onPressed: model.jumpToJ008Page,
           padding: EdgeInsets.all(0),
           child: Text("혹시 비밀번호를 분실하셨나요?",
               style: TextStyle(

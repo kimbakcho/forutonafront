@@ -1,3 +1,3 @@
 enum SnsSupportService {
-  FaceBook,Naver,Kakao
+  FaceBook,Naver,Kakao,Forutona
 }

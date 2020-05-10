@@ -16,29 +16,32 @@ class J002View extends StatelessWidget {
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(
                       children: <Widget>[
-
                         Column(children: <Widget>[
                           topBar(model),
                           allAgreeBtnBar(context, model),
                           detailAgreeBar(context, model),
                         ]),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          height: 9,
-                          width: MediaQuery.of(context).size.width,
-                          child: LinearProgressIndicator(
-                            backgroundColor: Color(0xffCCCCCC),
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Color(0xff3497FD),
-                            ),
-                            value: 0.25,
-                          ),
-                        )
+                        joinProgressBar(context)
                       ],
                     )))
           ]);
         }));
+  }
+
+  Positioned joinProgressBar(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      height: 9,
+      width: MediaQuery.of(context).size.width,
+      child: LinearProgressIndicator(
+        backgroundColor: Color(0xffCCCCCC),
+        valueColor: AlwaysStoppedAnimation<Color>(
+          Color(0xff3497FD),
+        ),
+        value: 0.25,
+      ),
+    );
   }
 
   Container detailAgreeBar(BuildContext context, J002ViewModel model) {
@@ -221,7 +224,8 @@ class J002View extends StatelessWidget {
                       height: 24,
                       child: FlatButton(
                           padding: EdgeInsets.all(0),
-                          onPressed: model.onPositionInformationCollectionPolicyViewer,
+                          onPressed:
+                              model.onPositionInformationCollectionPolicyViewer,
                           child: Icon(
                             ForutonaIcon.chevron_right,
                             color: Color(0xff454F63),
@@ -278,7 +282,8 @@ class J002View extends StatelessWidget {
                       height: 24,
                       child: FlatButton(
                           padding: EdgeInsets.all(0),
-                          onPressed: model.onPersonalInformationCollectionPolicyViewer,
+                          onPressed:
+                              model.onPersonalInformationCollectionPolicyViewer,
                           child: Icon(
                             ForutonaIcon.chevron_right,
                             color: Color(0xff454F63),
