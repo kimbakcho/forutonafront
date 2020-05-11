@@ -12,7 +12,7 @@ FuserAccountUpdateReqdto _$FuserAccountUpdateReqdtoFromJson(
     json['isoCode'] as String,
     json['nickName'] as String,
     json['selfIntroduction'] as String,
-  );
+  )..userProfileImageUrl = json['userProfileImageUrl'] as String;
 }
 
 Map<String, dynamic> _$FuserAccountUpdateReqdtoToJson(
@@ -21,4 +21,5 @@ Map<String, dynamic> _$FuserAccountUpdateReqdtoToJson(
       'isoCode': instance.isoCode,
       'nickName': instance.nickName,
       'selfIntroduction': instance.selfIntroduction,
+      'userProfileImageUrl': instance.userProfileImageUrl,
     };

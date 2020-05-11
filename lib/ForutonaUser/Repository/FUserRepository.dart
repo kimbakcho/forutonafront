@@ -38,6 +38,7 @@ class FUserRepository {
     return NickNameDuplicationCheckResDto.fromJson(response.data);
   }
 
+  //파일 업로드 동시에 UserProfileUrl 에 BackEnd 에서  UserInfo 의 정보에 이미지 Url 을 넣어준다.
   Future<String> updateUserProfileImage(File file) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     var idToken = await firebaseUser.getIdToken(refresh: true);

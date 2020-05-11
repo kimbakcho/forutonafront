@@ -14,7 +14,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => IssueBallWidgetStyle3ViewModel(ballResDto),
+        create: (_) => IssueBallWidgetStyle3ViewModel(ballResDto,context),
         child: Consumer<IssueBallWidgetStyle3ViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -39,7 +39,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
                     Positioned(top: 50, right: 0, child: ballBottomBar(model,context))
                   ],
                 ),
-                onPressed: () {},
+                onPressed: model.goIssueDetailPage,
               ),
               decoration: BoxDecoration(
                   color: Color(0xffffffff),

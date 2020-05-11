@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:android_intent/android_intent.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -29,6 +30,7 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001DetailReplyView.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
@@ -95,19 +97,33 @@ class ID001MainPageViewModel extends ChangeNotifier {
     if (issueBallDescriptionDto.youtubeVideoId != null) {
       youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
     }
-    tagLoad(fBallResDto.ballUuid);
-    await ballMarkerLoad();
+
+     tagLoad(fBallResDto.ballUuid);
+
+     ballMarkerLoad();
+
     makerUserInfo =
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-    replyLoad();
-    loadFBallValuation();
+
+     replyLoad();
+
+     loadFBallValuation();
 
     notifyListeners();
   }
+  bool showFBallValuation(){
+    GlobalModel globalModel = Provider.of(_context, listen: false);
+    if(globalModel.fUserInfoDto != null){
+      return true;
+    }else {
+      return false;
+    }
+  }
 
-  void loadFBallValuation() async {
+  Future<void> loadFBallValuation() async {
+    GlobalModel globalModel = Provider.of(_context, listen: false);
     userNickName =
-        Provider.of<GlobalModel>(_context, listen: false).fUserInfoDto.nickName;
+        globalModel.fUserInfoDto.nickName;
     FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
     valuationReqDto.ballUuid = fBallResDto.ballUuid;
     valuationReqDto.uid =
@@ -135,7 +151,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future ballMarkerLoad() async {
+  Future<void> ballMarkerLoad() async {
     this.ballList = new List<FBallResForMarkerStyle2Dto>();
     ballList.add(new FBallResForMarkerStyle2Dto(
         FBallType.IssueBall,
@@ -209,7 +225,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  tagLoad(String ballUuid) async {
+  Future<void> tagLoad(String ballUuid) async {
     var tagResDtoWrap =
         await _tagRepository.tagFromBallUuid(TagFromBallReqDto(ballUuid));
     List<TagResDto> tags = tagResDtoWrap.tags;
@@ -628,26 +644,39 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void popupInputDisplay() async {
-    ID001InputReplyViewResult result = await showGeneralDialog(
-        context: _context,
-        barrierDismissible: true,
-        transitionDuration: Duration(milliseconds: 300),
-        barrierColor: Colors.black.withOpacity(0.3),
-        barrierLabel:
-            MaterialLocalizations.of(_context).modalBarrierDismissLabel,
-        pageBuilder:
-            (_context, Animation animation, Animation secondaryAnimation) {
-          FBallReplyInsertReqDto reqDto = new FBallReplyInsertReqDto();
-          reqDto.ballUuid = fBallResDto.ballUuid;
-          return ID001InputReplyView(reqDto);
-        });
-    if (result != null) {
-      await replyLoad();
-      mainScrollController.animateTo(
-          mainScrollController.position.maxScrollExtent + 100,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.linear);
-    }
+     var firebaseUser = await FirebaseAuth.instance.currentUser();
+     if(firebaseUser != null ){
+       ID001InputReplyViewResult result = await showGeneralDialog(
+           context: _context,
+           barrierDismissible: true,
+           transitionDuration: Duration(milliseconds: 300),
+           barrierColor: Colors.black.withOpacity(0.3),
+           barrierLabel:
+           MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+           pageBuilder:
+               (_context, Animation animation, Animation secondaryAnimation) {
+             FBallReplyInsertReqDto reqDto = new FBallReplyInsertReqDto();
+             reqDto.ballUuid = fBallResDto.ballUuid;
+             return ID001InputReplyView(reqDto);
+           });
+       if (result != null) {
+         await replyLoad();
+         mainScrollController.animateTo(
+             mainScrollController.position.maxScrollExtent + 100,
+             duration: Duration(milliseconds: 500),
+             curve: Curves.linear);
+       }
+     }else {
+       Navigator.push(
+           _context,
+           MaterialPageRoute(
+               settings: RouteSettings(name: "/J001"),
+               builder: (context) {
+                 return J001View();
+               }));
+     }
+
+
   }
 
   void popDetailReply() async {

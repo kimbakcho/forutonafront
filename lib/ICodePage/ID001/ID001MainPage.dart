@@ -49,7 +49,7 @@ class ID001MainPage extends StatelessWidget {
                                     shrinkWrap: true,
                                     padding: EdgeInsets.all(0),
                                     children: <Widget>[
-                                      googleMapBar(model),
+                                      googleMapBar(model, context),
                                       issueBallNameBar(),
                                       issueBallTitleBar(model),
                                       conditionStatueBar(model),
@@ -93,7 +93,9 @@ class ID001MainPage extends StatelessWidget {
                                           : Container(),
                                       replyInputBar(model, context),
                                       replyTopBar(model),
-                                      ballValuationBar(model)
+                                      model.showFBallValuation()
+                                          ? ballValuationBar(model)
+                                          : Container()
                                     ]))),
                         Positioned(
                             top: MediaQuery.of(context).padding.top,
@@ -108,125 +110,132 @@ class ID001MainPage extends StatelessWidget {
   Container ballValuationBar(ID001MainPageViewModel model) {
     return Container(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                child: Text("평가하기",
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+            Widget>[
+          Container(
+            child: Text("평가하기",
+                style: TextStyle(
+                  fontFamily: "Noto Sans CJK KR",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                  color: Color(0xff454f63),
+                )),
+            margin: EdgeInsets.only(bottom: 8),
+          ),
+          Container(
+              child: RichText(
+                  text: TextSpan(
+                      text: model.userNickName,
+                      style: TextStyle(
+                        fontFamily: "Noto Sans CJK KR",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Color(0xff3497FD),
+                      ),
+                      children: [
+                TextSpan(
+                    text: model.getFBallValuationText(),
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
                       color: Color(0xff454f63),
                     )),
-                margin: EdgeInsets.only(bottom: 8),
-              ),
-              Container(
-                  child: RichText(
-                      text: TextSpan(
-                          text: model.userNickName,
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Color(0xff3497FD),
-                          ),
-                          children: [
-                    TextSpan(
-                        text: model.getFBallValuationText(),
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: Color(0xff454f63),
-                        )),
-                  ]))),
-              Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: Row(children: <Widget>[
-                    Container(
-                        height: 32.00,
-                        width: 70.00,
-                        child: FlatButton(
-                            onPressed: model.onPlusBtn,
-                            padding: EdgeInsets.all(0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  ForutonaIcon.like,
-                                  color: model.getValuationIconAndTextColor(FBallValuationState.Like),
-                                  size: 15,
-                                ),
-                                Container(
-                                    margin: EdgeInsets.only(left: 12),
-                                    child: Text("+1",
-                                        style: TextStyle(
-                                          fontFamily: "Noto Sans CJK KR",
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
-                                          color: model.getValuationIconAndTextColor(FBallValuationState.Like),
-                                        )))
-                              ],
-                            )),
-                        decoration: BoxDecoration(
-                          color: model.getValuationBoxColor(FBallValuationState.Like),
-                          border: Border.all(
-                            width: 2.00,
-                            color: model.getValuationBorderColor(FBallValuationState.Like),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0.00, 3.00),
-                              color: Color(0xff455b63).withOpacity(0.10),
-                              blurRadius: 6,
+              ]))),
+          Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Row(children: <Widget>[
+                Container(
+                    height: 32.00,
+                    width: 70.00,
+                    child: FlatButton(
+                        onPressed: model.onPlusBtn,
+                        padding: EdgeInsets.all(0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              ForutonaIcon.like,
+                              color: model.getValuationIconAndTextColor(
+                                  FBallValuationState.Like),
+                              size: 15,
                             ),
+                            Container(
+                                margin: EdgeInsets.only(left: 12),
+                                child: Text("+1",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: model.getValuationIconAndTextColor(
+                                          FBallValuationState.Like),
+                                    )))
                           ],
-                          borderRadius: BorderRadius.circular(10.00),
                         )),
-                    Container(
-                        height: 32.00,
-                        width: 70.00,
-                        margin: EdgeInsets.only(left: 16),
-                        child: FlatButton(
-                            onPressed: model.onMinusBtn,
-                            padding: EdgeInsets.all(0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  ForutonaIcon.dislike,
-                                  color: model.getValuationIconAndTextColor(FBallValuationState.DisLike),
-                                  size: 15,
-                                ),
-                                Container(
-                                    margin: EdgeInsets.only(left: 12),
-                                    child: Text("-1",
-                                        style: TextStyle(
-                                          fontFamily: "Noto Sans CJK KR",
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
-                                          color: model.getValuationIconAndTextColor(FBallValuationState.DisLike),
-                                        )))
-                              ],
-                            )),
-                        decoration: BoxDecoration(
-                          color: model.getValuationBoxColor(FBallValuationState.DisLike),
-                          border: Border.all(
-                            width: 2.00,
-                            color: model.getValuationBorderColor(FBallValuationState.DisLike),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0.00, 3.00),
-                              color: Color(0xff455b63).withOpacity(0.10),
-                              blurRadius: 6,
+                    decoration: BoxDecoration(
+                      color:
+                          model.getValuationBoxColor(FBallValuationState.Like),
+                      border: Border.all(
+                        width: 2.00,
+                        color: model
+                            .getValuationBorderColor(FBallValuationState.Like),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.00, 3.00),
+                          color: Color(0xff455b63).withOpacity(0.10),
+                          blurRadius: 6,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10.00),
+                    )),
+                Container(
+                    height: 32.00,
+                    width: 70.00,
+                    margin: EdgeInsets.only(left: 16),
+                    child: FlatButton(
+                        onPressed: model.onMinusBtn,
+                        padding: EdgeInsets.all(0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              ForutonaIcon.dislike,
+                              color: model.getValuationIconAndTextColor(
+                                  FBallValuationState.DisLike),
+                              size: 15,
                             ),
+                            Container(
+                                margin: EdgeInsets.only(left: 12),
+                                child: Text("-1",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: model.getValuationIconAndTextColor(
+                                          FBallValuationState.DisLike),
+                                    )))
                           ],
-                          borderRadius: BorderRadius.circular(10.00),
-                        ))
-                  ]))
-            ]));
+                        )),
+                    decoration: BoxDecoration(
+                      color: model
+                          .getValuationBoxColor(FBallValuationState.DisLike),
+                      border: Border.all(
+                        width: 2.00,
+                        color: model.getValuationBorderColor(
+                            FBallValuationState.DisLike),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.00, 3.00),
+                          color: Color(0xff455b63).withOpacity(0.10),
+                          blurRadius: 6,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10.00),
+                    ))
+              ]))
+        ]));
   }
 
   ListView replyTopBar(ID001MainPageViewModel model) {
@@ -800,7 +809,7 @@ class ID001MainPage extends StatelessWidget {
         ]));
   }
 
-  Container googleMapBar(ID001MainPageViewModel model) {
+  Container googleMapBar(ID001MainPageViewModel model, BuildContext context) {
     return Container(
         child: Stack(children: <Widget>[
           GoogleMap(
@@ -812,9 +821,16 @@ class ID001MainPage extends StatelessWidget {
             initialCameraPosition: model.initialCameraPosition,
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
             markers: model.markers,
             circles: model.circles,
-          )
+          ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              height: 323,
+              child: FlatButton(
+                onPressed: () {},
+              ))
         ]),
         height: 323);
   }

@@ -65,7 +65,8 @@ class J001ViewModel extends ChangeNotifier {
           .signInWithEmailAndPassword(
               email: idTextFieldController.text,
               password: pwTextFieldController.text);
-      var idTokenResult = await authResult.user.getIdToken(refresh: true);
+      GlobalModel globalModel = Provider.of(_context, listen: false);
+      globalModel.setFUserInfoDto();
       Navigator.of(_context).popUntil(ModalRoute.withName('/'));
     } catch (value) {
       errorCheck = true;
@@ -115,6 +116,8 @@ class J001ViewModel extends ChangeNotifier {
   Future snsLoginLogic(SnsLoginService snsLoginService) async {
     try {
       if (await snsLoginService.tryLogin()) {
+        GlobalModel globalModel = Provider.of(_context);
+        await globalModel.setFUserInfoDto();
         Navigator.of(_context).popUntil(ModalRoute.withName('/'));
       }
     } on NotJoinException catch (e) {

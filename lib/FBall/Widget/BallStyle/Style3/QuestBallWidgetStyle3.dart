@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style3/IssueBallWidgetStyle3ViewModel.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/QuestBallWidgetStyle3ViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -14,8 +15,8 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => IssueBallWidgetStyle3ViewModel(ballResDto),
-        child: Consumer<IssueBallWidgetStyle3ViewModel>(
+        create: (_) => QuestBallWidgetStyle3ViewModel(ballResDto,context),
+        child: Consumer<QuestBallWidgetStyle3ViewModel>(
             builder: (_, model, child) {
           return Container(
               height: 90.00,
@@ -39,7 +40,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
                     Positioned(top: 50, right: 0, child: ballBottomBar(model,context))
                   ],
                 ),
-                onPressed: () {},
+                onPressed: model.goIssueDetailPage,
               ),
               decoration: BoxDecoration(
                   color: Color(0xffffffff),
@@ -54,7 +55,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
         }));
   }
 
-  Container makerInfoBar(IssueBallWidgetStyle3ViewModel model) {
+  Container makerInfoBar(QuestBallWidgetStyle3ViewModel model) {
     return Container(
       width: model.isMainPicture() ? 178 : 252,
       child: RichText(
@@ -81,7 +82,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
     );
   }
 
-  Container ballBottomBar(IssueBallWidgetStyle3ViewModel model,BuildContext context) {
+  Container ballBottomBar(QuestBallWidgetStyle3ViewModel model,BuildContext context) {
     return Container(
         height: 48.00,
         width: MediaQuery.of(context).size.width-48,
@@ -151,7 +152,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
     );
   }
 
-  Container ballMainimageBox(IssueBallWidgetStyle3ViewModel model) {
+  Container ballMainimageBox(QuestBallWidgetStyle3ViewModel model) {
     return model.isMainPicture()
         ? Container(
             height: 54.00,
@@ -169,7 +170,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
         : Container();
   }
 
-  Container ballNameText(IssueBallWidgetStyle3ViewModel model,BuildContext context) {
+  Container ballNameText(QuestBallWidgetStyle3ViewModel model,BuildContext context) {
     return Container(
       width: model.isMainPicture() ? MediaQuery.of(context).size.width-182 : MediaQuery.of(context).size.width-108,
       height: 18,

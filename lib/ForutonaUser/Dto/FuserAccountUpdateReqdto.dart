@@ -8,6 +8,7 @@ class FuserAccountUpdateReqdto {
   String isoCode;
   String nickName;
   String selfIntroduction;
+  String userProfileImageUrl;
 
   FuserAccountUpdateReqdto(this.isoCode, this.nickName, this.selfIntroduction);
 

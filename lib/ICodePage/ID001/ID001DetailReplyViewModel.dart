@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
@@ -6,6 +7,7 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
 
 import 'ID001DetailSubReplyInputView.dart';
 import 'ID001InputReplyView.dart';
@@ -106,20 +108,33 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
   }
 
   void insertSubReply(FBallSubReplyResDto detailReply) async {
-    var subReplyItem = await showGeneralDialog(
-        context: scaffold.currentState.context,
-        barrierDismissible: false,
-        transitionDuration: Duration(milliseconds: 300),
-        barrierColor: Colors.black.withOpacity(0.3),
-        barrierLabel:
-            MaterialLocalizations.of(_context).modalBarrierDismissLabel,
-        pageBuilder:
-            (_context, Animation animation, Animation secondaryAnimation) {
-          return ID001DetailSubReplyInputView(detailReply);
-        });
-    if (subReplyItem != null) {
-      detailReply.subReply = subReplyItem;
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    if(firebaseUser != null ){
+      var subReplyItem = await showGeneralDialog(
+          context: scaffold.currentState.context,
+          barrierDismissible: false,
+          transitionDuration: Duration(milliseconds: 300),
+          barrierColor: Colors.black.withOpacity(0.3),
+          barrierLabel:
+          MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+          pageBuilder:
+              (_context, Animation animation, Animation secondaryAnimation) {
+            return ID001DetailSubReplyInputView(detailReply);
+          });
+      if (subReplyItem != null) {
+        detailReply.subReply = subReplyItem;
+      }
+    }else {
+      Navigator.push(
+          _context,
+          MaterialPageRoute(
+              settings: RouteSettings(name: "/J001"),
+              builder: (context) {
+                return J001View();
+              }));
     }
+
+
   }
 
   void modifyPopup(FBallReplyResDto detailReply) async {

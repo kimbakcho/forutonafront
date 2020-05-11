@@ -6,7 +6,11 @@ import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:forutonafront/GlobalModel.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../../Preference.dart';
 
 class G010MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -16,7 +20,7 @@ class G010MainPageViewModel extends ChangeNotifier {
   File _currentPickProfileImage;
   String _currentIsoCode;
 
-  bool isChangeProfileImage = false;
+  bool _isChangeProfileImage = false;
   TextEditingController nickNameController = new TextEditingController();
   TextEditingController userIntroduceController = new TextEditingController();
   int nickNameInputTextLength = 0;
@@ -50,13 +54,22 @@ class G010MainPageViewModel extends ChangeNotifier {
       return ;
     }
 
-    //프로필 이미지 변경 체크 및 업데이트
-    if(isChangeProfileImage && _currentPickProfileImage != null){
-      String imageUrl = await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
-    }
     FuserAccountUpdateReqdto reqDto = new FuserAccountUpdateReqdto(_currentIsoCode,nickNameController.text,userIntroduceController.text);
+
+    //프로필 이미지 변경 체크 및 업데이트
+    if(_isChangeProfileImage && _currentPickProfileImage != null){
+      String imageUrl = await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
+      reqDto.userProfileImageUrl = imageUrl;
+    }else if(_isChangeProfileImage && _currentPickProfileImage == null){
+      reqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
+    }else {
+      reqDto.userProfileImageUrl = _fUserInfoResDto.profilePictureUrl;
+    }
+
     var result = await _fUserRepository.updateAccountUserInfo(reqDto);
     if(result == 1){
+      GlobalModel globalModel = Provider.of(_context, listen: false);
+      globalModel.setFUserInfoDto();
       Navigator.of(_context).pop();
     }
   }
@@ -67,13 +80,116 @@ class G010MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  onChangeProfileImageTab() async {
-    File file = await ImagePicker.pickImage(source: ImageSource.gallery);
-    _currentPickProfileImage = file;
-    currentProfileImage = FileImage(file);
-    isChangeProfileImage =true;
-    notifyListeners();
+  void onChangeProfileImageTab() async {
+    var result = await showGeneralDialog(
+        context: _context,
+        barrierDismissible: true,
+        transitionDuration: Duration(milliseconds: 300),
+        barrierColor: Colors.black.withOpacity(0.3),
+        barrierLabel:
+        MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+        pageBuilder:
+            (_context, Animation animation, Animation secondaryAnimation) {
+          return Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Center(
+                  child: Container(
+                      height: 200.00,
+                      width: 221.00,
+                      child: Column(children: <Widget>[
+                        Container(
+                          width: 221,
+                          child: FlatButton(
+                            onPressed: () {
+                              _currentPickProfileImage = null;
+                              currentProfileImage =
+                                  AssetImage("assets/basicprofileimage.png");
+                              _isChangeProfileImage = true;
+                              notifyListeners();
+                              Navigator.of(_context).pop();
+                            },
+                            child: Text("기본이미지",
+                                style: TextStyle(
+                                  fontFamily: "Noto Sans CJK KR",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: Color(0xff454f63),
+                                )),
+                          ),
+                        ),
+                        didver(_context),
+                        Container(
+                          width: 221,
+                          child: FlatButton(
+                            onPressed: () async {
+                              File file = await ImagePicker.pickImage(
+                                  source: ImageSource.camera);
+                              _currentPickProfileImage = file;
+                              currentProfileImage = FileImage(file);
+                              _isChangeProfileImage = true;
+                              notifyListeners();
+                              Navigator.of(_context).pop();
+                            },
+                            child: Text("카메라",
+                                style: TextStyle(
+                                  fontFamily: "Noto Sans CJK KR",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: Color(0xff454f63),
+                                )),
+                          ),
+                        ),
+                        didver(_context),
+                        Container(
+                          width: 221,
+                          child: FlatButton(
+                            onPressed: () async {
+                              File file = await ImagePicker.pickImage(
+                                  source: ImageSource.gallery);
+                              _currentPickProfileImage = file;
+                              currentProfileImage = FileImage(file);
+                              _isChangeProfileImage = true;
+                              notifyListeners();
+                              Navigator.of(_context).pop();
+                            },
+                            child: Text("갤러리",
+                                style: TextStyle(
+                                  fontFamily: "Noto Sans CJK KR",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: Color(0xff454f63),
+                                )),
+                          ),
+                        ),
+                        didver(_context),
+                        Container(
+                            width: 221,
+                            child: FlatButton(
+                                onPressed: () {
+                                  Navigator.of(_context).pop();
+                                },
+                                child: Text("닫기",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: Color(0xffff4f9a),
+                                    ))))
+                      ]),
+                      decoration: BoxDecoration(
+                        color: Color(0xffffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0.00, 4.00),
+                            color: Color(0xff455b63).withOpacity(0.08),
+                            blurRadius: 16,
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(12.00),
+                      ))));
+        });
   }
+
 
   onEditCompleteNickName() async {
     RegExp regExp1 = new RegExp(r'^(?=.*?[!@#\$&*~\s])');
@@ -130,5 +246,12 @@ class G010MainPageViewModel extends ChangeNotifier {
             )));
     _currentIsoCode = isoCode;
     notifyListeners();
+  }
+  Container didver(BuildContext context) {
+    return Container(
+      height: 1,
+      width: MediaQuery.of(context).size.width,
+      color: Color(0xffe4e7e8),
+    );
   }
 }

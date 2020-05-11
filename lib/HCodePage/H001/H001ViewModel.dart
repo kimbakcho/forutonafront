@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -11,6 +12,7 @@ import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -167,16 +169,29 @@ class H001ViewModel with ChangeNotifier {
 
 
   void goBallMakePage() async {
-    await Navigator.push(
-        _context,
-        MaterialPageRoute(
-            settings: RouteSettings(name: "/H002"),
-            builder: (context) {
-              return H002Page(
-                heroTag: "H001MakeButton",
-              );
-            }));
-      currentPosition = await Geolocator().getCurrentPosition();
-      reFreshSearchBall(currentPosition);
+     var currentUser = await FirebaseAuth.instance.currentUser();
+     if(currentUser != null){
+       await Navigator.push(
+           _context,
+           MaterialPageRoute(
+               settings: RouteSettings(name: "/H002"),
+               builder: (context) {
+                 return H002Page(
+                   heroTag: "H001MakeButton",
+                 );
+               }));
+       currentPosition = await Geolocator().getCurrentPosition();
+       reFreshSearchBall(currentPosition);
+     }else {
+       Navigator.push(
+           _context,
+           MaterialPageRoute(
+               settings: RouteSettings(name: "/J001"),
+               builder: (context) {
+                 return J001View();
+               }));
+     }
+
+
   }
 }

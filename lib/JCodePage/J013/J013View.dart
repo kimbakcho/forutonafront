@@ -30,26 +30,25 @@ class J013View extends StatelessWidget {
                                   cautionBar(context),
                                   jumpLoginPageBtnBar(model, context),
                                   Container(
-                                    width: MediaQuery.of(context).size.width,
+                                      width: MediaQuery.of(context).size.width,
                                       margin:
                                           EdgeInsets.fromLTRB(16, 14, 16, 0),
                                       child: FlatButton(
                                         onPressed: model.popupReTrySendEmail,
                                         padding: EdgeInsets.all(0),
                                         child: Container(
-                                          width: MediaQuery.of(context).size.width,
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           child: Text("혹시 인증 메일을 받지 못하셨나요?",
                                               style: GoogleFonts.notoSans(
                                                 fontWeight: FontWeight.w300,
                                                 fontSize: 13,
                                                 color: Color(0xffff4f9a),
                                                 decoration:
-                                                TextDecoration.underline,
+                                                    TextDecoration.underline,
                                               )),
                                         ),
-                                      ) 
-                                      
-                                      )
+                                      ))
                                 ],
                               ),
                             )

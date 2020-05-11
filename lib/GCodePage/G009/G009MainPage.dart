@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:forutonafront/GCodePage/G009/G009MainPageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,8 @@ class G009MainPage extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
-                      Positioned(top: 0,
+                      Positioned(
+                          top: 0,
                           width: MediaQuery.of(context).size.width,
                           child: topBar(model)),
                       Positioned(
@@ -38,9 +38,8 @@ class G009MainPage extends StatelessWidget {
                           bottom: 16,
                           width: MediaQuery.of(context).size.width,
                           child: Container(
-                            margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                              margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                               height: 52.00,
-
                               child: FlatButton(
                                 onPressed: model.logout,
                                 child: Text("로그아웃",
@@ -65,8 +64,7 @@ class G009MainPage extends StatelessWidget {
                                       blurRadius: 6,
                                     )
                                   ],
-                                  borderRadius:
-                                      BorderRadius.circular(12.00))))
+                                  borderRadius: BorderRadius.circular(12.00))))
                     ])))
           ]);
         }));
@@ -74,13 +72,11 @@ class G009MainPage extends StatelessWidget {
 
   Container customerCenterRowBtn(G009MainPageViewModel model) {
     return Container(
-
       height: 48,
       child: FlatButton(
           onPressed: model.goCustomCenter,
           padding: EdgeInsets.all(0),
           child: Container(
-
               height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -101,13 +97,11 @@ class G009MainPage extends StatelessWidget {
 
   Container versionInfoRowBtn() {
     return Container(
-
       height: 48,
       child: FlatButton(
           onPressed: () {},
           padding: EdgeInsets.all(0),
           child: Container(
-
               height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -128,13 +122,11 @@ class G009MainPage extends StatelessWidget {
 
   Container noticeRowBtn(G009MainPageViewModel model) {
     return Container(
-
       height: 48,
       child: FlatButton(
           onPressed: model.goNoticePage,
           padding: EdgeInsets.all(0),
           child: Container(
-
               height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -166,13 +158,11 @@ class G009MainPage extends StatelessWidget {
 
   Container alarmRowbtn(G009MainPageViewModel model) {
     return Container(
-
       height: 48,
       child: FlatButton(
           onPressed: model.goAlarmSettingPage,
           padding: EdgeInsets.all(0),
           child: Container(
-
               height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -193,13 +183,11 @@ class G009MainPage extends StatelessWidget {
 
   Container openScopeRowBtn() {
     return Container(
-
       height: 48,
       child: FlatButton(
           onPressed: () {},
           padding: EdgeInsets.all(0),
           child: Container(
-
               height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -220,13 +208,11 @@ class G009MainPage extends StatelessWidget {
 
   Container securityRowBtn(G009MainPageViewModel model) {
     return Container(
-
       height: 48,
       child: FlatButton(
           onPressed: model.goSecurityPage,
           padding: EdgeInsets.all(0),
           child: Container(
-
               height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -247,13 +233,11 @@ class G009MainPage extends StatelessWidget {
 
   Container accountRowBtn(G009MainPageViewModel model) {
     return Container(
-
       height: 48,
       child: FlatButton(
           onPressed: model.goAccountSettingPage,
           padding: EdgeInsets.all(0),
           child: Container(
-
               height: 48,
               alignment: Alignment.centerLeft,
               child: Padding(

@@ -9,7 +9,9 @@ import 'package:forutonafront/GCodePage/G011/G011MainPage.dart';
 import 'package:forutonafront/GCodePage/G015/G015MainPage.dart';
 import 'package:forutonafront/GCodePage/G016/G016MainPage.dart';
 import 'package:forutonafront/GCodePage/G019/G019MainPage.dart';
+import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/MainPage/CodeMainpage.dart';
+import 'package:provider/provider.dart';
 
 class G009MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -44,6 +46,9 @@ class G009MainPageViewModel extends ChangeNotifier {
       await FacebookLogin().logOut();
     }
     await FirebaseAuth.instance.signOut();
+
+    GlobalModel globalModel = Provider.of(_context, listen: false);
+    globalModel.setFUserInfoDto();
 //    Navigator.of(_context).popUntil(ModalRoute.withName('/'));
     Navigator.pushAndRemoveUntil(
         _context,

@@ -14,6 +14,7 @@ import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/GlobalModel.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class J007ViewModel extends ChangeNotifier {
   GlobalModel _globalModel;
   File _currentPickProfileImage;
   ImageProvider currentProfileImage;
-  bool isChangeProfileImage = false;
+  bool _isChangeProfileImage = false;
 
   FUserRepository _fUserRepository = new FUserRepository();
 
@@ -108,9 +109,9 @@ class J007ViewModel extends ChangeNotifier {
     GlobalModel globalModel = Provider.of(_context,listen: false);
     globalModel.fUserInfoJoinReqDto.nickName = nickNameController.text;
     globalModel.fUserInfoJoinReqDto.userIntroduce = userIntroduceController.text;
-    if(isChangeProfileImage){
+    if(_isChangeProfileImage){
       if(_currentPickProfileImage == null){
-        globalModel.fUserInfoJoinReqDto.userProfileImageUrl = "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
+        globalModel.fUserInfoJoinReqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
       }
     }
     SnsLoginService snsLoginService;
@@ -182,7 +183,7 @@ class J007ViewModel extends ChangeNotifier {
                               _currentPickProfileImage = null;
                               currentProfileImage =
                                   AssetImage("assets/basicprofileimage.png");
-                              isChangeProfileImage = true;
+                              _isChangeProfileImage = true;
                               notifyListeners();
                               Navigator.of(_context).pop();
                             },
@@ -204,7 +205,7 @@ class J007ViewModel extends ChangeNotifier {
                                   source: ImageSource.camera);
                               _currentPickProfileImage = file;
                               currentProfileImage = FileImage(file);
-                              isChangeProfileImage = true;
+                              _isChangeProfileImage = true;
                               notifyListeners();
                               Navigator.of(_context).pop();
                             },
@@ -226,7 +227,7 @@ class J007ViewModel extends ChangeNotifier {
                                   source: ImageSource.gallery);
                               _currentPickProfileImage = file;
                               currentProfileImage = FileImage(file);
-                              isChangeProfileImage = true;
+                              _isChangeProfileImage = true;
                               notifyListeners();
                               Navigator.of(_context).pop();
                             },
