@@ -13,32 +13,44 @@ class H00301PageViewModel extends ChangeNotifier {
   FBallPlayerRepository _fBallPlayerRepository = FBallPlayerRepository();
   UserToPlayBallResWrapDto userToPlayBallList;
   ScrollController scrollController = ScrollController();
-  int pageCount = 0;
-  int limitSize = 10;
+  int _pageCount = 0;
+  int _limitSize = 10;
+
+  bool _isLoading = false;
+  getIsLoading(){
+    return _isLoading;
+  }
+  _setIsLoading(bool value){
+    _isLoading = value;
+    notifyListeners();
+  }
 
   H00301PageViewModel(this.context) {
-    userToPlayBallList = new UserToPlayBallResWrapDto(DateTime.now(), []);
-    scrollController.addListener(scrollListener);
+
     this.init();
   }
 
   init() async {
+    userToPlayBallList = new UserToPlayBallResWrapDto(DateTime.now(), []);
+    scrollController.addListener(scrollListener);
+    _setIsLoading(true);
     await ballListUp();
+    _setIsLoading(false);
   }
 
   Future ballListUp() async {
     var globalModel = Provider.of<GlobalModel>(context, listen: false);
     List<MultiSort> sorts = new List<MultiSort>();
     sorts.add(MultiSort("Alive", QueryOrders.DESC));
-    //start가 Join Time
+    //startTime이 참여한 시작시간이다.
     sorts.add(MultiSort("startTime", QueryOrders.DESC));
     MultiSorts wrapsorts = new MultiSorts(sorts);
     var userToPlayBallReqDto = UserToPlayBallReqDto(
         globalModel.fUserInfoDto.uid,
-        pageCount,
-        limitSize,
+        _pageCount,
+        _limitSize,
         wrapsorts.toQureyJson());
-    if (pageCount == 0) {
+    if (_isFirstPage()) {
       this.userToPlayBallList = await _fBallPlayerRepository
           .getUserToPlayBallList(userToPlayBallReqDto);
     } else {
@@ -52,19 +64,26 @@ class H00301PageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  scrollListener() async {
-    /**
-     * 맨 밑으로 왔을때 무한 스크롤을 위한 이벤트 처리
-     */
+  bool _isFirstPage() => _pageCount == 0;
 
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange) {
-      pageCount++;
-      if (pageCount * limitSize > userToPlayBallList.contents.length) {
+  scrollListener() async {
+    if (_isScrollerMoveBottomOver()) {
+      _pageCount++;
+      if (!_hasBalls()) {
         return;
       } else {
         ballListUp();
       }
     }
+  }
+
+  bool _hasBalls() {
+    return !(_pageCount * _limitSize > userToPlayBallList.contents.length);
+
+  }
+
+  bool _isScrollerMoveBottomOver() {
+    return scrollController.offset >= scrollController.position.maxScrollExtent &&
+      !scrollController.position.outOfRange;
   }
 }

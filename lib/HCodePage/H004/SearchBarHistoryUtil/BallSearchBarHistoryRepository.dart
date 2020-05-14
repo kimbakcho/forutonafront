@@ -24,7 +24,6 @@ class BallSearchBarHistoryRepository {
   }
 
 
-
   Future<List<BallSearchbarHistroyDto>> removeHistroy(BallSearchbarHistroyDto reqDto) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<BallSearchbarHistroyDto> historys = getBallSearchHistroyFromPrefs(prefs);

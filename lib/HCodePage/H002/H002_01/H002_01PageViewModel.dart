@@ -12,14 +12,20 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class H002_01PageViewModel extends ChangeNotifier {
   final BuildContext _context;
 
-  Position _initPosition;
-
   String address;
   CameraPosition initCameraPosition;
   CameraPosition currentCameraPosition;
-
   bool isBallPinUp = false;
+  bool _isLoading = false;
+  getIsLoading(){
+    return _isLoading;
+  }
+  _setIsLoading(bool value){
+    _isLoading = value;
+    notifyListeners();
+  }
 
+  Position _initPosition;
   Completer<GoogleMapController> _googleMapController = Completer();
   GeolocationRepository _geolocationRepository = GeolocationRepository();
 
@@ -46,11 +52,13 @@ class H002_01PageViewModel extends ChangeNotifier {
   }
 
   void onMapIdle() async{
+    _setIsLoading(true);
       this.address = await _geolocationRepository.getPositionAddress(Position(
           latitude: currentCameraPosition.target.latitude,
           longitude: currentCameraPosition.target.longitude));
       isBallPinUp = false;
       notifyListeners();
+    _setIsLoading(false);
   }
 
   void onBackBtnClick() {

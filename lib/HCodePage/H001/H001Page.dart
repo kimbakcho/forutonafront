@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
@@ -35,6 +36,9 @@ class _H001PageState extends State<H001Page> {
                         ]))
                       ]),
                       makeButton(model),
+                      model.getIsLoading() ?
+                      CommonLoadingComponent() : Container()
+
                     ]);
                   })))
         ]));
@@ -60,7 +64,7 @@ class _H001PageState extends State<H001Page> {
       itemCount: model.fBallListUpWrapDto.balls.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
-          return model.inlineRanking
+          return model.isFoldTagRanking()
               ? inlineRanking(model)
               : unInlineRaking(model);
         }
@@ -75,7 +79,7 @@ class _H001PageState extends State<H001Page> {
   }
 
   Widget makeButton(H001ViewModel model) {
-    return model.inlineRanking
+    return model.isFoldTagRanking()
         ? Positioned(
             child: Hero(
               tag: "H001MakeButton",
@@ -191,73 +195,7 @@ class _H001PageState extends State<H001Page> {
     ]);
   }
 
-  Container bottomNavigation(CodeMainViewModel model) {
-    return Container(
-        color: Colors.white,
-        height: 52,
-        child: Row(children: <Widget>[
-          Expanded(
-              flex: 1,
-              child: FlatButton(
-                  onPressed: () {
-                    model.jumpToPage(HCodeState.HCDOE);
-                  },
-                  child: Icon(
-                    ForutonaIcon.list,
-                    color: model.currentState == HCodeState.HCDOE
-                        ? Color(0xff454F63)
-                        : Color(0xffE4E7E8),
-                  ))),
-          Expanded(
-              flex: 1,
-              child: FlatButton(
-                  onPressed: () {
-                    model.jumpToPage(HCodeState.ICODE);
-                  },
-                  child: Icon(
-                    ForutonaIcon.map,
-                    color: model.currentState == HCodeState.ICODE
-                        ? Color(0xff454F63)
-                        : Color(0xffE4E7E8),
-                  ))),
-          Expanded(
-              flex: 1,
-              child: FlatButton(
-                  onPressed: () {
-                    model.jumpToPage(HCodeState.JCODE);
-                  },
-                  child: Icon(
-                    ForutonaIcon.officialchannel,
-                    color: model.currentState == HCodeState.JCODE
-                        ? Color(0xff454F63)
-                        : Color(0xffE4E7E8),
-                  ))),
-          Expanded(
-              flex: 1,
-              child: FlatButton(
-                  onPressed: () {
-                    model.jumpToPage(HCodeState.KCODE);
-                  },
-                  child: Icon(
-                    ForutonaIcon.social,
-                    color: model.currentState == HCodeState.KCODE
-                        ? Color(0xff454F63)
-                        : Color(0xffE4E7E8),
-                  ))),
-          Expanded(
-              flex: 1,
-              child: FlatButton(
-                  onPressed: () {
-                    model.jumpToPage(HCodeState.GCODE);
-                  },
-                  child: Icon(
-                    ForutonaIcon.user,
-                    color: model.currentState == HCodeState.GCODE
-                        ? Color(0xff454F63)
-                        : Color(0xffE4E7E8),
-                  ))),
-        ]));
-  }
+
 
   Container inlineRanking(H001ViewModel model) {
     return Container(

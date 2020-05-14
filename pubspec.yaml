@@ -123,7 +123,6 @@ flutter:
   assets:
     - assets/
     - assets/MarkesImages/
-    - assets/AuthMethodImages/
     - assets/Rive/
     - assets/Brand/
     - assets/MainImage/

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H002/H002_01/H002_01PageViewModel.dart';
 import 'package:geolocator/geolocator.dart';
@@ -55,7 +56,8 @@ class H002_01Page extends StatelessWidget {
                 bottom: 24,
                 width: MediaQuery.of(context).size.width,
                 child: bottomAddBallBtn(model),
-              )
+              ),
+              model.getIsLoading() ? CommonLoadingComponent() : Container()
             ]))
           ]);
         }));

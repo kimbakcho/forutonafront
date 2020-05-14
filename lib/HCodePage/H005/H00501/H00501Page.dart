@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
@@ -21,27 +22,29 @@ class H00501Page extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                   child: Column(
                 children: <Widget>[
-                  selectOrderButton(model),
                   Expanded(
                       child: ListView.builder(
-                          controller: model.mainDcollercontroller,
+                          controller: model.mainDropDownBtnController,
                           padding: EdgeInsets.all(0),
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
-                          itemCount: model.listUpBalls.length,
+                          itemCount: model.listUpBalls.length+1,
                           itemBuilder: (context, index) {
-                            return Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
-                                child: BallStyle1Support.selectBallWidget(model.listUpBalls[index]));
+                            if(index ==0 ){
+                              return selectOrderButton(model);
+                            }else {
+                              return Container(
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
+                                  child: BallStyle1Support.selectBallWidget(model.listUpBalls[index-1]));
+                            }
                           }))
                 ],
               )),
-            )
+            ),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         }));
   }
-
-
 
   Container selectOrderButton(H00501PageViewModel model) {
     return Container(

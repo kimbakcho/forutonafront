@@ -23,7 +23,6 @@ class H001ViewModel with ChangeNotifier {
   final BuildContext _context;
   H001PageState currentState;
   String selectPositionAddress = "로 딩 중";
-  Position currentPosition;
   bool rankingAutoPlay = false;
   bool hasBall = true;
   SwiperController rankingSwiperController = new SwiperController();
@@ -33,7 +32,10 @@ class H001ViewModel with ChangeNotifier {
   TagRankingWrapDto rankingWrapDto;
   FBallListUpWrapDto fBallListUpWrapDto =
       new FBallListUpWrapDto(DateTime.now(), []);
+  bool _isLoading = false;
 
+
+  Position _currentPosition;
   bool _inlineRanking = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
@@ -43,32 +45,51 @@ class H001ViewModel with ChangeNotifier {
 
 
   H001ViewModel(this._context) {
-    currentState = H001PageState.H001_01;
-    rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
-    h001CenterListViewController
-        .addListener(h001CenterListViewControllerListener);
     init();
   }
 
   init() async {
+    currentState = H001PageState.H001_01;
+    rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
+    h001CenterListViewController
+        .addListener(h001CenterListViewControllerListener);
+    _setIsLoading(true);
+    if(await geoPermissionCheck()){
+      await reFreshSearchBall(_currentPosition);
+    }
+    _setIsLoading(false);
+  }
+
+  bool getIsLoading(){
+    return _isLoading;
+  }
+
+  _setIsLoading(bool value){
+    _isLoading = value;
+    notifyListeners();
+  }
+
+
+  Future<bool> geoPermissionCheck() async {
     if(await GeoLocationUtil.permissionCheck()){
-      currentPosition = await Geolocator().getCurrentPosition();
-      await reFreshSearchBall(currentPosition);
+      _currentPosition = await Geolocator().getCurrentPosition();
+      return true;
+    }else {
+      return false;
     }
 
   }
 
   moveToH007() async {
-
     ///Navigator 는 검색 위치로 지정한 LatLng 이 나온다.
     MapSearchGeoDto position = await Navigator.of(_context).push(MaterialPageRoute(
         settings: RouteSettings(name: "H007"),
-        builder: (context)=> H007MainPage(currentPosition,
+        builder: (context)=> H007MainPage(_currentPosition,
             selectPositionAddress)
     ));
     if(position != null){
-      currentPosition = Position(latitude: position.latLng.latitude,longitude: position.latLng.longitude);
-      await reFreshSearchBall(currentPosition,address: position.descriptionAddress);
+      _currentPosition = Position(latitude: position.latLng.latitude,longitude: position.latLng.longitude);
+      await reFreshSearchBall(_currentPosition,address: position.descriptionAddress);
     }
 
   }
@@ -77,7 +98,7 @@ class H001ViewModel with ChangeNotifier {
     if(address == null){
       selectPositionAddress = "로 딩 중";
       notifyListeners();
-      selectPositionAddress = await geAddressFromGeoLocation(serachPosition);
+      selectPositionAddress = await getAddressFromGeoLocation(serachPosition);
     }else {
       selectPositionAddress = address;
     }
@@ -85,11 +106,8 @@ class H001ViewModel with ChangeNotifier {
     fBallListUpWrapDto = new FBallListUpWrapDto(DateTime.now(), []);
     _pageCount = 0;
     getBallListUp(serachPosition, _pageCount, _ballPageLimitSize);
-
     notifyListeners();
   }
-
-
 
   Future getBallListUp(Position currentPosition, int page, int size) async {
     FBallListUpReqDto ballListUpReqDto = new FBallListUpReqDto(
@@ -138,34 +156,41 @@ class H001ViewModel with ChangeNotifier {
       notifyListeners();
     }
 
-    /**
-     * 맨 밑으로 왔을때 무한 스크롤을 위한 이벤트 처리
-     */
-    if (h001CenterListViewController.offset >=
-            h001CenterListViewController.position.maxScrollExtent &&
-        !h001CenterListViewController.position.outOfRange) {
+    if (_isScrollerBottomOver()) {
       _pageCount++;
-      if (_pageCount * _ballPageLimitSize > fBallListUpWrapDto.balls.length) {
+      if (!_hasBalls()) {
         return;
       } else {
-        getBallListUp(currentPosition, _pageCount, _ballPageLimitSize);
+        getBallListUp(_currentPosition, _pageCount, _ballPageLimitSize);
       }
     }
   }
 
-  Future<String> geAddressFromGeoLocation(Position reqPosition) async {
+  bool _hasBalls() {
+    return !(_pageCount * _ballPageLimitSize > fBallListUpWrapDto.balls.length);
+  }
+
+  bool _isScrollerBottomOver() {
+    return h001CenterListViewController.offset >=
+          h001CenterListViewController.position.maxScrollExtent &&
+      !h001CenterListViewController.position.outOfRange;
+  }
+
+  Future<String> getAddressFromGeoLocation(Position reqPosition) async {
     var address = await _geolocationRepository.getPositionAddress(reqPosition);
     notifyListeners();
     return address;
   }
 
-  bool get inlineRanking => _inlineRanking;
 
   set inlineRanking(bool value) {
     _inlineRanking = value;
     notifyListeners();
   }
 
+  isFoldTagRanking(){
+    return _inlineRanking;
+  }
 
 
   void goBallMakePage() async {
@@ -180,8 +205,8 @@ class H001ViewModel with ChangeNotifier {
                    heroTag: "H001MakeButton",
                  );
                }));
-       currentPosition = await Geolocator().getCurrentPosition();
-       reFreshSearchBall(currentPosition);
+       _currentPosition = await Geolocator().getCurrentPosition();
+       reFreshSearchBall(_currentPosition);
      }else {
        Navigator.push(
            _context,

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
-
 import 'package:forutonafront/HCodePage/H005/H00502/H00502pageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -17,25 +16,29 @@ class H00502Page extends StatelessWidget {
         return Stack(children: <Widget>[
           Scaffold(
               body: Container(
-                width: MediaQuery.of(context).size.width,
-                  child: Column(
-                      children: <Widget>[
-                        relationTagRankingList(model,context),
-                        selectOrderButton(model),
-                        Expanded(
-                            child: ListView.builder(
-                                controller: model.mainDcollercontroller,
-                                padding: EdgeInsets.all(0),
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                itemCount: model.listUpBalls.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
-                                      child: BallStyle1Support.selectBallWidget(model.listUpBalls[index]));
-                                }))
-
-                      ])))
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(children: <Widget>[
+                    Expanded(
+                        child: ListView.builder(
+                            controller: model.mainDropDownBtnController,
+                            padding: EdgeInsets.all(0),
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            itemCount: model.listUpBalls.length+2,
+                            itemBuilder: (context, index) {
+                              if(index == 0){
+                                return relationTagRankingList(model, context);
+                              }else if(index == 1){
+                                return selectOrderButton(model);
+                              }else {
+                                return Container(
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
+                                    child: BallStyle1Support.selectBallWidget(
+                                        model.listUpBalls[index-2]));
+                              }
+                            }))
+                  ]))),
+          model.getIsLoading() ? CommonLoadingComponent() : Container()
         ]);
       }),
     );
@@ -61,7 +64,6 @@ class H00502Page extends StatelessWidget {
               onChanged: (H00502DropdownItemType newValue) {
                 model.selectOrder = newValue;
                 model.onChangeOrder();
-
               },
               underline: Container(
                 height: 0,
@@ -78,7 +80,8 @@ class H00502Page extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.00))));
   }
 
-  Container relationTagRankingList(H00502pageViewModel model,BuildContext context) {
+  Container relationTagRankingList(
+      H00502pageViewModel model, BuildContext context) {
     return Container(
         height: 54,
         width: MediaQuery.of(context).size.width,

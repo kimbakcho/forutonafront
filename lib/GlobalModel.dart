@@ -20,6 +20,7 @@ class GlobalModel with ChangeNotifier {
   init() async {
     await setFUserInfoDto();
   }
+
   Future<void> setFUserInfoDto() async {
     fUserInfoDto = await _fUserRepository.getForutonaGetMe();
   }

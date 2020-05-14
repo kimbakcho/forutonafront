@@ -42,7 +42,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                     child: Stack(children: <Widget>[
                       // 태그 랭킹 펼칠시 숨기기
                       Consumer<H001ViewModel>(builder: (_, h001model, child) {
-                        return !h001model.inlineRanking
+                        return !h001model.isFoldTagRanking()
                             ? Positioned(
                                 bottom: 0,
                                 width: MediaQuery.of(context).size.width,
@@ -55,7 +55,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                         topNavibar(model),
                         Expanded(
                             child: PageView(
-                                controller: model.hCodePagecontroller,
+                                controller: model.hCodePageController,
                                 children: <Widget>[
                               H001Page(),
                               H003MainPage()
@@ -63,7 +63,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                       ]),
                       // 태그 랭킹 접을때 보이기
                       Consumer<H001ViewModel>(builder: (_, h001model, child) {
-                        return h001model.inlineRanking
+                        return h001model.isFoldTagRanking()
                             ? Positioned(
                                 bottom: 0,
                                 left: 0,

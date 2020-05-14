@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Support.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,8 @@ class H00302Page extends StatelessWidget {
                       return BallStyle2Support.selectBallWidget(
                           model.userToMakerBallList.contents[index]);
                     },
-                    itemCount: model.userToMakerBallList.contents.length)
+                    itemCount: model.userToMakerBallList.contents.length),
+                model.getIsLoading() ? CommonLoadingComponent() : Container()
               ]));
         }));
   }

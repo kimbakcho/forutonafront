@@ -9,8 +9,6 @@ class H004MainPageViewModel extends ChangeNotifier{
   FocusNode searchFocusNode =  FocusNode();
   TextEditingController searchTextController = new TextEditingController();
   bool hasSearchTextFocus = true;
-  bool searchClearButtonActive = false;
-  bool searchClearButtonShow = true;
 
 
   BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();

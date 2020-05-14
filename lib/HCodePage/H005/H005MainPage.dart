@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
@@ -54,7 +55,9 @@ class _H005MainPageState extends State<H005MainPage>
                             ],
                           ),
                         )
-                      ])
+                      ]),
+                      model.getIsLoading()?
+                          CommonLoadingComponent():Container()
                     ])))
           ]);
         }));

@@ -13,7 +13,7 @@ import 'package:google_place/google_place.dart';
 class H007MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
   Position _initPosition;
-  bool _flagIdleIgore = true;
+  bool _flagIdleIgnore = true;
 
   String address;
   CameraPosition initCameraPosition;
@@ -44,14 +44,14 @@ class H007MainPageViewModel extends ChangeNotifier {
   }
 
   onMapCreate(GoogleMapController controller) async {
-    _flagIdleIgore = true;
+    _flagIdleIgnore = true;
     _googleMapController.complete(controller);
     await controller.moveCamera(CameraUpdate.newCameraPosition(initCameraPosition));
-    _flagIdleIgore = false;
+    _flagIdleIgnore = false;
   }
 
   onMapIdle() async {
-    if (!_flagIdleIgore) {
+    if (!_flagIdleIgnore) {
       this.address = await _geolocationRepository.getPositionAddress(Position(
           latitude: currentCameraPosition.target.latitude,
           longitude: currentCameraPosition.target.longitude));
