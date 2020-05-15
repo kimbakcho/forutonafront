@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndicator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J002/J002ViewModel.dart';
 import 'package:provider/provider.dart';
@@ -34,13 +35,7 @@ class J002View extends StatelessWidget {
       left: 0,
       height: 9,
       width: MediaQuery.of(context).size.width,
-      child: LinearProgressIndicator(
-        backgroundColor: Color(0xffCCCCCC),
-        valueColor: AlwaysStoppedAnimation<Color>(
-          Color(0xff3497FD),
-        ),
-        value: 0.25,
-      ),
+      child: CommonLinearProgressIndicator(0.25),
     );
   }
 

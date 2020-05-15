@@ -9,12 +9,7 @@ class H004MainPageViewModel extends ChangeNotifier{
   FocusNode searchFocusNode =  FocusNode();
   TextEditingController searchTextController = new TextEditingController();
   bool hasSearchTextFocus = true;
-
-
-  BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
-
   List<BallSearchbarHistroyDto> searchHistorys = [];
-
 
   H004MainPageViewModel(this.context){
     searchFocusNode.addListener(onSearchFocusNode);
@@ -30,6 +25,7 @@ class H004MainPageViewModel extends ChangeNotifier{
   }
 
   removeSearchText(BallSearchbarHistroyDto reqDto)async {
+    BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
     searchHistorys = await _ballSearchBarHistoryRepository.removeHistroy(reqDto);
     notifyListeners();
   }
@@ -48,14 +44,17 @@ class H004MainPageViewModel extends ChangeNotifier{
   }
 
   onSearch(value) async {
+    BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
     BallSearchbarHistroyDto saveReq = BallSearchbarHistroyDto(value,DateTime.now());
     searchHistorys = await _ballSearchBarHistoryRepository.saveHistory(saveReq);
   }
   onSave(value) async {
+    BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
     BallSearchbarHistroyDto saveReq = BallSearchbarHistroyDto(value,DateTime.now());
     searchHistorys = await _ballSearchBarHistoryRepository.saveHistory(saveReq);
   }
   _loadSearchHistory() async {
+    BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
     searchHistorys = await  _ballSearchBarHistoryRepository.loadHistroy();
     return searchHistorys;
   }
@@ -71,7 +70,6 @@ class H004MainPageViewModel extends ChangeNotifier{
       }
     }
   }
-
 
   bool isClearButtonShow(){
     if(!hasSearchTextFocus && searchTextController.text.length == 0){

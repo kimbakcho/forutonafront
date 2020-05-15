@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J007/J007ViewModel.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,8 @@ class J007View extends StatelessWidget {
                                 ),
                                 backgroundColor: Color(0xffCCCCCC)))
                       ],
-                    )))
+                    ))),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         }));
   }

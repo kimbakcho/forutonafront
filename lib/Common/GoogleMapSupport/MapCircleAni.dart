@@ -60,16 +60,11 @@ class _MapCircleAniState extends State<MapCircleAni> with TickerProviderStateMix
   }
   @override
   void didUpdateWidget(MapCircleAni oldWidget) {
-    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
-
     );
   }
   @override

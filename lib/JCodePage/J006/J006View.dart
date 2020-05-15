@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndicator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -17,22 +18,26 @@ class J006View extends StatelessWidget {
                 body: Container(
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
-                    child: Column(children: <Widget>[
-                      topBar(model),
-                      Expanded(
-                          child: ListView(
-                              padding: EdgeInsets.all(0),
-                              children: <Widget>[
-                            idDescriptionBar(context),
-                            idTextInputBar(model),
-                            emailErrorDisplayBar(model),
-                            pwTextInputBar(model),
-                            pwTextErrorDisplayBar(model),
-                            pwCheckInputBar(model),
-                            pwCheckErrorDisplayBar(model)
-                          ]))
-                    ]))),
-            joinProgressBar(context)
+                    child: Stack(
+                      children: <Widget>[
+                        Column(children: <Widget>[
+                          topBar(model),
+                          Expanded(
+                              child: ListView(
+                                  padding: EdgeInsets.all(0),
+                                  children: <Widget>[
+                                idDescriptionBar(context),
+                                idTextInputBar(model),
+                                emailErrorDisplayBar(model),
+                                pwTextInputBar(model),
+                                pwTextErrorDisplayBar(model),
+                                pwCheckInputBar(model),
+                                pwCheckErrorDisplayBar(model)
+                              ]))
+                        ]),
+                        joinProgressBar(context)
+                      ],
+                    ))),
           ]);
         }));
   }
@@ -45,15 +50,11 @@ class J006View extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Container(
         height: 10,
-        child: LinearProgressIndicator(
-          value: 0.75,
-          backgroundColor: Color(0xffCCCCCC),
-          valueColor: AlwaysStoppedAnimation<Color>(
-              Color(0xff3497FD)),
-        ),
+        child: CommonLinearProgressIndicator(0.75),
       ),
     );
   }
+
   Container pwCheckErrorDisplayBar(J006ViewModel model) {
     return model.isPwCheckTextError
         ? Container(
@@ -202,6 +203,7 @@ class J006View extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           TextField(
+            keyboardType: TextInputType.emailAddress,
             controller: model.idEditingController,
             onChanged: model.onIdEditChangeText,
             onEditingComplete: model.onIdEditComplete,
@@ -317,18 +319,21 @@ class J006View extends StatelessWidget {
                   blurRadius: 16,
                 ),
               ],
-              border: model.isCanNextBtn() ? Border.all(color: Color(0xff454F63),width: 1):Border.all(color: Colors.white,width: 0),
-
+              border: model.isCanNextBtn()
+                  ? Border.all(color: Color(0xff454F63), width: 1)
+                  : Border.all(color: Colors.white, width: 0),
               borderRadius: BorderRadius.circular(5.00),
             ),
             child: FlatButton(
-              onPressed: model.isCanNextBtn() ? model.onNextComplete : null,
+                onPressed: model.isCanNextBtn() ? model.onNextComplete : null,
                 padding: EdgeInsets.all(0),
                 child: Text("다음",
                     style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
-                      color: model.isCanNextBtn() ? Color(0xff454F63) : Color(0xffb1b1b1),
+                      color: model.isCanNextBtn()
+                          ? Color(0xff454F63)
+                          : Color(0xffb1b1b1),
                     ))))
       ]),
     );

@@ -33,15 +33,10 @@ class H001ViewModel with ChangeNotifier {
   FBallListUpWrapDto fBallListUpWrapDto =
       new FBallListUpWrapDto(DateTime.now(), []);
   bool _isLoading = false;
-
-
   Position _currentPosition;
   bool _inlineRanking = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
-  TagRepository _tagRepository = new TagRepository();
-  GeolocationRepository _geolocationRepository = GeolocationRepository();
-  FBallRepository _fBallRepository = new FBallRepository();
 
 
   H001ViewModel(this._context) {
@@ -49,12 +44,14 @@ class H001ViewModel with ChangeNotifier {
   }
 
   init() async {
+    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
     currentState = H001PageState.H001_01;
     rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
     h001CenterListViewController
         .addListener(h001CenterListViewControllerListener);
     _setIsLoading(true);
-    if(await geoPermissionCheck()){
+    if(await _geoLocationUtil.permissionCheck()){
+      _currentPosition = await Geolocator().getCurrentPosition();
       await reFreshSearchBall(_currentPosition);
     }
     _setIsLoading(false);
@@ -70,15 +67,6 @@ class H001ViewModel with ChangeNotifier {
   }
 
 
-  Future<bool> geoPermissionCheck() async {
-    if(await GeoLocationUtil.permissionCheck()){
-      _currentPosition = await Geolocator().getCurrentPosition();
-      return true;
-    }else {
-      return false;
-    }
-
-  }
 
   moveToH007() async {
     ///Navigator 는 검색 위치로 지정한 LatLng 이 나온다.
@@ -89,7 +77,9 @@ class H001ViewModel with ChangeNotifier {
     ));
     if(position != null){
       _currentPosition = Position(latitude: position.latLng.latitude,longitude: position.latLng.longitude);
+      _setIsLoading(true);
       await reFreshSearchBall(_currentPosition,address: position.descriptionAddress);
+      _setIsLoading(false);
     }
 
   }
@@ -105,11 +95,13 @@ class H001ViewModel with ChangeNotifier {
     getTagRanking(serachPosition);
     fBallListUpWrapDto = new FBallListUpWrapDto(DateTime.now(), []);
     _pageCount = 0;
+
     getBallListUp(serachPosition, _pageCount, _ballPageLimitSize);
-    notifyListeners();
+
   }
 
   Future getBallListUp(Position currentPosition, int page, int size) async {
+    FBallRepository _fBallRepository = new FBallRepository();
     FBallListUpReqDto ballListUpReqDto = new FBallListUpReqDto(
         latitude: currentPosition.latitude,
         longitude: currentPosition.longitude,
@@ -136,6 +128,7 @@ class H001ViewModel with ChangeNotifier {
   }
 
   Future getTagRanking(Position currentPosition) async {
+    TagRepository _tagRepository = new TagRepository();
     rankingWrapDto = await _tagRepository.getTagRanking(new TagRankingReqDto(
         currentPosition.latitude, currentPosition.longitude, 10));
     rankingSwiperController.move(0);
@@ -151,9 +144,9 @@ class H001ViewModel with ChangeNotifier {
       notifyListeners();
     } else if (h001CenterListViewController.position.userScrollDirection ==
         ScrollDirection.reverse) {
-      addressDisplayShowFlag = false;
-      makeButtonDisplayShowFlag = false;
-      notifyListeners();
+    addressDisplayShowFlag = false;
+    makeButtonDisplayShowFlag = false;
+    notifyListeners();
     }
 
     if (_isScrollerBottomOver()) {
@@ -161,7 +154,9 @@ class H001ViewModel with ChangeNotifier {
       if (!_hasBalls()) {
         return;
       } else {
-        getBallListUp(_currentPosition, _pageCount, _ballPageLimitSize);
+        _setIsLoading(true);
+        await getBallListUp(_currentPosition, _pageCount, _ballPageLimitSize);
+        _setIsLoading(false);
       }
     }
   }
@@ -177,6 +172,7 @@ class H001ViewModel with ChangeNotifier {
   }
 
   Future<String> getAddressFromGeoLocation(Position reqPosition) async {
+    GeolocationRepository _geolocationRepository = GeolocationRepository();
     var address = await _geolocationRepository.getPositionAddress(reqPosition);
     notifyListeners();
     return address;
@@ -206,7 +202,9 @@ class H001ViewModel with ChangeNotifier {
                  );
                }));
        _currentPosition = await Geolocator().getCurrentPosition();
-       reFreshSearchBall(_currentPosition);
+       _setIsLoading(true);
+       await reFreshSearchBall(_currentPosition);
+       _setIsLoading(false);
      }else {
        Navigator.push(
            _context,

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/Common/SmsReceiverUtil/SmsAuthSupportLanguage.dart';
+import 'package:forutonafront/Common/SmsReceiverUtil/SmsReceiverService.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthReqDto.dart';
@@ -10,6 +12,7 @@ import 'package:forutonafront/ForutonaUser/Repository/PhoneAuthRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J006/J006View.dart';
 import 'package:provider/provider.dart';
+import 'package:sms_receiver/sms_receiver.dart';
 
 class J004ViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -17,13 +20,19 @@ class J004ViewModel extends ChangeNotifier {
   String _currentPhoneNumber;
   String _currentInternationalizedPhoneNumber;
   String _currentIsoCode;
-  int remindTimeSec = 120;
-  PhoneAuthRepository _phoneAuthRepository = new PhoneAuthRepository();
-  PhoneAuthResDto resPhoneAuth;
+  bool _isLoading = false;
+  getIsLoading(){
+    return _isLoading;
+  }
+  _setIsLoading(bool value){
+    _isLoading = value;
+    notifyListeners();
+  }
 
+  int remindTimeSec = 120;
+  PhoneAuthResDto resPhoneAuth;
   TextEditingController authNumberEditingController = TextEditingController();
   Timer secTick;
-
   J004ViewModel(this._context) {
     secTick = Timer.periodic(Duration(seconds: 1), (timer) {
       secTick = timer;
@@ -41,8 +50,6 @@ class J004ViewModel extends ChangeNotifier {
     Navigator.of(_context).pop();
   }
 
-
-
   void onPhoneNumberChange(
       String phoneNumber, String internationalizedPhoneNumber, String isoCode) {
     _currentPhoneNumber = phoneNumber;
@@ -51,12 +58,28 @@ class J004ViewModel extends ChangeNotifier {
   }
 
   reqPhoneAuth() async {
+    PhoneAuthRepository _phoneAuthRepository = new PhoneAuthRepository();
     PhoneAuthReqDto reqDto = PhoneAuthReqDto();
     reqDto.isoCode = _currentIsoCode;
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
+    _setIsLoading(true);
     resPhoneAuth = await _phoneAuthRepository.reqPhoneAuth(reqDto);
+    _setIsLoading(false);
+    startSmsReceiver();
     notifyListeners();
+  }
+
+  void startSmsReceiver() {
+    var smsAuthReceiverService = SmsAuthReceiverService(onSmsReceived,SmsAuthSupportLanguage.KoKr);
+    smsAuthReceiverService.startListening();
+  }
+  onSmsReceived(String message){
+    authNumberEditingController.text = message;
+    notifyListeners();
+  }
+  onTimeout(){
+    print("timeout");
   }
 
   bool isCanRequest() {
@@ -99,6 +122,7 @@ class J004ViewModel extends ChangeNotifier {
   }
 
   void reqNumberAuthReq() async {
+    PhoneAuthRepository _phoneAuthRepository = new PhoneAuthRepository();
     PhoneAuthNumberReqDto reqDto = PhoneAuthNumberReqDto();
     reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
     reqDto.phoneNumber = _currentPhoneNumber;
@@ -124,4 +148,6 @@ class J004ViewModel extends ChangeNotifier {
           .push(MaterialPageRoute(builder: (_) => J006View()));
     }
   }
+
+
 }

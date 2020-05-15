@@ -22,7 +22,6 @@ class H00302PageViewModel extends ChangeNotifier {
     _isLoading = value;
     notifyListeners();
   }
-  FBallRepository _fballRepository =  FBallRepository();
   int _pageCount = 0;
   int _limitSize = 10;
 
@@ -39,14 +38,11 @@ class H00302PageViewModel extends ChangeNotifier {
   }
 
   Future ballListUp() async {
+    FBallRepository _fballRepository =  FBallRepository();
     var globalModel = Provider.of<GlobalModel>(context,listen: false);
-    List<MultiSort> sorts = new List<MultiSort>();
-    sorts.add(MultiSort("Alive",QueryOrders.DESC));
-    //start가 Join sartTime
-    sorts.add(MultiSort("makeTime",QueryOrders.DESC));
-    MultiSorts wrapsorts = new MultiSorts(sorts) ;
-    var userToMakerBallReqDto = UserToMakerBallReqDto(globalModel.fUserInfoDto.uid,_pageCount,_limitSize,wrapsorts.toQureyJson());
-    if(_pageCount == 0){
+    MultiSorts searchOrder = _makeSearchOrder();
+    var userToMakerBallReqDto = UserToMakerBallReqDto(globalModel.fUserInfoDto.uid,_pageCount,_limitSize,searchOrder.toQureyJson());
+    if(_isFirstPage()){
       this.userToMakerBallList = await _fballRepository.getUserToMakerBalls(userToMakerBallReqDto);
     }else {
       var userToPlayBallResWrapDto = await _fballRepository.getUserToMakerBalls(userToMakerBallReqDto);
@@ -55,6 +51,18 @@ class H00302PageViewModel extends ChangeNotifier {
     notifyListeners();
 
   }
+
+  MultiSorts _makeSearchOrder() {
+    List<MultiSort> sorts = new List<MultiSort>();
+    sorts.add(MultiSort("Alive",QueryOrders.DESC));
+    //start가 Join sartTime
+    sorts.add(MultiSort("makeTime",QueryOrders.DESC));
+    MultiSorts wrapsorts = new MultiSorts(sorts) ;
+    return wrapsorts;
+  }
+
+  bool _isFirstPage() => _pageCount == 0;
+
   scrollListener() async{
     if (_isScrollerMoveBottomOver()) {
       _pageCount++;

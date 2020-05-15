@@ -7,6 +7,7 @@ import 'package:forutonafront/Common/Tag/Dto/TagRankingDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagSearchFromTextReqDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
 import 'package:geolocator/geolocator.dart';
@@ -39,9 +40,6 @@ class H00502pageViewModel extends ChangeNotifier {
   int _pageCount= 0;
   int _ballPageLimitSize = 20;
 
-
-
-
   H00502pageViewModel(this.context){
     _h005MainModel = Provider.of<H005MainPageViewModel>(context);
     init();
@@ -54,7 +52,7 @@ class H00502pageViewModel extends ChangeNotifier {
         return;
       } else {
         MultiSorts sorts = _makeSearchOrders();
-        onSearch(
+        _onSearch(
             _h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
       }
     }
@@ -84,7 +82,11 @@ class H00502pageViewModel extends ChangeNotifier {
     notifyListeners();
     mainDropDownBtnController.addListener(onScrollListener);
     MultiSorts sorts = _makeSearchOrders();
-    onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    _setIsLoading(true);
+    FBallListUpWrapDto searchResult = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    _setListUpBall(this._pageCount,searchResult);
+    _setTagSearchCount(searchResult);
+    _setIsLoading(false);
   }
   H00502DropdownItemType get selectOrder => _selectOrder;
 
@@ -92,30 +94,37 @@ class H00502pageViewModel extends ChangeNotifier {
     _selectOrder = value;
     notifyListeners();
   }
-  onChangeOrder(){
+  onChangeOrder() async {
     _pageCount = 0;
     MultiSorts sorts = _makeSearchOrders();
     this.listUpBalls = [];
-    notifyListeners();
-    onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
-    notifyListeners();
-  }
-  onSearch(
-      String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
     _setIsLoading(true);
+    FBallListUpWrapDto searchResult = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    _setListUpBall(this._pageCount,searchResult);
+    _setTagSearchCount(searchResult);
+    _setIsLoading(false);
+  }
+
+  Future<FBallListUpWrapDto> _onSearch (
+      String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
     var position = await Geolocator().getLastKnownPosition();
     TagSearchFromTextReqDto reqDto = new TagSearchFromTextReqDto(
         searchText, sorts.toQureyJson(), pagesize, pagecount,position.latitude,position.longitude);
-    var listUpBallFromSearchText =
-    await _tagRepository.tagSearchFromTextToBalls(reqDto);
-    if (pagecount == 0) {
+    return await _tagRepository.tagSearchFromTextToBalls(reqDto);
+  }
+
+  void _setListUpBall(int pagecount, FBallListUpWrapDto listUpBallFromSearchText) {
+       if (isFirstPage(pagecount)) {
       this.listUpBalls = listUpBallFromSearchText.balls;
     } else {
       this.listUpBalls.addAll(listUpBallFromSearchText.balls);
     }
+  }
+
+  bool isFirstPage(int pagecount) => pagecount == 0;
+
+  void _setTagSearchCount(FBallListUpWrapDto listUpBallFromSearchText) {
     _h005MainModel.tagSearchCount = listUpBallFromSearchText.searchBallCount;
-    _setIsLoading(false);
-    notifyListeners();
   }
   _initOrdersItems() {
     _ordersItems.add(H00502DropdownItemType(

@@ -13,6 +13,7 @@ import 'package:forutonafront/ForutonaUser/Service/ForutonaLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,38 +21,39 @@ import 'package:provider/provider.dart';
 
 class J007ViewModel extends ChangeNotifier {
   final BuildContext _context;
-  CodeCountry _codeCountry = CodeCountry();
-  String currentCountryCode = "KR";
-  GlobalModel _globalModel;
-  File _currentPickProfileImage;
   ImageProvider currentProfileImage;
-  bool _isChangeProfileImage = false;
-
-  FUserRepository _fUserRepository = new FUserRepository();
-
   bool isCanNotUseNickNameDisPlay = false;
   int nickNameInputTextLength = 0;
   TextEditingController nickNameController = new TextEditingController();
-
   TextEditingController userIntroduceController = new TextEditingController();
   int userIntroduceInputTextLength = 0;
+  String currentCountryCode = "KR";
 
+  File _currentPickProfileImage;
+  bool _isChangeProfileImage = false;
+  bool _isLoading = false;
+  getIsLoading(){
+    return _isLoading;
+  }
+  _setIsLoading(bool value){
+    _isLoading = value;
+    notifyListeners();
+  }
 
 
   J007ViewModel(this._context) {
     GlobalModel globalModel = Provider.of(_context,listen: false);
-    _globalModel = Provider.of(_context, listen: false);
-    if (_globalModel.fUserInfoJoinReqDto.countryCode != null) {
-      currentCountryCode = _globalModel.fUserInfoJoinReqDto.countryCode;
+    if (globalModel.fUserInfoJoinReqDto.countryCode != null) {
+      currentCountryCode = globalModel.fUserInfoJoinReqDto.countryCode;
     }
     if(globalModel.fUserInfoJoinReqDto.userProfileImageUrl == null){
       globalModel.fUserInfoJoinReqDto.userProfileImageUrl = "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
     }
     currentProfileImage =
-        NetworkImage(_globalModel.fUserInfoJoinReqDto.userProfileImageUrl);
+        NetworkImage(globalModel.fUserInfoJoinReqDto.userProfileImageUrl);
 
-    if (_globalModel.fUserInfoJoinReqDto.nickName != null) {
-      nickNameController.text = _globalModel.fUserInfoJoinReqDto.nickName;
+    if (globalModel.fUserInfoJoinReqDto.nickName != null) {
+      nickNameController.text = globalModel.fUserInfoJoinReqDto.nickName;
       nickNameInputTextLength = nickNameController.text.length;
     }
     nickNameController.addListener(_onNickNameControllerListener);
@@ -84,6 +86,7 @@ class J007ViewModel extends ChangeNotifier {
       notifyListeners();
       return isCanNotUseNickNameDisPlay;
     }
+    FUserRepository _fUserRepository = new FUserRepository();
     var nickNameDuplicationCheckResDto = await _fUserRepository
         .checkNickNameDuplication(nickNameController.text);
     if (nickNameDuplicationCheckResDto.haveNickName) {
@@ -114,22 +117,16 @@ class J007ViewModel extends ChangeNotifier {
         globalModel.fUserInfoJoinReqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
       }
     }
-    SnsLoginService snsLoginService;
-    if(globalModel.fUserInfoJoinReqDto.snsSupportService == SnsSupportService.FaceBook){
-      snsLoginService = FaceBookLoginService();
-    }else if(globalModel.fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Naver){
-      snsLoginService = NaverLoginService();
-    }else if(globalModel.fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Kakao){
-      snsLoginService = KakaoLoginService();
-    }else if(globalModel.fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Forutona){
-      snsLoginService = ForutonaLoginService();
-    }else {
-      snsLoginService = ForutonaLoginService();
-    }
+    SnsLoginService snsLoginService = SnsSupportServiceFactory.getSnsSupportService(globalModel.fUserInfoJoinReqDto.snsSupportService);
+    _setIsLoading(true);
     var fUserInfoJoinResDto = await snsLoginService.joinUser(globalModel.fUserInfoJoinReqDto);
+    _setIsLoading(false);
     if(fUserInfoJoinResDto.joinComplete){
       if(_currentPickProfileImage!=null){
+        _setIsLoading(true);
+        FUserRepository _fUserRepository = new FUserRepository();
         await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
+        _setIsLoading(false);
       }
       Navigator.of(_context).popUntil(ModalRoute.withName('/'));
     }else {
@@ -145,6 +142,7 @@ class J007ViewModel extends ChangeNotifier {
   }
 
   String getCountryName(String isoCode) {
+    CodeCountry _codeCountry = CodeCountry();
     return _codeCountry.findCountryName(isoCode);
   }
 

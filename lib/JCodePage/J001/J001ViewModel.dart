@@ -24,7 +24,6 @@ class J001ViewModel extends ChangeNotifier {
 
   J001ViewModel(this._context) {
     GlobalModel globalModel = Provider.of<GlobalModel>(_context, listen: false);
-    //초기화
     globalModel.fUserInfoJoinReqDto = FUserInfoJoinReqDto();
     idTextFieldController.addListener(onIdTextFieldController);
     pwTextFieldController.addListener(onPwTextFieldController);
@@ -92,6 +91,8 @@ class J001ViewModel extends ChangeNotifier {
         "The password is invalid or the user does not have a password.") {
       return "아이디가 없거나 패스워드가 틀렸습니다.";
     } else if (message == "An internal error has occurred. [ 7: ]") {
+      return "네트워크 접속에 실패했습니다. 네트워크 연결 상태를 확인해주세요.";
+    } else if( message.indexOf("A network error") >= 0 ) {
       return "네트워크 접속에 실패했습니다. 네트워크 연결 상태를 확인해주세요.";
     } else {
       return message;

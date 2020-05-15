@@ -81,29 +81,37 @@ class J002ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool checkAllAgree() {
-    if (serviceUseAgree &&
-        serviceManagement &&
-        personalInformationCollectionAgree &&
-        positionInformationCollectionAgree &&
-        marketingInformationReceiveAgree &&
-        ageOverAgree) {
+  void checkAllAgree() {
+    if (isAllAgree()) {
       allAgree = true;
     }else {
       allAgree = false;
     }
     notifyListeners();
   }
+
+  bool isAllAgree() {
+    return serviceUseAgree &&
+      serviceManagement &&
+      personalInformationCollectionAgree &&
+      positionInformationCollectionAgree &&
+      marketingInformationReceiveAgree &&
+      ageOverAgree;
+  }
   bool nextBtnFlag(){
-    if(serviceUseAgree &&
-        serviceManagement &&
-        personalInformationCollectionAgree &&
-        positionInformationCollectionAgree &&
-        ageOverAgree){
+    if(isSatisfied()){
       return true;
     }else {
       return false;
     }
+  }
+
+  bool isSatisfied() {
+    return serviceUseAgree &&
+      serviceManagement &&
+      personalInformationCollectionAgree &&
+      positionInformationCollectionAgree &&
+      ageOverAgree;
   }
   void onNextBtnClick(){
     GlobalModel globalModel = Provider.of<GlobalModel>(_context,listen: false);

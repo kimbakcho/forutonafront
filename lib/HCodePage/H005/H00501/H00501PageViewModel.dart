@@ -5,6 +5,7 @@ import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Dto/BallNameSearchReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart';
@@ -29,6 +30,7 @@ class H00501PageViewModel extends ChangeNotifier {
     _selectOrder = value;
     notifyListeners();
   }
+
   bool _isLoading = false;
   getIsLoading(){
     return _isLoading;
@@ -36,25 +38,31 @@ class H00501PageViewModel extends ChangeNotifier {
   _setIsLoading(bool value){
     return _isLoading;
   }
-  FBallRepository _fBallRepository = new FBallRepository();
+
   H005MainPageViewModel _h005MainModel;
   int _ballPageLimitSize = 20;
   int _pageCount = 0;
 
   H00501PageViewModel(this.context) {
+    init();
+  }
+  init() async{
     _initOrdersItems();
     mainDropDownBtnController.addListener(onScrollListener);
     _h005MainModel = Provider.of<H005MainPageViewModel>(context);
-    MultiSorts sorts = _makeSerachOrders();
-    onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    MultiSorts sorts = _makeSearchOrders();
+    _setIsLoading(true);
+    var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    _setListUpBall(_pageCount, fBallListUpWrapDto);
+    _setSearchCount(fBallListUpWrapDto);
+    _setIsLoading(false);
   }
 
-
-  MultiSorts _makeSerachOrders() {
-    List<MultiSort> sortlist = new List<MultiSort>();
-    sortlist.add(new MultiSort(
+  MultiSorts _makeSearchOrders() {
+    List<MultiSort> sortList = new List<MultiSort>();
+    sortList.add(new MultiSort(
         EnumToString.parse(selectOrder.value), selectOrder.orders));
-    MultiSorts sorts = new MultiSorts(sortlist);
+    MultiSorts sorts = new MultiSorts(sortList);
     return sorts;
   }
 
@@ -65,8 +73,8 @@ class H00501PageViewModel extends ChangeNotifier {
       if (!hasBalls()) {
         return;
       } else {
-        MultiSorts sorts = _makeSerachOrders();
-        onSearch(
+        MultiSorts sorts = _makeSearchOrders();
+        _onSearch(
             _h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
       }
     }
@@ -80,34 +88,37 @@ class H00501PageViewModel extends ChangeNotifier {
       !mainDropDownBtnController.position.outOfRange;
   }
 
-  onChangeOrder() {
+  onChangeOrder() async{
     _pageCount = 0;
-    MultiSorts sorts = _makeSerachOrders();
+    MultiSorts sorts = _makeSearchOrders();
     this.listUpBalls = [];
-    notifyListeners();
-    onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
-    notifyListeners();
+    _setIsLoading(true);
+    var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    _setListUpBall(_pageCount, fBallListUpWrapDto);
+    _setSearchCount(fBallListUpWrapDto);
+    _setIsLoading(false);
   }
 
-  onSearch(
+  Future<FBallListUpWrapDto> _onSearch(
       String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
-    _setIsLoading(true);
+    FBallRepository _fBallRepository = new FBallRepository();
     var position = await Geolocator().getLastKnownPosition();
     BallNameSearchReqDto reqDto = new BallNameSearchReqDto(
         searchText, sorts.toQureyJson(), pagesize, pagecount,position.latitude,position.longitude);
-    var listUpBallFromSearchText =
-        await _fBallRepository.listUpBallFromSearchText(reqDto);
-    if (_isFirstPage(pagecount)) {
+    return await _fBallRepository.listUpBallFromSearchText(reqDto);
+  }
+
+  void _setSearchCount(FBallListUpWrapDto listUpBallFromSearchText) => _h005MainModel.titleSearchCount = listUpBallFromSearchText.searchBallCount;
+
+  _setListUpBall(int pageCount, FBallListUpWrapDto listUpBallFromSearchText) {
+    if (_isFirstPage(pageCount)) {
       this.listUpBalls = listUpBallFromSearchText.balls;
     } else {
       this.listUpBalls.addAll(listUpBallFromSearchText.balls);
     }
-    _h005MainModel.titleSearchCount = listUpBallFromSearchText.searchBallCount;
-    _setIsLoading(false);
-    notifyListeners();
   }
 
-  bool _isFirstPage(int pagecount) => pagecount == 0;
+  bool _isFirstPage(int pageCount) => pageCount == 0;
 
   _initOrdersItems() {
     ordersItems.add(H00501DropdownItemType(

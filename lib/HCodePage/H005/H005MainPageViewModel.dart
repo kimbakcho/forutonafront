@@ -17,8 +17,8 @@ import 'H00502/H00502pageViewModel.dart';
 class H005MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
   TabController tabController ;
-  final String _serachText;
-  String searchTilteText;
+  final String _searchText;
+  String searchTitleText;
   String _searchTagText;
   H005PageState currentState = H005PageState.Title;
   bool hasClearFlag = false;
@@ -30,23 +30,21 @@ class H005MainPageViewModel extends ChangeNotifier {
   _setIsLoading(bool value){
     return _isLoading;
   }
-  FBallRepository _fBallRepository = new FBallRepository();
-  TagRepository _tagRepository = TagRepository();
   int _titleSearchCount=0;
   int _tagSearchCount=0;
-
-  H005MainPageViewModel(this._context,this._serachText, {this.tabController}){
-    searchTilteText = _serachText;
-    _searchTagText = '#'+_serachText;
+  H005MainPageViewModel(this._context,this._searchText, {this.tabController}){
+    searchTitleText = _searchText;
+    _searchTagText = '#'+_searchText;
     init();
   }
+
   init()async {
     List<MultiSort> sortlist = new List<MultiSort>();
     sortlist.add(new MultiSort(
         "ballPower", QueryOrders.DESC));
     MultiSorts sorts = new MultiSorts(sortlist);
-    this.onSearchTextCount(_serachText,sorts,10,0);
-    this.onSearchTagCount(_serachText,sorts,10,0);
+    this.onSearchTextCount(_searchText,sorts,10,0);
+    this.onSearchTagCount(_searchText,sorts,10,0);
   }
 
   int get tagSearchCount => _tagSearchCount;
@@ -64,7 +62,7 @@ class H005MainPageViewModel extends ChangeNotifier {
   }
 
   getSearchText(){
-    return _serachText;
+    return _searchText;
   }
 
   getTitleText(){
@@ -100,7 +98,7 @@ class H005MainPageViewModel extends ChangeNotifier {
       return "";
     }
     if(currentState == H005PageState.Title){
-      return searchTilteText;
+      return searchTitleText;
     }else if (currentState == H005PageState.Tag){
       return _searchTagText;
     }
@@ -108,6 +106,7 @@ class H005MainPageViewModel extends ChangeNotifier {
   }
   onSearchTextCount(
       String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
+    FBallRepository _fBallRepository = new FBallRepository();
     _setIsLoading(true);
     var position = await Geolocator().getLastKnownPosition();
     BallNameSearchReqDto reqDto = new BallNameSearchReqDto(
@@ -121,6 +120,7 @@ class H005MainPageViewModel extends ChangeNotifier {
 
   onSearchTagCount(
       String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
+    TagRepository _tagRepository = TagRepository();
     _setIsLoading(true);
     var position = await Geolocator().getLastKnownPosition();
     TagSearchFromTextReqDto reqDto = new TagSearchFromTextReqDto(

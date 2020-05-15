@@ -138,7 +138,8 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
-    GeoLocationUtil.useGpsReq();
+    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
+    _geoLocationUtil.useGpsReq();
     var currentLocation = await Geolocator().getCurrentPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),

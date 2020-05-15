@@ -6,11 +6,12 @@ class GeolocationRepository {
 
   Future<String> getPositionAddress(Position reqPosition) async {
     String resultAddress = "";
+    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
     if (reqPosition != null) {
       var placeMarkList = await Geolocator()
           .placemarkFromPosition(reqPosition, localeIdentifier: "ko");
       if (placeMarkList.length > 0) {
-        resultAddress = GeoLocationUtil.replacePlacemarkToAddresStr(placeMarkList[0]);
+        resultAddress = _geoLocationUtil.replacePlacemarkToAddresStr(placeMarkList[0]);
       } else {
         resultAddress = "";
       }

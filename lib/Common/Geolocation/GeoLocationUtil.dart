@@ -5,7 +5,7 @@ import 'package:permission_handler/permission_handler.dart' as Permit;
 class GeoLocationUtil {
   ///GPS 가 사용 가능한지 알아보는 메소드
   ///만약 GPS off 면 on 요청 해줌 Flutter 권한 관련 오류로 요청 메세지를 던지기만 하고 타임 아웃으로 빠져 나옴
-  static Future<void> useGpsReq() async {
+  Future<void> useGpsReq() async {
     try {
       Location location = new Location();
       bool _serviceEnabled;
@@ -24,7 +24,7 @@ class GeoLocationUtil {
     return true;
   }
 
-  static Future<bool> permissionCheck() async {
+  Future<bool> permissionCheck() async {
     Map<Permit.PermissionGroup, Permit.PermissionStatus> permissition =
         await Permit.PermissionHandler().requestPermissions([
       Permit.PermissionGroup.location,
@@ -40,7 +40,7 @@ class GeoLocationUtil {
     }
   }
 
-  static String replacePlacemarkToAddresStr(Placemark placemark) {
+  String replacePlacemarkToAddresStr(Placemark placemark) {
     String resultAddress = "";
     if (placemark.administrativeArea != null &&
         placemark.administrativeArea.length != 0) {

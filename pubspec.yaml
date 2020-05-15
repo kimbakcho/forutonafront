@@ -25,65 +25,58 @@ dependencies:
   firebase_core_web: ^0.1.1+1
   #Url 웹페이지를 띄우기 위해서 사용
   url_launcher: ^5.4.1
-  url_launcher_macos: ^0.0.1+2
   # add dependency for Google Analytics for Firebase
   firebase_analytics: ^5.0.2
+  #NaverLogin을 위해서 사용
   flutter_naver_login: ^1.0.1
   #Firebase 인증을 위해서 사용
   firebase_auth: ^0.15.5+3
+  #FaceBook인증을 위해서 사용
   flutter_facebook_login: ^3.0.0
-  #과거 Http 에 사용
-  http: ^0.12.0+2
+  #추후 지역황 ㅔ사용
   flutter_localizations: # add this
     sdk: flutter
-  flutter_cupertino_localizations: ^1.0.1
-  date_util: ^0.1.4
+  #JSON 직렬화에 사용
   json_annotation:
   #카메라에서 이미지를 찍고 해당 사진을 리턴 받기 위해서 사용
   image_picker: ^0.6.5
+  #비동기 처리에 필요
   async: ^2.3.0
-  flutter_swiper: ^1.1.6
+  #GoogleMap
   google_maps_flutter: ^0.5.27+1
   #GPS 지도 정보를 사용하기 위해서 사용
   geolocator: ^5.3.1
-  flutter_google_places: ^0.2.3
-  after_init: ^0.1.2
+  #태그 랭킹등에서 사용
+  flutter_swiper: ^1.1.6
+  #허가 관리
   permission_handler: ^3.3.0
   #생년월일을 선택할때 사용
-  flutter_datetime_picker: ^1.3.8
   international_phone_input: ^1.0.2
-  flutter_rating_bar: ^3.0.0+1
   uuid: ^2.0.1
-  loading: ^1.0.2
   #인증 문자 메세지에서 사용
   sms_receiver:
     git:
       url: https://github.com/kimbakcho/flutter_sms_receiver
-  sliding_up_panel: ^0.3.6
-  sliding_sheet: ^0.2.5
-  sticky_headers: ^0.1.8
-  great_circle_distance2: ^1.0.1+1
+  #FCM에 사용
   firebase_messaging: ^6.0.9
   #사진을 여러장 선택 할 필요가 있을때 사용
   multi_image_picker: ^4.6.0
+  #Kakao 로그인 할때 사용
   flutter_kakao_login: ^0.8.1
+  #내부 Native Notication을 사용하기위한 사용
   flutter_local_notifications: ^0.9.0+1
   #큐브의 에니메이션 효과등 복잡한 애니메이션을 Flare를 사용하여 처리기위해서 사용
   flare_flutter: ^1.8.3
   #KeyBarod 나타 날때  UI 변화를 주기 위해서 사용
   flutter_keyboard_visibility: ^2.0.0
-  country_pickers: ^1.1.0
+  #Emun을 스트링으로 변환 시키기 위해 사용
   enum_to_string: ^1.0.8
-  carousel_slider: ^1.4.1
   #backEnd 서버와 Http 통신하기 위해서 사용
   dio: ^3.0.8
   #토스트 메세지를 띄울때 사용
   fluttertoast: ^3.1.3
   #유튜브 정보를 얻어 오는데 사용
   youtube_explode_dart: ^0.0.9
-  video_player: ^0.10.8+1
-  chewie2: ^0.10.2
-  youtube_parser: ^1.1.0
   #코딩 패턴 사용
   provider: ^4.0.4
   #각종 이미지들을 확대 축소 가능하고 슬라이드로 보여주는데서 사용
@@ -100,8 +93,8 @@ dependencies:
   android_intent: ^0.3.7+1
   #googlefont 사용
   google_fonts: ^1.0.0
-
-
+  #youtube VideoID Paser
+  youtube_parser: ^1.1.0
 
 dev_dependencies:
   flutter_test:

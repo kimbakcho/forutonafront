@@ -27,7 +27,6 @@ class H002_01PageViewModel extends ChangeNotifier {
 
   Position _initPosition;
   Completer<GoogleMapController> _googleMapController = Completer();
-  GeolocationRepository _geolocationRepository = GeolocationRepository();
 
   H002_01PageViewModel(this._initPosition, this.address, this._context) {
     initCameraPosition = CameraPosition(
@@ -52,6 +51,7 @@ class H002_01PageViewModel extends ChangeNotifier {
   }
 
   void onMapIdle() async{
+    GeolocationRepository _geolocationRepository = GeolocationRepository();
     _setIsLoading(true);
       this.address = await _geolocationRepository.getPositionAddress(Position(
           latitude: currentCameraPosition.target.latitude,
@@ -84,7 +84,8 @@ class H002_01PageViewModel extends ChangeNotifier {
 
   void onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
-    GeoLocationUtil.useGpsReq();
+    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
+    _geoLocationUtil.useGpsReq();
     var currentLocation = await Geolocator().getCurrentPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),

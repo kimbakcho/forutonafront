@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/MainModel.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 //flutter pub run build_runner watch
 
 void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     ChangeNotifierProvider(
         create: (_) => GlobalModel(),

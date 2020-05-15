@@ -135,15 +135,19 @@ class J006ViewModel extends ChangeNotifier {
     }
   }
   onNextComplete()async{
-    await onIdEditComplete();
-    onPwEditComplete();
-    onPwCheckComplete();
+    await finalCheckVaild();
     if(!isIdTextError && !isPwTextError && !isPwCheckTextError){
       GlobalModel globalModel = Provider.of(_context,listen: false);
       globalModel.fUserInfoJoinReqDto.password = pwEditingController.text;
       globalModel.fUserInfoJoinReqDto.email = idEditingController.text;
       Navigator.of(_context).push(MaterialPageRoute(builder: (_)=>J007View()));
     }
+  }
+
+  Future finalCheckVaild() async {
+    await onIdEditComplete();
+    onPwEditComplete();
+    onPwCheckComplete();
   }
 
   void onIdEditChangeText(String value) {

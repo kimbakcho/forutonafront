@@ -10,12 +10,11 @@ import 'package:provider/provider.dart';
 
 class H00301PageViewModel extends ChangeNotifier {
   final BuildContext context;
-  FBallPlayerRepository _fBallPlayerRepository = FBallPlayerRepository();
+
   UserToPlayBallResWrapDto userToPlayBallList;
   ScrollController scrollController = ScrollController();
   int _pageCount = 0;
   int _limitSize = 10;
-
   bool _isLoading = false;
   getIsLoading(){
     return _isLoading;
@@ -26,7 +25,6 @@ class H00301PageViewModel extends ChangeNotifier {
   }
 
   H00301PageViewModel(this.context) {
-
     this.init();
   }
 
@@ -39,6 +37,7 @@ class H00301PageViewModel extends ChangeNotifier {
   }
 
   Future ballListUp() async {
+    FBallPlayerRepository _fBallPlayerRepository = FBallPlayerRepository();
     var globalModel = Provider.of<GlobalModel>(context, listen: false);
     List<MultiSort> sorts = new List<MultiSort>();
     sorts.add(MultiSort("Alive", QueryOrders.DESC));

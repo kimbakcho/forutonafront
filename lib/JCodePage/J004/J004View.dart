@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +36,8 @@ class J004View extends StatelessWidget {
                         )
                       ]),
                       joinProgressBar(context)
-                    ])))
+                    ]))),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         }));
   }
@@ -47,11 +50,7 @@ class J004View extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Container(
         height: 10,
-        child: LinearProgressIndicator(
-          value: 0.5,
-          backgroundColor: Color(0xffCCCCCC),
-          valueColor: AlwaysStoppedAnimation<Color>(Color(0xff3497FD)),
-        ),
+        child: CommonLinearProgressIndicator(0.5),
       ),
     );
   }
@@ -136,6 +135,7 @@ class J004View extends StatelessWidget {
                 child: Container(
                     height: 50,
                     child: TextField(
+                      keyboardType: TextInputType.number,
                         controller: model.authNumberEditingController,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),

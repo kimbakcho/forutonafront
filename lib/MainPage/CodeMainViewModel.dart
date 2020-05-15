@@ -9,9 +9,9 @@ enum HCodeState { HCDOE, ICODE, JCODE, KCODE, GCODE  }
 class CodeMainViewModel with ChangeNotifier {
   PageController pageController;
   HCodeState currentState;
-  Geolocator _geoLocator = new Geolocator();
+
   Position lastKnownPosition;
-  GeolocationRepository _geolocationRepository = new GeolocationRepository();
+
   String firstAddress = "";
   CodeMainViewModel() {
     pageController = new PageController();
@@ -19,7 +19,10 @@ class CodeMainViewModel with ChangeNotifier {
     init();
   }
   init()async {
-    GeoLocationUtil.useGpsReq();
+    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
+    GeolocationRepository _geolocationRepository = new GeolocationRepository();
+    _geoLocationUtil.useGpsReq();
+    Geolocator _geoLocator = new Geolocator();
     this.lastKnownPosition = await _geoLocator.getCurrentPosition();
     _geoLocator.getPositionStream().listen(changeGeolocationListen);
     firstAddress = await _geolocationRepository.getPositionAddress(lastKnownPosition);
