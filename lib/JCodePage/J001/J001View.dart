@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/JCodePage/J001/J001ViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +46,8 @@ class J001View extends StatelessWidget {
                       ))
                 ],
               ),
-            ))
+            )),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         }));
   }

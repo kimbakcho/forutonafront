@@ -21,6 +21,14 @@ class J001ViewModel extends ChangeNotifier {
   TextEditingController pwTextFieldController = TextEditingController();
   FocusNode idTextFocusNode = FocusNode();
   FocusNode pwTextFocusNode = FocusNode();
+  bool _isLoading = false;
+  getIsLoading(){
+    return _isLoading;
+  }
+  _setIsLoading(bool value){
+    _isLoading = value;
+    notifyListeners();
+  }
 
   J001ViewModel(this._context) {
     GlobalModel globalModel = Provider.of<GlobalModel>(_context, listen: false);
@@ -116,11 +124,14 @@ class J001ViewModel extends ChangeNotifier {
 
   Future snsLoginLogic(SnsLoginService snsLoginService) async {
     try {
+      _setIsLoading(true);
       if (await snsLoginService.tryLogin()) {
-        GlobalModel globalModel = Provider.of(_context);
+        GlobalModel globalModel = Provider.of(_context,listen: false);
         await globalModel.setFUserInfoDto();
         Navigator.of(_context).popUntil(ModalRoute.withName('/'));
       }
+      _setIsLoading(false);
+
     } on NotJoinException catch (e) {
       GlobalModel globalModel =
           Provider.of<GlobalModel>(_context, listen: false);

@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 //flutter pub run build_runner watch
 
 void main() {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     ChangeNotifierProvider(
         create: (_) => GlobalModel(),
@@ -20,6 +19,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return ChangeNotifierProvider(
       create: (_)=>MainModel(context),
       child: Consumer<MainModel>(builder: (_,model,child){
