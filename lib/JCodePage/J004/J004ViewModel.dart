@@ -16,7 +16,6 @@ import 'package:sms_receiver/sms_receiver.dart';
 
 class J004ViewModel extends ChangeNotifier {
   final BuildContext _context;
-
   String _currentPhoneNumber;
   String _currentInternationalizedPhoneNumber;
   String _currentIsoCode;
@@ -112,7 +111,7 @@ class J004ViewModel extends ChangeNotifier {
       if (resPhoneAuth.authRetryAvailableTime
           .difference(DateTime.now())
           .isNegative) {
-        return 0;
+        return 120;
       } else {
         return resPhoneAuth.authRetryAvailableTime
             .difference(DateTime.now())

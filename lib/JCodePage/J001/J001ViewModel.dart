@@ -5,11 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:forutonafront/ForutonaUser/Service/FaceBookLoginService.dart';
-import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
-import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
-import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
+import 'package:forutonafront/ForutonaUser/Service/Impl/NotJoinException.dart';
+
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
+import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
 import 'package:forutonafront/JCodePage/J008/J008View.dart';
@@ -108,17 +107,17 @@ class J001ViewModel extends ChangeNotifier {
   }
 
   void onFaceBookLogin() async {
-    SnsLoginService snsLoginService = new FaceBookLoginService();
+    SnsLoginService snsLoginService = SnsSupportServiceFactory.createSnsSupportService(SnsSupportService.FaceBook);
     await snsLoginLogic(snsLoginService);
   }
 
   void onKakaoLogin() async {
-    SnsLoginService snsLoginService = new KakaoLoginService();
+    SnsLoginService snsLoginService = SnsSupportServiceFactory.createSnsSupportService(SnsSupportService.Kakao);
     await snsLoginLogic(snsLoginService);
   }
 
   void onNaverLogin() async {
-    SnsLoginService snsLoginService = new NaverLoginService();
+    SnsLoginService snsLoginService = SnsSupportServiceFactory.createSnsSupportService(SnsSupportService.Naver);
     await snsLoginLogic(snsLoginService);
   }
 
@@ -131,7 +130,6 @@ class J001ViewModel extends ChangeNotifier {
         Navigator.of(_context).popUntil(ModalRoute.withName('/'));
       }
       _setIsLoading(false);
-
     } on NotJoinException catch (e) {
       GlobalModel globalModel =
           Provider.of<GlobalModel>(_context, listen: false);

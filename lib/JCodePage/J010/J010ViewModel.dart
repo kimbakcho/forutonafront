@@ -19,7 +19,6 @@ import '../../GlobalModel.dart';
 class J010ViewModel extends ChangeNotifier{
   final BuildContext _context;
 
-
   String _currentPhoneNumber;
   String _currentInternationalizedPhoneNumber;
   String _currentIsoCode;

@@ -18,5 +18,4 @@ class BallStyle2Support {
         return Container(child: Text("don't know"));
       }
   }
-
 }

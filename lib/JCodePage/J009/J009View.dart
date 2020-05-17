@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J009/J009ViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,7 +34,8 @@ class J009View extends StatelessWidget {
                           ]),
                           joinProgressBar(context)
                         ],
-                      )))
+                      ))),
+              model.getIsLoading() ? CommonLoadingComponent() : Container()
             ],
           );
         }));
@@ -66,6 +68,7 @@ class J009View extends StatelessWidget {
             controller: model.idEditingController,
             onChanged: model.onIdEditChangeText,
             onEditingComplete: model.onIdEditComplete,
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(16, 16, 44, 16),
                 hintText: "이메일 주소",
@@ -83,7 +86,7 @@ class J009View extends StatelessWidget {
                     borderSide:
                         BorderSide(color: Color(0xff3497FD), width: 1))),
           ),
-          model.isEmailTypeValid()
+          !model.hasEmailError()
               ? Positioned(
                   top: 16,
                   right: 16,
@@ -104,12 +107,12 @@ class J009View extends StatelessWidget {
   }
 
   Container emailErrorDisplayBar(J009ViewModel model) {
-    return model.isIdTextError
+    return model.hasEmailError()
         ? Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: 22),
             height: 27,
-            child: Text(model.idTextErrorText,
+            child: Text(model.emailErrorText(),
                 style: GoogleFonts.notoSans(
                   fontSize: 14,
                   color: Color(0xffff4f9a),

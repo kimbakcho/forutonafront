@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/SignValid/Impl/PhoneFindValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/PhoneFindValidService.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J010/J010View.dart';
@@ -9,9 +10,19 @@ class J009ViewModel extends ChangeNotifier {
   final BuildContext _context;
 
   TextEditingController idEditingController = TextEditingController();
+  PhoneFindValidService _phoneFindValidService = PhoneFindValidImpl();
+  bool _isLoading = false;
 
-  bool isIdTextError = false;
-  String idTextErrorText = "";
+  getIsLoading() {
+    return _isLoading;
+  }
+
+  _setIsLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  bool _hasComplete = false;
 
   J009ViewModel(this._context) {
     GlobalModel globalModel = Provider.of(_context, listen: false);
@@ -29,47 +40,40 @@ class J009ViewModel extends ChangeNotifier {
       return false;
     }
   }
-
   onNextComplete() async {
-    isIdTextError = false;
-    idTextErrorText = "";
-    await onIdEditComplete();
-    if (!isIdTextError) {
+    _setIsLoading(true);
+    await _phoneFindValidService.emailIdValid(idEditingController.text);
+    _hasComplete = true;
+    if (!_phoneFindValidService.hasPhoneEmailError()) {
       GlobalModel globalModel = Provider.of(_context, listen: false);
       globalModel.pwFindPhoneAuthReqDto.email = idEditingController.text;
       Navigator.of(_context)
           .push(MaterialPageRoute(builder: (_) => J010View()));
     }
+    _setIsLoading(false);
   }
 
   void onIdEditChangeText(String value) {
+    _hasComplete = false;
     notifyListeners();
   }
 
   Future<void> onIdEditComplete() async {
-    String id = idEditingController.text;
-    var list =
-        await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: id);
-    if (!isEmailTypeValid()) {
-      isIdTextError = true;
-      idTextErrorText = "*이메일 형식이 맞지 않습니다.";
-    } else if (list.length == 0) {
-      isIdTextError = true;
-      idTextErrorText = "*입력하신 정보와 일치하는 계정이 없습니다.";
-    } else {
-      isIdTextError = false;
-      idTextErrorText = "";
-    }
-    notifyListeners();
+    _setIsLoading(true);
+    await _phoneFindValidService.emailIdValid(idEditingController.text);
+    _hasComplete = true;
+    _setIsLoading(false);
   }
 
-  bool isEmailTypeValid() {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(idEditingController.text))
-      return false;
-    else
-      return true;
+  bool hasEmailError() {
+    return _phoneFindValidService.hasEmailError();
+  }
+
+  String emailErrorText() {
+    if (_hasComplete) {
+      return _phoneFindValidService.emailErrorText();
+    } else {
+      return "";
+    }
   }
 }

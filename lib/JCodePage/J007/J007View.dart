@@ -66,7 +66,7 @@ class J007View extends StatelessWidget {
                     )),
                 Spacer(),
                 Container(
-                  child: Text("(${model.userIntroduceInputTextLength}/80)",
+                  child: Text("(${model.userIntroduceInputTextLength}/100)",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontSize: 10,
@@ -80,7 +80,7 @@ class J007View extends StatelessWidget {
               child: TextField(
                   minLines: 1,
                   maxLines: null,
-                  maxLength: 80,
+                  maxLength: 100,
                   controller: model.userIntroduceController,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -119,10 +119,10 @@ class J007View extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontSize: 12,
-                            color: model.isCanNotUseNickNameDisPlay ? Color(0xffff4f9a): Color(0xff454f63),
+                            color: model.hasNickNameError() ? Color(0xffff4f9a): Color(0xff454f63),
                           )),
                       Spacer(),
-                      Text("(${model.nickNameInputTextLength}/80)",
+                      Text("(${model.nickNameInputTextLength}/20)",
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontSize: 10,
@@ -138,6 +138,7 @@ class J007View extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                   child: TextField(
                       onEditingComplete: model.onEditCompleteNickName,
+                      onChanged: model.onChangeNickName,
                       controller: model.nickNameController,
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
@@ -145,7 +146,7 @@ class J007View extends StatelessWidget {
                         fontSize: 14,
                         color: Color(0xff454f63),
                       ),
-                      maxLength: 80,
+                      maxLength: 20,
                       decoration: InputDecoration(
                         hintText: "닉네임을 입력해주세요",
                         hintStyle: TextStyle(
@@ -171,9 +172,9 @@ class J007View extends StatelessWidget {
           Positioned(
               top: 60,
               left: 16,
-              child: model.isCanNotUseNickNameDisPlay
+              child: model.hasNickNameError()
                   ? Container(
-                  child: Text("*사용하실 수 없는 닉네임입니다.",
+                  child: Text(model.nickNameErrorText(),
                       style: TextStyle(
                           fontFamily: "Noto Sans CJK KR",
                           fontSize: 12,
@@ -301,19 +302,19 @@ class J007View extends StatelessWidget {
           margin: EdgeInsets.only(right: 16),
           child: FlatButton(
             onPressed:
-                model.isValidComplete() ? model.onCompeleteBtnClick : null,
+                model.isCanComplete() ? model.onCompeleteBtnClick : null,
             child: Text("완료",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
-                  color: model.isValidComplete()
+                  color: model.isCanComplete()
                       ? Colors.black
                       : Color(0xffb1b1b1),
                 )),
           ),
           decoration: BoxDecoration(
-            color: model.isValidComplete() ? Colors.white : Color(0xffd4d4d4),
+            color: model.isCanComplete() ? Colors.white : Color(0xffd4d4d4),
             boxShadow: [
               BoxShadow(
                 offset: Offset(0.00, 12.00),
@@ -321,7 +322,7 @@ class J007View extends StatelessWidget {
                 blurRadius: 16,
               ),
             ],
-            border: model.isValidComplete()
+            border: model.isCanComplete()
                 ? Border.all(color: Colors.black, width: 1)
                 : null,
             borderRadius: BorderRadius.circular(5.00),

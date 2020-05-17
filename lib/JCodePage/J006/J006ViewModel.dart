@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:forutonafront/Common/SignValid/Impl/IdDuplicationCheckSignValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SignVaildService.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J007/J007View.dart';
 import 'package:provider/provider.dart';
@@ -9,122 +12,58 @@ class J006ViewModel extends ChangeNotifier {
   TextEditingController idEditingController = TextEditingController();
   TextEditingController pwEditingController = TextEditingController();
   TextEditingController pwCheckEditingController = TextEditingController();
-  bool isIdTextError = false;
-  String idTextErrorText = "";
-  bool isPwTextError = false;
-  String pwTextErrorText = "";
-  bool isPwCheckTextError = false;
-  String pwCheckTextErrorText = "";
+  SignValidService _signValidService = IdDuplicationCheckSignValidImpl();
+  bool hasIdComplete = false;
 
+  bool _isLoading = false;
+  getIsLoading(){
+    return _isLoading;
+  }
+  _setIsLoading(bool value){
+    _isLoading = value;
+    notifyListeners();
+  }
   J006ViewModel(this._context);
-
   void onBackTap() {
     Navigator.of(_context).pop();
   }
-
-  bool isEmailTypeValid() {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(idEditingController.text))
-      return false;
-    else
-      return true;
+  Future<void> onIdEditComplete() async {
+    _setIsLoading(true);
+    hasIdComplete= true;
+    await _signValidService.emailIdValid(idEditingController.text);
+    _setIsLoading(false);
   }
-
-
-  bool isPwTypeValid() {
-    String value = pwEditingController.text;
-    RegExp regExp1 = new RegExp(r'^(?=.*?[A-Z])');
-    RegExp regExp2 = new RegExp(r'^(?=.*?[a-z])');
-    RegExp regExp3 = new RegExp(r'^(?=.*?[0-9])');
-    RegExp regExp4 = new RegExp(r'^(?=.*?[!@#\$&*~])');
-    int match1 = regExp1.hasMatch(value) ? 1 : 0;
-    int match2 = regExp2.hasMatch(value) ? 1 : 0;
-    int match3 = regExp3.hasMatch(value) ? 1 : 0;
-    int match4 = regExp4.hasMatch(value) ? 1 : 0;
-    if (value.length < 8) {
-      return false;
-    } else if (value.length > 16) {
-      return false;
-    } else if ((match1 + match2 + match3 + match4) < 3) {
-      return false;
-    } else {
-      return true;
-    }
+  hasEmailError() {
+     return _signValidService.hasEmailError();
   }
-
-  String pwTypeValid() {
-    String value = pwEditingController.text;
-    RegExp regExp1 = new RegExp(r'^(?=.*?[A-Z])');
-    RegExp regExp2 = new RegExp(r'^(?=.*?[a-z])');
-    RegExp regExp3 = new RegExp(r'^(?=.*?[0-9])');
-    RegExp regExp4 = new RegExp(r'^(?=.*?[!@#\$&*~])');
-    int match1 = regExp1.hasMatch(value) ? 1 : 0;
-    int match2 = regExp2.hasMatch(value) ? 1 : 0;
-    int match3 = regExp3.hasMatch(value) ? 1 : 0;
-    int match4 = regExp4.hasMatch(value) ? 1 : 0;
-    if (value.length < 8) {
-      return "패스워드가 8자리 이하 입니다.";
-    } else if (value.length > 16) {
-      return "패스워드가 16자리 이상 입니다.";
-    } else if ((match1 + match2 + match3 + match4) < 3) {
-      return "영문 소문자,대문자,숫자,특수문자 중 3개 이상 조합";
-    } else {
+  String emailErrorText() {
+    if(hasIdComplete){
+      return _signValidService.emailErrorText();
+    }else {
       return "";
     }
   }
-
-  bool isPwCheckTypeValid() {
-    if(pwEditingController.text.length <8){
-      return false;
-    }
-    if (pwEditingController.text != pwCheckEditingController.text) {
-      return false;
-    } else {
+  hasPwCheckError() {
+    if(pwCheckEditingController.text.length > 0){
+      return _signValidService.hasPwCheckError();
+    }else {
       return true;
     }
   }
-
-  Future<void> onIdEditComplete() async {
-    String id = idEditingController.text;
-    var list =
-        await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: id);
-    if (!isEmailTypeValid()) {
-      isIdTextError = true;
-      idTextErrorText = "*이메일 형식이 맞지 않습니다.";
-    } else if (list.length != 0) {
-      isIdTextError = true;
-      idTextErrorText = "*이미 존재하는 아이디 입니다.";
-    } else {
-      isIdTextError = false;
-      idTextErrorText = "";
-    }
-    notifyListeners();
-  }
-
   void onPwEditComplete() {
-    if (!isPwTypeValid()) {
-      isPwTextError = true;
-      pwTextErrorText = pwTypeValid();
-    } else {
-      isPwTextError = false;
-      pwTextErrorText = "";
-    }
+    _signValidService.pwValid(pwEditingController.text);
     notifyListeners();
   }
-
+  hasPwError() {
+      return _signValidService.hasPwError();
+  }
+  String pwErrorText() {
+    return _signValidService.pwErrorText();
+  }
   void onPwCheckComplete() {
-    if (pwEditingController.text != pwCheckEditingController.text) {
-      isPwCheckTextError = true;
-      pwCheckTextErrorText = "패스워드가 일치 하지 않습니다.";
-    } else {
-      isPwCheckTextError = false;
-      pwCheckTextErrorText = "";
-    }
+    _signValidService.pwCheckValid(pwEditingController.text, pwCheckEditingController.text);
     notifyListeners();
   }
-
   bool isCanNextBtn() {
     if (idEditingController.text.length > 0 &&
         pwEditingController.text.length > 0 &&
@@ -135,30 +74,45 @@ class J006ViewModel extends ChangeNotifier {
     }
   }
   onNextComplete()async{
-    await finalCheckVaild();
-    if(!isIdTextError && !isPwTextError && !isPwCheckTextError){
+    _setIsLoading(true);
+    await finalCheckValid();
+    if(!hasEmailError() && !hasPwError() && !hasPwCheckError()){
       GlobalModel globalModel = Provider.of(_context,listen: false);
       globalModel.fUserInfoJoinReqDto.password = pwEditingController.text;
       globalModel.fUserInfoJoinReqDto.email = idEditingController.text;
       Navigator.of(_context).push(MaterialPageRoute(builder: (_)=>J007View()));
     }
+    _setIsLoading(false);
   }
-
-  Future finalCheckVaild() async {
-    await onIdEditComplete();
-    onPwEditComplete();
-    onPwCheckComplete();
+  Future finalCheckValid() async {
+    await _signValidService.emailIdValid(idEditingController.text);
+    hasIdComplete = true;
+    _signValidService.pwValid(pwEditingController.text);
+    _signValidService.pwCheckValid(pwEditingController.text, pwCheckEditingController.text);
   }
-
   void onIdEditChangeText(String value) {
+    hasIdComplete = false;
     notifyListeners();
   }
 
   void onPwCheckEditChangeText(String value) {
+    _signValidService.pwCheckValid(pwEditingController.text, pwCheckEditingController.text);
     notifyListeners();
   }
 
   void onPwEditChangeText(String value) {
+    _signValidService.pwValid(pwEditingController.text);
     notifyListeners();
   }
+
+  String pwCheckErrorText() {
+    if(pwCheckEditingController.text.length > 0){
+      return _signValidService.pwCheckErrorText();
+    }else {
+      return "";
+    }
+  }
+
+
+
 }

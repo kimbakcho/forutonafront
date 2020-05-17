@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 
-import 'SnsLoginService.dart';
+import '../SnsLoginService.dart';
 
 class ForutonaLoginService extends SnsLoginService {
   FUserRepository _fUserRepository = FUserRepository();
@@ -22,5 +24,20 @@ class ForutonaLoginService extends SnsLoginService {
   @override
   SnsSupportService getSupportSnsService() {
     return SnsSupportService.Forutona;
+  }
+
+  @override
+  Future<bool> tryLogin() {
+
+  }
+
+  @override
+  String getToken() {
+
+  }
+
+  @override
+  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto accessToken) {
+
   }
 }

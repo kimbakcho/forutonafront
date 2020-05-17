@@ -4,11 +4,11 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Service/NotJoinException.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/ForutonaUser/Service/Impl/NotJoinException.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:provider/provider.dart';
 
-import 'SnsLoginService.dart';
+import '../SnsLoginService.dart';
 
 class FaceBookLoginService extends SnsLoginService{
 

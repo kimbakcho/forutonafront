@@ -6,29 +6,17 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 
-import 'FaceBookLoginService.dart';
-import 'ForutonaLoginService.dart';
-import 'KakaoLoginService.dart';
-import 'NaverLoginService.dart';
-
-class SnsLoginService {
+abstract class SnsLoginService {
 
   FUserRepository _fUserRepository = new FUserRepository();
 
-  SnsSupportService getSupportSnsService(){
-    return null;
-  }
-  String getToken(){
-    return null;
-  }
+  SnsSupportService getSupportSnsService();
 
-  Future<bool> tryLogin() async{
-    print("tryLogin");
-  }
+  String getToken();
 
-  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto accessToken) async{
-    print("checkSnsUidJoinCheck");
-  }
+  Future<bool> tryLogin();
+
+  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto accessToken);
 
   Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto) async{
     FUserInfoJoinResDto resDto = await _fUserRepository.joinUser(reqDto);

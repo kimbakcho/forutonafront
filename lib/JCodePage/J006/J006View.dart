@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndicator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,7 +36,8 @@ class J006View extends StatelessWidget {
                                 pwCheckErrorDisplayBar(model)
                               ]))
                         ]),
-                        joinProgressBar(context)
+                        joinProgressBar(context),
+                        model.getIsLoading() ? CommonLoadingComponent() : Container()
                       ],
                     ))),
           ]);
@@ -56,12 +58,12 @@ class J006View extends StatelessWidget {
   }
 
   Container pwCheckErrorDisplayBar(J006ViewModel model) {
-    return model.isPwCheckTextError
+    return model.hasPwCheckError()
         ? Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: 22),
             height: 27,
-            child: Text(model.pwCheckTextErrorText,
+            child: Text(model.pwCheckErrorText(),
                 style: GoogleFonts.notoSans(
                   fontSize: 14,
                   color: Color(0xffff4f9a),
@@ -99,7 +101,7 @@ class J006View extends StatelessWidget {
                     borderSide:
                         BorderSide(color: Color(0xff3497FD), width: 1))),
           ),
-          model.isPwCheckTypeValid()
+          !model.hasPwCheckError()
               ? Positioned(
                   top: 16,
                   right: 16,
@@ -118,12 +120,12 @@ class J006View extends StatelessWidget {
   }
 
   Container pwTextErrorDisplayBar(J006ViewModel model) {
-    return model.isPwTextError
+    return model.hasPwError()
         ? Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: 22),
             height: 27,
-            child: Text(model.pwTextErrorText,
+            child: Text(model.pwErrorText(),
                 style: GoogleFonts.notoSans(
                   fontSize: 14,
                   color: Color(0xffff4f9a),
@@ -161,7 +163,7 @@ class J006View extends StatelessWidget {
                     borderSide:
                         BorderSide(color: Color(0xff3497FD), width: 1))),
           ),
-          model.isPwTypeValid()
+          !model.hasPwError()
               ? Positioned(
                   top: 16,
                   right: 16,
@@ -180,12 +182,12 @@ class J006View extends StatelessWidget {
   }
 
   Container emailErrorDisplayBar(J006ViewModel model) {
-    return model.isIdTextError
+    return model.hasEmailError()
         ? Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: 22),
             height: 27,
-            child: Text(model.idTextErrorText,
+            child: Text(model.emailErrorText(),
                 style: GoogleFonts.notoSans(
                   fontSize: 14,
                   color: Color(0xffff4f9a),
@@ -224,7 +226,7 @@ class J006View extends StatelessWidget {
                     borderSide:
                         BorderSide(color: Color(0xff3497FD), width: 1))),
           ),
-          model.isEmailTypeValid()
+          !model.hasEmailError()
               ? Positioned(
                   top: 16,
                   right: 16,

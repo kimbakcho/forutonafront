@@ -1,38 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_kakao_login/flutter_kakao_login.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
 
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 
 import 'NotJoinException.dart';
-import 'SnsLoginService.dart';
 
-class KakaoLoginService extends SnsLoginService {
+
+class NaverLoginService extends SnsLoginService {
 
   FUserSnSLoginReqDto _reqDto = FUserSnSLoginReqDto();
   FUserRepository _fUserRepository = FUserRepository();
 
   @override
-  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto reqDto) async{
+  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto reqDto) async {
     FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto = await _fUserRepository.getSnsUserJoinCheckInfo(reqDto);
     return fUserSnsCheckJoinResDto;
   }
 
   @override
-  Future<bool>  tryLogin() async {
-    FlutterKakaoLogin kakaoSignIn = FlutterKakaoLogin();
-    KakaoLoginResult result;
-    result = await kakaoSignIn.logIn();
-    switch (result.status) {
-      case KakaoLoginStatus.loggedIn:
-        result = await kakaoSignIn.getUserMe();
-        KakaoAccessToken token =await kakaoSignIn.currentAccessToken;
-        _reqDto.accessToken = token.token;
-        _reqDto.snsService = SnsSupportService.Kakao;
-        _reqDto.fUserUid  = "${SnsSupportService.Kakao}${result.account.userID}";
-        _reqDto.snsUid = result.account.userID;
+  Future<bool> tryLogin() async {
+    NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
+    switch(naverLoginResult.status) {
+      case NaverLoginStatus.loggedIn:
+        var currentAccessToken =  await FlutterNaverLogin.currentAccessToken;
+        _reqDto.accessToken = currentAccessToken.accessToken;
+        _reqDto.snsService = SnsSupportService.Naver;
+        _reqDto.fUserUid = "${SnsSupportService.Naver}${naverLoginResult.account.id}";
+        _reqDto.snsUid = naverLoginResult.account.id;
         var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
         if(!fUserSnsCheckJoinResDto.join){
           throw new NotJoinException("not Join",fUserSnsCheckJoinResDto);
@@ -40,21 +38,19 @@ class KakaoLoginService extends SnsLoginService {
           await FirebaseAuth.instance.signInWithCustomToken(token: fUserSnsCheckJoinResDto.firebaseCustomToken);
         }
         break;
-      case KakaoLoginStatus.loggedOut:
-        throw("loggedOut");
+      case NaverLoginStatus.cancelledByUser:
+        throw ("cancelledByUser");
         break;
-      case KakaoLoginStatus.error:
-        throw(result.errorMessage);
+      case NaverLoginStatus.error:
+        throw (naverLoginResult.errorMessage);
         break;
     }
-
     return true;
   }
 
   @override
   SnsSupportService getSupportSnsService() {
-
-    return SnsSupportService.Kakao;
+    return SnsSupportService.Naver;
   }
   @override
   String getToken() {

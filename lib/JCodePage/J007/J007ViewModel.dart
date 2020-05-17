@@ -1,17 +1,12 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/Common/SignValid/Impl/DefaultSignValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SignVaildService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Service/FaceBookLoginService.dart';
-import 'package:forutonafront/ForutonaUser/Service/ForutonaLoginService.dart';
-import 'package:forutonafront/ForutonaUser/Service/KakaoLoginService.dart';
-import 'package:forutonafront/ForutonaUser/Service/NaverLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart';
 import 'package:forutonafront/GlobalModel.dart';
@@ -22,32 +17,35 @@ import 'package:provider/provider.dart';
 class J007ViewModel extends ChangeNotifier {
   final BuildContext _context;
   ImageProvider currentProfileImage;
-  bool isCanNotUseNickNameDisPlay = false;
+
   int nickNameInputTextLength = 0;
   TextEditingController nickNameController = new TextEditingController();
   TextEditingController userIntroduceController = new TextEditingController();
   int userIntroduceInputTextLength = 0;
   String currentCountryCode = "KR";
+  SignValidService _signValidService = new DefaultSignValidImpl();
 
   File _currentPickProfileImage;
   bool _isChangeProfileImage = false;
+  bool _haveNickNameConfirm = false;
   bool _isLoading = false;
-  getIsLoading(){
+  getIsLoading() {
     return _isLoading;
   }
-  _setIsLoading(bool value){
+
+  _setIsLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
-
   J007ViewModel(this._context) {
-    GlobalModel globalModel = Provider.of(_context,listen: false);
+    GlobalModel globalModel = Provider.of(_context, listen: false);
     if (globalModel.fUserInfoJoinReqDto.countryCode != null) {
       currentCountryCode = globalModel.fUserInfoJoinReqDto.countryCode;
     }
-    if(globalModel.fUserInfoJoinReqDto.userProfileImageUrl == null){
-      globalModel.fUserInfoJoinReqDto.userProfileImageUrl = "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
+    if (globalModel.fUserInfoJoinReqDto.userProfileImageUrl == null) {
+      globalModel.fUserInfoJoinReqDto.userProfileImageUrl =
+          "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
     }
     currentProfileImage =
         NetworkImage(globalModel.fUserInfoJoinReqDto.userProfileImageUrl);
@@ -56,12 +54,12 @@ class J007ViewModel extends ChangeNotifier {
       nickNameController.text = globalModel.fUserInfoJoinReqDto.nickName;
       nickNameInputTextLength = nickNameController.text.length;
     }
-    nickNameController.addListener(_onNickNameControllerListener);
+
     userIntroduceController.addListener(__onUserIntroduceControllerListener);
   }
 
-  bool isValidComplete() {
-    if (nickNameController.text.length > 0 && !isCanNotUseNickNameDisPlay) {
+  bool isCanComplete() {
+    if (nickNameController.text.length > 0) {
       return true;
     } else {
       return false;
@@ -73,63 +71,67 @@ class J007ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  _onNickNameControllerListener() {
-    nickNameInputTextLength = nickNameController.text.length;
-    isCanNotUseNickNameDisPlay = false;
-    notifyListeners();
-  }
-
   onEditCompleteNickName() async {
-    RegExp regExp1 = new RegExp(r'^(?=.*?[!@#\$&*~\s])');
-    if (regExp1.hasMatch(nickNameController.text)) {
-      isCanNotUseNickNameDisPlay = true;
-      notifyListeners();
-      return isCanNotUseNickNameDisPlay;
-    }
-    FUserRepository _fUserRepository = new FUserRepository();
-    var nickNameDuplicationCheckResDto = await _fUserRepository
-        .checkNickNameDuplication(nickNameController.text);
-    if (nickNameDuplicationCheckResDto.haveNickName) {
-      isCanNotUseNickNameDisPlay = true;
-      notifyListeners();
-      return isCanNotUseNickNameDisPlay;
-    } else {
-      isCanNotUseNickNameDisPlay = false;
-    }
-    notifyListeners();
-    return isCanNotUseNickNameDisPlay;
+    _setIsLoading(true);
+    _haveNickNameConfirm = true;
+    await _signValidService.nickNameValid(nickNameController.text);
+    _setIsLoading(false);
   }
 
+
+  void onChangeNickName(String value) {
+    _haveNickNameConfirm = false;
+    nickNameInputTextLength = nickNameController.text.length;
+    notifyListeners();
+  }
+
+  bool hasNickNameError() {
+    if(_haveNickNameConfirm) {
+      return _signValidService.hasNickNameError();
+    }else {
+      return false;
+    }
+  }
+  String nickNameErrorText() {
+    return _signValidService.nickNameErrorText();
+  }
   void onBackTap() {
     Navigator.of(_context).pop();
   }
 
+
   void onCompeleteBtnClick() async {
     //닉네임 중복 체크
-    if(await onEditCompleteNickName()){
+    _setIsLoading(true);
+
+    await _signValidService.nickNameValid(nickNameController.text);
+    _haveNickNameConfirm = true;
+    if(_signValidService.hasNickNameError()){
+      _setIsLoading(false);
       return ;
     }
-    GlobalModel globalModel = Provider.of(_context,listen: false);
+    GlobalModel globalModel = Provider.of(_context, listen: false);
     globalModel.fUserInfoJoinReqDto.nickName = nickNameController.text;
-    globalModel.fUserInfoJoinReqDto.userIntroduce = userIntroduceController.text;
-    if(_isChangeProfileImage){
-      if(_currentPickProfileImage == null){
-        globalModel.fUserInfoJoinReqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
+    globalModel.fUserInfoJoinReqDto.userIntroduce =
+        userIntroduceController.text;
+    if (_isChangeProfileImage) {
+      if (_currentPickProfileImage == null) {
+        globalModel.fUserInfoJoinReqDto.userProfileImageUrl =
+            Preference.basicProfileImageUrl;
       }
     }
-    SnsLoginService snsLoginService = SnsSupportServiceFactory.getSnsSupportService(globalModel.fUserInfoJoinReqDto.snsSupportService);
-    _setIsLoading(true);
-    var fUserInfoJoinResDto = await snsLoginService.joinUser(globalModel.fUserInfoJoinReqDto);
-    _setIsLoading(false);
-    if(fUserInfoJoinResDto.joinComplete){
-      if(_currentPickProfileImage!=null){
-        _setIsLoading(true);
+    SnsLoginService snsLoginService =
+        SnsSupportServiceFactory.createSnsSupportService(
+            globalModel.fUserInfoJoinReqDto.snsSupportService);
+    var fUserInfoJoinResDto =
+        await snsLoginService.joinUser(globalModel.fUserInfoJoinReqDto);
+    if (fUserInfoJoinResDto.joinComplete) {
+      if (_currentPickProfileImage != null) {
         FUserRepository _fUserRepository = new FUserRepository();
         await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
-        _setIsLoading(false);
       }
       Navigator.of(_context).popUntil(ModalRoute.withName('/'));
-    }else {
+    } else {
       Fluttertoast.showToast(
           msg: "가입 실패",
           toastLength: Toast.LENGTH_SHORT,
@@ -139,6 +141,7 @@ class J007ViewModel extends ChangeNotifier {
           textColor: Colors.white,
           fontSize: 12.0);
     }
+    _setIsLoading(false);
   }
 
   String getCountryName(String isoCode) {
@@ -274,4 +277,9 @@ class J007ViewModel extends ChangeNotifier {
       color: Color(0xffe4e7e8),
     );
   }
+
+
+
+
+
 }
