@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:forutonafront/Common/SignValid/Impl/DefaultSignValidImpl.dart';
-import 'package:forutonafront/Common/SignValid/SignVaildService.dart';
+import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
 
-class IdDuplicationCheckSignValidImpl extends SignValidService with DefaultSignValidMix,IdDuplicationCheckSignValidMix{
+
+import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidImpl.dart';
+
+class IdDuplicationCheckSignValidImpl extends SignUpValidService with DefaultSignValidMix,IdDuplicationCheckSignValidMix{
 
 }
-mixin IdDuplicationCheckSignValidMix on SignValidService {
+mixin IdDuplicationCheckSignValidMix on SignUpValidService {
   bool _isFireBaseIdTextError = true;
   String _idFireBaseTextErrorText = "";
 
@@ -37,21 +40,9 @@ mixin IdDuplicationCheckSignValidMix on SignValidService {
         return ;
       }
     }on PlatformException catch (e) {
-      if(e.code == "ERROR_INVALID_EMAIL"){
-        _isFireBaseIdTextError = true;
-        _idFireBaseTextErrorText = "*이메일 형식이 맞지 않습니다.";
-      } else if(e.code == "error"){
-        if(e.message == "Given String is empty or null"){
-          _isFireBaseIdTextError = true;
-          _idFireBaseTextErrorText = "*이메일 형식이 맞지 않습니다.";
-        }else {
-          _isFireBaseIdTextError = true;
-          _idFireBaseTextErrorText = e.message;
-        }
-      } else {
-        _isFireBaseIdTextError = true;
-        _idFireBaseTextErrorText = e.message;
-      }
+      FireBaseValidErrorUtil error = FireBaseValidErrorUtil();
+      _isFireBaseIdTextError = true;
+      _idFireBaseTextErrorText = error.getErrorText(e);
       return ;
     }
     super.emailIdValid(email);

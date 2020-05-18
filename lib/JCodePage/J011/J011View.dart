@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J011/J011ViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,18 +34,19 @@ class J011View extends StatelessWidget {
                         ]),
                         joinProgressBar(context)
                       ],
-                    )))
+                    ))),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         }));
   }
 
   Container pwCheckErrorDisplayBar(J011ViewModel model) {
-    return model.isPwCheckTextError
+    return model.hasPwCheckError()
         ? Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: 22),
             height: 27,
-            child: Text(model.pwCheckTextErrorText,
+            child: Text(model.pwCheckErrorText(),
                 style: GoogleFonts.notoSans(
                   fontSize: 14,
                   color: Color(0xffff4f9a),
@@ -62,8 +64,8 @@ class J011View extends StatelessWidget {
         child: Stack(children: <Widget>[
           TextField(
             controller: model.pwCheckEditingController,
-            onChanged: model.onPwEditChangeText,
-            onEditingComplete: model.onPwEditComplete,
+            onChanged: model.onPwCheckEditChangeText,
+            onEditingComplete: model.onPwCheckComplete,
             obscureText: true,
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(16, 16, 44, 16),
@@ -82,7 +84,7 @@ class J011View extends StatelessWidget {
                     borderSide:
                         BorderSide(color: Color(0xff3497FD), width: 1))),
           ),
-          model.isPwCheckTypeValid()
+          !model.hasPwCheckError()
               ? Positioned(
                   top: 16,
                   right: 16,
@@ -101,12 +103,12 @@ class J011View extends StatelessWidget {
   }
 
   Container pwTextErrorDisplayBar(J011ViewModel model) {
-    return model.isPwTextError
+    return model.hasPwError()
         ? Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: 22),
             height: 27,
-            child: Text(model.pwTextErrorText,
+            child: Text(model.pwErrorText(),
                 style: GoogleFonts.notoSans(
                   fontSize: 14,
                   color: Color(0xffff4f9a),
@@ -124,7 +126,7 @@ class J011View extends StatelessWidget {
         child: Stack(children: <Widget>[
           TextField(
             controller: model.pwEditingController,
-            onChanged: model.onPwCheckEditChangeText,
+            onChanged: model.onPwEditChangeText,
             onEditingComplete: model.onPwEditComplete,
             obscureText: true,
             decoration: InputDecoration(
@@ -144,7 +146,7 @@ class J011View extends StatelessWidget {
                     borderSide:
                         BorderSide(color: Color(0xff3497FD), width: 1))),
           ),
-          model.isPwTypeValid()
+          !model.hasPwError()
               ? Positioned(
                   top: 16,
                   right: 16,

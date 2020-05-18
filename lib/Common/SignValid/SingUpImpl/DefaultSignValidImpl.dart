@@ -1,11 +1,11 @@
-import 'package:forutonafront/Common/SignValid/SignVaildService.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 
-class DefaultSignValidImpl extends SignValidService with DefaultSignValidMix {
+class DefaultSignValidImpl extends SignUpValidService with DefaultSignValidMix {
 
 
 }
-mixin DefaultSignValidMix on SignValidService {
+mixin DefaultSignValidMix on SignUpValidService {
   bool _isIdTextError = true;
   String _idTextErrorText = "";
   bool _pwTextError = true;
@@ -69,7 +69,7 @@ mixin DefaultSignValidMix on SignValidService {
       _pwTextErrorText = "패스워드가 16자리 이상 입니다.";
     } else if ((match1 + match2 + match3 + match4) < 3) {
       _pwTextError = true;
-      _pwTextErrorText = "영문 소문자,대문자,숫자,특수문자 중 3개 이상 조합";
+      _pwTextErrorText = "영문, 소문자, 대문자, 특수문자 중 3개 이상 조합";
     } else {
       _pwTextError = false;
       _pwTextErrorText =  "";
@@ -90,9 +90,10 @@ mixin DefaultSignValidMix on SignValidService {
   void pwCheckValid(String pw,String pwCheck) {
     _pwCheckError = false;
     _pwCheckErrorText = "";
-    if(pwCheck.length <8){
-      _pwCheckError = false;
+    if(pwCheck.length < 8){
+      _pwCheckError = true;
       _pwCheckErrorText = "";
+      return ;
     }
     if (pw != pwCheck) {
       _pwCheckError = true;
@@ -101,6 +102,7 @@ mixin DefaultSignValidMix on SignValidService {
       _pwCheckError = false;
       _pwCheckErrorText = "";
     }
+    return ;
   }
 
   @override
@@ -139,8 +141,6 @@ mixin DefaultSignValidMix on SignValidService {
     return _nickNameErrorText;
   }
 
-
-
   bool _isEmailTypeValid(String emailId) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -150,6 +150,5 @@ mixin DefaultSignValidMix on SignValidService {
     else
       return true;
   }
-
 
 }

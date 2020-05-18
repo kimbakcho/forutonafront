@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/SignValid/Impl/PhoneFindValidImpl.dart';
-import 'package:forutonafront/Common/SignValid/PhoneFindValidService.dart';
+import 'package:forutonafront/Common/SignValid/PwFindValid/PhoneFindValidService.dart';
+import 'package:forutonafront/Common/SignValid/PwFindValidImpl/PhoneFindValidImpl.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J010/J010View.dart';
@@ -44,7 +44,7 @@ class J009ViewModel extends ChangeNotifier {
     _setIsLoading(true);
     await _phoneFindValidService.emailIdValid(idEditingController.text);
     _hasComplete = true;
-    if (!_phoneFindValidService.hasPhoneEmailError()) {
+    if (!_phoneFindValidService.hasEmailError()) {
       GlobalModel globalModel = Provider.of(_context, listen: false);
       globalModel.pwFindPhoneAuthReqDto.email = idEditingController.text;
       Navigator.of(_context)
@@ -66,7 +66,12 @@ class J009ViewModel extends ChangeNotifier {
   }
 
   bool hasEmailError() {
-    return _phoneFindValidService.hasEmailError();
+    if(_hasComplete){
+      return _phoneFindValidService.hasEmailError();
+    }else {
+      return true;
+    }
+
   }
 
   String emailErrorText() {

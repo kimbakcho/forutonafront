@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
-import 'package:forutonafront/Common/SignValid/Impl/DefaultSignValidImpl.dart';
-import 'package:forutonafront/Common/SignValid/SignVaildService.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
+import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidImpl.dart';
+
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart';
@@ -23,7 +24,7 @@ class J007ViewModel extends ChangeNotifier {
   TextEditingController userIntroduceController = new TextEditingController();
   int userIntroduceInputTextLength = 0;
   String currentCountryCode = "KR";
-  SignValidService _signValidService = new DefaultSignValidImpl();
+  SignUpValidService _signValidService = new DefaultSignValidImpl();
 
   File _currentPickProfileImage;
   bool _isChangeProfileImage = false;

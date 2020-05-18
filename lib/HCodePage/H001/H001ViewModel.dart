@@ -50,6 +50,7 @@ class H001ViewModel with ChangeNotifier {
     h001CenterListViewController
         .addListener(h001CenterListViewControllerListener);
     _setIsLoading(true);
+    await _geoLocationUtil.permissionCheck();
     if(await _geoLocationUtil.permissionCheck()){
       _currentPosition = await Geolocator().getCurrentPosition();
       await reFreshSearchBall(_currentPosition);

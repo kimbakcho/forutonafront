@@ -1,4 +1,4 @@
-abstract class SignValidService {
+abstract class SignUpValidService {
   Future<void> emailIdValid(String email);
   bool hasEmailError();
   String emailErrorText();

@@ -2,14 +2,27 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/SignValid/PwFindValid/PwFindValidService.dart';
+import 'package:forutonafront/Common/SignValid/PwFindValidImpl/PwFindValidImpl.dart';
 import 'package:forutonafront/JCodePage/J013/J013View.dart';
 
 class J012ViewModel extends ChangeNotifier{
   final BuildContext _context;
   TextEditingController idEditingController = new TextEditingController();
-  bool isIdTextError = false;
-  String idTextErrorText = "";
+
   J012ViewModel(this._context);
+  bool _idEditCompleteFlag = false;
+  bool _isLoading = false;
+
+  getIsLoading() {
+    return _isLoading;
+  }
+  _setIsLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  PwFindValidService _pwFindValidService = PwFindValidImpl();
 
 
   void onBackTap() {
@@ -25,44 +38,37 @@ class J012ViewModel extends ChangeNotifier{
   }
 
   onNextComplete() async{
-    isIdTextError = false;
-    idTextErrorText = "";
-    await onIdEditComplete();
-    if (!isIdTextError) {
+    _idEditCompleteFlag = true;
+    _setIsLoading(true);
+    await _pwFindValidService.emailIdValid(idEditingController.text);
+    if (!_pwFindValidService.hasEmailError()) {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: idEditingController.text);
       Navigator.of(_context).push(MaterialPageRoute(builder: (_)=>J013View(idEditingController.text)));
     }
+    _setIsLoading(false);
   }
 
   void onIdEditChangeText(String value) {
+    _idEditCompleteFlag = false;
     notifyListeners();
   }
 
   Future<void> onIdEditComplete() async {
-    String id = idEditingController.text;
-    var list =
-    await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: id);
-    if (!isEmailTypeValid()) {
-      isIdTextError = true;
-      idTextErrorText = "*이메일 형식이 맞지 않습니다.";
-    } else if (list.length == 0) {
-      isIdTextError = true;
-      idTextErrorText = "*입력하신 정보와 일치하는 계정이 없습니다.";
-    } else {
-      isIdTextError = false;
-      idTextErrorText = "";
-    }
+    _idEditCompleteFlag = true;
+    await _pwFindValidService.emailIdValid(idEditingController.text);
     notifyListeners();
   }
-
-  bool isEmailTypeValid() {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(idEditingController.text))
-      return false;
-    else
-      return true;
+  bool hasEmailError(){
+      return _pwFindValidService.hasEmailError();
   }
+  String emailErrorText(){
+    if(_idEditCompleteFlag){
+      return _pwFindValidService.emailErrorText();
+    }else {
+      return "";
+    }
+
+  }
+
 
 }

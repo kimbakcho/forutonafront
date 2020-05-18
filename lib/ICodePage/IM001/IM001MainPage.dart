@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageViewModel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -63,7 +64,8 @@ class IM001MainPage extends StatelessWidget {
                         left: 0,
                         child: bottomBar(model,context),
                       ),
-                    ])))
+                    ]))),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         }));
   }

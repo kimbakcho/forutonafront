@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/JCodePage/J010/J010ViewModel.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -35,7 +36,8 @@ class J010View extends StatelessWidget {
                         )
                       ]),
                       joinProgressBar(context)
-                    ])))
+                    ]))),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         },
       ),
@@ -140,6 +142,7 @@ class J010View extends StatelessWidget {
                     height: 50,
                     child: TextField(
                         controller: model.authNumberEditingController,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                             hintText: "인증번호 입력",

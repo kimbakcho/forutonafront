@@ -73,7 +73,16 @@ class IM001MainPageViewModel extends ChangeNotifier {
   //Repository
   FBallRepository _fBallRepository = FBallRepository();
 
+  //Loading
+  bool _isLoading = false;
+  getIsLoading() {
+    return _isLoading;
+  }
 
+  _setIsLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 
   IM001MainPageViewModel(this._context, this._setUpPosition, this.address) {
     _ballUuid = new Uuid().v4();
@@ -187,12 +196,9 @@ class IM001MainPageViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-//    _ticker.dispose();
     if (_clipBoardCheckTimer != null) {
       _clipBoardCheckTimer.cancel();
     }
-
-
     super.dispose();
   }
 
@@ -210,6 +216,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
   }
 
   void onCompleteTap() async {
+    _setIsLoading(true);
     List<Uint8List> images = [];
     List<BallImageItemDto> uploadListImageItemDto = [];
     for (var o in ballImageList) {
@@ -234,7 +241,6 @@ class IM001MainPageViewModel extends ChangeNotifier {
       issueBallDescriptionDto.youtubeVideoId =
           YoutubeIdParser.getIdFromUrl(validYoutubeLink);
     }
-
     FBallInsertReqDto ballInsertReqDto = FBallInsertReqDto();
     ballInsertReqDto.ballType = FBallType.IssueBall;
     //JSON 으로 넣어 준 다음 다음에 다시 JSON 으로 파서 해서 사용
@@ -251,11 +257,11 @@ class IM001MainPageViewModel extends ChangeNotifier {
       tags.add(TagInsertReqDto(ballInsertReqDto.ballUuid, textWidget.data));
     }
     ballInsertReqDto.tags = tags;
-
     var result = await _fBallRepository.insertBall(ballInsertReqDto);
     if (result == 1) {
-      Navigator.of(_context).popUntil(ModalRoute.withName('HCODE'));
+      Navigator.of(_context).popUntil(ModalRoute.withName('/'));
     }
+    _setIsLoading(false);
   }
 
   //이미지 추가를 눌렀을때

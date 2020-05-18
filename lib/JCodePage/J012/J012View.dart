@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J012/J012ViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,18 +34,19 @@ class J012View extends StatelessWidget {
                           ]),
                           joinProgressBar(context)
                         ],
-                      )))
+                      ))),
+              model.getIsLoading() ? CommonLoadingComponent() : Container()
             ],
           );
         }));
   }
   Container emailErrorDisplayBar(J012ViewModel model) {
-    return model.isIdTextError
+    return model.hasEmailError()
         ? Container(
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(left: 22),
       height: 27,
-      child: Text(model.idTextErrorText,
+      child: Text(model.emailErrorText(),
           style: GoogleFonts.notoSans(
             fontSize: 14,
             color: Color(0xffff4f9a),
@@ -82,7 +84,7 @@ class J012View extends StatelessWidget {
                     borderSide:
                     BorderSide(color: Color(0xff3497FD), width: 1))),
           ),
-          model.isEmailTypeValid()
+          !model.hasEmailError()
               ? Positioned(
               top: 16,
               right: 16,
@@ -152,7 +154,7 @@ class J012View extends StatelessWidget {
       child: Container(
         height: 10,
         child: LinearProgressIndicator(
-          value:1,
+          value:0.5,
           backgroundColor: Color(0xffCCCCCC),
           valueColor: AlwaysStoppedAnimation<Color>(Color(0xff3497FD)),
         ),
@@ -172,7 +174,7 @@ class J012View extends StatelessWidget {
                 child: Icon(Icons.arrow_back)),
             width: 48),
         Container(
-            child: Text("휴대폰 인증하기",
+            child: Text("이메일주소 인증하기",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,

@@ -1,12 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/Common/SignValid/SignIn/SignInValidWithSignInService.dart';
+import 'package:forutonafront/Common/SignValid/SignInImpl/FireBaseSignInValidImpl.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Service/Impl/NotJoinException.dart';
-
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart';
 import 'package:forutonafront/GlobalModel.dart';
@@ -21,13 +20,18 @@ class J001ViewModel extends ChangeNotifier {
   FocusNode idTextFocusNode = FocusNode();
   FocusNode pwTextFocusNode = FocusNode();
   bool _isLoading = false;
-  getIsLoading(){
+
+  getIsLoading() {
     return _isLoading;
   }
-  _setIsLoading(bool value){
+
+  _setIsLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
+
+  SignInValidWithSignInService _signInValidWithSignInService =
+      new FireBaseSignInValidImpl();
 
   J001ViewModel(this._context) {
     GlobalModel globalModel = Provider.of<GlobalModel>(_context, listen: false);
@@ -64,60 +68,44 @@ class J001ViewModel extends ChangeNotifier {
   }
 
   onLoginBtnClick() async {
-    bool errorCheck = false;
-    String errorText = "";
-    try {
-      AuthResult authResult = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: idTextFieldController.text,
-              password: pwTextFieldController.text);
-      GlobalModel globalModel = Provider.of(_context, listen: false);
-      globalModel.setFUserInfoDto();
-      Navigator.of(_context).popUntil(ModalRoute.withName('/'));
-    } catch (value) {
-      errorCheck = true;
-      PlatformException exCode = value as PlatformException;
+    _setIsLoading(true);
+    await _signInValidWithSignInService.signInValidWithSignIn(
+        idTextFieldController.text, pwTextFieldController.text);
+    if (_signInValidWithSignInService.hasSignInError()) {
       Fluttertoast.showToast(
-          msg: fireBaseLoginErrorMessageLangChage(exCode.message),
+          msg: _signInValidWithSignInService.signInErrorText(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIos: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
-    }
-  }
-
-  fireBaseLoginErrorMessageLangChage(String message) {
-    if (message == "The email address is badly formatted.") {
-      return "아이디가 이메일 형식이 아닙니다";
-    } else if (message ==
-        "There is no user record corresponding to this identifier. The user may have been deleted.") {
-      return "아이디가 없거나 패스워드가 틀렸습니다.";
-    } else if (message ==
-        "The password is invalid or the user does not have a password.") {
-      return "아이디가 없거나 패스워드가 틀렸습니다.";
-    } else if (message == "An internal error has occurred. [ 7: ]") {
-      return "네트워크 접속에 실패했습니다. 네트워크 연결 상태를 확인해주세요.";
-    } else if( message.indexOf("A network error") >= 0 ) {
-      return "네트워크 접속에 실패했습니다. 네트워크 연결 상태를 확인해주세요.";
     } else {
-      return message;
+      GlobalModel globalModel = Provider.of(_context, listen: false);
+      globalModel.setFUserInfoDto();
+      Navigator.of(_context).popUntil(ModalRoute.withName('/'));
     }
+    _setIsLoading(false);
   }
 
   void onFaceBookLogin() async {
-    SnsLoginService snsLoginService = SnsSupportServiceFactory.createSnsSupportService(SnsSupportService.FaceBook);
+    SnsLoginService snsLoginService =
+        SnsSupportServiceFactory.createSnsSupportService(
+            SnsSupportService.FaceBook);
     await snsLoginLogic(snsLoginService);
   }
 
   void onKakaoLogin() async {
-    SnsLoginService snsLoginService = SnsSupportServiceFactory.createSnsSupportService(SnsSupportService.Kakao);
+    SnsLoginService snsLoginService =
+        SnsSupportServiceFactory.createSnsSupportService(
+            SnsSupportService.Kakao);
     await snsLoginLogic(snsLoginService);
   }
 
   void onNaverLogin() async {
-    SnsLoginService snsLoginService = SnsSupportServiceFactory.createSnsSupportService(SnsSupportService.Naver);
+    SnsLoginService snsLoginService =
+        SnsSupportServiceFactory.createSnsSupportService(
+            SnsSupportService.Naver);
     await snsLoginLogic(snsLoginService);
   }
 
@@ -125,7 +113,7 @@ class J001ViewModel extends ChangeNotifier {
     try {
       _setIsLoading(true);
       if (await snsLoginService.tryLogin()) {
-        GlobalModel globalModel = Provider.of(_context,listen: false);
+        GlobalModel globalModel = Provider.of(_context, listen: false);
         await globalModel.setFUserInfoDto();
         Navigator.of(_context).popUntil(ModalRoute.withName('/'));
       }
