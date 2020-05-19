@@ -8,33 +8,15 @@ part of 'FBallReqDto.dart';
 
 FBallReqDto _$FBallReqDtoFromJson(Map<String, dynamic> json) {
   return FBallReqDto(
-    json['uid'] as String,
-    json['cubeUuid'] as String,
-    (json['longitude'] as num)?.toDouble(),
-    (json['latitude'] as num)?.toDouble(),
-    json['matchBallName'] as String,
-    _$enumDecodeNullable(_$FBallTypeEnumMap, json['fBallType']),
-    json['makeTime'] == null
-        ? null
-        : DateTime.parse(json['makeTime'] as String),
-    _$enumDecodeNullable(_$FBallStateEnumMap, json['fBallState']),
-    json['page'] == null
-        ? null
-        : Pageable.fromJson(json['page'] as Map<String, dynamic>),
+    _$enumDecodeNullable(_$FBallTypeEnumMap, json['ballType']),
+    json['ballUuid'] as String,
   );
 }
 
 Map<String, dynamic> _$FBallReqDtoToJson(FBallReqDto instance) =>
     <String, dynamic>{
-      'uid': instance.uid,
-      'cubeUuid': instance.cubeUuid,
-      'longitude': instance.longitude,
-      'latitude': instance.latitude,
-      'matchBallName': instance.matchBallName,
-      'fBallType': _$FBallTypeEnumMap[instance.fBallType],
-      'makeTime': instance.makeTime?.toIso8601String(),
-      'fBallState': _$FBallStateEnumMap[instance.fBallState],
-      'page': instance.page,
+      'ballType': _$FBallTypeEnumMap[instance.ballType],
+      'ballUuid': instance.ballUuid,
     };
 
 T _$enumDecode<T>(
@@ -72,10 +54,4 @@ T _$enumDecodeNullable<T>(
 const _$FBallTypeEnumMap = {
   FBallType.IssueBall: 'IssueBall',
   FBallType.QuestBall: 'QuestBall',
-};
-
-const _$FBallStateEnumMap = {
-  FBallState.Wait: 'Wait',
-  FBallState.Play: 'Play',
-  FBallState.Finish: 'Finish',
 };

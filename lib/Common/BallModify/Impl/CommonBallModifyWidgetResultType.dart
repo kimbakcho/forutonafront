@@ -1,0 +1,3 @@
+enum CommonBallModifyWidgetResultType {
+  Update,Delete
+}

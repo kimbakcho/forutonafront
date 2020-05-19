@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
+import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
@@ -94,7 +95,7 @@ class H002_01PageViewModel extends ChangeNotifier {
 
   void onMapBallAdd(LatLng target,String address) {
     Navigator.of(_context).push(MaterialPageRoute(
-      builder: (_)=>IM001MainPage(target,address),
+      builder: (_)=>IM001MainPage(target,address,null,IM001MainPageEnterMode.Insert),
     ));
   }
 }

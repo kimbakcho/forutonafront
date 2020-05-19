@@ -33,13 +33,6 @@ class FBallRepository {
     return FBallImageUploadResDto.fromJson(response.data);
   }
 
-  Future<int> insertBall(FBallInsertReqDto reqDto)async {
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken(refresh: true);
-    FDio dio = FDio(idToken.token);
-    var response = await dio.post("/v1/FBall/Insert",data: reqDto.toJson());
-    return int.parse(response.data);
-  }
 
   /// 지도로 부터 사각형 양끝단을 받아 BackEnd 로 부터 범위 검색
   Future<FBallListUpWrapDto> listUpBallFromMapArea(BallFromMapAreaReqDto reqDto) async {

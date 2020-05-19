@@ -876,7 +876,7 @@ class ID001MainPage extends StatelessWidget {
           padding: EdgeInsets.only(left: 8),
           child: FlatButton(
               padding: EdgeInsets.all(0),
-              onPressed: () {},
+              onPressed: model.showBallSetting,
               child: Icon(
                 ForutonaIcon.setting,
                 color: Colors.black,

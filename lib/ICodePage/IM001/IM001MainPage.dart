@@ -4,8 +4,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageViewModel.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +18,12 @@ import 'BallImageItemDto.dart';
 class IM001MainPage extends StatelessWidget {
   final LatLng setUpPosition;
   final String address;
+  final String ballUuid;
+  final IM001MainPageEnterMode mode;
 
-  const IM001MainPage(this.setUpPosition, this.address);
+
+  IM001MainPage(
+      this.setUpPosition, this.address, this.ballUuid, this.mode);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,7 @@ class IM001MainPage extends StatelessWidget {
         statusBarIconBrightness: Brightness.dark);
 
     return ChangeNotifierProvider(
-        create: (_) => IM001MainPageViewModel(context, setUpPosition, address),
+        create: (_) => IM001MainPageViewModel(context, setUpPosition, address,ballUuid,mode),
         child: Consumer<IM001MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -56,13 +63,13 @@ class IM001MainPage extends StatelessWidget {
                               contentDivder(),
                               imageListBar(model),
                               youtubeBar(model),
-                              tagBar(model,context),
+                              tagBar(model, context),
                             ]))
                       ]),
                       Positioned(
                         bottom: 0,
                         left: 0,
-                        child: bottomBar(model,context),
+                        child: bottomBar(model, context),
                       ),
                     ]))),
             model.getIsLoading() ? CommonLoadingComponent() : Container()
@@ -70,14 +77,14 @@ class IM001MainPage extends StatelessWidget {
         }));
   }
 
-  Container tagBar(IM001MainPageViewModel model,BuildContext context) {
+  Container tagBar(IM001MainPageViewModel model, BuildContext context) {
     return model.tagBarVisibility
         ? Container(
             child: Column(children: <Widget>[
             tagTopLabelBar(model),
             tagEditTextBar(model),
             Container(
-              width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: Wrap(
                   direction: Axis.horizontal,
@@ -392,58 +399,57 @@ class IM001MainPage extends StatelessWidget {
     }
   }
 
-  Container bottomBar(IM001MainPageViewModel model,BuildContext context) {
+  Container bottomBar(IM001MainPageViewModel model, BuildContext context) {
     return !model.keyboardVisibility
         ? Container(
             height: 60.00,
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  height: 42.00,
-                  width: 42.00,
-                  child: FlatButton(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
-                    shape: CircleBorder(),
-                    onPressed: model.onShowSelectPictureDialog,
-                    child: Icon(ForutonaIcon.camera, color: Colors.white),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xffee9acf),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0.00, 3.00),
-                        color: Color(0xff000000).withOpacity(0.16),
-                        blurRadius: 6,
-                      ),
-                    ],
-                  ),
+            child: Row(children: <Widget>[
+              Container(
+                height: 42.00,
+                width: 42.00,
+                child: FlatButton(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
+                  shape: CircleBorder(),
+                  onPressed: model.onShowSelectPictureDialog,
+                  child: Icon(ForutonaIcon.camera, color: Colors.white),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 16),
-                  height: 42.00,
-                  width: 42.00,
-                  child: FlatButton(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
-                    shape: CircleBorder(),
-                    onPressed: model.youtubeAttachVisibilityToggle,
-                    child: Icon(ForutonaIcon.videoattach, color: Colors.white),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xff8382F2),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0.00, 3.00),
-                        color: Color(0xff000000).withOpacity(0.16),
-                        blurRadius: 6,
-                      ),
-                    ],
-                  ),
+                decoration: BoxDecoration(
+                  color: Color(0xffee9acf),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.00, 3.00),
+                      color: Color(0xff000000).withOpacity(0.16),
+                      blurRadius: 6,
+                    ),
+                  ],
                 ),
-                Container(
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 16),
+                height: 42.00,
+                width: 42.00,
+                child: FlatButton(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
+                  shape: CircleBorder(),
+                  onPressed: model.youtubeAttachVisibilityToggle,
+                  child: Icon(ForutonaIcon.videoattach, color: Colors.white),
+                ),
+                decoration: BoxDecoration(
+                  color: Color(0xff8382F2),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.00, 3.00),
+                      color: Color(0xff000000).withOpacity(0.16),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
                   margin: EdgeInsets.only(left: 16),
                   height: 42.00,
                   width: 42.00,
@@ -454,19 +460,16 @@ class IM001MainPage extends StatelessWidget {
                     child: Icon(ForutonaIcon.tagadd, color: Colors.white),
                   ),
                   decoration: BoxDecoration(
-                    color: Color(0xff88D4F1),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0.00, 3.00),
-                        color: Color(0xff000000).withOpacity(0.16),
-                        blurRadius: 6,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                      color: Color(0xff88D4F1),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.00, 3.00),
+                          color: Color(0xff000000).withOpacity(0.16),
+                          blurRadius: 6,
+                        )
+                      ]))
+            ]),
             decoration: BoxDecoration(
               color: Color(0xffffffff).withOpacity(0.90),
               border: Border.all(

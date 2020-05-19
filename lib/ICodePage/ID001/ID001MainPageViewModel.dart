@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:forutonafront/Common/BallModify/BallModifyService.dart';
+import 'package:forutonafront/Common/BallModify/Impl/IssueBallModifyImpl.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagResDto.dart';
@@ -97,20 +99,15 @@ class ID001MainPageViewModel extends ChangeNotifier {
     if (issueBallDescriptionDto.youtubeVideoId != null) {
       youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
     }
-
      tagLoad(fBallResDto.ballUuid);
-
      ballMarkerLoad();
-
     makerUserInfo =
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-
      replyLoad();
-
      loadFBallValuation();
-
     notifyListeners();
   }
+
   bool showFBallValuation(){
     GlobalModel globalModel = Provider.of(_context, listen: false);
     if(globalModel.fUserInfoDto != null){
@@ -858,6 +855,17 @@ class ID001MainPageViewModel extends ChangeNotifier {
         return Colors.white;
       }
     }
+  }
+
+  void showBallSetting() async {
+    BallModifyService ballModifyService = IssueBallModifyImpl();
+//    BallReportingService ballReportingService = BallReportingService();
+    if(await ballModifyService.isCanModify(fBallResDto)){
+      ballModifyService.showModifySelectDialog(_context,fBallResDto);
+    }else {
+
+    }
+
   }
 }
 

@@ -26,7 +26,7 @@ class BallImageViewer extends StatelessWidget {
             children: <Widget>[
               Scaffold(
                   appBar: AppBar(
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.black,
                       title: Row(
                         children: <Widget>[Text("이미지"), Spacer(),
                           Text("${model.currentPage+1}"+'/ '+"${imageList.length}")],
