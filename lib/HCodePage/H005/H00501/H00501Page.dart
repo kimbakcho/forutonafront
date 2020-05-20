@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 
 import 'package:forutonafront/HCodePage/H005/H00501/H00501PageViewModel.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +35,8 @@ class H00501Page extends StatelessWidget {
                             }else {
                               return Container(
                                   margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
-                                  child: BallStyle1Support.selectBallWidget(model.listUpBalls[index-1]));
+                                  child: BallStyle1Widget.create(model.listUpBalls[index-1],model.onRequestReFreshBall) as Widget
+                              );
                             }
                           }))
                 ],

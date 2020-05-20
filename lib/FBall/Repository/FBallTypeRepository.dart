@@ -6,9 +6,9 @@ import 'package:forutonafront/FBall/Repository/Impl/IssueBallTypeRepository.dart
 
 abstract class FBallTypeRepository<T1 extends FBallInsertReqDto,T2 extends FBallResDto> {
   Future<int> insertBall(T1 reqDto);
-  Future<T2> selectBall(FBallReqDto ballUuid);
+  Future<T2> selectBall(FBallReqDto reqDto);
   Future<int> updateBall(T1 reqDto);
-  Future<int> deleteBall(FBallReqDto ballUuid);
+  Future<int> deleteBall(FBallReqDto reqDto);
   factory FBallTypeRepository.create(FBallType fBallType){
     if(fBallType == FBallType.IssueBall){
       FBallTypeRepository<FBallInsertReqDto,FBallResDto> instance = IssueBallTypeRepository();

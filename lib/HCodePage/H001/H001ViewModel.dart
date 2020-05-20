@@ -9,12 +9,17 @@ import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:uuid/uuid.dart';
 
 
 enum H001PageState { H001_01, H003_01 }
@@ -30,9 +35,20 @@ class H001ViewModel with ChangeNotifier {
   bool addressDisplayShowFlag = true;
   bool makeButtonDisplayShowFlag = true;
   TagRankingWrapDto rankingWrapDto;
+  String listViewKey = Uuid().v4();
+
   FBallListUpWrapDto fBallListUpWrapDto =
       new FBallListUpWrapDto(DateTime.now(), []);
+
   bool _isLoading = false;
+  getIsLoading() {
+    return _isLoading;
+  }
+
+  _setIsLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
   Position _currentPosition;
   bool _inlineRanking = true;
   int _pageCount = 0;
@@ -56,15 +72,6 @@ class H001ViewModel with ChangeNotifier {
       await reFreshSearchBall(_currentPosition);
     }
     _setIsLoading(false);
-  }
-
-  bool getIsLoading(){
-    return _isLoading;
-  }
-
-  _setIsLoading(bool value){
-    _isLoading = value;
-    notifyListeners();
   }
 
 
@@ -94,9 +101,8 @@ class H001ViewModel with ChangeNotifier {
       selectPositionAddress = address;
     }
     getTagRanking(serachPosition);
-    fBallListUpWrapDto = new FBallListUpWrapDto(DateTime.now(), []);
-    _pageCount = 0;
 
+    _pageCount = 0;
     getBallListUp(serachPosition, _pageCount, _ballPageLimitSize);
 
   }
@@ -113,19 +119,22 @@ class H001ViewModel with ChangeNotifier {
     var fBallListUpWrapDtoTemp =
         await _fBallRepository.listUpBall(ballListUpReqDto);
     if(page == 0){
-      fBallListUpWrapDto.balls.clear();
-      notifyListeners();
+      this.fBallListUpWrapDto.balls.clear();
     }
-    fBallListUpWrapDto.searchTime = fBallListUpWrapDtoTemp.searchTime;
-    fBallListUpWrapDto.balls.addAll(fBallListUpWrapDtoTemp.balls);
-
-    if (fBallListUpWrapDto.balls.length == 0) {
+    this.fBallListUpWrapDto.balls.addAll(fBallListUpWrapDtoTemp.balls);
+    reRenderListView();
+    if (this.fBallListUpWrapDto.balls.length == 0) {
       hasBall = false;
       addressDisplayShowFlag = true;
     } else {
       hasBall = true;
     }
+
     notifyListeners();
+  }
+
+  void reRenderListView() {
+    this.listViewKey = Uuid().v4();
   }
 
   Future getTagRanking(Position currentPosition) async {
@@ -163,7 +172,7 @@ class H001ViewModel with ChangeNotifier {
   }
 
   bool _hasBalls() {
-    return !(_pageCount * _ballPageLimitSize > fBallListUpWrapDto.balls.length);
+    return !(_pageCount * _ballPageLimitSize > this.fBallListUpWrapDto.balls.length);
   }
 
   bool _isScrollerBottomOver() {
@@ -215,7 +224,25 @@ class H001ViewModel with ChangeNotifier {
                  return J001View();
                }));
      }
+  }
 
+  onRequestReFreshBall(FBallResDto p1) async {
+    _setIsLoading(true);
+    double scrollerOffset = h001CenterListViewController.offset ;
+    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+    var ballResDto = await fBallTypeRepository
+        .selectBall(FBallReqDto(p1.ballType, p1.ballUuid));
+    var indexWhere = this.fBallListUpWrapDto.balls.indexWhere((element) => element.ballUuid == ballResDto.ballUuid);
+    if(!ballResDto.ballDeleteFlag){
+      this.fBallListUpWrapDto.balls[indexWhere] = ballResDto;
+    }else {
+      this.fBallListUpWrapDto.balls.removeAt(indexWhere);
+    }
+    _setIsLoading(false);
+    //key변경시 ReReander
+    reRenderListView();
+    await Future.delayed(Duration(milliseconds: 10));
+    h001CenterListViewController.jumpTo(scrollerOffset);
 
   }
 }

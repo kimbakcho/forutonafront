@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAni.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -102,7 +103,8 @@ class ID001MainPage extends StatelessWidget {
                             left: 0,
                             child: topHeaderBar(model, context))
                       ],
-                    )))
+                    ))),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         }));
   }

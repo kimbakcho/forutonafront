@@ -28,5 +28,6 @@ class FBallResForMarkerDto extends FBallResDto {
             ballResDto.userLevel,
             ballResDto.distanceWithMapCenter,
             ballResDto.distanceDisplayText,
-            ballResDto.contributor);
+            ballResDto.contributor,
+            ballResDto.ballDeleteFlag);
 }

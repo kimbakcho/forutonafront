@@ -148,4 +148,7 @@ class H00502pageViewModel extends ChangeNotifier {
         }).toList();
     selectOrder = _ordersItems[0];
   }
+
+  onRequestReFreshBall(FBallResDto p1) {
+  }
 }

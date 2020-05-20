@@ -29,6 +29,7 @@ class FBallResDto {
   double distanceWithMapCenter;
   String distanceDisplayText;
   int contributor;
+  bool ballDeleteFlag;
 
 
   FBallResDto(
@@ -52,7 +53,8 @@ class FBallResDto {
       this.userLevel,
       this.distanceWithMapCenter,
       this.distanceDisplayText,
-      this.contributor
+      this.contributor,
+      this.ballDeleteFlag
       );
 
   factory FBallResDto.fromJson(Map<String, dynamic> json) =>

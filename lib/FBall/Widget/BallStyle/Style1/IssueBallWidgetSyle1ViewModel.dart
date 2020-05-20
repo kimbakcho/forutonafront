@@ -2,18 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
-import 'package:forutonafront/FBall/Dto/FBallDescirptionBasic.dart';
+import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
+import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
 
 class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
   final BuildContext _context;
-  FBallResDto ballResDto;
-  FBallDescirptionBasic fBallDescriptionBasic;
+  final FBallResDto ballResDto;
+  IssueBallDescriptionDto fBallDescriptionBasic;
+  final Function(FBallResDto) onRequestReFreshBall;
 
   //Loading
   bool _isLoading = false;
@@ -27,8 +30,8 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  IssueBallWidgetSyle1ViewModel(this.ballResDto, this._context) {
-    this.fBallDescriptionBasic = FBallDescirptionBasic.fromJson(
+  IssueBallWidgetSyle1ViewModel(this.ballResDto, this._context,this.onRequestReFreshBall) {
+    this.fBallDescriptionBasic = IssueBallDescriptionDto.fromJson(
         json.decode(this.ballResDto.description));
   }
 
@@ -64,23 +67,95 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
   void goIssueDetailPage() async {
     await Navigator.of(_context)
         .push(MaterialPageRoute(builder: (_) => ID001MainPage(ballResDto)));
-    _setIsLoading(true);
-    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-    this.ballResDto = await fBallTypeRepository
-        .selectBall(FBallReqDto(FBallType.IssueBall, ballResDto.ballUuid));
-    var position = await Geolocator().getLastKnownPosition();
+//    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+//    var ballResDto1 = await fBallTypeRepository
+//        .selectBall(FBallReqDto(FBallType.IssueBall, ballResDto.ballUuid));
+//    this.ballResDto.ballDeleteFlag = ballResDto1.ballDeleteFlag;
+//    if(!ballResDto1.ballDeleteFlag){
+//      var position = await Geolocator().getLastKnownPosition();
+//      ballResDto1.distanceWithMapCenter = await Geolocator().distanceBetween(
+//          ballResDto1.latitude,
+//          ballResDto1.longitude,
+//          position.latitude,
+//          position.longitude);
+//      ballResDto1.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(
+//          ballResDto1.distanceWithMapCenter);
+//      this.fBallDescriptionBasic = IssueBallDescriptionDto.fromJson(
+//          json.decode(ballResDto1.description));
+//    }
+    this.onRequestReFreshBall(ballResDto);
+  }
 
-    this.ballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
-        this.ballResDto.latitude,
-        this.ballResDto.longitude,
-        position.latitude,
-        position.longitude);
+  String getBallName(){
+    if(ballResDto.ballDeleteFlag){
+      return "(삭제됨)${ballResDto.ballName}";
+    }else {
+      return ballResDto.ballName;
+    }
+  }
 
-    this.ballResDto.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(
-        this.ballResDto.distanceWithMapCenter);
+  String getPlaceAddress(){
+    if(ballResDto.ballDeleteFlag){
+      return "";
+    }else {
+      return ballResDto.ballName;
+    }
+  }
 
-    this.fBallDescriptionBasic = FBallDescirptionBasic.fromJson(
-        json.decode(this.ballResDto.description));
-    _setIsLoading(false);
+  String getDistanceDisplayText(){
+    if(ballResDto.ballDeleteFlag){
+      return "";
+    }else {
+      return ballResDto.distanceDisplayText;
+    }
+  }
+
+  String getProfilePicktureUrl(){
+    if(ballResDto.ballDeleteFlag){
+      return Preference.basicProfileImageUrl;
+    }else {
+      return ballResDto.profilePicktureUrl;
+    }
+  }
+
+  String getNickName(){
+    if(ballResDto.ballDeleteFlag){
+      return "";
+    }else {
+      return ballResDto.nickName;
+    }
+  }
+
+  String getRemainingTime(){
+    if(ballResDto.ballDeleteFlag){
+      return "-";
+    }else {
+      return TimeDisplayUtil.getRemainingToStrFromNow(
+          this.ballResDto.activationTime);
+    }
+  }
+
+  String getCommentCount(){
+    if(ballResDto.ballDeleteFlag){
+      return "-";
+    }else {
+      return this.ballResDto.commentCount.toString();
+    }
+  }
+
+  String getDisLikeCount(){
+    if(ballResDto.ballDeleteFlag){
+      return "-";
+    }else {
+      return this.ballResDto.ballDisLikes.toString();
+    }
+  }
+
+  String getLikeCount(){
+    if(ballResDto.ballDeleteFlag){
+      return "-";
+    }else {
+      return this.ballResDto.ballLikes.toString();
+    }
   }
 }

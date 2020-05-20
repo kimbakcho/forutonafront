@@ -4,19 +4,21 @@ import 'package:forutonafront/FBall/Dto/FBallType.dart';
 
 import 'IssueBallWidgetStyle1.dart';
 
-class BallStyle1Support {
-    static Widget selectBallWidget(FBallResDto resDto){
+abstract class BallStyle1Widget {
+  FBallResDto getFBallResDto();
+
+  factory BallStyle1Widget.create(FBallResDto resDto,Function(FBallResDto) onRequestReFreshBall){
     switch (resDto.ballType) {
       case FBallType.IssueBall: {
-        return IssueBallWidgetStyle1(resDto);
+        return IssueBallWidgetStyle1(resDto,onRequestReFreshBall);
       }
       break;
       case FBallType.QuestBall:{
-        return Container(child: Text("QuestBall"),);
+        return null;
       }
       break;
       default: {
-        return Container(child: Text("don't know"),);
+        return null;
       }
       break;
     }

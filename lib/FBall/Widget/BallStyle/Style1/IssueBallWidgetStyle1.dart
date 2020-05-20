@@ -2,33 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/IssueBallWidgetSyle1ViewModel.dart';
 import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
-class IssueBallWidgetStyle1 extends StatefulWidget {
-  FBallResDto ballResDto;
 
-  IssueBallWidgetStyle1(this.ballResDto);
-
-  @override
-  _IssueBallWidgetStyle1State createState() {
-    return _IssueBallWidgetStyle1State(this.ballResDto);
-  }
-}
-
-class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
-  FBallResDto ballResDto;
-
-  _IssueBallWidgetStyle1State(this.ballResDto);
-
+class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
+  final FBallResDto ballResDto;
+  Function(FBallResDto) onRequestReFreshBall;
+  IssueBallWidgetStyle1(this.ballResDto,this.onRequestReFreshBall);
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) =>
-            IssueBallWidgetSyle1ViewModel(this.ballResDto, this.context),
+            IssueBallWidgetSyle1ViewModel(this.ballResDto, context,this.onRequestReFreshBall),
         child:
             Consumer<IssueBallWidgetSyle1ViewModel>(builder: (_, model, child) {
           return Stack(
@@ -40,9 +29,10 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
                     onPressed: model.goIssueDetailPage,
                     child: Column(children: <Widget>[
                       ballHeader(model),
-                      ballMainPickture(model),
+                      !this.ballResDto.ballDeleteFlag ?
+                      ballMainPickture(model,context) : Container(),
                       ballProfileBar(model),
-                      ballTextBar(model),
+                      ballTextBar(model,context),
                       divider(),
                       Container(
                         height: 48.00,
@@ -51,7 +41,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text(model.ballResDto.ballLikes.toString(),
+                            Text(model.getLikeCount(),
                                 style: TextStyle(
                                   fontFamily: "Gibson",
                                   fontWeight: FontWeight.w600,
@@ -63,7 +53,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
                                 child: Icon(ForutonaIcon.thumbsup,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
-                            Text(model.ballResDto.ballDisLikes.toString(),
+                            Text(model.getDisLikeCount(),
                                 style: TextStyle(
                                   fontFamily: "Gibson",
                                   fontWeight: FontWeight.w600,
@@ -75,7 +65,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
                                 child: Icon(ForutonaIcon.thumbsdown,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
-                            Text(model.ballResDto.commentCount.toString(),
+                            Text(model.getCommentCount(),
                                 style: TextStyle(
                                   fontFamily: "Gibson",
                                   fontWeight: FontWeight.w600,
@@ -88,8 +78,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
                             Text(
-                                TimeDisplayUtil.getRemainingToStrFromNow(
-                                    model.ballResDto.activationTime),
+                                model.getRemainingTime(),
                                 style: TextStyle(
                                   fontFamily: "Gibson",
                                   fontWeight: FontWeight.w600,
@@ -132,7 +121,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
     );
   }
 
-  Container ballTextBar(IssueBallWidgetSyle1ViewModel model) {
+  Container ballTextBar(IssueBallWidgetSyle1ViewModel model,BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width - 64,
       padding: EdgeInsets.only(bottom: 23),
@@ -162,7 +151,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(model.ballResDto.profilePicktureUrl)),
+                      image: NetworkImage(model.getProfilePicktureUrl())),
                   shape: BoxShape.circle,
                   border: Border.all(width: 1.00, color: Color(0xffdc3e57))),
             ),
@@ -170,7 +159,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
           Positioned(
             left: 34,
             top: 0,
-            child: Text(model.ballResDto.nickName,
+            child: Text(model.getNickName(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -182,8 +171,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
             left: 34,
             top: 16,
             child: Text(
-                TimeDisplayUtil.getRemainingToStrFromNow(
-                    model.ballResDto.activationTime),
+                model.getRemainingTime(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontSize: 8,
@@ -195,7 +183,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
     );
   }
 
-  Widget ballMainPickture(IssueBallWidgetSyle1ViewModel model) {
+  Widget ballMainPickture(IssueBallWidgetSyle1ViewModel model,BuildContext context) {
     return model.isMainPicture()
         ? Stack(children: <Widget>[
             FlatButton(
@@ -284,7 +272,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
             width: 256,
             child: Container(
                 width: 256,
-                child: Text(model.ballResDto.ballName,
+                child: Text(model.getBallName(),
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w700,
@@ -299,7 +287,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
           width: 200,
           child: Container(
             width: 200,
-            child: Text(model.ballResDto.placeAddress,
+            child: Text(model.getPlaceAddress(),
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontSize: 12,
@@ -315,7 +303,7 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
           child: Container(
             width: 68,
             alignment: Alignment.centerRight,
-            child: Text(model.ballResDto.distanceDisplayText,
+            child: Text(model.getDistanceDisplayText(),
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontSize: 10,
@@ -327,4 +315,10 @@ class _IssueBallWidgetStyle1State extends State<IssueBallWidgetStyle1> {
       padding: EdgeInsets.fromLTRB(13, 16, 12, 14),
     );
   }
+
+  @override
+  FBallResDto getFBallResDto() {
+    return this.ballResDto;
+  }
+
 }

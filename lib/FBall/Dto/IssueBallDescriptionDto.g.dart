@@ -22,6 +22,6 @@ Map<String, dynamic> _$IssueBallDescriptionDtoToJson(
         IssueBallDescriptionDto instance) =>
     <String, dynamic>{
       'text': instance.text,
-      'desimages': instance.desimages?.map((e) => e?.toJson())?.toList(),
+      'desimages': instance.desimages,
       'youtubeVideoId': instance.youtubeVideoId,
     };

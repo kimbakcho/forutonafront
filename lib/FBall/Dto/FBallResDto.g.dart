@@ -33,6 +33,7 @@ FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
     (json['distanceWithMapCenter'] as num)?.toDouble(),
     json['distanceDisplayText'] as String,
     json['contributor'] as int,
+    json['ballDeleteFlag'] as bool,
   )..ballHits = json['ballHits'] as int;
 }
 
@@ -60,6 +61,7 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'distanceWithMapCenter': instance.distanceWithMapCenter,
       'distanceDisplayText': instance.distanceDisplayText,
       'contributor': instance.contributor,
+      'ballDeleteFlag': instance.ballDeleteFlag,
     };
 
 T _$enumDecode<T>(

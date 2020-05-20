@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:forutonafront/Common/BallModify/BallModifyService.dart';
+import 'package:forutonafront/Common/BallModify/Impl/CommonBallModifyWidgetResultType.dart';
 import 'package:forutonafront/Common/BallModify/Impl/IssueBallModifyImpl.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
@@ -16,6 +17,7 @@ import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
@@ -25,6 +27,7 @@ import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/MakerSupportStyle2.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
+import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
@@ -47,7 +50,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
 
   FUserRepository _fUserRepository = new FUserRepository();
   IssueBallDescriptionDto issueBallDescriptionDto;
-  final FBallResDto fBallResDto;
+  FBallResDto fBallResDto;
   bool showMoreDetailFlag = false;
   FUserInfoResDto makerUserInfo;
 
@@ -86,41 +89,51 @@ class ID001MainPageViewModel extends ChangeNotifier {
       FBallValuationRepository();
   FBallValuationResDto fBallValuationResDto;
 
+  bool _isLoading = false;
+  getIsLoading() {
+    return _isLoading;
+  }
+
+  _setIsLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+
   ID001MainPageViewModel(this._context, this.fBallResDto) {
+    _init();
+  }
+
+  _init() async {
     initialCameraPosition = CameraPosition(
         target: LatLng(fBallResDto.latitude, fBallResDto.longitude),
         zoom: 14.425);
     issueBallDescriptionDto =
         IssueBallDescriptionDto.fromJson(json.decode(fBallResDto.description));
-    init();
-  }
-
-  init() async {
     if (issueBallDescriptionDto.youtubeVideoId != null) {
       youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
     }
-     tagLoad(fBallResDto.ballUuid);
-     ballMarkerLoad();
+    tagLoad(fBallResDto.ballUuid);
+    ballMarkerLoad();
     makerUserInfo =
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-     replyLoad();
-     loadFBallValuation();
+    replyLoad();
+    loadFBallValuation();
     notifyListeners();
   }
 
-  bool showFBallValuation(){
+  bool showFBallValuation() {
     GlobalModel globalModel = Provider.of(_context, listen: false);
-    if(globalModel.fUserInfoDto != null){
+    if (globalModel.fUserInfoDto != null) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
 
   Future<void> loadFBallValuation() async {
     GlobalModel globalModel = Provider.of(_context, listen: false);
-    userNickName =
-        globalModel.fUserInfoDto.nickName;
+    userNickName = globalModel.fUserInfoDto.nickName;
     FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
     valuationReqDto.ballUuid = fBallResDto.ballUuid;
     valuationReqDto.uid =
@@ -641,39 +654,37 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void popupInputDisplay() async {
-     var firebaseUser = await FirebaseAuth.instance.currentUser();
-     if(firebaseUser != null ){
-       ID001InputReplyViewResult result = await showGeneralDialog(
-           context: _context,
-           barrierDismissible: true,
-           transitionDuration: Duration(milliseconds: 300),
-           barrierColor: Colors.black.withOpacity(0.3),
-           barrierLabel:
-           MaterialLocalizations.of(_context).modalBarrierDismissLabel,
-           pageBuilder:
-               (_context, Animation animation, Animation secondaryAnimation) {
-             FBallReplyInsertReqDto reqDto = new FBallReplyInsertReqDto();
-             reqDto.ballUuid = fBallResDto.ballUuid;
-             return ID001InputReplyView(reqDto);
-           });
-       if (result != null) {
-         await replyLoad();
-         mainScrollController.animateTo(
-             mainScrollController.position.maxScrollExtent + 100,
-             duration: Duration(milliseconds: 500),
-             curve: Curves.linear);
-       }
-     }else {
-       Navigator.push(
-           _context,
-           MaterialPageRoute(
-               settings: RouteSettings(name: "/J001"),
-               builder: (context) {
-                 return J001View();
-               }));
-     }
-
-
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    if (firebaseUser != null) {
+      ID001InputReplyViewResult result = await showGeneralDialog(
+          context: _context,
+          barrierDismissible: true,
+          transitionDuration: Duration(milliseconds: 300),
+          barrierColor: Colors.black.withOpacity(0.3),
+          barrierLabel:
+              MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+          pageBuilder:
+              (_context, Animation animation, Animation secondaryAnimation) {
+            FBallReplyInsertReqDto reqDto = new FBallReplyInsertReqDto();
+            reqDto.ballUuid = fBallResDto.ballUuid;
+            return ID001InputReplyView(reqDto);
+          });
+      if (result != null) {
+        await replyLoad();
+        mainScrollController.animateTo(
+            mainScrollController.position.maxScrollExtent + 100,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.linear);
+      }
+    } else {
+      Navigator.push(
+          _context,
+          MaterialPageRoute(
+              settings: RouteSettings(name: "/J001"),
+              builder: (context) {
+                return J001View();
+              }));
+    }
   }
 
   void popDetailReply() async {
@@ -713,8 +724,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void onPlusBtn() async {
-    if(fBallResDto.activationTime.isBefore(DateTime.now())){
-      return ;
+    if (fBallResDto.activationTime.isBefore(DateTime.now())) {
+      return;
     }
 
     if (isPlusStatue()) {
@@ -735,8 +746,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void onMinusBtn() async {
-    if(fBallResDto.activationTime.isBefore(DateTime.now())){
-      return ;
+    if (fBallResDto.activationTime.isBefore(DateTime.now())) {
+      return;
     }
     if (isMinusStatue()) {
       await _fBallValuationRepository
@@ -859,13 +870,25 @@ class ID001MainPageViewModel extends ChangeNotifier {
 
   void showBallSetting() async {
     BallModifyService ballModifyService = IssueBallModifyImpl();
-//    BallReportingService ballReportingService = BallReportingService();
-    if(await ballModifyService.isCanModify(fBallResDto)){
-      ballModifyService.showModifySelectDialog(_context,fBallResDto);
-    }else {
-
+    if (await ballModifyService.isCanModify(fBallResDto)) {
+      var result =
+          await ballModifyService.showModifySelectDialog(_context, fBallResDto);
+      if (result == CommonBallModifyWidgetResultType.Delete) {
+        Navigator.of(_context).pop();
+      } else if (result == CommonBallModifyWidgetResultType.Update) {
+        await ballContentRefresh();
+      }
     }
+  }
 
+  Future ballContentRefresh() async {
+    _setIsLoading(true);
+    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+    var currentFBallResDto = await fBallTypeRepository
+        .selectBall(FBallReqDto(FBallType.IssueBall, fBallResDto.ballUuid));
+    this.fBallResDto = currentFBallResDto;
+    this._init();
+    _setIsLoading(false);
   }
 }
 

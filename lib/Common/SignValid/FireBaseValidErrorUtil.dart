@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-
+//Mixin 목적으로 사용
 class FireBaseValidErrorUtil {
 
   String getErrorText(PlatformException e) {

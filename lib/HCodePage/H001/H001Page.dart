@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class H001Page extends StatefulWidget {
   H001Page({Key key}) : super(key: key);
@@ -38,7 +39,6 @@ class _H001PageState extends State<H001Page> {
                       makeButton(model),
                       model.getIsLoading() ?
                       CommonLoadingComponent() : Container()
-
                     ]);
                   })))
         ]));
@@ -58,6 +58,7 @@ class _H001PageState extends State<H001Page> {
 
   ListView buildListUpPanel(H001ViewModel model) {
     return ListView.separated(
+      key: new Key(model.listViewKey),
       padding: EdgeInsets.fromLTRB(0, 0, 0, 65),
       physics: BouncingScrollPhysics(),
       shrinkWrap: true,
@@ -68,8 +69,7 @@ class _H001PageState extends State<H001Page> {
               ? inlineRanking(model)
               : unInlineRaking(model);
         }
-        return BallStyle1Support.selectBallWidget(
-            model.fBallListUpWrapDto.balls[index - 1]);
+        return BallStyle1Widget.create(model.fBallListUpWrapDto.balls[index - 1], model.onRequestReFreshBall) as Widget;
       },
       controller: model.h001CenterListViewController,
       separatorBuilder: (context, index) {

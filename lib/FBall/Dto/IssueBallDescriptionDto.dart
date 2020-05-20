@@ -1,18 +1,17 @@
-//이슈볼안의 내용
 
+import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import 'FBallDesImagesDto.dart';
-
 part 'IssueBallDescriptionDto.g.dart';
 
-@JsonSerializable(explicitToJson:  true)
+@JsonSerializable()
 class IssueBallDescriptionDto {
-  IssueBallDescriptionDto();
-  //이슈볼의 내용
   String text;
   List<FBallDesImagesDto> desimages = [];
   String youtubeVideoId;
+
+  IssueBallDescriptionDto();
   factory IssueBallDescriptionDto.fromJson(Map<String, dynamic> json) => _$IssueBallDescriptionDtoFromJson(json);
   Map<String, dynamic> toJson() => _$IssueBallDescriptionDtoToJson(this);
+
+
 }

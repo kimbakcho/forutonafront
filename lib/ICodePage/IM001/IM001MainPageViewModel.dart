@@ -306,13 +306,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
       await fBallTypeRepository.updateBall(ballInsertReqDto);
       FBallResDto fBallResDto = await fBallTypeRepository.selectBall(
           FBallReqDto(FBallType.IssueBall, _ballUuid));
-      Navigator.of(_context).pop();
-      Navigator.of(_context).pop();
-      Navigator.of(_context).push(MaterialPageRoute(
-          builder: (_) {
-            return ID001MainPage(fBallResDto);
-          }
-      ));
+      Navigator.of(_context).pop(mode);
     }
 
 

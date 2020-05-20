@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Support.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H005/H00502/H00502pageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +33,8 @@ class H00502Page extends StatelessWidget {
                               }else {
                                 return Container(
                                     margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
-                                    child: BallStyle1Support.selectBallWidget(
-                                        model.listUpBalls[index-2]));
+                                    child: BallStyle1Widget.create(model.listUpBalls[index-2],model.onRequestReFreshBall) as Widget
+                                );
                               }
                             }))
                   ]))),
