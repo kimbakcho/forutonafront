@@ -7,25 +7,25 @@ part of 'UserBallResDto.dart';
 // **************************************************************************
 
 UserBallResDto _$UserBallResDtoFromJson(Map<String, dynamic> json) {
-  return UserBallResDto(
-    json['fballUuid'] as String,
-    _$enumDecodeNullable(_$FBallTypeEnumMap, json['fballType']),
-    (json['longitude'] as num)?.toDouble(),
-    (json['latitude'] as num)?.toDouble(),
-    json['ballName'] as String,
-    json['ballPlaceAddress'] as String,
-    json['ballLikes'] as int,
-    json['ballDisLikes'] as int,
-    json['commentCount'] as int,
-    json['activationTime'] == null
+  return UserBallResDto()
+    ..fBallUuid = json['fballUuid'] as String
+    ..fBallType = _$enumDecodeNullable(_$FBallTypeEnumMap, json['fballType'])
+    ..longitude = (json['longitude'] as num)?.toDouble()
+    ..latitude = (json['latitude'] as num)?.toDouble()
+    ..ballName = json['ballName'] as String
+    ..ballPlaceAddress = json['ballPlaceAddress'] as String
+    ..ballLikes = json['ballLikes'] as int
+    ..ballDisLikes = json['ballDisLikes'] as int
+    ..commentCount = json['commentCount'] as int
+    ..activationTime = json['activationTime'] == null
         ? null
-        : DateTime.parse(json['activationTime'] as String),
-    json['makeTime'] == null
+        : DateTime.parse(json['activationTime'] as String)
+    ..makeTime = json['makeTime'] == null
         ? null
-        : DateTime.parse(json['makeTime'] as String),
-    (json['distanceWithMapCenter'] as num)?.toDouble(),
-    json['distanceDisplayText'] as String,
-  );
+        : DateTime.parse(json['makeTime'] as String)
+    ..ballDeleteFlag = json['ballDeleteFlag'] as bool
+    ..distanceWithMapCenter = (json['distanceWithMapCenter'] as num)?.toDouble()
+    ..distanceDisplayText = json['distanceDisplayText'] as String;
 }
 
 Map<String, dynamic> _$UserBallResDtoToJson(UserBallResDto instance) =>
@@ -41,6 +41,7 @@ Map<String, dynamic> _$UserBallResDtoToJson(UserBallResDto instance) =>
       'commentCount': instance.commentCount,
       'activationTime': instance.activationTime?.toIso8601String(),
       'makeTime': instance.makeTime?.toIso8601String(),
+      'ballDeleteFlag': instance.ballDeleteFlag,
       'distanceWithMapCenter': instance.distanceWithMapCenter,
       'distanceDisplayText': instance.distanceDisplayText,
     };

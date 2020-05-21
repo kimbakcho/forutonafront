@@ -8,6 +8,7 @@ import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
+import 'package:forutonafront/ICodePage/ID001/Dto/ID001ResultPopDto.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
@@ -66,23 +67,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
 
   void goIssueDetailPage() async {
     await Navigator.of(_context)
-        .push(MaterialPageRoute(builder: (_) => ID001MainPage(ballResDto)));
-//    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-//    var ballResDto1 = await fBallTypeRepository
-//        .selectBall(FBallReqDto(FBallType.IssueBall, ballResDto.ballUuid));
-//    this.ballResDto.ballDeleteFlag = ballResDto1.ballDeleteFlag;
-//    if(!ballResDto1.ballDeleteFlag){
-//      var position = await Geolocator().getLastKnownPosition();
-//      ballResDto1.distanceWithMapCenter = await Geolocator().distanceBetween(
-//          ballResDto1.latitude,
-//          ballResDto1.longitude,
-//          position.latitude,
-//          position.longitude);
-//      ballResDto1.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(
-//          ballResDto1.distanceWithMapCenter);
-//      this.fBallDescriptionBasic = IssueBallDescriptionDto.fromJson(
-//          json.decode(ballResDto1.description));
-//    }
+        .push(MaterialPageRoute(builder: (_) => ID001MainPage(ballResDto.ballUuid)));
     this.onRequestReFreshBall(ballResDto);
   }
 

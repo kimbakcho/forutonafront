@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Support.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
 import 'package:provider/provider.dart';
 
 import 'H00302PageViewModel.dart';
@@ -19,10 +19,9 @@ class H00302Page extends StatelessWidget {
                     controller: model.scrollController,
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
-                      return BallStyle2Support.selectBallWidget(
-                          model.userToMakerBallList.contents[index]);
+                      return model.ballListUpWidgets[index];
                     },
-                    itemCount: model.userToMakerBallList.contents.length),
+                    itemCount: model.ballListUpWidgets.length),
                 model.getIsLoading() ? CommonLoadingComponent() : Container()
               ]));
         }));

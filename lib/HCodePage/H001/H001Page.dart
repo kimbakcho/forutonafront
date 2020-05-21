@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
-class H001Page extends StatefulWidget {
-  H001Page({Key key}) : super(key: key);
 
-  @override
-  _H001PageState createState() => _H001PageState();
-}
 
-class _H001PageState extends State<H001Page> {
+
+class H001Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var h001ViewModel = Provider.of<H001ViewModel>(context);
@@ -28,7 +21,7 @@ class _H001PageState extends State<H001Page> {
                   child: Consumer<H001ViewModel>(builder: (_, model, child) {
                     return Stack(children: <Widget>[
                       Column(children: <Widget>[
-                        addressDisplay(model),
+                        addressDisplay(model,context),
                         Expanded(
                             child: Stack(children: <Widget>[
                           model.hasBall
@@ -58,18 +51,17 @@ class _H001PageState extends State<H001Page> {
 
   ListView buildListUpPanel(H001ViewModel model) {
     return ListView.separated(
-      key: new Key(model.listViewKey),
       padding: EdgeInsets.fromLTRB(0, 0, 0, 65),
       physics: BouncingScrollPhysics(),
       shrinkWrap: true,
-      itemCount: model.fBallListUpWrapDto.balls.length + 1,
+      itemCount: model.ballWidgetLists.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
           return model.isFoldTagRanking()
               ? inlineRanking(model)
-              : unInlineRaking(model);
+              : unInlineRaking(model,context);
         }
-        return BallStyle1Widget.create(model.fBallListUpWrapDto.balls[index - 1], model.onRequestReFreshBall) as Widget;
+        return model.ballWidgetLists[index - 1] as Widget;
       },
       controller: model.h001CenterListViewController,
       separatorBuilder: (context, index) {
@@ -118,7 +110,7 @@ class _H001PageState extends State<H001Page> {
         : Container();
   }
 
-  Column unInlineRaking(H001ViewModel model) {
+  Column unInlineRaking(H001ViewModel model,BuildContext context) {
     return Column(children: <Widget>[
       Container(
           margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -241,7 +233,7 @@ class _H001PageState extends State<H001Page> {
             borderRadius: BorderRadius.circular(10.00)));
   }
 
-  AnimatedContainer addressDisplay(H001ViewModel model) {
+  AnimatedContainer addressDisplay(H001ViewModel model,BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
       color: Colors.white,

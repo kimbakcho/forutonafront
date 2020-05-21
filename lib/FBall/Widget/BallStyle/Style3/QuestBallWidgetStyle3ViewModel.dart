@@ -24,7 +24,7 @@ class QuestBallWidgetStyle3ViewModel extends ChangeNotifier {
   }
   void goIssueDetailPage() {
     Navigator.of(_context).push(MaterialPageRoute(
-        builder: (_)=>ID001MainPage(ballResDto)
+        builder: (_)=>ID001MainPage(ballResDto.ballUuid)
     ));
   }
 

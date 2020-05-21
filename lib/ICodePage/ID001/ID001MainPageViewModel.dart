@@ -34,6 +34,7 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
+import 'package:forutonafront/ICodePage/ID001/Dto/ID001ResultPopDto.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001DetailReplyView.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -88,6 +89,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   FBallValuationRepository _fBallValuationRepository =
       FBallValuationRepository();
   FBallValuationResDto fBallValuationResDto;
+  bool isInitFinish = false;
 
   bool _isLoading = false;
   getIsLoading() {
@@ -98,13 +100,18 @@ class ID001MainPageViewModel extends ChangeNotifier {
     _isLoading = value;
     notifyListeners();
   }
+  final String fBallUuid;
 
-
-  ID001MainPageViewModel(this._context, this.fBallResDto) {
+  ID001MainPageViewModel(this._context, this.fBallUuid) {
     _init();
   }
 
   _init() async {
+    _setIsLoading(true);
+    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+    var currentFBallResDto = await fBallTypeRepository
+        .selectBall(FBallReqDto(FBallType.IssueBall, this.fBallUuid));
+    this.fBallResDto = currentFBallResDto;
     initialCameraPosition = CameraPosition(
         target: LatLng(fBallResDto.latitude, fBallResDto.longitude),
         zoom: 14.425);
@@ -119,6 +126,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
     replyLoad();
     loadFBallValuation();
+    isInitFinish= true;
+    _setIsLoading(false);
     notifyListeners();
   }
 
@@ -876,19 +885,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
       if (result == CommonBallModifyWidgetResultType.Delete) {
         Navigator.of(_context).pop();
       } else if (result == CommonBallModifyWidgetResultType.Update) {
-        await ballContentRefresh();
+        this._init();
       }
     }
-  }
-
-  Future ballContentRefresh() async {
-    _setIsLoading(true);
-    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-    var currentFBallResDto = await fBallTypeRepository
-        .selectBall(FBallReqDto(FBallType.IssueBall, fBallResDto.ballUuid));
-    this.fBallResDto = currentFBallResDto;
-    this._init();
-    _setIsLoading(false);
   }
 }
 

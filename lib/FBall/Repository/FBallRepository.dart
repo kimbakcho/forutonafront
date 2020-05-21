@@ -10,7 +10,9 @@ import 'package:forutonafront/FBall/Dto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallReqDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallResWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallSelectReqDto.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:convert';
@@ -92,6 +94,19 @@ class FBallRepository {
       ball.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(ball.distanceWithMapCenter);
     }
     return userToMakerBallResWrapDto;
+  }
+
+  Future<UserToMakerBallResDto> getUserToMakerBall(UserToMakerBallSelectReqDto reqDto) async{
+    FDio dio = new FDio("nonetoken");
+    var response =
+        await dio.get("/v1/FBall/UserToMakerBall", queryParameters: reqDto.toJson());
+    var userToMakerBall = UserToMakerBallResDto.fromJson(response.data);
+    var position = await Geolocator().getLastKnownPosition();
+
+    userToMakerBall.distanceWithMapCenter = await Geolocator().distanceBetween(
+        userToMakerBall.latitude, userToMakerBall.longitude, position.latitude, position.longitude);
+    userToMakerBall.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(userToMakerBall.distanceWithMapCenter);
+    return userToMakerBall;
   }
 
 }

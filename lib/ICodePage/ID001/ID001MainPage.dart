@@ -13,9 +13,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ID001MainPage extends StatelessWidget {
-  final FBallResDto _fBallResDto;
+  final String fBallUuid;
 
-  ID001MainPage(this._fBallResDto) {
+  ID001MainPage(this.fBallUuid) {
     var statueBar = SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white.withOpacity(0.5),
         statusBarIconBrightness: Brightness.dark);
@@ -25,13 +25,14 @@ class ID001MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => ID001MainPageViewModel(context, _fBallResDto),
+        create: (_) => ID001MainPageViewModel(context, fBallUuid),
         child: Consumer<ID001MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
                 body: Container(
                     color: Colors.white,
-                    child: Stack(
+                    child: model.isInitFinish ?
+                    Stack(
                       children: <Widget>[
                         Positioned(
                           bottom: 0,
@@ -103,7 +104,7 @@ class ID001MainPage extends StatelessWidget {
                             left: 0,
                             child: topHeaderBar(model, context))
                       ],
-                    ))),
+                    ):Container() )),
             model.getIsLoading() ? CommonLoadingComponent() : Container()
           ]);
         }));

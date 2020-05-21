@@ -8,19 +8,18 @@ import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:uuid/uuid.dart';
-
 
 enum H001PageState { H001_01, H003_01 }
 
@@ -37,10 +36,13 @@ class H001ViewModel with ChangeNotifier {
   TagRankingWrapDto rankingWrapDto;
   String listViewKey = Uuid().v4();
 
-  FBallListUpWrapDto fBallListUpWrapDto =
-      new FBallListUpWrapDto(DateTime.now(), []);
+//  FBallListUpWrapDto fBallListUpWrapDto =
+//      new FBallListUpWrapDto(DateTime.now(), []);
+
+  List<BallStyle1Widget> ballWidgetLists = [];
 
   bool _isLoading = false;
+
   getIsLoading() {
     return _isLoading;
   }
@@ -49,62 +51,61 @@ class H001ViewModel with ChangeNotifier {
     _isLoading = value;
     notifyListeners();
   }
+
   Position _currentPosition;
   bool _inlineRanking = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
-
 
   H001ViewModel(this._context) {
     init();
   }
 
   init() async {
-    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
+    GeoLocationUtil _geoLocationUtil = new GeoLocationUtil();
     currentState = H001PageState.H001_01;
     rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
     h001CenterListViewController
         .addListener(h001CenterListViewControllerListener);
     _setIsLoading(true);
     await _geoLocationUtil.permissionCheck();
-    if(await _geoLocationUtil.permissionCheck()){
+    if (await _geoLocationUtil.permissionCheck()) {
       _currentPosition = await Geolocator().getCurrentPosition();
       await reFreshSearchBall(_currentPosition);
     }
     _setIsLoading(false);
   }
 
-
-
   moveToH007() async {
     ///Navigator 는 검색 위치로 지정한 LatLng 이 나온다.
-    MapSearchGeoDto position = await Navigator.of(_context).push(MaterialPageRoute(
-        settings: RouteSettings(name: "H007"),
-        builder: (context)=> H007MainPage(_currentPosition,
-            selectPositionAddress)
-    ));
-    if(position != null){
-      _currentPosition = Position(latitude: position.latLng.latitude,longitude: position.latLng.longitude);
+    MapSearchGeoDto position = await Navigator.of(_context).push(
+        MaterialPageRoute(
+            settings: RouteSettings(name: "H007"),
+            builder: (context) =>
+                H007MainPage(_currentPosition, selectPositionAddress)));
+    if (position != null) {
+      _currentPosition = Position(
+          latitude: position.latLng.latitude,
+          longitude: position.latLng.longitude);
       _setIsLoading(true);
-      await reFreshSearchBall(_currentPosition,address: position.descriptionAddress);
+      await reFreshSearchBall(_currentPosition,
+          address: position.descriptionAddress);
       _setIsLoading(false);
     }
-
   }
 
-  Future reFreshSearchBall(Position serachPosition,{String address}) async {
-    if(address == null){
+  Future reFreshSearchBall(Position serachPosition, {String address}) async {
+    if (address == null) {
       selectPositionAddress = "로 딩 중";
       notifyListeners();
       selectPositionAddress = await getAddressFromGeoLocation(serachPosition);
-    }else {
+    } else {
       selectPositionAddress = address;
     }
     getTagRanking(serachPosition);
 
     _pageCount = 0;
     getBallListUp(serachPosition, _pageCount, _ballPageLimitSize);
-
   }
 
   Future getBallListUp(Position currentPosition, int page, int size) async {
@@ -118,12 +119,18 @@ class H001ViewModel with ChangeNotifier {
         sort: "Influence,DESC");
     var fBallListUpWrapDtoTemp =
         await _fBallRepository.listUpBall(ballListUpReqDto);
-    if(page == 0){
-      this.fBallListUpWrapDto.balls.clear();
+
+    if (page == 0) {
+      this.ballWidgetLists.clear();
     }
-    this.fBallListUpWrapDto.balls.addAll(fBallListUpWrapDtoTemp.balls);
-    reRenderListView();
-    if (this.fBallListUpWrapDto.balls.length == 0) {
+
+    this.ballWidgetLists.addAll(fBallListUpWrapDtoTemp.balls
+        .map((x) => BallStyle1Widget.create(x, onRequestReFreshBall))
+        .toList());
+
+//    reRenderListView();
+
+    if (this.ballWidgetLists.length == 0) {
       hasBall = false;
       addressDisplayShowFlag = true;
     } else {
@@ -133,9 +140,9 @@ class H001ViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void reRenderListView() {
-    this.listViewKey = Uuid().v4();
-  }
+//  void reRenderListView() {
+//    this.listViewKey = Uuid().v4();
+//  }
 
   Future getTagRanking(Position currentPosition) async {
     TagRepository _tagRepository = new TagRepository();
@@ -154,14 +161,14 @@ class H001ViewModel with ChangeNotifier {
       notifyListeners();
     } else if (h001CenterListViewController.position.userScrollDirection ==
         ScrollDirection.reverse) {
-    addressDisplayShowFlag = false;
-    makeButtonDisplayShowFlag = false;
-    notifyListeners();
+      addressDisplayShowFlag = false;
+      makeButtonDisplayShowFlag = false;
+      notifyListeners();
     }
 
     if (_isScrollerBottomOver()) {
       _pageCount++;
-      if (!_hasBalls()) {
+      if (!_hasMoreListUpBalls()) {
         return;
       } else {
         _setIsLoading(true);
@@ -171,14 +178,15 @@ class H001ViewModel with ChangeNotifier {
     }
   }
 
-  bool _hasBalls() {
-    return !(_pageCount * _ballPageLimitSize > this.fBallListUpWrapDto.balls.length);
+  bool _hasMoreListUpBalls() {
+    return !(_pageCount * _ballPageLimitSize >
+        this.ballWidgetLists.length);
   }
 
   bool _isScrollerBottomOver() {
     return h001CenterListViewController.offset >=
-          h001CenterListViewController.position.maxScrollExtent &&
-      !h001CenterListViewController.position.outOfRange;
+            h001CenterListViewController.position.maxScrollExtent &&
+        !h001CenterListViewController.position.outOfRange;
   }
 
   Future<String> getAddressFromGeoLocation(Position reqPosition) async {
@@ -188,61 +196,55 @@ class H001ViewModel with ChangeNotifier {
     return address;
   }
 
-
   set inlineRanking(bool value) {
     _inlineRanking = value;
     notifyListeners();
   }
 
-  isFoldTagRanking(){
+  isFoldTagRanking() {
     return _inlineRanking;
   }
 
-
   void goBallMakePage() async {
-     var currentUser = await FirebaseAuth.instance.currentUser();
-     if(currentUser != null){
-       await Navigator.push(
-           _context,
-           MaterialPageRoute(
-               settings: RouteSettings(name: "/H002"),
-               builder: (context) {
-                 return H002Page(
-                   heroTag: "H001MakeButton",
-                 );
-               }));
-       _currentPosition = await Geolocator().getCurrentPosition();
-       _setIsLoading(true);
-       await reFreshSearchBall(_currentPosition);
-       _setIsLoading(false);
-     }else {
-       Navigator.push(
-           _context,
-           MaterialPageRoute(
-               settings: RouteSettings(name: "/J001"),
-               builder: (context) {
-                 return J001View();
-               }));
-     }
+    var currentUser = await FirebaseAuth.instance.currentUser();
+    if (currentUser != null) {
+      await Navigator.push(
+          _context,
+          MaterialPageRoute(
+              settings: RouteSettings(name: "/H002"),
+              builder: (context) {
+                return H002Page(
+                  heroTag: "H001MakeButton",
+                );
+              }));
+      _currentPosition = await Geolocator().getCurrentPosition();
+      _setIsLoading(true);
+      await reFreshSearchBall(_currentPosition);
+      _setIsLoading(false);
+    } else {
+      Navigator.push(
+          _context,
+          MaterialPageRoute(
+              settings: RouteSettings(name: "/J001"),
+              builder: (context) {
+                return J001View();
+              }));
+    }
   }
 
-  onRequestReFreshBall(FBallResDto p1) async {
+  onRequestReFreshBall(FBallResDto reFreshNeedBall) async {
     _setIsLoading(true);
-    double scrollerOffset = h001CenterListViewController.offset ;
     var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
     var ballResDto = await fBallTypeRepository
-        .selectBall(FBallReqDto(p1.ballType, p1.ballUuid));
-    var indexWhere = this.fBallListUpWrapDto.balls.indexWhere((element) => element.ballUuid == ballResDto.ballUuid);
-    if(!ballResDto.ballDeleteFlag){
-      this.fBallListUpWrapDto.balls[indexWhere] = ballResDto;
-    }else {
-      this.fBallListUpWrapDto.balls.removeAt(indexWhere);
+        .selectBall(FBallReqDto(reFreshNeedBall.ballType, reFreshNeedBall.ballUuid));
+    var indexWhere = this
+        .ballWidgetLists
+        .indexWhere((element) => element.getFBallResDto().ballUuid == ballResDto.ballUuid);
+    if (!ballResDto.ballDeleteFlag) {
+      this.ballWidgetLists[indexWhere] = BallStyle1Widget.create(ballResDto, onRequestReFreshBall);
+    } else {
+      this.ballWidgetLists.removeAt(indexWhere);
     }
     _setIsLoading(false);
-    //key변경시 ReReander
-    reRenderListView();
-    await Future.delayed(Duration(milliseconds: 10));
-    h001CenterListViewController.jumpTo(scrollerOffset);
-
   }
 }

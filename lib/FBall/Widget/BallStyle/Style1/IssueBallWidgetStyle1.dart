@@ -16,6 +16,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
+        key: UniqueKey(),
         create: (_) =>
             IssueBallWidgetSyle1ViewModel(this.ballResDto, context,this.onRequestReFreshBall),
         child:

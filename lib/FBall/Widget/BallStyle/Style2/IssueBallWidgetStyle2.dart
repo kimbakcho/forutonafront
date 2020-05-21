@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
 
 
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -11,26 +12,26 @@ import 'package:provider/provider.dart';
 import 'IssueBallWidgetStyle2ViewModel.dart';
 
 // ignore: must_be_immutable
-class IssueBallWidgetStyle2 extends StatelessWidget {
-  UserBallResDto resDto;
-
-  IssueBallWidgetStyle2(this.resDto);
+class IssueBallWidgetStyle2 extends StatelessWidget implements BallStyle2Widget{
+  final UserBallResDto resDto;
+  final Function(UserBallResDto) onRequestReFreshBall;
+  IssueBallWidgetStyle2(this.resDto,this.onRequestReFreshBall);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => IssueBallWidgetStyle2ViewModel(this.resDto),
+      key: UniqueKey(),
+        create: (_) => IssueBallWidgetStyle2ViewModel(this.resDto,context,onRequestReFreshBall),
         child: Consumer<IssueBallWidgetStyle2ViewModel>(
             builder: (_, model, child) {
           return Container(
               margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
               height: 133,
-
               child: Stack(
                 children: <Widget>[
                   FlatButton(
                       padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                      onPressed: () {},
+                      onPressed: model.goIssueDetailPage,
                       child: Stack(children: <Widget>[
                         Positioned(
                           top: 0,
@@ -49,7 +50,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                           bottom: 47,
                           right: 0,
                           child: Container(
-                            child: Text(model.resDto.distanceDisplayText,
+                            child: Text(getBallDistanceDisplay(model),
                                 style: TextStyle(
                                   fontFamily: "Noto Sans CJK KR",
                                   fontSize: 10,
@@ -74,6 +75,16 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
         }));
   }
 
+  String getBallDistanceDisplay(IssueBallWidgetStyle2ViewModel model){
+    if(model.isBallDelete()){
+        return "";
+    }else {
+      return model.resDto.distanceDisplayText;
+    }
+
+  }
+
+
   Container pointDashButton() {
     return Container(
         height: 30,
@@ -89,6 +100,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
         ));
   }
 
+
   Container valueBottomBar(IssueBallWidgetStyle2ViewModel model) {
     return Container(
       child: Row(
@@ -96,7 +108,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
         children: <Widget>[
           Container(
             child: Text(
-                NomalValueDisplay.changeIntDisplaystr(model.resDto.ballLikes),
+                getBallLikes(model),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -115,8 +127,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
           ),
           Container(
             child: Text(
-                NomalValueDisplay.changeIntDisplaystr(
-                    model.resDto.ballDisLikes),
+                getBallDisLike(model),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -135,8 +146,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
           ),
           Container(
             child: Text(
-                NomalValueDisplay.changeIntDisplaystr(
-                    model.resDto.commentCount),
+                getBallCommentCount(model),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -155,8 +165,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
           ),
           Container(
             child: Text(
-                TimeDisplayUtil.getRemainingToStrFromNow(
-                    model.resDto.activationTime),
+                getBallActivationTime(model),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -170,12 +179,50 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
               ForutonaIcon.accesstime,
               size: 15,
               color: Color(0xff78849e),
-            ),
+            )
           )
-        ],
-      ),
+        ]
+      )
     );
   }
+
+  String getBallActivationTime(IssueBallWidgetStyle2ViewModel model) {
+    if(model.isBallDelete()){
+      return "-";
+    }else {
+      return TimeDisplayUtil.getRemainingToStrFromNow(
+          model.resDto.activationTime);
+    }
+
+  }
+
+  String getBallCommentCount(IssueBallWidgetStyle2ViewModel model) {
+    if(model.isBallDelete()){
+      return "-";
+    }else {
+      return NomalValueDisplay.changeIntDisplaystr(
+          model.resDto.commentCount);
+    }
+
+  }
+
+  String getBallDisLike(IssueBallWidgetStyle2ViewModel model) {
+    if(model.isBallDelete()){
+      return "-";
+    }else {
+      return NomalValueDisplay.changeIntDisplaystr(
+          model.resDto.ballDisLikes);
+    }
+  }
+
+  String getBallLikes(IssueBallWidgetStyle2ViewModel model){
+    if(model.isBallDelete()){
+      return "-";
+    }else {
+      return NomalValueDisplay.changeIntDisplaystr(model.resDto.ballLikes);
+    }
+  }
+
 
   Container divider(BuildContext context) {
     return Container(
@@ -204,7 +251,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(model.resDto.ballName,
+            Text(getBallName(model),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -213,7 +260,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                   fontSize: 13,
                   color: model.isAlive ? Color(0xff454f63):Color(0xff454F63).withOpacity(0.7),
                 )),
-            Text(model.resDto.ballPlaceAddress,
+            Text(getBallPlaceAddress(model),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -223,5 +270,28 @@ class IssueBallWidgetStyle2 extends StatelessWidget {
                 ))
           ],
         ));
+  }
+
+  String getBallPlaceAddress(IssueBallWidgetStyle2ViewModel model){
+    if(model.isBallDelete()){
+       return "";
+    }else {
+      return model.resDto.ballPlaceAddress;
+    }
+  }
+
+  String getBallName(IssueBallWidgetStyle2ViewModel model){
+    if(model.isBallDelete()){
+      return "(삭제됨) ${model.resDto.ballName}";
+    }else {
+      return model.resDto.ballName;
+    }
+
+  }
+
+
+  @override
+  UserBallResDto getUserBallResDto() {
+    return this.resDto;
   }
 }

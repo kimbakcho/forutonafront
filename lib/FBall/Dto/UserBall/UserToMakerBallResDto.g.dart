@@ -24,6 +24,7 @@ UserToMakerBallResDto _$UserToMakerBallResDtoFromJson(
     ..makeTime = json['makeTime'] == null
         ? null
         : DateTime.parse(json['makeTime'] as String)
+    ..ballDeleteFlag = json['ballDeleteFlag'] as bool
     ..distanceWithMapCenter = (json['distanceWithMapCenter'] as num)?.toDouble()
     ..distanceDisplayText = json['distanceDisplayText'] as String;
 }
@@ -42,6 +43,7 @@ Map<String, dynamic> _$UserToMakerBallResDtoToJson(
       'commentCount': instance.commentCount,
       'activationTime': instance.activationTime?.toIso8601String(),
       'makeTime': instance.makeTime?.toIso8601String(),
+      'ballDeleteFlag': instance.ballDeleteFlag,
       'distanceWithMapCenter': instance.distanceWithMapCenter,
       'distanceDisplayText': instance.distanceDisplayText,
     };

@@ -10,6 +10,6 @@ class UserToMakerBallResDto extends UserBallResDto {
   factory UserToMakerBallResDto.fromJson(Map<String, dynamic> json) => _$UserToMakerBallResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$UserToMakerBallResDtoToJson(this);
 
-  UserToMakerBallResDto() : super('', null, 0.0, 0.0, '', '', 0, 0, 0, null, null, 0.0, '');
+  UserToMakerBallResDto() : super();
 
 }

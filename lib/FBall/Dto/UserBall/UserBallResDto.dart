@@ -22,24 +22,12 @@ class UserBallResDto {
   int commentCount;
   DateTime activationTime;
   DateTime makeTime;
+  bool ballDeleteFlag;
 
   double distanceWithMapCenter;
   String distanceDisplayText;
 
-  UserBallResDto(
-      this.fBallUuid,
-      this.fBallType,
-      this.longitude,
-      this.latitude,
-      this.ballName,
-      this.ballPlaceAddress,
-      this.ballLikes,
-      this.ballDisLikes,
-      this.commentCount,
-      this.activationTime,
-      this.makeTime,
-      this.distanceWithMapCenter,
-      this.distanceDisplayText);
+  UserBallResDto();
 
   factory UserBallResDto.fromJson(Map<String, dynamic> json) => _$UserBallResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$UserBallResDtoToJson(this);

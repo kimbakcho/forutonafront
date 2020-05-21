@@ -14,7 +14,7 @@ class UserToPlayBallResDto extends UserBallResDto{
 
   DateTime joinTime;
 
-  UserToPlayBallResDto(this.joinTime) : super('', null, 0.0, 0.0, '', '', 0, 0, 0, null, null, 0.0, '');
+  UserToPlayBallResDto(this.joinTime) : super();
 
   factory UserToPlayBallResDto.fromJson(Map<String, dynamic> json) => _$UserToPlayBallResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$UserToPlayBallResDtoToJson(this);
