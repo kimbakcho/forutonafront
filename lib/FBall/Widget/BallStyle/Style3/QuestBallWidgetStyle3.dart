@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style3/IssueBallWidgetStyle3ViewModel.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3Widget.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style3/QuestBallWidgetStyle3ViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
-class QuestBallWidgetStyle3 extends StatelessWidget {
-  FBallResDto ballResDto;
+import 'BallStyle3WidgetController.dart';
 
-  QuestBallWidgetStyle3(this.ballResDto);
+// ignore: must_be_immutable
+class QuestBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
+  final BallStyle3WidgetController ballStyle3WidgetController;
+
+  QuestBallWidgetStyle3(this.ballStyle3WidgetController);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => QuestBallWidgetStyle3ViewModel(ballResDto,context),
+        key: UniqueKey(),
+        create: (_) => QuestBallWidgetStyle3ViewModel(ballStyle3WidgetController,context),
         child: Consumer<QuestBallWidgetStyle3ViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -35,7 +38,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
                     Positioned(
                         top: 31, left: 54, child: makerInfoBar(model)),
                     Positioned(
-                        right: 0, top: 0, child: ballMainimageBox(model)),
+                        right: 0, top: 0, child: ballMainImageBox(model)),
                     Positioned(top: 54, left: 0, child: divider(context)),
                     Positioned(top: 50, right: 0, child: ballBottomBar(model,context))
                   ],
@@ -60,7 +63,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
       width: model.isMainPicture() ? 178 : 252,
       child: RichText(
         text: TextSpan(
-            text: model.ballResDto.nickName,
+            text: model.getFBallResDto().nickName,
             style: TextStyle(
               fontFamily: "Noto Sans CJK KR",
               fontWeight: FontWeight.w700,
@@ -70,7 +73,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
             children: <TextSpan>[
               TextSpan(text: "    "),
               TextSpan(
-                  text: "${model.ballResDto.userLevel.toStringAsFixed(0)}  lv",
+                  text: "${model.getFBallResDto().userLevel.toStringAsFixed(0)}  lv",
                   style: TextStyle(
                     fontFamily: "Noto Sans CJK KR",
                     fontWeight: FontWeight.w700,
@@ -91,7 +94,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(ballResDto.ballLikes.toString(),
+            Text(model.getFBallResDto().ballLikes.toString(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -103,7 +106,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
                 child: Icon(ForutonaIcon.thumbsup,
                     color: Color(0xff78849E), size: 17)),
             SizedBox(width: 19),
-            Text(model.ballResDto.ballDisLikes.toString(),
+            Text(model.getFBallResDto().ballDisLikes.toString(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -115,7 +118,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
                 child: Icon(ForutonaIcon.thumbsdown,
                     color: Color(0xff78849E), size: 17)),
             SizedBox(width: 19),
-            Text(model.ballResDto.commentCount.toString(),
+            Text(model.getFBallResDto().commentCount.toString(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -129,7 +132,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
             SizedBox(width: 19),
             Text(
                 TimeDisplayUtil.getRemainingToStrFromNow(
-                    model.ballResDto.activationTime),
+                    model.getFBallResDto().activationTime),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -152,7 +155,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
     );
   }
 
-  Container ballMainimageBox(QuestBallWidgetStyle3ViewModel model) {
+  Container ballMainImageBox(QuestBallWidgetStyle3ViewModel model) {
     return model.isMainPicture()
         ? Container(
             height: 54.00,
@@ -174,7 +177,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
     return Container(
       width: model.isMainPicture() ? MediaQuery.of(context).size.width-182 : MediaQuery.of(context).size.width-108,
       height: 18,
-      child: Text(model.ballResDto.ballName,
+      child: Text(model.getFBallResDto().ballName,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontFamily: "Noto Sans CJK KR",
@@ -196,4 +199,16 @@ class QuestBallWidgetStyle3 extends StatelessWidget {
           shape: BoxShape.circle,
         ));
   }
+
+  @override
+  BallStyle3WidgetController getBallStyle3WidgetController() {
+    return ballStyle3WidgetController;
+  }
+
+  @override
+  String getBallUuid() {
+    return ballStyle3WidgetController.fBallResDto.ballUuid;
+  }
+
+
 }

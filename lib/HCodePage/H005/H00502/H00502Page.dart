@@ -19,12 +19,12 @@ class H00502Page extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: Column(children: <Widget>[
                     Expanded(
-                        child: ListView.builder(
+                        child: ListView.separated(
                             controller: model.mainDropDownBtnController,
                             padding: EdgeInsets.all(0),
                             shrinkWrap: true,
                             physics: BouncingScrollPhysics(),
-                            itemCount: model.listUpBalls.length+2,
+                            itemCount: model.ballWidgetLists.length+2,
                             itemBuilder: (context, index) {
                               if(index == 0){
                                 return relationTagRankingList(model, context);
@@ -33,10 +33,14 @@ class H00502Page extends StatelessWidget {
                               }else {
                                 return Container(
                                     margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
-                                    child: BallStyle1Widget.create(model.listUpBalls[index-2],model.onRequestReFreshBall) as Widget
+                                    child: model.ballWidgetLists[index-2]
                                 );
                               }
-                            }))
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(height: 16);
+                            }
+                        ))
                   ]))),
           model.getIsLoading() ? CommonLoadingComponent() : Container()
         ]);

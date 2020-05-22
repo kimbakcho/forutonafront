@@ -4,24 +4,25 @@ import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
-
-
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetController.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'IssueBallWidgetStyle2ViewModel.dart';
 
 // ignore: must_be_immutable
-class IssueBallWidgetStyle2 extends StatelessWidget implements BallStyle2Widget{
-  final UserBallResDto resDto;
-  final Function(UserBallResDto) onRequestReFreshBall;
-  IssueBallWidgetStyle2(this.resDto,this.onRequestReFreshBall);
+class IssueBallWidgetStyle2 extends StatelessWidget
+    implements BallStyle2Widget {
+  final BallStyle2WidgetController ballStyle2WidgetController;
+
+  IssueBallWidgetStyle2(this.ballStyle2WidgetController);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      key: UniqueKey(),
-        create: (_) => IssueBallWidgetStyle2ViewModel(this.resDto,context,onRequestReFreshBall),
+        key: UniqueKey(),
+        create: (_) => IssueBallWidgetStyle2ViewModel(
+            this.ballStyle2WidgetController,context),
         child: Consumer<IssueBallWidgetStyle2ViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -39,7 +40,9 @@ class IssueBallWidgetStyle2 extends StatelessWidget implements BallStyle2Widget{
                           child: ballIcon(),
                         ),
                         Positioned(
-                            top: 0, left: 46, child: titleAndAddress(model,context)),
+                            top: 0,
+                            left: 46,
+                            child: titleAndAddress(model, context)),
                         Positioned(
                           bottom: 31,
                           child: divider(context),
@@ -59,15 +62,15 @@ class IssueBallWidgetStyle2 extends StatelessWidget implements BallStyle2Widget{
                           ),
                         ),
                       ])),
-                  Positioned(right: 4, top: 10, child: pointDashButton())
+                  Positioned(right: 4, top: 10, child: pointDashButton(model))
                 ],
               ),
               decoration: BoxDecoration(
-                  color: model.isAlive ? Color(0xffffffff) :  Color(0xffF6F6F6),
+                  color: model.isAlive ? Color(0xffffffff) : Color(0xffF6F6F6),
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(0.00, 3.00),
-                      color:  Color(0xff000000).withOpacity(0.16),
+                      color: Color(0xff000000).withOpacity(0.16),
                       blurRadius: 6,
                     )
                   ],
@@ -75,159 +78,144 @@ class IssueBallWidgetStyle2 extends StatelessWidget implements BallStyle2Widget{
         }));
   }
 
-  String getBallDistanceDisplay(IssueBallWidgetStyle2ViewModel model){
-    if(model.isBallDelete()){
-        return "";
-    }else {
-      return model.resDto.distanceDisplayText;
+  String getBallDistanceDisplay(IssueBallWidgetStyle2ViewModel model) {
+    if (model.isBallDelete()) {
+      return "";
+    } else {
+      return model.getUserBallResDto().distanceDisplayText;
     }
-
   }
 
-
-  Container pointDashButton() {
-    return Container(
-        height: 30,
-        width: 30,
-        child: FlatButton(
-          padding: EdgeInsets.all(0),
-          onPressed: () {},
-          shape: CircleBorder(),
-          child: Icon(
-            ForutonaIcon.pointdash,
-            size: 16,
-          ),
-        ));
+  Container pointDashButton(IssueBallWidgetStyle2ViewModel model) {
+    return model.isBallDelete()
+        ? Container()
+        : Container(
+            height: 30,
+            width: 30,
+            child: FlatButton(
+              padding: EdgeInsets.all(0),
+              onPressed: model.showBallSetting,
+              shape: CircleBorder(),
+              child: Icon(
+                ForutonaIcon.pointdash,
+                size: 16,
+              ),
+            ));
   }
-
 
   Container valueBottomBar(IssueBallWidgetStyle2ViewModel model) {
     return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            child: Text(
-                getBallLikes(model),
-                style: TextStyle(
-                  fontFamily: "Gibson",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: Color(0xff78849e),
-                )),
-            margin: EdgeInsets.only(right: 6),
-          ),
-          Container(
-            child: Icon(
-              ForutonaIcon.thumbsup,
-              size: 15,
+        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+      Container(
+        child: Text(getBallLikes(model),
+            style: TextStyle(
+              fontFamily: "Gibson",
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
               color: Color(0xff78849e),
-            ),
-            margin: EdgeInsets.only(right: 19),
-          ),
-          Container(
-            child: Text(
-                getBallDisLike(model),
-                style: TextStyle(
-                  fontFamily: "Gibson",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: Color(0xff78849e),
-                )),
-            margin: EdgeInsets.only(right: 6),
-          ),
-          Container(
-            child: Icon(
-              ForutonaIcon.thumbsdown,
-              size: 15,
+            )),
+        margin: EdgeInsets.only(right: 6),
+      ),
+      Container(
+        child: Icon(
+          ForutonaIcon.thumbsup,
+          size: 15,
+          color: Color(0xff78849e),
+        ),
+        margin: EdgeInsets.only(right: 19),
+      ),
+      Container(
+        child: Text(getBallDisLike(model),
+            style: TextStyle(
+              fontFamily: "Gibson",
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
               color: Color(0xff78849e),
-            ),
-            margin: EdgeInsets.only(right: 19),
-          ),
-          Container(
-            child: Text(
-                getBallCommentCount(model),
-                style: TextStyle(
-                  fontFamily: "Gibson",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: Color(0xff78849e),
-                )),
-            margin: EdgeInsets.only(right: 6),
-          ),
-          Container(
-            child: Icon(
-              ForutonaIcon.comment,
-              size: 15,
+            )),
+        margin: EdgeInsets.only(right: 6),
+      ),
+      Container(
+        child: Icon(
+          ForutonaIcon.thumbsdown,
+          size: 15,
+          color: Color(0xff78849e),
+        ),
+        margin: EdgeInsets.only(right: 19),
+      ),
+      Container(
+        child: Text(getBallCommentCount(model),
+            style: TextStyle(
+              fontFamily: "Gibson",
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
               color: Color(0xff78849e),
-            ),
-            margin: EdgeInsets.only(right: 19),
-          ),
-          Container(
-            child: Text(
-                getBallActivationTime(model),
-                style: TextStyle(
-                  fontFamily: "Gibson",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: Color(0xff78849e),
-                )),
-            margin: EdgeInsets.only(right: 6),
-          ),
-          Container(
-            child: Icon(
-              ForutonaIcon.accesstime,
-              size: 15,
+            )),
+        margin: EdgeInsets.only(right: 6),
+      ),
+      Container(
+        child: Icon(
+          ForutonaIcon.comment,
+          size: 15,
+          color: Color(0xff78849e),
+        ),
+        margin: EdgeInsets.only(right: 19),
+      ),
+      Container(
+        child: Text(getBallActivationTime(model),
+            style: TextStyle(
+              fontFamily: "Gibson",
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
               color: Color(0xff78849e),
-            )
-          )
-        ]
-      )
-    );
+            )),
+        margin: EdgeInsets.only(right: 6),
+      ),
+      Container(
+          child: Icon(
+        ForutonaIcon.accesstime,
+        size: 15,
+        color: Color(0xff78849e),
+      ))
+    ]));
   }
 
   String getBallActivationTime(IssueBallWidgetStyle2ViewModel model) {
-    if(model.isBallDelete()){
+    if (model.isBallDelete()) {
       return "-";
-    }else {
+    } else {
       return TimeDisplayUtil.getRemainingToStrFromNow(
-          model.resDto.activationTime);
+          model.getUserBallResDto().activationTime);
     }
-
   }
 
   String getBallCommentCount(IssueBallWidgetStyle2ViewModel model) {
-    if(model.isBallDelete()){
+    if (model.isBallDelete()) {
       return "-";
-    }else {
-      return NomalValueDisplay.changeIntDisplaystr(
-          model.resDto.commentCount);
+    } else {
+      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().commentCount);
     }
-
   }
 
   String getBallDisLike(IssueBallWidgetStyle2ViewModel model) {
-    if(model.isBallDelete()){
+    if (model.isBallDelete()) {
       return "-";
-    }else {
-      return NomalValueDisplay.changeIntDisplaystr(
-          model.resDto.ballDisLikes);
+    } else {
+      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().ballDisLikes);
     }
   }
 
-  String getBallLikes(IssueBallWidgetStyle2ViewModel model){
-    if(model.isBallDelete()){
+  String getBallLikes(IssueBallWidgetStyle2ViewModel model) {
+    if (model.isBallDelete()) {
       return "-";
-    }else {
-      return NomalValueDisplay.changeIntDisplaystr(model.resDto.ballLikes);
+    } else {
+      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().ballLikes);
     }
   }
-
 
   Container divider(BuildContext context) {
     return Container(
       height: 1,
-      width: MediaQuery.of(context).size.width-64,
+      width: MediaQuery.of(context).size.width - 64,
       color: Color(0xffe4e7e8),
     );
   }
@@ -245,9 +233,10 @@ class IssueBallWidgetStyle2 extends StatelessWidget implements BallStyle2Widget{
     );
   }
 
-  Container titleAndAddress(IssueBallWidgetStyle2ViewModel model,BuildContext context) {
+  Container titleAndAddress(
+      IssueBallWidgetStyle2ViewModel model, BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width-120,
+        width: MediaQuery.of(context).size.width - 120,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -258,7 +247,9 @@ class IssueBallWidgetStyle2 extends StatelessWidget implements BallStyle2Widget{
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
-                  color: model.isAlive ? Color(0xff454f63):Color(0xff454F63).withOpacity(0.7),
+                  color: model.isAlive
+                      ? Color(0xff454f63)
+                      : Color(0xff454F63).withOpacity(0.7),
                 )),
             Text(getBallPlaceAddress(model),
                 maxLines: 1,
@@ -272,26 +263,30 @@ class IssueBallWidgetStyle2 extends StatelessWidget implements BallStyle2Widget{
         ));
   }
 
-  String getBallPlaceAddress(IssueBallWidgetStyle2ViewModel model){
-    if(model.isBallDelete()){
-       return "";
-    }else {
-      return model.resDto.ballPlaceAddress;
+  String getBallPlaceAddress(IssueBallWidgetStyle2ViewModel model) {
+    if (model.isBallDelete()) {
+      return "";
+    } else {
+      return model.getUserBallResDto().ballPlaceAddress;
     }
   }
 
-  String getBallName(IssueBallWidgetStyle2ViewModel model){
-    if(model.isBallDelete()){
-      return "(삭제됨) ${model.resDto.ballName}";
-    }else {
-      return model.resDto.ballName;
+  String getBallName(IssueBallWidgetStyle2ViewModel model) {
+    if (model.isBallDelete()) {
+      return "(삭제됨) ${model.getUserBallResDto().ballName}";
+    } else {
+      return model.getUserBallResDto().ballName;
     }
-
   }
-
 
   @override
-  UserBallResDto getUserBallResDto() {
-    return this.resDto;
+  BallStyle2WidgetController getBallStyle2WidgetController() {
+    return ballStyle2WidgetController;
+  }
+
+  @override
+  String getBallUuid() {
+    return ballStyle2WidgetController.userBallResDto.fBallUuid;
+
   }
 }

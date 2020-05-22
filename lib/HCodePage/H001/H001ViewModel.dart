@@ -13,7 +13,10 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1ReFreshBallUtil.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetController.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetInter.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
@@ -23,7 +26,7 @@ import 'package:uuid/uuid.dart';
 
 enum H001PageState { H001_01, H003_01 }
 
-class H001ViewModel with ChangeNotifier {
+class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
   final BuildContext _context;
   H001PageState currentState;
   String selectPositionAddress = "로 딩 중";
@@ -125,7 +128,7 @@ class H001ViewModel with ChangeNotifier {
     }
 
     this.ballWidgetLists.addAll(fBallListUpWrapDtoTemp.balls
-        .map((x) => BallStyle1Widget.create(x, onRequestReFreshBall))
+        .map((x) => BallStyle1Widget.create(x.ballType,BallStyle1WidgetController(x,this)))
         .toList());
 
 //    reRenderListView();
@@ -136,13 +139,8 @@ class H001ViewModel with ChangeNotifier {
     } else {
       hasBall = true;
     }
-
     notifyListeners();
   }
-
-//  void reRenderListView() {
-//    this.listViewKey = Uuid().v4();
-//  }
 
   Future getTagRanking(Position currentPosition) async {
     TagRepository _tagRepository = new TagRepository();
@@ -232,19 +230,11 @@ class H001ViewModel with ChangeNotifier {
     }
   }
 
+  @override
   onRequestReFreshBall(FBallResDto reFreshNeedBall) async {
     _setIsLoading(true);
-    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-    var ballResDto = await fBallTypeRepository
-        .selectBall(FBallReqDto(reFreshNeedBall.ballType, reFreshNeedBall.ballUuid));
-    var indexWhere = this
-        .ballWidgetLists
-        .indexWhere((element) => element.getFBallResDto().ballUuid == ballResDto.ballUuid);
-    if (!ballResDto.ballDeleteFlag) {
-      this.ballWidgetLists[indexWhere] = BallStyle1Widget.create(ballResDto, onRequestReFreshBall);
-    } else {
-      this.ballWidgetLists.removeAt(indexWhere);
-    }
+    var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
+    await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
     _setIsLoading(false);
   }
 }

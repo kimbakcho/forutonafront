@@ -121,7 +121,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
       youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
     }
     tagLoad(fBallResDto.ballUuid);
-    ballMarkerLoad();
+
     makerUserInfo =
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
     replyLoad();
@@ -129,6 +129,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     isInitFinish= true;
     _setIsLoading(false);
     notifyListeners();
+    ballMarkerLoad();
   }
 
   bool showFBallValuation() {
@@ -879,9 +880,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
 
   void showBallSetting() async {
     BallModifyService ballModifyService = IssueBallModifyImpl();
-    if (await ballModifyService.isCanModify(fBallResDto)) {
+    if (await ballModifyService.isCanModify(fBallResDto.uid)) {
       var result =
-          await ballModifyService.showModifySelectDialog(_context, fBallResDto);
+          await ballModifyService.showModifySelectDialog(_context, fBallResDto.ballType,fBallResDto.ballUuid);
       if (result == CommonBallModifyWidgetResultType.Delete) {
         Navigator.of(_context).pop();
       } else if (result == CommonBallModifyWidgetResultType.Update) {

@@ -1,12 +1,18 @@
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3Widget.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3WidgetController.dart';
 
-class FBallResForMarkerDto extends FBallResDto {
+class FBallResForMarker extends FBallResDto {
   bool isSelectBall = false;
 
-  Function onTopEvent;
+  final Function onTopEvent;
 
-  FBallResForMarkerDto(
-      this.isSelectBall, this.onTopEvent, FBallResDto ballResDto)
+  BallStyle3Widget ballStyle3Widget;
+
+  BallStyle3WidgetController ballStyle3WidgetController;
+
+  FBallResForMarker(
+      this.isSelectBall, this.onTopEvent,FBallResDto ballResDto, this.ballStyle3WidgetController)
       : super(
             ballResDto.latitude,
             ballResDto.longitude,
@@ -29,5 +35,7 @@ class FBallResForMarkerDto extends FBallResDto {
             ballResDto.distanceWithMapCenter,
             ballResDto.distanceDisplayText,
             ballResDto.contributor,
-            ballResDto.ballDeleteFlag);
+            ballResDto.ballDeleteFlag){
+    ballStyle3Widget = BallStyle3Widget.create(ballResDto.ballType,ballStyle3WidgetController);
+  }
 }

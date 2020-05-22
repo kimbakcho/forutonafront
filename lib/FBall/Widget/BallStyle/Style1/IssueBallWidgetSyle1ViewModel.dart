@@ -13,12 +13,14 @@ import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'BallStyle1WidgetController.dart';
+
 class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
   final BuildContext _context;
-  final FBallResDto ballResDto;
-  IssueBallDescriptionDto fBallDescriptionBasic;
-  final Function(FBallResDto) onRequestReFreshBall;
 
+  IssueBallDescriptionDto fBallDescriptionBasic;
+
+  final BallStyle1WidgetController ballStyle1WidgetController;
   //Loading
   bool _isLoading = false;
 
@@ -31,13 +33,13 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  IssueBallWidgetSyle1ViewModel(this.ballResDto, this._context,this.onRequestReFreshBall) {
+  IssueBallWidgetSyle1ViewModel(this.ballStyle1WidgetController, this._context) {
     this.fBallDescriptionBasic = IssueBallDescriptionDto.fromJson(
-        json.decode(this.ballResDto.description));
+        json.decode(getBallResDto().description));
   }
 
   bool isAliveBall() {
-    return this.ballResDto.activationTime.isAfter(DateTime.now());
+    return getBallResDto().activationTime.isAfter(DateTime.now());
   }
 
   @override
@@ -67,80 +69,84 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
 
   void goIssueDetailPage() async {
     await Navigator.of(_context)
-        .push(MaterialPageRoute(builder: (_) => ID001MainPage(ballResDto.ballUuid)));
-    this.onRequestReFreshBall(ballResDto);
+        .push(MaterialPageRoute(builder: (_) => ID001MainPage(getBallResDto().ballUuid)));
+    this.ballStyle1WidgetController.onRequestReFreshBall(getBallResDto());
   }
 
   String getBallName(){
-    if(ballResDto.ballDeleteFlag){
-      return "(삭제됨)${ballResDto.ballName}";
+    if(getBallResDto().ballDeleteFlag){
+      return "(삭제됨)${getBallResDto().ballName}";
     }else {
-      return ballResDto.ballName;
+      return getBallResDto().ballName;
     }
   }
 
   String getPlaceAddress(){
-    if(ballResDto.ballDeleteFlag){
+    if(getBallResDto().ballDeleteFlag){
       return "";
     }else {
-      return ballResDto.ballName;
+      return getBallResDto().ballName;
     }
   }
 
   String getDistanceDisplayText(){
-    if(ballResDto.ballDeleteFlag){
+    if(getBallResDto().ballDeleteFlag){
       return "";
     }else {
-      return ballResDto.distanceDisplayText;
+      return getBallResDto().distanceDisplayText;
     }
   }
 
   String getProfilePicktureUrl(){
-    if(ballResDto.ballDeleteFlag){
+    if(getBallResDto().ballDeleteFlag){
       return Preference.basicProfileImageUrl;
     }else {
-      return ballResDto.profilePicktureUrl;
+      return getBallResDto().profilePicktureUrl;
     }
   }
 
   String getNickName(){
-    if(ballResDto.ballDeleteFlag){
+    if(getBallResDto().ballDeleteFlag){
       return "";
     }else {
-      return ballResDto.nickName;
+      return getBallResDto().nickName;
     }
   }
 
   String getRemainingTime(){
-    if(ballResDto.ballDeleteFlag){
+    if(getBallResDto().ballDeleteFlag){
       return "-";
     }else {
       return TimeDisplayUtil.getRemainingToStrFromNow(
-          this.ballResDto.activationTime);
+          this.getBallResDto().activationTime);
     }
   }
 
   String getCommentCount(){
-    if(ballResDto.ballDeleteFlag){
+    if(getBallResDto().ballDeleteFlag){
       return "-";
     }else {
-      return this.ballResDto.commentCount.toString();
+      return this.getBallResDto().commentCount.toString();
     }
   }
 
   String getDisLikeCount(){
-    if(ballResDto.ballDeleteFlag){
+    if(getBallResDto().ballDeleteFlag){
       return "-";
     }else {
-      return this.ballResDto.ballDisLikes.toString();
+      return this.getBallResDto().ballDisLikes.toString();
     }
   }
 
   String getLikeCount(){
-    if(ballResDto.ballDeleteFlag){
+    if(getBallResDto().ballDeleteFlag){
       return "-";
     }else {
-      return this.ballResDto.ballLikes.toString();
+      return this.getBallResDto().ballLikes.toString();
     }
+  }
+
+  getBallResDto(){
+    return ballStyle1WidgetController.fBallResDto;
   }
 }

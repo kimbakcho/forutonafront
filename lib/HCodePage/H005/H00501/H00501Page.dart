@@ -23,22 +23,23 @@ class H00501Page extends StatelessWidget {
                   child: Column(
                 children: <Widget>[
                   Expanded(
-                      child: ListView.builder(
+                      child: ListView.separated(
                           controller: model.mainDropDownBtnController,
                           padding: EdgeInsets.all(0),
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
-                          itemCount: model.listUpBalls.length+1,
+                          itemCount: model.ballWidgetLists.length+1,
                           itemBuilder: (context, index) {
                             if(index ==0 ){
                               return selectOrderButton(model);
                             }else {
-                              return Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
-                                  child: BallStyle1Widget.create(model.listUpBalls[index-1],model.onRequestReFreshBall) as Widget
-                              );
+                              return model.ballWidgetLists[index-1];
                             }
-                          }))
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(height: 16);
+                          }
+                      ))
                 ],
               )),
             ),

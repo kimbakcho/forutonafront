@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
 import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
@@ -10,9 +9,14 @@ import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/MakerSupportStyle1.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3WidgetController.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3WidgetInter.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
@@ -21,7 +25,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-class ICodeMainPageViewModel extends ChangeNotifier {
+class ICodeMainPageViewModel extends ChangeNotifier
+    implements BallStyle3WidgetInter {
   final BuildContext _context;
   bool _flagIdleIgore = true;
   int _pageCount = 0;
@@ -37,27 +42,38 @@ class ICodeMainPageViewModel extends ChangeNotifier {
   String currentAddress = "";
   final Set<Marker> markers = {};
   GlobalKey mapContainerGlobalKey = GlobalKey();
-  List<FBallResForMarkerDto> listUpBalls = [];
+  List<FBallResForMarker> listUpBalls = [];
   bool reFreshBtnActive = false;
 
   PageController bottomPageController =
       new PageController(initialPage: 0, keepPage: true, viewportFraction: 0.9);
+
+  bool _isLoading = false;
+
+  getIsLoading() {
+    return _isLoading;
+  }
+
+  _setIsLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   Completer<GoogleMapController> _googleMapController = Completer();
 
   ICodeMainPageViewModel(this._context) {
     _codeMainViewModel = Provider.of<CodeMainViewModel>(_context);
-    if(_codeMainViewModel != null && _codeMainViewModel.lastKnownPosition != null  ){
+    if (_codeMainViewModel != null &&
+        _codeMainViewModel.lastKnownPosition != null) {
       _codeMainViewModel = Provider.of<CodeMainViewModel>(_context);
       initCameraPosition = CameraPosition(
           target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
               _codeMainViewModel.lastKnownPosition.longitude),
           zoom: 14.4746);
       currentAddress = _codeMainViewModel.firstAddress;
-
-    }else {
-      initCameraPosition= CameraPosition(
-        target:Preference.initPosition,zoom:14.4746
-      );
+    } else {
+      initCameraPosition =
+          CameraPosition(target: Preference.initPosition, zoom: 14.4746);
       currentAddress = "남산 공원";
     }
     bottomPageController.addListener(onPageContollerListner);
@@ -138,7 +154,7 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
-    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
+    GeoLocationUtil _geoLocationUtil = new GeoLocationUtil();
     _geoLocationUtil.useGpsReq();
     var currentLocation = await Geolocator().getCurrentPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -150,26 +166,25 @@ class ICodeMainPageViewModel extends ChangeNotifier {
     _flagIdleIgore = true;
     _googleMapController.complete(controller);
     reFreshBtnActive = false;
-    if(_codeMainViewModel != null && _codeMainViewModel.lastKnownPosition != null){
+    if (_codeMainViewModel != null &&
+        _codeMainViewModel.lastKnownPosition != null) {
       await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
               _codeMainViewModel.lastKnownPosition.longitude),
           zoom: 14.4746)));
       await onRefreshBall();
       _flagIdleIgore = false;
-    }else {
+    } else {
       var position = await Geolocator().getLastKnownPosition();
-      var positionAddress = await _geolocationRepository.getPositionAddress(position);
+      var positionAddress =
+          await _geolocationRepository.getPositionAddress(position);
       currentAddress = positionAddress;
       await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(position.latitude,position.longitude),
-        zoom: 14.4746
-      )));
+          target: LatLng(position.latitude, position.longitude),
+          zoom: 14.4746)));
       await onRefreshBall();
       _flagIdleIgore = false;
-
     }
-
   }
 
   onRefreshBall() async {
@@ -190,10 +205,6 @@ class ICodeMainPageViewModel extends ChangeNotifier {
     List<MultiSort> sortList = [];
     sortList.add(MultiSort("ballPower", QueryOrders.DESC));
     MultiSorts sorts = MultiSorts(sortList);
-    if (_pageCount == 0) {
-      this.listUpBalls = [];
-      notifyListeners();
-    }
     onSearch(
         southwestPoint, northeastPoint, sorts, _ballPageLimitSize, _pageCount);
   }
@@ -212,32 +223,28 @@ class ICodeMainPageViewModel extends ChangeNotifier {
         pageSize,
         sorts.toQureyJson());
     _fBallListUpWrapDto = await _fBallRepository.listUpBallFromMapArea(reqDto);
-    //Google Map 마커를 그리기 위해서 리스트 볼에 받는 객체로 변환 해줌.
+
     if (pageCount == 0) {
       this.listUpBalls.clear();
-      for (var o in _fBallListUpWrapDto.balls) {
-        this
-            .listUpBalls
-            .add(new FBallResForMarkerDto(false, ballSelectFuction, o));
-      }
-      //리프레쉬 에는 첫번째볼을 선택함.
+    }
+
+    this.listUpBalls.addAll(_fBallListUpWrapDto.balls
+        .map((x) => new FBallResForMarker(
+            false, ballSelectFuction, x, BallStyle3WidgetController(x, this)))
+        .toList());
+
+    if (pageCount == 0) {
       if (this.listUpBalls.length > 0) {
         this.listUpBalls[0].isSelectBall = true;
       }
-      //가끔 첫 마커 Draw실행에 PNG 못 그릴때가 있음 그래서 미리 1번 그려줌
-    } else {
-      for (var o in _fBallListUpWrapDto.balls) {
-        this
-            .listUpBalls
-            .add(new FBallResForMarkerDto(false, ballSelectFuction, o));
-      }
     }
+
     notifyListeners();
     drawBall(this.listUpBalls);
   }
 
   //Ball이 화면에서 선택 될때 콜백 되는 함수
-  ballSelectFuction(FBallResForMarkerDto resDto) async {
+  ballSelectFuction(FBallResForMarker resDto) async {
     clearBallSelect();
     int ballIndex =
         this.listUpBalls.indexWhere((a) => (a.ballUuid == resDto.ballUuid));
@@ -251,12 +258,10 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   //마커를 그리는 메소드
   //ICodeMain은 MarkerStyle1Util 에서 선택한 Widget을 화면에 그린다.
-  drawBall(List<FBallResForMarkerDto> listUpBalls) async {
+  drawBall(List<FBallResForMarker> listUpBalls) async {
     final GoogleMapController controller = await _googleMapController.future;
-
     Completer<Set<Marker>> _markerCompleter = Completer();
     MakerSupportStyle1(listUpBalls, _markerCompleter).generate(_context);
-
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
@@ -323,6 +328,25 @@ class ICodeMainPageViewModel extends ChangeNotifier {
         x: (offsetX * xScale).toInt(), y: (offsetY * yScale).toInt()));
   }
 
+
   @override
-  void dispose() {}
+  onRequestReFreshBall(FBallResDto p1) async {
+    _setIsLoading(true);
+    var fBallTypeRepository = FBallTypeRepository.create(p1.ballType);
+    FBallReqDto fBallReqDto = FBallReqDto(p1.ballType, p1.ballUuid);
+    var selectBall = await fBallTypeRepository.selectBall(fBallReqDto);
+    var indexWhere = listUpBalls
+        .indexWhere((element) => element.ballUuid == selectBall.ballUuid);
+    if (selectBall.ballDeleteFlag) {
+      if (listUpBalls.length >= 1) {
+        listUpBalls[indexWhere - 1].isSelectBall = true;
+      }
+      listUpBalls.removeAt(indexWhere);
+    } else {
+      listUpBalls[indexWhere] = FBallResForMarker(true, ballSelectFuction,
+          selectBall, BallStyle3WidgetController(selectBall, this));
+    }
+    drawBall(listUpBalls);
+    _setIsLoading(false);
+  }
 }

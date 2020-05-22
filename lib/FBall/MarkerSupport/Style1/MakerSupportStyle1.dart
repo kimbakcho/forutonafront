@@ -16,7 +16,7 @@ import 'FBallResForMarkerDto.dart';
 /// 해당 객체는 BallList FBallResForMarkerDto 를 받고 결과로 GoogleMapMaker Completer 통해 리턴함
 class MakerSupportStyle1 {
 //  final Function(List<Uint8List>) callback;
-  final List<FBallResForMarkerDto> ballList;
+  final List<FBallResForMarker> ballList;
   final Completer completer;
 
   MakerSupportStyle1(this.ballList, this.completer);
@@ -59,7 +59,7 @@ class MakerSupportStyle1 {
 /// 2) After painted access the repaint boundary with global key and converts it to uInt8List
 /// 3) Returns set of Uint8List (bitmaps) through callback
 class _MarkerHelper extends StatefulWidget {
-  final List<FBallResForMarkerDto> ballList;
+  final List<FBallResForMarker> ballList;
 
   final Completer completer;
 

@@ -1,9 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/IssueBallStyle1MarkerWidget.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/QuestBallStyle1MarkerWidget.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3Support.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3Widget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -78,8 +79,11 @@ class ICodeMainPage extends StatelessWidget {
                         left: 0,
                         child: bottomBallListUp(model,context),
                       ),
-                    ])))
-          ]);
+                    ]))),
+            model.getIsLoading() ? CommonLoadingComponent() : Container()
+          ]
+
+          );
         }));
   }
 
@@ -94,10 +98,7 @@ class ICodeMainPage extends StatelessWidget {
           onPageChanged: model.onBallListSelectChanged,
           itemCount: model.listUpBalls.length,
           itemBuilder: (context, index) {
-            return Container(
-                margin: EdgeInsets.only(right: 7),
-                child: BallStyle3Support.selectBallWidget(
-                    model.listUpBalls[index]));
+            return model.listUpBalls[index].ballStyle3Widget;
           }),
     );
   }

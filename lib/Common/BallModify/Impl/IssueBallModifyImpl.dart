@@ -16,9 +16,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class IssueBallModifyImpl implements BallModifyService {
 
   @override
-  Future<bool> isCanModify(FBallResDto resDto) async {
+  Future<bool> isCanModify(String ballUid) async {
+//    FBallTypeRepository fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+//    var fBallResDto = await fBallTypeRepository.selectBall(FBallReqDto(fBallType,ballUuid));
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    if(resDto.uid == firebaseUser.uid){
+    if(ballUid == firebaseUser.uid){
       return true;
     }else {
       return false;
@@ -26,7 +28,11 @@ class IssueBallModifyImpl implements BallModifyService {
   }
 
   @override
-  Future<CommonBallModifyWidgetResultType> showModifySelectDialog(BuildContext context,FBallResDto resDto) async{
+  Future<CommonBallModifyWidgetResultType> showModifySelectDialog(BuildContext context,FBallType fBallType,String ballUuid) async{
+    FBallTypeRepository fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+
+    var fBallResDto = await fBallTypeRepository.selectBall(FBallReqDto(fBallType,ballUuid));
+
     CommonBallModifyWidgetResultType commandResult = await showGeneralDialog(
         context: context,
         barrierDismissible: true,
@@ -41,16 +47,15 @@ class IssueBallModifyImpl implements BallModifyService {
     if(commandResult == CommonBallModifyWidgetResultType.Update){
         var result = await Navigator.of(context).push(MaterialPageRoute(
           builder: (_){
-            return IM001MainPage(LatLng(resDto.latitude,resDto.longitude),
-                resDto.placeAddress, resDto.ballUuid, IM001MainPageEnterMode.Update);
+            return IM001MainPage(LatLng(fBallResDto.latitude,fBallResDto.longitude),
+                fBallResDto.placeAddress, fBallResDto.ballUuid, IM001MainPageEnterMode.Update);
           }
         ));
         if(result != null && result == IM001MainPageEnterMode.Update){
           return CommonBallModifyWidgetResultType.Update;
         }
     }else if(commandResult == CommonBallModifyWidgetResultType.Delete){
-      FBallTypeRepository fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-      FBallReqDto reqDto = new FBallReqDto(FBallType.IssueBall, resDto.ballUuid);
+      FBallReqDto reqDto = new FBallReqDto(FBallType.IssueBall, fBallResDto.ballUuid);
       await fBallTypeRepository.deleteBall(reqDto);
       return CommonBallModifyWidgetResultType.Delete;
     }

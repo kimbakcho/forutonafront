@@ -7,11 +7,14 @@ import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallSelectReqDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallPlayerRepository.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2ReFreshBallUtil.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetController.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetInter.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:provider/provider.dart';
 
-class H00301PageViewModel extends ChangeNotifier {
+class H00301PageViewModel extends ChangeNotifier implements BallStyle2WidgetInter{
   final BuildContext context;
   List<BallStyle2Widget> ballListUpWidgets = [];
   ScrollController scrollController = ScrollController();
@@ -67,7 +70,7 @@ class H00301PageViewModel extends ChangeNotifier {
       ballListUpWidgets.clear();
     }
     ballListUpWidgets.addAll(userToPlayBallList.contents
-        .map((x) => BallStyle2Widget.create(x, onRequestReFreshBall))
+        .map((x) => BallStyle2Widget.create(x.fBallType,BallStyle2WidgetController(x,this)))
         .toList());
     notifyListeners();
   }
@@ -95,15 +98,12 @@ class H00301PageViewModel extends ChangeNotifier {
       !scrollController.position.outOfRange;
   }
 
+  @override
   onRequestReFreshBall(UserBallResDto p1) async {
     _setIsLoading(true);
-    FBallPlayerRepository _fBallPlayerRepository = FBallPlayerRepository();
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var userToPlayBall = await _fBallPlayerRepository.getUserToPlayBall(UserToPlayBallSelectReqDto(firebaseUser.uid,p1.fBallUuid));
-    var indexWhere = this
-        .ballListUpWidgets
-        .indexWhere((element) => element.getUserBallResDto().fBallUuid == p1.fBallUuid);
-    this.ballListUpWidgets[indexWhere] = BallStyle2Widget.create(userToPlayBall, onRequestReFreshBall);
+    var ballStyle2ReFreshBallUtil = BallStyle2ReFreshBallUtil();
+    ballStyle2ReFreshBallUtil.reFreshBallAndUiUpdate(ballListUpWidgets, p1, this);
     _setIsLoading(false);
   }
+
 }

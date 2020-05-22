@@ -25,6 +25,8 @@ class IM001MainPage extends StatelessWidget {
   IM001MainPage(
       this.setUpPosition, this.address, this.ballUuid, this.mode);
 
+
+
   @override
   Widget build(BuildContext context) {
     var statueBar = SystemUiOverlayStyle.light.copyWith(

@@ -6,8 +6,15 @@ import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Dto/BallNameSearchReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1ReFreshBallUtil.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetController.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetInter.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Ordersenum.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,14 +22,14 @@ import 'package:provider/provider.dart';
 
 import '../H005MainPageViewModel.dart';
 
-class H00501PageViewModel extends ChangeNotifier {
+class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInter{
   final BuildContext context;
 
   List<DropdownMenuItem<H00501DropdownItemType>> dropDownItems =
       new List<DropdownMenuItem<H00501DropdownItemType>>();
   List<H00501DropdownItemType> ordersItems = new List<H00501DropdownItemType>();
   ScrollController mainDropDownBtnController = new ScrollController();
-  List<FBallResDto> listUpBalls = [];
+  List<BallStyle1Widget> ballWidgetLists = [];
 
   H00501DropdownItemType _selectOrder;
   H00501DropdownItemType get selectOrder => _selectOrder;
@@ -80,7 +87,7 @@ class H00501PageViewModel extends ChangeNotifier {
     }
 }
 
-  bool hasBalls() => !(_pageCount * _ballPageLimitSize > listUpBalls.length);
+  bool hasBalls() => !(_pageCount * _ballPageLimitSize > ballWidgetLists.length);
 
   bool _isScrollerMoveBottomOver() {
     return mainDropDownBtnController.offset >=
@@ -91,7 +98,7 @@ class H00501PageViewModel extends ChangeNotifier {
   onChangeOrder() async{
     _pageCount = 0;
     MultiSorts sorts = _makeSearchOrders();
-    this.listUpBalls = [];
+    this.ballWidgetLists.clear();
     _setIsLoading(true);
     var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
     _setListUpBall(_pageCount, fBallListUpWrapDto);
@@ -112,10 +119,10 @@ class H00501PageViewModel extends ChangeNotifier {
 
   _setListUpBall(int pageCount, FBallListUpWrapDto listUpBallFromSearchText) {
     if (_isFirstPage(pageCount)) {
-      this.listUpBalls = listUpBallFromSearchText.balls;
-    } else {
-      this.listUpBalls.addAll(listUpBallFromSearchText.balls);
+      ballWidgetLists.clear();
     }
+    ballWidgetLists.addAll(listUpBallFromSearchText.balls
+        .map((e) => BallStyle1Widget.create(e.ballType,BallStyle1WidgetController(e,this))).toList());
   }
 
   bool _isFirstPage(int pageCount) => pageCount == 0;
@@ -143,7 +150,11 @@ class H00501PageViewModel extends ChangeNotifier {
     selectOrder = ordersItems[0];
   }
 
-  onRequestReFreshBall(FBallResDto p1) {
-    
+  @override
+  onRequestReFreshBall(FBallResDto reFreshNeedBall) async {
+    _setIsLoading(true);
+    var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
+    await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
+    _setIsLoading(false);
   }
 }

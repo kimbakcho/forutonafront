@@ -3,17 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3WidgetController.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 
 class QuestBallWidgetStyle3ViewModel extends ChangeNotifier {
   final BuildContext _context;
-
-  FBallResDto ballResDto;
+  final BallStyle3WidgetController ballStyle3WidgetController;
   IssueBallDescriptionDto fBallDescriptionBasic;
-  QuestBallWidgetStyle3ViewModel(this.ballResDto,this._context){
-    this.ballResDto = ballResDto;
+  QuestBallWidgetStyle3ViewModel(this.ballStyle3WidgetController,this._context){
     this.fBallDescriptionBasic = IssueBallDescriptionDto.fromJson(
-        json.decode(this.ballResDto.description));
+        json.decode(getFBallResDto().description));
   }
   isMainPicture(){
     if(fBallDescriptionBasic.desimages.length > 0){
@@ -22,10 +21,14 @@ class QuestBallWidgetStyle3ViewModel extends ChangeNotifier {
       return false;
     }
   }
-  void goIssueDetailPage() {
-    Navigator.of(_context).push(MaterialPageRoute(
-        builder: (_)=>ID001MainPage(ballResDto.ballUuid)
+  getFBallResDto(){
+    return ballStyle3WidgetController.fBallResDto;
+  }
+  void goIssueDetailPage() async{
+    await Navigator.of(_context).push(MaterialPageRoute(
+        builder: (_)=>ID001MainPage(getFBallResDto().ballUuid)
     ));
+    ballStyle3WidgetController.onRequestReFreshBall(getFBallResDto());
   }
 
 }

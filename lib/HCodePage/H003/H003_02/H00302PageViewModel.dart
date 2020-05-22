@@ -7,19 +7,22 @@ import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallSelectReqDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2ReFreshBallUtil.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetController.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetInter.dart';
 import 'package:provider/provider.dart';
 
 import '../../../GlobalModel.dart';
 
-class H00302PageViewModel extends ChangeNotifier {
+class H00302PageViewModel extends ChangeNotifier implements BallStyle2WidgetInter{
   final BuildContext context;
 
   ScrollController scrollController = ScrollController();
   List<BallStyle2Widget> ballListUpWidgets = [];
+  bool _isInitFinish = false;
 
   bool _isLoading = false;
-  bool _isinitFinish = false;
   getIsLoading() {
     return _isLoading;
   }
@@ -41,11 +44,11 @@ class H00302PageViewModel extends ChangeNotifier {
     _setIsLoading(true);
     await ballListUp();
     _setIsLoading(false);
-    _isinitFinish= false;
+    _isInitFinish= false;
   }
   isEmptyPage(){
     GlobalModel globalModel = Provider.of(context,listen:  false);
-    if(globalModel.fUserInfoDto != null && _isinitFinish && ballListUpWidgets.length == 0){
+    if(globalModel.fUserInfoDto != null && _isInitFinish && ballListUpWidgets.length == 0){
       return true;
     }else {
       return false;
@@ -67,7 +70,7 @@ class H00302PageViewModel extends ChangeNotifier {
     var userToMakerBallList =
         await _fballRepository.getUserToMakerBalls(userToMakerBallReqDto);
     ballListUpWidgets.addAll(userToMakerBallList.contents
-        .map((x) => BallStyle2Widget.create(x, onRequestReFreshBall))
+        .map((x) => BallStyle2Widget.create(x.fBallType,BallStyle2WidgetController(x,this) ))
         .toList());
     notifyListeners();
   }
@@ -104,15 +107,11 @@ class H00302PageViewModel extends ChangeNotifier {
         !scrollController.position.outOfRange;
   }
 
+  @override
   onRequestReFreshBall(UserBallResDto p1) async{
     _setIsLoading(true);
-    FBallRepository fBallRepository = FBallRepository();
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var userToMakeBall = await fBallRepository.getUserToMakerBall(UserToMakerBallSelectReqDto(firebaseUser.uid,p1.fBallUuid));
-    var indexWhere = this
-        .ballListUpWidgets
-        .indexWhere((element) => element.getUserBallResDto().fBallUuid == p1.fBallUuid);
-    this.ballListUpWidgets[indexWhere] = BallStyle2Widget.create(userToMakeBall, onRequestReFreshBall);
+    var ballStyle2ReFreshBallUtil = BallStyle2ReFreshBallUtil();
+    ballStyle2ReFreshBallUtil.reFreshBallAndUiUpdate(ballListUpWidgets, p1, this);
     _setIsLoading(false);
   }
 }

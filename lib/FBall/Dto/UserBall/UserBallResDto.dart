@@ -23,6 +23,7 @@ class UserBallResDto {
   DateTime activationTime;
   DateTime makeTime;
   bool ballDeleteFlag;
+  String ballUid;
 
   double distanceWithMapCenter;
   String distanceDisplayText;

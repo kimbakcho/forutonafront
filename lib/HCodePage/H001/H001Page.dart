@@ -61,7 +61,7 @@ class H001Page extends StatelessWidget {
               ? inlineRanking(model)
               : unInlineRaking(model,context);
         }
-        return model.ballWidgetLists[index - 1] as Widget;
+        return model.ballWidgetLists[index - 1];
       },
       controller: model.h001CenterListViewController,
       separatorBuilder: (context, index) {

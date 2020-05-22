@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3WidgetController.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style3/IssueBallWidgetStyle3ViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
-class IssueBallWidgetStyle3 extends StatelessWidget {
-  FBallResDto ballResDto;
+import 'BallStyle3Widget.dart';
 
-  IssueBallWidgetStyle3(this.ballResDto);
+// ignore: must_be_immutable
+class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
+  final BallStyle3WidgetController ballStyle3WidgetController;
+
+  IssueBallWidgetStyle3(this.ballStyle3WidgetController);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => IssueBallWidgetStyle3ViewModel(ballResDto,context),
+      key: UniqueKey(),
+        create: (_) => IssueBallWidgetStyle3ViewModel(ballStyle3WidgetController,context),
         child: Consumer<IssueBallWidgetStyle3ViewModel>(
             builder: (_, model, child) {
           return Container(
+              margin: EdgeInsets.only(right: 6),
               height: 90.00,
               width: MediaQuery.of(context).size.width-48,
               child: FlatButton(
@@ -59,7 +64,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
       width: model.isMainPicture() ? MediaQuery.of(context).size.width-182 : MediaQuery.of(context).size.width-108,
       child: RichText(
         text: TextSpan(
-            text: model.ballResDto.nickName,
+            text: model.getFBallResDto().nickName,
             style: TextStyle(
               fontFamily: "Noto Sans CJK KR",
               fontWeight: FontWeight.w700,
@@ -69,7 +74,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
             children: <TextSpan>[
               TextSpan(text: "    "),
               TextSpan(
-                  text: "${model.ballResDto.userLevel.toStringAsFixed(0)}  lv",style: TextStyle(
+                  text: "${model.getFBallResDto().userLevel.toStringAsFixed(0)}  lv",style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w700,
                 fontSize: 9,
                 color:Color(0xff454f63).withOpacity(0.56),
@@ -88,7 +93,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(ballResDto.ballLikes.toString(),
+          Text(model.getFBallResDto().ballLikes.toString(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -100,7 +105,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
               child: Icon(ForutonaIcon.thumbsup,
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
-          Text(model.ballResDto.ballDisLikes.toString(),
+          Text(model.getFBallResDto().ballDisLikes.toString(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -112,7 +117,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
               child: Icon(ForutonaIcon.thumbsdown,
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
-          Text(model.ballResDto.commentCount.toString(),
+          Text(model.getFBallResDto().commentCount.toString(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -126,7 +131,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
           SizedBox(width: 19),
           Text(
               TimeDisplayUtil.getRemainingToStrFromNow(
-                  model.ballResDto.activationTime),
+                  model.getFBallResDto().activationTime),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -172,7 +177,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
     return Container(
       width: model.isMainPicture() ? MediaQuery.of(context).size.width-182 : MediaQuery.of(context).size.width-108,
       height: 18,
-      child: Text(model.ballResDto.ballName,
+      child: Text(model.getFBallResDto().ballName,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontFamily: "Noto Sans CJK KR",
@@ -193,5 +198,16 @@ class IssueBallWidgetStyle3 extends StatelessWidget {
           color: Color(0xffdc3e57),
           shape: BoxShape.circle,
         ));
+  }
+
+
+  @override
+  BallStyle3WidgetController getBallStyle3WidgetController() {
+
+  }
+
+  @override
+  String getBallUuid() {
+
   }
 }

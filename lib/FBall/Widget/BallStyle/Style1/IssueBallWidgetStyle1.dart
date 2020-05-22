@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetController.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/IssueBallWidgetSyle1ViewModel.dart';
 import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -10,15 +11,18 @@ import 'package:provider/provider.dart';
 
 
 class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
-  final FBallResDto ballResDto;
-  Function(FBallResDto) onRequestReFreshBall;
-  IssueBallWidgetStyle1(this.ballResDto,this.onRequestReFreshBall);
+
+  final BallStyle1WidgetController ballStyle1WidgetController;
+
+  IssueBallWidgetStyle1(this.ballStyle1WidgetController);
+
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         key: UniqueKey(),
         create: (_) =>
-            IssueBallWidgetSyle1ViewModel(this.ballResDto, context,this.onRequestReFreshBall),
+            IssueBallWidgetSyle1ViewModel(ballStyle1WidgetController,context),
         child:
             Consumer<IssueBallWidgetSyle1ViewModel>(builder: (_, model, child) {
           return Stack(
@@ -30,7 +34,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
                     onPressed: model.goIssueDetailPage,
                     child: Column(children: <Widget>[
                       ballHeader(model),
-                      !this.ballResDto.ballDeleteFlag ?
+                      !model.getBallResDto().ballDeleteFlag ?
                       ballMainPickture(model,context) : Container(),
                       ballProfileBar(model),
                       ballTextBar(model,context),
@@ -194,11 +198,11 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
                       .push(MaterialPageRoute(builder: (context) {
                     return BallImageViewer(
                         model.fBallDescriptionBasic.desimages,
-                        model.ballResDto.ballUuid + "picturefromBigpicture");
+                        model.getBallResDto().ballUuid + "picturefromBigpicture");
                   }));
                 },
                 child: Hero(
-                    tag: model.ballResDto.ballUuid + "picturefromBigpicture",
+                    tag: model.getBallResDto().ballUuid + "picturefromBigpicture",
                     child: Container(
                         height: 172.00,
                         decoration: BoxDecoration(
@@ -211,7 +215,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
                     bottom: 10,
                     right: 10,
                     child: Hero(
-                      tag: model.ballResDto.ballUuid + "picturefrombutton",
+                      tag: model.getBallResDto().ballUuid + "picturefrombutton",
                       child: Container(
                           child: FlatButton(
                             onPressed: () {
@@ -219,7 +223,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
                                   .push(MaterialPageRoute(builder: (context) {
                                 return BallImageViewer(
                                     model.fBallDescriptionBasic.desimages,
-                                    model.ballResDto.ballUuid +
+                                    model.getBallResDto().ballUuid +
                                         "picturefrombutton");
                               }));
                             },
@@ -318,8 +322,13 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
   }
 
   @override
-  FBallResDto getFBallResDto() {
-    return this.ballResDto;
+  BallStyle1WidgetController getBallStyle1WidgetController() {
+    return ballStyle1WidgetController;
+  }
+
+  @override
+  String getBallUuid() {
+    return ballStyle1WidgetController.fBallResDto.ballUuid;
   }
 
 }

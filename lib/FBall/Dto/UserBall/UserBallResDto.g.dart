@@ -24,6 +24,7 @@ UserBallResDto _$UserBallResDtoFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['makeTime'] as String)
     ..ballDeleteFlag = json['ballDeleteFlag'] as bool
+    ..ballUid = json['ballUid'] as String
     ..distanceWithMapCenter = (json['distanceWithMapCenter'] as num)?.toDouble()
     ..distanceDisplayText = json['distanceDisplayText'] as String;
 }
@@ -42,6 +43,7 @@ Map<String, dynamic> _$UserBallResDtoToJson(UserBallResDto instance) =>
       'activationTime': instance.activationTime?.toIso8601String(),
       'makeTime': instance.makeTime?.toIso8601String(),
       'ballDeleteFlag': instance.ballDeleteFlag,
+      'ballUid': instance.ballUid,
       'distanceWithMapCenter': instance.distanceWithMapCenter,
       'distanceDisplayText': instance.distanceDisplayText,
     };

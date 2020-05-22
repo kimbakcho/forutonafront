@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/BallModify/Impl/CommonBallModifyWidgetResultType.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallType.dart';
 
 abstract class BallModifyService {
 
-  Future<bool> isCanModify(FBallResDto resDto);
-  Future<CommonBallModifyWidgetResultType> showModifySelectDialog(BuildContext context,FBallResDto resDto);
+  Future<bool> isCanModify(String ballUid);
+  Future<CommonBallModifyWidgetResultType> showModifySelectDialog(BuildContext context,FBallType fBallType,String ballUuid);
 
 }
