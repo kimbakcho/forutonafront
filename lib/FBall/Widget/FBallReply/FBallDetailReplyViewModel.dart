@@ -1,21 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallDetailReplyContentBar.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallDetailSubReplyInputView.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallInputReplyView.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 
-import 'ID001DetailSubReplyInputView.dart';
-import 'ID001InputReplyView.dart';
 
-class ID001DetailReplyViewModel extends ChangeNotifier {
+class FBallDetailReplyViewModel extends ChangeNotifier {
   FBallReplyResWrapDto fBallReplyResWrapDto = new FBallReplyResWrapDto();
   FBallReplyRepository _fBallReplyRepository = new FBallReplyRepository();
-  List<FBallSubReplyResDto> detailReply = [];
+//  List<FBallSubReplyResDto> detailReply = [];
+  List<FBallDetailReplyContentBar> fBallDetailReplyContentBars = [];
   ScrollController replyScrollerController = new ScrollController();
   final String ballUuid;
   BuildContext _context;
@@ -23,7 +26,7 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
   int _sizeLimit = 20;
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
 
-  ID001DetailReplyViewModel(this.ballUuid, this._context) {
+  FBallDetailReplyViewModel(this.ballUuid, this._context) {
     replyScrollerController.addListener(_onlistscrollListener);
     init();
   }
@@ -38,7 +41,7 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
     if (replyScrollerController.offset >=
             replyScrollerController.position.maxScrollExtent &&
         !replyScrollerController.position.outOfRange) {
-      if (detailReply.length < (_currentPage + 1 * _sizeLimit)) {
+      if (fBallDetailReplyContentBars.length < (_currentPage + 1 * _sizeLimit)) {
         return;
       }
       _currentPage++;
@@ -53,16 +56,21 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
     reqDto.page = page;
     reqDto.detail = true;
     if (page == 0) {
-      detailReply.clear();
+      fBallDetailReplyContentBars.clear();
     }
     fBallReplyResWrapDto = await _fBallReplyRepository.getFBallReply(reqDto);
     var replyResWrapToSubReplyResDtoList2 =
         replyResWrapToSubReplyResDtoList(fBallReplyResWrapDto);
-    detailReply.addAll(replyResWrapToSubReplyResDtoList2);
+    fBallDetailReplyContentBars.addAll(replyResWrapToSubReplyResDtoList2
+        .map((e) => FBallDetailReplyContentBar(e)).toList());
     notifyListeners();
   }
+  onInsertSubReply(FBallSubReplyResDto fBallSubReplyResDto) async {
 
-  replyResWrapToSubReplyResDtoList(FBallReplyResWrapDto fBallReplyResWrapDto) {
+
+  }
+
+  List<FBallSubReplyResDto> replyResWrapToSubReplyResDtoList(FBallReplyResWrapDto fBallReplyResWrapDto) {
     var contents = fBallReplyResWrapDto.contents;
     List<FBallSubReplyResDto> fBallSubReplyResDto = [];
     var replyList = contents.where((item) {
@@ -110,20 +118,20 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
   void insertSubReply(FBallSubReplyResDto detailReply) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     if(firebaseUser != null ){
-      var subReplyItem = await showGeneralDialog(
-          context: scaffold.currentState.context,
-          barrierDismissible: false,
-          transitionDuration: Duration(milliseconds: 300),
-          barrierColor: Colors.black.withOpacity(0.3),
-          barrierLabel:
-          MaterialLocalizations.of(_context).modalBarrierDismissLabel,
-          pageBuilder:
-              (_context, Animation animation, Animation secondaryAnimation) {
-            return ID001DetailSubReplyInputView(detailReply);
-          });
-      if (subReplyItem != null) {
-        detailReply.subReply = subReplyItem;
-      }
+//      var subReplyItem = await showGeneralDialog(
+//          context: scaffold.currentState.context,
+//          barrierDismissible: false,
+//          transitionDuration: Duration(milliseconds: 300),
+//          barrierColor: Colors.black.withOpacity(0.3),
+//          barrierLabel:
+//          MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+//          pageBuilder:
+//              (_context, Animation animation, Animation secondaryAnimation) {
+//            return ID001DetailSubReplyInputView(detailReply);
+//          });
+//      if (subReplyItem != null) {
+//        detailReply.subReply = subReplyItem;
+//      }
     }else {
       Navigator.push(
           _context,
@@ -133,7 +141,6 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
                 return J001View();
               }));
     }
-
 
   }
 
@@ -345,7 +352,7 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
           fBallReplyInsertReqDto.ballUuid = detailReply.ballUuid;
           fBallReplyInsertReqDto.idx = detailReply.idx;
           fBallReplyInsertReqDto.replyText = detailReply.replyText;
-          return ID001InputReplyView(fBallReplyInsertReqDto);
+          return FBallInputReplyView(fBallReplyInsertReqDto);
         });
     detailReply.replyText = changeText;
   }
@@ -403,6 +410,7 @@ class ID001DetailReplyViewModel extends ChangeNotifier {
         });
 
   }
+
 }
 
 enum ModifyReturnValue { Edit, Delete }

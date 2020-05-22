@@ -29,10 +29,8 @@ class IssueBallModifyImpl implements BallModifyService {
 
   @override
   Future<CommonBallModifyWidgetResultType> showModifySelectDialog(BuildContext context,FBallType fBallType,String ballUuid) async{
+
     FBallTypeRepository fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-
-    var fBallResDto = await fBallTypeRepository.selectBall(FBallReqDto(fBallType,ballUuid));
-
     CommonBallModifyWidgetResultType commandResult = await showGeneralDialog(
         context: context,
         barrierDismissible: true,
@@ -45,6 +43,7 @@ class IssueBallModifyImpl implements BallModifyService {
           return CommonBallModifyWidget();
         });
     if(commandResult == CommonBallModifyWidgetResultType.Update){
+      var fBallResDto = await fBallTypeRepository.selectBall(FBallReqDto(fBallType,ballUuid));
         var result = await Navigator.of(context).push(MaterialPageRoute(
           builder: (_){
             return IM001MainPage(LatLng(fBallResDto.latitude,fBallResDto.longitude),
@@ -55,7 +54,7 @@ class IssueBallModifyImpl implements BallModifyService {
           return CommonBallModifyWidgetResultType.Update;
         }
     }else if(commandResult == CommonBallModifyWidgetResultType.Delete){
-      FBallReqDto reqDto = new FBallReqDto(FBallType.IssueBall, fBallResDto.ballUuid);
+      FBallReqDto reqDto = new FBallReqDto(FBallType.IssueBall, ballUuid);
       await fBallTypeRepository.deleteBall(reqDto);
       return CommonBallModifyWidgetResultType.Delete;
     }

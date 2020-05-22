@@ -199,9 +199,9 @@ class ICodeMainPageViewModel extends ChangeNotifier
         mapContainerGlobalKey.currentContext.findRenderObject();
     _currentMapPosition = initCameraPosition;
     var southwestPoint = await getWidgetOffsetPositionToLatLngFromMap(
-        mapRenderBoxRed, controller, 16, 465);
+        mapRenderBoxRed, controller, 16, MediaQuery.of(_context).size.height-180);
     var northeastPoint = await getWidgetOffsetPositionToLatLngFromMap(
-        mapRenderBoxRed, controller, 344, 108);
+        mapRenderBoxRed, controller, MediaQuery.of(_context).size.width-16, 108);
     List<MultiSort> sortList = [];
     sortList.add(MultiSort("ballPower", QueryOrders.DESC));
     MultiSorts sorts = MultiSorts(sortList);
@@ -240,7 +240,10 @@ class ICodeMainPageViewModel extends ChangeNotifier
     }
 
     notifyListeners();
-    drawBall(this.listUpBalls);
+    await drawBall(this.listUpBalls);
+    this.markers.add(Marker(markerId: MarkerId("southwestPoint"),position: southwestPoint));
+    this.markers.add(Marker(markerId: MarkerId("northeastPoint"),position: northeastPoint));
+
   }
 
   //Ball이 화면에서 선택 될때 콜백 되는 함수

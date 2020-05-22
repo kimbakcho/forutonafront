@@ -3,32 +3,40 @@ import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
+import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:provider/provider.dart';
 
 import 'H00502/H00502Page.dart';
 
 class H005MainPage extends StatefulWidget {
-  H005MainPage(this.serachText);
+  H005MainPage(this.searchText,{this.initPageState});
 
-  String serachText;
+  final String searchText;
+  H005PageState initPageState;
 
   @override
   _H005MainPageState createState() {
-    return _H005MainPageState(serachText);
+      return _H005MainPageState(searchText,initPageState: this.initPageState);
   }
 }
 
 class _H005MainPageState extends State<H005MainPage>
     with SingleTickerProviderStateMixin {
-  _H005MainPageState(this.serachText);
+  _H005MainPageState(this.serachText,{this.initPageState});
 
-  String serachText;
+  final String serachText;
   TabController tabController;
+  H005PageState initPageState;
 
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    if(initPageState!=null){
+      tabController = TabController(length: 2, vsync: this, initialIndex: initPageState.index);
+    }else {
+      tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    }
+
   }
 
   @override

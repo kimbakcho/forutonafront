@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
+import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -68,6 +70,13 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
   }
 
   void goIssueDetailPage() async {
+    var currentUser = await FirebaseAuth.instance.currentUser();
+    var fBallTypeRepository = FBallTypeRepository.create(getBallResDto().ballType);
+    fBallTypeRepository.ballHit(FBallReqDto(getBallResDto().ballType,getBallResDto().ballUuid));
+    if(currentUser != null){
+      fBallTypeRepository.joinBall(FBallJoinReqDto(getBallResDto().ballType,getBallResDto().ballUuid,currentUser.uid));
+    }
+
     await Navigator.of(_context)
         .push(MaterialPageRoute(builder: (_) => ID001MainPage(getBallResDto().ballUuid)));
     this.ballStyle1WidgetController.onRequestReFreshBall(getBallResDto());
@@ -146,7 +155,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     }
   }
 
-  getBallResDto(){
+  FBallResDto getBallResDto(){
     return ballStyle1WidgetController.fBallResDto;
   }
 }

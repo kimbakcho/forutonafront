@@ -6,7 +6,7 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
 
-class ID001InputReplyViewModel extends ChangeNotifier {
+class FBallInputReplyViewModel extends ChangeNotifier {
   StreamSubscription keyboard;
   bool isBackSendButton = false;
   final BuildContext _context;
@@ -14,7 +14,7 @@ class ID001InputReplyViewModel extends ChangeNotifier {
   TextEditingController replyTextController = new TextEditingController();
   FBallReplyRepository _fBallReplyRepository = new FBallReplyRepository();
 
-  ID001InputReplyViewModel(this.fBallReplyInsertReqDto,this._context) {
+  FBallInputReplyViewModel(this.fBallReplyInsertReqDto,this._context) {
     if(fBallReplyInsertReqDto.idx!=null){
       replyTextController.text = fBallReplyInsertReqDto.replyText;
     }
@@ -31,7 +31,6 @@ class ID001InputReplyViewModel extends ChangeNotifier {
   void insertReply() async {
     isBackSendButton = true;
     await fBallReplyInsert();
-
     replyTextController.clear();
     Navigator.of(_context).pop(ID001InputReplyViewResult.Insert);
   }

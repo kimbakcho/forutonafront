@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:provider/provider.dart';
@@ -128,24 +129,31 @@ class H001Page extends StatelessWidget {
                           bottom:
                               BorderSide(width: 1.0, color: Color(0xFF38CAF5))),
                     ),
-                    child: Row(children: <Widget>[
-                      Text("${model.rankingWrapDto.contents[index].ranking}."),
-                      SizedBox(width: 12),
-                      Text("#${model.rankingWrapDto.contents[index].tagName}"),
-                      Spacer(),
-                      Text(
-                          "${(model.rankingWrapDto.contents[index].tagPower).toStringAsFixed(1)}k"),
-                      SizedBox(width: 12),
-                      Container(
-                        width: 12,
-                        child: FlatButton(
-                            padding: EdgeInsets.all(0),
-                            onPressed: () {
-                              model.inlineRanking = false;
-                            },
-                            child: Icon(ForutonaIcon.down_arrow, size: 10)),
-                      )
-                    ]));
+                    child: FlatButton(
+                      onPressed: (){
+                        model.gotoTagSearch(model.rankingWrapDto.contents[index].tagName);
+                      },
+                      child:Row(children: <Widget>[
+                        Text("${model.rankingWrapDto.contents[index].ranking}."),
+                        SizedBox(width: 12),
+                        Text("#${model.rankingWrapDto.contents[index].tagName}"),
+                        Spacer(),
+                        Text(
+                            "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}"),
+                        SizedBox(width: 12),
+//                      Container(
+//                        width: 12,
+//                        child: FlatButton(
+//                            padding: EdgeInsets.all(0),
+//                            onPressed: () {
+//                              model.inlineRanking = false;
+//                            },
+//                            child: Icon(ForutonaIcon.down_arrow, size: 10)),
+//                      )
+                      ])
+                    )
+
+                    );
               }),
           height: MediaQuery.of(context).size.height - 240,
           width: MediaQuery.of(context).size.width,
@@ -210,7 +218,7 @@ class H001Page extends StatelessWidget {
                             "#${model.rankingWrapDto.contents[index].tagName}"),
                         Spacer(),
                         Text(
-                            "${(model.rankingWrapDto.contents[index].tagPower).toStringAsFixed(1)}k"),
+                            "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}"),
                         SizedBox(width: 12),
                         Container(
                           width: 12,
@@ -264,4 +272,5 @@ class H001Page extends StatelessWidget {
       ),
     );
   }
+
 }

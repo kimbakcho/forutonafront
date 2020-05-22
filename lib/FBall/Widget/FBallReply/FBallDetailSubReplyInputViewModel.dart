@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
 
-class ID001DetailSubReplyInputViewModel extends ChangeNotifier{
+class FBallDetailSubReplyInputViewModel extends ChangeNotifier{
   final FBallSubReplyResDto mainReply;
   final BuildContext _context;
   bool _isBackSendButton = false;
   StreamSubscription _keyboard;
   TextEditingController subReplyController = new TextEditingController();
   FBallReplyRepository _fBallReplyRepository = FBallReplyRepository();
-  ID001DetailSubReplyInputViewModel(this.mainReply,this._context){
+  FBallDetailSubReplyInputViewModel(this.mainReply,this._context){
     _keyboard = KeyboardVisibility.onChange.listen((value) {
       if (!value) {
         _keyboard.cancel();
@@ -44,7 +45,7 @@ class ID001DetailSubReplyInputViewModel extends ChangeNotifier{
     subReplyReqDto.ballUuid = mainReply.ballUuid;
     subReplyReqDto.replyNumber = mainReply.replyNumber;
     subReplyReqDto.detail = false;
-    var fBallReplyResWrapDto = await _fBallReplyRepository.getFBallSubReply(subReplyReqDto);
+    FBallReplyResWrapDto fBallReplyResWrapDto = await _fBallReplyRepository.getFBallSubReply(subReplyReqDto);
     Navigator.of(_context).pop(fBallReplyResWrapDto.contents);
 
   }

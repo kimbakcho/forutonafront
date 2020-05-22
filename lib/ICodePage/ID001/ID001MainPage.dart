@@ -6,6 +6,7 @@ import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAni.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyWidget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -93,8 +94,9 @@ class ID001MainPage extends StatelessWidget {
                                       model.tagChips.length > 0
                                           ? didver()
                                           : Container(),
-                                      replyInputBar(model, context),
-                                      replyTopBar(model),
+                                      FBallReplyWidget(
+                                          model.fBallUuid
+                                      ),
                                       model.showFBallValuation()
                                           ? ballValuationBar(model)
                                           : Container()
@@ -241,150 +243,9 @@ class ID001MainPage extends StatelessWidget {
         ]));
   }
 
-  ListView replyTopBar(ID001MainPageViewModel model) {
-    return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.all(0),
-      itemCount: model.fBallReplyResWrapDto.contents.length,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        return replyContentBar(context, model, index);
-      },
-    );
-  }
 
-  Container replyContentBar(
-      BuildContext context, ID001MainPageViewModel model, int index) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        height: 61,
-        padding: EdgeInsets.fromLTRB(16, 15, 16, 13),
-        decoration: BoxDecoration(
-            border:
-                Border(bottom: BorderSide(width: 1, color: Color(0xffF2F0F1)))),
-        child: Stack(children: <Widget>[
-          Positioned(
-            left: 0,
-            top: 0,
-            width: 32,
-            height: 32,
-            child: Container(
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: NetworkImage(model.fBallReplyResWrapDto
-                          .contents[index].userProfilePictureUrl))),
-            ),
-          ),
-          Positioned(
-              top: 0,
-              left: 44,
-              child: RichText(
-                  text: TextSpan(
-                      text: model
-                          .fBallReplyResWrapDto.contents[index].userNickName,
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 11,
-                        color: Color(0xff454f63),
-                      ),
-                      children: [
-                    TextSpan(
-                        text: "   " +
-                            TimeDisplayUtil.getRemainingToStrFromNow(model
-                                .fBallReplyResWrapDto
-                                .contents[index]
-                                .replyUploadDateTime),
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontSize: 9,
-                          color: Color(0xffb1b1b1),
-                        ))
-                  ]))),
-          Positioned(
-              left: 44,
-              bottom: 0,
-              width: MediaQuery.of(context).size.width - 76,
-              child: Container(
-                  child: Text(
-                model.fBallReplyResWrapDto.contents[index].replyText,
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontSize: 10,
-                  color: Color(0xff454f63),
-                ),
-                overflow: TextOverflow.ellipsis,
-              )))
-        ]));
-  }
 
-  Container replyInputBar(ID001MainPageViewModel model, BuildContext context) {
-    return Container(
-        height: 103,
-        decoration: BoxDecoration(color: Color(0xffF2F0F1)),
-        child: Stack(children: <Widget>[
-          Positioned(
-              top: 16,
-              left: 16,
-              child: Container(
-                  child: Text(
-                      "댓글(${model.fBallReplyResWrapDto.replyTotalCount})"))),
-          Positioned(
-              top: 4,
-              right: 6,
-              child: Container(
-                  child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      onPressed: model.popDetailReply,
-                      child: Text("댓글 페이지로 이동",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12,
-                            color: Color(0xff3497fd),
-                          ))))),
-          Positioned(
-              top: 47,
-              width: MediaQuery.of(context).size.width,
-              child: Container(
-                  height: 32.00,
-                  margin: EdgeInsets.fromLTRB(16, 0, 63, 0),
-                  child: FlatButton(
-                      onPressed: model.popupInputDisplay,
-                      padding: EdgeInsets.all(0),
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.only(left: 16),
-                          height: 32.00,
-                          child: Text("의견을 남겨주세요.",
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontSize: 14,
-                                color: Color(0xff78849e),
-                              )))),
-                  decoration: BoxDecoration(
-                      color: Color(0xfff9f9f9),
-                      borderRadius: BorderRadius.circular(12.00)))),
-          Positioned(
-              top: 47,
-              right: 16,
-              child: Container(
-                  width: 30,
-                  height: 30,
-                  child: FlatButton(
-                    padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
-                    onPressed: () {},
-                    shape: CircleBorder(),
-                    child: Icon(ForutonaIcon.replysendicon,
-                        color: Color(0xffB1B1B1), size: 13),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xffE4E7E8),
-                    shape: BoxShape.circle,
-                  )))
-        ]));
-  }
+
 
   Container tagBar(ID001MainPageViewModel model) {
     return Container(
@@ -579,7 +440,7 @@ class ID001MainPage extends StatelessWidget {
             width: 11,
             height: 11,
             child: Icon(
-              ForutonaIcon.dislike,
+              ForutonaIcon.like,
               color: Color(0xff78849e),
               size: 11,
             ),
@@ -598,7 +459,7 @@ class ID001MainPage extends StatelessWidget {
               height: 11,
               margin: EdgeInsets.only(left: 8),
               child: Icon(
-                ForutonaIcon.thumbsdown,
+                ForutonaIcon.dislike,
                 color: Color(0xff78849e),
                 size: 11,
               )),

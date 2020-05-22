@@ -7,6 +7,7 @@ import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
+import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -18,6 +19,8 @@ import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dar
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetController.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetInter.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
+import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
+import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
@@ -236,5 +239,17 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
     var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
     await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
     _setIsLoading(false);
+  }
+
+  void gotoTagSearch(String tagName) {
+    Navigator.of(_context).push(
+      MaterialPageRoute(
+        builder: (_) => H005MainPage(tagName,initPageState: H005PageState.Tag)
+      )
+    );
+  }
+  String changeTagValueDisplay(double value){
+    return NomalValueDisplay.changeIntDisplaystr(value);
+
   }
 }

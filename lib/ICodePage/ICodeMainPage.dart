@@ -54,6 +54,7 @@ class ICodeMainPage extends StatelessWidget {
                         onCameraIdle: model.onMapIdle,
                         markers: model.markers,
                       ),
+
                       Positioned(
                         top: MediaQuery.of(context).padding.top+5,
                         left: 0,

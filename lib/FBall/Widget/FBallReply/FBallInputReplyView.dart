@@ -4,17 +4,18 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'ID001InputReplyViewModel.dart';
+import 'FBallInputReplyViewModel.dart';
 
-class ID001InputReplyView extends StatelessWidget {
+class FBallInputReplyView extends StatelessWidget {
+
   final FBallReplyInsertReqDto fBallReplyInsertReqDto;
-  ID001InputReplyView(this.fBallReplyInsertReqDto);
+  FBallInputReplyView(this.fBallReplyInsertReqDto);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_)=>ID001InputReplyViewModel(fBallReplyInsertReqDto,context),
-      child: Consumer<ID001InputReplyViewModel>(
+      create: (_)=>FBallInputReplyViewModel(fBallReplyInsertReqDto,context),
+      child: Consumer<FBallInputReplyViewModel>(
         builder: (_,model,child){
           return Scaffold(
               backgroundColor: Color(0x00000000),
@@ -72,7 +73,6 @@ class ID001InputReplyView extends StatelessWidget {
                                     }else {
                                       model.insertReply();
                                     }
-
                                   },
                                   child: Icon(
                                     ForutonaIcon.replysendicon,

@@ -35,14 +35,13 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/ICodePage/ID001/Dto/ID001ResultPopDto.dart';
-import 'package:forutonafront/ICodePage/ID001/ID001DetailReplyView.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
-import 'ID001InputReplyView.dart';
-import 'ID001InputReplyViewModel.dart';
+import '../../FBall/Widget/FBallReply/FBallInputReplyView.dart';
+import '../../FBall/Widget/FBallReply/FBallInputReplyViewModel.dart';
 
 class ID001MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -75,14 +74,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
   //Tag 관련
   TagRepository _tagRepository = new TagRepository();
   List<Chip> tagChips = [];
-
-  //볼에 레이더 애니메이션을 주기위한 Ticker
-  Ticker _ticker;
-
-  //댓글 관련
-  int replyCount = 0;
-  FBallReplyRepository _fBallReplyRepository = new FBallReplyRepository();
-  FBallReplyResWrapDto fBallReplyResWrapDto = new FBallReplyResWrapDto();
 
   //UnAndDown 관련
   String userNickName = "로 딩 중";
@@ -124,7 +115,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
 
     makerUserInfo =
         await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-    replyLoad();
+
     loadFBallValuation();
     isInitFinish= true;
     _setIsLoading(false);
@@ -155,21 +146,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> replyLoad() async {
-    FBallReplyReqDto reqDto = new FBallReplyReqDto();
-    reqDto.ballUuid = fBallResDto.ballUuid;
-    reqDto.detail = false;
-    reqDto.size = 3;
-    reqDto.page = 0;
-    if (reqDto.page == 0) {
-      this.fBallReplyResWrapDto.contents.clear();
-      notifyListeners();
-    }
-    this.fBallReplyResWrapDto =
-        await _fBallReplyRepository.getFBallReply(reqDto);
-
-    notifyListeners();
-  }
 
   Future<void> ballMarkerLoad() async {
     this.ballList = new List<FBallResForMarkerStyle2Dto>();
@@ -677,10 +653,10 @@ class ID001MainPageViewModel extends ChangeNotifier {
               (_context, Animation animation, Animation secondaryAnimation) {
             FBallReplyInsertReqDto reqDto = new FBallReplyInsertReqDto();
             reqDto.ballUuid = fBallResDto.ballUuid;
-            return ID001InputReplyView(reqDto);
+            return FBallInputReplyView(reqDto);
           });
       if (result != null) {
-        await replyLoad();
+
         mainScrollController.animateTo(
             mainScrollController.position.maxScrollExtent + 100,
             duration: Duration(milliseconds: 500),
@@ -697,25 +673,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }
   }
 
-  void popDetailReply() async {
-    await showGeneralDialog(
-        context: _context,
-        barrierDismissible: true,
-        transitionDuration: Duration(milliseconds: 300),
-        barrierColor: Colors.black.withOpacity(0.3),
-        barrierLabel:
-            MaterialLocalizations.of(_context).modalBarrierDismissLabel,
-        pageBuilder:
-            (_context, Animation animation, Animation secondaryAnimation) {
-          return ID001DetailReplyView(fBallResDto.ballUuid);
-        });
-
-    await replyLoad();
-    mainScrollController.animateTo(
-        mainScrollController.position.maxScrollExtent + 100,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.linear);
-  }
 
   isPlusStatue() {
     if (fBallValuationResDto != null && fBallValuationResDto.upAndDown > 0) {
@@ -734,6 +691,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void onPlusBtn() async {
+    _setIsLoading(true);
     if (fBallResDto.activationTime.isBefore(DateTime.now())) {
       return;
     }
@@ -752,10 +710,13 @@ class ID001MainPageViewModel extends ChangeNotifier {
     } else {
       await onFBallValuation(1);
     }
-    notifyListeners();
+    makerUserInfo =
+    await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
+    _setIsLoading(false);
   }
 
   void onMinusBtn() async {
+    _setIsLoading(true);
     if (fBallResDto.activationTime.isBefore(DateTime.now())) {
       return;
     }
@@ -773,7 +734,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
     } else {
       await onFBallValuation(-1);
     }
-    notifyListeners();
+    makerUserInfo =
+    await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
+    _setIsLoading(false);
   }
 
   Future onFBallValuation(int unAndDown) async {
@@ -890,6 +853,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
       }
     }
   }
+
+
 }
 
 enum FBallValuationState { Like, DisLike }
