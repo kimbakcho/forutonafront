@@ -1,7 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetController.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/IssueBallWidgetSyle1ViewModel.dart';
@@ -9,20 +8,18 @@ import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
-
-class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
-
+class IssueBallWidgetStyle1 extends StatelessWidget
+    implements BallStyle1Widget {
   final BallStyle1WidgetController ballStyle1WidgetController;
 
   IssueBallWidgetStyle1(this.ballStyle1WidgetController);
-
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         key: UniqueKey(),
         create: (_) =>
-            IssueBallWidgetSyle1ViewModel(ballStyle1WidgetController,context),
+            IssueBallWidgetSyle1ViewModel(ballStyle1WidgetController, context),
         child:
             Consumer<IssueBallWidgetSyle1ViewModel>(builder: (_, model, child) {
           return Stack(
@@ -34,10 +31,11 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
                     onPressed: model.goIssueDetailPage,
                     child: Column(children: <Widget>[
                       ballHeader(model),
-                      !model.getBallResDto().ballDeleteFlag ?
-                      ballMainPickture(model,context) : Container(),
+                      !model.getBallResDto().ballDeleteFlag
+                          ? ballMainPickture(model, context)
+                          : Container(),
                       ballProfileBar(model),
-                      ballTextBar(model,context),
+                      ballTextBar(model, context),
                       divider(),
                       Container(
                         height: 48.00,
@@ -82,8 +80,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
                                 child: Icon(ForutonaIcon.comment,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
-                            Text(
-                                model.getRemainingTime(),
+                            Text(model.getRemainingTime(),
                                 style: TextStyle(
                                   fontFamily: "Gibson",
                                   fontWeight: FontWeight.w600,
@@ -126,7 +123,8 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
     );
   }
 
-  Container ballTextBar(IssueBallWidgetSyle1ViewModel model,BuildContext context) {
+  Container ballTextBar(
+      IssueBallWidgetSyle1ViewModel model, BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width - 64,
       padding: EdgeInsets.only(bottom: 23),
@@ -175,8 +173,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
           Positioned(
             left: 34,
             top: 16,
-            child: Text(
-                model.getRemainingTime(),
+            child: Text(model.getRemainingTime(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontSize: 8,
@@ -188,7 +185,8 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
     );
   }
 
-  Widget ballMainPickture(IssueBallWidgetSyle1ViewModel model,BuildContext context) {
+  Widget ballMainPickture(
+      IssueBallWidgetSyle1ViewModel model, BuildContext context) {
     return model.isMainPicture()
         ? Stack(children: <Widget>[
             FlatButton(
@@ -198,18 +196,28 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
                       .push(MaterialPageRoute(builder: (context) {
                     return BallImageViewer(
                         model.fBallDescriptionBasic.desimages,
-                        model.getBallResDto().ballUuid + "picturefromBigpicture");
+                        model.getBallResDto().ballUuid +
+                            "picturefromBigpicture");
                   }));
                 },
                 child: Hero(
-                    tag: model.getBallResDto().ballUuid + "picturefromBigpicture",
-                    child: Container(
-                        height: 172.00,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          fit: BoxFit.fitWidth,
-                          image: NetworkImage(model.mainPictureSrc()),
-                        ))))),
+                    tag: model.getBallResDto().ballUuid +
+                        "picturefromBigpicture",
+                    child: CachedNetworkImage(
+                      imageUrl: model.mainPictureSrc(),
+                      imageBuilder: (context, imageProvider) => Container(
+                          height: 172.00,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            fit: BoxFit.fitWidth,
+                            image: imageProvider,
+                          ))),
+                      placeholder: (context, url) => Container(
+                        height: 172,
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ))),
             model.getPicktureCount() > 1
                 ? Positioned(
                     bottom: 10,
@@ -330,5 +338,4 @@ class IssueBallWidgetStyle1 extends StatelessWidget implements BallStyle1Widget{
   String getBallUuid() {
     return ballStyle1WidgetController.fBallResDto.ballUuid;
   }
-
 }

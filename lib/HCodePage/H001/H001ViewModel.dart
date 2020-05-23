@@ -111,7 +111,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
     getTagRanking(serachPosition);
 
     _pageCount = 0;
-    getBallListUp(serachPosition, _pageCount, _ballPageLimitSize);
+    await getBallListUp(serachPosition, _pageCount, _ballPageLimitSize);
   }
 
   Future getBallListUp(Position currentPosition, int page, int size) async {
@@ -235,10 +235,10 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
 
   @override
   onRequestReFreshBall(FBallResDto reFreshNeedBall) async {
-    _setIsLoading(true);
+//    _setIsLoading(true);
     var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
     await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
-    _setIsLoading(false);
+//    _setIsLoading(false);
   }
 
   void gotoTagSearch(String tagName) {

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dart';
@@ -319,7 +320,14 @@ class IM001MainPageViewModel extends ChangeNotifier {
     List<BallImageItemDto> uploadListImageItemDto = [];
     for (var o in refSrcList) {
       if (o.imageByte != null) {
-        images.add(o.imageByte);
+        var image = await decodeImageFromList(o.imageByte);
+        var compressImage = await FlutterImageCompress.compressWithList(
+          o.imageByte,
+          minHeight: image.height.toInt(),
+          minWidth: image.width.toInt(),
+          quality: 96,
+        );
+        images.add(Uint8List.fromList(compressImage));
         uploadListImageItemDto.add(o);
       }
     }
@@ -358,8 +366,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
         ));
     if (images != null) {
       for (var i in images) {
-        ByteData imageData = await i.getByteData();
-
+        ByteData imageData = await i.getByteData(quality: 88);
         BallImageItemDto itemDto = new BallImageItemDto();
         itemDto.imageByte = imageData.buffer.asUint8List();
         ballImageList.add(itemDto);

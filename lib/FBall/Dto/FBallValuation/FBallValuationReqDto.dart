@@ -7,8 +7,8 @@ part 'FBallValuationReqDto.g.dart';
 @JsonSerializable()
 class FBallValuationReqDto {
 
-
   FBallValuationReqDto();
+
   String ballUuid;
   String uid;
 

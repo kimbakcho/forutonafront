@@ -9,7 +9,7 @@ part of 'FBallValuationInsertReqDto.dart';
 FBallValuationInsertReqDto _$FBallValuationInsertReqDtoFromJson(
     Map<String, dynamic> json) {
   return FBallValuationInsertReqDto()
-    ..idx = json['idx'] as int
+    ..valueUuid = json['valueUuid'] as String
     ..ballUuid = json['ballUuid'] as String
     ..uid = json['uid'] as String
     ..unAndDown = json['unAndDown'] as int;
@@ -18,7 +18,7 @@ FBallValuationInsertReqDto _$FBallValuationInsertReqDtoFromJson(
 Map<String, dynamic> _$FBallValuationInsertReqDtoToJson(
         FBallValuationInsertReqDto instance) =>
     <String, dynamic>{
-      'idx': instance.idx,
+      'valueUuid': instance.valueUuid,
       'ballUuid': instance.ballUuid,
       'uid': instance.uid,
       'unAndDown': instance.unAndDown,

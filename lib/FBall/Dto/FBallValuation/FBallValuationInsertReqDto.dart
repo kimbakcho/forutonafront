@@ -6,7 +6,7 @@ part 'FBallValuationInsertReqDto.g.dart';
 @JsonSerializable()
 class FBallValuationInsertReqDto {
   FBallValuationInsertReqDto();
-  int idx;
+  String valueUuid;
   String ballUuid;
   String uid;
   int unAndDown;

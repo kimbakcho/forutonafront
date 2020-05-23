@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'H00302PageViewModel.dart';
@@ -15,16 +15,30 @@ class H00302Page extends StatelessWidget {
           return Container(
               margin: EdgeInsets.only(bottom: 53),
               child: Stack(children: <Widget>[
-                ListView.builder(
-                    controller: model.scrollController,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return model.ballListUpWidgets[index];
-                    },
-                    itemCount: model.ballListUpWidgets.length),
+                !viewModel.isEmptyPage()
+                    ? buildListView(model)
+                    : Container(
+                        child: Center(
+                            child: Text(
+                                "아쉽지만\n"
+                                "제작하신 컨텐츠가 없습니다.",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 14,
+                                  color: Color(0xffb1b1b1),
+                                )))),
                 model.getIsLoading() ? CommonLoadingComponent() : Container()
               ]));
         }));
   }
 
+  ListView buildListView(H00302PageViewModel model) {
+    return ListView.builder(
+        controller: model.scrollController,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return model.ballListUpWidgets[index];
+        },
+        itemCount: model.ballListUpWidgets.length);
+  }
 }

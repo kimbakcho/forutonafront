@@ -5,7 +5,7 @@ part 'FBallValuationResDto.g.dart';
 
 @JsonSerializable()
 class FBallValuationResDto {
-   int idx;
+   String valueUuid;
    String ballUuid;
    String uid;
    int upAndDown;

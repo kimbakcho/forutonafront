@@ -15,18 +15,20 @@ import 'package:provider/provider.dart';
 
 class ID001MainPage extends StatelessWidget {
   final String fBallUuid;
+  final FBallResDto fBallResDto;
 
-  ID001MainPage(this.fBallUuid) {
+  ID001MainPage(this.fBallUuid,{this.fBallResDto}) {
     var statueBar = SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white.withOpacity(0.5),
         statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(statueBar);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => ID001MainPageViewModel(context, fBallUuid),
+        create: (_) => ID001MainPageViewModel(context, fBallUuid,fBallResDto: fBallResDto),
         child: Consumer<ID001MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(

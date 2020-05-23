@@ -38,6 +38,7 @@ import 'package:forutonafront/ICodePage/ID001/Dto/ID001ResultPopDto.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
 import '../../FBall/Widget/FBallReply/FBallInputReplyView.dart';
@@ -93,16 +94,20 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
   final String fBallUuid;
 
-  ID001MainPageViewModel(this._context, this.fBallUuid) {
+  ID001MainPageViewModel(this._context, this.fBallUuid,{this.fBallResDto}) {
     _init();
   }
 
   _init() async {
-    _setIsLoading(true);
-    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-    var currentFBallResDto = await fBallTypeRepository
-        .selectBall(FBallReqDto(FBallType.IssueBall, this.fBallUuid));
-    this.fBallResDto = currentFBallResDto;
+
+    if(fBallResDto == null ){
+      _setIsLoading(true);
+      var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+      var currentFBallResDto = await fBallTypeRepository
+          .selectBall(FBallReqDto(FBallType.IssueBall, this.fBallUuid));
+      this.fBallResDto = currentFBallResDto;
+      _setIsLoading(false);
+    }
     initialCameraPosition = CameraPosition(
         target: LatLng(fBallResDto.latitude, fBallResDto.longitude),
         zoom: 14.425);
@@ -118,9 +123,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
 
     loadFBallValuation();
     isInitFinish= true;
-    _setIsLoading(false);
-    notifyListeners();
+
     ballMarkerLoad();
+    notifyListeners();
   }
 
   bool showFBallValuation() {
@@ -691,69 +696,66 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void onPlusBtn() async {
-    _setIsLoading(true);
+//    _setIsLoading(true);
     if (fBallResDto.activationTime.isBefore(DateTime.now())) {
       return;
     }
-
     if (isPlusStatue()) {
-      await _fBallValuationRepository
-          .deleteFBallValuation(fBallValuationResDto.idx);
-      fBallValuationResDto = null;
+      deleteValueation();
       notifyListeners();
     } else if (isMinusStatue()) {
-      await _fBallValuationRepository
-          .deleteFBallValuation(fBallValuationResDto.idx);
-
-      await onFBallValuation(1);
+      deleteValueation();
+      onFBallValuation(1);
       notifyListeners();
     } else {
-      await onFBallValuation(1);
+      onFBallValuation(1);
     }
     makerUserInfo =
     await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-    _setIsLoading(false);
+//    _setIsLoading(false);
   }
 
   void onMinusBtn() async {
-    _setIsLoading(true);
+//    _setIsLoading(true);
     if (fBallResDto.activationTime.isBefore(DateTime.now())) {
       return;
     }
     if (isMinusStatue()) {
-      await _fBallValuationRepository
-          .deleteFBallValuation(fBallValuationResDto.idx);
-      fBallValuationResDto = null;
+      deleteValueation();
       notifyListeners();
     } else if (isPlusStatue()) {
-      await _fBallValuationRepository
-          .deleteFBallValuation(fBallValuationResDto.idx);
-
-      await onFBallValuation(-1);
+      deleteValueation();
+      onFBallValuation(-1);
       notifyListeners();
     } else {
-      await onFBallValuation(-1);
+      onFBallValuation(-1);
     }
     makerUserInfo =
     await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-    _setIsLoading(false);
+//    _setIsLoading(false);
+  }
+
+  void deleteValueation() {
+    _fBallValuationRepository
+        .deleteFBallValuation(fBallValuationResDto.valueUuid);
+    fBallValuationResDto = null;
   }
 
   Future onFBallValuation(int unAndDown) async {
     FBallValuationInsertReqDto reqDto = FBallValuationInsertReqDto();
+    reqDto.valueUuid = Uuid().v4();
     reqDto.ballUuid = fBallResDto.ballUuid;
     reqDto.uid =
         Provider.of<GlobalModel>(_context, listen: false).fUserInfoDto.uid;
     reqDto.unAndDown = unAndDown;
-    var idx = await _fBallValuationRepository.insertFBallValuation(reqDto);
-    if (idx >= 0) {
-      fBallValuationResDto = FBallValuationResDto();
+     _fBallValuationRepository.insertFBallValuation(reqDto);
+
+    if(fBallValuationResDto == null) {
+      fBallValuationResDto = new FBallValuationResDto();
+      fBallValuationResDto.valueUuid = reqDto.valueUuid;
+      fBallValuationResDto.ballUuid = reqDto.ballUuid;
       fBallValuationResDto.uid = reqDto.uid;
-      fBallValuationResDto.ballUuid = fBallResDto.ballUuid;
-      fBallValuationResDto.upAndDown = unAndDown;
-      fBallValuationResDto.idx = idx;
-    } else {
-      fBallValuationResDto = null;
+      fBallValuationResDto.upAndDown = reqDto.unAndDown;
     }
   }
 
@@ -849,11 +851,15 @@ class ID001MainPageViewModel extends ChangeNotifier {
       if (result == CommonBallModifyWidgetResultType.Delete) {
         Navigator.of(_context).pop();
       } else if (result == CommonBallModifyWidgetResultType.Update) {
-        this._init();
+        reFreshBall();
       }
     }
   }
 
+  void reFreshBall() {
+    this.fBallResDto = null;
+    this._init();
+  }
 
 }
 

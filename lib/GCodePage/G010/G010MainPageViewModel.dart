@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
@@ -58,6 +59,7 @@ class G010MainPageViewModel extends ChangeNotifier {
 
     //프로필 이미지 변경 체크 및 업데이트
     if(_isChangeProfileImage && _currentPickProfileImage != null){
+
       String imageUrl = await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
       reqDto.userProfileImageUrl = imageUrl;
     }else if(_isChangeProfileImage && _currentPickProfileImage == null){

@@ -107,8 +107,11 @@ class MapGeoSearchPage extends StatelessWidget {
                 child: TextField(
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.search,
+                  autofocus: true,
                   focusNode: model.searchFocusNode,
-                  onSubmitted: (value) async {},
+                  onSubmitted: (value) async {
+                    model.onSubmit(value);
+                  },
                   maxLines: 1,
                   controller: model.searchTextController,
                   cursorColor: Color(0xff707070),
@@ -129,7 +132,7 @@ class MapGeoSearchPage extends StatelessWidget {
                               fontSize: 14,
                               color: Color(0xff454f63),
                             ),
-                      contentPadding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                      contentPadding: EdgeInsets.fromLTRB(15, 0, 35, 0),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Color(0xff3497FD), width: 1.5),

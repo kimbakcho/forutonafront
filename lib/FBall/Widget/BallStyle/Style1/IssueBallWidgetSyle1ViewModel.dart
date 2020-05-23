@@ -78,7 +78,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     }
 
     await Navigator.of(_context)
-        .push(MaterialPageRoute(builder: (_) => ID001MainPage(getBallResDto().ballUuid)));
+        .push(MaterialPageRoute(builder: (_) => ID001MainPage(getBallResDto().ballUuid,fBallResDto: getBallResDto())));
     this.ballStyle1WidgetController.onRequestReFreshBall(getBallResDto());
   }
 

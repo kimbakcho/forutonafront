@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -86,10 +87,10 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
   }
 
   bool isClearButtonShow() {
-    if (!hasSearchTextFocus && searchTextController.text.length == 0) {
-      return false;
-    } else {
+    if (hasSearchTextFocus && searchTextController.text.length > 0) {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -98,6 +99,19 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
       return false;
     } else {
       return true;
+    }
+  }
+
+  void onSubmit(String value) {
+    if(predictions.length == 0){
+      Fluttertoast.showToast(
+          msg: "검색결과가 없습니다.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
     }
   }
 }

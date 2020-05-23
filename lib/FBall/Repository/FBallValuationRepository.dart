@@ -13,7 +13,7 @@ class FBallValuationRepository {
     return FBallValuationWrapResDto.fromJson(response.data);
   }
 
-  Future<int> insertFBallValuation( FBallValuationInsertReqDto reqDto) async {
+  Future<String> insertFBallValuation( FBallValuationInsertReqDto reqDto) async {
     var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
     FDio fDio = new FDio(idToken.token);
@@ -21,7 +21,7 @@ class FBallValuationRepository {
     return response.data;
   }
 
-  Future<int> updateFBallValuation( FBallValuationInsertReqDto reqDto) async {
+  Future<String> updateFBallValuation( FBallValuationInsertReqDto reqDto) async {
     var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
     FDio fDio = new FDio(idToken.token);
@@ -29,11 +29,11 @@ class FBallValuationRepository {
     return response.data;
   }
 
-  Future<int> deleteFBallValuation( int idx) async {
+  Future<String> deleteFBallValuation(String valueUuid) async {
     var currentUser = await FirebaseAuth.instance.currentUser();
     var idToken = await currentUser.getIdToken(refresh: true);
     FDio fDio = new FDio(idToken.token);
-    var response = await fDio.delete("/v1/FBallValuation/$idx");
+    var response = await fDio.delete("/v1/FBallValuation/$valueUuid");
     return response.data;
   }
 

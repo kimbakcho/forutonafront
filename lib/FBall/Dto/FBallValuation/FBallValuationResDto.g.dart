@@ -8,7 +8,7 @@ part of 'FBallValuationResDto.dart';
 
 FBallValuationResDto _$FBallValuationResDtoFromJson(Map<String, dynamic> json) {
   return FBallValuationResDto()
-    ..idx = json['idx'] as int
+    ..valueUuid = json['valueUuid'] as String
     ..ballUuid = json['ballUuid'] as String
     ..uid = json['uid'] as String
     ..upAndDown = json['upAndDown'] as int;
@@ -17,7 +17,7 @@ FBallValuationResDto _$FBallValuationResDtoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$FBallValuationResDtoToJson(
         FBallValuationResDto instance) =>
     <String, dynamic>{
-      'idx': instance.idx,
+      'valueUuid': instance.valueUuid,
       'ballUuid': instance.ballUuid,
       'uid': instance.uid,
       'upAndDown': instance.upAndDown,

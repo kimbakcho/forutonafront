@@ -49,7 +49,8 @@ class _H005MainPageState extends State<H005MainPage>
             Scaffold(
                 body: Container(
                     color: Color(0xfff2f0f1),
-                    padding: EdgeInsets.fromLTRB(0, 22, 0, 0),
+                    padding:  EdgeInsets.fromLTRB(
+                        0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
                       Column(children: <Widget>[
                         topSerchBar(context, model),
@@ -102,33 +103,33 @@ class _H005MainPageState extends State<H005MainPage>
                   borderRadius: BorderRadius.circular(12.00),
                 ))
           ]),
-          Positioned(
-              right: 40,
-              top: 13,
-              child: Container(
-                  height: 20.00,
-                  width: 20.00,
-                  child: FlatButton(
-                    onPressed: () {
-                      model.sethasClearFlag(true);
-                    },
-                    padding: EdgeInsets.all(0),
-                    child: Icon(Icons.close,
-                        size: 13,
-                        color: !model.hasClearFlag
-                            ? Color(0xff454F63)
-                            : Color(0xffCCCCCC)),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xffffffff),
-                    border: Border.all(
-                      width: 1.00,
-                      color: !model.hasClearFlag
-                          ? Color(0xff454F63)
-                          : Color(0xffcccccc),
-                    ),
-                    shape: BoxShape.circle,
-                  )))
+//          Positioned(
+//              right: 40,
+//              top: 13,
+//              child: Container(
+//                  height: 20.00,
+//                  width: 20.00,
+//                  child: FlatButton(
+//                    onPressed: () {
+//                      model.sethasClearFlag(true);
+//                    },
+//                    padding: EdgeInsets.all(0),
+//                    child: Icon(Icons.close,
+//                        size: 13,
+//                        color: !model.hasClearFlag
+//                            ? Color(0xff454F63)
+//                            : Color(0xffCCCCCC)),
+//                  ),
+//                  decoration: BoxDecoration(
+//                    color: Color(0xffffffff),
+//                    border: Border.all(
+//                      width: 1.00,
+//                      color: !model.hasClearFlag
+//                          ? Color(0xff454F63)
+//                          : Color(0xffcccccc),
+//                    ),
+//                    shape: BoxShape.circle,
+//                  )))
         ],
       ),
       decoration: BoxDecoration(color: Colors.white),

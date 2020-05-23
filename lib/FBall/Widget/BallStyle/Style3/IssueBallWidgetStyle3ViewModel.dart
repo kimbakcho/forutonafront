@@ -39,7 +39,7 @@ class IssueBallWidgetStyle3ViewModel extends ChangeNotifier {
       fBallTypeRepository.joinBall(FBallJoinReqDto(getFBallResDto().ballType,getFBallResDto().ballUuid,currentUser.uid));
     }
     await Navigator.of(_context).push(MaterialPageRoute(
-        builder: (_)=>ID001MainPage(getFBallResDto().ballUuid)
+        builder: (_)=>ID001MainPage(getFBallResDto().ballUuid,fBallResDto:getFBallResDto())
     ));
     ballStyle3WidgetController.onRequestReFreshBall(getFBallResDto());
   }

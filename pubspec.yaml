@@ -95,6 +95,13 @@ dependencies:
   google_fonts: ^1.0.0
   #youtube VideoID Paser
   youtube_parser: ^1.1.0
+  #이미지 압축을 위해서 사용
+  flutter_image_compress: ^0.6.8
+  #이미지 MetaData를 추출 위해서 사용
+  image: ^2.1.12
+  #이미지 캐쉬 및 로딩에 사용
+  cached_network_image: ^2.2.0+1
+
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,11 @@
+
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
@@ -43,8 +46,16 @@ class FUserRepository {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
+    var uint8list = await file.readAsBytes();
+    var image = await decodeImageFromList(uint8list);
+    var compressImage = await FlutterImageCompress.compressWithList(
+      uint8list,
+      minHeight: image.height.toInt(),
+      minWidth: image.width.toInt(),
+      quality: 96,
+    );
     FormData formData = FormData.fromMap({
-      "ProfileImage": await MultipartFile.fromFile(file.path)
+      "ProfileImage": MultipartFile.fromBytes(compressImage,contentType: MediaType("image", "jpeg"),filename: "ProfileImage.jpg")
     });
     var response = await dio.put("/v1/ForutonaUser/ProfileImage",data: formData);
     return response.data;

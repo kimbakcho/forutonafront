@@ -27,7 +27,8 @@ class _H004MainPageState extends State<H004MainPage> {
                 body: Container(
                     width: MediaQuery.of(context).size.width,
                     color: Color(0xfff2f0f1),
-                    padding: EdgeInsets.fromLTRB(0, 22, 0, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(
                       children: <Widget>[
                         Column(children: <Widget>[
@@ -61,11 +62,7 @@ class _H004MainPageState extends State<H004MainPage> {
               height: 52,
               child: FlatButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return H005MainPage(
-                          model.searchHistorys[index].searchText);
-                    }));
+                    model.gotoH005Page(model.searchHistorys[index].searchText);
                   },
                   child: Row(children: <Widget>[
                     Expanded (
@@ -147,10 +144,8 @@ class _H004MainPageState extends State<H004MainPage> {
                     model.attckSearchFocus();
                   } else {
                     await model.onSave(value);
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return H005MainPage(value);
-                    }));
+                    model.gotoH005Page(value);
+
                   }
                 },
                 maxLines: 1,
