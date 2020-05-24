@@ -23,14 +23,14 @@ class FBallDetailReplyContentBar extends StatefulWidget {
 
 class _FBallDetailReplyContentBarState extends State<FBallDetailReplyContentBar> {
 
-  List<FBallDetailReplySubContentBar> _subContentBars = [];
+  List<FBallDetailReplyContentBar> _subContentBars = [];
 
   @override
 
   void initState() {
       super.initState();
-      _subContentBars.addAll(widget.fBallSubReplyResDto.subReply
-          .map((e) => FBallDetailReplySubContentBar(e,modifyPopup: modifyPopup)).toList());
+//      _subContentBars.addAll(widget.fBallSubReplyResDto.subReply
+//          .map((e) => FBallDetailReplySubContentBar(e,modifyPopup: modifyPopup)).toList());
   }
 
 
@@ -67,7 +67,9 @@ class _FBallDetailReplyContentBarState extends State<FBallDetailReplyContentBar>
                 });
             if (subReplyItem != null) {
               _subContentBars.clear();
-              _subContentBars.addAll(subReplyItem.map((e) => FBallDetailReplySubContentBar(e)).toList()) ;
+              widget.fBallSubReplyResDto.subReply = subReplyItem;
+
+//              _subContentBars.addAll(subReplyItem.map((e) => FBallDetailReplySubContentBar(e)).toList()) ;
             }
             setState(() {
             });
@@ -167,7 +169,7 @@ class _FBallDetailReplyContentBarState extends State<FBallDetailReplyContentBar>
   }
 
   Container subReplyToggleBar() {
-    return widget.fBallSubReplyResDto.subReply.length != 0
+    return _subContentBars.length != 0
         ? Container(
         margin: EdgeInsets.only(left: 49),
         height: 20,
@@ -427,15 +429,15 @@ class _FBallDetailReplyContentBarState extends State<FBallDetailReplyContentBar>
           FBallReplyInsertReqDto fBallReplyInsertReqDto =
           FBallReplyInsertReqDto();
           fBallReplyInsertReqDto.ballUuid = detailReply.ballUuid;
-          fBallReplyInsertReqDto.idx = detailReply.idx;
+//          fBallReplyInsertReqDto.idx = detailReply.idx;
           fBallReplyInsertReqDto.replyText = detailReply.replyText;
-          return FBallInputReplyView(fBallReplyInsertReqDto);
+//          return FBallInputReplyView(fBallReplyInsertReqDto);
         });
     detailReply.replyText = changeText;
   }
   Future<void> replyDeleteAction(FBallReplyResDto detailReply) async {
     FBallReplyRepository _fBallReplyRepository = new FBallReplyRepository();
-    await _fBallReplyRepository.deleteFBallReply(detailReply.idx);
+//    await _fBallReplyRepository.deleteFBallReply(detailReply.idx);
   }
 
   String getUserPorfilePicktureUrl() {

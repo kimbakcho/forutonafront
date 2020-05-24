@@ -24,7 +24,9 @@ import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 enum H001PageState { H001_01, H003_01 }
@@ -77,6 +79,9 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
     await _geoLocationUtil.permissionCheck();
     if (await _geoLocationUtil.permissionCheck()) {
       _currentPosition = await Geolocator().getCurrentPosition();
+      await reFreshSearchBall(_currentPosition);
+    }else {
+      _currentPosition = Position(longitude: Preference.initPosition.longitude,latitude: Preference.initPosition.latitude);
       await reFreshSearchBall(_currentPosition);
     }
     _setIsLoading(false);
@@ -175,6 +180,8 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
         _setIsLoading(true);
         await getBallListUp(_currentPosition, _pageCount, _ballPageLimitSize);
         _setIsLoading(false);
+        h001CenterListViewController.animateTo(h001CenterListViewController.offset+(MediaQuery.of(_context).size.height/2),
+            duration: Duration(milliseconds: 300), curve: Curves.linear );
       }
     }
   }
@@ -238,6 +245,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
 //    _setIsLoading(true);
     var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
     await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
+    notifyListeners();
 //    _setIsLoading(false);
   }
 

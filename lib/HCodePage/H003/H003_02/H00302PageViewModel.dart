@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import '../../../GlobalModel.dart';
 
 class H00302PageViewModel extends ChangeNotifier implements BallStyle2WidgetInter{
-  final BuildContext context;
+  final BuildContext _context;
 
   ScrollController scrollController = ScrollController();
   List<BallStyle2Widget> ballListUpWidgets = [];
@@ -35,19 +35,19 @@ class H00302PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
   int _pageCount = 0;
   int _limitSize = 10;
 
-  H00302PageViewModel(this.context) {
+  H00302PageViewModel(this._context) {
     this.init();
   }
 
   init() async {
     scrollController.addListener(scrollListener);
-    _setIsLoading(true);
+
     await ballListUp();
-    _setIsLoading(false);
+
     _isInitFinish= false;
   }
   isEmptyPage(){
-    GlobalModel globalModel = Provider.of(context,listen:  false);
+    GlobalModel globalModel = Provider.of(_context,listen:  false);
     if(globalModel.fUserInfoDto != null && _isInitFinish && ballListUpWidgets.length == 0){
       return true;
     }else {
@@ -56,8 +56,9 @@ class H00302PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
   }
 
   Future ballListUp() async {
+    _setIsLoading(true);
     FBallRepository _fballRepository = FBallRepository();
-    var globalModel = Provider.of<GlobalModel>(context, listen: false);
+    var globalModel = Provider.of<GlobalModel>(_context, listen: false);
     MultiSorts searchOrder = _makeSearchOrder();
     var userToMakerBallReqDto = UserToMakerBallReqDto(
         globalModel.fUserInfoDto.uid,
@@ -70,9 +71,9 @@ class H00302PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
     var userToMakerBallList =
         await _fballRepository.getUserToMakerBalls(userToMakerBallReqDto);
     ballListUpWidgets.addAll(userToMakerBallList.contents
-        .map((x) => BallStyle2Widget.create(x.fBallType,BallStyle2WidgetController(x,this) ))
+        .map((x) => BallStyle2Widget.create(x.fballResDto.ballType,BallStyle2WidgetController(x,this) ))
         .toList());
-    notifyListeners();
+    _setIsLoading(false);
   }
 
   MultiSorts _makeSearchOrder() {
@@ -92,7 +93,9 @@ class H00302PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
       if (!_hasBalls()) {
         return;
       } else {
-        ballListUp();
+        await ballListUp();
+        scrollController.animateTo(scrollController.offset+(MediaQuery.of(_context).size.height/2),
+            duration: Duration(milliseconds: 300), curve: Curves.linear );
       }
     }
   }
@@ -109,9 +112,10 @@ class H00302PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
 
   @override
   onRequestReFreshBall(UserBallResDto p1) async{
-    _setIsLoading(true);
+//    _setIsLoading(true);
     var ballStyle2ReFreshBallUtil = BallStyle2ReFreshBallUtil();
-    ballStyle2ReFreshBallUtil.reFreshBallAndUiUpdate(ballListUpWidgets, p1, this);
-    _setIsLoading(false);
+    await ballStyle2ReFreshBallUtil.reFreshBallAndUiUpdate(ballListUpWidgets, p1, this);
+    notifyListeners();
+//    _setIsLoading(false);
   }
 }

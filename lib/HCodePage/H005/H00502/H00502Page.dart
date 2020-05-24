@@ -15,7 +15,7 @@ class H00502Page extends StatelessWidget {
       child: Consumer<H00502pageViewModel>(builder: (_, model, child) {
         return Stack(children: <Widget>[
           Scaffold(
-              body: Container(
+              body: !model.isEmptyPage() ? Container(
                   width: MediaQuery.of(context).size.width,
                   child: Column(children: <Widget>[
                     Expanded(
@@ -41,7 +41,12 @@ class H00502Page extends StatelessWidget {
                               return SizedBox(height: 16);
                             }
                         ))
-                  ]))),
+                  ])) : Container(
+                  child: Center(
+                    child: Text("검색된 결과가 없습니다."),
+                  )
+              )
+          ),
           model.getIsLoading() ? CommonLoadingComponent() : Container()
         ]);
       }),

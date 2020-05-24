@@ -9,7 +9,7 @@ part of 'FBallReplyInsertReqDto.dart';
 FBallReplyInsertReqDto _$FBallReplyInsertReqDtoFromJson(
     Map<String, dynamic> json) {
   return FBallReplyInsertReqDto()
-    ..idx = json['idx'] as int
+    ..replyUuid = json['replyUuid'] as String
     ..ballUuid = json['ballUuid'] as String
     ..replyNumber = json['replyNumber'] as int
     ..replySort = json['replySort'] as int
@@ -20,7 +20,7 @@ FBallReplyInsertReqDto _$FBallReplyInsertReqDtoFromJson(
 Map<String, dynamic> _$FBallReplyInsertReqDtoToJson(
         FBallReplyInsertReqDto instance) =>
     <String, dynamic>{
-      'idx': instance.idx,
+      'replyUuid': instance.replyUuid,
       'ballUuid': instance.ballUuid,
       'replyNumber': instance.replyNumber,
       'replySort': instance.replySort,

@@ -8,7 +8,7 @@ part of 'FBallReplyResDto.dart';
 
 FBallReplyResDto _$FBallReplyResDtoFromJson(Map<String, dynamic> json) {
   return FBallReplyResDto()
-    ..idx = json['idx'] as int
+    ..replyUuid = json['replyUuid'] as String
     ..ballUuid = json['ballUuid'] as String
     ..uid = json['uid'] as String
     ..replyNumber = json['replyNumber'] as int
@@ -28,7 +28,7 @@ FBallReplyResDto _$FBallReplyResDtoFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$FBallReplyResDtoToJson(FBallReplyResDto instance) =>
     <String, dynamic>{
-      'idx': instance.idx,
+      'replyUuid': instance.replyUuid,
       'ballUuid': instance.ballUuid,
       'uid': instance.uid,
       'replyNumber': instance.replyNumber,

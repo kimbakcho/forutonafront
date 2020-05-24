@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallDetailReplyContentBar.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyWidgetViewController.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -10,13 +11,13 @@ import 'FBallDetailReplyViewModel.dart';
 
 class FBallDetailReplyView extends StatelessWidget {
   final String ballUuid;
-
-  FBallDetailReplyView(this.ballUuid);
+  final FBallReplyWidgetViewController _fBallReplyWidgetViewController;
+  FBallDetailReplyView(this.ballUuid,this._fBallReplyWidgetViewController);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => FBallDetailReplyViewModel(ballUuid, context),
+        create: (_) => FBallDetailReplyViewModel(ballUuid, context,_fBallReplyWidgetViewController),
         child: Consumer<FBallDetailReplyViewModel>(builder: (_, model, child) {
           return Scaffold(
               key: model.scaffold,
@@ -33,8 +34,8 @@ class FBallDetailReplyView extends StatelessWidget {
                       height: 38,
                       padding: EdgeInsets.fromLTRB(16, 12, 16, 10),
                       child: Text(
-                          model.fBallReplyResWrapDto.replyTotalCount != null
-                              ? "댓글( ${model.fBallReplyResWrapDto.replyTotalCount} )"
+                          model.getReplyResWrapDto().replyTotalCount != null
+                              ? "댓글( ${model.getReplyResWrapDto().replyTotalCount} )"
                               : "로딩중",
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -49,9 +50,9 @@ class FBallDetailReplyView extends StatelessWidget {
                         controller: model.replyScrollerController,
                         shrinkWrap: true,
                         padding: EdgeInsets.all(0),
-                        itemCount: model.fBallDetailReplyContentBars.length,
+                        itemCount: model.getReplyContentBars().length,
                         itemBuilder: (context, index) {
-                          return model.fBallDetailReplyContentBars[index];
+                          return model.getReplyContentBars()[index];
                         }
                   )))
                 ]),

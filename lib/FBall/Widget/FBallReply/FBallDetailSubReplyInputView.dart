@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallDetailSubReplyInputViewModel.dart';
@@ -161,8 +162,10 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                           decoration: BoxDecoration(color: Color(0xffF2F0F1)),
                         )
                       ],
-                    ))
+                    )),
+                model.getIsLoading() ? CommonLoadingComponent() : Container()
               ],
+
             ),
           );
         }));

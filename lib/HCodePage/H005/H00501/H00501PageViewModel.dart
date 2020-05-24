@@ -43,12 +43,15 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
     return _isLoading;
   }
   _setIsLoading(bool value){
-    return _isLoading;
+    _isLoading = value;
+    notifyListeners();
   }
 
   H005MainPageViewModel _h005MainModel;
   int _ballPageLimitSize = 20;
   int _pageCount = 0;
+
+  bool _initFinishFlag= false;
 
   H00501PageViewModel(this.context) {
     init();
@@ -57,12 +60,10 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
     _initOrdersItems();
     mainDropDownBtnController.addListener(onScrollListener);
     _h005MainModel = Provider.of<H005MainPageViewModel>(context);
-    MultiSorts sorts = _makeSearchOrders();
-    _setIsLoading(true);
-    var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), _makeSearchOrders(), _ballPageLimitSize, _pageCount);
     _setListUpBall(_pageCount, fBallListUpWrapDto);
     _setSearchCount(fBallListUpWrapDto);
-    _setIsLoading(false);
+    _initFinishFlag = true;
   }
 
   MultiSorts _makeSearchOrders() {
@@ -74,15 +75,15 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
   }
 
 
-  onScrollListener() {
+  onScrollListener() async {
     if (_isScrollerMoveBottomOver()) {
       _pageCount++;
       if (!hasBalls()) {
         return;
       } else {
-        MultiSorts sorts = _makeSearchOrders();
-        _onSearch(
-            _h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+        var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), _makeSearchOrders(), _ballPageLimitSize, _pageCount);
+        _setListUpBall(_pageCount, fBallListUpWrapDto);
+        _setSearchCount(fBallListUpWrapDto);
       }
     }
 }
@@ -108,11 +109,14 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
 
   Future<FBallListUpWrapDto> _onSearch(
       String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
+    _setIsLoading(true);
     FBallRepository _fBallRepository = new FBallRepository();
     var position = await Geolocator().getLastKnownPosition();
     BallNameSearchReqDto reqDto = new BallNameSearchReqDto(
         searchText, sorts.toQureyJson(), pagesize, pagecount,position.latitude,position.longitude);
-    return await _fBallRepository.listUpBallFromSearchText(reqDto);
+    var fBallListUpWrapDto = await _fBallRepository.listUpBallFromSearchText(reqDto);
+    _setIsLoading(false);
+    return fBallListUpWrapDto;
   }
 
   void _setSearchCount(FBallListUpWrapDto listUpBallFromSearchText) => _h005MainModel.titleSearchCount = listUpBallFromSearchText.searchBallCount;
@@ -156,5 +160,12 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
     var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
     await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
     _setIsLoading(false);
+  }
+  isEmptyPage(){
+    if(_initFinishFlag && ballWidgetLists.length == 0){
+      return true;
+    }else {
+      return false;
+    }
   }
 }

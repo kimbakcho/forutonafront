@@ -12,6 +12,15 @@ class FBallDetailSubReplyInputViewModel extends ChangeNotifier{
   final FBallSubReplyResDto mainReply;
   final BuildContext _context;
   bool _isBackSendButton = false;
+  bool _isLoading = false;
+  getIsLoading(){
+    return _isLoading;
+  }
+  _setIsLoading(bool value){
+    _isLoading = value;
+    notifyListeners();
+  }
+
   StreamSubscription _keyboard;
   TextEditingController subReplyController = new TextEditingController();
   FBallReplyRepository _fBallReplyRepository = FBallReplyRepository();
@@ -32,6 +41,7 @@ class FBallDetailSubReplyInputViewModel extends ChangeNotifier{
   }
 
   void sendSubReply(FBallSubReplyResDto mainReply) async {
+    _setIsLoading(true);
     _isBackSendButton = true;
     FBallReplyInsertReqDto reqDto= new FBallReplyInsertReqDto();
     reqDto.replyText = subReplyController.text;
@@ -46,6 +56,7 @@ class FBallDetailSubReplyInputViewModel extends ChangeNotifier{
     subReplyReqDto.replyNumber = mainReply.replyNumber;
     subReplyReqDto.detail = false;
     FBallReplyResWrapDto fBallReplyResWrapDto = await _fBallReplyRepository.getFBallSubReply(subReplyReqDto);
+    _setIsLoading(false);
     Navigator.of(_context).pop(fBallReplyResWrapDto.contents);
 
   }

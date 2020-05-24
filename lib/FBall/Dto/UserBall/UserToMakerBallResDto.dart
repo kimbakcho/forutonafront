@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'UserBallResDto.dart';
-import '../FBallType.dart';
-
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 part 'UserToMakerBallResDto.g.dart';
 
 @JsonSerializable()

@@ -16,8 +16,15 @@ class BallStyle1ReFreshBallUtil {
         ballWidgetLists
         .indexWhere((element) => element.getBallUuid() == ballResDto.ballUuid);
     if (!ballResDto.ballDeleteFlag) {
+
+      //해당 부분 비동기 처리로 인해 User가 평가후 화면에서 빠르게 나올때  BackEnd에서 해당 데이터 처리 전에 데이터를 받아 올때
+      //동기화 문제가 발생함. 그래서 reFreshNeedBall 에서 Client 에서 실행 한 값으로 Like disLike 추측 반영
+      ballResDto.ballLikes = reFreshNeedBall.ballLikes;
+      ballResDto.ballDisLikes =reFreshNeedBall.ballDisLikes;
+
       ballWidgetLists[indexWhere] = BallStyle1Widget.create(ballResDto.ballType,
           BallStyle1WidgetController(ballResDto,ballStyle1WidgetInter));
+
     } else {
       ballWidgetLists.removeAt(indexWhere);
     }

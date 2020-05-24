@@ -37,7 +37,8 @@ class H00502pageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
     return _isLoading;
   }
   _setIsLoading(bool value){
-    return _isLoading;
+    _isLoading = value;
+    notifyListeners();
   }
   TagRankingWrapDto _tagRankingWrapDto;
   TagRepository _tagRepository = TagRepository();
@@ -46,21 +47,22 @@ class H00502pageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
   H00502DropdownItemType _selectOrder;
   int _pageCount= 0;
   int _ballPageLimitSize = 20;
+  bool _initFinishFlag= false;
 
   H00502pageViewModel(this.context){
     _h005MainModel = Provider.of<H005MainPageViewModel>(context);
     init();
   }
 
-  onScrollListener() {
+  onScrollListener() async{
     if (_isScrollerMoveBottomOver()) {
       _pageCount++;
       if (!_hasBalls()) {
         return;
       } else {
-        MultiSorts sorts = _makeSearchOrders();
-        _onSearch(
-            _h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+        var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), _makeSearchOrders(), _ballPageLimitSize, _pageCount);
+        _setListUpBall(_pageCount, fBallListUpWrapDto);
+        _setTagSearchCount(fBallListUpWrapDto);
       }
     }
   }
@@ -88,12 +90,10 @@ class H00502pageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
     this.tagRankings = _tagRankingWrapDto.contents;
     notifyListeners();
     mainDropDownBtnController.addListener(onScrollListener);
-    MultiSorts sorts = _makeSearchOrders();
-    _setIsLoading(true);
-    FBallListUpWrapDto searchResult = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    FBallListUpWrapDto searchResult = await _onSearch(_h005MainModel.getSearchText(), _makeSearchOrders(), _ballPageLimitSize, _pageCount);
     _setListUpBall(this._pageCount,searchResult);
     _setTagSearchCount(searchResult);
-    _setIsLoading(false);
+    _initFinishFlag = true;
   }
   H00502DropdownItemType get selectOrder => _selectOrder;
 
@@ -103,32 +103,32 @@ class H00502pageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
   }
   onChangeOrder() async {
     _pageCount = 0;
-    MultiSorts sorts = _makeSearchOrders();
     ballWidgetLists.clear();
-    _setIsLoading(true);
-    FBallListUpWrapDto searchResult = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
+    FBallListUpWrapDto searchResult = await _onSearch(_h005MainModel.getSearchText(), _makeSearchOrders(), _ballPageLimitSize, _pageCount);
     _setListUpBall(this._pageCount,searchResult);
     _setTagSearchCount(searchResult);
-    _setIsLoading(false);
   }
 
-  Future<FBallListUpWrapDto> _onSearch (
-      String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
+  Future<FBallListUpWrapDto> _onSearch   (
+      String searchText, MultiSorts sorts, int pageSize, int pageCount) async {
+    _setIsLoading(true);
     var position = await Geolocator().getLastKnownPosition();
     TagSearchFromTextReqDto reqDto = new TagSearchFromTextReqDto(
-        searchText, sorts.toQureyJson(), pagesize, pagecount,position.latitude,position.longitude);
-    return await _tagRepository.tagSearchFromTextToBalls(reqDto);
+        searchText, sorts.toQureyJson(), pageSize, pageCount,position.latitude,position.longitude);
+    var fBallListUpWrapDto = await _tagRepository.tagSearchFromTextToBalls(reqDto);
+    _setIsLoading(false);
+    return fBallListUpWrapDto;
   }
 
-  void _setListUpBall(int pagecount, FBallListUpWrapDto listUpBallFromSearchText) {
-    if (isFirstPage(pagecount)) {
+  void _setListUpBall(int pageCount, FBallListUpWrapDto listUpBallFromSearchText) {
+    if (isFirstPage(pageCount)) {
          ballWidgetLists.clear();
     }
     ballWidgetLists.addAll(listUpBallFromSearchText.balls
         .map((e) => BallStyle1Widget.create(e.ballType,BallStyle1WidgetController(e,this))).toList());
   }
 
-  bool isFirstPage(int pagecount) => pagecount == 0;
+  bool isFirstPage(int pageCount) => pageCount == 0;
 
   void _setTagSearchCount(FBallListUpWrapDto listUpBallFromSearchText) {
     _h005MainModel.tagSearchCount = listUpBallFromSearchText.searchBallCount;
@@ -161,5 +161,13 @@ class H00502pageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
     var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
     await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
     _setIsLoading(false);
+  }
+
+  isEmptyPage(){
+    if(_initFinishFlag && ballWidgetLists.length == 0){
+      return true;
+    }else {
+      return false;
+    }
   }
 }

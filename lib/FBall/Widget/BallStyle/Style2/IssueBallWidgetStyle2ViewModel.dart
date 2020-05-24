@@ -25,16 +25,16 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier{
   }
 
   isBallDelete(){
-    return getUserBallResDto().ballDeleteFlag;
+    return getUserBallResDto().fballResDto.ballDeleteFlag;
   }
 
   void isAliveBall(){
-    isAlive =  getUserBallResDto().activationTime.isAfter(DateTime.now());
+    isAlive =  getUserBallResDto().fballResDto.activationTime.isAfter(DateTime.now());
     notifyListeners();
   }
 
   void goIssueDetailPage() async {
-    if(getUserBallResDto().ballDeleteFlag){
+    if(isBallDelete()){
       Fluttertoast.showToast(
           msg: "삭제된 Ball 입니다.",
           toastLength: Toast.LENGTH_SHORT,
@@ -45,16 +45,16 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier{
           fontSize: 12.0);
     }else {
       await Navigator.of(_context)
-          .push(MaterialPageRoute(builder: (_) => ID001MainPage(getUserBallResDto().fBallUuid)));
+          .push(MaterialPageRoute(builder: (_) => ID001MainPage(getUserBallResDto().fballResDto.ballUuid,fBallResDto: getUserBallResDto().fballResDto)));
       this.ballStyle2WidgetController.onRequestReFreshBall(getUserBallResDto());
     }
   }
   void showBallSetting() async {
 
     BallModifyService ballModifyService = IssueBallModifyImpl();
-    if (await ballModifyService.isCanModify(getUserBallResDto().ballUid)) {
+    if (await ballModifyService.isCanModify(getUserBallResDto().fballResDto.ballUuid)) {
       var result =
-      await ballModifyService.showModifySelectDialog(_context, getUserBallResDto().fBallType,getUserBallResDto().fBallUuid);
+      await ballModifyService.showModifySelectDialog(_context, getUserBallResDto().fballResDto.ballType,getUserBallResDto().fballResDto.ballUuid);
       this.ballStyle2WidgetController.onRequestReFreshBall(getUserBallResDto());
     }
   }

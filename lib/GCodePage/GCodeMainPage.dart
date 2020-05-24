@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/GCodePage/G001/G001MainPage.dart';
+import 'package:forutonafront/GCodePage/G001/G001MainPageController.dart';
 import 'package:forutonafront/GCodePage/GCodePageState.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:provider/provider.dart';
@@ -9,15 +10,23 @@ import 'G001/G001MainPageViewModel.dart';
 import 'GCodeMainPageViewModel.dart';
 
 class GCodeMainPage extends StatelessWidget {
+
+  G001MainPageController g001mainPageController = G001MainPageController();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<G001MainPageViewModel>(
-            create: (_) => G001MainPageViewModel()),
-        ChangeNotifierProxyProvider<G001MainPageViewModel,GCodeMainPageViewModel>(
-            update: (_,g001,__) => GCodeMainPageViewModel(context,g001),
-        ),
+            create: (_)  {
+            g001mainPageController.g001mainPageInter = G001MainPageViewModel();
+              return g001mainPageController.g001mainPageInter;
+            }),
+        ChangeNotifierProvider<GCodeMainPageViewModel>(
+          create: (_)  {
+            return GCodeMainPageViewModel(context,g001mainPageController);
+          }
+        )
       ],
       child: Consumer<GCodeMainPageViewModel>(builder: (_, model, child) {
         return Stack(children: <Widget>[

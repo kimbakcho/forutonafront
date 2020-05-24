@@ -13,7 +13,7 @@ class FBallSubReplyResDto extends FBallReplyResDto{
     ballSubReplyResDto.replyText = mainReplyitem.replyText;
     ballSubReplyResDto.userNickName = mainReplyitem.userNickName;
     ballSubReplyResDto.replyDepth = mainReplyitem.replyDepth;
-    ballSubReplyResDto.idx =mainReplyitem.idx;
+    ballSubReplyResDto.replyUuid =mainReplyitem.replyUuid;
     ballSubReplyResDto.ballUuid = mainReplyitem.ballUuid;
     ballSubReplyResDto.uid = mainReplyitem.uid;
     ballSubReplyResDto.userProfilePictureUrl = mainReplyitem.userProfilePictureUrl;

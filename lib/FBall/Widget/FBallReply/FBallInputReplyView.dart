@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyWidgetViewController.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -8,13 +10,13 @@ import 'FBallInputReplyViewModel.dart';
 
 class FBallInputReplyView extends StatelessWidget {
 
-  final FBallReplyInsertReqDto fBallReplyInsertReqDto;
-  FBallInputReplyView(this.fBallReplyInsertReqDto);
+  final FBallReplyInsertReqDto _fBallReplyInsertReqDto;
+  FBallInputReplyView(this._fBallReplyInsertReqDto);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_)=>FBallInputReplyViewModel(fBallReplyInsertReqDto,context),
+      create: (_)=>FBallInputReplyViewModel(_fBallReplyInsertReqDto,context),
       child: Consumer<FBallInputReplyViewModel>(
         builder: (_,model,child){
           return Scaffold(
@@ -68,7 +70,7 @@ class FBallInputReplyView extends StatelessWidget {
                                   shape: CircleBorder(),
                                   padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
                                   onPressed: () async {
-                                    if(fBallReplyInsertReqDto.idx != null){
+                                    if(_fBallReplyInsertReqDto.replyUuid != null){
                                       model.updateReply();
                                     }else {
                                       model.insertReply();
@@ -81,7 +83,8 @@ class FBallInputReplyView extends StatelessWidget {
                                   ),
                                 ))
                           ],
-                        )))
+                        ))),
+                model.getIsLoading() ? CommonLoadingComponent() : Container()
               ]));
         },
       ),

@@ -82,7 +82,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     if (model.isBallDelete()) {
       return "";
     } else {
-      return model.getUserBallResDto().distanceDisplayText;
+      return model.getUserBallResDto().fballResDto.distanceDisplayText;
     }
   }
 
@@ -184,7 +184,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
       return "-";
     } else {
       return TimeDisplayUtil.getRemainingToStrFromNow(
-          model.getUserBallResDto().activationTime);
+          model.getUserBallResDto().fballResDto.activationTime);
     }
   }
 
@@ -192,7 +192,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     if (model.isBallDelete()) {
       return "-";
     } else {
-      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().commentCount);
+      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().fballResDto.commentCount);
     }
   }
 
@@ -200,7 +200,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     if (model.isBallDelete()) {
       return "-";
     } else {
-      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().ballDisLikes);
+      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().fballResDto.ballDisLikes);
     }
   }
 
@@ -208,7 +208,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     if (model.isBallDelete()) {
       return "-";
     } else {
-      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().ballLikes);
+      return NomalValueDisplay.changeIntDisplaystr(model.getUserBallResDto().fballResDto.ballLikes);
     }
   }
 
@@ -267,15 +267,15 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     if (model.isBallDelete()) {
       return "";
     } else {
-      return model.getUserBallResDto().ballPlaceAddress;
+      return model.getUserBallResDto().fballResDto.placeAddress;
     }
   }
 
   String getBallName(IssueBallWidgetStyle2ViewModel model) {
     if (model.isBallDelete()) {
-      return "(삭제됨) ${model.getUserBallResDto().ballName}";
+      return "(삭제됨) ${model.getUserBallResDto().fballResDto.ballName}";
     } else {
-      return model.getUserBallResDto().ballName;
+      return model.getUserBallResDto().fballResDto.ballName;
     }
   }
 
@@ -286,7 +286,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
 
   @override
   String getBallUuid() {
-    return ballStyle2WidgetController.userBallResDto.fBallUuid;
+    return ballStyle2WidgetController.userBallResDto.fballResDto.ballUuid;
 
   }
 }

@@ -5,7 +5,7 @@ part 'FBallReplyInsertReqDto.g.dart';
 
 @JsonSerializable()
 class FBallReplyInsertReqDto {
-  int idx;
+  String replyUuid;
   String ballUuid;
   int replyNumber;
   int replySort;

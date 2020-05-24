@@ -1,6 +1,5 @@
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
-
-import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'UserBallResDto.dart';
@@ -11,7 +10,6 @@ part 'UserToPlayBallResDto.g.dart';
 
 @JsonSerializable()
 class UserToPlayBallResDto extends UserBallResDto{
-
   DateTime joinTime;
 
   UserToPlayBallResDto(this.joinTime) : super();

@@ -11,29 +11,32 @@ import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallDetailReplyContentBar.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallDetailSubReplyInputView.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallInputReplyView.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyContentBar.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyUtil.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyWidgetViewController.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyWidgetViewModel.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
+import 'package:provider/provider.dart';
 
 
 class FBallDetailReplyViewModel extends ChangeNotifier {
-  FBallReplyResWrapDto fBallReplyResWrapDto = new FBallReplyResWrapDto();
   FBallReplyRepository _fBallReplyRepository = new FBallReplyRepository();
-//  List<FBallSubReplyResDto> detailReply = [];
-  List<FBallDetailReplyContentBar> fBallDetailReplyContentBars = [];
   ScrollController replyScrollerController = new ScrollController();
+  final FBallReplyWidgetViewController _fBallReplyWidgetViewController;
   final String ballUuid;
   BuildContext _context;
   int _currentPage = 0;
   int _sizeLimit = 20;
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
+  FBallReplyWidgetViewModel fBallReplyWidgetViewModel;
 
-  FBallDetailReplyViewModel(this.ballUuid, this._context) {
+  FBallDetailReplyViewModel(this.ballUuid, this._context,this._fBallReplyWidgetViewController) {
     replyScrollerController.addListener(_onlistscrollListener);
     init();
   }
 
   init() async {
     loadDetailReply(_currentPage, _sizeLimit);
-
   }
 
   _onlistscrollListener() {
@@ -41,13 +44,15 @@ class FBallDetailReplyViewModel extends ChangeNotifier {
     if (replyScrollerController.offset >=
             replyScrollerController.position.maxScrollExtent &&
         !replyScrollerController.position.outOfRange) {
-      if (fBallDetailReplyContentBars.length < (_currentPage + 1 * _sizeLimit)) {
+      if (getReplyContentBars().length < (_currentPage + 1 * _sizeLimit)) {
         return;
       }
       _currentPage++;
       loadDetailReply(_currentPage, _sizeLimit);
     }
   }
+
+  List<FBallReplyContentBar> getReplyContentBars() => _fBallReplyWidgetViewController.replyContentBars;
 
   loadDetailReply(int page, int size) async {
     FBallReplyReqDto reqDto = FBallReplyReqDto();
@@ -56,64 +61,21 @@ class FBallDetailReplyViewModel extends ChangeNotifier {
     reqDto.page = page;
     reqDto.detail = true;
     if (page == 0) {
-      fBallDetailReplyContentBars.clear();
+      getReplyContentBars().clear();
+      getReplyResWrapDto().replyTotalCount = 0;
+      getReplyResWrapDto().contents.clear();
     }
-    fBallReplyResWrapDto = await _fBallReplyRepository.getFBallReply(reqDto);
-    var replyResWrapToSubReplyResDtoList2 =
-        replyResWrapToSubReplyResDtoList(fBallReplyResWrapDto);
-    fBallDetailReplyContentBars.addAll(replyResWrapToSubReplyResDtoList2
-        .map((e) => FBallDetailReplyContentBar(e)).toList());
+    _fBallReplyWidgetViewController.fBallReplyResWrapDto = await _fBallReplyRepository.getFBallReply(reqDto);
+    List<FBallSubReplyResDto> subReplyDto = FBallReplyUtil().replyResWrapToSubReplyResDtoList(getReplyResWrapDto());
+    getReplyContentBars().addAll(subReplyDto
+        .map((e) => FBallReplyContentBar(e,true,false,true,MediaQuery.of(_context).size.width)).toList());
+
     notifyListeners();
   }
-  onInsertSubReply(FBallSubReplyResDto fBallSubReplyResDto) async {
+
+  FBallReplyResWrapDto getReplyResWrapDto() => _fBallReplyWidgetViewController.fBallReplyResWrapDto;
 
 
-  }
-
-  List<FBallSubReplyResDto> replyResWrapToSubReplyResDtoList(FBallReplyResWrapDto fBallReplyResWrapDto) {
-    var contents = fBallReplyResWrapDto.contents;
-    List<FBallSubReplyResDto> fBallSubReplyResDto = [];
-    var replyList = contents.where((item) {
-      return item.replySort == 0;
-    });
-    var mainReplyList = replyList.toList();
-    mainReplyList.sort((x1, x2) {
-      return x1.replyUploadDateTime
-              .difference(x2.replyUploadDateTime)
-              .isNegative
-          ? 1
-          : -1;
-    });
-    for (var mainReply in mainReplyList) {
-      FBallSubReplyResDto item =
-          FBallSubReplyResDto.fromFBallReplyResDto(mainReply);
-      var subReply = contents.where((item) {
-        if (item.replySort == 0) {
-          return false;
-        } else if (item.replyNumber == mainReply.replyNumber) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      var subReplyList = subReply.toList();
-      subReplyList.sort((x1, x2) {
-        return x1.replyUploadDateTime
-                .difference(x2.replyUploadDateTime)
-                .isNegative
-            ? 1
-            : -1;
-      });
-      item.subReply = subReplyList;
-      fBallSubReplyResDto.add(item);
-    }
-    return fBallSubReplyResDto;
-  }
-
-  void replySubOpenFlagToggle(FBallSubReplyResDto detailReply) {
-    detailReply.replyOpenFlag = !detailReply.replyOpenFlag;
-    notifyListeners();
-  }
 
   void insertSubReply(FBallSubReplyResDto detailReply) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
@@ -350,7 +312,7 @@ class FBallDetailReplyViewModel extends ChangeNotifier {
           FBallReplyInsertReqDto fBallReplyInsertReqDto =
               FBallReplyInsertReqDto();
           fBallReplyInsertReqDto.ballUuid = detailReply.ballUuid;
-          fBallReplyInsertReqDto.idx = detailReply.idx;
+          fBallReplyInsertReqDto.replyUuid = detailReply.replyUuid;
           fBallReplyInsertReqDto.replyText = detailReply.replyText;
           return FBallInputReplyView(fBallReplyInsertReqDto);
         });
@@ -358,7 +320,7 @@ class FBallDetailReplyViewModel extends ChangeNotifier {
   }
 
   Future<void> replyDeleteAction(FBallReplyResDto detailReply) async {
-    await _fBallReplyRepository.deleteFBallReply(detailReply.idx);
+    await _fBallReplyRepository.deleteFBallReply(detailReply.replyUuid);
   }
 
   void reportPopup(FBallReplyResDto subReply) async {

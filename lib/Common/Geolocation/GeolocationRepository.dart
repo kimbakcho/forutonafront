@@ -20,7 +20,6 @@ class GeolocationRepository {
       }catch (e){
         return "주 소 없 음";
       }
-
     }
     if (resultAddress.length == 0) {
       return "주 소 없 음";

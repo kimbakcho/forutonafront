@@ -16,11 +16,11 @@ class FBallPlayerRepository {
     var userToPlayBallResWrapDto =
         UserToPlayBallResWrapDto.fromJson(response.data);
     var position = await Geolocator().getLastKnownPosition();
-    for (var ball in userToPlayBallResWrapDto.contents) {
-      ball.distanceWithMapCenter = await Geolocator().distanceBetween(
-          ball.latitude, ball.longitude, position.latitude, position.longitude);
-      ball.distanceDisplayText =
-          DistanceDisplayUtil.changeDisplayStr(ball.distanceWithMapCenter);
+    for (var userJoinContent in userToPlayBallResWrapDto.contents) {
+      userJoinContent.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
+          userJoinContent.fballResDto.latitude, userJoinContent.fballResDto.longitude, position.latitude, position.longitude);
+      userJoinContent.fballResDto.distanceDisplayText =
+          DistanceDisplayUtil.changeDisplayStr(userJoinContent.fballResDto.distanceWithMapCenter);
     }
     return userToPlayBallResWrapDto;
   }
@@ -32,13 +32,13 @@ class FBallPlayerRepository {
         queryParameters: reqDto.toJson());
     var resDto = UserToPlayBallResDto.fromJson(response.data);
     var position = await Geolocator().getLastKnownPosition();
-    resDto.distanceWithMapCenter = await Geolocator().distanceBetween(
-        resDto.latitude,
-        resDto.longitude,
+    resDto.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
+        resDto.fballResDto.latitude,
+        resDto.fballResDto.longitude,
         position.latitude,
         position.longitude);
-    resDto.distanceDisplayText =
-        DistanceDisplayUtil.changeDisplayStr(resDto.distanceWithMapCenter);
+    resDto.fballResDto.distanceDisplayText =
+        DistanceDisplayUtil.changeDisplayStr(resDto.fballResDto.distanceWithMapCenter);
     return resDto;
   }
 }

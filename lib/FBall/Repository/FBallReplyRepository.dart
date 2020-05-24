@@ -35,11 +35,11 @@ class FBallReplyRepository {
     return response.data;
   }
 
-  Future<int> deleteFBallReply(int idx) async {
+  Future<int> deleteFBallReply(String replyUuid) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
-    var response = await dio.delete("/v1/FBallReply/"+idx.toString());
+    var response = await dio.delete("/v1/FBallReply/"+replyUuid);
     return response.data;
   }
 }

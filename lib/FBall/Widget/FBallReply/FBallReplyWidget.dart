@@ -16,7 +16,7 @@ class FBallReplyWidget extends StatelessWidget {
             children: <Widget>[
               topInputBar(model, context),
               Column(
-                children: model.replyContentBar,
+                children: model.fBallReplyWidgetViewController.replyContentBars,
               )
             ],
           );

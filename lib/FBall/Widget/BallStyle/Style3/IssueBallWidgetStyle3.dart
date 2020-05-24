@@ -203,11 +203,11 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
 
   @override
   BallStyle3WidgetController getBallStyle3WidgetController() {
-
+    return ballStyle3WidgetController;
   }
 
   @override
   String getBallUuid() {
-
+    return ballStyle3WidgetController.fBallResDto.ballUuid;
   }
 }

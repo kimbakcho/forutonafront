@@ -4,7 +4,7 @@ part 'FBallReplyResDto.g.dart';
 
 @JsonSerializable()
 class FBallReplyResDto {
-  int idx;
+  String replyUuid;
   String ballUuid;
   String uid;
   int replyNumber;
@@ -16,8 +16,6 @@ class FBallReplyResDto {
   String userNickName;
   String userProfilePictureUrl;
   bool deleteFlag;
-
-
 
   FBallReplyResDto();
   factory FBallReplyResDto.fromJson(Map<String, dynamic> json) =>

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:forutonafront/GCodePage/G001/G001MainPageInter.dart';
 
-class G001MainPageViewModel extends ChangeNotifier {
+class G001MainPageViewModel extends ChangeNotifier implements G001MainPageInter{
   FUserInfoResDto _fUserInfoResDto;
   FUserRepository _fUserRepository = new FUserRepository();
   CodeCountry _countryCode = new CodeCountry();
@@ -17,8 +18,8 @@ class G001MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //타 Provider 에서 실행 시킴.
-  reFreshUserInfo()async{
+  @override
+  reFreshUserInfo() async{
     _fUserInfoResDto = null;
     _fUserInfoResDto = await _fUserRepository.getForutonaGetMe();
     notifyListeners();
@@ -71,4 +72,10 @@ class G001MainPageViewModel extends ChangeNotifier {
       return true;
     }
   }
+
+
+
+
+
+
 }

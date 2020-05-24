@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/GCodePage/G001/G001MainPageController.dart';
 import 'package:forutonafront/GCodePage/G001/G001MainPageViewModel.dart';
 import 'package:forutonafront/GCodePage/G009/G009MainPage.dart';
 import 'package:forutonafront/GCodePage/GCodePageState.dart';
@@ -8,9 +9,9 @@ import 'package:forutonafront/GCodePage/GCodePageState.dart';
 class GCodeMainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
   GCodePageState currentState;
-  G001MainPageViewModel _g001mainPageViewModel;
+  G001MainPageController _g001mainPageController;
   PageController gCodePagecontroller = new PageController();
-  GCodeMainPageViewModel(this._context,this._g001mainPageViewModel){
+  GCodeMainPageViewModel(this._context,this._g001mainPageController){
     currentState = GCodePageState.G001Page;
     gCodePagecontroller.addListener(onhCodePageChangeListners);
 
@@ -18,7 +19,7 @@ class GCodeMainPageViewModel extends ChangeNotifier {
   void jumpToSettingPage()async {
     await Navigator.of(_context).push(MaterialPageRoute(builder: (_)=>G009MainPage()));
 
-    _g001mainPageViewModel.reFreshUserInfo();
+    _g001mainPageController.reFreshUserInfo();
     print("test");
 
   }

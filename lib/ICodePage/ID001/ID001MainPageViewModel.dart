@@ -644,39 +644,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }
   }
 
-  void popupInputDisplay() async {
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    if (firebaseUser != null) {
-      ID001InputReplyViewResult result = await showGeneralDialog(
-          context: _context,
-          barrierDismissible: true,
-          transitionDuration: Duration(milliseconds: 300),
-          barrierColor: Colors.black.withOpacity(0.3),
-          barrierLabel:
-              MaterialLocalizations.of(_context).modalBarrierDismissLabel,
-          pageBuilder:
-              (_context, Animation animation, Animation secondaryAnimation) {
-            FBallReplyInsertReqDto reqDto = new FBallReplyInsertReqDto();
-            reqDto.ballUuid = fBallResDto.ballUuid;
-            return FBallInputReplyView(reqDto);
-          });
-      if (result != null) {
-
-        mainScrollController.animateTo(
-            mainScrollController.position.maxScrollExtent + 100,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.linear);
-      }
-    } else {
-      Navigator.push(
-          _context,
-          MaterialPageRoute(
-              settings: RouteSettings(name: "/J001"),
-              builder: (context) {
-                return J001View();
-              }));
-    }
-  }
 
 
   isPlusStatue() {
@@ -701,17 +668,16 @@ class ID001MainPageViewModel extends ChangeNotifier {
       return;
     }
     if (isPlusStatue()) {
-      deleteValueation();
+      deleteValueation(1);
       notifyListeners();
     } else if (isMinusStatue()) {
-      deleteValueation();
+      deleteValueation(-1);
       onFBallValuation(1);
       notifyListeners();
     } else {
       onFBallValuation(1);
     }
-    makerUserInfo =
-    await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
+
 //    _setIsLoading(false);
   }
 
@@ -721,24 +687,28 @@ class ID001MainPageViewModel extends ChangeNotifier {
       return;
     }
     if (isMinusStatue()) {
-      deleteValueation();
+      deleteValueation(-1);
       notifyListeners();
     } else if (isPlusStatue()) {
-      deleteValueation();
+      deleteValueation(1);
       onFBallValuation(-1);
       notifyListeners();
     } else {
       onFBallValuation(-1);
     }
-    makerUserInfo =
-    await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
-//    _setIsLoading(false);
   }
 
-  void deleteValueation() {
+  void deleteValueation(int deletePoint) {
     _fBallValuationRepository
         .deleteFBallValuation(fBallValuationResDto.valueUuid);
     fBallValuationResDto = null;
+    makerUserInfo.cumulativeInfluence = (makerUserInfo.cumulativeInfluence - deletePoint);
+    if(deletePoint > 0) {
+      fBallResDto.ballLikes = fBallResDto.ballLikes - deletePoint.abs();
+    }else {
+      fBallResDto.ballDisLikes = fBallResDto.ballDisLikes - deletePoint.abs();
+    }
+
   }
 
   Future onFBallValuation(int unAndDown) async {
@@ -756,6 +726,12 @@ class ID001MainPageViewModel extends ChangeNotifier {
       fBallValuationResDto.ballUuid = reqDto.ballUuid;
       fBallValuationResDto.uid = reqDto.uid;
       fBallValuationResDto.upAndDown = reqDto.unAndDown;
+    }
+    makerUserInfo.cumulativeInfluence = (makerUserInfo.cumulativeInfluence + unAndDown);
+    if(unAndDown > 0) {
+      fBallResDto.ballLikes = fBallResDto.ballLikes + unAndDown.abs();
+    }else {
+      fBallResDto.ballDisLikes = fBallResDto.ballDisLikes + unAndDown.abs();
     }
   }
 

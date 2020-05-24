@@ -15,6 +15,7 @@ import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.da
 import 'package:forutonafront/FBall/MarkerSupport/Style1/MakerSupportStyle1.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
+import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3ReFreshBallUtil.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3WidgetController.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style3/BallStyle3WidgetInter.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
@@ -74,8 +75,10 @@ class ICodeMainPageViewModel extends ChangeNotifier
     } else {
       initCameraPosition =
           CameraPosition(target: Preference.initPosition, zoom: 14.4746);
+
       currentAddress = "남산 공원";
     }
+    _currentMapPosition = initCameraPosition;
     bottomPageController.addListener(onPageContollerListner);
   }
 
@@ -175,12 +178,12 @@ class ICodeMainPageViewModel extends ChangeNotifier
       await onRefreshBall();
       _flagIdleIgore = false;
     } else {
-      var position = await Geolocator().getLastKnownPosition();
+//      var position = await Geolocator().getLastKnownPosition();
       var positionAddress =
-          await _geolocationRepository.getPositionAddress(position);
+          await _geolocationRepository.getPositionAddress(Position(longitude: _currentMapPosition.target.longitude,latitude: _currentMapPosition.target.latitude));
       currentAddress = positionAddress;
       await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
+          target: LatLng(_currentMapPosition.target.latitude, _currentMapPosition.target.longitude),
           zoom: 14.4746)));
       await onRefreshBall();
       _flagIdleIgore = false;
@@ -197,7 +200,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
     final GoogleMapController controller = await _googleMapController.future;
     final RenderBox mapRenderBoxRed =
         mapContainerGlobalKey.currentContext.findRenderObject();
-    _currentMapPosition = initCameraPosition;
+//    _currentMapPosition = initCameraPosition;
     var southwestPoint = await getWidgetOffsetPositionToLatLngFromMap(
         mapRenderBoxRed, controller, 16, MediaQuery.of(_context).size.height-180);
     var northeastPoint = await getWidgetOffsetPositionToLatLngFromMap(
@@ -230,7 +233,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
 
     this.listUpBalls.addAll(_fBallListUpWrapDto.balls
         .map((x) => new FBallResForMarker(
-            false, ballSelectFuction, x, BallStyle3WidgetController(x, this)))
+            false, ballSelectFunction, x, BallStyle3WidgetController(x, this)))
         .toList());
 
     if (pageCount == 0) {
@@ -247,7 +250,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
   }
 
   //Ball이 화면에서 선택 될때 콜백 되는 함수
-  ballSelectFuction(FBallResForMarker resDto) async {
+  ballSelectFunction(FBallResForMarker resDto) async {
     clearBallSelect();
     int ballIndex =
         this.listUpBalls.indexWhere((a) => (a.ballUuid == resDto.ballUuid));
@@ -333,22 +336,10 @@ class ICodeMainPageViewModel extends ChangeNotifier
 
 
   @override
-  onRequestReFreshBall(FBallResDto p1) async {
+  onRequestReFreshBall(FBallResDto reFreshNeedBall) async {
     _setIsLoading(true);
-    var fBallTypeRepository = FBallTypeRepository.create(p1.ballType);
-    FBallReqDto fBallReqDto = FBallReqDto(p1.ballType, p1.ballUuid);
-    var selectBall = await fBallTypeRepository.selectBall(fBallReqDto);
-    var indexWhere = listUpBalls
-        .indexWhere((element) => element.ballUuid == selectBall.ballUuid);
-    if (selectBall.ballDeleteFlag) {
-      if (listUpBalls.length >= 1) {
-        listUpBalls[indexWhere - 1].isSelectBall = true;
-      }
-      listUpBalls.removeAt(indexWhere);
-    } else {
-      listUpBalls[indexWhere] = FBallResForMarker(true, ballSelectFuction,
-          selectBall, BallStyle3WidgetController(selectBall, this));
-    }
+    var ballStyle3ReFreshBallUtil = BallStyle3ReFreshBallUtil();
+    await ballStyle3ReFreshBallUtil.reFreshBallAndUiUpdate(listUpBalls, reFreshNeedBall, ballSelectFunction, this);
     drawBall(listUpBalls);
     _setIsLoading(false);
   }
