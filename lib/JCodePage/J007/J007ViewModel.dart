@@ -45,8 +45,7 @@ class J007ViewModel extends ChangeNotifier {
       currentCountryCode = globalModel.fUserInfoJoinReqDto.countryCode;
     }
     if (globalModel.fUserInfoJoinReqDto.userProfileImageUrl == null) {
-      globalModel.fUserInfoJoinReqDto.userProfileImageUrl =
-          "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
+      globalModel.fUserInfoJoinReqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
     }
     currentProfileImage =
         NetworkImage(globalModel.fUserInfoJoinReqDto.userProfileImageUrl);
@@ -104,7 +103,6 @@ class J007ViewModel extends ChangeNotifier {
   void onCompeleteBtnClick() async {
     //닉네임 중복 체크
     _setIsLoading(true);
-
     await _signValidService.nickNameValid(nickNameController.text);
     _haveNickNameConfirm = true;
     if(_signValidService.hasNickNameError()){
@@ -205,11 +203,13 @@ class J007ViewModel extends ChangeNotifier {
                             onPressed: () async {
                               File file = await ImagePicker.pickImage(
                                   source: ImageSource.camera);
-                              _currentPickProfileImage = file;
-                              currentProfileImage = FileImage(file);
-                              _isChangeProfileImage = true;
-                              notifyListeners();
-                              Navigator.of(_context).pop();
+                              if(file != null){
+                                _currentPickProfileImage = file;
+                                currentProfileImage = FileImage(file);
+                                _isChangeProfileImage = true;
+                                notifyListeners();
+                                Navigator.of(_context).pop();
+                              }
                             },
                             child: Text("카메라",
                                 style: TextStyle(
@@ -227,11 +227,13 @@ class J007ViewModel extends ChangeNotifier {
                             onPressed: () async {
                               File file = await ImagePicker.pickImage(
                                   source: ImageSource.gallery);
-                              _currentPickProfileImage = file;
-                              currentProfileImage = FileImage(file);
-                              _isChangeProfileImage = true;
-                              notifyListeners();
-                              Navigator.of(_context).pop();
+                              if(file != null){
+                                _currentPickProfileImage = file;
+                                currentProfileImage = FileImage(file);
+                                _isChangeProfileImage = true;
+                                notifyListeners();
+                                Navigator.of(_context).pop();
+                              }
                             },
                             child: Text("갤러리",
                                 style: TextStyle(
@@ -269,6 +271,10 @@ class J007ViewModel extends ChangeNotifier {
                         borderRadius: BorderRadius.circular(12.00),
                       ))));
         });
+    textFieldUnFocus();
+  }
+  textFieldUnFocus(){
+    FocusScope.of(_context).requestFocus(new FocusNode());
   }
 
   Container didver(BuildContext context) {

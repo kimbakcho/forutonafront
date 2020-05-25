@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:provider/provider.dart';
 
 import 'G012MainPageViewModel.dart';
@@ -32,7 +33,8 @@ class G012MainPage extends StatelessWidget {
                             checkPwTextField(model),
                             checkPwErrorBar(model),
                           ])))
-                    ])))
+                    ]))),
+            model.getIsLoading() ? CommonLoadingComponent(isTouch: false) : Container()
           ]);
         }));
   }
@@ -41,7 +43,7 @@ class G012MainPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
       child: model.isCheckPasswordError()
-          ? Text("*패스워드가 일치하지 않습니다.",
+          ? Text(model.getCheckPasswordErrorText(),
               style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",
                 fontSize: 12,
@@ -58,6 +60,7 @@ class G012MainPage extends StatelessWidget {
         child: TextField(
             obscureText: true,
             controller: model.checkPwController,
+            onChanged: model.checkPwEditChange,
             onEditingComplete: model.onCheckEditComplete,
             decoration: InputDecoration(
               filled: true,
@@ -91,6 +94,7 @@ class G012MainPage extends StatelessWidget {
         child: TextField(
             obscureText: true,
             controller: model.newPwController,
+            onChanged: model.onNewPwEditChange,
             onEditingComplete: model.onNewPwEditComplete,
             decoration: InputDecoration(
               filled: true,
@@ -121,7 +125,7 @@ class G012MainPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
       child: model.isNewPasswordError()
-          ? Text("*문자, 숫자, 기호를 조합하여 8-16자로 설정해주세요.",
+          ? Text(model.getNewPasswordErrorText(),
               style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",
                 fontSize: 12,
@@ -135,7 +139,7 @@ class G012MainPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
       child: model.isCurrentPasswordError()
-          ? Text("*현재 패스워드와 일치하지 않습니다.",
+          ? Text(model.getCurrentPasswordErrorText(),
               style: TextStyle(
                 fontFamily: "Noto Sans CJK KR",
                 fontSize: 12,
@@ -152,6 +156,7 @@ class G012MainPage extends StatelessWidget {
         child: TextField(
             obscureText: true,
             controller: model.currentPwController,
+            onChanged: model.onCurrentPwEditChange,
             onEditingComplete: model.onCurrentPwEditComplete,
             decoration: InputDecoration(
               filled: true,
@@ -201,7 +206,7 @@ class G012MainPage extends StatelessWidget {
             width: MediaQuery.of(context).size.width - 64,
             child: Text(
                 "*패스워드는 주기적으로 바꾸어 사용하시는 것이 안전합니다." +
-                    "*패스워드에 8-16자리 영문 대소문자, 숫자, 특수문자를 조합" +
+                    "\n*패스워드에 8-16자리 영문 대소문자, 숫자, 특수문자를 조합" +
                     "하시면 비밀번호 안전도가 높아져 도용의 위험이 줄어듭니다.",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",

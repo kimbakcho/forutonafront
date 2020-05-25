@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
 import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 
@@ -14,6 +16,8 @@ mixin DefaultSignValidMix on SignUpValidService {
   String _pwCheckErrorText = "";
   bool _nickNameError = true;
   String _nickNameErrorText = "";
+  bool _currentPwError = true;
+  String _currentPwErrorText = "";
 
   @override
   String emailErrorText() {
@@ -149,6 +153,27 @@ mixin DefaultSignValidMix on SignUpValidService {
       return false;
     else
       return true;
+  }
+
+  Future<void> currentPwValid(String pw) async{
+     _currentPwError = false;
+     _currentPwErrorText = "";
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: firebaseUser.email, password: pw);
+    } catch (ex) {
+      _currentPwError = true;
+      _currentPwErrorText = FireBaseValidErrorUtil().getErrorText(ex);
+    }
+  }
+
+  bool hasCurrentPwError(){
+    return _currentPwError;
+  }
+
+  String currentPwErrorText(){
+    return _currentPwErrorText;
   }
 
 }

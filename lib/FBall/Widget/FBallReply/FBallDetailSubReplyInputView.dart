@@ -39,6 +39,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
+                                            fit: BoxFit.fitWidth,
                                             image: NetworkImage(mainReply
                                                 .userProfilePictureUrl))),
                                   ),
@@ -63,23 +64,6 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                             margin: EdgeInsets.fromLTRB(
                                                 16, 0, 16, 0),
                                           )),
-//                                          Container(
-//                                            decoration: BoxDecoration(
-//                                                shape: BoxShape.circle),
-//                                            margin: EdgeInsets.only(right: 16),
-//                                            child: FlatButton(
-//                                              shape: CircleBorder(),
-//                                              padding: EdgeInsets.all(0),
-//                                              onPressed: () {},
-//                                              child: Icon(
-//                                                ForutonaIcon.pointdash,
-//                                                color: Color(0xff454F63),
-//                                                size: 16,
-//                                              ),
-//                                            ),
-//                                            width: 20,
-//                                            height: 20,
-//                                          )
                                         ]),
                                         Container(
                                             margin: EdgeInsets.fromLTRB(
@@ -120,9 +104,12 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                         keyboardAppearance: Brightness.dark,
                                         minLines: 1,
                                         maxLines: 4,
+                                        maxLength: 300,
+                                        onChanged: model.onReplyInputChange,
                                         controller: model.subReplyController,
                                         autofocus: true,
                                         decoration: InputDecoration(
+                                          counter: Container(),
                                             contentPadding: EdgeInsets.fromLTRB(
                                                 16, 5, 16, 5),
                                             isDense: true,

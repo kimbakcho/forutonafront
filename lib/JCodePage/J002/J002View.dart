@@ -12,6 +12,7 @@ class J002View extends StatelessWidget {
         child: Consumer<J002ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
+              backgroundColor: Color(0xffF2F0F1),
                 body: Container(
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
@@ -79,7 +80,7 @@ class J002View extends StatelessWidget {
 
   Container ageOverAgreeBar(BuildContext context, J002ViewModel model) {
     return Container(
-        height: 52.00,
+        height: 54.00,
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
             onPressed: model.onAgeOverAgree,
@@ -104,9 +105,10 @@ class J002View extends StatelessWidget {
                               : Color(0xffB1B1B1),
                           shape: BoxShape.circle))),
               Positioned(
-                top: 18,
+                top: 0,
                 left: 52,
                 child: Container(
+                    margin: EdgeInsets.only(top: 16,bottom: 16),
                     child: Text("만 14세 이상입니다.",
                         style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -114,7 +116,7 @@ class J002View extends StatelessWidget {
                             color: Color(0xff454f63)))),
               ),
               Positioned(
-                top: 33,
+                top: 40,
                 left: 52,
                 child: Container(
                     child: Text("만 14세 미만의 어린이는 가입을 제한하고 있습니다.",
@@ -159,9 +161,10 @@ class J002View extends StatelessWidget {
                               : Color(0xffB1B1B1),
                           shape: BoxShape.circle))),
               Positioned(
-                top: 18,
+                top: 0,
                 left: 52,
                 child: Container(
+                    margin: EdgeInsets.only(top: 16,bottom: 16),
                     child: Text("마케팅 정보 메일 수신 동의(선택)",
                         style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -202,9 +205,10 @@ class J002View extends StatelessWidget {
                               : Color(0xffB1B1B1),
                           shape: BoxShape.circle))),
               Positioned(
-                top: 18,
+                top: 0,
                 left: 52,
                 child: Container(
+                    margin: EdgeInsets.only(top: 16,bottom: 16),
                     child: Text("위치정보 활용 동의",
                         style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -260,9 +264,10 @@ class J002View extends StatelessWidget {
                               : Color(0xffB1B1B1),
                           shape: BoxShape.circle))),
               Positioned(
-                top: 18,
+                top: 0,
                 left: 52,
                 child: Container(
+                    margin: EdgeInsets.only(top: 16,bottom: 16),
                     child: Text("개인정보 수집 이용 동의",
                         style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -318,9 +323,10 @@ class J002View extends StatelessWidget {
                               : Color(0xffB1B1B1),
                           shape: BoxShape.circle))),
               Positioned(
-                top: 18,
+                top: 0,
                 left: 52,
                 child: Container(
+                    margin: EdgeInsets.only(top: 16,bottom: 16),
                     child: Text("서비스 운영 정책 동의",
                         style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -374,9 +380,10 @@ class J002View extends StatelessWidget {
                               : Color(0xffB1B1B1),
                           shape: BoxShape.circle))),
               Positioned(
-                top: 18,
+                top: 0,
                 left: 52,
                 child: Container(
+                    margin: EdgeInsets.only(top: 16,bottom: 16),
                     child: Text("서비스 이용약관 동의",
                         style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
@@ -432,14 +439,15 @@ class J002View extends StatelessWidget {
                         shape: BoxShape.circle),
                   )),
               Positioned(
-                top: 18,
+                top: 0,
                 left: 52,
                 child: Container(
+                    margin: EdgeInsets.only(top: 16,bottom: 16),
                     child: Text("모든 약관에 동의합니다.",
                         style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontSize: 14,
-                            color: Color(0xff454f63)))),
+                            color: Color(0xff454F63 )))),
               )
             ])),
         decoration: BoxDecoration(

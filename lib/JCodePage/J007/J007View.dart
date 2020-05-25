@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J007/J007ViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class J007View extends StatelessWidget {
@@ -24,11 +25,11 @@ class J007View extends StatelessWidget {
                                   padding: EdgeInsets.all(0),
                                   shrinkWrap: true,
                                   children: <Widget>[
-                                    userProfileImageBar(model),
+                                userProfileImageBar(model),
                                 countrySelectBar(context, model),
                                 didver(context),
-                                    nickNameEditor(model,context),
-                                    userIntroduceEditor(model,context)
+                                nickNameEditor(model, context),
+                                userIntroduceEditor(model, context)
                               ]))
                         ]),
                         Positioned(
@@ -44,12 +45,14 @@ class J007View extends StatelessWidget {
                                 backgroundColor: Color(0xffCCCCCC)))
                       ],
                     ))),
-            model.getIsLoading() ? CommonLoadingComponent() : Container()
+            model.getIsLoading()
+                ? CommonLoadingComponent(isTouch: false)
+                : Container()
           ]);
         }));
   }
-  Container userIntroduceEditor(
-      J007ViewModel model, BuildContext context) {
+
+  Container userIntroduceEditor(J007ViewModel model, BuildContext context) {
     return Container(
         height: MediaQuery.of(context).size.height - 398,
         color: Colors.white,
@@ -59,16 +62,15 @@ class J007View extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Text("자기소개",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
+                      letterSpacing: 4,
                       fontSize: 12,
                       color: Color(0xff454f63),
                     )),
                 Spacer(),
                 Container(
                   child: Text("(${model.userIntroduceInputTextLength}/100)",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontSize: 10,
                         color: Color(0xffd4d4d4),
                       )),
@@ -82,11 +84,13 @@ class J007View extends StatelessWidget {
                   maxLines: null,
                   maxLength: 100,
                   controller: model.userIntroduceController,
+                  style: GoogleFonts.notoSans(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14),
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                       hintText: "자기소개를 입력해주세요.",
-                      hintStyle: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      hintStyle: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
                         color: Color(0xffd4d4d4),
@@ -95,11 +99,11 @@ class J007View extends StatelessWidget {
                       enabledBorder: OutlineInputBorder(
                           gapPadding: 0,
                           borderSide:
-                          BorderSide(color: Colors.white, width: 0)),
+                              BorderSide(color: Colors.white, width: 0)),
                       focusedBorder: OutlineInputBorder(
                           gapPadding: 0,
                           borderSide:
-                          BorderSide(color: Colors.white, width: 0)))))
+                              BorderSide(color: Colors.white, width: 0)))))
         ]));
   }
 
@@ -116,15 +120,16 @@ class J007View extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       Text("닉네임",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
+                            letterSpacing: 4,
                             fontSize: 12,
-                            color: model.hasNickNameError() ? Color(0xffff4f9a): Color(0xff454f63),
+                            color: model.hasNickNameError()
+                                ? Color(0xffff4f9a)
+                                : Color(0xff454f63),
                           )),
                       Spacer(),
                       Text("(${model.nickNameInputTextLength}/20)",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
                             fontSize: 10,
                             color: Color(0xffd4d4d4),
                           ))
@@ -140,12 +145,9 @@ class J007View extends StatelessWidget {
                       onEditingComplete: model.onEditCompleteNickName,
                       onChanged: model.onChangeNickName,
                       controller: model.nickNameController,
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        color: Color(0xff454f63),
-                      ),
+                      style: GoogleFonts.notoSans(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
                       maxLength: 20,
                       decoration: InputDecoration(
                         hintText: "닉네임을 입력해주세요",
@@ -163,22 +165,22 @@ class J007View extends StatelessWidget {
                         enabledBorder: OutlineInputBorder(
                             gapPadding: 0,
                             borderSide:
-                            BorderSide(color: Colors.white, width: 0)),
+                                BorderSide(color: Colors.white, width: 0)),
                         focusedBorder: OutlineInputBorder(
                             gapPadding: 0,
                             borderSide:
-                            BorderSide(color: Colors.white, width: 0)),
+                                BorderSide(color: Colors.white, width: 0)),
                       )))),
           Positioned(
               top: 60,
               left: 16,
               child: model.hasNickNameError()
                   ? Container(
-                  child: Text(model.nickNameErrorText(),
-                      style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontSize: 12,
-                          color: Color(0xffff4f9a))))
+                      child: Text(model.nickNameErrorText(),
+                          style: GoogleFonts.notoSans(
+
+                              fontSize: 12,
+                              color: Color(0xffff4f9a))))
                   : Container())
         ]),
         decoration: BoxDecoration(
@@ -189,30 +191,32 @@ class J007View extends StatelessWidget {
 
   Container countrySelectBar(BuildContext context, J007ViewModel model) {
     return Container(
-        padding: EdgeInsets.only(top: 16),
-        child: Column(children: <Widget>[
-          Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-              width: MediaQuery.of(context).size.width,
-              child: Text("국가",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
-                    fontSize: 12,
-                    color: Color(0xff454f63),
-                  ))),
-          Container(
-              child: FlatButton(
-            padding: EdgeInsets.only(left: 16),
-            onPressed: model.onCountryChange,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Text(model.getCountryName(model.currentCountryCode)),
+      padding: EdgeInsets.only(top: 16),
+      child: Column(children: <Widget>[
+        Container(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            width: MediaQuery.of(context).size.width,
+            child: Text("국가",
+                style: GoogleFonts.notoSans(
+                  letterSpacing: 4,
+                  fontSize: 12,
+                  color: Color(0xff454f63),
+                ))),
+        Container(
+            child: FlatButton(
+          padding: EdgeInsets.only(left: 16),
+          onPressed: model.onCountryChange,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Text(model.getCountryName(model.currentCountryCode),
+              style: GoogleFonts.notoSans(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14),
             ),
-          ))
-        ]),
-        decoration: BoxDecoration(
-          color: Colors.white
-        ),
+          ),
+        ))
+      ]),
+      decoration: BoxDecoration(color: Colors.white),
     );
   }
 
@@ -227,52 +231,52 @@ class J007View extends StatelessWidget {
   Container userProfileImageBar(J007ViewModel model) {
     return Container(
       height: 145,
+      color: Color(0xffF2F0F1),
       child: Center(
-        child : Stack(alignment: Alignment.bottomRight, children: <Widget>[
-          Container(
-              height: 69.00,
-              width: 69.00,
-              child: FlatButton(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(0),
-                onPressed: model.onChangeProfileImageTab,
-              ),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: model.currentProfileImage,
+          child: Stack(alignment: Alignment.bottomRight, children: <Widget>[
+        Container(
+            height: 69.00,
+            width: 69.00,
+            child: FlatButton(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(0),
+              onPressed: model.onChangeProfileImageTab,
+            ),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fitWidth,
+                  image: model.currentProfileImage,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0.00, 3.00),
+                    color: Color(0xff000000).withOpacity(0.16),
+                    blurRadius: 6,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0.00, 3.00),
-                      color: Color(0xff000000).withOpacity(0.16),
-                      blurRadius: 6,
-                    ),
-                  ],
-                  shape: BoxShape.circle)),
-          Positioned(
-              child: Container(
-                  height: 21.00,
-                  width: 21.00,
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: model.onChangeProfileImageTab,
-                    child: Icon(
-                      ForutonaIcon.pencil,
-                      color: Colors.white,
-                      size: 10,
-                    ),
+                ],
+                shape: BoxShape.circle)),
+        Positioned(
+            child: Container(
+                height: 21.00,
+                width: 21.00,
+                child: FlatButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: model.onChangeProfileImageTab,
+                  child: Icon(
+                    ForutonaIcon.pencil,
+                    color: Colors.white,
+                    size: 10,
                   ),
-                  decoration: BoxDecoration(
-                    color: Color(0xffb1b1b1),
-                    border: Border.all(
-                      width: 1.00,
-                      color: Color(0xfff2f0f1),
-                    ),
-                    shape: BoxShape.circle,
-                  )))
-        ]
-      )),
+                ),
+                decoration: BoxDecoration(
+                  color: Color(0xffb1b1b1),
+                  border: Border.all(
+                    width: 1.00,
+                    color: Color(0xfff2f0f1),
+                  ),
+                  shape: BoxShape.circle,
+                )))
+      ])),
     );
   }
 
@@ -301,16 +305,14 @@ class J007View extends StatelessWidget {
           width: 75.00,
           margin: EdgeInsets.only(right: 16),
           child: FlatButton(
-            onPressed:
-                model.isCanComplete() ? model.onCompeleteBtnClick : null,
+            onPressed: model.isCanComplete() ? model.onCompeleteBtnClick : null,
             child: Text("완료",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
-                  color: model.isCanComplete()
-                      ? Colors.black
-                      : Color(0xffb1b1b1),
+                  color:
+                      model.isCanComplete() ? Colors.black : Color(0xffb1b1b1),
                 )),
           ),
           decoration: BoxDecoration(

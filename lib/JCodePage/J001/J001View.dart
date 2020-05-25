@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/JCodePage/J001/J001ViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class J001View extends StatelessWidget {
@@ -11,7 +12,6 @@ class J001View extends StatelessWidget {
           ChangeNotifierProvider(
             create: (_) => J001ViewModel(context),
           ),
-
         ],
         child: Consumer<J001ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
@@ -30,18 +30,18 @@ class J001View extends StatelessWidget {
                     ]),
                   ),
                   Positioned(
-                    top: MediaQuery.of(context).padding.top+10,
+                    top: MediaQuery.of(context).padding.top + 10,
                     left: 0,
-                    child: closeBar(context,model),
+                    child: closeBar(context, model),
                   ),
                   Positioned(
-                      top:MediaQuery.of(context).size.height - 167,
+                      top: MediaQuery.of(context).size.height - 167,
                       left: 0,
                       child: Column(
                         children: <Widget>[
                           orBar(context),
-                          snsLogInBtnBar(context,model),
-                          joinBtnBar(context,model)
+                          snsLogInBtnBar(context, model),
+                          joinBtnBar(context, model)
                         ],
                       ))
                 ],
@@ -52,7 +52,7 @@ class J001View extends StatelessWidget {
         }));
   }
 
-  Container joinBtnBar(BuildContext context,J001ViewModel model) {
+  Container joinBtnBar(BuildContext context, J001ViewModel model) {
     return Container(
       margin: EdgeInsets.only(top: 22),
       width: MediaQuery.of(context).size.width,
@@ -62,20 +62,18 @@ class J001View extends StatelessWidget {
         child: RichText(
           text: TextSpan(
               text: "아직 회원이 아니신가요?",
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              style: GoogleFonts.notoSans(
                 fontWeight: FontWeight.w500,
-                fontSize: 12,
+                fontSize: 14,
                 color: Color(0xff78849E),
                 decoration: TextDecoration.underline,
               ),
               children: [
                 TextSpan(
                     text: "가입하기",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
-                      fontSize: 12,
+                      fontSize: 14,
                       color: Color(0xff3497FD),
                       decoration: TextDecoration.underline,
                     ))
@@ -85,7 +83,7 @@ class J001View extends StatelessWidget {
     );
   }
 
-  Container snsLogInBtnBar(BuildContext context,J001ViewModel model) {
+  Container snsLogInBtnBar(BuildContext context, J001ViewModel model) {
     return Container(
       margin: EdgeInsets.only(top: 23),
       width: MediaQuery.of(context).size.width,
@@ -181,17 +179,16 @@ class J001View extends StatelessWidget {
 
   Container pwFindBar(J001ViewModel model) {
     return Container(
-      height: 14,
-      margin: EdgeInsets.fromLTRB(32, 24, 16, 0),
+      height: 20,
+      margin: EdgeInsets.fromLTRB(32, 24, 35, 0),
       alignment: Alignment.centerRight,
       child: FlatButton(
           onPressed: model.jumpToJ008Page,
           padding: EdgeInsets.all(0),
           child: Text("혹시 비밀번호를 분실하셨나요?",
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
-                fontSize: 10,
-                color: Color(0xffff4f9a),
+              style: GoogleFonts.notoSans(
+                fontSize: 13,
+                color: Color(0xffFF4F9A),
               ))),
     );
   }
@@ -233,28 +230,20 @@ class J001View extends StatelessWidget {
     return Container(
         margin: EdgeInsets.fromLTRB(36, 16, 36, 0),
         child: TextField(
-          style: TextStyle(
-            fontFamily: "Noto Sans CJK KR",
-            fontSize: 12,
-            color: Color(0xff454f63),
+          style: GoogleFonts.notoSans(
+            fontSize: 14,
+            color: Color(0xff78849E),
           ),
           focusNode: model.pwTextFocusNode,
           controller: model.pwTextFieldController,
           obscureText: true,
           decoration: InputDecoration(
               labelText: "비밀번호",
-              labelStyle: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
-                fontSize: 12,
+              labelStyle: GoogleFonts.notoSans(
+                fontSize: 14,
                 color: model.pwTextFocusNode.hasFocus
                     ? Color(0xff3497fd)
                     : Color(0xff78849E),
-              ),
-              hintText: "비밀번호",
-              hintStyle: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
-                fontSize: 12,
-                color: Color(0xff454f63),
               ),
               fillColor: Colors.white,
               filled: true,
@@ -274,25 +263,17 @@ class J001View extends StatelessWidget {
       child: TextField(
         controller: model.idTextFieldController,
         focusNode: model.idTextFocusNode,
-        style: TextStyle(
-          fontFamily: "Noto Sans CJK KR",
-          fontSize: 12,
-          color: Color(0xff454f63),
+        style: GoogleFonts.notoSans(
+          fontSize: 14,
+          color: Color(0xff78849E),
         ),
         decoration: InputDecoration(
             labelText: "아이디(이메일 주소)",
-            labelStyle: TextStyle(
-              fontFamily: "Noto Sans CJK KR",
-              fontSize: 12,
+            labelStyle: GoogleFonts.notoSans(
+              fontSize: 14,
               color: model.idTextFocusNode.hasFocus
                   ? Color(0xff3497fd)
                   : Color(0xff78849E),
-            ),
-            hintText: "아이디(이메일 주소)",
-            hintStyle: TextStyle(
-              fontFamily: "Noto Sans CJK KR",
-              fontSize: 12,
-              color: Color(0xff454f63),
             ),
             fillColor: Colors.white,
             filled: true,
@@ -320,35 +301,32 @@ class J001View extends StatelessWidget {
     );
   }
 
-  Container closeBar(BuildContext context,J001ViewModel model) {
+  Container closeBar(BuildContext context, J001ViewModel model) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      alignment: Alignment.centerRight,
-      child: Container(
-          margin: EdgeInsets.only(top: 16, right: 16),
-          height: 23.00,
-          width: 23.00,
-
+        width: MediaQuery.of(context).size.width,
+        alignment: Alignment.centerRight,
+        child: Container(
+          width: 30,
+          height: 30,
+          margin: EdgeInsets.only(right: 16),
           child: FlatButton(
-            padding: EdgeInsets.all(0),
-            onPressed: model.onClose,
-            child: Icon(Icons.clear, color: Colors.white, size: 15)
-          ) ,
-
-
-          decoration: BoxDecoration(
-            color: Color(0xff454f63),
-            boxShadow: [
-              BoxShadow(
-                offset: Offset(0.00, 3.00),
-                color: Color(0xff000000).withOpacity(0.16),
-                blurRadius: 6,
-              )
-            ],
-            shape: BoxShape.circle,
-          )),
-    );
+              padding: EdgeInsets.all(0),
+              onPressed: model.onClose,
+              child: Container(
+                  width: 24,
+                  height: 24,
+                  child: Icon(Icons.close, color: Colors.white, size: 20),
+                  decoration: BoxDecoration(
+                    color: Color(0xff454f63),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0.00, 3.00),
+                        color: Color(0xff000000).withOpacity(0.16),
+                        blurRadius: 6,
+                      )
+                    ],
+                    shape: BoxShape.circle,
+                  ))),
+        ));
   }
-
-
 }

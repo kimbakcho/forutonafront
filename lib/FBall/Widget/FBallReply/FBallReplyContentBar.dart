@@ -128,7 +128,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                             image: NetworkImage(getUserPorfilePicktureUrl()),
-                            fit: BoxFit.contain)),
+                            fit: BoxFit.fitWidth)),
                   )
                 : Container(
                     width: 21,
@@ -137,7 +137,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                             image: NetworkImage(getUserPorfilePicktureUrl()),
-                            fit: BoxFit.contain)),
+                            fit: BoxFit.fitWidth)),
                   ),
             Expanded(
                 child: Container(

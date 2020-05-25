@@ -33,7 +33,7 @@ class FBallInputReplyView extends StatelessWidget {
                             Expanded(
                                 child: Container(
                                     color: Colors.white,
-                                    padding: EdgeInsets.fromLTRB(16, 13, 0, 13),
+                                    padding: EdgeInsets.fromLTRB(16, 16, 0, 13),
                                     alignment: Alignment.centerLeft,
                                     margin: EdgeInsets.only(right: 16),
                                     child: TextField(
@@ -41,8 +41,11 @@ class FBallInputReplyView extends StatelessWidget {
                                         style: TextStyle(fontSize: 20),
                                         autofocus: true,
                                         minLines: 1,
+                                        maxLength: 300,
+                                        onChanged: model.onReplyInputChange,
                                         maxLines: 4,
                                         decoration: InputDecoration(
+                                          counter: Container(),
                                             isDense: true,
                                             contentPadding: EdgeInsets.fromLTRB(
                                                 16, 4, 16, 4),

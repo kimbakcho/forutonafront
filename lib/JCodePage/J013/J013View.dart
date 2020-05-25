@@ -16,6 +16,7 @@ class J013View extends StatelessWidget {
           return Stack(
             children: <Widget>[
               Scaffold(
+                backgroundColor: Color(0xffF2F0F1),
                   body: Container(
                       padding: EdgeInsets.fromLTRB(
                           0, MediaQuery.of(context).padding.top, 0, 0),
@@ -39,14 +40,15 @@ class J013View extends StatelessWidget {
                                         child: Container(
                                           width:
                                               MediaQuery.of(context).size.width,
-                                          child: Text("혹시 인증 메일을 받지 못하셨나요?",
-                                              style: GoogleFonts.notoSans(
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 13,
-                                                color: Color(0xffff4f9a),
-                                                decoration:
-                                                    TextDecoration.underline,
-                                              )),
+                                          child: Container(
+                                            child: Text("혹시 인증 메일을 받지 못하셨나요?",
+                                                style: GoogleFonts.notoSans(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 13,
+                                                  color: Color(0xffff4f9a),
+                                                  decoration: TextDecoration.underline,
+                                                )),
+                                          ),
                                         ),
                                       ))
                                 ],
@@ -147,10 +149,10 @@ class J013View extends StatelessWidget {
               ))
         ],
       ),
-      height: 83.00,
+      height: 96.00,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Color(0xfff5f5f5),
+        color: Color(0xffF6F6F6),
         boxShadow: [
           BoxShadow(
             offset: Offset(0.00, 4.00),

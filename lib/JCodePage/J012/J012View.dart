@@ -14,6 +14,8 @@ class J012View extends StatelessWidget {
           return Stack(
             children: <Widget>[
               Scaffold(
+                backgroundColor: Color(0xffF2F0F1),
+
                   body: Container(
                       padding: EdgeInsets.fromLTRB(
                           0, MediaQuery.of(context).padding.top, 0, 0),
@@ -123,7 +125,7 @@ class J012View extends StatelessWidget {
               left: 16,
               child: Text("현재 사용중이신 계정 이메일 주소를 입력해주세요.",
                   style: GoogleFonts.notoSans(
-                    fontSize: 11,
+                    fontSize: 13,
                     color: Color(0xff454f63),
                   )))
         ],
@@ -131,7 +133,7 @@ class J012View extends StatelessWidget {
       height: 83.00,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Color(0xfff5f5f5),
+        color: Color(0xffF6F6F6),
         boxShadow: [
           BoxShadow(
             offset: Offset(0.00, 4.00),

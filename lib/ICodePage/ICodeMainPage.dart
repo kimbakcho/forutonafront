@@ -53,6 +53,7 @@ class ICodeMainPage extends StatelessWidget {
                         onCameraMoveStarted: model.onMoveStartMap,
                         onCameraIdle: model.onMapIdle,
                         markers: model.markers,
+                        zoomControlsEnabled: false,
                       ),
 
                       Positioned(

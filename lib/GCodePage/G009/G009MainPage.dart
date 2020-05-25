@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/GCodePage/G009/G009MainPageViewModel.dart';
+import 'package:forutonafront/GlobalModel.dart';
 import 'package:provider/provider.dart';
 
 class G009MainPage extends StatelessWidget {
@@ -207,7 +208,9 @@ class G009MainPage extends StatelessWidget {
   }
 
   Container securityRowBtn(G009MainPageViewModel model) {
-    return Container(
+
+    return  model.isForutonaUser() ?
+      Container(
       height: 48,
       child: FlatButton(
           onPressed: model.goSecurityPage,
@@ -228,7 +231,7 @@ class G009MainPage extends StatelessWidget {
           color: Colors.white,
           border:
               Border(bottom: BorderSide(color: Color(0xffF2F0F1), width: 1))),
-    );
+    ): Container();
   }
 
   Container accountRowBtn(G009MainPageViewModel model) {

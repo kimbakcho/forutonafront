@@ -12,6 +12,7 @@ class J008View extends StatelessWidget {
           return Stack(
             children: <Widget>[
               Scaffold(
+                backgroundColor: Color(0xffF2F0F1),
                   body: Container(
                       padding: EdgeInsets.fromLTRB(
                           0, MediaQuery.of(context).padding.top, 0, 0),
@@ -40,7 +41,7 @@ class J008View extends StatelessWidget {
                   "이메일 인증하기",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
-                    fontSize: 14,
+                    fontSize: 15,
                     color: Color(0xff454f63),
                   ),
                 )),
@@ -52,7 +53,7 @@ class J008View extends StatelessWidget {
                   child: Text("계정에 사용한 이메일 주소를 인증하고 패스워드를 변경합니다.",
                       style: GoogleFonts.notoSans(
                         fontSize: 14,
-                        color: Color(0xff78849e),
+                        color: Color(0xff454F63),
                       )),
                 )),
             Positioned(
@@ -111,7 +112,7 @@ class J008View extends StatelessWidget {
                   "휴대폰 인증하기",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
-                    fontSize: 14,
+                    fontSize: 15,
                     color: Color(0xff454f63),
                   ),
                 )),
@@ -123,7 +124,7 @@ class J008View extends StatelessWidget {
                   child: Text("계정에 등록된 휴대폰 번호를 인증하고 패스워드를 변경합니다.",
                       style: GoogleFonts.notoSans(
                         fontSize: 14,
-                        color: Color(0xff78849e),
+                        color: Color(0xff454F63),
                       )),
                 )),
             Positioned(

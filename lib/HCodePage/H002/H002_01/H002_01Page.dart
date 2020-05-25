@@ -37,6 +37,7 @@ class H002_01Page extends StatelessWidget {
                 onCameraMove: model.onMoveMap,
                 onCameraMoveStarted: model.onMoveStartMap,
                 onCameraIdle: model.onMapIdle,
+                zoomControlsEnabled: false,
               ),
               Center(child: UpDownPin(model)),
               Center(
@@ -132,6 +133,7 @@ class H002_01Page extends StatelessWidget {
         height: 52.00,
         width: 52.00,
         child: FlatButton(
+          padding: EdgeInsets.only(right: 1),
           onPressed: () {
             model.onMyLocation();
           },

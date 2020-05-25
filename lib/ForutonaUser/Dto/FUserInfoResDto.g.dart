@@ -21,7 +21,8 @@ FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
     ..positionAgree = json['positionAgree'] as bool
     ..martketingAgree = json['martketingAgree'] as bool
     ..ageLimitAgree = json['ageLimitAgree'] as bool
-    ..snsService = json['snsService'] as String
+    ..snsService =
+        _$enumDecodeNullable(_$SnsSupportServiceEnumMap, json['snsService'])
     ..phoneNumber = json['phoneNumber'] as String
     ..isoCode = json['isoCode'] as String
     ..latitude = (json['latitude'] as num)?.toDouble()
@@ -72,7 +73,7 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
       'positionAgree': instance.positionAgree,
       'martketingAgree': instance.martketingAgree,
       'ageLimitAgree': instance.ageLimitAgree,
-      'snsService': instance.snsService,
+      'snsService': _$SnsSupportServiceEnumMap[instance.snsService],
       'phoneNumber': instance.phoneNumber,
       'isoCode': instance.isoCode,
       'latitude': instance.latitude,
@@ -103,3 +104,42 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
       'alarmSponNewContent': instance.alarmSponNewContent,
       'deactivation': instance.deactivation,
     };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$SnsSupportServiceEnumMap = {
+  SnsSupportService.FaceBook: 'FaceBook',
+  SnsSupportService.Naver: 'Naver',
+  SnsSupportService.Kakao: 'Kakao',
+  SnsSupportService.Forutona: 'Forutona',
+};

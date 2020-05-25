@@ -25,6 +25,7 @@ class H007MainPage extends StatelessWidget {
                 onMapCreated: model.onMapCreate,
                 onCameraMove: model.onCameraMove,
                 onCameraIdle: model.onMapIdle,
+                zoomControlsEnabled: false,
               ),
               Positioned(
                 top: 0,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/GCodePage/G010/G010MainPageViewModel.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,8 @@ class G010MainPage extends StatelessWidget {
                             nickNameEditor(model, context),
                             userIntroduceEditor(model, context)
                           ]))
-                    ])))
+                    ]))),
+            model.getIsLoading() ? CommonLoadingComponent(isTouch: false) : Container()
           ]);
         }));
   }
@@ -50,7 +52,7 @@ class G010MainPage extends StatelessWidget {
                     )),
                 Spacer(),
                 Container(
-                  child: Text("(${model.userIntroduceInputTextLength}/80)",
+                  child: Text("(${model.userIntroduceInputTextLength}/100)",
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontSize: 10,
@@ -64,7 +66,7 @@ class G010MainPage extends StatelessWidget {
               child: TextField(
                   minLines: 1,
                   maxLines: null,
-                  maxLength: 80,
+                  maxLength: 100,
                   controller: model.userIntroduceController,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -106,7 +108,7 @@ class G010MainPage extends StatelessWidget {
                             color: Color(0xff454f63),
                           )),
                       Spacer(),
-                      Text("(${model.nickNameInputTextLength}/80)",
+                      Text("(${model.nickNameInputTextLength}/20)",
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontSize: 10,
@@ -123,13 +125,14 @@ class G010MainPage extends StatelessWidget {
                   child: TextField(
                       onEditingComplete: model.onEditCompleteNickName,
                       controller: model.nickNameController,
+                      focusNode: model.nickNameFocusNode,
                       style: TextStyle(
                         fontFamily: "Noto Sans CJK KR",
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
                         color: Color(0xff454f63),
                       ),
-                      maxLength: 80,
+                      maxLength: 20,
                       decoration: InputDecoration(
                         hintText: "닉네임을 입력해주세요",
                         hintStyle: TextStyle(
@@ -155,13 +158,13 @@ class G010MainPage extends StatelessWidget {
           Positioned(
               top: 60,
               left: 16,
-              child: model.isCanNotUseNickNameDisPlay
+              child: model.hasNickNameError()
                   ? Container(
-                      child: Text("*사용하실 수 없는 닉네임입니다.",
-                          style: TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
-                              fontSize: 12,
-                              color: Color(0xffff4f9a))))
+                  child: Text(model.nickNameErrorText(),
+                      style: TextStyle(
+                          fontFamily: "Noto Sans CJK KR",
+                          fontSize: 12,
+                          color: Color(0xffff4f9a))))
                   : Container())
         ]),
         decoration: BoxDecoration(

@@ -173,7 +173,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
           Positioned(
             left: 34,
             top: 16,
-            child: Text(model.getRemainingTime(),
+            child: Text(model.getBallMakeTime(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontSize: 8,

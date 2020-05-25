@@ -94,7 +94,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     if(getBallResDto().ballDeleteFlag){
       return "";
     }else {
-      return getBallResDto().ballName;
+      return getBallResDto().placeAddress;
     }
   }
 
@@ -128,6 +128,15 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     }else {
       return TimeDisplayUtil.getRemainingToStrFromNow(
           this.getBallResDto().activationTime);
+    }
+  }
+
+  String getBallMakeTime(){
+    if(getBallResDto().ballDeleteFlag){
+      return "-";
+    }else {
+      return TimeDisplayUtil.getRemainingToStrFromNow(
+          this.getBallResDto().makeTime);
     }
   }
 

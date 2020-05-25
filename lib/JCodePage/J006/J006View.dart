@@ -16,6 +16,7 @@ class J006View extends StatelessWidget {
         child: Consumer<J006ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
+                backgroundColor: Color(0xffF2F0F1),
                 body: Container(
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
@@ -61,11 +62,12 @@ class J006View extends StatelessWidget {
     return model.hasPwCheckError()
         ? Container(
             alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(left: 22),
-            height: 27,
+      padding: EdgeInsets.only(top: 8,bottom: 10),
+      height: 38,
+      margin: EdgeInsets.only(left: 22),
             child: Text(model.pwCheckErrorText(),
                 style: GoogleFonts.notoSans(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: Color(0xffff4f9a),
                 )),
           )
@@ -123,11 +125,12 @@ class J006View extends StatelessWidget {
     return model.hasPwError()
         ? Container(
             alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(top: 8,bottom: 10),
+      height: 38,
             margin: EdgeInsets.only(left: 22),
-            height: 27,
             child: Text(model.pwErrorText(),
                 style: GoogleFonts.notoSans(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: Color(0xffff4f9a),
                 )),
           )
@@ -186,11 +189,12 @@ class J006View extends StatelessWidget {
         ? Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: 22),
-            height: 27,
+            padding: EdgeInsets.only(top: 8,bottom: 10),
+            height: 38,
             child: Text(model.emailErrorText(),
                 style: GoogleFonts.notoSans(
-                  fontSize: 14,
-                  color: Color(0xffff4f9a),
+                  fontSize: 12,
+                  color: Color(0xffFF4F9A),
                 )),
           )
         : Container(
@@ -268,14 +272,15 @@ class J006View extends StatelessWidget {
             left: 16,
             child: Text("아이디는 실제 사용하시는 이메일로 작성해주세요.\n패스워드 분실시 복구에 사용됩니다.",
                 style: GoogleFonts.notoSans(
-                  fontSize: 11,
+                  fontSize: 13,
                   color: Color(0xff454f63),
+                  fontWeight: FontWeight.normal
                 )),
           )
         ],
       ),
       decoration: BoxDecoration(
-        color: Color(0xfff5f5f5),
+        color: Color(0xffF6F6F6),
         boxShadow: [
           BoxShadow(
             offset: Offset(0.00, 4.00),

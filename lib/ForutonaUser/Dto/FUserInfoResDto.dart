@@ -1,4 +1,5 @@
 
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserInfoResDto.g.dart';
@@ -17,7 +18,7 @@ class FUserInfoResDto {
    bool positionAgree;
    bool martketingAgree;
    bool ageLimitAgree;
-   String snsService;
+   SnsSupportService snsService;
    String phoneNumber;
    String isoCode;
    double latitude;

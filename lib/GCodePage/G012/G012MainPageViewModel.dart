@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
+import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidImpl.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 
@@ -8,15 +9,24 @@ class G012MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
 
   //에러 체크 시도 구분
-  bool _isCheckTry = false;
-  bool _isCurrentPwTry = false;
-  bool _isNewPwTry = false;
-  bool _currentPwCheckError = false;
+  bool _isCurrentConfirm = false;
   FUserRepository _fUserRepository = new FUserRepository();
+
+  bool _isLoading = false;
+  getIsLoading() {
+    return _isLoading;
+  }
+
+  _setIsLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 
   TextEditingController currentPwController = new TextEditingController();
   TextEditingController newPwController = new TextEditingController();
   TextEditingController checkPwController = new TextEditingController();
+
+  SignUpValidService _signUpValidService = DefaultSignValidImpl();
 
   G012MainPageViewModel(this._context) {
     checkPwController.addListener(_onCheckPwControllerListener);
@@ -41,83 +51,74 @@ class G012MainPageViewModel extends ChangeNotifier {
   }
 
   isCurrentPasswordError() {
-    //패스워드 일치 테스트
-    if (_isCurrentPwTry && _currentPwCheckError) {
+    if (_isCurrentConfirm && _signUpValidService.hasCurrentPwError()) {
       return true;
     } else {
       return false;
     }
   }
 
-  bool isNewPasswordError() {
-    if (_isNewPwTry) {
-      RegExp regExp1 = new RegExp(r'^(?=.*?[A-Z])');
-      RegExp regExp2 = new RegExp(r'^(?=.*?[a-z])');
-      RegExp regExp3 = new RegExp(r'^(?=.*?[0-9])');
-      RegExp regExp4 = new RegExp(r'^(?=.*?[!@#\$&*~])');
-      int match1 = regExp1.hasMatch(newPwController.text) ? 1 : 0;
-      int match2 = regExp2.hasMatch(newPwController.text) ? 1 : 0;
-      int match3 = regExp3.hasMatch(newPwController.text) ? 1 : 0;
-      int match4 = regExp4.hasMatch(newPwController.text) ? 1 : 0;
-      if (newPwController.text.length < 8) {
-        return true;
-      } else if (newPwController.text.length > 16) {
-        return true;
-      } else if ((match1 + match2 + match3 + match4) < 3) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  bool isCheckPasswordError() {
-    if (_isCheckTry) {
-      if (checkPwController.text != newPwController.text) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  void onCheckEditComplete() {
-    if (checkPwController.text.length > 0) {
-      _isCheckTry = true;
-    }
+  void onCurrentPwEditChange(String value) {
+    _isCurrentConfirm = false;
     notifyListeners();
   }
 
   Future onCurrentPwEditComplete() async {
-    if (currentPwController.text.length > 6) {
-      _isCurrentPwTry = true;
-      _currentPwCheckError = false;
-      var firebaseUser = await FirebaseAuth.instance.currentUser();
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: firebaseUser.email, password: currentPwController.text);
-      } catch (ex) {
-        _currentPwCheckError = true;
-        Fluttertoast.showToast(
-            msg: ex.toString(),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Color(0xff454F63),
-            textColor: Colors.white,
-            fontSize: 12.0);
-      }
-    }
+    _isCurrentConfirm = true;
+    _setIsLoading(true);
+    await _signUpValidService.currentPwValid(currentPwController.text);
+    _setIsLoading(false);
+  }
+
+  String getCurrentPasswordErrorText() {
+    return _signUpValidService.currentPwErrorText();
+  }
+
+  void onNewPwEditChange(String value) {
+    _signUpValidService.pwValid(newPwController.text);
     notifyListeners();
   }
 
   void onNewPwEditComplete() async {
-    if (newPwController.text.length > 0) {}
+    _signUpValidService.pwValid(newPwController.text);
     notifyListeners();
+  }
+
+  bool isNewPasswordError() {
+    if (newPwController.text.length > 0 && _signUpValidService.hasPwError()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  String getNewPasswordErrorText() {
+    return _signUpValidService.pwErrorText();
+  }
+
+  void checkPwEditChange(String value) {
+    _signUpValidService.pwCheckValid(
+        newPwController.text, checkPwController.text);
+    notifyListeners();
+  }
+
+  void onCheckEditComplete() {
+    _signUpValidService.pwCheckValid(
+        newPwController.text, checkPwController.text);
+    notifyListeners();
+  }
+
+  bool isCheckPasswordError() {
+    if (checkPwController.text.length > 0 &&
+        _signUpValidService.hasPwCheckError()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  String getCheckPasswordErrorText() {
+    return _signUpValidService.pwCheckErrorText();
   }
 
   isCanComplete() {
@@ -130,19 +131,15 @@ class G012MainPageViewModel extends ChangeNotifier {
   }
 
   void onPwChangeComplete() async {
-
-    _isCheckTry = true;
-    _isCurrentPwTry = true;
-    _isNewPwTry = true;
-
-    if (!await onCurrentPwEditComplete()) {
-      notifyListeners();
+    _isCurrentConfirm = true;
+    _setIsLoading(true);
+    await _signUpValidService.currentPwValid(currentPwController.text);
+    _signUpValidService.pwValid(newPwController.text);
+    _signUpValidService.pwCheckValid(newPwController.text, checkPwController.text);
+    if (_signUpValidService.hasCurrentPwError() || _signUpValidService.hasPwError() || _signUpValidService.hasPwCheckError()) {
+      _setIsLoading(false);
       return;
     }
-
-    if (!isCurrentPasswordError() &&
-        !isNewPasswordError() &&
-        !isCheckPasswordError()) {
       try {
         if (await _fUserRepository
                 .pWChange(FUserInfoPwChangeReqDto(newPwController.text)) ==
@@ -160,10 +157,7 @@ class G012MainPageViewModel extends ChangeNotifier {
             textColor: Colors.white,
             fontSize: 12.0);
       }
-    } else {
-      notifyListeners();
-    }
-    notifyListeners();
+    _setIsLoading(false);
   }
 
   Future showCompleteChangePwDialog() async {

@@ -11,4 +11,7 @@ abstract class SignUpValidService {
   Future<void> nickNameValid(String nickName);
   bool hasNickNameError();
   String nickNameErrorText();
+  Future<void> currentPwValid(String pw);
+  bool hasCurrentPwError();
+  String currentPwErrorText();
 }

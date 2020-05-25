@@ -585,6 +585,7 @@ class IM001MainPage extends StatelessWidget {
             initialCameraPosition: model.initCameraPosition,
             myLocationEnabled: false,
             myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
             markers: model.markers,
           ),
           Positioned(

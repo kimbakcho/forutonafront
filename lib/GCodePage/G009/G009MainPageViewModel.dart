@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/GCodePage/G010/G010MainPage.dart';
 import 'package:forutonafront/GCodePage/G011/G011MainPage.dart';
 import 'package:forutonafront/GCodePage/G015/G015MainPage.dart';
@@ -75,5 +77,14 @@ class G009MainPageViewModel extends ChangeNotifier {
   void goCustomCenter() {
     Navigator.of(_context).push(MaterialPageRoute(
         builder: (_) => G019MainPage(), settings: RouteSettings(name: "G019")));
+  }
+
+  bool isForutonaUser(){
+    GlobalModel globalModel = Provider.of(_context,listen: false);
+    if(globalModel.fUserInfoDto.snsService ==SnsSupportService.Forutona){
+      return true;
+    }else {
+      return false;
+    }
   }
 }

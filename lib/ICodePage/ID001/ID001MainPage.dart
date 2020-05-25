@@ -690,6 +690,7 @@ class ID001MainPage extends StatelessWidget {
             zoomControlsEnabled: false,
             markers: model.markers,
             circles: model.circles,
+            zoomControlsEnabled: false,
           ),
           Container(
               width: MediaQuery.of(context).size.width,
