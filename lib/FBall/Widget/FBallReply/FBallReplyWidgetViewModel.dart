@@ -69,6 +69,9 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
       List<FBallReplyContentBar> replyList  = [];
       if(fBallReplyWidgetViewController.replyContentBars.length > 3){
         replyList =  fBallReplyWidgetViewController.replyContentBars.sublist(0,3);
+      }else {
+        replyList =  fBallReplyWidgetViewController.replyContentBars.sublist(0,
+            fBallReplyWidgetViewController.replyContentBars.length);
       }
 
       fBallReplyWidgetViewController
@@ -80,11 +83,15 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
   }
 
   void popupInputDisplay() async {
-    FBallReplyInsertReqDto fBallReplyInsertReqDto = new FBallReplyInsertReqDto();
-    fBallReplyInsertReqDto.ballUuid = ballUuid;
-    FBallReplyResDto fBallReplyResDto = await FBallReplyUtil().popupInputDisplay(fBallReplyInsertReqDto,_context);
-    fBallReplyWidgetViewController.replyContentBars.insert(0,
-        FBallReplyContentBar(fBallReplyResDto,false,true,true,MediaQuery.of(_context).size.width)
-    );
+    FBallReplyResDto fBallReplyResDto = await FBallReplyUtil().popupInputDisplay(_context,ballUuid);
+    if(fBallReplyResDto != null){
+      fBallReplyWidgetViewController.replyContentBars.insert(0,
+          FBallReplyContentBar(fBallReplyResDto,false,true,true,MediaQuery.of(_context).size.width)
+      );
+      if(fBallReplyWidgetViewController.replyContentBars.length>3){
+        fBallReplyWidgetViewController.replyContentBars.removeAt(3);
+      }
+      fBallReplyWidgetViewController.fBallReplyResWrapDto.replyTotalCount++;
+    }
   }
 }

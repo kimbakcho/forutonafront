@@ -46,34 +46,21 @@ class FBallInputReplyViewModel extends ChangeNotifier {
 
   void insertReply() async {
     isBackSendButton = true;
-    FBallReplyResDto fBallReplyResDto = fBallReplyInsert();
+    FBallReplyResDto fBallReplyResDto = await fBallReplyInsert();
     replyTextController.clear();
     Navigator.of(_context).pop(fBallReplyResDto);
   }
 
-  FBallReplyResDto fBallReplyInsert() {
+  Future<FBallReplyResDto> fBallReplyInsert() async{
+    _setIsLoading(true);
     _fBallReplyInsertReqDto.replyUuid = Uuid().v4();
     _fBallReplyInsertReqDto.replyNumber = -1;
     _fBallReplyInsertReqDto.replyDepth = 0;
     _fBallReplyInsertReqDto.replySort = 0;
     _fBallReplyInsertReqDto.replyText = replyTextController.text;
-    _fBallReplyRepository.insertFBallReply(_fBallReplyInsertReqDto);
-
-    FBallReplyResDto replyResDto = new FBallReplyResDto();
-    replyResDto.ballUuid = _fBallReplyInsertReqDto.ballUuid;
-    replyResDto.replyUuid = _fBallReplyInsertReqDto.replyUuid;
-    replyResDto.deleteFlag = false;
-    replyResDto.replyUpdateDateTime = DateTime.now();
-    replyResDto.replyDepth = _fBallReplyInsertReqDto.replyDepth;
-    replyResDto.replySort = _fBallReplyInsertReqDto.replySort ;
-    replyResDto.replyText = _fBallReplyInsertReqDto.replyText;
-    GlobalModel globalModel = Provider.of(_context,listen: false);
-    replyResDto.uid = globalModel.fUserInfoDto.uid;
-    replyResDto.userNickName =  globalModel.fUserInfoDto.nickName;
-    replyResDto.userProfilePictureUrl = globalModel.fUserInfoDto.profilePictureUrl;
-    replyResDto.replyNumber = _fBallReplyInsertReqDto.replyNumber;
-
-    return replyResDto;
+    var fBallReplyResDto = await _fBallReplyRepository.insertFBallReply(_fBallReplyInsertReqDto);
+    _setIsLoading(false);
+    return fBallReplyResDto;
   }
 
   void updateReply() async {

@@ -63,23 +63,23 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                             margin: EdgeInsets.fromLTRB(
                                                 16, 0, 16, 0),
                                           )),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle),
-                                            margin: EdgeInsets.only(right: 16),
-                                            child: FlatButton(
-                                              shape: CircleBorder(),
-                                              padding: EdgeInsets.all(0),
-                                              onPressed: () {},
-                                              child: Icon(
-                                                ForutonaIcon.pointdash,
-                                                color: Color(0xff454F63),
-                                                size: 16,
-                                              ),
-                                            ),
-                                            width: 20,
-                                            height: 20,
-                                          )
+//                                          Container(
+//                                            decoration: BoxDecoration(
+//                                                shape: BoxShape.circle),
+//                                            margin: EdgeInsets.only(right: 16),
+//                                            child: FlatButton(
+//                                              shape: CircleBorder(),
+//                                              padding: EdgeInsets.all(0),
+//                                              onPressed: () {},
+//                                              child: Icon(
+//                                                ForutonaIcon.pointdash,
+//                                                color: Color(0xff454F63),
+//                                                size: 16,
+//                                              ),
+//                                            ),
+//                                            width: 20,
+//                                            height: 20,
+//                                          )
                                         ]),
                                         Container(
                                             margin: EdgeInsets.fromLTRB(
@@ -165,7 +165,6 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                     )),
                 model.getIsLoading() ? CommonLoadingComponent() : Container()
               ],
-
             ),
           );
         }));

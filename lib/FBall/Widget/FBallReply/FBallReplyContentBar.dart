@@ -6,9 +6,11 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallDetailReplyViewModel.dart';
+import 'package:forutonafront/FBall/Widget/FBallReply/FBallDetailSubReplyInputView.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyUtil.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FBallReplyContentBar extends StatefulWidget {
   final FBallReplyResDto fBallReplyResDto;
@@ -43,7 +45,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                 key: UniqueKey(),
                 margin: EdgeInsets.only(left: 50),
                 child: FBallReplyContentBar(
-                    e, false, false, true, widget._maxWidth - 50),
+                    e, false, false, true, widget._maxWidth-40),
               ))
           .toList());
     }
@@ -54,7 +56,38 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
     return Column(
       key: UniqueKey(),
       children: <Widget>[
-        parentReply(context),
+        FlatButton(
+          onPressed: widget._showSubReply && !widget.fBallReplyResDto.deleteFlag
+              ? () async {
+                  FBallReplyResDto resDto = await showGeneralDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      transitionDuration: Duration(milliseconds: 300),
+                      barrierColor: Colors.black.withOpacity(0.3),
+                      barrierLabel: MaterialLocalizations.of(context)
+                          .modalBarrierDismissLabel,
+                      pageBuilder: (_context, Animation animation,
+                          Animation secondaryAnimation) {
+                        return FBallDetailSubReplyInputView(
+                            widget.fBallReplyResDto);
+                      });
+                  setState(() {
+                    if(resDto != null){
+                      subFBallReplyContentBar.insert(
+                          0,
+                          Container(
+                            key: UniqueKey(),
+                            margin: EdgeInsets.only(left: 50),
+                            child: FBallReplyContentBar(
+                                resDto, false, false, true, widget._maxWidth-40),
+                          ));
+                    }
+                  });
+                }
+              : null,
+          padding: EdgeInsets.all(0),
+          child: parentReply(context),
+        ),
         widget._showSubReply ? subReplyToggleBar() : Container(),
         isOpenSubReply()
             ? Column(
@@ -77,96 +110,103 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
     return Container(
         key: UniqueKey(),
         width: widget._maxWidth,
-        height: 61,
-        padding: EdgeInsets.fromLTRB(16, 15, 16, 13),
+        padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(
                     width: widget._showBottomDivider ? 1 : 0,
                     color: Color(0xffF2F0F1)))),
-        child: Stack(children: <Widget>[
-          Positioned(
-            left: 0,
-            top: 0,
-            width: 32,
-            height: 32,
-            child: Container(
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: NetworkImage(getUserPorfilePicktureUrl()))),
-            ),
-          ),
-          Positioned(
-              top: 0,
-              left: 44,
-              child: RichText(
-                  text: TextSpan(
-                      text: getUserNickName(),
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 11,
-                        color: Color(0xff454f63),
-                      ),
-                      children: [
-                    TextSpan(
-                        text: getReplyUpdateDateTime(),
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontSize: 9,
-                          color: Color(0xffb1b1b1),
-                        ))
-                  ]))),
-          Positioned(
-              left: 44,
-              bottom: 0,
-              width: widget._maxWidth - 76,
-              child: Container(
-                  child: Text(
-                getBallText(),
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontSize: 10,
-                  color: Color(0xff454f63),
-                ),
-                overflow: TextOverflow.ellipsis,
-              ))),
-          Positioned(
-            right: 0,
-            top: 0,
-            child: !widget.fBallReplyResDto.deleteFlag
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            widget.fBallReplyResDto.replyDepth == 0
                 ? Container(
-                    width: 20,
-                    height: 20,
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: NetworkImage(getUserPorfilePicktureUrl()),
+                            fit: BoxFit.contain)),
+                  )
+                : Container(
+                    width: 21,
+                    height: 21,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: NetworkImage(getUserPorfilePicktureUrl()),
+                            fit: BoxFit.contain)),
+                  ),
+            Expanded(
+                child: Container(
+                    margin: EdgeInsets.only(left: 12),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(children: <Widget>[
+                            Container(
+                                child:
+                                    Text(getUserNickName(),
+                                        style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w700,
+
+                                          fontSize: 11,
+                                          color: Color(0xff454f63),
+                                        )))
+                          ]),
+                          Row(children: <Widget>[
+                            Container(
+                              width: widget._maxWidth-92,
+                                child: Text(getBallText(),
+                                    style: GoogleFonts.notoSans(
+                                      fontSize: 10,
+                                      color: Color(0xff454f63),
+                                    )))
+                          ]),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                  child: Text(getReplyUpdateDateTime(),
+                                      style: GoogleFonts.notoSans(
+                                        fontSize: 9,
+                                        color: Color(0xffb1b1b1),
+                                      )))
+                            ],
+                          )
+                        ]))),
+            !widget.fBallReplyResDto.deleteFlag
+                ? Container(
+                    width: 16,
+                    height: 16,
                     decoration: BoxDecoration(shape: BoxShape.circle),
                     child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      shape: CircleBorder(),
-                      onPressed: () async {
-                        var firebaseUser =
-                            await FirebaseAuth.instance.currentUser();
-                        if (widget.fBallReplyResDto.uid == firebaseUser.uid) {
-                          ModifyReturnValue result =
-                              await FBallReplyUtil().modifyPopup(context);
-                          if (result == ModifyReturnValue.Edit) {
-                            await _editReply(context);
+                        padding: EdgeInsets.all(0),
+                        onPressed: () async {
+                          var firebaseUser =
+                              await FirebaseAuth.instance.currentUser();
+                          if (widget.fBallReplyResDto.uid == firebaseUser.uid) {
+                            ModifyReturnValue result =
+                                await FBallReplyUtil().modifyPopup(context);
+                            if (result == ModifyReturnValue.Edit) {
+                              await _editReply(context);
+                            } else if (result == ModifyReturnValue.Delete) {
+                              _deleteReply();
+                            }
                           } else {
-                            _deleteReply();
+                            //추후 신고 하기 구현 할 자리
                           }
-                        } else {
-                          //추후 신고 하기 구현 할 자리
-                        }
-                      },
-                      child: Icon(
-                        ForutonaIcon.pointdash,
-                        size: 15,
-                        color: Color(0xff454F63),
-                      ),
-                    ))
-                : Container(),
-          )
-        ]));
+                        },
+                        shape: CircleBorder(),
+                        child: Icon(
+                          ForutonaIcon.pointdash,
+                          size:
+                              widget.fBallReplyResDto.replyDepth == 0 ? 15 : 8,
+                        )))
+                : Container()
+          ],
+        ));
   }
 
   Future _editReply(BuildContext context) async {
@@ -179,7 +219,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
     fBallReplyInsertReqDto.replyDepth = widget.fBallReplyResDto.replyDepth;
     fBallReplyInsertReqDto.replySort = widget.fBallReplyResDto.replySort;
     FBallReplyResDto fBallReplyResDto = await FBallReplyUtil()
-        .popupInputDisplay(fBallReplyInsertReqDto, context);
+        .popupInputDisplay(context,fBallReplyInsertReqDto.ballUuid,reqDto: fBallReplyInsertReqDto);
     setState(() {
       widget.fBallReplyResDto.replyText = fBallReplyResDto.replyText;
     });
@@ -205,9 +245,8 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
     if (widget.fBallReplyResDto.deleteFlag) {
       return "";
     } else {
-      return "   " +
-          TimeDisplayUtil.getRemainingToStrFromNow(
-              widget.fBallReplyResDto.replyUpdateDateTime);
+      return TimeDisplayUtil.getRemainingToStrFromNow(
+          widget.fBallReplyResDto.replyUpdateDateTime);
     }
   }
 
@@ -216,7 +255,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
       return "";
     } else {
       return widget.fBallReplyResDto.userNickName;
-      ;
+
     }
   }
 
@@ -265,148 +304,3 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
   }
 }
 
-//
-//class FBallReplyContentBar extends StatelessWidget {
-//
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Column(
-//      children: <Widget>[
-//        parentReply(context)
-//      ],
-//    ) ;
-//
-//  }
-//
-//  Container parentReply(BuildContext context) {
-//    return Container(
-//          key: UniqueKey(),
-//          width: MediaQuery.of(context).size.width,
-//          height: 61,
-//          padding: EdgeInsets.fromLTRB(16, 15, 16, 13),
-//          decoration: BoxDecoration(
-//              border:
-//              Border(bottom: BorderSide(width: 1, color: Color(0xffF2F0F1)))),
-//          child: Stack(children: <Widget>[
-//            Positioned(
-//              left: 0,
-//              top: 0,
-//              width: 32,
-//              height: 32,
-//              child: Container(
-//                decoration: BoxDecoration(
-//                    shape: BoxShape.circle,
-//                    image: DecorationImage(
-//                        image: NetworkImage(getUserPorfilePicktureUrl()))),
-//              ),
-//            ),
-//            Positioned(
-//                top: 0,
-//                left: 44,
-//                child: RichText(
-//                    text: TextSpan(
-//                        text: getUserNickName(),
-//                        style: TextStyle(
-//                          fontFamily: "Noto Sans CJK KR",
-//                          fontWeight: FontWeight.w700,
-//                          fontSize: 11,
-//                          color: Color(0xff454f63),
-//                        ),
-//                        children: [
-//                          TextSpan(
-//                              text: getReplyUpdateDateTime(),
-//                              style: TextStyle(
-//                                fontFamily: "Noto Sans CJK KR",
-//                                fontSize: 9,
-//                                color: Color(0xffb1b1b1),
-//                              ))
-//                        ]))),
-//            Positioned(
-//                left: 44,
-//                bottom: 0,
-//                width: MediaQuery.of(context).size.width - 76,
-//                child: Container(
-//                    child: Text(
-//                      getBallText(),
-//                      style: TextStyle(
-//                        fontFamily: "Noto Sans CJK KR",
-//                        fontSize: 10,
-//                        color: Color(0xff454f63),
-//                      ),
-//                      overflow: TextOverflow.ellipsis,
-//                    )))
-//          ])
-//
-//      );
-//  }
-//
-//
-//  Container subReplyToggleBar() {
-//    return subFBallReplyContentBar.length != 0
-//        ? Container(
-//        margin: EdgeInsets.only(left: 49),
-//        height: 20,
-//        alignment: Alignment.centerLeft,
-//        child: FlatButton(
-//            onPressed: () {
-//              subReplyOpenFlag = !subReplyOpenFlag;
-//            },
-//            padding: EdgeInsets.all(0),
-//            child: RichText(
-//              text: TextSpan(
-//                  text: widget.fBallSubReplyResDto.replyOpenFlag ? "▲" : "▼",
-//                  style: TextStyle(
-//                    fontFamily: "Noto Sans CJK KR",
-//                    fontWeight: FontWeight.w700,
-//                    fontSize: 10,
-//                    color: Color(0xff3497fd),
-//                  ),
-//                  children: [
-//                    TextSpan(
-//                        text:
-//                        "답글 숨기기(${_subContentBars.length})",
-//                        style: TextStyle(
-//                          fontFamily: "Noto Sans CJK KR",
-//                          fontWeight: FontWeight.w700,
-//                          fontSize: 10,
-//                          color: Color(0xff3497fd),
-//                        )),
-//                  ]),
-//            )))
-//        : Container();
-//  }
-//
-//  String getUserPorfilePicktureUrl() {
-//    if(_fBallSubReplyResDto.deleteFlag){
-//      return Preference.basicProfileImageUrl;
-//    }else {
-//      return _fBallSubReplyResDto.userProfilePictureUrl;
-//    }
-//  }
-//  String getReplyUpdateDateTime() {
-//    if(_fBallSubReplyResDto.deleteFlag){
-//      return "";
-//    }else {
-//      return "   " +
-//          TimeDisplayUtil.getRemainingToStrFromNow(_fBallSubReplyResDto.replyUpdateDateTime);
-//    }
-//  }
-//
-//  String getUserNickName() {
-//    if(_fBallSubReplyResDto.deleteFlag){
-//      return "";
-//    }else {
-//      return _fBallSubReplyResDto.userNickName;;
-//    }
-//  }
-//
-//  String getBallText() {
-//    if (_fBallSubReplyResDto.deleteFlag) {
-//      return "삭제됨";
-//    } else {
-//      return _fBallSubReplyResDto.replyText;
-//    }
-//  }
-//
-//}

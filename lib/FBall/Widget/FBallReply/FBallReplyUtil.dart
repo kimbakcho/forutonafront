@@ -113,9 +113,14 @@ class FBallReplyUtil {
     return result;
   }
 
-  Future<FBallReplyResDto> popupInputDisplay(FBallReplyInsertReqDto reqDto,BuildContext context) async {
+  Future<FBallReplyResDto> popupInputDisplay(BuildContext context,String ballUuid,{FBallReplyInsertReqDto reqDto}) async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     if (firebaseUser != null) {
+      FBallReplyInsertReqDto reqDto1 = reqDto;
+      if(reqDto1 == null){
+        reqDto1 = new FBallReplyInsertReqDto();
+        reqDto1.ballUuid = ballUuid;
+      }
       FBallReplyResDto fBallReplyResDto = await showGeneralDialog(
           context: context,
           barrierDismissible: true,
@@ -125,7 +130,7 @@ class FBallReplyUtil {
           MaterialLocalizations.of(context).modalBarrierDismissLabel,
           pageBuilder:
               (_context, Animation animation, Animation secondaryAnimation) {
-            return FBallInputReplyView(reqDto);
+            return FBallInputReplyView(reqDto1);
           });
       return fBallReplyResDto;
     } else {
