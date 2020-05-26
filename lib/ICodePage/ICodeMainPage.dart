@@ -12,16 +12,43 @@ import 'package:provider/provider.dart';
 
 import 'ICodeMainPageViewModel.dart';
 
-class ICodeMainPage extends StatelessWidget {
-  ICodeMainPage(){
+class ICodeMainPage extends StatefulWidget {
+  @override
+  _ICodeMainPageState createState() => _ICodeMainPageState();
+}
+
+class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserver {
+  AppLifecycleState _lastLifecycleState;
+  UniqueKey googleMapKey = UniqueKey();
+
+  _ICodeMainPageState(){
     var statueBar = SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white.withOpacity(0.6),
         statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(statueBar);
   }
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state)   {
+    googleMapKey = UniqueKey();
+    setState(()  {
+      _lastLifecycleState = state;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => ICodeMainPageViewModel(context),
         child: Consumer<ICodeMainPageViewModel>(builder: (_, model, child) {
@@ -44,6 +71,7 @@ class ICodeMainPage extends StatelessWidget {
                             ],
                           )),
                       GoogleMap(
+                        key: googleMapKey,
                         initialCameraPosition: model.initCameraPosition,
                         onMapCreated: model.onCreateMap,
                         myLocationEnabled: true,

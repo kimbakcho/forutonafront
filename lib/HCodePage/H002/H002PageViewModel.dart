@@ -8,17 +8,9 @@ class H002PageViewModel extends ChangeNotifier {
   H002PageViewModel(this._context);
 
   void goAddIssueBall() async{
-    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
-    _geoLocationUtil.useGpsReq();
-    Geolocator _geoLocator = new Geolocator();
     Position currentPosition;
-    if(await _geoLocator.isLocationServiceEnabled()){
-      currentPosition = await  Geolocator().getCurrentPosition();
-    }else {
-      _geoLocationUtil.useGpsReq();
-    }
-
-
+    await GeoLocationUtil().useGpsReq(_context);
+    currentPosition = await GeoLocationUtil().getCurrentWithLastPosition();
 
     String address = await GeolocationRepository().getPositionAddress(currentPosition);
     Navigator.of(_context).push(MaterialPageRoute(

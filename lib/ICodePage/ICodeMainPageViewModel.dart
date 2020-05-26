@@ -157,9 +157,9 @@ class ICodeMainPageViewModel extends ChangeNotifier
 
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
-    GeoLocationUtil _geoLocationUtil = new GeoLocationUtil();
-    _geoLocationUtil.useGpsReq();
-    var currentLocation = await Geolocator().getCurrentPosition();
+
+    await GeoLocationUtil().useGpsReq(_context);
+    var currentLocation = await GeoLocationUtil().getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: 14.4746)));
@@ -197,6 +197,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
   }
 
   Future getBallListUp() async {
+    _setIsLoading(true);
     final GoogleMapController controller = await _googleMapController.future;
     final RenderBox mapRenderBoxRed =
         mapContainerGlobalKey.currentContext.findRenderObject();
@@ -208,11 +209,12 @@ class ICodeMainPageViewModel extends ChangeNotifier
     List<MultiSort> sortList = [];
     sortList.add(MultiSort("ballPower", QueryOrders.DESC));
     MultiSorts sorts = MultiSorts(sortList);
-    onSearch(
+    await onSearch(
         southwestPoint, northeastPoint, sorts, _ballPageLimitSize, _pageCount);
+    _setIsLoading(false);
   }
 
-  onSearch(LatLng southwestPoint, LatLng northeastPoint, MultiSorts sorts,
+  Future<void> onSearch(LatLng southwestPoint, LatLng northeastPoint, MultiSorts sorts,
       int pageSize, int pageCount) async {
     final GoogleMapController controller = await _googleMapController.future;
     BallFromMapAreaReqDto reqDto = BallFromMapAreaReqDto(

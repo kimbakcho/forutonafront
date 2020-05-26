@@ -7,16 +7,46 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-// ignore: camel_case_types, must_be_immutable
-class H002_01Page extends StatelessWidget {
+class H002_01Page extends StatefulWidget {
   Position initPosition;
   String address;
 
-  H002_01Page(this.initPosition, this.address) {
+  H002_01Page(this.initPosition, this.address);
+
+  @override
+  _H002_01PageState createState() => _H002_01PageState(initPosition,address);
+}
+
+class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
+  AppLifecycleState _lastLifecycleState;
+  Position initPosition;
+  String address;
+  UniqueKey googleMapKey = UniqueKey();
+  _H002_01PageState(this.initPosition, this.address){
     var statueBar = SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white.withOpacity(0),
         statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(statueBar);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async  {
+    googleMapKey = UniqueKey();
+    setState(()  {
+      _lastLifecycleState = state;
+    });
   }
 
   @override
@@ -27,39 +57,40 @@ class H002_01Page extends StatelessWidget {
           return Stack(children: <Widget>[
             Scaffold(
                 body: Stack(children: <Widget>[
-              GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: model.initCameraPosition,
-                onMapCreated: model.onCreateMap,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                indoorViewEnabled: true,
-                onCameraMove: model.onMoveMap,
-                onCameraMoveStarted: model.onMoveStartMap,
-                onCameraIdle: model.onMapIdle,
-                zoomControlsEnabled: false,
-              ),
-              Center(child: UpDownPin(model)),
-              Center(
-                child: UpDownPinBottm(),
-              ),
-              Positioned(
-                  top: 28,
-                  left: 0,
-                  width: MediaQuery.of(context).size.width,
-                  child: topAddressBar(model, context)),
-              Positioned(
-                top: 96,
-                right: 16,
-                child: myLocationBtn(model),
-              ),
-              Positioned(
-                bottom: 24,
-                width: MediaQuery.of(context).size.width,
-                child: bottomAddBallBtn(model),
-              ),
-              model.getIsLoading() ? CommonLoadingComponent() : Container()
-            ]))
+                  GoogleMap(
+                    key: googleMapKey,
+                    mapType: MapType.normal,
+                    initialCameraPosition: model.initCameraPosition,
+                    onMapCreated: model.onCreateMap,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: false,
+                    indoorViewEnabled: true,
+                    onCameraMove: model.onMoveMap,
+                    onCameraMoveStarted: model.onMoveStartMap,
+                    onCameraIdle: model.onMapIdle,
+                    zoomControlsEnabled: false,
+                  ),
+                  Center(child: UpDownPin(model)),
+                  Center(
+                    child: UpDownPinBottm(),
+                  ),
+                  Positioned(
+                      top: 28,
+                      left: 0,
+                      width: MediaQuery.of(context).size.width,
+                      child: topAddressBar(model, context)),
+                  Positioned(
+                    top: 96,
+                    right: 16,
+                    child: myLocationBtn(model),
+                  ),
+                  Positioned(
+                    bottom: 24,
+                    width: MediaQuery.of(context).size.width,
+                    child: bottomAddBallBtn(model),
+                  ),
+                  model.getIsLoading() ? CommonLoadingComponent() : Container()
+                ]))
           ]);
         }));
   }
@@ -207,3 +238,4 @@ class H002_01Page extends StatelessWidget {
             )));
   }
 }
+

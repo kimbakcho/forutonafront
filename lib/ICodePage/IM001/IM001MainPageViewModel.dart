@@ -40,7 +40,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
   final LatLng _setUpPosition;
   String _ballUuid;
-  Timer _clipBoardCheckTimer;
+//  Timer _clipBoardCheckTimer;
 
   //볼에 레이더 애니메이션을 주기위한 Ticker
   Ticker _ticker;
@@ -148,6 +148,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
     notifyListeners();
     //MapAniMaction을 그려 준다.
     googleMapDarwRader();
+    copyClipBoard();
     _setIsLoading(false);
   }
 
@@ -238,9 +239,9 @@ class IM001MainPageViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    if (_clipBoardCheckTimer != null) {
-      _clipBoardCheckTimer.cancel();
-    }
+//    if (_clipBoardCheckTimer != null) {
+//      _clipBoardCheckTimer.cancel();
+//    }
     super.dispose();
   }
 
@@ -455,24 +456,17 @@ class IM001MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String> copyClipBoard() async {
+    ClipboardData clipBoardData = await Clipboard.getData("text/plain");
+    currentClipBoardData = clipBoardData.text.trim();
+    return currentClipBoardData;
+  }
+
   void youtubeAttachVisibilityToggle() {
     youtubeAttachVisibility = !youtubeAttachVisibility;
-    if (youtubeAttachVisibility == true) {
-      if (_clipBoardCheckTimer != null) {
-        _clipBoardCheckTimer.cancel();
-      }
-      _clipBoardCheckTimer =
-          Timer.periodic(Duration(seconds: 2), (timer) async {
-            ClipboardData clipBoardData = await Clipboard.getData("text/plain");
-            currentClipBoardData = clipBoardData.text.trim();
-            notifyListeners();
-          });
-    } else {
-      if (_clipBoardCheckTimer != null) {
-        currentClipBoardData = null;
-        _clipBoardCheckTimer.cancel();
-      }
-    }
+//    if (youtubeAttachVisibility == true) {
+//
+//    }
 
     notifyListeners();
     moveToBottomScroller();
@@ -488,7 +482,8 @@ class IM001MainPageViewModel extends ChangeNotifier {
                 curve: Curves.linear));
   }
 
-  validYoutubeLinkCheck(String currentClipBoardData) {
+  validYoutubeLinkCheck() async {
+    await copyClipBoard();
     String idFromUrl = getIdFromUrl(currentClipBoardData);
     if (idFromUrl == null) {
       Fluttertoast.showToast(

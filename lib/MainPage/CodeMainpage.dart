@@ -19,7 +19,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<CodeMainViewModel>(
-            create: (_) => CodeMainViewModel()),
+            create: (_) => CodeMainViewModel(context)),
         ChangeNotifierProvider<H001ViewModel>(create: (_) => H001ViewModel(context))
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {

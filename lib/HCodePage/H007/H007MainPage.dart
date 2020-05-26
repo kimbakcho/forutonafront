@@ -5,11 +5,44 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-class H007MainPage extends StatelessWidget {
+class H007MainPage extends StatefulWidget {
   Position initPosition;
   String address;
 
   H007MainPage(this.initPosition, this.address);
+
+  @override
+  _H007MainPageState createState() => _H007MainPageState(initPosition,address);
+}
+
+class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver {
+  AppLifecycleState _lastLifecycleState;
+  Position initPosition;
+  String address;
+  UniqueKey googleMapKey = UniqueKey();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state)   {
+    googleMapKey = UniqueKey();
+    setState(()  {
+      _lastLifecycleState = state;
+    });
+  }
+
+  _H007MainPageState(this.initPosition, this.address);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -18,43 +51,44 @@ class H007MainPage extends StatelessWidget {
           return Stack(children: <Widget>[
             Scaffold(
                 body: Stack(children: <Widget>[
-              GoogleMap(
-                initialCameraPosition: model.initCameraPosition,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                onMapCreated: model.onMapCreate,
-                onCameraMove: model.onCameraMove,
-                onCameraIdle: model.onMapIdle,
-                zoomControlsEnabled: false,
-              ),
-              Positioned(
-                top: 0,
-                left: 0,
-                child: topGradiantEffect(),
-              ),
-              Positioned(
-                top: MediaQuery.of(context).padding.top + 2,
-                width: MediaQuery.of(context).size.width,
-                child: topAddressBar(model),
-              ),
-              Positioned(
-                top: 96,
-                right: 16,
-                child: myLocationBtn(model),
-              ),
-              Center(
-                child: Icon(
-                  ForutonaIcon.anchor,
-                  color: Color(0xff454F63),
-                  size: 22,
-                ),
-              ),
-              Positioned(
-                bottom: 24,
-                width: MediaQuery.of(context).size.width,
-                child: bottomSerarchBtn(model),
-              )
-            ]))
+                  GoogleMap(
+                    key: googleMapKey,
+                    initialCameraPosition: model.initCameraPosition,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: false,
+                    onMapCreated: model.onMapCreate,
+                    onCameraMove: model.onCameraMove,
+                    onCameraIdle: model.onMapIdle,
+                    zoomControlsEnabled: false,
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: topGradiantEffect(),
+                  ),
+                  Positioned(
+                    top: MediaQuery.of(context).padding.top + 2,
+                    width: MediaQuery.of(context).size.width,
+                    child: topAddressBar(model),
+                  ),
+                  Positioned(
+                    top: 96,
+                    right: 16,
+                    child: myLocationBtn(model),
+                  ),
+                  Center(
+                    child: Icon(
+                      ForutonaIcon.anchor,
+                      color: Color(0xff454F63),
+                      size: 22,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 24,
+                    width: MediaQuery.of(context).size.width,
+                    child: bottomSerarchBtn(model),
+                  )
+                ]))
           ]);
         }));
   }
@@ -119,7 +153,7 @@ class H007MainPage extends StatelessWidget {
   Container topAddressBar(H007MainPageViewModel model) {
     return Container(
         child: Container(
-          margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
             height: 52.00,
             child: Row(
               children: <Widget>[
@@ -185,3 +219,4 @@ class H007MainPage extends StatelessWidget {
             )));
   }
 }
+

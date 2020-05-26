@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
+import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/BallNameSearchReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallImageUploadResDto.dart';
@@ -42,7 +43,8 @@ class FBallRepository {
     var response =
         await dio.get("/v1/FBall/BallListUpFromMapArea", queryParameters: reqDto.toJson());
     var fBallListUpWrapDto = FBallListUpWrapDto.fromJson(response.data);
-    var position = await Geolocator().getLastKnownPosition();
+
+    var position = await GeoLocationUtil().getCurrentWithLastPosition();
     for (var ball in fBallListUpWrapDto.balls) {
       if(position != null){
         ball.distanceWithMapCenter = await Geolocator().distanceBetween(
@@ -62,7 +64,7 @@ class FBallRepository {
     var response =
         await dio.get("/v1/FBall/BallListUpFromSearchText", queryParameters: reqDto.toJson());
     var fBallListUpWrapDto = FBallListUpWrapDto.fromJson(response.data);
-    var position = await Geolocator().getLastKnownPosition();
+    var position = await GeoLocationUtil().getCurrentWithLastPosition();
     for (var ball in fBallListUpWrapDto.balls) {
       ball.distanceWithMapCenter = await Geolocator().distanceBetween(
           ball.latitude, ball.longitude, position.latitude, position.longitude);
@@ -76,7 +78,8 @@ class FBallRepository {
     var response =
         await dio.get("/v1/FBall/BallListUp", queryParameters: reqDto.toJson());
     var fBallListUpWrapDto = FBallListUpWrapDto.fromJson(response.data);
-    var position = await Geolocator().getLastKnownPosition();
+
+    var position = await GeoLocationUtil().getCurrentWithLastPosition();
     for (var ball in fBallListUpWrapDto.balls) {
       if(position != null){
         ball.distanceWithMapCenter = await Geolocator().distanceBetween(
@@ -99,7 +102,7 @@ class FBallRepository {
     var response =
       await dio.get("/v1/FBall/UserToMakerBalls", queryParameters: reqDto.toJson());
     var userToMakerBallResWrapDto = UserToMakerBallResWrapDto.fromJson(response.data);
-    var position = await Geolocator().getLastKnownPosition();
+    var position = await GeoLocationUtil().getCurrentWithLastPosition();
     for (var userContent in userToMakerBallResWrapDto.contents) {
       userContent.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
           userContent.fballResDto.latitude, userContent.fballResDto.longitude, position.latitude, position.longitude);
@@ -113,7 +116,7 @@ class FBallRepository {
     var response =
         await dio.get("/v1/FBall/UserToMakerBall", queryParameters: reqDto.toJson());
     var userContent = UserToMakerBallResDto.fromJson(response.data);
-    var position = await Geolocator().getLastKnownPosition();
+    var position = await GeoLocationUtil().getCurrentWithLastPosition();
 
     userContent.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
         userContent.fballResDto.latitude, userContent.fballResDto.longitude, position.latitude, position.longitude);

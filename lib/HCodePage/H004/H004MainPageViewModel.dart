@@ -96,14 +96,10 @@ class H004MainPageViewModel extends ChangeNotifier {
   }
 
   gotoH005Page(String searchText) async {
-    GeoLocationUtil _geoLocationUtil = new GeoLocationUtil();
-    await _geoLocationUtil.useGpsReq();
-    if (await _geoLocationUtil.permissionCheck()) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) {
-        return H005MainPage(
-            searchText);
-      }));
-    }
+    await GeoLocationUtil().useGpsReq(context);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) {
+      return H005MainPage(searchText);
+    }));
   }
 }

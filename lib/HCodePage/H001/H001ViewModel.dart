@@ -44,6 +44,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
   TagRankingWrapDto rankingWrapDto;
   String listViewKey = Uuid().v4();
 
+
 //  FBallListUpWrapDto fBallListUpWrapDto =
 //      new FBallListUpWrapDto(DateTime.now(), []);
 
@@ -70,20 +71,16 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
   }
 
   init() async {
-    GeoLocationUtil _geoLocationUtil = new GeoLocationUtil();
+
     currentState = H001PageState.H001_01;
     rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
     h001CenterListViewController
         .addListener(h001CenterListViewControllerListener);
     _setIsLoading(true);
-    await _geoLocationUtil.permissionCheck();
-    if (await _geoLocationUtil.permissionCheck()) {
-      _currentPosition = await Geolocator().getCurrentPosition();
-      await reFreshSearchBall(_currentPosition);
-    }else {
-      _currentPosition = Position(longitude: Preference.initPosition.longitude,latitude: Preference.initPosition.latitude);
-      await reFreshSearchBall(_currentPosition);
-    }
+    await GeoLocationUtil().useGpsReq(_context);
+    _currentPosition = await GeoLocationUtil().getCurrentWithLastPosition();
+
+    await reFreshSearchBall(_currentPosition);
     _setIsLoading(false);
   }
 
@@ -184,11 +181,22 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
             duration: Duration(milliseconds: 300), curve: Curves.linear );
       }
     }
+    if(isScrollerTopOver()){
+      _pageCount = 0;
+      _setIsLoading(true);
+      await getBallListUp(_currentPosition, _pageCount, _ballPageLimitSize);
+      _setIsLoading(false);
+    }
   }
 
   bool _hasMoreListUpBalls() {
     return !(_pageCount * _ballPageLimitSize >
         this.ballWidgetLists.length);
+  }
+
+  bool isScrollerTopOver(){
+    return h001CenterListViewController.offset <= h001CenterListViewController.position.minScrollExtent &&
+        !h001CenterListViewController.position.outOfRange;
   }
 
   bool _isScrollerBottomOver() {
@@ -225,7 +233,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
                   heroTag: "H001MakeButton",
                 );
               }));
-      _currentPosition = await Geolocator().getCurrentPosition();
+      _currentPosition = await GeoLocationUtil().getCurrentWithLastPosition();
       _setIsLoading(true);
       await reFreshSearchBall(_currentPosition);
       _setIsLoading(false);

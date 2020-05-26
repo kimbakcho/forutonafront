@@ -54,7 +54,7 @@ class H001Page extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 65),
       physics: BouncingScrollPhysics(),
-      shrinkWrap: true,
+//      shrinkWrap: true,
       itemCount: model.ballWidgetLists.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {

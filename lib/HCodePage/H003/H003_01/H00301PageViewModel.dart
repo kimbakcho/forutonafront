@@ -36,9 +36,7 @@ class H00301PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
 
   init() async {
     scrollController.addListener(scrollListener);
-
     await ballListUp();
-
     _isInitFinish = true;
   }
   isEmptyPage(){
@@ -89,7 +87,17 @@ class H00301PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
             duration: Duration(milliseconds: 300), curve: Curves.linear );
       }
     }
+    if(isScrollerTopOver()){
+      _pageCount = 0;
+      await ballListUp();
+    }
   }
+
+  bool isScrollerTopOver(){
+    return scrollController.offset <= scrollController.position.minScrollExtent &&
+        !scrollController.position.outOfRange;
+  }
+
 
   bool _hasBalls() {
     return !(_pageCount * _limitSize > ballListUpWidgets.length);

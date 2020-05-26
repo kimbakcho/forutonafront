@@ -101,6 +101,8 @@ dependencies:
   image: ^2.1.12
   #이미지 캐쉬 및 로딩에 사용
   cached_network_image: ^2.2.0+1
+  #Mutex
+  mutex: ^1.0.3
 
 
 

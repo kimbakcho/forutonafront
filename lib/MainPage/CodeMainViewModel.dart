@@ -13,19 +13,16 @@ class CodeMainViewModel with ChangeNotifier {
   Position lastKnownPosition;
 
   String firstAddress = "";
-  CodeMainViewModel() {
+  BuildContext _context;
+
+  CodeMainViewModel(this._context) {
     pageController = new PageController();
     currentState = HCodeState.HCDOE;
     init();
   }
   init()async {
-    GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
-    GeolocationRepository _geolocationRepository = new GeolocationRepository();
-    await _geoLocationUtil.useGpsReq();
-    Geolocator _geoLocator = new Geolocator();
-    this.lastKnownPosition = await _geoLocator.getCurrentPosition();
-    _geoLocator.getPositionStream().listen(changeGeolocationListen);
-    firstAddress = await _geolocationRepository.getPositionAddress(lastKnownPosition);
+    await GeoLocationUtil().useGpsReq(_context);
+    this.lastKnownPosition = await GeoLocationUtil().getCurrentWithLastPosition();
   }
 
   changeGeolocationListen(Position currentPosition){

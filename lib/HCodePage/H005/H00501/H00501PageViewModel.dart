@@ -1,6 +1,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
@@ -111,7 +112,8 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
       String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
     _setIsLoading(true);
     FBallRepository _fBallRepository = new FBallRepository();
-    var position = await Geolocator().getLastKnownPosition();
+
+    var position = await GeoLocationUtil().getCurrentWithLastPosition();
     BallNameSearchReqDto reqDto = new BallNameSearchReqDto(
         searchText, sorts.toQureyJson(), pagesize, pagecount,position.latitude,position.longitude);
     var fBallListUpWrapDto = await _fBallRepository.listUpBallFromSearchText(reqDto);

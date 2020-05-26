@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/MainModel.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Splash/SplashPage.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    KakaoContext.clientId = "2e77dd42e5b6e1e79b8a0ec21e242e05";
+    KakaoContext.clientId = Preference.kaKaoNativeApiKey;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

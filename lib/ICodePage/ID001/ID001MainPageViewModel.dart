@@ -14,9 +14,6 @@ import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dar
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagResDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
@@ -26,7 +23,6 @@ import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationResDto.dart
 import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/MakerSupportStyle2.dart';
-import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
@@ -34,15 +30,11 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
-import 'package:forutonafront/ICodePage/ID001/Dto/ID001ResultPopDto.dart';
-import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
-import '../../FBall/Widget/FBallReply/FBallInputReplyView.dart';
-import '../../FBall/Widget/FBallReply/FBallInputReplyViewModel.dart';
 
 class ID001MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
