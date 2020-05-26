@@ -1,3 +1,5 @@
+
+
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as Permit;
@@ -7,14 +9,14 @@ class GeoLocationUtil {
   ///만약 GPS off 면 on 요청 해줌 Flutter 권한 관련 오류로 요청 메세지를 던지기만 하고 타임 아웃으로 빠져 나옴
   Future<void> useGpsReq() async {
     try {
+
       Location location = new Location();
       bool _serviceEnabled;
       _serviceEnabled = await location.serviceEnabled();
       if (!_serviceEnabled) {
-        await location.requestService().timeout(Duration(seconds: 1));
-        _serviceEnabled = await location.serviceEnabled();
+        _serviceEnabled = await location.requestService();
         if (!_serviceEnabled) {
-          return false;
+          return;
         }
       }
     } catch (Ex) {

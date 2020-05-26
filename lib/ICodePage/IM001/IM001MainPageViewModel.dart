@@ -515,6 +515,17 @@ class IM001MainPageViewModel extends ChangeNotifier {
   }
 
   void onTagTextChanged(String value) {
+    if(value.indexOf(",") == 0){
+      tagEditController.clear();
+      Fluttertoast.showToast(
+          msg: "태그 내용을 입력해주세요.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
+    }
     if (value.indexOf(",") > 0) {
       value = value.substring(0, value.length - 1);
       addTagChips(value);
@@ -522,6 +533,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
       moveToBottomScroller();
       notifyListeners();
     }
+
   }
 
   void onTagFieldSubmitted(String value) {
@@ -532,16 +544,15 @@ class IM001MainPageViewModel extends ChangeNotifier {
   }
 
   void addTagChips(String value) {
-    if (tagChips.length == 10) {
+    if (tagChips.length > 10) {
       Fluttertoast.showToast(
-          msg: "태그가 10개 이상입니다.",
+          msg: "태그는 최대 10개까지 입력가능합니다",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
-      Navigator.of(_context).pop();
       notifyListeners();
       return;
     }

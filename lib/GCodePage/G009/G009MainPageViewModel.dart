@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
@@ -14,6 +13,7 @@ import 'package:forutonafront/GCodePage/G019/G019MainPage.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/MainPage/CodeMainpage.dart';
 import 'package:provider/provider.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 
 class G009MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -37,9 +37,7 @@ class G009MainPageViewModel extends ChangeNotifier {
   void logout() async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     if (firebaseUser.uid.indexOf("Kakao") == 0) {
-      if (await FlutterKakaoLogin().isLoggedIn) {
-        await FlutterKakaoLogin().logOut();
-      }
+       await UserApi.instance.logout();
     }
     if (firebaseUser.uid.indexOf("Naver") == 0) {
       await FlutterNaverLogin.logOut();

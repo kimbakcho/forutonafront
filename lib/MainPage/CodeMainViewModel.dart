@@ -21,7 +21,7 @@ class CodeMainViewModel with ChangeNotifier {
   init()async {
     GeoLocationUtil _geoLocationUtil =new GeoLocationUtil();
     GeolocationRepository _geolocationRepository = new GeolocationRepository();
-    _geoLocationUtil.useGpsReq();
+    await _geoLocationUtil.useGpsReq();
     Geolocator _geoLocator = new Geolocator();
     this.lastKnownPosition = await _geoLocator.getCurrentPosition();
     _geoLocator.getPositionStream().listen(changeGeolocationListen);

@@ -245,10 +245,6 @@ class ID001MainPage extends StatelessWidget {
         ]));
   }
 
-
-
-
-
   Container tagBar(ID001MainPageViewModel model) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
@@ -690,7 +686,6 @@ class ID001MainPage extends StatelessWidget {
             zoomControlsEnabled: false,
             markers: model.markers,
             circles: model.circles,
-            zoomControlsEnabled: false,
           ),
           Container(
               width: MediaQuery.of(context).size.width,
