@@ -100,6 +100,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
           address: position.descriptionAddress);
       _setIsLoading(false);
     }
+    notifyListeners();
   }
 
   Future reFreshSearchBall(Position serachPosition, {String address}) async {
@@ -195,8 +196,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
   }
 
   bool isScrollerTopOver(){
-    return h001CenterListViewController.offset <= h001CenterListViewController.position.minScrollExtent &&
-        !h001CenterListViewController.position.outOfRange;
+    return h001CenterListViewController.offset <= h001CenterListViewController.position.minScrollExtent-100;
   }
 
   bool _isScrollerBottomOver() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
@@ -41,6 +42,10 @@ class _H005MainPageState extends State<H005MainPage>
 
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
         create: (_) => H005MainPageViewModel(context, serachText,
             tabController: tabController),

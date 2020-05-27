@@ -6,6 +6,7 @@ import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetCont
 import 'package:forutonafront/FBall/Widget/BallStyle/Style1/IssueBallWidgetSyle1ViewModel.dart';
 import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class IssueBallWidgetStyle1 extends StatelessWidget
@@ -30,7 +31,8 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                     padding: EdgeInsets.all(0),
                     onPressed: model.goIssueDetailPage,
                     child: Column(children: <Widget>[
-                      ballHeader(model),
+                      ballHeader(model,context),
+                      divider(),
                       !model.getBallResDto().ballDeleteFlag
                           ? ballMainPickture(model, context)
                           : Container(),
@@ -45,50 +47,46 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(model.getLikeCount(),
-                                style: TextStyle(
-                                  fontFamily: "Gibson",
-                                  fontWeight: FontWeight.w600,
+                                style: GoogleFonts.notoSans(
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   color: Color(0xff78849e),
                                 )),
                             Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 7),
+                                padding: EdgeInsets.fromLTRB(5, 0, 0, 1),
                                 child: Icon(ForutonaIcon.thumbsup,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
                             Text(model.getDisLikeCount(),
-                                style: TextStyle(
-                                  fontFamily: "Gibson",
-                                  fontWeight: FontWeight.w600,
+                                style: GoogleFonts.notoSans(
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   color: Color(0xff78849e),
                                 )),
                             Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 3),
+                                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                 child: Icon(ForutonaIcon.thumbsdown,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
                             Text(model.getCommentCount(),
-                                style: TextStyle(
-                                  fontFamily: "Gibson",
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
+                                style: GoogleFonts.notoSans(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
                                   color: Color(0xff78849e),
                                 )),
                             Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 3),
+                                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                 child: Icon(ForutonaIcon.comment,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
                             Text(model.getRemainingTime(),
-                                style: TextStyle(
-                                  fontFamily: "Gibson",
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
+                                style: GoogleFonts.notoSans(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
                                   color: Color(0xff78849e),
                                 )),
                             Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 3),
+                                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                 child: Icon(ForutonaIcon.accesstime,
                                     color: Color(0xff78849E), size: 17)),
                           ],
@@ -131,22 +129,21 @@ class IssueBallWidgetStyle1 extends StatelessWidget
       child: Text(model.fBallDescriptionBasic.text,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontFamily: "Noto Sans CJK KR",
+          style: GoogleFonts.notoSans(
             fontSize: 14,
-            color: Color(0xff78849e),
+            color: Color(0xff454F63),
           )),
     );
   }
 
   Container ballProfileBar(IssueBallWidgetSyle1ViewModel model) {
     return Container(
-      height: 55,
+      height: 60,
       padding: EdgeInsets.fromLTRB(14, 15, 14, 15),
       child: Stack(
         children: <Widget>[
           Positioned(
-            top: 0,
+            top: 4,
             left: 0,
             child: Container(
               height: 25.00,
@@ -166,7 +163,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
-                  fontSize: 11,
+                  fontSize: 12,
                   color: Color(0xff454f63),
                 )),
           ),
@@ -174,10 +171,9 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             left: 34,
             top: 16,
             child: Text(model.getBallMakeTime(),
-                style: TextStyle(
-                  fontFamily: "Gibson",
-                  fontSize: 8,
-                  color: Color(0xff454f63).withOpacity(0.56),
+                style: GoogleFonts.notoSans(
+                  fontSize: 10,
+                  color: Color(0xff454f63),
                 )),
           )
         ],
@@ -206,15 +202,20 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                     child: CachedNetworkImage(
                       imageUrl: model.mainPictureSrc(),
                       imageBuilder: (context, imageProvider) => Container(
-                          height: 172.00,
+                          height: 200.00,
                           decoration: BoxDecoration(
                               image: DecorationImage(
                             fit: BoxFit.fitWidth,
                             image: imageProvider,
                           ))),
                       placeholder: (context, url) => Container(
-                        height: 172,
-                        child: Center(child: CircularProgressIndicator()),
+                        height: 200,
+                        child:  Container(
+                          color: Color(0xfff2f0f1),
+                          child: Center(
+                            child: Icon(ForutonaIcon.imageloding,color: Color(0xffE4E7E8),size: 100,),
+                          ),
+                        ),
                       ),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ))),
@@ -262,15 +263,15 @@ class IssueBallWidgetStyle1 extends StatelessWidget
         : Container();
   }
 
-  Container ballHeader(IssueBallWidgetSyle1ViewModel model) {
+  Container ballHeader(IssueBallWidgetSyle1ViewModel model,BuildContext context) {
     return Container(
-      height: 65,
+      height: 64,
       child: Stack(children: <Widget>[
         Positioned(
-          top: 0,
+          top: 2,
           left: 0,
           child: Container(
-              padding: EdgeInsets.only(left: 1, bottom: 1),
+              padding: EdgeInsets.only(left: 2, top: 1),
               child: Icon(ForutonaIcon.issue, size: 17, color: Colors.white),
               height: 30.00,
               width: 30.00,
@@ -281,10 +282,9 @@ class IssueBallWidgetStyle1 extends StatelessWidget
         ),
         Positioned(
             top: 0,
-            left: 48,
-            width: 256,
+            left: 44,
+            width: MediaQuery.of(context).size.width-100,
             child: Container(
-                width: 256,
                 child: Text(model.getBallName(),
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
@@ -296,15 +296,14 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                     overflow: TextOverflow.ellipsis))),
         Positioned(
           top: 19,
-          left: 48,
-          width: 200,
+          left: 44,
+          width: MediaQuery.of(context).size.width-100,
           child: Container(
-            width: 200,
             child: Text(model.getPlaceAddress(),
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontSize: 12,
-                  color: Color(0xff454f63).withOpacity(0.56),
+                  color: Color(0xff78849E),
                 )),
           ),
         ),
@@ -320,7 +319,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontSize: 10,
-                  color: Color(0xffff4f9a).withOpacity(0.56),
+                  color: Color(0xffFF4F9A),
                 )),
           ),
         )

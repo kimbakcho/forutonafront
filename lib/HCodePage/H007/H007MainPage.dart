@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
+import 'package:forutonafront/HCodePage/H007/MapCircleAnimation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -12,10 +14,11 @@ class H007MainPage extends StatefulWidget {
   H007MainPage(this.initPosition, this.address);
 
   @override
-  _H007MainPageState createState() => _H007MainPageState(initPosition,address);
+  _H007MainPageState createState() => _H007MainPageState(initPosition, address);
 }
 
-class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver {
+class _H007MainPageState extends State<H007MainPage>
+    with WidgetsBindingObserver {
   AppLifecycleState _lastLifecycleState;
   Position initPosition;
   String address;
@@ -34,9 +37,9 @@ class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state)   {
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     googleMapKey = UniqueKey();
-    setState(()  {
+    setState(() {
       _lastLifecycleState = state;
     });
   }
@@ -45,50 +48,57 @@ class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white.withOpacity(0.6),
+        statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
         create: (_) => H007MainPageViewModel(initPosition, address, context),
         child: Consumer<H007MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
                 body: Stack(children: <Widget>[
-                  GoogleMap(
-                    key: googleMapKey,
-                    initialCameraPosition: model.initCameraPosition,
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: false,
-                    onMapCreated: model.onMapCreate,
-                    onCameraMove: model.onCameraMove,
-                    onCameraIdle: model.onMapIdle,
-                    zoomControlsEnabled: false,
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    child: topGradiantEffect(),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).padding.top + 2,
-                    width: MediaQuery.of(context).size.width,
-                    child: topAddressBar(model),
-                  ),
-                  Positioned(
-                    top: 96,
-                    right: 16,
-                    child: myLocationBtn(model),
-                  ),
+              GoogleMap(
+                key: googleMapKey,
+                initialCameraPosition: model.initCameraPosition,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: false,
+                onMapCreated: model.onMapCreate,
+                onCameraMove: model.onCameraMove,
+                onCameraIdle: model.onMapIdle,
+                zoomControlsEnabled: false,
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                child: topGradiantEffect(),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 16,
+                width: MediaQuery.of(context).size.width,
+                child: topAddressBar(model),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 84,
+                right: 16,
+                child: myLocationBtn(model),
+              ),
+              Center(
+                child: Icon(
+                  ForutonaIcon.anchor,
+                  color: Color(0xff454F63),
+                  size: 22,
+                ),
+              ),
+              Positioned(
+                bottom: 24,
+                width: MediaQuery.of(context).size.width,
+                child: bottomSerarchBtn(model),
+              ),
                   Center(
-                    child: Icon(
-                      ForutonaIcon.anchor,
-                      color: Color(0xff454F63),
-                      size: 22,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 24,
-                    width: MediaQuery.of(context).size.width,
-                    child: bottomSerarchBtn(model),
+                    child:MapCircleAnimation()
+
                   )
-                ]))
+            ]))
           ]);
         }));
   }
@@ -97,7 +107,6 @@ class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver
     return Container(
         margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
         height: 52.00,
-
         child: FlatButton(
           onPressed: () {
             model.onMapBallSearch(model.currentCameraPosition.target);
@@ -138,13 +147,13 @@ class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver
           child: Icon(Icons.my_location),
         ),
         decoration: BoxDecoration(
-          color: Color(0xffffffff),
+          color: Color(0xffffffff).withOpacity(0.80),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0.00, 12.00),
-              color: Color(0xff455b63).withOpacity(0.10),
-              blurRadius: 16,
-            ),
+              offset: Offset(0.00, 3.00),
+              color: Color(0xff455b63).withOpacity(0.40),
+              blurRadius: 6,
+            )
           ],
           borderRadius: BorderRadius.circular(12.00),
         ));
@@ -193,12 +202,12 @@ class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver
               ],
             ),
             decoration: BoxDecoration(
-              color: Color(0xffffffff),
+              color: Color(0xffffffff).withOpacity(0.80),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0.00, 12.00),
-                  color: Color(0xff455b63).withOpacity(0.08),
-                  blurRadius: 16,
+                  offset: Offset(0.00, 3.00),
+                  color: Color(0xff455b63).withOpacity(0.40),
+                  blurRadius: 6,
                 ),
               ],
               borderRadius: BorderRadius.circular(12.00),
@@ -209,7 +218,6 @@ class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver
     return IgnorePointer(
         child: Container(
             height: 165,
-
             decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -219,4 +227,3 @@ class _H007MainPageState extends State<H007MainPage> with WidgetsBindingObserver
             )));
   }
 }
-

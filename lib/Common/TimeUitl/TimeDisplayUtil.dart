@@ -5,7 +5,7 @@ class TimeDisplayUtil {
   /*
   현재 시간을 기준으로 남는 시간을 수치 표현 방식으로 변환 해줌
    */
-  static String getRemainingToStrFromNow(DateTime destTime){
+  static String getCalcToStrFromNow(DateTime destTime){
 
     DateTime now = DateTime.now();
     var difference = now.difference(destTime);

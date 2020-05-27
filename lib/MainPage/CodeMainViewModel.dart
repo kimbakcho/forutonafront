@@ -20,9 +20,13 @@ class CodeMainViewModel with ChangeNotifier {
     currentState = HCodeState.HCDOE;
     init();
   }
+
   init()async {
     await GeoLocationUtil().useGpsReq(_context);
     this.lastKnownPosition = await GeoLocationUtil().getCurrentWithLastPosition();
+    var placeMarkList = await Geolocator()
+        .placemarkFromPosition(lastKnownPosition, localeIdentifier: "ko");
+    firstAddress = GeoLocationUtil().replacePlacemarkToAddresStr(placeMarkList[0]);
   }
 
   changeGeolocationListen(Position currentPosition){

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/JCodePage/J001/J001ViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,10 @@ import 'package:provider/provider.dart';
 class J001View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(

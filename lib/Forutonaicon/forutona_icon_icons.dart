@@ -96,4 +96,5 @@ class ForutonaIcon {
   static const IconData replysendicon = IconData(0xe848, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData dislike = IconData(0xe849, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData like = IconData(0xe84a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData imageloding = IconData(0xe84b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

@@ -126,7 +126,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     if(getBallResDto().ballDeleteFlag){
       return "-";
     }else {
-      return TimeDisplayUtil.getRemainingToStrFromNow(
+      return TimeDisplayUtil.getCalcToStrFromNow(
           this.getBallResDto().activationTime);
     }
   }
@@ -135,7 +135,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     if(getBallResDto().ballDeleteFlag){
       return "-";
     }else {
-      return TimeDisplayUtil.getRemainingToStrFromNow(
+      return TimeDisplayUtil.getCalcToStrFromNow(
           this.getBallResDto().makeTime);
     }
   }

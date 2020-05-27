@@ -81,7 +81,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                                 16, 0, 32, 16),
                                             child: Text(
                                                 TimeDisplayUtil
-                                                    .getRemainingToStrFromNow(
+                                                    .getCalcToStrFromNow(
                                                         mainReply
                                                             .replyUploadDateTime),
                                                 style: TextStyle(

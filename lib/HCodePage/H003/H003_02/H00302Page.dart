@@ -13,6 +13,7 @@ class H00302Page extends StatelessWidget {
         value: viewModel,
         child: Consumer<H00302PageViewModel>(builder: (_, model, child) {
           return Container(
+            color: Color(0xffF2F0F1),
               margin: EdgeInsets.only(bottom: 53),
               child: Stack(children: <Widget>[
                 !viewModel.isEmptyPage()
@@ -34,6 +35,7 @@ class H00302Page extends StatelessWidget {
 
   ListView buildListView(H00302PageViewModel model) {
     return ListView.builder(
+      padding: EdgeInsets.all(0),
         controller: model.scrollController,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {

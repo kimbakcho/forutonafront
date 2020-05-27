@@ -18,17 +18,13 @@ class HCodeMainPage extends StatefulWidget {
 }
 
 class _HCodeMainPageState extends State<HCodeMainPage> {
-  @override
-  void initState() {
-    var statueBar = SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(statueBar);
-  }
 
   @override
   Widget build(BuildContext context) {
-
-    print(MediaQuery.of(context).size.width);
+    SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
 
     return ChangeNotifierProvider(
         create: (_) => HCodeMainPageViewModel(),
@@ -81,7 +77,6 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
 
   Container topNavibar(HCodeMainPageViewModel model) {
     return Container(
-        color: Colors.white,
         padding: EdgeInsets.fromLTRB(16, 7, 16, 0),
         height: 64,
         child: Row(
@@ -95,7 +90,18 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
               h003Button(model),
               Spacer(),
               searchButton()
-            ]));
+            ]),
+      decoration: BoxDecoration(
+        color: Color(0xffffffff),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0.00,3.00),
+            color: Color(0xff000000).withOpacity(0.03),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+    );
   }
 
   Container searchButton() {
@@ -116,7 +122,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                     return H004MainPage();
                   }));
             },
-            child: Icon(ForutonaIcon.search)));
+            child: Icon(ForutonaIcon.search,color: Color(0xffB1B1B1),)));
   }
 
   Column h001Button(HCodeMainPageViewModel model) {

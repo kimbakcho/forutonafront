@@ -326,7 +326,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
           o.imageByte,
           minHeight: image.height.toInt(),
           minWidth: image.width.toInt(),
-          quality: 96,
+          quality: 70,
         );
         images.add(Uint8List.fromList(compressImage));
         uploadListImageItemDto.add(o);

@@ -21,12 +21,6 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
   AppLifecycleState _lastLifecycleState;
   UniqueKey googleMapKey = UniqueKey();
 
-  _ICodeMainPageState(){
-    var statueBar = SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white.withOpacity(0.6),
-        statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(statueBar);
-  }
   @override
   void initState() {
     super.initState();
@@ -49,6 +43,9 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white.withOpacity(0.6),
+        statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
         create: (_) => ICodeMainPageViewModel(context),
         child: Consumer<ICodeMainPageViewModel>(builder: (_, model, child) {

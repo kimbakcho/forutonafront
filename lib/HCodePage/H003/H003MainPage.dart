@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/HCodePage/H003/H003MainPageModel.dart';
 import 'package:forutonafront/HCodePage/H003/H003PageState.dart';
 import 'package:forutonafront/HCodePage/H003/H003_01/H00301Page.dart';
@@ -11,6 +12,10 @@ import 'H003_02/H00302PageViewModel.dart';
 class H003MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<H003MainPageModel>(
@@ -39,7 +44,7 @@ class H003MainPage extends StatelessWidget {
 
   Container headerBar(H003MainPageModel model) {
     return Container(
-      height: 82,
+      height: 73,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

@@ -105,8 +105,7 @@ class H00302PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
   }
 
   bool isScrollerTopOver(){
-    return scrollController.offset <= scrollController.position.minScrollExtent &&
-        !scrollController.position.outOfRange;
+    return scrollController.offset <= scrollController.position.minScrollExtent -100;
   }
   bool _hasBalls() {
     return !(_pageCount * _limitSize > ballListUpWidgets.length);

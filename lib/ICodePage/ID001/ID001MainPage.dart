@@ -9,6 +9,7 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyWidget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -29,12 +30,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
    FBallResDto fBallResDto;
    UniqueKey googleMapKey = UniqueKey();
 
-   _ID001MainPageState(this.fBallUuid, this.fBallResDto){
-     var statueBar = SystemUiOverlayStyle.light.copyWith(
-         statusBarColor: Colors.white.withOpacity(0.5),
-         statusBarIconBrightness: Brightness.dark);
-     SystemChrome.setSystemUIOverlayStyle(statueBar);
-   }
+   _ID001MainPageState(this.fBallUuid, this.fBallResDto);
   @override
   void initState() {
     super.initState();
@@ -56,6 +52,10 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
   }
    @override
    Widget build(BuildContext context) {
+     SystemUiOverlayStyle.light.copyWith(
+         statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+         statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
      return ChangeNotifierProvider(
          create: (_) => ID001MainPageViewModel(context, fBallUuid,fBallResDto: fBallResDto),
          child: Consumer<ID001MainPageViewModel>(builder: (_, model, child) {
@@ -511,12 +511,29 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
            Container(
                margin: EdgeInsets.only(left: 4),
                child: Text("${model.fBallResDto.ballHits}회",
-                   style: TextStyle(
-                     fontFamily: "Noto Sans CJK KR",
+                   style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      fontSize: 10,
                      color: Color(0xff78849e),
-                   )))
+                   ))),
+           Container(
+               width: 11,
+               height: 11,
+               margin: EdgeInsets.only(left: 8),
+               child:Text("•",style: GoogleFonts.notoSans(
+                 fontWeight: FontWeight.w500,
+                 fontSize: 10,
+                 color: Color(0xff78849e),
+               )),
+           ),
+           Container(
+               margin: EdgeInsets.only(left: 4),
+               child: Text("${TimeDisplayUtil.getCalcToStrFromNow(model.fBallResDto.makeTime)}",
+                   style: GoogleFonts.notoSans(
+                     fontWeight: FontWeight.w500,
+                     fontSize: 10,
+                     color: Color(0xff78849e),
+                   ))),
          ]));
    }
 
@@ -640,7 +657,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                child: Container(
                  width: 251,
                  child: Text(
-                     TimeDisplayUtil.getRemainingToStrFromNow(
+                     TimeDisplayUtil.getCalcToStrFromNow(
                          model.fBallResDto.activationTime),
                      overflow: TextOverflow.ellipsis,
                      style: TextStyle(

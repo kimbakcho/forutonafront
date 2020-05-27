@@ -131,7 +131,7 @@ class QuestBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
                     color: Color(0xff78849E), size: 17)),
             SizedBox(width: 19),
             Text(
-                TimeDisplayUtil.getRemainingToStrFromNow(
+                TimeDisplayUtil.getCalcToStrFromNow(
                     model.getFBallResDto().activationTime),
                 style: TextStyle(
                   fontFamily: "Gibson",

@@ -52,7 +52,7 @@ class FUserRepository {
       uint8list,
       minHeight: image.height.toInt(),
       minWidth: image.width.toInt(),
-      quality: 96,
+      quality: 70,
     );
     FormData formData = FormData.fromMap({
       "ProfileImage": MultipartFile.fromBytes(compressImage,contentType: MediaType("image", "jpeg"),filename: "ProfileImage.jpg")

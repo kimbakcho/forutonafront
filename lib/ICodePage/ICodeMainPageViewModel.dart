@@ -75,11 +75,11 @@ class ICodeMainPageViewModel extends ChangeNotifier
     } else {
       initCameraPosition =
           CameraPosition(target: Preference.initPosition, zoom: 14.4746);
-
-      currentAddress = "남산 공원";
+      currentAddress = "신도림";
     }
     _currentMapPosition = initCameraPosition;
     bottomPageController.addListener(onPageContollerListner);
+
   }
 
   ///Return 으로는 MapSearchGeoDto 받는다.

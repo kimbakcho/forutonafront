@@ -15,7 +15,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return Consumer<CodeMainViewModel>(builder: (_, model, child) {
       return Container(
-          color: Colors.white,
           height: 52,
           child: Row(children: <Widget>[
             Expanded(
@@ -92,7 +91,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           ? Color(0xff454F63)
                           : Color(0xffE4E7E8),
                     ))),
-          ]));
+          ]),
+        decoration: BoxDecoration(
+          color: Color(0xffffffff),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0.00,3.00),
+              color: Color(0xff000000).withOpacity(0.16),
+              blurRadius: 6,
+            ),
+          ],
+        ),
+      );
     });
   }
 }

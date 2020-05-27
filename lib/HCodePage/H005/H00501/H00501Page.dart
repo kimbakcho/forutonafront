@@ -18,6 +18,7 @@ class H00501Page extends StatelessWidget {
         child: Consumer<H00501PageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
+              backgroundColor: Color(0xffF2F0F1),
               body: !model.isEmptyPage() ? Container(
                 width: MediaQuery.of(context).size.width,
                   child: Column(
@@ -54,7 +55,7 @@ class H00501Page extends StatelessWidget {
 
   Container selectOrderButton(H00501PageViewModel model) {
     return Container(
-        height: 58,
+        margin: EdgeInsets.only(top: 16),
         padding: EdgeInsets.only(right: 16),
         alignment: Alignment.centerRight,
         child: Container(

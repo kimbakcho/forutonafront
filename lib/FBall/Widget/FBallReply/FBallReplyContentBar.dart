@@ -245,7 +245,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
     if (widget.fBallReplyResDto.deleteFlag) {
       return "";
     } else {
-      return TimeDisplayUtil.getRemainingToStrFromNow(
+      return TimeDisplayUtil.getCalcToStrFromNow(
           widget.fBallReplyResDto.replyUpdateDateTime);
     }
   }

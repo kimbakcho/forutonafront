@@ -64,9 +64,10 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
-    var statueBar = SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white.withOpacity(1),
-        statusBarIconBrightness: Brightness.dark);
+    SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
 
     return ChangeNotifierProvider(
         create: (_) => IM001MainPageViewModel(context, setUpPosition, address,ballUuid,mode),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H004/H004MainPageViewModel.dart';
@@ -19,6 +20,10 @@ class _H004MainPageState extends State<H004MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
         create: (_) => H004MainPageViewModel(context),
         child: Consumer<H004MainPageViewModel>(builder: (_, model, child) {

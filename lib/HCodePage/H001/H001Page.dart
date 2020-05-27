@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 
 
 
 class H001Page extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     var h001ViewModel = Provider.of<H001ViewModel>(context);
     return ChangeNotifierProvider.value(
         value: h001ViewModel,
@@ -134,12 +141,27 @@ class H001Page extends StatelessWidget {
                         model.gotoTagSearch(model.rankingWrapDto.contents[index].tagName);
                       },
                       child:Row(children: <Widget>[
-                        Text("${model.rankingWrapDto.contents[index].ranking}."),
+                        Text("${model.rankingWrapDto.contents[index].ranking}.",
+                            style: GoogleFonts.notoSans(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Color(0xff454F63)
+                            )),
                         SizedBox(width: 12),
-                        Text("#${model.rankingWrapDto.contents[index].tagName}"),
+                        Text("#${model.rankingWrapDto.contents[index].tagName}",
+                            style: GoogleFonts.notoSans(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Color(0xff454F63)
+                            )),
                         Spacer(),
                         Text(
-                            "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}"),
+                            "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}",
+                            style: GoogleFonts.notoSans(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Color(0xff454F63)
+                            )),
                         SizedBox(width: 12),
 //                      Container(
 //                        width: 12,
@@ -212,10 +234,21 @@ class H001Page extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       child: Row(children: <Widget>[
                         Text(
-                            "${model.rankingWrapDto.contents[index].ranking}."),
+                            "${model.rankingWrapDto.contents[index].ranking}.",
+                          style: GoogleFonts.notoSans(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Color(0xff454F63)
+                          ),
+                        ),
                         SizedBox(width: 12),
                         Text(
-                            "#${model.rankingWrapDto.contents[index].tagName}"),
+                            "#${model.rankingWrapDto.contents[index].tagName}",
+                            style: GoogleFonts.notoSans(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Color(0xff454F63)
+                            )),
                         Spacer(),
                         Text(
                             "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}"),
@@ -233,7 +266,7 @@ class H001Page extends StatelessWidget {
                 },
               )
             : Container(),
-        margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
+        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
         height: model.rankingWrapDto.contents.length == 0 ? 0 : 40,
         decoration: BoxDecoration(
             color: Color(0xffe9faff),
@@ -244,10 +277,19 @@ class H001Page extends StatelessWidget {
   AnimatedContainer addressDisplay(H001ViewModel model,BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
-      color: Colors.white,
       height: model.addressDisplayShowFlag ? 73 : 0,
       padding: EdgeInsets.fromLTRB(16, 11, 16, 16),
       alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+        color: Color(0xffffffff),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0.00,3.00),
+            color: Color(0xff000000).withOpacity(0.03),
+            blurRadius: 6,
+          ),
+        ],
+      ),
       child: Container(
         height: 46.00,
         width: MediaQuery.of(context).size.width,

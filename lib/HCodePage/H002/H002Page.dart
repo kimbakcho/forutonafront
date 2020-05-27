@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
+import 'package:flutter/services.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H002/H002PageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -12,6 +14,10 @@ class H002Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     //Hero Animation Speed
     timeDilation = 1.5;
     return ChangeNotifierProvider(
@@ -31,7 +37,9 @@ class H002Page extends StatelessWidget {
                               questBallMakeButton(context)
                             ],
                           )
-                        ])))
+                        ]),
+                    color: Color(0xffF2F0F1),
+                    ))
               ]));
         }));
   }
@@ -96,12 +104,11 @@ class H002Page extends StatelessWidget {
               top: 79,
               left: 16,
               child: Container(
-                width: MediaQuery.of(context).size.width-32,
+                width: MediaQuery.of(context).size.width-64,
                 child: Text(
                     "실제 세상에서 일어나는 크고 작은 소식들을 지도 "
                     "위에 표시하고 공유할 수 있어요",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontSize: 12,
                       color: Color(0xff454f63),
                     )),
@@ -184,8 +191,7 @@ class H002Page extends StatelessWidget {
                 child: Text(
                     "현실에서 해결해야할 임무가 있으신가요? 보상을 건 "
                     "퀘스트를 만들어 세상에 도움을 청해보세요.",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontSize: 12,
                       color: Color(0xff454f63),
                     )),

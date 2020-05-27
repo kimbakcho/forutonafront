@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,9 @@ class MapGeoSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.white.withOpacity(0.6),
+        statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
         create: (_) => MapGeoSearchPageViewModel(_initAddress, _initPosition,context),
         child: Consumer<MapGeoSearchPageViewModel>(builder: (_, model, child) {

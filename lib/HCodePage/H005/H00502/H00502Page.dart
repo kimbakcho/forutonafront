@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H005/H00502/H00502pageViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -15,47 +14,61 @@ class H00502Page extends StatelessWidget {
       child: Consumer<H00502pageViewModel>(builder: (_, model, child) {
         return Stack(children: <Widget>[
           Scaffold(
-              body: !model.isEmptyPage() ? Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(children: <Widget>[
-                    Expanded(
-                        child: ListView.separated(
-                            controller: model.mainDropDownBtnController,
-                            padding: EdgeInsets.all(0),
-                            shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
-                            itemCount: model.ballWidgetLists.length+2,
-                            itemBuilder: (context, index) {
-                              if(index == 0){
-                                return relationTagRankingList(model, context);
-                              }else if(index == 1){
-                                return selectOrderButton(model);
-                              }else {
-                                return Container(
-                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
-                                    child: model.ballWidgetLists[index-2]
-                                );
-                              }
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(height: 16);
-                            }
-                        ))
-                  ])) : Container(
-                  child: Center(
-                    child: Text("검색된 결과가 없습니다."),
-                  )
-              )
-          ),
+            backgroundColor: Color(0xffF2F0F1),
+              body: !model.isEmptyPage()
+                  ? Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(children: <Widget>[
+                        Expanded(
+                            child: ListView.separated(
+                                controller: model.mainDropDownBtnController,
+                                padding: EdgeInsets.all(0),
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: model.ballWidgetLists.length + 2,
+                                itemBuilder: (context, index) {
+                                  if (index == 0) {
+                                    return relationTagRankingList(
+                                        model, context);
+                                  } else if (index == 1) {
+                                    return selectOrderButton(model);
+                                  } else {
+                                    return Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 16),
+                                        child:
+                                            model.ballWidgetLists[index - 2]);
+                                  }
+                                },
+                                separatorBuilder: (context, index) {
+                                  if (index == 0) {
+                                    return didver(context);
+                                  } else {
+                                    return SizedBox(height: 16);
+                                  }
+                                }))
+                      ]))
+                  : Container(
+                      child: Center(
+                      child: Text("검색된 결과가 없습니다."),
+                    ))),
           model.getIsLoading() ? CommonLoadingComponent() : Container()
         ]);
       }),
     );
   }
 
+  Container didver(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 14, bottom: 16),
+      height: 1,
+      width: MediaQuery.of(context).size.width,
+      color: Color(0xffE4E7E8),
+    );
+  }
+
   Container selectOrderButton(H00502pageViewModel model) {
     return Container(
-        height: 58,
         padding: EdgeInsets.only(right: 16),
         alignment: Alignment.centerRight,
         child: Container(
@@ -92,17 +105,18 @@ class H00502Page extends StatelessWidget {
   Container relationTagRankingList(
       H00502pageViewModel model, BuildContext context) {
     return Container(
-        height: 54,
+        margin: EdgeInsets.only(top: 16),
+        height: 32,
         width: MediaQuery.of(context).size.width,
         child: ListView.builder(
+            padding: EdgeInsets.all(0),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: model.tagRankings.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                  height: 26,
                   padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                  margin: EdgeInsets.fromLTRB(16, 14, 0, 14),
+                  margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
                   child: InkWell(
                       onTap: () {},
                       child: Text(model.tagRankings[index].tagName,

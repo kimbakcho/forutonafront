@@ -6,6 +6,7 @@ import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
 import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetController.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'IssueBallWidgetStyle2ViewModel.dart';
@@ -31,33 +32,32 @@ class IssueBallWidgetStyle2 extends StatelessWidget
               child: Stack(
                 children: <Widget>[
                   FlatButton(
-                      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       onPressed: model.goIssueDetailPage,
                       child: Stack(children: <Widget>[
                         Positioned(
-                          top: 0,
-                          left: 0,
+                          top: 16,
+                          left: 16,
                           child: ballIcon(),
                         ),
                         Positioned(
-                            top: 0,
-                            left: 46,
+                            top: 16,
+                            left: 62,
                             child: titleAndAddress(model, context)),
                         Positioned(
-                          bottom: 31,
+                          bottom: 47,
                           child: divider(context),
                         ),
                         Positioned(
-                            right: 0, bottom: 0, child: valueBottomBar(model)),
+                            right: 16, bottom: 16, child: valueBottomBar(model)),
                         Positioned(
-                          bottom: 47,
-                          right: 0,
+                          bottom: 63,
+                          right: 16,
                           child: Container(
                             child: Text(getBallDistanceDisplay(model),
-                                style: TextStyle(
-                                  fontFamily: "Noto Sans CJK KR",
+                                style: GoogleFonts.notoSans(
                                   fontSize: 10,
-                                  color: Color(0xffff4f9a).withOpacity(0.56),
+                                  color: Color(0xffFF4F9A),
                                 )),
                           ),
                         ),
@@ -183,7 +183,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     if (model.isBallDelete()) {
       return "-";
     } else {
-      return TimeDisplayUtil.getRemainingToStrFromNow(
+      return TimeDisplayUtil.getCalcToStrFromNow(
           model.getUserBallResDto().fballResDto.activationTime);
     }
   }
@@ -215,7 +215,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
   Container divider(BuildContext context) {
     return Container(
       height: 1,
-      width: MediaQuery.of(context).size.width - 64,
+      width: MediaQuery.of(context).size.width,
       color: Color(0xffe4e7e8),
     );
   }
@@ -228,7 +228,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         color: Color(0xffDC3E57),
         shape: BoxShape.circle,
       ),
-      padding: EdgeInsets.only(left: 1, bottom: 1),
+      padding: EdgeInsets.only(left: 2, top: 1),
       child: Icon(ForutonaIcon.issue, color: Colors.white, size: 17),
     );
   }
@@ -254,10 +254,9 @@ class IssueBallWidgetStyle2 extends StatelessWidget
             Text(getBallPlaceAddress(model),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontSize: 11,
-                  color: Color(0xff454f63).withOpacity(0.56),
+                style: GoogleFonts.notoSans(
+                  fontSize: 12,
+                  color: Color(0xff78849E),
                 ))
           ],
         ));

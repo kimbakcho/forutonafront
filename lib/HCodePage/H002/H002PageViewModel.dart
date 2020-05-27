@@ -11,7 +11,6 @@ class H002PageViewModel extends ChangeNotifier {
     Position currentPosition;
     await GeoLocationUtil().useGpsReq(_context);
     currentPosition = await GeoLocationUtil().getCurrentWithLastPosition();
-
     String address = await GeolocationRepository().getPositionAddress(currentPosition);
     Navigator.of(_context).push(MaterialPageRoute(
       builder: (_) => H002_01Page(currentPosition,address)
