@@ -45,9 +45,6 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
   String listViewKey = Uuid().v4();
 
 
-//  FBallListUpWrapDto fBallListUpWrapDto =
-//      new FBallListUpWrapDto(DateTime.now(), []);
-
   List<BallStyle1Widget> ballWidgetLists = [];
 
   bool _isLoading = false;
@@ -71,7 +68,6 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
   }
 
   init() async {
-
     currentState = H001PageState.H001_01;
     rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
     h001CenterListViewController
@@ -79,7 +75,6 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
     _setIsLoading(true);
     await GeoLocationUtil().useGpsReq(_context);
     _currentPosition = await GeoLocationUtil().getCurrentWithLastPosition();
-
     await reFreshSearchBall(_currentPosition);
     _setIsLoading(false);
   }
@@ -92,10 +87,11 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
             builder: (context) =>
                 H007MainPage(_currentPosition, selectPositionAddress)));
     if (position != null) {
+
+      _setIsLoading(true);
       _currentPosition = Position(
           latitude: position.latLng.latitude,
           longitude: position.latLng.longitude);
-      _setIsLoading(true);
       await reFreshSearchBall(_currentPosition,
           address: position.descriptionAddress);
       _setIsLoading(false);
@@ -185,7 +181,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter{
     if(isScrollerTopOver()){
       _pageCount = 0;
       _setIsLoading(true);
-      await getBallListUp(_currentPosition, _pageCount, _ballPageLimitSize);
+      await reFreshSearchBall(_currentPosition);
       _setIsLoading(false);
     }
   }

@@ -110,7 +110,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
       listUpBalls[index].isSelectBall = true;
       drawBall(this.listUpBalls);
       notifyListeners();
-      var zoomLevel = await controller.getZoomLevel();
+      var zoomLevel = 14.0;
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target:
               LatLng(listUpBalls[index].latitude, listUpBalls[index].longitude),

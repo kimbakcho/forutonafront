@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyWidgetViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class FBallReplyWidget extends StatelessWidget {
@@ -26,24 +27,29 @@ class FBallReplyWidget extends StatelessWidget {
   Container topInputBar(FBallReplyWidgetViewModel model, BuildContext context) {
     return Container(
         height: 103,
-        decoration: BoxDecoration(color: Color(0xffF2F0F1)),
+        decoration: BoxDecoration(color: Color(0xffF5F5F5)),
         child: Stack(children: <Widget>[
           Positioned(
               top: 16,
               left: 16,
               child: Container(
                   child: Text(
-                      "댓글(${model.getReplyTotalCount()})"))),
+                      "댓글(${model.getReplyTotalCount()})",
+                  style: GoogleFonts.notoSans(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold
+                  ),
+                  ))),
           Positioned(
-              top: 4,
+              top: 0,
               right: 6,
               child: Container(
+                  margin: EdgeInsets.only(bottom: 16),
                   child: FlatButton(
                       padding: EdgeInsets.all(0),
                       onPressed: model.popUpDetailReply,
                       child: Text("댓글 페이지로 이동",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
                             fontWeight: FontWeight.w700,
                             fontSize: 12,
                             color: Color(0xff3497fd),
@@ -62,13 +68,12 @@ class FBallReplyWidget extends StatelessWidget {
                           padding: EdgeInsets.only(left: 16),
                           height: 32.00,
                           child: Text("의견을 남겨주세요.",
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
+                              style: GoogleFonts.notoSans(
                                 fontSize: 14,
                                 color: Color(0xff78849e),
                               )))),
                   decoration: BoxDecoration(
-                      color: Color(0xfff9f9f9),
+                      color: Color(0xffFFFFFF),
                       borderRadius: BorderRadius.circular(12.00)))),
           Positioned(
               top: 47,

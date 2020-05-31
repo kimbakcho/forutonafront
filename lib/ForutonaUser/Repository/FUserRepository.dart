@@ -25,7 +25,6 @@ class FUserRepository {
       FDio dio = FDio(idToken.token);
       var response = await dio.get("/v1/ForutonaUser/Me",
           queryParameters: FUserReqDto(firebaseUser.uid).toJson());
-
       return FUserInfoResDto.fromJson(response.data);
     }else {
       return null;
@@ -74,8 +73,6 @@ class FUserRepository {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);
-    print(idToken.token);
-    print(changePwReqDto.toJson());
 
       var response = await dio.put("/v1/ForutonaUser/PwChange",data: changePwReqDto.toJson());
       print(response.data);

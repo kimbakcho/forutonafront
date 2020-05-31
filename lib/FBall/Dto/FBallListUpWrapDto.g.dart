@@ -8,10 +8,10 @@ part of 'FBallListUpWrapDto.dart';
 
 FBallListUpWrapDto _$FBallListUpWrapDtoFromJson(Map<String, dynamic> json) {
   return FBallListUpWrapDto(
-    json['searchTime'] == null
+    searchTime: json['searchTime'] == null
         ? null
         : DateTime.parse(json['searchTime'] as String),
-    (json['balls'] as List)
+    balls: (json['balls'] as List)
         ?.map((e) =>
             e == null ? null : FBallResDto.fromJson(e as Map<String, dynamic>))
         ?.toList(),

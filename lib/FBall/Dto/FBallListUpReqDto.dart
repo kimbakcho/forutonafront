@@ -5,12 +5,12 @@ part 'FBallListUpReqDto.g.dart';
 @JsonSerializable()
 class FBallListUpReqDto {
 
-  double latitude;
-  double longitude;
-  int ballLimit;
-  int page;
-  int size;
-  String sort;
+  final double latitude;
+  final double longitude;
+  final int ballLimit;
+  final int page;
+  final int size;
+  final String sort;
 
 
   FBallListUpReqDto({this.latitude, this.longitude, this.ballLimit, this.page,

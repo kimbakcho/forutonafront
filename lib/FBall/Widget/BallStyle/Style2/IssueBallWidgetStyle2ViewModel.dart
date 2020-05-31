@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/BallModify/BallModifyService.dart';
-import 'package:forutonafront/Common/BallModify/Impl/CommonBallModifyWidgetResultType.dart';
+
 import 'package:forutonafront/Common/BallModify/Impl/IssueBallModifyImpl.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';

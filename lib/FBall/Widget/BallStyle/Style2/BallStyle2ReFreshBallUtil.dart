@@ -17,16 +17,22 @@ import 'BallStyle2WidgetInter.dart';
 class BallStyle2ReFreshBallUtil {
   Future reFreshBallAndUiUpdate(List<BallStyle2Widget> ballWidgetLists,UserBallResDto reFreshNeedContent,BallStyle2WidgetInter ballStyle2WidgetInter) async {
     FBallPlayerRepository _fBallPlayerRepository = FBallPlayerRepository();
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var userToPlayBall = await _fBallPlayerRepository.getUserToPlayBall(UserToPlayBallSelectReqDto(firebaseUser.uid,reFreshNeedContent.fballResDto.ballUuid));
+    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+    var ballResDto = await fBallTypeRepository
+        .selectBall(FBallReqDto(reFreshNeedContent.fballResDto.ballType, reFreshNeedContent.fballResDto.ballUuid));
+
+//    var userToPlayBall = await _fBallPlayerRepository.getUserToPlayBall(UserToPlayBallSelectReqDto(firebaseUser.uid,reFreshNeedContent.fballResDto.ballUuid));
     //해당 부분 비동기 처리로 인해 User가 평가후 화면에서 빠르게 나올때  BackEnd에서 해당 데이터 처리 전에 데이터를 받아 올때
     //동기화 문제가 발생함. 그래서 reFreshNeedBall 에서 Client 에서 실행 한 값으로 Like disLike 추측 반영
-    userToPlayBall.fballResDto.ballLikes = reFreshNeedContent.fballResDto.ballLikes;
-    userToPlayBall.fballResDto.ballDisLikes =reFreshNeedContent.fballResDto.ballDisLikes;
+    ballResDto.ballLikes = reFreshNeedContent.fballResDto.ballLikes;
+    ballResDto.ballDisLikes = reFreshNeedContent.fballResDto.ballDisLikes;
+
+    reFreshNeedContent.fballResDto = ballResDto;
+
     var indexWhere =
     ballWidgetLists
         .indexWhere((element) => element.getBallUuid() == reFreshNeedContent.fballResDto.ballUuid);
     ballWidgetLists[indexWhere] =
-        BallStyle2Widget.create(userToPlayBall.fballResDto.ballType,BallStyle2WidgetController(userToPlayBall,ballStyle2WidgetInter));
+        BallStyle2Widget.create(reFreshNeedContent.fballResDto.ballType,BallStyle2WidgetController(reFreshNeedContent,ballStyle2WidgetInter));
   }
 }

@@ -224,7 +224,7 @@ class G010MainPageViewModel extends ChangeNotifier {
 
 
   onEditCompleteNickName() async {
-    GlobalModel globalModel = Provider.of(_context);
+    GlobalModel globalModel = Provider.of(_context,listen: false);
     if(globalModel.fUserInfoDto.nickName == nickNameController.text){
 
       return ;

@@ -103,7 +103,8 @@ dependencies:
   cached_network_image: ^2.2.0+1
   #Mutex
   mutex: ^1.0.3
-
+  #test할때 사용
+  mockito: ^4.1.1
 
 
 dev_dependencies:

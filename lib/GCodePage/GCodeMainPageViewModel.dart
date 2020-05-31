@@ -4,6 +4,7 @@ import 'package:forutonafront/GCodePage/G001/G001MainPageController.dart';
 import 'package:forutonafront/GCodePage/G001/G001MainPageViewModel.dart';
 import 'package:forutonafront/GCodePage/G009/G009MainPage.dart';
 import 'package:forutonafront/GCodePage/GCodePageState.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 
 
 class GCodeMainPageViewModel extends ChangeNotifier {
@@ -11,6 +12,7 @@ class GCodeMainPageViewModel extends ChangeNotifier {
   GCodePageState currentState;
   G001MainPageController _g001mainPageController;
   PageController gCodePagecontroller = new PageController();
+
   GCodeMainPageViewModel(this._context,this._g001mainPageController){
     currentState = GCodePageState.G001Page;
     gCodePagecontroller.addListener(onhCodePageChangeListners);
@@ -18,8 +20,8 @@ class GCodeMainPageViewModel extends ChangeNotifier {
   }
   void jumpToSettingPage()async {
     await Navigator.of(_context).push(MaterialPageRoute(builder: (_)=>G009MainPage()));
-
     _g001mainPageController.reFreshUserInfo();
+
     print("test");
 
   }

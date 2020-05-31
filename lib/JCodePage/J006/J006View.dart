@@ -209,6 +209,8 @@ class J006View extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           TextField(
+            autocorrect: false,
+            enableSuggestions: false,
             keyboardType: TextInputType.emailAddress,
             controller: model.idEditingController,
             onChanged: model.onIdEditChangeText,

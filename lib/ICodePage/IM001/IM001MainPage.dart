@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimation.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimationWithContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -12,7 +14,6 @@ import 'package:forutonafront/ICodePage/IM001/IM001MainPageViewModel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../Common/GoogleMapSupport/MapCircleAni.dart';
 import 'BallImageItemDto.dart';
 
 class IM001MainPage extends StatefulWidget {
@@ -20,9 +21,7 @@ class IM001MainPage extends StatefulWidget {
    String address;
    String ballUuid;
    IM001MainPageEnterMode mode;
-
    IM001MainPage(this.setUpPosition,this.address,this.ballUuid,this.mode);
-
   @override
   _IM001MainPageState createState() => _IM001MainPageState(this.setUpPosition,this.address,this.ballUuid,this.mode);
 }
@@ -80,11 +79,6 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        child: MapCircleAni(model.circleController),
-                      ),
                       Column(children: <Widget>[
                         topBar(model),
                         Expanded(
@@ -619,12 +613,10 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
             ].toSet(),
             mapType: MapType.normal,
             onMapCreated: model.onMapCreated,
-            circles: model.circles,
             initialCameraPosition: model.initCameraPosition,
             myLocationEnabled: false,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
-            markers: model.markers,
           ),
           Positioned(
               bottom: 0,
@@ -645,6 +637,9 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
                 ),
                 color: Color(0xffffffff).withOpacity(0.70),
               )),
+          Center(
+            child: MapCircleAnimationWithContainer.fromIssueBall()
+          ),
           Positioned(
             top: 0,
             left: 0,
@@ -671,7 +666,7 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
                 child: Icon(Icons.arrow_back)),
             width: 48),
         Container(
-            child: Text("이슈볼 만들기",
+            child: Text(model.topNameTitle,
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,

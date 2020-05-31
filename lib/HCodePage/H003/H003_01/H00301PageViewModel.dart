@@ -36,11 +36,19 @@ class H00301PageViewModel extends ChangeNotifier implements BallStyle2WidgetInte
 
   init() async {
     scrollController.addListener(scrollListener);
-    await ballListUp();
+    GlobalModel globalModel = Provider.of(_context,listen:  false);
+    if(globalModel.fUserInfoDto !=null){
+      await ballListUp();
+    }
+
     _isInitFinish = true;
   }
   isEmptyPage(){
     GlobalModel globalModel = Provider.of(_context,listen:  false);
+    if(globalModel.fUserInfoDto == null){
+      return true;
+    }
+
     if(globalModel.fUserInfoDto != null && _isInitFinish && ballListUpWidgets.length == 0){
       return true;
     }else {

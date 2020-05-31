@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/BallModify/Impl/CommonBallModifyWidgetResultType.dart';
+import 'package:forutonafront/Common/BallModify/Widget/DeletePopupWidget.dart';
+
+import 'CommonBallModifyWidgetResultType.dart';
 
 class CommonBallModifyWidget extends StatelessWidget {
   @override
@@ -37,8 +39,19 @@ class CommonBallModifyWidget extends StatelessWidget {
                     Container(
                       child: FlatButton(
                           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                          onPressed: () {
-                            Navigator.of(context).pop(CommonBallModifyWidgetResultType.Delete);
+                          onPressed: () async {
+                            CommonBallModifyWidgetResultType commandResult = await showGeneralDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                transitionDuration: Duration(milliseconds: 300),
+                                barrierColor: Colors.black.withOpacity(0.3),
+                                barrierLabel:
+                                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                pageBuilder:
+                                    (_context, Animation animation, Animation secondaryAnimation) {
+                                  return DeletePopupWidget();
+                                });
+                            Navigator.of(context).pop(commandResult);
                           },
                           child: Row(children: <Widget>[
                             Icon(Icons.delete, color: Colors.black),

@@ -4,14 +4,14 @@ import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 class IssueBallStyle1MarkerWidget {
   static Widget selectBall() {
     return Container(
-        height: 90,
-        width: 90,
+        height: 120,
+        width: 120,
         child: Container(
-          padding: EdgeInsets.only(bottom: 15),
+          padding: EdgeInsets.only(left: 7,bottom: 22),
           child: Icon(
             ForutonaIcon.issue,
             color: Colors.white,
-            size: 35,
+            size: 50,
           ),
           decoration: BoxDecoration(
               image: DecorationImage(

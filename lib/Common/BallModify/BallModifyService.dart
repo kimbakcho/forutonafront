@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/Common/BallModify/Impl/CommonBallModifyWidgetResultType.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallType.dart';
+
+import 'Widget/CommonBallModifyWidgetResultType.dart';
 
 abstract class BallModifyService {
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
-import 'package:forutonafront/HCodePage/H007/MapCircleAnimation.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/GoogleMapSupport/MapCircleAnimation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -95,7 +95,7 @@ class _H007MainPageState extends State<H007MainPage>
                 child: bottomSerarchBtn(model),
               ),
                   Center(
-                    child:MapCircleAnimation()
+                    child:MapCircleAnimation(200)
 
                   )
             ]))

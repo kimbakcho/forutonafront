@@ -124,11 +124,13 @@ class J007ViewModel extends ChangeNotifier {
             globalModel.fUserInfoJoinReqDto.snsSupportService);
     var fUserInfoJoinResDto =
         await snsLoginService.joinUser(globalModel.fUserInfoJoinReqDto);
+    FUserRepository _fUserRepository = new FUserRepository();
     if (fUserInfoJoinResDto.joinComplete) {
       if (_currentPickProfileImage != null) {
-        FUserRepository _fUserRepository = new FUserRepository();
+
         await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
       }
+      await globalModel.setFUserInfoDto();
       Navigator.of(_context).popUntil(ModalRoute.withName('/'));
     } else {
       Fluttertoast.showToast(

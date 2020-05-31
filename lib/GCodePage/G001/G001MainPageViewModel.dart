@@ -3,13 +3,16 @@ import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/GCodePage/G001/G001MainPageInter.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:provider/provider.dart';
 
 class G001MainPageViewModel extends ChangeNotifier implements G001MainPageInter{
   FUserInfoResDto _fUserInfoResDto;
   FUserRepository _fUserRepository = new FUserRepository();
   CodeCountry _countryCode = new CodeCountry();
+  final BuildContext _context;
 
-  G001MainPageViewModel() {
+  G001MainPageViewModel(this._context) {
     _init();
   }
 
@@ -22,6 +25,12 @@ class G001MainPageViewModel extends ChangeNotifier implements G001MainPageInter{
   reFreshUserInfo() async{
     _fUserInfoResDto = null;
     _fUserInfoResDto = await _fUserRepository.getForutonaGetMe();
+    CodeMainViewModel codeMainViewModel = Provider.of(_context,listen: false);
+    if(_fUserInfoResDto != null){
+      codeMainViewModel.jumpToPage(HCodeState.GCODE);
+    }else {
+      codeMainViewModel.jumpToPage(HCodeState.HCDOE);
+    }
     notifyListeners();
   }
 

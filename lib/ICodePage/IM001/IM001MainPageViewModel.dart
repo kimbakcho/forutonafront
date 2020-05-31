@@ -11,7 +11,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagInsertReqDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
@@ -40,22 +39,17 @@ class IM001MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
   final LatLng _setUpPosition;
   String _ballUuid;
-//  Timer _clipBoardCheckTimer;
-
-  //볼에 레이더 애니메이션을 주기위한 Ticker
-  Ticker _ticker;
 
   final String address;
   String currentClipBoardData;
   String validYoutubeLink;
   GlobalKey makerAnimationKey = new GlobalKey();
 
+  String topNameTitle = "이슈볼 만들기";
+
   //googleMap
   CameraPosition initCameraPosition;
-  Set<Marker> markers = Set<Marker>();
   Completer<GoogleMapController> _googleMapController = Completer();
-  Set<Circle> circles = Set<Circle>();
-  MapAniCircleController circleController = new MapAniCircleController();
 
   //Focus
   FocusNode tagEditFocusNode = FocusNode();
@@ -112,89 +106,50 @@ class IM001MainPageViewModel extends ChangeNotifier {
     });
     initCameraPosition =
     new CameraPosition(target: _setUpPosition, zoom: 14.4746);
-
     if (mode == IM001MainPageEnterMode.Insert) {
+      this.topNameTitle = "이슈볼 만들기";
+      notifyListeners();
       _ballUuid = new Uuid().v4();
     } else if (mode == IM001MainPageEnterMode.Update) {
-      var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-      FBallResDto preBallContent = await fBallTypeRepository
-          .selectBall(FBallReqDto(FBallType.IssueBall, _ballUuid));
-      titleEditController.text = preBallContent.ballName;
-      var descriptionDto = IssueBallDescriptionDto.fromJson(
-          json.decode(preBallContent.description));
-      textContentEditController.text = descriptionDto.text;
-      descriptionDto.desimages.forEach((element) {
-        this
-            .ballImageList
-            .add(BallImageItemDto.fromFBallDesImagesDto((element)));
-      });
-      validYoutubeLink = descriptionDto.youtubeVideoId;
-      TagRepository tagRepository = TagRepository();
-      var tagResDtoWrap = await tagRepository.tagFromBallUuid(
-          TagFromBallReqDto(preBallContent.ballUuid));
-      tagResDtoWrap.tags.forEach((element) {
-        addTagChips(element.tagItem);
-      });
+      await updateActionInit();
     }
 
-    this.ballList = new List<FBallResForMarkerStyle2Dto>();
-    ballList.add(new FBallResForMarkerStyle2Dto(
-        FBallType.IssueBall, _setUpPosition, _ballUuid));
-    Completer<Set<Marker>> _markerCompleter = Completer();
-    MakerSupportStyle2(ballList, _markerCompleter).generate(_context);
-    Set<Marker> markers = await _markerCompleter.future;
-    this.markers.clear();
-    this.markers.addAll(markers);
     notifyListeners();
-    //MapAniMaction을 그려 준다.
-    googleMapDarwRader();
     copyClipBoard();
     _setIsLoading(false);
   }
 
-  //Google Map에 레이더로 애니메이션을 그린다 .
-  void googleMapDarwRader() {
-    var circleBack = Circle(
-        circleId: CircleId("raderBack"),
-        zIndex: 0,
-        center: _setUpPosition,
-        strokeWidth: 0,
-        fillColor: Color(0xff39F999).withOpacity(0.17),
-        radius: 200);
-    circles.add(circleBack);
-    circleController.aniController.addListener(() {
-      var circle1 = Circle(
-          circleId: CircleId("rader1"),
-          zIndex: 1,
-          center: _setUpPosition,
-          strokeWidth: 0,
-          fillColor: Color(0xff39F999).withOpacity(0.3),
-          radius: circleController.circleRadius.value);
-      circles.removeWhere((value) {
-        return value.circleId.value == "rader1";
-      });
-      circles.add(circle1);
-      notifyListeners();
+  Future updateActionInit() async {
+    this.topNameTitle = "이슈볼 수정하기";
+    notifyListeners();
+    var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
+    FBallResDto preBallContent = await fBallTypeRepository
+        .selectBall(FBallReqDto(FBallType.IssueBall, _ballUuid));
+    titleEditController.text = preBallContent.ballName;
+    var descriptionDto = IssueBallDescriptionDto.fromJson(
+        json.decode(preBallContent.description));
+    textContentEditController.text = descriptionDto.text;
+    descriptionDto.desimages.forEach((element) {
+      this
+          .ballImageList
+          .add(BallImageItemDto.fromFBallDesImagesDto((element)));
     });
-    circleController.aniController2.addListener(() {
-      var circle2 = Circle(
-          circleId: CircleId("rader2"),
-          zIndex: 2,
-          center: _setUpPosition,
-          strokeWidth: 0,
-          fillColor: Color(0xff39F999).withOpacity(0.6),
-          radius: circleController.circleRadius2.value);
-      circles.removeWhere((value) {
-        return value.circleId.value == "rader2";
-      });
-      circles.add(circle2);
-      notifyListeners();
-    });
-    circleController.aniController.forward();
-    Future.delayed(Duration(milliseconds: 500), () {
-      circleController.aniController2.forward();
+    if(descriptionDto.youtubeVideoId != null){
+      this.youtubeAttachVisibility = true;
+      this.validYoutubeLink = "https://youtu.be/${descriptionDto.youtubeVideoId}";
+    }
+
+    TagRepository tagRepository = TagRepository();
+    var tagResDtoWrap = await tagRepository.tagFromBallUuid(
+        TagFromBallReqDto(preBallContent.ballUuid));
+    if(tagResDtoWrap.tags.length != 0){
+      this.tagBarVisibility = true;
+    }
+    tagResDtoWrap.tags.forEach((element) {
+      addTagChips(element.tagItem);
     });
   }
+
 
   void ontextContentFocusNode() {
     notifyListeners();
@@ -212,36 +167,8 @@ class IM001MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //여기서 선택된 볼의 애니메이션을 같이 그려준다.
-  onTickerDrawBall() async {
-    Completer<Set<Marker>> _markerCompleter = Completer();
-    RenderRepaintBoundary ballAnimation =
-    makerAnimationKey.currentContext.findRenderObject();
-
-    var ballAnimationImage = await ballAnimation.toImage(pixelRatio: 1.0);
-    ByteData byteData =
-    await ballAnimationImage.toByteData(format: ui.ImageByteFormat.png);
-    ballAnimationImage.dispose();
-    Uint8List uint8BallAnimation = byteData.buffer.asUint8List();
-    var makerSupport = MakerSupportStyle2(ballList, _markerCompleter);
-    makerSupport.generate(_context);
-    Set<Marker> markers = await _markerCompleter.future;
-    this.markers.clear();
-    this.markers.addAll(markers);
-    this.markers.add(Marker(
-        markerId: MarkerId("selectlader"),
-        position: this._setUpPosition,
-        anchor: Offset(0.5, 0.5),
-        zIndex: 0,
-        icon: BitmapDescriptor.fromBytes(uint8BallAnimation)));
-    notifyListeners();
-  }
-
   @override
   void dispose() {
-//    if (_clipBoardCheckTimer != null) {
-//      _clipBoardCheckTimer.cancel();
-//    }
     super.dispose();
   }
 
@@ -264,7 +191,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
 
   void onCompleteTap() async {
     _setIsLoading(true);
-    //ballImageList->fillUrls
+
     var fillUrlBallImageList =
     await _ballImageListUpLoadAndFillUrls(this.ballImageList);
 
@@ -302,7 +229,10 @@ class IM001MainPageViewModel extends ChangeNotifier {
     if (mode == IM001MainPageEnterMode.Insert) {
       var result = await fBallTypeRepository.insertBall(ballInsertReqDto);
       if (result == 1) {
-        Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+        Navigator.of(_context).pushAndRemoveUntil(MaterialPageRoute(
+          builder: (_)=>ID001MainPage(_ballUuid)
+        ), ModalRoute.withName('/'));
+
       }
     } else if (mode == IM001MainPageEnterMode.Update) {
       await fBallTypeRepository.updateBall(ballInsertReqDto);
@@ -310,7 +240,6 @@ class IM001MainPageViewModel extends ChangeNotifier {
           FBallReqDto(FBallType.IssueBall, _ballUuid));
       Navigator.of(_context).pop(mode);
     }
-
 
     _setIsLoading(false);
   }

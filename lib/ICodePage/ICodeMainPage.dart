@@ -82,7 +82,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
                       ),
 
                       Positioned(
-                        top: MediaQuery.of(context).padding.top+5,
+                        top: MediaQuery.of(context).padding.top+16,
                         left: 0,
                         width: MediaQuery.of(context).size.width,
                         child: textMapSerachBar(model,context),
@@ -168,7 +168,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
         child: Icon(Icons.my_location, color: Color(0xff454F63), size: 18),
       ),
       decoration: BoxDecoration(
-        color: Color(0xffffffff),
+        color: Color(0xffffffff).withOpacity(0.8),
         boxShadow: [
           BoxShadow(
             offset: Offset(0.00, 12.00),
@@ -204,11 +204,11 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
               onPressed:model.onPlaceSearchTap,
             ),
             decoration: BoxDecoration(
-              color: Color(0xffffffff).withOpacity(0.90),
+              color: Color(0xffffffff).withOpacity(0.8),
               boxShadow: [
                 BoxShadow(
                   offset: Offset(0.00, 3.00),
-                  color: Color(0xff455b63).withOpacity(0.45),
+                  color: Color(0xff455b63).withOpacity(0.2),
                   blurRadius: 6,
                 )
               ],

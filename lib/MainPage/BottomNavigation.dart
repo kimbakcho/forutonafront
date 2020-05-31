@@ -82,6 +82,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         var currentUser = await FirebaseAuth.instance.currentUser();
                         if(currentUser!=null){
                           model.jumpToPage(HCodeState.GCODE);
+                        }else {
+                          model.jumpToPage(HCodeState.HCDOE);
                         }
                       }
                     },

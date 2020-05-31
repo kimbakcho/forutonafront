@@ -130,13 +130,14 @@ class H001Page extends StatelessWidget {
                 return Container(
                     height: 40,
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     decoration: BoxDecoration(
                       border: Border(
                           bottom:
                               BorderSide(width: 1.0, color: Color(0xFF38CAF5))),
                     ),
                     child: FlatButton(
+                      padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       onPressed: (){
                         model.gotoTagSearch(model.rankingWrapDto.contents[index].tagName);
                       },
@@ -232,37 +233,45 @@ class H001Page extends StatelessWidget {
                   return Container(
                       height: 40,
                       padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
-                      child: Row(children: <Widget>[
-                        Text(
+                      child: FlatButton(
+                        onPressed: (){
+                          model.gotoTagSearch(model.rankingWrapDto.contents[index].tagName);
+                        },
+                        padding: EdgeInsets.all(0),
+                        child :Row(children: <Widget>[
+                          Text(
                             "${model.rankingWrapDto.contents[index].ranking}.",
-                          style: GoogleFonts.notoSans(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Color(0xff454F63)
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Text(
-                            "#${model.rankingWrapDto.contents[index].tagName}",
                             style: GoogleFonts.notoSans(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                                 color: Color(0xff454F63)
-                            )),
-                        Spacer(),
-                        Text(
-                            "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}"),
-                        SizedBox(width: 12),
-                        Container(
-                          width: 12,
-                          child: FlatButton(
-                              padding: EdgeInsets.all(0),
-                              onPressed: () {
-                                model.inlineRanking = false;
-                              },
-                              child: Icon(ForutonaIcon.down_arrow, size: 10)),
-                        )
-                      ]));
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Text(
+                              "#${model.rankingWrapDto.contents[index].tagName}",
+                              style: GoogleFonts.notoSans(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Color(0xff454F63)
+                              )),
+                          Spacer(),
+                          Text(
+                              "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}"),
+                          SizedBox(width: 12),
+                          Container(
+                            width: 12,
+                            child: FlatButton(
+                                padding: EdgeInsets.all(0),
+                                onPressed: () {
+                                  model.inlineRanking = false;
+                                },
+                                child: Icon(ForutonaIcon.down_arrow, size: 10)),
+                          )
+                        ])
+
+                      ) 
+                      );
                 },
               )
             : Container(),

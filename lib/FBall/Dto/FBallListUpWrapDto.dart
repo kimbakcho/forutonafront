@@ -5,12 +5,12 @@ part 'FBallListUpWrapDto.g.dart';
 
 @JsonSerializable()
 class FBallListUpWrapDto {
-  DateTime searchTime;
-  List<FBallResDto> balls;
+  final DateTime searchTime;
+  final List<FBallResDto> balls;
   //Ball의 전체 카운터 검색어 에서만 사용
   int searchBallCount = 0;
 
-  FBallListUpWrapDto(this.searchTime, this.balls);
+  FBallListUpWrapDto({this.searchTime, this.balls});
 
   factory FBallListUpWrapDto.fromJson(Map<String, dynamic> json) =>
       _$FBallListUpWrapDtoFromJson(json);

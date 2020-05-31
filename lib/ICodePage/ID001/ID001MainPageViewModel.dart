@@ -8,9 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:forutonafront/Common/BallModify/BallModifyService.dart';
-import 'package:forutonafront/Common/BallModify/Impl/CommonBallModifyWidgetResultType.dart';
 import 'package:forutonafront/Common/BallModify/Impl/IssueBallModifyImpl.dart';
-import 'package:forutonafront/Common/GoogleMapSupport/MapAniCircleController.dart';
+import 'package:forutonafront/Common/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagResDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
@@ -22,7 +21,6 @@ import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationResDto.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
-import 'package:forutonafront/FBall/MarkerSupport/Style2/MakerSupportStyle2.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
@@ -49,12 +47,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
 
   //googleMap 관련
   CameraPosition initialCameraPosition;
-  Set<Marker> markers = Set<Marker>();
   List<FBallResForMarkerStyle2Dto> ballList;
-  GlobalKey makerAnimationKey = new GlobalKey();
-  Set<Circle> circles = Set<Circle>();
-  MapAniCircleController googleMapCircleController =
-      new MapAniCircleController();
 
   //Youtube 관련
   Youtube.YoutubeExplode _youtubeExplode = Youtube.YoutubeExplode();
@@ -91,8 +84,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   _init() async {
-
+    mainScrollController.addListener(onScrollControllerListener);
     if(fBallResDto == null ){
+      isInitFinish = false;
       _setIsLoading(true);
       var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
       var currentFBallResDto = await fBallTypeRepository
@@ -116,8 +110,18 @@ class ID001MainPageViewModel extends ChangeNotifier {
     loadFBallValuation();
     isInitFinish= true;
 
-    ballMarkerLoad();
     notifyListeners();
+  }
+
+  onScrollControllerListener(){
+    notifyListeners();
+  }
+  isBallNameScrollOver(){
+    if(mainScrollController.hasClients && mainScrollController.offset > 305){
+      return true;
+    }else {
+      return false;
+    }
   }
 
   bool showFBallValuation() {
@@ -144,63 +148,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
 
-  Future<void> ballMarkerLoad() async {
-    this.ballList = new List<FBallResForMarkerStyle2Dto>();
-    ballList.add(new FBallResForMarkerStyle2Dto(
-        FBallType.IssueBall,
-        LatLng(fBallResDto.latitude, fBallResDto.longitude),
-        fBallResDto.ballUuid));
-    Completer<Set<Marker>> _markerCompleter = Completer();
-    MakerSupportStyle2(ballList, _markerCompleter).generate(_context);
-    Set<Marker> markers = await _markerCompleter.future;
-    this.markers.clear();
-    this.markers.addAll(markers);
-    googleMapDarwRader();
-  }
 
-  //Google Map에 레이더로 애니메이션을 그린다 .
-  void googleMapDarwRader() {
-    var circleBack = Circle(
-        circleId: CircleId("raderBack"),
-        zIndex: 0,
-        center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
-        strokeWidth: 0,
-        fillColor: Color(0xff39F999).withOpacity(0.17),
-        radius: 200);
-    circles.add(circleBack);
-    googleMapCircleController.aniController.addListener(() {
-      var circle1 = Circle(
-          circleId: CircleId("rader1"),
-          zIndex: 1,
-          center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
-          strokeWidth: 0,
-          fillColor: Color(0xff39F999).withOpacity(0.3),
-          radius: googleMapCircleController.circleRadius.value);
-      circles.removeWhere((value) {
-        return value.circleId.value == "rader1";
-      });
-      circles.add(circle1);
-      notifyListeners();
-    });
-    googleMapCircleController.aniController2.addListener(() {
-      var circle2 = Circle(
-          circleId: CircleId("rader2"),
-          zIndex: 2,
-          center: LatLng(fBallResDto.latitude, fBallResDto.longitude),
-          strokeWidth: 0,
-          fillColor: Color(0xff39F999).withOpacity(0.6),
-          radius: googleMapCircleController.circleRadius2.value);
-      circles.removeWhere((value) {
-        return value.circleId.value == "rader2";
-      });
-      circles.add(circle2);
-      notifyListeners();
-    });
-    googleMapCircleController.aniController.forward();
-    Future.delayed(Duration(milliseconds: 500), () {
-      googleMapCircleController.aniController2.forward();
-    });
-  }
 
   youtubeLoad(String videoId) async {
     var video = await _youtubeExplode.getVideo(videoId);
@@ -225,7 +173,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     tagChips.clear();
     for (var o in tags) {
       tagChips.add(Chip(
-        backgroundColor: Color(0xffCCCCCC),
+        backgroundColor: Color(0xffE4E7E8),
         label: Text("#${o.tagItem}",
             style: TextStyle(
               fontFamily: "Noto Sans CJK KR",
@@ -661,14 +609,15 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }
     if (isPlusStatue()) {
       deleteValueation(1);
-      notifyListeners();
+
     } else if (isMinusStatue()) {
       deleteValueation(-1);
       onFBallValuation(1);
-      notifyListeners();
+
     } else {
       onFBallValuation(1);
     }
+    notifyListeners();
 
 //    _setIsLoading(false);
   }
@@ -680,14 +629,15 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }
     if (isMinusStatue()) {
       deleteValueation(-1);
-      notifyListeners();
+
     } else if (isPlusStatue()) {
       deleteValueation(1);
       onFBallValuation(-1);
-      notifyListeners();
+
     } else {
       onFBallValuation(-1);
     }
+    notifyListeners();
   }
 
   void deleteValueation(int deletePoint) {
@@ -700,7 +650,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }else {
       fBallResDto.ballDisLikes = fBallResDto.ballDisLikes - deletePoint.abs();
     }
-
+    fBallResDto.contributor--;
   }
 
   Future onFBallValuation(int unAndDown) async {
@@ -725,6 +675,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     }else {
       fBallResDto.ballDisLikes = fBallResDto.ballDisLikes + unAndDown.abs();
     }
+    fBallResDto.contributor++;
   }
 
   getFBallValuationText() {
@@ -814,8 +765,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   void showBallSetting() async {
     BallModifyService ballModifyService = IssueBallModifyImpl();
     if (await ballModifyService.isCanModify(fBallResDto.uid)) {
-      var result =
-          await ballModifyService.showModifySelectDialog(_context, fBallResDto.ballType,fBallResDto.ballUuid);
+      var result = await ballModifyService.showModifySelectDialog(_context, fBallResDto.ballType,fBallResDto.ballUuid);
       if (result == CommonBallModifyWidgetResultType.Delete) {
         Navigator.of(_context).pop();
       } else if (result == CommonBallModifyWidgetResultType.Update) {

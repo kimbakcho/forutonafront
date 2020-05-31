@@ -113,7 +113,7 @@ mixin DefaultSignValidMix on SignUpValidService {
   Future<void> nickNameValid(String nickName) async {
     _nickNameError = false;
     _nickNameErrorText = "";
-    if (nickName.length <=2 ) {
+    if (nickName.length <2 ) {
       _nickNameError = true;
       _nickNameErrorText = "닉네임은 최소 2글자 이상이어야 합니다.";
       return ;

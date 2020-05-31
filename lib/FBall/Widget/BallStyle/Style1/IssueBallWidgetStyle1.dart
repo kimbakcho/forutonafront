@@ -265,7 +265,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
 
   Container ballHeader(IssueBallWidgetSyle1ViewModel model,BuildContext context) {
     return Container(
-      height: 64,
+      height: 68,
       child: Stack(children: <Widget>[
         Positioned(
           top: 2,
@@ -300,8 +300,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
           width: MediaQuery.of(context).size.width-100,
           child: Container(
             child: Text(model.getPlaceAddress(),
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontSize: 12,
                   color: Color(0xff78849E),
                 )),
@@ -316,8 +315,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             width: 68,
             alignment: Alignment.centerRight,
             child: Text(model.getDistanceDisplayText(),
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontSize: 10,
                   color: Color(0xffFF4F9A),
                 )),

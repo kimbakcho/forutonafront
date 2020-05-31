@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MapCircleAnimation extends StatefulWidget {
+  final double circleSize;
+  MapCircleAnimation(this.circleSize);
   @override
   _MapCircleAnimationState createState() => _MapCircleAnimationState();
 }
@@ -33,7 +35,7 @@ class _MapCircleAnimationState extends State<MapCircleAnimation>
     Animation circle2SizeCurve =
         CurvedAnimation(parent: circle2Controller, curve: Curves.easeOut);
     _circle2SizeTween =
-        Tween<double>(begin: 0, end: 200).animate(circle2SizeCurve);
+        Tween<double>(begin: 0, end: widget.circleSize).animate(circle2SizeCurve);
     _circle2SizeTween
       ..addListener(() {
         setState(() {});
@@ -55,7 +57,7 @@ class _MapCircleAnimationState extends State<MapCircleAnimation>
     Animation circle1SizeCurve =
         CurvedAnimation(parent: circle1Controller, curve: Curves.easeOut);
     _circle1SizeTween =
-        Tween<double>(begin: 0, end: 200).animate(circle1SizeCurve);
+        Tween<double>(begin: 0, end: widget.circleSize).animate(circle1SizeCurve);
     _circle1SizeTween
       ..addListener(() {
         setState(() {});

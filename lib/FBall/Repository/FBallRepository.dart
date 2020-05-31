@@ -89,7 +89,6 @@ class FBallRepository {
         ball.distanceWithMapCenter = 0;
         ball.distanceDisplayText = "";
       }
-
     }
     return fBallListUpWrapDto;
   }

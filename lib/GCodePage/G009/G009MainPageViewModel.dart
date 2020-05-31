@@ -48,18 +48,10 @@ class G009MainPageViewModel extends ChangeNotifier {
     await FirebaseAuth.instance.signOut();
 
     GlobalModel globalModel = Provider.of(_context, listen: false);
-    globalModel.setFUserInfoDto();
-//    Navigator.of(_context).popUntil(ModalRoute.withName('/'));
-    Navigator.pushAndRemoveUntil(
-        _context,
-        MaterialPageRoute(
-            settings:
-            RouteSettings(name: "/"),
-            builder: (context) {
-              return CodeMainpage();
-            }),
-        ModalRoute.withName('/')
-    );
+    globalModel.signOutFUserInfoDto();
+
+    Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+
   }
 
   void goAlarmSettingPage() {

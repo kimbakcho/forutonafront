@@ -70,8 +70,8 @@ class IssueBallWidgetStyle2 extends StatelessWidget
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(0.00, 3.00),
-                      color: Color(0xff000000).withOpacity(0.16),
-                      blurRadius: 6,
+                      color: Color(0xff455B63).withOpacity(0.08),
+                      blurRadius: 12,
                     )
                   ],
                   borderRadius: BorderRadius.circular(12.00)));
