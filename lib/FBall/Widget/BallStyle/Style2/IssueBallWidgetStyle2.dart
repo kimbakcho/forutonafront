@@ -82,7 +82,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     if (model.isBallDelete()) {
       return "";
     } else {
-      return model.getUserBallResDto().fballResDto.distanceDisplayText;
+//      return model.getUserBallResDto().fballResDto.distanceDisplayText;
     }
   }
 

@@ -30,11 +30,12 @@ FBall _$FBallFromJson(Map<String, dynamic> json) {
     json['profilePicktureUrl'] as String,
     json['uid'] as String,
     (json['userLevel'] as num)?.toDouble(),
-    (json['distanceWithMapCenter'] as num)?.toDouble(),
-    json['distanceDisplayText'] as String,
     json['contributor'] as int,
     json['ballDeleteFlag'] as bool,
-  )..ballHits = json['ballHits'] as int;
+  )
+    ..ballHits = json['ballHits'] as int
+    ..distanceWithMapCenter = (json['distanceWithMapCenter'] as num)?.toDouble()
+    ..distanceDisplayText = json['distanceDisplayText'] as String;
 }
 
 Map<String, dynamic> _$FBallToJson(FBall instance) => <String, dynamic>{

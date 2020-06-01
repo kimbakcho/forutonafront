@@ -1,7 +1,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
@@ -110,7 +110,7 @@ class H005MainPageViewModel extends ChangeNotifier {
     FBallRepository _fBallRepository = new FBallRepository();
     _setIsLoading(true);
 
-    var position = await GeoLocationUtil().getCurrentWithLastPosition();
+    var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     BallNameSearchReqDto reqDto = new BallNameSearchReqDto(
         searchText, sorts.toQureyJson(), pagesize, pagecount,position.latitude,position.longitude);
     var listUpBallFromSearchText =
@@ -124,7 +124,7 @@ class H005MainPageViewModel extends ChangeNotifier {
       String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
     TagRepository _tagRepository = TagRepository();
     _setIsLoading(true);
-    var position = await GeoLocationUtil().getCurrentWithLastPosition();
+    var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     TagSearchFromTextReqDto reqDto = new TagSearchFromTextReqDto(
         searchText, sorts.toQureyJson(), pagesize, pagecount,position.latitude,position.longitude);
     var listUpBallFromSearchText =

@@ -1,6 +1,6 @@
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallResDto.dart';
@@ -16,12 +16,12 @@ class FBallPlayerRepository {
         queryParameters: reqDto.toJson());
     var userToPlayBallResWrapDto =
         UserToPlayBallResWrapDto.fromJson(response.data);
-    var position = await GeoLocationUtil().getCurrentWithLastPosition();
+    var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     for (var userJoinContent in userToPlayBallResWrapDto.contents) {
-      userJoinContent.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
-          userJoinContent.fballResDto.latitude, userJoinContent.fballResDto.longitude, position.latitude, position.longitude);
-      userJoinContent.fballResDto.distanceDisplayText =
-          DistanceDisplayUtil.changeDisplayStr(userJoinContent.fballResDto.distanceWithMapCenter);
+//      userJoinContent.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
+//          userJoinContent.fballResDto.latitude, userJoinContent.fballResDto.longitude, position.latitude, position.longitude);
+//      userJoinContent.fballResDto.distanceDisplayText =
+//          DistanceDisplayUtil.changeDisplayStr(userJoinContent.fballResDto.distanceWithMapCenter);
     }
     return userToPlayBallResWrapDto;
   }
@@ -33,14 +33,14 @@ class FBallPlayerRepository {
         queryParameters: reqDto.toJson());
     var resDto = UserToPlayBallResDto.fromJson(response.data);
 
-    var position = await GeoLocationUtil().getCurrentWithLastPosition();
-    resDto.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
-        resDto.fballResDto.latitude,
-        resDto.fballResDto.longitude,
-        position.latitude,
-        position.longitude);
-    resDto.fballResDto.distanceDisplayText =
-        DistanceDisplayUtil.changeDisplayStr(resDto.fballResDto.distanceWithMapCenter);
+    var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
+//    resDto.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
+//        resDto.fballResDto.latitude,
+//        resDto.fballResDto.longitude,
+//        position.latitude,
+//        position.longitude);
+//    resDto.fballResDto.distanceDisplayText =
+//        DistanceDisplayUtil.changeDisplayStr(resDto.fballResDto.distanceWithMapCenter);
     return resDto;
   }
 }

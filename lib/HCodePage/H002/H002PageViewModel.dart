@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
-import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/HCodePage/H002/H002_01/H002_01Page.dart';
 import 'package:geolocator/geolocator.dart';
 class H002PageViewModel extends ChangeNotifier {
@@ -9,9 +8,9 @@ class H002PageViewModel extends ChangeNotifier {
 
   void goAddIssueBall() async{
     Position currentPosition;
-    await GeoLocationUtil().useGpsReq(_context);
-    currentPosition = await GeoLocationUtil().getCurrentWithLastPosition();
-    String address = await GeolocationRepository().getPositionAddress(currentPosition);
+    await GeoLocationUtilUseCase().useGpsReq(_context);
+    currentPosition = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
+    String address = await GeoLocationUtilUseCase().getPositionAddress(currentPosition);
     Navigator.of(_context).push(MaterialPageRoute(
       builder: (_) => H002_01Page(currentPosition,address)
     ));

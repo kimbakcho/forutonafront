@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
@@ -36,10 +36,10 @@ class IssueBallTypeRepository implements FBallTypeRepository{
     FDio dio = FDio(idToken.token);
     var response = await dio.post("/v1/FBall/Select",queryParameters: fBallReqDto.toJson());
     var fBallResDto = FBallResDto.fromJson(response.data);
-    var position = await  GeoLocationUtil().getCurrentWithLastPosition();
-    fBallResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
-        fBallResDto.latitude, fBallResDto.longitude, position.latitude, position.longitude);
-    fBallResDto.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(fBallResDto.distanceWithMapCenter);
+    var position = await  GeoLocationUtilUseCase().getCurrentWithLastPosition();
+//    fBallResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
+//        fBallResDto.latitude, fBallResDto.longitude, position.latitude, position.longitude);
+//    fBallResDto.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(fBallResDto.distanceWithMapCenter);
     return fBallResDto;
   }
 

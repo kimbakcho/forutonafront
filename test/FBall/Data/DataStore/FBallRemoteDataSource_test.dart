@@ -8,9 +8,6 @@ import 'package:forutonafront/FBall/Data/DataStore/IFBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/Preference.dart';
 import 'package:matcher/matcher.dart';
 import 'package:mockito/mockito.dart';
 
@@ -21,7 +18,7 @@ void main(){
   IFBallRemoteDataSource fBallRemoteDataSource;
   MockFDio mockFDio;
   setUp((){
-    fBallRemoteDataSource = FBallMysqlDataSourceImpl();
+    fBallRemoteDataSource = FBallRemoteSourceImpl();
     mockFDio = MockFDio();
   });
   final FBallListUpReqDto searchCondition = new FBallListUpReqDto(

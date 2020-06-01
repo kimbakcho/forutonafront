@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/HCodePage/H004/SearchBarHistoryUtil/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:provider/provider.dart';
@@ -96,7 +96,7 @@ class H004MainPageViewModel extends ChangeNotifier {
   }
 
   gotoH005Page(String searchText) async {
-    await GeoLocationUtil().useGpsReq(context);
+    await GeoLocationUtilUseCase().useGpsReq(context);
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) {
       return H005MainPage(searchText);

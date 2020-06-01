@@ -32,9 +32,9 @@ class H001Page extends StatelessWidget {
                         addressDisplay(model,context),
                         Expanded(
                             child: Stack(children: <Widget>[
-                          model.hasBall
-                              ? buildListUpPanel(model)
-                              : ballEmptyPanel(),
+                          model.isBallEmpty()
+                              ? ballEmptyPanel()
+                              : buildListUpPanel(model),
                         ]))
                       ]),
                       makeButton(model),

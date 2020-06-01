@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
-import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:geolocator/geolocator.dart';
@@ -51,8 +51,8 @@ class H007MainPageViewModel extends ChangeNotifier {
 
   onMapIdle() async {
     if (!_flagIdleIgnore) {
-      GeolocationRepository _geolocationRepository = GeolocationRepository();
-      this.address = await _geolocationRepository.getPositionAddress(Position(
+
+      this.address = await GeoLocationUtilUseCase().getPositionAddress(Position(
           latitude: currentCameraPosition.target.latitude,
           longitude: currentCameraPosition.target.longitude));
       notifyListeners();
@@ -63,8 +63,8 @@ class H007MainPageViewModel extends ChangeNotifier {
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
 
-    await GeoLocationUtil().useGpsReq(_context);
-    var currentLocation = await GeoLocationUtil().getCurrentWithLastPosition();
+    await GeoLocationUtilUseCase().useGpsReq(_context);
+    var currentLocation = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: 14.4746)));

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
-import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
@@ -37,7 +37,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
   CameraPosition _currentMapPosition;
   CodeMainViewModel _codeMainViewModel;
   FBallRepository _fBallRepository = new FBallRepository();
-  GeolocationRepository _geolocationRepository = GeolocationRepository();
+
 
   CameraPosition initCameraPosition;
   String currentAddress = "";
@@ -148,7 +148,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
 
   onMapIdle() async {
     if (!_flagIdleIgore) {
-      currentAddress = await _geolocationRepository.getPositionAddress(Position(
+      currentAddress = await GeoLocationUtilUseCase().getPositionAddress(Position(
           latitude: _currentMapPosition.target.latitude,
           longitude: _currentMapPosition.target.longitude));
       notifyListeners();
@@ -158,8 +158,8 @@ class ICodeMainPageViewModel extends ChangeNotifier
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
 
-    await GeoLocationUtil().useGpsReq(_context);
-    var currentLocation = await GeoLocationUtil().getCurrentWithLastPosition();
+    await GeoLocationUtilUseCase().useGpsReq(_context);
+    var currentLocation = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: 14.4746)));
@@ -180,7 +180,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
     } else {
 //      var position = await Geolocator().getLastKnownPosition();
       var positionAddress =
-          await _geolocationRepository.getPositionAddress(Position(longitude: _currentMapPosition.target.longitude,latitude: _currentMapPosition.target.latitude));
+          await GeoLocationUtilUseCase().getPositionAddress(Position(longitude: _currentMapPosition.target.longitude,latitude: _currentMapPosition.target.latitude));
       currentAddress = positionAddress;
       await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(_currentMapPosition.target.latitude, _currentMapPosition.target.longitude),

@@ -1,6 +1,6 @@
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
@@ -24,11 +24,11 @@ class TagRepository {
     var response =
     await dio.get("/v1/FTag/tagSearchFromTextToBalls", queryParameters: reqDto.toJson());
     var fBallListUpWrapDto = FBallListUpWrapDto.fromJson(response.data);
-    var position = await  GeoLocationUtil().getCurrentWithLastPosition();
+    var position = await  GeoLocationUtilUseCase().getCurrentWithLastPosition();
     for (var ball in fBallListUpWrapDto.balls) {
-      ball.distanceWithMapCenter = await Geolocator().distanceBetween(
-          ball.latitude, ball.longitude, position.latitude, position.longitude);
-      ball.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(ball.distanceWithMapCenter);
+//      ball.distanceWithMapCenter = await Geolocator().distanceBetween(
+//          ball.latitude, ball.longitude, position.latitude, position.longitude);
+//      ball.distanceDisplayText = DistanceDisplayUtil.changeDisplayStr(ball.distanceWithMapCenter);
     }
     return fBallListUpWrapDto;
   }

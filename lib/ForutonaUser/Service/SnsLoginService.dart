@@ -24,6 +24,4 @@ abstract class SnsLoginService {
     return resDto;
   }
 
-
-
 }

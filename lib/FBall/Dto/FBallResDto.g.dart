@@ -30,8 +30,6 @@ FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
     json['profilePicktureUrl'] as String,
     json['uid'] as String,
     (json['userLevel'] as num)?.toDouble(),
-    (json['distanceWithMapCenter'] as num)?.toDouble(),
-    json['distanceDisplayText'] as String,
     json['contributor'] as int,
     json['ballDeleteFlag'] as bool,
   )..ballHits = json['ballHits'] as int;
@@ -58,8 +56,6 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'profilePicktureUrl': instance.profilePicktureUrl,
       'uid': instance.uid,
       'userLevel': instance.userLevel,
-      'distanceWithMapCenter': instance.distanceWithMapCenter,
-      'distanceDisplayText': instance.distanceDisplayText,
       'contributor': instance.contributor,
       'ballDeleteFlag': instance.ballDeleteFlag,
     };

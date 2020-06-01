@@ -26,8 +26,6 @@ class FBallResDto {
   String profilePicktureUrl;
   String uid;
   double userLevel;
-  double distanceWithMapCenter;
-  String distanceDisplayText;
   int contributor;
   bool ballDeleteFlag;
 
@@ -51,8 +49,6 @@ class FBallResDto {
       this.profilePicktureUrl,
       this.uid,
       this.userLevel,
-      this.distanceWithMapCenter,
-      this.distanceDisplayText,
       this.contributor,
       this.ballDeleteFlag
       );

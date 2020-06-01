@@ -32,8 +32,6 @@ class FBallResForMarker extends FBallResDto {
             ballResDto.profilePicktureUrl,
             ballResDto.uid,
             ballResDto.userLevel,
-            ballResDto.distanceWithMapCenter,
-            ballResDto.distanceDisplayText,
             ballResDto.contributor,
             ballResDto.ballDeleteFlag){
     ballStyle3Widget = BallStyle3Widget.create(ballResDto.ballType,ballStyle3WidgetController);

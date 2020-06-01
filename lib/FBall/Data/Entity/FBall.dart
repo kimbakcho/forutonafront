@@ -51,8 +51,6 @@ class FBall {
       this.profilePicktureUrl,
       this.uid,
       this.userLevel,
-      this.distanceWithMapCenter,
-      this.distanceDisplayText,
       this.contributor,
       this.ballDeleteFlag
       );

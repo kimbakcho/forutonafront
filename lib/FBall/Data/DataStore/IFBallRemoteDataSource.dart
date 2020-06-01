@@ -11,7 +11,7 @@ abstract class IFBallRemoteDataSource {
     {@required FBallListUpReqDto fBallListUpReqDto,@required FDio fDio});
 }
 
-class FBallMysqlDataSourceImpl implements IFBallRemoteDataSource {
+class FBallRemoteSourceImpl implements IFBallRemoteDataSource {
 
   @override
   Future<FBallListUpWrap> listUpFromPosition(

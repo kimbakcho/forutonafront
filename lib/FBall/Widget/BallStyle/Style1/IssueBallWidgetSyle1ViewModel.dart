@@ -3,6 +3,10 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseIp.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOp.dart';
+
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
@@ -17,7 +21,7 @@ import 'package:geolocator/geolocator.dart';
 
 import 'BallStyle1WidgetController.dart';
 
-class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
+class IssueBallWidgetSyle1ViewModel extends ChangeNotifier implements GeoLocationUtilUseCaseOp{
   final BuildContext _context;
 
   IssueBallDescriptionDto fBallDescriptionBasic;
@@ -25,6 +29,8 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
   final BallStyle1WidgetController ballStyle1WidgetController;
   //Loading
   bool _isLoading = false;
+
+  String distanceDisplayText = "";
 
   getIsLoading() {
     return _isLoading;
@@ -38,6 +44,9 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
   IssueBallWidgetSyle1ViewModel(this.ballStyle1WidgetController, this._context) {
     this.fBallDescriptionBasic = IssueBallDescriptionDto.fromJson(
         json.decode(getBallResDto().description));
+    GeoLocationUtilUseCase().reqBallDistanceDisplayText
+      (lat: getBallResDto().latitude,lng: getBallResDto().longitude,geoLocationUtilUseCaseOp: this);
+
   }
 
   bool isAliveBall() {
@@ -102,7 +111,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
     if(getBallResDto().ballDeleteFlag){
       return "";
     }else {
-      return getBallResDto().distanceDisplayText;
+      return distanceDisplayText;
     }
   }
 
@@ -166,5 +175,11 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier {
 
   FBallResDto getBallResDto(){
     return ballStyle1WidgetController.fBallResDto;
+  }
+
+  @override
+  onBallDistanceDisplayText({String displayDistanceText}) {
+    this.distanceDisplayText = displayDistanceText;
+    notifyListeners();
   }
 }

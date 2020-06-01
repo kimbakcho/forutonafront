@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,17 +10,20 @@ import 'package:permission_handler/permission_handler.dart' as Permit;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class GeoLocationUtil {
+import 'GeoLocationUtilUseCaseIp.dart';
+import 'GeoLocationUtilUseCaseOp.dart';
+
+class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseIp {
   ///GPS 가 사용 가능한지 알아보는 메소드
   ///만약 GPS off 면 on 요청 해줌 Flutter 권한 관련 오류로 요청 메세지를 던지기만 하고 타임 아웃으로 빠져 나옴
   Geolocator _geolocator = Geolocator();
-  static final GeoLocationUtil _instance = GeoLocationUtil._internal();
+  static final GeoLocationUtilUseCase _instance = GeoLocationUtilUseCase._internal();
 
-  factory GeoLocationUtil() {
+  factory GeoLocationUtilUseCase() {
     return _instance;
   }
 
-  GeoLocationUtil._internal();
+  GeoLocationUtilUseCase._internal();
 
 
   Future<bool> useGpsReq(BuildContext context) async {
@@ -64,7 +68,6 @@ class GeoLocationUtil {
       sharedPreferences.setDouble("currentlong", resultPosition.longitude);
       sharedPreferences.setDouble("currentlat", resultPosition.latitude);
     }
-
     return resultPosition;
   }
 
@@ -89,6 +92,22 @@ class GeoLocationUtil {
       return false;
     }else {
       return true;
+    }
+  }
+
+  void reqBallDistanceDisplayText({@required double lat,@required double lng,@required GeoLocationUtilUseCaseOp geoLocationUtilUseCaseOp}) async{
+    var position = await getLastKnowPonePosition();
+    var distance = await Geolocator().distanceBetween(lat, lng, position.latitude, position.longitude);
+    geoLocationUtilUseCaseOp.onBallDistanceDisplayText(displayDistanceText: DistanceDisplayUtil.changeDisplayStr(distance));
+  }
+
+  Future<String> getPositionAddress(Position searchPosition) async {
+    var placeMarkList = await Geolocator()
+        .placemarkFromPosition(searchPosition, localeIdentifier: "ko");
+    if(placeMarkList.length > 0){
+      return replacePlacemarkToAddresStr(placeMarkList[0]);
+    }else{
+      return "주 소 없 음";
     }
   }
 

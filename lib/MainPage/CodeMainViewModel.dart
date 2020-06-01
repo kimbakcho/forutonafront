@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/GeoLocationUtil.dart';
-import 'package:forutonafront/Common/Geolocation/GeolocationRepository.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -22,11 +22,11 @@ class CodeMainViewModel with ChangeNotifier {
   }
 
   init()async {
-    await GeoLocationUtil().useGpsReq(_context);
-    this.lastKnownPosition = await GeoLocationUtil().getCurrentWithLastPosition();
+    await GeoLocationUtilUseCase().useGpsReq(_context);
+    this.lastKnownPosition = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     var placeMarkList = await Geolocator()
         .placemarkFromPosition(lastKnownPosition, localeIdentifier: "ko");
-    firstAddress = GeoLocationUtil().replacePlacemarkToAddresStr(placeMarkList[0]);
+    firstAddress = GeoLocationUtilUseCase().replacePlacemarkToAddresStr(placeMarkList[0]);
   }
 
   changeGeolocationListen(Position currentPosition){

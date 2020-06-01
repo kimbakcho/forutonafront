@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mutex/mutex.dart';
 
 import 'ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
@@ -14,6 +15,7 @@ class GlobalModel with ChangeNotifier {
   FUserInfoJoinReqDto fUserInfoJoinReqDto = FUserInfoJoinReqDto();
   PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto = PwFindPhoneAuthReqDto();
   FUserRepository _fUserRepository = new FUserRepository();
+  Position currentAddress = Position();
   Mutex geoRequestMutex = new Mutex();
 
   GlobalModel(){
