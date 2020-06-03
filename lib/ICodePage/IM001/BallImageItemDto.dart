@@ -11,7 +11,7 @@ class BallImageItemDto {
 
   BallImageItemDto();
 
-  factory BallImageItemDto.fromFBallDesImagesDto(FBallDesImagesDto item){
+  factory BallImageItemDto.fromFBallDesImagesDto(FBallDesImages item){
     BallImageItemDto ballImageItemDto = new  BallImageItemDto();
     ballImageItemDto.imageUrl = item.src;
     return ballImageItemDto;

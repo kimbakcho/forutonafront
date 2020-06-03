@@ -6,13 +6,13 @@ part of 'FBallDesImagesDto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FBallDesImagesDto _$FBallDesImagesDtoFromJson(Map<String, dynamic> json) {
-  return FBallDesImagesDto()
+FBallDesImages _$FBallDesImagesFromJson(Map<String, dynamic> json) {
+  return FBallDesImages()
     ..index = json['index'] as int
     ..src = json['src'] as String;
 }
 
-Map<String, dynamic> _$FBallDesImagesDtoToJson(FBallDesImagesDto instance) =>
+Map<String, dynamic> _$FBallDesImagesToJson(FBallDesImages instance) =>
     <String, dynamic>{
       'index': instance.index,
       'src': instance.src,

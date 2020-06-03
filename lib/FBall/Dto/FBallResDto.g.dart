@@ -7,32 +7,32 @@ part of 'FBallResDto.dart';
 // **************************************************************************
 
 FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
-  return FBallResDto(
-    (json['latitude'] as num)?.toDouble(),
-    (json['longitude'] as num)?.toDouble(),
-    json['ballUuid'] as String,
-    json['ballName'] as String,
-    _$enumDecodeNullable(_$FBallTypeEnumMap, json['ballType']),
-    _$enumDecodeNullable(_$FBallStateEnumMap, json['ballState']),
-    json['placeAddress'] as String,
-    json['ballLikes'] as int,
-    json['ballDisLikes'] as int,
-    json['commentCount'] as int,
-    json['ballPower'] as int,
-    json['activationTime'] == null
+  return FBallResDto()
+    ..latitude = (json['latitude'] as num)?.toDouble()
+    ..longitude = (json['longitude'] as num)?.toDouble()
+    ..ballUuid = json['ballUuid'] as String
+    ..ballName = json['ballName'] as String
+    ..ballType = _$enumDecodeNullable(_$FBallTypeEnumMap, json['ballType'])
+    ..ballState = _$enumDecodeNullable(_$FBallStateEnumMap, json['ballState'])
+    ..placeAddress = json['placeAddress'] as String
+    ..ballHits = json['ballHits'] as int
+    ..ballLikes = json['ballLikes'] as int
+    ..ballDisLikes = json['ballDisLikes'] as int
+    ..commentCount = json['commentCount'] as int
+    ..ballPower = json['ballPower'] as int
+    ..activationTime = json['activationTime'] == null
         ? null
-        : DateTime.parse(json['activationTime'] as String),
-    json['makeTime'] == null
+        : DateTime.parse(json['activationTime'] as String)
+    ..makeTime = json['makeTime'] == null
         ? null
-        : DateTime.parse(json['makeTime'] as String),
-    json['description'] as String,
-    json['nickName'] as String,
-    json['profilePicktureUrl'] as String,
-    json['uid'] as String,
-    (json['userLevel'] as num)?.toDouble(),
-    json['contributor'] as int,
-    json['ballDeleteFlag'] as bool,
-  )..ballHits = json['ballHits'] as int;
+        : DateTime.parse(json['makeTime'] as String)
+    ..description = json['description'] as String
+    ..nickName = json['nickName'] as String
+    ..profilePictureUrl = json['profilePictureUrl'] as String
+    ..uid = json['uid'] as String
+    ..userLevel = (json['userLevel'] as num)?.toDouble()
+    ..contributor = json['contributor'] as int
+    ..ballDeleteFlag = json['ballDeleteFlag'] as bool;
 }
 
 Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
@@ -53,7 +53,7 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'makeTime': instance.makeTime?.toIso8601String(),
       'description': instance.description,
       'nickName': instance.nickName,
-      'profilePicktureUrl': instance.profilePicktureUrl,
+      'profilePictureUrl': instance.profilePictureUrl,
       'uid': instance.uid,
       'userLevel': instance.userLevel,
       'contributor': instance.contributor,

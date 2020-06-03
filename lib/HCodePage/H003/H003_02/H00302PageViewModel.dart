@@ -6,11 +6,11 @@ import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallSelectReqDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2ReFreshBallUtil.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2Widget.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2WidgetController.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2WidgetInter.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2ReFreshBallUtil.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetController.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetInter.dart';
 import 'package:provider/provider.dart';
 
 import '../../../GlobalModel.dart';

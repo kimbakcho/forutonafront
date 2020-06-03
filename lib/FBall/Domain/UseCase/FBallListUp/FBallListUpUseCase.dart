@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+
 import 'package:forutonafront/FBall/Domain/Repository/IFBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseIp.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOp.dart';

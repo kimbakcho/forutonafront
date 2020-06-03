@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/FBall/Data/DataStore/IFBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:matcher/matcher.dart';
 import 'package:mockito/mockito.dart';
@@ -45,7 +45,7 @@ void main(){
     setWhenBallListUp(mockFDio);
     //act
        var fBallListUpWrapDto = await fBallRemoteDataSource
-           .listUpFromPosition(fBallListUpReqDto: searchCondition,fDio: mockFDio);
+           .listUpFromPosition(fBallListUpReqDto: searchCondition,noneTokenFDio: mockFDio);
     //assert
       expect(fBallListUpWrapDto.balls.length > 0, isTrue);
       expect(fBallListUpWrapDto.balls[0], TypeMatcher<FBall>());

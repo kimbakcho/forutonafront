@@ -4,19 +4,19 @@ import 'package:json_annotation/json_annotation.dart';
 part 'FBallDesImagesDto.g.dart';
 
 @JsonSerializable()
-class FBallDesImagesDto {
+class FBallDesImages {
   int index;
   String src;
 
-  factory FBallDesImagesDto.fromUrl(index,src){
-     var fBallDesImagesDto = FBallDesImagesDto();
+  factory FBallDesImages.fromUrl(index,src){
+     var fBallDesImagesDto = FBallDesImages();
      fBallDesImagesDto.index = index;
      fBallDesImagesDto.src = src;
      return fBallDesImagesDto;
   }
 
-  factory FBallDesImagesDto.fromJson(Map<String, dynamic> json) => _$FBallDesImagesDtoFromJson(json);
-  Map<String, dynamic> toJson() => _$FBallDesImagesDtoToJson(this);
+  factory FBallDesImages.fromJson(Map<String, dynamic> json) => _$FBallDesImagesFromJson(json);
+  Map<String, dynamic> toJson() => _$FBallDesImagesToJson(this);
 
-  FBallDesImagesDto();
+  FBallDesImages();
 }

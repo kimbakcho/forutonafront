@@ -1,7 +1,8 @@
+import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'FBallState.dart';
-import 'FBallType.dart';
+import '../Data/Value/FBallState.dart';
+import '../Data/Value/FBallType.dart';
 
 part 'FBallResDto.g.dart';
 
@@ -23,38 +24,43 @@ class FBallResDto {
   DateTime makeTime;
   String description;
   String nickName;
-  String profilePicktureUrl;
+  String profilePictureUrl;
   String uid;
   double userLevel;
   int contributor;
   bool ballDeleteFlag;
 
 
-  FBallResDto(
-      this.latitude,
-      this.longitude,
-      this.ballUuid,
-      this.ballName,
-      this.ballType,
-      this.ballState,
-      this.placeAddress,
-      this.ballLikes,
-      this.ballDisLikes,
-      this.commentCount,
-      this.ballPower,
-      this.activationTime,
-      this.makeTime,
-      this.description,
-      this.nickName,
-      this.profilePicktureUrl,
-      this.uid,
-      this.userLevel,
-      this.contributor,
-      this.ballDeleteFlag
-      );
+  FBallResDto();
 
   factory FBallResDto.fromJson(Map<String, dynamic> json) =>
       _$FBallResDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$FBallResDtoToJson(this);
+
+  factory FBallResDto.fromFBall(FBall fBall){
+    FBallResDto fBallResDto = FBallResDto();
+    fBallResDto.latitude = fBall.latitude;
+    fBallResDto.longitude = fBall.longitude;
+    fBallResDto.ballUuid = fBall.ballUuid;
+    fBallResDto.ballName = fBall.ballName;
+    fBallResDto.ballType = fBall.ballType;
+    fBallResDto.ballState = fBall.ballState;
+    fBallResDto.placeAddress = fBall.placeAddress;
+    fBallResDto.ballHits = fBall.ballHits;
+    fBallResDto.ballLikes = fBall.ballLikes;
+    fBallResDto.ballDisLikes = fBall.ballDisLikes;
+    fBallResDto.commentCount = fBall.commentCount;
+    fBallResDto.ballPower = fBall.ballPower;
+    fBallResDto.activationTime = fBall.activationTime;
+    fBallResDto.makeTime = fBall.makeTime;
+    fBallResDto.description = fBall.description;
+    fBallResDto.nickName = fBall.nickName;
+    fBallResDto.uid = fBall.uid;
+    fBallResDto.userLevel = fBall.userLevel;
+    fBallResDto.contributor = fBall.contributor;
+    fBallResDto.ballDeleteFlag = fBall.ballDeleteFlag;
+    return fBallResDto;
+  }
+
 }

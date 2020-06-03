@@ -38,7 +38,7 @@ class H001Page extends StatelessWidget {
                         ]))
                       ]),
                       makeButton(model),
-                      model.getIsLoading() ?
+                      model.isLoading ?
                       CommonLoadingComponent() : Container()
                     ]);
                   })))
@@ -61,7 +61,6 @@ class H001Page extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 65),
       physics: BouncingScrollPhysics(),
-//      shrinkWrap: true,
       itemCount: model.ballWidgetLists.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
@@ -125,7 +124,7 @@ class H001Page extends StatelessWidget {
           child: ListView.builder(
               padding: EdgeInsets.all(0),
               shrinkWrap: true,
-              itemCount: model.rankingWrapDto.contents.length,
+              itemCount: model.tagRankingDtos.length,
               itemBuilder: (builder, index) {
                 return Container(
                     height: 40,
@@ -139,17 +138,17 @@ class H001Page extends StatelessWidget {
                     child: FlatButton(
                       padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       onPressed: (){
-                        model.gotoTagSearch(model.rankingWrapDto.contents[index].tagName);
+                        model.gotoTagSearch(model.tagRankingDtos[index].tagName);
                       },
                       child:Row(children: <Widget>[
-                        Text("${model.rankingWrapDto.contents[index].ranking}.",
+                        Text("${model.tagRankingDtos[index].ranking}.",
                             style: GoogleFonts.notoSans(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                                 color: Color(0xff454F63)
                             )),
                         SizedBox(width: 12),
-                        Text("#${model.rankingWrapDto.contents[index].tagName}",
+                        Text("#${model.tagRankingDtos[index].tagName}",
                             style: GoogleFonts.notoSans(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -157,26 +156,15 @@ class H001Page extends StatelessWidget {
                             )),
                         Spacer(),
                         Text(
-                            "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}",
+                            "${ model.changeTagValueDisplay(model.tagRankingDtos[index].tagPower)}",
                             style: GoogleFonts.notoSans(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                                 color: Color(0xff454F63)
                             )),
                         SizedBox(width: 12),
-//                      Container(
-//                        width: 12,
-//                        child: FlatButton(
-//                            padding: EdgeInsets.all(0),
-//                            onPressed: () {
-//                              model.inlineRanking = false;
-//                            },
-//                            child: Icon(ForutonaIcon.down_arrow, size: 10)),
-//                      )
                       ])
-                    )
-
-                    );
+                    ));
               }),
           height: MediaQuery.of(context).size.height - 240,
           width: MediaQuery.of(context).size.width,
@@ -222,9 +210,9 @@ class H001Page extends StatelessWidget {
 
   Container inlineRanking(H001ViewModel model) {
     return Container(
-        child: model.rankingWrapDto.contents.length != 0
+        child: model.tagRankingDtos.length != 0
             ? Swiper(
-                itemCount: model.rankingWrapDto.contents.length,
+                itemCount: model.tagRankingDtos.length,
                 autoplay: model.rankingAutoPlay,
                 scrollDirection: Axis.vertical,
                 autoplayDelay: 2000,
@@ -235,12 +223,12 @@ class H001Page extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       child: FlatButton(
                         onPressed: (){
-                          model.gotoTagSearch(model.rankingWrapDto.contents[index].tagName);
+                          model.gotoTagSearch(model.tagRankingDtos[index].tagName);
                         },
                         padding: EdgeInsets.all(0),
                         child :Row(children: <Widget>[
                           Text(
-                            "${model.rankingWrapDto.contents[index].ranking}.",
+                            "${model.tagRankingDtos[index].ranking}.",
                             style: GoogleFonts.notoSans(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -249,7 +237,7 @@ class H001Page extends StatelessWidget {
                           ),
                           SizedBox(width: 12),
                           Text(
-                              "#${model.rankingWrapDto.contents[index].tagName}",
+                              "#${model.tagRankingDtos[index].tagName}",
                               style: GoogleFonts.notoSans(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -257,7 +245,7 @@ class H001Page extends StatelessWidget {
                               )),
                           Spacer(),
                           Text(
-                              "${ model.changeTagValueDisplay(model.rankingWrapDto.contents[index].tagPower)}"),
+                              "${ model.changeTagValueDisplay(model.tagRankingDtos[index].tagPower)}"),
                           SizedBox(width: 12),
                           Container(
                             width: 12,
@@ -276,7 +264,7 @@ class H001Page extends StatelessWidget {
               )
             : Container(),
         margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-        height: model.rankingWrapDto.contents.length == 0 ? 0 : 40,
+        height: model.tagRankingDtos.length == 0 ? 0 : 40,
         decoration: BoxDecoration(
             color: Color(0xffe9faff),
             border: Border.all(width: 1.00, color: Color(0xff38caf5)),

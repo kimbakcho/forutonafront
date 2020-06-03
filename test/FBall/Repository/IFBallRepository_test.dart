@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/FBall/Data/DataStore/IFBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallrepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/IFBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
@@ -38,7 +38,7 @@ void main() {
     //act
     var reslut = await ifBallRepository.listUpFromPosition(listUpReqDto: searchCondition);
     //assert
-    verify(mockIFBallRemoteDataSource.listUpFromPosition(fBallListUpReqDto: anyNamed('fBallListUpReqDto'), fDio: anyNamed('fDio')));
+    verify(mockIFBallRemoteDataSource.listUpFromPosition(fBallListUpReqDto: anyNamed('fBallListUpReqDto'), noneTokenFDio : anyNamed('fDio')));
     expect(reslut,TypeMatcher<FBallListUpWrap>());
   });
 
@@ -55,6 +55,6 @@ void main() {
 
 void setDateSourceListUpBall(MockIFBallRemoteDataSource mockIFBallRemoteDataSource) {
   when(mockIFBallRemoteDataSource
-      .listUpFromPosition(fBallListUpReqDto: anyNamed('fBallListUpReqDto'), fDio: anyNamed('fDio')))
+      .listUpFromPosition(fBallListUpReqDto: anyNamed('fBallListUpReqDto'), noneTokenFDio: anyNamed('fDio')))
       .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
 }

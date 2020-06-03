@@ -8,22 +8,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:forutonafront/Common/BallModify/BallModifyService.dart';
-import 'package:forutonafront/Common/BallModify/Impl/IssueBallModifyImpl.dart';
+import 'package:forutonafront/Common/BallModify/Impl/IssueBallModifyService.dart';
 import 'package:forutonafront/Common/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
 import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
-import 'package:forutonafront/Common/Tag/Dto/TagResDto.dart';
+import 'package:forutonafront/Common/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
+import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationResDto.dart';
-import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallValuationRepository.dart';
-import 'package:forutonafront/FBall/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
@@ -40,7 +39,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   ScrollController mainScrollController = new ScrollController();
 
   FUserRepository _fUserRepository = new FUserRepository();
-  IssueBallDescriptionDto issueBallDescriptionDto;
+
   FBallResDto fBallResDto;
   bool showMoreDetailFlag = false;
   FUserInfoResDto makerUserInfo;
@@ -97,8 +96,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
     initialCameraPosition = CameraPosition(
         target: LatLng(fBallResDto.latitude, fBallResDto.longitude),
         zoom: 14.425);
-    issueBallDescriptionDto =
-        IssueBallDescriptionDto.fromJson(json.decode(fBallResDto.description));
+//    issueBallDescriptionDto =
+//        IssueBallDescriptionDto.fromJson(json.decode(fBallResDto.description));
     if (issueBallDescriptionDto.youtubeVideoId != null) {
       youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
     }
@@ -763,7 +762,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void showBallSetting() async {
-    BallModifyService ballModifyService = IssueBallModifyImpl();
+    BallModifyService ballModifyService = IssueBallModifyService();
     if (await ballModifyService.isCanModify(fBallResDto.uid)) {
       var result = await ballModifyService.showModifySelectDialog(_context, fBallResDto.ballType,fBallResDto.ballUuid);
       if (result == CommonBallModifyWidgetResultType.Delete) {

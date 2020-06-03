@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dio/native_imp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Preference.dart';
 
 class FDio extends DioForNative {
@@ -18,5 +19,17 @@ class FDio extends DioForNative {
       HttpHeaders.authorizationHeader: "Bearer " + token
     };
     return options;
+  }
+
+  factory FDio.noneToken(){
+    FDio fDio = new FDio("noneToken");
+    return fDio;
+  }
+
+  static makeAuthTokenFDio() async {
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    var idToken = await firebaseUser.getIdToken(refresh: true);
+    FDio dio = FDio(idToken.token);
+    return dio;
   }
 }

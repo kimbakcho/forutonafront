@@ -19,8 +19,8 @@ import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallType.dart';
-import 'package:forutonafront/FBall/Dto/IssueBallDescriptionDto.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/FBallType.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/IssueBallDescription.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/MakerSupportStyle2.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
@@ -200,7 +200,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
     issueBallDescriptionDto.text = textContentEditController.text;
     for (int i = 0; i < fillUrlBallImageList.length; i++) {
       issueBallDescriptionDto.desimages
-          .add(FBallDesImagesDto.fromUrl(i, fillUrlBallImageList[i].imageUrl));
+          .add(FBallDesImages.fromUrl(i, fillUrlBallImageList[i].imageUrl));
     }
 
     if (validYoutubeLink != null) {

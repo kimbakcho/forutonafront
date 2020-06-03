@@ -1,5 +1,5 @@
-import 'package:forutonafront/Common/Tag/Dto/TagInsertReqDto.dart';
-import 'FBallType.dart';
+import 'package:forutonafront/Tag/Dto/TagInsertReqDto.dart';
+import '../Data/Value/FBallType.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'FBallInsertReqDto.g.dart';
 

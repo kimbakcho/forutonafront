@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimationWithContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
+import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Widget/FBallReply/FBallReplyWidget.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,21 +18,20 @@ import 'package:provider/provider.dart';
 
 class ID001MainPage extends StatefulWidget {
    String fBallUuid;
-   FBallResDto fBallResDto;
+   IssueBall issueBall;
 
-   ID001MainPage(this.fBallUuid, {this.fBallResDto});
+   ID001MainPage(this.fBallUuid, {this.issueBall});
 
   @override
-  _ID001MainPageState createState() => _ID001MainPageState(fBallUuid,fBallResDto);
+  _ID001MainPageState createState() => _ID001MainPageState();
 }
 
 class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserver {
   AppLifecycleState _lastLifecycleState;
-   String fBallUuid;
-   FBallResDto fBallResDto;
+
    UniqueKey googleMapKey = UniqueKey();
 
-   _ID001MainPageState(this.fBallUuid, this.fBallResDto);
+
   @override
   void initState() {
     super.initState();

@@ -1,20 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallSelectReqDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2Widget.dart';
 import 'package:forutonafront/FBall/Repository/FBallPlayerRepository.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2ReFreshBallUtil.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2Widget.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetController.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style2/BallStyle2WidgetInter.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:provider/provider.dart';
 
-class H00301PageViewModel extends ChangeNotifier implements BallStyle2WidgetInter{
+class H00301PageViewModel extends ChangeNotifier implements {
   final BuildContext _context;
   List<BallStyle2Widget> ballListUpWidgets = [];
   ScrollController scrollController = ScrollController();

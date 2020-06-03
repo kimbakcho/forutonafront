@@ -1,12 +1,9 @@
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallResWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallSelectReqDto.dart';
-import 'package:geolocator/geolocator.dart';
+
 
 class FBallPlayerRepository {
   Future<UserToPlayBallResWrapDto> getUserToPlayBallList(

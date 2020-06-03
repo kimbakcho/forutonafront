@@ -2,10 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/Common/Tag/Dto/TagRankingReqDto.dart';
-import 'package:forutonafront/Common/Tag/Dto/TagRankingWrapDto.dart';
-import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Data/DataStore/IFBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallrepositoryImpl.dart';
@@ -14,24 +11,23 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCas
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOp.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1ReFreshBallUtil.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1Widget.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetController.dart';
-import 'package:forutonafront/FBall/Widget/BallStyle/Style1/BallStyle1WidgetInter.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
-import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagUseCase.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagUseCaseIp.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagUseCaseOp.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingReqDto.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:uuid/uuid.dart';
 
 enum H001PageState { H001_01, H003_01 }
 
-class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallListUpUseCaseOp{
+class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOp,TagUseCaseOp{
   final BuildContext _context;
   String selectPositionAddress = "로 딩 중";
   bool rankingAutoPlay = false;
@@ -39,48 +35,51 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallL
   ScrollController h001CenterListViewController = new ScrollController();
   bool addressDisplayShowFlag = true;
   bool makeButtonDisplayShowFlag = true;
-  FBallListUpUseCaseIp fBallListUpUseCaseIp;
+  FBallListUpUseCaseIp _fBallListUpUseCaseIp;
   List<BallStyle1Widget> ballWidgetLists = [];
   Position _currentSearchPosition;
   bool _inlineRanking = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
 
-  bool _isLoading = false;
-  getIsLoading() {
+  TagUseCaseIp _tagUseCaseIp = TagUseCase();
+
+
+
+      bool _isLoading = false;
+
+  get isLoading {
     return _isLoading;
   }
-  _setIsLoading(bool value) {
+  set isLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
-
-  TagRankingWrapDto rankingWrapDto;
-
+//  TagRankingWrapDto rankingWrapDto;
+  List<TagRankingDto> tagRankingDtos;
 
   H001ViewModel(this._context) {
     init();
   }
 
   init() async {
-    fBallListUpUseCaseIp = FBallListUpUseCase(
+    _fBallListUpUseCaseIp = FBallListUpUseCase(
       ifBallRepository: FBallrepositoryImpl(ifBallRemoteDataSource: FBallRemoteSourceImpl()),
       geoLocationUtil: GeoLocationUtilUseCase(),
       fBallListUpUseCaseOp: this,
     );
 
-    rankingWrapDto = new TagRankingWrapDto(DateTime.now(), []);
     setAddressText("로딩중");
     h001CenterListViewController
         .addListener(h001CenterListViewControllerListener);
     _currentSearchPosition = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
-    await searchFBallPosition(searchPosition: _currentSearchPosition,findAddress: true);
+    searchFBallPosition(searchPosition: _currentSearchPosition,findAddress: true);
     getTagRanking(_currentSearchPosition);
   }
 
   Future searchFBallPosition({@required Position searchPosition,int pageCount = 0,bool findAddress = true}) async {
-    _setIsLoading(true);
+    isLoading = true;
     await GeoLocationUtilUseCase().useGpsReq(_context);
     FBallListUpReqDto ballListUpReqDto = new FBallListUpReqDto(
         latitude: searchPosition.latitude,
@@ -90,8 +89,8 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallL
         size: _ballPageLimitSize,
         sort: "Influence,DESC",
         findAddress: findAddress);
-    await fBallListUpUseCaseIp.positionSearchListUpBall(searchReqDto: ballListUpReqDto);
-    _setIsLoading(false);
+    await _fBallListUpUseCaseIp.positionSearchListUpBall(searchReqDto: ballListUpReqDto);
+    isLoading= false;
   }
 
   @override
@@ -100,7 +99,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallL
       this.ballWidgetLists.clear();
     }
     this.ballWidgetLists.addAll(fBallResDtos
-        .map((x) => BallStyle1Widget.create(x.ballType,BallStyle1WidgetController(x,this)))
+        .map((x) => BallStyle1Widget.create(fBallResDto: x,))
         .toList());
     if(address != null){
       setAddressText(address);
@@ -137,7 +136,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallL
             builder: (context) =>
                 H007MainPage(_currentSearchPosition, selectPositionAddress)));
     if (position != null) {
-      _setIsLoading(true);
+      isLoading = true;
       _currentSearchPosition = Position(
           latitude: position.latLng.latitude,
           longitude: position.latLng.longitude);
@@ -146,7 +145,7 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallL
 
       setAddressText(position.descriptionAddress);
 
-      _setIsLoading(false);
+      isLoading = false;
     }
     notifyListeners();
   }
@@ -268,15 +267,11 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallL
 
   Future<bool> isLogin() async => await FirebaseAuth.instance.currentUser()!=null;
 
+
   //------------------Clean arch-------------------------------
 
   Future getTagRanking(Position currentPosition) async {
-    TagRepository _tagRepository = new TagRepository();
-    rankingWrapDto = await _tagRepository.getTagRanking(new TagRankingReqDto(
-        currentPosition.latitude, currentPosition.longitude, 10));
-    rankingSwiperController.move(0);
-    rankingAutoPlay = true;
-    notifyListeners();
+    _tagUseCaseIp.getTagRanking(reqDto: TagRankingReqDto(currentPosition.latitude, currentPosition.longitude, 10), op: this);
   }
 
   set inlineRanking(bool value) {
@@ -288,15 +283,6 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallL
     return _inlineRanking;
   }
 
-  @override
-  onRequestReFreshBall(FBallResDto reFreshNeedBall) async {
-//    _setIsLoading(true);
-    var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
-    await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
-    notifyListeners();
-//    _setIsLoading(false);
-  }
-
   void gotoTagSearch(String tagName) {
     Navigator.of(_context).push(
       MaterialPageRoute(
@@ -304,8 +290,17 @@ class H001ViewModel with ChangeNotifier implements  BallStyle1WidgetInter,FBallL
       )
     );
   }
+
   String changeTagValueDisplay(double value){
     return NomalValueDisplay.changeIntDisplaystr(value);
+  }
+
+  @override
+  void onTagRanking(List<TagRankingDto> tagRankingDtos) {
+    this.tagRankingDtos = tagRankingDtos;
+    rankingSwiperController.move(0);
+    rankingAutoPlay = true;
+    notifyListeners();
   }
 
 }

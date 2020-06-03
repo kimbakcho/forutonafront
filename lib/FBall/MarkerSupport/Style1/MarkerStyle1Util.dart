@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/FBall/Dto/FBallType.dart';
+import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/IssueBallStyle1MarkerWidget.dart';
 
 import 'Widget/QuestBallStyle1MarkerWidget.dart';

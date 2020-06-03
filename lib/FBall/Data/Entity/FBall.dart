@@ -1,5 +1,6 @@
-import 'package:forutonafront/FBall/Dto/FBallState.dart';
-import 'package:forutonafront/FBall/Dto/FBallType.dart';
+
+import 'package:forutonafront/FBall/Data/Value/FBallState.dart';
+import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -26,34 +27,11 @@ class FBall {
   String profilePicktureUrl;
   String uid;
   double userLevel;
-  double distanceWithMapCenter;
-  String distanceDisplayText;
   int contributor;
   bool ballDeleteFlag;
 
 
-  FBall(
-      this.latitude,
-      this.longitude,
-      this.ballUuid,
-      this.ballName,
-      this.ballType,
-      this.ballState,
-      this.placeAddress,
-      this.ballLikes,
-      this.ballDisLikes,
-      this.commentCount,
-      this.ballPower,
-      this.activationTime,
-      this.makeTime,
-      this.description,
-      this.nickName,
-      this.profilePicktureUrl,
-      this.uid,
-      this.userLevel,
-      this.contributor,
-      this.ballDeleteFlag
-      );
+  FBall();
 
   factory FBall.fromJson(Map<String, dynamic> json) =>
       _$FBallFromJson(json);

@@ -1,5 +1,6 @@
 
-import 'package:forutonafront/FBall/Dto/FBallType.dart';
+
+import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FBallJoinReqDto.g.dart';

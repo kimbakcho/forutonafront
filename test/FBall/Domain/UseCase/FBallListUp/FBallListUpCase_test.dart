@@ -3,8 +3,9 @@ import 'dart:convert';
 
 
 import 'package:flutter_test/flutter_test.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/FBall/Data/Value/FBallListUpWrap.dart';
+
 import 'package:forutonafront/FBall/Domain/Repository/IFBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseIp.dart';
@@ -48,11 +49,9 @@ void main(){
             .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
         //act
         var positionSearchListUpBall = await ballListUpUseCase.positionSearchListUpBall(searchReqDto: fBallListUpReqDto);
-
         //assert
         verify(mockFBallListUpCaseOp.onPositionSearchListUpBall(fBallResDtos: anyNamed('fBallResDtos'),address: anyNamed('address')));
         expect(positionSearchListUpBall, TypeMatcher<List<FBallResDto>>());
-
       });
 
   test('should be entity to dto list value same position',
@@ -99,11 +98,9 @@ void main(){
             findAddress: false
         );
         //act
-        var positionSearchListUpBall = await ballListUpUseCase.positionSearchListUpBall(searchReqDto: fBallListUpReqDtoFindAddressOption);
-
+        await ballListUpUseCase.positionSearchListUpBall(searchReqDto: fBallListUpReqDtoFindAddressOption);
         //assert
         verify(mockFBallListUpCaseOp.onPositionSearchListUpBall(fBallResDtos: anyNamed('fBallResDtos'), address: null));
-
       });
 
 }
