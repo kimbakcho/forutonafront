@@ -10,10 +10,10 @@ import 'package:forutonafront/FBall/Dto/FBallImageUploadResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallResDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallResWrapDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToMakerBallSelectReqDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallResWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallSelectReqDto.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:convert';
@@ -96,11 +96,11 @@ class FBallRepository {
   /**
    * User가 만든 Ball을 찾음.
    */
-  Future<UserToMakerBallResWrapDto> getUserToMakerBalls(UserToMakerBallReqDto reqDto) async {
+  Future<UserToMakeBallResWrapDto> getUserToMakerBalls(UserToMakeBallReqDto reqDto) async {
     FDio dio = new FDio("nonetoken");
     var response =
       await dio.get("/v1/FBall/UserToMakerBalls", queryParameters: reqDto.toJson());
-    var userToMakerBallResWrapDto = UserToMakerBallResWrapDto.fromJson(response.data);
+    var userToMakerBallResWrapDto = UserToMakeBallResWrapDto.fromJson(response.data);
     var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     for (var userContent in userToMakerBallResWrapDto.contents) {
 //      userContent.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(
@@ -110,11 +110,11 @@ class FBallRepository {
     return userToMakerBallResWrapDto;
   }
 
-  Future<UserToMakerBallResDto> getUserToMakerBall(UserToMakerBallSelectReqDto reqDto) async{
+  Future<UserToMakeBallResDto> getUserToMakerBall(UserToMakeBallSelectReqDto reqDto) async{
     FDio dio = new FDio("nonetoken");
     var response =
         await dio.get("/v1/FBall/UserToMakerBall", queryParameters: reqDto.toJson());
-    var userContent = UserToMakerBallResDto.fromJson(response.data);
+    var userContent = UserToMakeBallResDto.fromJson(response.data);
     var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
 
 //    userContent.fballResDto.distanceWithMapCenter = await Geolocator().distanceBetween(

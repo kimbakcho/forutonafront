@@ -23,13 +23,11 @@ class KakaoLoginService extends SnsLoginService {
 
   @override
   Future<bool>  tryLogin() async {
-//    FlutterKakaoLogin kakaoSignIn = FlutterKakaoLogin();
     try {
       final installed = await isKakaoTalkInstalled();
       final authCode = installed ? await AuthCodeClient.instance.requestWithTalk() : await AuthCodeClient.instance.request();
         AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
         await AccessTokenStore.instance.toStore(token);
-
       User user = await UserApi.instance.me();
         _reqDto.accessToken = token.accessToken;
         _reqDto.snsService = SnsSupportService.Kakao;
@@ -48,37 +46,11 @@ class KakaoLoginService extends SnsLoginService {
     } catch (e) {
       throw(e.message);
     }
-//    KakaoLoginResult result;
-//    result = await kakaoSignIn.logIn();
-//    switch (result.status) {
-//      case KakaoLoginStatus.loggedIn:
-//        result = await kakaoSignIn.getUserMe();
-//        KakaoAccessToken token =await kakaoSignIn.currentAccessToken;
-//        _reqDto.accessToken = token.token;
-//        _reqDto.snsService = SnsSupportService.Kakao;
-//        _reqDto.fUserUid  = "${SnsSupportService.Kakao}${result.account.userID}";
-//        _reqDto.snsUid = result.account.userID;
-//        var fUserSnsCheckJoinResDto = await snsUidJoinCheck(_reqDto);
-//        if(!fUserSnsCheckJoinResDto.join){
-//          throw new NotJoinException("not Join",fUserSnsCheckJoinResDto);
-//        }else {
-//          await FirebaseAuth.instance.signInWithCustomToken(token: fUserSnsCheckJoinResDto.firebaseCustomToken);
-//        }
-//        break;
-//      case KakaoLoginStatus.loggedOut:
-//        throw("loggedOut");
-//        break;
-//      case KakaoLoginStatus.error:
-//        throw(result.errorMessage);
-//        break;
-//    }
-
     return true;
   }
 
   @override
   SnsSupportService getSupportSnsService() {
-
     return SnsSupportService.Kakao;
   }
   @override

@@ -27,7 +27,7 @@ class H00301Page extends StatelessWidget {
                                   fontSize: 14,
                                   color: Color(0xffb1b1b1),
                                 )))),
-                model.getIsLoading() ? CommonLoadingComponent() : Container()
+                model.isLoading ? CommonLoadingComponent() : Container()
               ]));
         }));
   }

@@ -1,37 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 
-import 'package:forutonafront/FBall/Domain/Repository/IFBallRepository.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseIp.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOp.dart';
+import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 
-class FBallListUpUseCase implements FBallListUpUseCaseIp {
-  final FBallListUpUseCaseOp fBallListUpUseCaseOp;
-  final IFBallRepository ifBallRepository;
+class FBallListUpUseCase implements FBallListUpUseCaseInputPort {
+  final FBallListUpUseCaseOutputPort fBallListUpUseCaseOutputPort;
+  final FBallRepository fBallRepository;
   final GeoLocationUtilUseCase geoLocationUtil;
 
   FBallListUpUseCase(
-      {@required this.fBallListUpUseCaseOp,
-      @required this.ifBallRepository,
+      {@required this.fBallListUpUseCaseOutputPort,
+      @required this.fBallRepository,
       @required this.geoLocationUtil});
 
   @override
   Future<List<FBallResDto>> positionSearchListUpBall(
       {@required FBallListUpReqDto searchReqDto}) async {
     var fBallListUpWrap =
-        await ifBallRepository.listUpFromPosition(listUpReqDto: searchReqDto);
+        await fBallRepository.listUpFromPosition(listUpReqDto: searchReqDto);
     var result = fBallListUpWrap.balls
         .map((e) => new FBallResDto.fromJson(e.toJson()))
         .toList();
     String updateAddress;
     updateAddress = await getAddress(searchReqDto);
-    fBallListUpUseCaseOp.onPositionSearchListUpBall(
-        fBallResDtos: result,
-        address: updateAddress);
+    if(fBallListUpUseCaseOutputPort != null){
+      fBallListUpUseCaseOutputPort.onPositionSearchListUpBall(
+          fBallResDtos: result,
+          address: updateAddress);
+    }
     return result;
   }
 

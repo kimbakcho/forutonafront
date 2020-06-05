@@ -4,12 +4,12 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallListUpWrap.dart';
+import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 
-import 'package:forutonafront/FBall/Domain/Repository/IFBallRepository.dart';
+import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseIp.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOp.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:geolocator/geolocator.dart';
@@ -17,20 +17,20 @@ import 'package:mockito/mockito.dart';
 import 'package:matcher/matcher.dart';
 import '../../../../fixtures/fixture_reader.dart';
 
-class MockIFBallRepository extends Mock implements IFBallRepository{}
-class MockFBallListUpCaseOp extends Mock implements FBallListUpUseCaseOp{}
+class MockIFBallRepository extends Mock implements FBallRepository{}
+class MockFBallListUpCaseOp extends Mock implements FBallListUpUseCaseOutputPort{}
 class MockGeoLocationUtil extends Mock implements GeoLocationUtilUseCase{}
 void main(){
   MockIFBallRepository mockIFBallRepository;
-  FBallListUpUseCaseIp ballListUpUseCase;
+  FBallListUpUseCaseInputPort ballListUpUseCase;
   MockFBallListUpCaseOp mockFBallListUpCaseOp;
   MockGeoLocationUtil mockGeoLocationUtil;
   setUp((){
     mockIFBallRepository = MockIFBallRepository();
     mockFBallListUpCaseOp = MockFBallListUpCaseOp();
     mockGeoLocationUtil = MockGeoLocationUtil();
-    ballListUpUseCase = FBallListUpUseCase(fBallListUpUseCaseOp: mockFBallListUpCaseOp
-        ,ifBallRepository: mockIFBallRepository,geoLocationUtil: mockGeoLocationUtil);
+    ballListUpUseCase = FBallListUpUseCase(fBallListUpUseCaseOutputPort: mockFBallListUpCaseOp
+        ,fBallRepository: mockIFBallRepository,geoLocationUtil: mockGeoLocationUtil);
 
   });
   final fBallListUpReqDto = FBallListUpReqDto(

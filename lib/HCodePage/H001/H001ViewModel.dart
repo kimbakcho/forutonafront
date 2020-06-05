@@ -4,11 +4,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
-import 'package:forutonafront/FBall/Data/DataStore/IFBallRemoteDataSource.dart';
-import 'package:forutonafront/FBall/Data/Repository/FBallrepositoryImpl.dart';
+import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
+import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseIp.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOp.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
@@ -27,7 +27,7 @@ import 'package:geolocator/geolocator.dart';
 
 enum H001PageState { H001_01, H003_01 }
 
-class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOp,TagUseCaseOp{
+class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort,TagUseCaseOp{
   final BuildContext _context;
   String selectPositionAddress = "로 딩 중";
   bool rankingAutoPlay = false;
@@ -35,7 +35,7 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOp,TagUseC
   ScrollController h001CenterListViewController = new ScrollController();
   bool addressDisplayShowFlag = true;
   bool makeButtonDisplayShowFlag = true;
-  FBallListUpUseCaseIp _fBallListUpUseCaseIp;
+  FBallListUpUseCaseInputPort _fBallListUpUseCaseIp;
   List<BallStyle1Widget> ballWidgetLists = [];
   Position _currentSearchPosition;
   bool _inlineRanking = true;
@@ -65,9 +65,9 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOp,TagUseC
 
   init() async {
     _fBallListUpUseCaseIp = FBallListUpUseCase(
-      ifBallRepository: FBallrepositoryImpl(ifBallRemoteDataSource: FBallRemoteSourceImpl()),
+      fBallRepository: FBallRepositoryImpl(fBallRemoteDataSource: FBallRemoteSourceImpl()),
       geoLocationUtil: GeoLocationUtilUseCase(),
-      fBallListUpUseCaseOp: this,
+      fBallListUpUseCaseOutputPort: this,
     );
 
     setAddressText("로딩중");

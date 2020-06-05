@@ -24,7 +24,7 @@ class FBall {
   DateTime makeTime;
   String description;
   String nickName;
-  String profilePicktureUrl;
+  String profilePictureUrl;
   String uid;
   double userLevel;
   int contributor;

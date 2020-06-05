@@ -66,7 +66,7 @@ class IssueBall extends FBall{
     if(ballDeleteFlag){
       return Preference.basicProfileImageUrl;
     }else {
-      return super.profilePicktureUrl;
+      return super.profilePictureUrl;
     }
   }
 

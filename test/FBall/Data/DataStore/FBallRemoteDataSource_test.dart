@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/FBall/Data/DataStore/IFBallRemoteDataSource.dart';
+import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/FBallListUpWrap.dart';
+import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
 import 'package:matcher/matcher.dart';
 import 'package:mockito/mockito.dart';
@@ -15,7 +15,7 @@ import '../../../fixtures/fixture_reader.dart';
 
 class MockFDio extends Mock implements FDio{}
 void main(){
-  IFBallRemoteDataSource fBallRemoteDataSource;
+  FBallRemoteDataSource fBallRemoteDataSource;
   MockFDio mockFDio;
   setUp((){
     fBallRemoteDataSource = FBallRemoteSourceImpl();

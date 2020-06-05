@@ -1,27 +1,25 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/FBall/Data/DataStore/IFBallRemoteDataSource.dart';
+import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/FBallListUpWrap.dart';
-import 'package:forutonafront/FBall/Data/Repository/FBallrepositoryImpl.dart';
-import 'package:forutonafront/FBall/Domain/Repository/IFBallRepository.dart';
+import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
+import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
+import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:mockito/mockito.dart';
 import 'package:matcher/matcher.dart';
 import '../../fixtures/fixture_reader.dart';
 
-class MockIFBallRemoteDataSource extends Mock implements IFBallRemoteDataSource {}
+class MockIFBallRemoteDataSource extends Mock implements FBallRemoteDataSource {}
 
 void main() {
 
   MockIFBallRemoteDataSource mockIFBallRemoteDataSource;
-  IFBallRepository ifBallRepository;
+  FBallRepository ifBallRepository;
   setUp(() {
     mockIFBallRemoteDataSource = MockIFBallRemoteDataSource();
-    ifBallRepository = FBallrepositoryImpl(ifBallRemoteDataSource: mockIFBallRemoteDataSource);
+    ifBallRepository = FBallRepositoryImpl(fBallRemoteDataSource: mockIFBallRemoteDataSource);
   });
   final FBallListUpReqDto searchCondition = new FBallListUpReqDto(
       latitude: 37.43469925835876,

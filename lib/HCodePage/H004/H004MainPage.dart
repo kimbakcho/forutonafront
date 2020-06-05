@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H004/H004MainPageViewModel.dart';
-import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -55,24 +54,24 @@ class _H004MainPageState extends State<H004MainPage> {
       duration: Duration(milliseconds: 500),
       height: model.isClearButtonActive()
           ? 0.0
-          : (52.0 * model.searchHistorys.length),
+          : (52.0 * model.searchHistoryList.length),
 
       child: ListView.builder(
           padding: EdgeInsets.all(0),
           shrinkWrap: true,
-          itemCount: model.searchHistorys.length,
+          itemCount: model.searchHistoryList.length,
           itemBuilder: (context, index) {
             return Container(
               padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
               height: 52,
               child: FlatButton(
                   onPressed: () {
-                    model.gotoH005Page(model.searchHistorys[index].searchText);
+                    model.gotoH005Page(model.searchHistoryList[index].searchText);
                   },
                   child: Row(children: <Widget>[
                     Expanded (
                       child: Container(
-                        child: Text(model.searchHistorys[index].searchText,
+                        child: Text(model.searchHistoryList[index].searchText,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontFamily: "Noto Sans CJK KR",
@@ -84,7 +83,7 @@ class _H004MainPageState extends State<H004MainPage> {
                     Container(
                       child: Text(
                           DateFormat("yy.MM.dd").format(
-                              model.searchHistorys[index].searchTime.toLocal()),
+                              model.searchHistoryList[index].searchTime.toLocal()),
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontSize: 14,
@@ -96,7 +95,7 @@ class _H004MainPageState extends State<H004MainPage> {
                         child: IconButton(
                             onPressed: () {
                               model.removeSearchText(
-                                  model.searchHistorys[index]);
+                                  model.searchHistoryList[index]);
                             },
                             icon: Icon(
                               ForutonaIcon.removepath,

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/HCodePage/H004/SearchBarHistoryUtil/BallSearchBarHistoryRepository.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseOutputPort.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
-import 'package:provider/provider.dart';
 
-import 'SearchBarHistoryUtil/BallSearchbarHistroyDto.dart';
+import '../../FBall/Dto/BallSearchBarHistoryDto.dart';
 
-class H004MainPageViewModel extends ChangeNotifier {
+class H004MainPageViewModel extends ChangeNotifier implements BallSearchBarHistoryUseCaseOutputPort{
   final BuildContext context;
   FocusNode searchFocusNode = FocusNode();
   TextEditingController searchTextController = new TextEditingController();
   bool hasSearchTextFocus = true;
-  List<BallSearchbarHistroyDto> searchHistorys = [];
+
+  List<BallSearchBarHistoryDto> searchHistoryList = [];
+  BallSearchBarHistoryUseCaseInputPort _ballSearchBarHistoryUseCaseInputPort = BallSearchBarHistoryUseCase();
 
   H004MainPageViewModel(this.context) {
     searchFocusNode.addListener(onSearchFocusNode);
@@ -27,11 +30,9 @@ class H004MainPageViewModel extends ChangeNotifier {
     this.searchTextController.clear();
   }
 
-  removeSearchText(BallSearchbarHistroyDto reqDto) async {
-    BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
-    searchHistorys =
-    await _ballSearchBarHistoryRepository.removeHistroy(reqDto);
-    notifyListeners();
+  removeSearchText(BallSearchBarHistoryDto reqDto) async {
+    await _ballSearchBarHistoryUseCaseInputPort.removeHistory(reqDto: reqDto,outputPort: this);
+    _loadSearchHistory();
   }
 
   onSearchTextController() {
@@ -48,23 +49,21 @@ class H004MainPageViewModel extends ChangeNotifier {
   }
 
   onSearch(value) async {
-    BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
-    BallSearchbarHistroyDto saveReq = BallSearchbarHistroyDto(
+    BallSearchBarHistoryDto saveReq = BallSearchBarHistoryDto(
         value, DateTime.now());
-    searchHistorys = await _ballSearchBarHistoryRepository.saveHistory(saveReq);
+     await _ballSearchBarHistoryUseCaseInputPort.saveHistory(reqDto: saveReq,outputPort: this);
+     _loadSearchHistory();
   }
 
   onSave(value) async {
-    BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
-    BallSearchbarHistroyDto saveReq = BallSearchbarHistroyDto(
+    BallSearchBarHistoryDto saveReq = BallSearchBarHistoryDto(
         value, DateTime.now());
-    searchHistorys = await _ballSearchBarHistoryRepository.saveHistory(saveReq);
+    await _ballSearchBarHistoryUseCaseInputPort.saveHistory(reqDto: saveReq,outputPort: this);
+    _loadSearchHistory();
   }
 
   _loadSearchHistory() async {
-    BallSearchBarHistoryRepository _ballSearchBarHistoryRepository = BallSearchBarHistoryRepository();
-    searchHistorys = await _ballSearchBarHistoryRepository.loadHistroy();
-    return searchHistorys;
+    await _ballSearchBarHistoryUseCaseInputPort.loadHistory(outputPort: this);
   }
 
   getSearchHintText() {
@@ -101,5 +100,21 @@ class H004MainPageViewModel extends ChangeNotifier {
         .push(MaterialPageRoute(builder: (context) {
       return H005MainPage(searchText);
     }));
+  }
+
+  @override
+  onLoadHistory(List<BallSearchBarHistoryDto> ballSearchBarHistoryDtos) {
+    searchHistoryList = ballSearchBarHistoryDtos;
+    notifyListeners();
+  }
+
+  @override
+  onRemoveHistory() {
+    notifyListeners();
+  }
+
+  @override
+  onSaveHistory() {
+    notifyListeners();
   }
 }

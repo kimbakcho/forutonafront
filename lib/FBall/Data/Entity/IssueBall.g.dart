@@ -25,6 +25,7 @@ IssueBall _$IssueBallFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['makeTime'] as String)
     ..description = json['description'] as String
+    ..profilePictureUrl = json['profilePictureUrl'] as String
     ..uid = json['uid'] as String
     ..userLevel = (json['userLevel'] as num)?.toDouble()
     ..contributor = json['contributor'] as int
@@ -45,6 +46,7 @@ Map<String, dynamic> _$IssueBallToJson(IssueBall instance) => <String, dynamic>{
       'activationTime': instance.activationTime?.toIso8601String(),
       'makeTime': instance.makeTime?.toIso8601String(),
       'description': instance.description,
+      'profilePictureUrl': instance.profilePictureUrl,
       'uid': instance.uid,
       'userLevel': instance.userLevel,
       'contributor': instance.contributor,

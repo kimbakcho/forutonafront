@@ -28,7 +28,7 @@ FBall _$FBallFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['makeTime'] as String)
     ..description = json['description'] as String
     ..nickName = json['nickName'] as String
-    ..profilePicktureUrl = json['profilePicktureUrl'] as String
+    ..profilePictureUrl = json['profilePictureUrl'] as String
     ..uid = json['uid'] as String
     ..userLevel = (json['userLevel'] as num)?.toDouble()
     ..contributor = json['contributor'] as int
@@ -52,7 +52,7 @@ Map<String, dynamic> _$FBallToJson(FBall instance) => <String, dynamic>{
       'makeTime': instance.makeTime?.toIso8601String(),
       'description': instance.description,
       'nickName': instance.nickName,
-      'profilePicktureUrl': instance.profilePicktureUrl,
+      'profilePictureUrl': instance.profilePictureUrl,
       'uid': instance.uid,
       'userLevel': instance.userLevel,
       'contributor': instance.contributor,

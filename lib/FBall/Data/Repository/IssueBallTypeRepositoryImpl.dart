@@ -1,20 +1,17 @@
 
 
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/FBall/Data/DataStore/IIssueBallTypeRemoteDateSource.dart';
+import 'package:forutonafront/FBall/Data/DataStore/IssueBallTypeRemoteDateSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Domain/Repository/IssueBallTypeRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 class IssueBallTypeRepositoryImpl implements IssueBallTypeRepository{
 
-  final IssueBallTypeRemoteDateSource issueBallTypeRemoteDateSource;
+  final IssueBallTypeRemoteDateSourceImpl issueBallTypeRemoteDateSource;
 
   IssueBallTypeRepositoryImpl({@required this.issueBallTypeRemoteDateSource});
 
