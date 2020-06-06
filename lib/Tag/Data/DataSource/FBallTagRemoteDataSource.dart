@@ -8,14 +8,14 @@ import 'package:forutonafront/Tag/Dto/RelationTagRankingFromTagNameReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 
-abstract class IFBallTagRemoteDataSource {
+abstract class FBallTagRemoteDataSource {
   Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallTagRankingWrap> getRelationTagRankingFromTagNameOrderByBallPower({@required RelationTagRankingFromTagNameReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallTagWrap> tagFromBallUuid({@required TagFromBallReqDto reqDto,@required @required FDio noneTokenFDio});
 }
 
-class FBallTagRemoteDataSource implements IFBallTagRemoteDataSource{
-  FBallTagRemoteDataSource();
+class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource{
+  FBallTagRemoteDataSourceImpl();
 
   @override
   Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto,@required FDio noneTokenFDio}) async {

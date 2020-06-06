@@ -62,7 +62,7 @@ class IssueBall extends FBall{
     }
   }
 
-  String get profilePicktureUrl {
+  String get profilePictureUrl {
     if(ballDeleteFlag){
       return Preference.basicProfileImageUrl;
     }else {
@@ -143,4 +143,11 @@ class IssueBall extends FBall{
     }
   }
 
+  bool hasYoutubeVideo(){
+    return _issueBallDescription.hasYoutubeVideo();
+  }
+
+  get youtubeVideoId {
+    return _issueBallDescription.youtubeVideoId;
+  }
 }

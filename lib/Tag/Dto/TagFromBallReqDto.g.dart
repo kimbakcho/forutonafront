@@ -8,7 +8,7 @@ part of 'TagFromBallReqDto.dart';
 
 TagFromBallReqDto _$TagFromBallReqDtoFromJson(Map<String, dynamic> json) {
   return TagFromBallReqDto(
-    json['ballUuid'] as String,
+    ballUuid: json['ballUuid'] as String,
   );
 }
 

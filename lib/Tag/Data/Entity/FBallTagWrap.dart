@@ -1,4 +1,4 @@
-import 'package:forutonafront/Tag/Data/Entity/FBalltag.dart';
+import 'package:forutonafront/Tag/Data/Entity/FBallTag.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FBallTagWrap.g.dart';
@@ -6,7 +6,7 @@ part 'FBallTagWrap.g.dart';
 @JsonSerializable()
 class FBallTagWrap {
   int totalCount;
-  List<FBalltag> tags;
+  List<FBallTag> tags;
 
   FBallTagWrap();
 

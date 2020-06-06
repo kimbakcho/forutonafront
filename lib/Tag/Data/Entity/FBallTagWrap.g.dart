@@ -11,7 +11,7 @@ FBallTagWrap _$FBallTagWrapFromJson(Map<String, dynamic> json) {
     ..totalCount = json['totalCount'] as int
     ..tags = (json['tags'] as List)
         ?.map((e) =>
-            e == null ? null : FBalltag.fromJson(e as Map<String, dynamic>))
+            e == null ? null : FBallTag.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 

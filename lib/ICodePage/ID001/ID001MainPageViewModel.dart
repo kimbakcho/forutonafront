@@ -4,35 +4,44 @@ import 'dart:io';
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
-import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/FBall/Repository/FBallValuationRepository.dart';
+import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfoSimple1.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimple1ResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
+import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
+import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
 
-class ID001MainPageViewModel extends ChangeNotifier {
+class ID001MainPageViewModel extends ChangeNotifier implements TagFromBallUuidUseCaseOutputPort,
+    UserInfoSimple1UseCaseOutputPort{
   final BuildContext context;
+  final IssueBall issueBall;
 
   ScrollController mainScrollController = new ScrollController();
 
   FUserRepository _fUserRepository = new FUserRepository();
 
-  FBallResDto fBallResDto;
   bool showMoreDetailFlag = false;
-  FUserInfoResDto makerUserInfo;
+  FUserInfoSimple1ResDto makerUserInfo;
 
   //googleMap 관련
   CameraPosition initialCameraPosition;
@@ -47,7 +56,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   DateTime currentYoutubeUploadDate;
 
   //Tag 관련
-  TagRepository _tagRepository = new TagRepository();
+  TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort = TagFromBallUuidUseCase();
   List<Chip> tagChips = [];
 
   //UnAndDown 관련
@@ -55,50 +64,47 @@ class ID001MainPageViewModel extends ChangeNotifier {
   FBallValuationRepository _fBallValuationRepository =
       FBallValuationRepository();
   FBallValuationResDto fBallValuationResDto;
+
+  //UserInfo 관련
+  UserInfoSimple1UseCaseInputPort _userInfoSimple1UseCaseInputPort = UserInfoSimple1UseCase();
+
   bool isInitFinish = false;
 
   bool _isLoading = false;
-  getIsLoading() {
+  get isLoading {
     return _isLoading;
   }
 
-  _setIsLoading(bool value) {
+  set isLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
-  final String fBallUuid;
 
-  ID001MainPageViewModel({@required this.context, this.fBallUuid,this.fBallResDto}) {
+  ID001MainPageViewModel({@required this.context,@required this.issueBall}) {
     _init();
   }
 
   _init() async {
     mainScrollController.addListener(onScrollControllerListener);
-    if(fBallResDto == null ){
-      isInitFinish = false;
-      _setIsLoading(true);
-      var fBallTypeRepository = FBallTypeRepository.create(FBallType.IssueBall);
-      var currentFBallResDto = await fBallTypeRepository
-          .selectBall(FBallReqDto(FBallType.IssueBall, this.fBallUuid));
-      this.fBallResDto = currentFBallResDto;
-      _setIsLoading(false);
-    }
     initialCameraPosition = CameraPosition(
-        target: LatLng(fBallResDto.latitude, fBallResDto.longitude),
+        target: LatLng(issueBall.latitude, issueBall.longitude),
         zoom: 14.425);
-//    issueBallDescriptionDto =
-//        IssueBallDescriptionDto.fromJson(json.decode(fBallResDto.description));
-    if (issueBallDescriptionDto.youtubeVideoId != null) {
-      youtubeLoad(issueBallDescriptionDto.youtubeVideoId);
+    if (issueBall.hasYoutubeVideo()) {
+      youtubeLoad(issueBall.youtubeVideoId);
     }
-    tagLoad(fBallResDto.ballUuid);
+    _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(reqDto: TagFromBallReqDto(ballUuid: issueBall.ballUuid),outputPort: this);
 
-    makerUserInfo =
-        await _fUserRepository.getUserInfoSimple1(FUserReqDto(fBallResDto.uid));
+    _userInfoSimple1UseCaseInputPort.getUserInfoSimple1(reqDto: FUserReqDto(issueBall.uid),outputPort: this);
 
     loadFBallValuation();
     isInitFinish= true;
 
+    notifyListeners();
+  }
+
+  @override
+  onUserInfoSimple1(FUserInfoSimple1ResDto fUserInfoSimple1ResDto) {
+    makerUserInfo = fUserInfoSimple1ResDto;
     notifyListeners();
   }
 
@@ -126,7 +132,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     GlobalModel globalModel = Provider.of(context, listen: false);
     userNickName = globalModel.fUserInfoDto.nickName;
     FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
-    valuationReqDto.ballUuid = fBallResDto.ballUuid;
+    valuationReqDto.ballUuid = issueBall.ballUuid;
     valuationReqDto.uid =
         Provider.of<GlobalModel>(context, listen: false).fUserInfoDto.uid;
     var fBallValuationWrapResDto =
@@ -135,9 +141,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
       fBallValuationResDto = fBallValuationWrapResDto.contents[0];
     }
   }
-
-
-
 
   youtubeLoad(String videoId) async {
     var video = await _youtubeExplode.getVideo(videoId);
@@ -155,12 +158,11 @@ class ID001MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> tagLoad(String ballUuid) async {
-    var tagResDtoWrap =
-        await _tagRepository.tagFromBallUuid(TagFromBallReqDto(ballUuid));
-    List<TagResDto> tags = tagResDtoWrap.tags;
+
+  @override
+  onTagFromBallUuid(List<FBallTagResDto> ballTags) {
     tagChips.clear();
-    for (var o in tags) {
+    for (var o in ballTags) {
       tagChips.add(Chip(
         backgroundColor: Color(0xffE4E7E8),
         label: Text("#${o.tagItem}",
@@ -175,13 +177,6 @@ class ID001MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  ImageProvider getMakerUserImage() {
-    if (makerUserInfo != null && makerUserInfo.profilePictureUrl.length != 0) {
-      return NetworkImage(makerUserInfo.profilePictureUrl);
-    } else {
-      return AssetImage("assets/basicprofileimage.png");
-    }
-  }
 
   void onBackBtn() {
     Navigator.of(context).pop();
@@ -767,6 +762,8 @@ class ID001MainPageViewModel extends ChangeNotifier {
     this.fBallResDto = null;
     this._init();
   }
+
+
 
 }
 

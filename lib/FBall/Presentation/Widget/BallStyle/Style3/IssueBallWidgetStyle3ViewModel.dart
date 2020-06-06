@@ -28,7 +28,7 @@ class IssueBallWidgetStyle3ViewModel extends ChangeNotifier implements IssueBall
       _issueBallUseCase.joinBall(reqDto: FBallJoinReqDto(issueBall.ballType,issueBall.ballUuid,currentUser.uid));
     }
     await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => ID001MainPage(issueBall.ballUuid,issueBall: issueBall)));
+        .push(MaterialPageRoute(builder: (_) => ID001MainPage(issueBall: issueBall)));
     _issueBallUseCase.selectBall(ballUuid: issueBall.ballUuid);
   }
 

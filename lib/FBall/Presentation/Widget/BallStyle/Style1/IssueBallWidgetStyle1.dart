@@ -154,7 +154,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
               decoration: BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(model.issueBall.profilePicktureUrl)),
+                      image: NetworkImage(model.issueBall.profilePictureUrl)),
                   shape: BoxShape.circle,
                   border: Border.all(width: 1.00, color: Color(0xffdc3e57))),
             ),

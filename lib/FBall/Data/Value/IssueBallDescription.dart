@@ -33,4 +33,12 @@ class IssueBallDescription {
     return desimages.length;
   }
 
+  bool hasYoutubeVideo(){
+    if(youtubeVideoId.length == 0){
+      return false;
+    }else {
+      return true;
+    }
+  }
+
 }

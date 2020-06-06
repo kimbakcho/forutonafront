@@ -16,10 +16,9 @@ import 'package:provider/provider.dart';
 
 
 class ID001MainPage extends StatefulWidget {
-   String fBallUuid;
    IssueBall issueBall;
 
-   ID001MainPage(this.fBallUuid, {this.issueBall});
+   ID001MainPage({this.issueBall});
 
   @override
   _ID001MainPageState createState() => _ID001MainPageState();
@@ -41,17 +40,17 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state)   {
-    reReanderGoogleMap();
+    reRenderGoogleMap();
   }
 
-  UniqueKey reReanderGoogleMap() => googleMapKey = UniqueKey();
+  UniqueKey reRenderGoogleMap() => googleMapKey = UniqueKey();
 
    @override
    Widget build(BuildContext context) {
      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
          statusBarColor: Colors.white.withOpacity(0.9), statusBarIconBrightness: Brightness.dark));
      return ChangeNotifierProvider(
-         create: (_) => ID001MainPageViewModel(context, fBallUuid,fBallResDto: fBallResDto),
+         create: (_) => ID001MainPageViewModel(context: context,issueBall:widget.issueBall),
          child: Consumer<ID001MainPageViewModel>(builder: (_, model, child) {
            return Stack(children: <Widget>[
              Scaffold(
@@ -93,19 +92,13 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                                        didver(2),
                                        issueTextContentBar(model),
                                        model.getImageContentBar(context),
-                                       model.issueBallDescriptionDto.desimages
-                                           .length !=
-                                           0
+                                       model.issueBall.isMainPicture()
                                            ? didver(2)
                                            : Container(),
-                                       model.issueBallDescriptionDto
-                                           .youtubeVideoId !=
-                                           null
+                                       model.issueBall.hasYoutubeVideo()
                                            ? youtubeBar(model, context)
                                            : Container(),
-                                       model.issueBallDescriptionDto
-                                           .youtubeVideoId !=
-                                           null
+                                       model.issueBall.hasYoutubeVideo()
                                            ? didver(2)
                                            : Container(),
                                        model.tagChips.length > 0
@@ -114,9 +107,8 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                                        model.tagChips.length > 0
                                            ? didver(2)
                                            : Container(),
-
                                        FBallReplyWidget(
-                                           model.fBallUuid
+                                           model.issueBall.ballUuid
                                        ),
                                        didver(4),
                                        model.showFBallValuation()
@@ -129,7 +121,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                              child: topHeaderBar(model, context))
                        ],
                      ):Container() )),
-             model.getIsLoading() ? CommonLoadingComponent() : Container()
+             model.isLoading ? CommonLoadingComponent() : Container()
            ]);
          }));
    }
@@ -293,7 +285,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                    child: FlatButton(
                        onPressed: () {
                          model.goYoutubeIntent(
-                             model.issueBallDescriptionDto.youtubeVideoId);
+                             model.issueBall.youtubeVideoId);
                        },
                        padding: EdgeInsets.all(0),
                        child: Container(
@@ -371,7 +363,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
    Container issueTextContentBar(ID001MainPageViewModel model) {
      return Container(
          padding: EdgeInsets.fromLTRB(16, 23, 16, 24),
-         child: Text(model.issueBallDescriptionDto.text,
+         child: Text(model.issueBall.descriptionText,
              style: TextStyle(
                fontFamily: "Noto Sans CJK KR",
                fontSize: 14,
@@ -394,7 +386,9 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                  decoration: BoxDecoration(
                      image: DecorationImage(
                        fit: BoxFit.cover,
-                       image: model.getMakerUserImage(),
+                       image: NetworkImage(
+                         model.issueBall.profilePictureUrl,
+                       ),
                      ),
                      shape: BoxShape.circle),
                )),
@@ -464,7 +458,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
            ),
            Container(
                margin: EdgeInsets.only(left: 4),
-               child: Text("${model.fBallResDto.ballLikes}회",
+               child: Text("${model.issueBall.displayLikeCount}회",
                    style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      fontSize: 12,
@@ -481,7 +475,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                )),
            Container(
                margin: EdgeInsets.only(left: 4),
-               child: Text("${model.fBallResDto.ballDisLikes}회",
+               child: Text("${model.issueBall.displayDisLikeCount}회",
                    style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      fontSize: 12,
@@ -498,7 +492,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                )),
            Container(
                margin: EdgeInsets.only(left: 4),
-               child: Text("${model.fBallResDto.ballHits}회",
+               child: Text("${model.issueBall.ballHits}회",
                    style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      fontSize: 12,
@@ -516,7 +510,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
            ),
            Container(
                margin: EdgeInsets.only(left: 4),
-               child: Text("${TimeDisplayUtil.getCalcToStrFromNow(model.fBallResDto.makeTime)}",
+               child: Text(model.issueBall.displayMakeTime,
                    style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      fontSize: 12,
@@ -530,7 +524,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
          child: Stack(children: <Widget>[
            Container(
                padding: EdgeInsets.only(left: 16, right: 48),
-               child: Text(model.fBallResDto.ballName,
+               child: Text(model.issueBall.ballName,
                    overflow: TextOverflow.ellipsis,
                    maxLines: model.showMoreDetailFlag ? 3 : 2,
                    style: GoogleFonts.notoSans(
@@ -594,7 +588,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                  left: 44,
                  child: Container(
                    width: MediaQuery.of(context).size.width-100,
-                   child: Text('${model.fBallResDto.contributor}명이 반응 하였습니다.',
+                   child: Text('${model.issueBall.contributor}명이 반응 하였습니다.',
                        overflow: TextOverflow.ellipsis,
                        style: GoogleFonts.notoSans(
                          fontSize: 12,
@@ -642,8 +636,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                child: Container(
                  width: MediaQuery.of(context).size.width-100,
                  child: Text(
-                     TimeDisplayUtil.getCalcToStrFromNow(
-                         model.fBallResDto.activationTime),
+                     model.issueBall.remainingTime,
                      overflow: TextOverflow.ellipsis,
                      style: GoogleFonts.notoSans(
                        fontSize: 12,
@@ -689,7 +682,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                left: 44,
                child: Container(
                  width: MediaQuery.of(context).size.width-100,
-                 child: Text(model.fBallResDto.placeAddress,
+                 child: Text(model.issueBall.placeAddress,
                      overflow: TextOverflow.ellipsis,
                      style: GoogleFonts.notoSans(
                        fontSize: 12,
@@ -750,7 +743,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
          Expanded(
             child: Container(
               margin: EdgeInsets.fromLTRB(13, 0, 13, 0),
-              child:Text(model.fBallResDto.ballName,
+              child:Text(model.issueBall.ballName,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.notoSans(
                 fontSize: 16,

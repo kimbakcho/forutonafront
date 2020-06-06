@@ -1,18 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FBalltag.dart';
+part of 'FBallTag.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FBalltag _$FBalltagFromJson(Map<String, dynamic> json) {
-  return FBalltag()
+FBallTag _$FBallTagFromJson(Map<String, dynamic> json) {
+  return FBallTag()
     ..ballUuid = json['ballUuid'] as String
     ..tagItem = json['tagItem'] as String;
 }
 
-Map<String, dynamic> _$FBalltagToJson(FBalltag instance) => <String, dynamic>{
+Map<String, dynamic> _$FBallTagToJson(FBallTag instance) => <String, dynamic>{
       'ballUuid': instance.ballUuid,
       'tagItem': instance.tagItem,
     };

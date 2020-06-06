@@ -44,7 +44,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
           fontSize: 12.0);
     }else {
       await Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ID001MainPage(issueBall.ballUuid,issueBall: issueBall)));
+          .push(MaterialPageRoute(builder: (_) => ID001MainPage(issueBall: issueBall)));
       issueBallUseCase.selectBall(ballUuid: issueBall.ballUuid,outputPort: this);
     }
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import 'package:forutonafront/Tag/Data/Value/FBallTagRankingWrap.dart';
@@ -10,22 +11,25 @@ import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dar
 
 class TagRepositoryImpl implements TagRepository {
 
-  IFBallTagRemoteDataSource _fBallTagRemoteDataSource = FBallTagRemoteDataSource();
+  final FBallTagRemoteDataSource fBallTagRemoteDataSource;
+
+  TagRepositoryImpl({@required this.fBallTagRemoteDataSource});
+
 
   @override
   Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto) async {
-    return await _fBallTagRemoteDataSource.getFTagRankingFromBallInfluencePower(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return await fBallTagRemoteDataSource.getFTagRankingFromBallInfluencePower(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
 
   @override
   Future<FBallTagRankingWrap> getRelationTagRankingFromTagNameOrderByBallPower(RelationTagRankingFromTagNameReqDto reqDto) async {
-    return await _fBallTagRemoteDataSource.getRelationTagRankingFromTagNameOrderByBallPower(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return await fBallTagRemoteDataSource.getRelationTagRankingFromTagNameOrderByBallPower(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
   @override
   Future<FBallTagWrap> tagFromBallUuid(TagFromBallReqDto reqDto) async {
-    return await _fBallTagRemoteDataSource.tagFromBallUuid(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return await fBallTagRemoteDataSource.tagFromBallUuid(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
   

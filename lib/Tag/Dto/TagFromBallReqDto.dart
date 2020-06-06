@@ -7,7 +7,7 @@ part 'TagFromBallReqDto.g.dart';
 class TagFromBallReqDto {
   String ballUuid;
 
-  TagFromBallReqDto(this.ballUuid);
+  TagFromBallReqDto({this.ballUuid});
 
   factory TagFromBallReqDto.fromJson(Map<String, dynamic> json) => _$TagFromBallReqDtoFromJson(json);
   Map<String, dynamic> toJson() => _$TagFromBallReqDtoToJson(this);
