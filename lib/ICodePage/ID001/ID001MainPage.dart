@@ -6,7 +6,6 @@ import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimationWithCont
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
@@ -27,11 +26,7 @@ class ID001MainPage extends StatefulWidget {
 }
 
 class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserver {
-  AppLifecycleState _lastLifecycleState;
-
    UniqueKey googleMapKey = UniqueKey();
-
-
   @override
   void initState() {
     super.initState();
@@ -46,11 +41,11 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state)   {
-    googleMapKey = UniqueKey();
-    setState(()  {
-      _lastLifecycleState = state;
-    });
+    reReanderGoogleMap();
   }
+
+  UniqueKey reReanderGoogleMap() => googleMapKey = UniqueKey();
+
    @override
    Widget build(BuildContext context) {
      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(

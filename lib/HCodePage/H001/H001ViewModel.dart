@@ -6,10 +6,10 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUp/FBallListUpUseCaseOutputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
@@ -18,16 +18,16 @@ import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagUseCase.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagUseCaseIp.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagUseCaseOp.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCase.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingReqDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 import 'package:geolocator/geolocator.dart';
 
 enum H001PageState { H001_01, H003_01 }
 
-class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort,TagUseCaseOp{
+class H001ViewModel with ChangeNotifier implements  FBallListUpFromInfluencePowerUseCaseOutputPort,TagRankingFromBallInfluencePowerUseCaseOutputPort{
   final BuildContext _context;
   String selectPositionAddress = "로 딩 중";
   bool rankingAutoPlay = false;
@@ -35,18 +35,16 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
   ScrollController h001CenterListViewController = new ScrollController();
   bool addressDisplayShowFlag = true;
   bool makeButtonDisplayShowFlag = true;
-  FBallListUpUseCaseInputPort _fBallListUpUseCaseIp;
+  FBallListUpFromInfluencePowerUseCaseInputPort _fBallListUpFromInfluencePowerUseCaseInputPort;
   List<BallStyle1Widget> ballWidgetLists = [];
   Position _currentSearchPosition;
   bool _inlineRanking = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
 
-  TagUseCaseIp _tagUseCaseIp = TagUseCase();
+  TagRankingFromBallInfluencePowerUseCaseInputPort _tagRankingFromPositionUseCaseInputPort = TagRankingFromBallInfluencePowerUseCase();
 
-
-
-      bool _isLoading = false;
+  bool _isLoading = false;
 
   get isLoading {
     return _isLoading;
@@ -56,7 +54,6 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
     notifyListeners();
   }
 
-//  TagRankingWrapDto rankingWrapDto;
   List<TagRankingDto> tagRankingDtos;
 
   H001ViewModel(this._context) {
@@ -64,7 +61,7 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
   }
 
   init() async {
-    _fBallListUpUseCaseIp = FBallListUpUseCase(
+    _fBallListUpFromInfluencePowerUseCaseInputPort = FBallListUpFromInfluencePowerUseCase(
       fBallRepository: FBallRepositoryImpl(fBallRemoteDataSource: FBallRemoteSourceImpl()),
       geoLocationUtil: GeoLocationUtilUseCase(),
       fBallListUpUseCaseOutputPort: this,
@@ -74,14 +71,14 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
     h001CenterListViewController
         .addListener(h001CenterListViewControllerListener);
     _currentSearchPosition = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
-    searchFBallPosition(searchPosition: _currentSearchPosition,findAddress: true);
-    getTagRanking(_currentSearchPosition);
+    searchFBallFromBallInfluencePower(searchPosition: _currentSearchPosition,findAddress: true);
+    getTagRankingFromBallInfluencePower(_currentSearchPosition);
   }
 
-  Future searchFBallPosition({@required Position searchPosition,int pageCount = 0,bool findAddress = true}) async {
+  Future searchFBallFromBallInfluencePower({@required Position searchPosition,int pageCount = 0,bool findAddress = true}) async {
     isLoading = true;
     await GeoLocationUtilUseCase().useGpsReq(_context);
-    FBallListUpReqDto ballListUpReqDto = new FBallListUpReqDto(
+    FBallListUpFromBallInfluencePowerReqDto ballListUpReqDto = new FBallListUpFromBallInfluencePowerReqDto(
         latitude: searchPosition.latitude,
         longitude: searchPosition.longitude,
         ballLimit: 1000,
@@ -89,12 +86,12 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
         size: _ballPageLimitSize,
         sort: "Influence,DESC",
         findAddress: findAddress);
-    await _fBallListUpUseCaseIp.positionSearchListUpBall(searchReqDto: ballListUpReqDto);
+    await _fBallListUpFromInfluencePowerUseCaseInputPort.ballListUpFromInfluencePower(searchReqDto: ballListUpReqDto);
     isLoading= false;
   }
 
   @override
-  onPositionSearchListUpBall({@required List<FBallResDto> fBallResDtos,@required String address}) async {
+  onListUpBallFromBallInfluencePower({@required List<FBallResDto> fBallResDtos,@required String address}) async {
     if(isFirstPage){
       this.ballWidgetLists.clear();
     }
@@ -141,7 +138,7 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
           latitude: position.latLng.latitude,
           longitude: position.latLng.longitude);
 
-      await searchFBallPosition(searchPosition: _currentSearchPosition,findAddress: false);
+      await searchFBallFromBallInfluencePower(searchPosition: _currentSearchPosition,findAddress: false);
 
       setAddressText(position.descriptionAddress);
 
@@ -171,14 +168,14 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
     _addPageCount();
     if(_hasMoreListUpBalls()) {
       _addPageCount();
-      await searchFBallPosition(searchPosition: _currentSearchPosition,pageCount: _pageCount,findAddress: false);
+      await searchFBallFromBallInfluencePower(searchPosition: _currentSearchPosition,pageCount: _pageCount,findAddress: false);
       moveScrollerDown();
     }
   }
 
   void _onScrollerTopOver() async {
     setFirstPage();
-    await searchFBallPosition(searchPosition: _currentSearchPosition,pageCount: _pageCount,findAddress: false);
+    await searchFBallFromBallInfluencePower(searchPosition: _currentSearchPosition,pageCount: _pageCount,findAddress: false);
   }
 
 
@@ -252,7 +249,7 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
               }));
       _currentSearchPosition = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
       setFirstPage();
-      await searchFBallPosition(searchPosition: _currentSearchPosition,findAddress: false);
+      await searchFBallFromBallInfluencePower(searchPosition: _currentSearchPosition,findAddress: false);
 
     } else {
       Navigator.push(
@@ -267,11 +264,15 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
 
   Future<bool> isLogin() async => await FirebaseAuth.instance.currentUser()!=null;
 
-
-  //------------------Clean arch-------------------------------
-
-  Future getTagRanking(Position currentPosition) async {
-    _tagUseCaseIp.getTagRanking(reqDto: TagRankingReqDto(currentPosition.latitude, currentPosition.longitude, 10), op: this);
+  Future getTagRankingFromBallInfluencePower(Position currentPosition) async {
+    _tagRankingFromPositionUseCaseInputPort.getTagRankingFromBallInfluencePower(reqDto: TagRankingFromBallInfluencePowerReqDto(currentPosition.latitude, currentPosition.longitude, 10), outputPort: this);
+  }
+  @override
+  void onTagRankingFromBallInfluencePower(List<TagRankingDto> tagRankingDtos) {
+    this.tagRankingDtos = tagRankingDtos;
+    rankingSwiperController.move(0);
+    rankingAutoPlay = true;
+    notifyListeners();
   }
 
   set inlineRanking(bool value) {
@@ -286,7 +287,7 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
   void gotoTagSearch(String tagName) {
     Navigator.of(_context).push(
       MaterialPageRoute(
-        builder: (_) => H005MainPage(tagName,initPageState: H005PageState.Tag)
+        builder: (_) => H005MainPage(searchText: tagName,initPageState: H005PageState.Tag)
       )
     );
   }
@@ -295,12 +296,6 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpUseCaseOutputPort
     return NomalValueDisplay.changeIntDisplaystr(value);
   }
 
-  @override
-  void onTagRanking(List<TagRankingDto> tagRankingDtos) {
-    this.tagRankingDtos = tagRankingDtos;
-    rankingSwiperController.move(0);
-    rankingAutoPlay = true;
-    notifyListeners();
-  }
+
 
 }

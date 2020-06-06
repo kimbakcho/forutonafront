@@ -1,18 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:android_intent/android_intent.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:forutonafront/Common/BallModify/BallModifyService.dart';
-import 'package:forutonafront/Common/BallModify/Impl/IssueBallModifyService.dart';
-import 'package:forutonafront/Common/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
-import 'package:forutonafront/Common/Tag/Dto/TagFromBallReqDto.dart';
-import 'package:forutonafront/Common/Tag/Dto/FBallTagResDto.dart';
-import 'package:forutonafront/Common/Tag/Repository/TagRepository.dart';
 import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -21,7 +12,6 @@ import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
-import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
 import 'package:forutonafront/FBall/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
@@ -34,7 +24,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
 
 class ID001MainPageViewModel extends ChangeNotifier {
-  final BuildContext _context;
+  final BuildContext context;
 
   ScrollController mainScrollController = new ScrollController();
 
@@ -78,7 +68,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
   final String fBallUuid;
 
-  ID001MainPageViewModel(this._context, this.fBallUuid,{this.fBallResDto}) {
+  ID001MainPageViewModel({@required this.context, this.fBallUuid,this.fBallResDto}) {
     _init();
   }
 
@@ -124,7 +114,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   bool showFBallValuation() {
-    GlobalModel globalModel = Provider.of(_context, listen: false);
+    GlobalModel globalModel = Provider.of(context, listen: false);
     if (globalModel.fUserInfoDto != null) {
       return true;
     } else {
@@ -133,12 +123,12 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   Future<void> loadFBallValuation() async {
-    GlobalModel globalModel = Provider.of(_context, listen: false);
+    GlobalModel globalModel = Provider.of(context, listen: false);
     userNickName = globalModel.fUserInfoDto.nickName;
     FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
     valuationReqDto.ballUuid = fBallResDto.ballUuid;
     valuationReqDto.uid =
-        Provider.of<GlobalModel>(_context, listen: false).fUserInfoDto.uid;
+        Provider.of<GlobalModel>(context, listen: false).fUserInfoDto.uid;
     var fBallValuationWrapResDto =
         await _fBallValuationRepository.getFBallValuation(valuationReqDto);
     if (fBallValuationWrapResDto.count == 1) {
@@ -194,7 +184,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   void onBackBtn() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   void showMoreDetailToggle() {
@@ -211,7 +201,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
   }
 
   jumpToBallImageViewer(int indexNumber) {
-    Navigator.of(_context).push(MaterialPageRoute(builder: (context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return BallImageViewer(
         issueBallDescriptionDto.desimages,
         null,
@@ -657,7 +647,7 @@ class ID001MainPageViewModel extends ChangeNotifier {
     reqDto.valueUuid = Uuid().v4();
     reqDto.ballUuid = fBallResDto.ballUuid;
     reqDto.uid =
-        Provider.of<GlobalModel>(_context, listen: false).fUserInfoDto.uid;
+        Provider.of<GlobalModel>(context, listen: false).fUserInfoDto.uid;
     reqDto.unAndDown = unAndDown;
      _fBallValuationRepository.insertFBallValuation(reqDto);
 
@@ -764,9 +754,9 @@ class ID001MainPageViewModel extends ChangeNotifier {
   void showBallSetting() async {
     BallModifyService ballModifyService = IssueBallModifyService();
     if (await ballModifyService.isCanModify(fBallResDto.uid)) {
-      var result = await ballModifyService.showModifySelectDialog(_context, fBallResDto.ballType,fBallResDto.ballUuid);
+      var result = await ballModifyService.showModifySelectDialog(context, fBallResDto.ballType,fBallResDto.ballUuid);
       if (result == CommonBallModifyWidgetResultType.Delete) {
-        Navigator.of(_context).pop();
+        Navigator.of(context).pop();
       } else if (result == CommonBallModifyWidgetResultType.Update) {
         reFreshBall();
       }

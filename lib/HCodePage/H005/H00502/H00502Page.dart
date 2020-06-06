@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/HCodePage/H005/H00502/H00502pageViewModel.dart';
+import 'package:forutonafront/HCodePage/H005/H00502/H00502PageViewModel.dart';
 import 'package:provider/provider.dart';
 
 import 'H00502DropdownItemType.dart';
@@ -9,9 +9,10 @@ import 'H00502DropdownItemType.dart';
 class H00502Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => H00502pageViewModel(context),
-      child: Consumer<H00502pageViewModel>(builder: (_, model, child) {
+    H00502PageViewModel _h00501pageViewModel = Provider.of(context);
+    return ChangeNotifierProvider.value(
+      value: _h00501pageViewModel,
+      child: Consumer<H00502PageViewModel>(builder: (_, model, child) {
         return Stack(children: <Widget>[
           Scaffold(
             backgroundColor: Color(0xffF2F0F1),
@@ -52,7 +53,7 @@ class H00502Page extends StatelessWidget {
                       child: Center(
                       child: Text("검색된 결과가 없습니다."),
                     ))),
-          model.getIsLoading() ? CommonLoadingComponent() : Container()
+          model.isLoading ? CommonLoadingComponent() : Container()
         ]);
       }),
     );
@@ -67,7 +68,7 @@ class H00502Page extends StatelessWidget {
     );
   }
 
-  Container selectOrderButton(H00502pageViewModel model) {
+  Container selectOrderButton(H00502PageViewModel model) {
     return Container(
         padding: EdgeInsets.only(right: 16),
         alignment: Alignment.centerRight,
@@ -103,7 +104,7 @@ class H00502Page extends StatelessWidget {
   }
 
   Container relationTagRankingList(
-      H00502pageViewModel model, BuildContext context) {
+      H00502PageViewModel model, BuildContext context) {
     return Container(
         margin: EdgeInsets.only(top: 16),
         height: 32,
@@ -112,14 +113,14 @@ class H00502Page extends StatelessWidget {
             padding: EdgeInsets.all(0),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: model.tagRankings.length,
+            itemCount: model.relationTagRankings.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                   padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
                   margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
                   child: InkWell(
                       onTap: () {},
-                      child: Text(model.tagRankings[index].tagName,
+                      child: Text(model.relationTagRankings[index].tagName,
                           style: TextStyle(
                             fontFamily: "Noto Sans CJK KR",
                             fontWeight: FontWeight.w500,

@@ -1,29 +1,24 @@
+import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseIp.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Dto/BallNameSearchReqDto.dart';
+import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/FBallType.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1ReFreshBallUtil.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1WidgetController.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1WidgetInter.dart';
 import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
-import 'package:forutonafront/FBall/Repository/FBallTypeRepository.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Ordersenum.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:provider/provider.dart';
 
-import '../H005MainPageViewModel.dart';
-
-class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInter{
+class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearchTitleUseCaseOutputPort{
   final BuildContext context;
 
   List<DropdownMenuItem<H00501DropdownItemType>> dropDownItems =
@@ -31,40 +26,64 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
   List<H00501DropdownItemType> ordersItems = new List<H00501DropdownItemType>();
   ScrollController mainDropDownBtnController = new ScrollController();
   List<BallStyle1Widget> ballWidgetLists = [];
-
   H00501DropdownItemType _selectOrder;
   H00501DropdownItemType get selectOrder => _selectOrder;
+
   set selectOrder(H00501DropdownItemType value) {
     _selectOrder = value;
     notifyListeners();
   }
 
   bool _isLoading = false;
-  getIsLoading(){
+
+  get isLoading {
     return _isLoading;
   }
-  _setIsLoading(bool value){
+
+  set isLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
-  H005MainPageViewModel _h005MainModel;
+  String searchTitle;
+
+  final FBallListUpFromSearchTitleUseCaseInputPort
+      fBallListUpFromSearchTitleUseCaseInputPort;
+  GeoLocationUtilUseCaseIp geoLocationUtilUseCaseIp = GeoLocationUtilUseCase();
   int _ballPageLimitSize = 20;
   int _pageCount = 0;
 
-  bool _initFinishFlag= false;
+  bool _initFinishFlag = false;
 
-  H00501PageViewModel(this.context) {
+  H00501PageViewModel(
+      {@required this.context,
+      @required this.searchTitle,
+      @required this.fBallListUpFromSearchTitleUseCaseInputPort}) {
+    this.fBallListUpFromSearchTitleUseCaseInputPort.addBallListUpFromSearchTitleListener(outputPort: this);
+    this.fBallListUpFromSearchTitleUseCaseInputPort.addBallListUpFromSearchTitleTotalCountListener(outputPort: this);
     init();
   }
-  init() async{
+
+  init() async {
     _initOrdersItems();
     mainDropDownBtnController.addListener(onScrollListener);
-    _h005MainModel = Provider.of<H005MainPageViewModel>(context);
-    var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), _makeSearchOrders(), _ballPageLimitSize, _pageCount);
-    _setListUpBall(_pageCount, fBallListUpWrapDto);
-    _setSearchCount(fBallListUpWrapDto);
+    await ballListUpFromSearchText();
     _initFinishFlag = true;
+  }
+
+  Future ballListUpFromSearchText() async {
+    isLoading = true;
+    var position = await geoLocationUtilUseCaseIp.getCurrentWithLastPosition();
+    var fBallListUpFromSearchTitleReqDto = new FBallListUpFromSearchTitleReqDto(
+        searchText: searchTitle,
+        sortsJsonText: _makeSearchOrders().toQueryJson(),
+        page: _pageCount,
+        size: _ballPageLimitSize,
+        longitude: position.longitude,
+        latitude: position.latitude);
+    await fBallListUpFromSearchTitleUseCaseInputPort.ballListUpFromSearchTitle(
+        reqDto: fBallListUpFromSearchTitleReqDto);
+    isLoading = false;
   }
 
   MultiSorts _makeSearchOrders() {
@@ -75,61 +94,34 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
     return sorts;
   }
 
-
   onScrollListener() async {
     if (_isScrollerMoveBottomOver()) {
-      _pageCount++;
+      setNextPage();
       if (!hasBalls()) {
         return;
       } else {
-        var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), _makeSearchOrders(), _ballPageLimitSize, _pageCount);
-        _setListUpBall(_pageCount, fBallListUpWrapDto);
-        _setSearchCount(fBallListUpWrapDto);
+        await ballListUpFromSearchText();
       }
     }
-}
+  }
 
-  bool hasBalls() => !(_pageCount * _ballPageLimitSize > ballWidgetLists.length);
+  int setNextPage() => _pageCount++;
+
+  bool hasBalls() =>
+      !(_pageCount * _ballPageLimitSize > ballWidgetLists.length);
 
   bool _isScrollerMoveBottomOver() {
     return mainDropDownBtnController.offset >=
-          mainDropDownBtnController.position.maxScrollExtent &&
-      !mainDropDownBtnController.position.outOfRange;
+            mainDropDownBtnController.position.maxScrollExtent &&
+        !mainDropDownBtnController.position.outOfRange;
   }
 
-  onChangeOrder() async{
-    _pageCount = 0;
-    MultiSorts sorts = _makeSearchOrders();
-    this.ballWidgetLists.clear();
-    _setIsLoading(true);
-    var fBallListUpWrapDto = await _onSearch(_h005MainModel.getSearchText(), sorts, _ballPageLimitSize, _pageCount);
-    _setListUpBall(_pageCount, fBallListUpWrapDto);
-    _setSearchCount(fBallListUpWrapDto);
-    _setIsLoading(false);
+  onChangeOrder() async {
+    setFirstPage();
+
   }
 
-  Future<FBallListUpWrapDto> _onSearch(
-      String searchText, MultiSorts sorts, int pagesize, int pagecount) async {
-    _setIsLoading(true);
-    FBallRepository _fBallRepository = new FBallRepository();
-
-    var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
-    BallNameSearchReqDto reqDto = new BallNameSearchReqDto(
-        searchText, sorts.toQureyJson(), pagesize, pagecount,position.latitude,position.longitude);
-    var fBallListUpWrapDto = await _fBallRepository.listUpBallFromSearchText(reqDto);
-    _setIsLoading(false);
-    return fBallListUpWrapDto;
-  }
-
-  void _setSearchCount(FBallListUpWrapDto listUpBallFromSearchText) => _h005MainModel.titleSearchCount = listUpBallFromSearchText.searchBallCount;
-
-  _setListUpBall(int pageCount, FBallListUpWrapDto listUpBallFromSearchText) {
-    if (_isFirstPage(pageCount)) {
-      ballWidgetLists.clear();
-    }
-    ballWidgetLists.addAll(listUpBallFromSearchText.balls
-        .map((e) => BallStyle1Widget.create(e.ballType,BallStyle1WidgetController(e,this))).toList());
-  }
+  int setFirstPage() => _pageCount = 0;
 
   bool _isFirstPage(int pageCount) => pageCount == 0;
 
@@ -156,18 +148,28 @@ class H00501PageViewModel extends ChangeNotifier implements BallStyle1WidgetInte
     selectOrder = ordersItems[0];
   }
 
-  @override
-  onRequestReFreshBall(FBallResDto reFreshNeedBall) async {
-    _setIsLoading(true);
-    var ballStyle1ReFreshBallUtil = BallStyle1ReFreshBallUtil();
-    await ballStyle1ReFreshBallUtil.reFreshBallAndUiUpdate(ballWidgetLists, reFreshNeedBall, this);
-    _setIsLoading(false);
-  }
-  isEmptyPage(){
-    if(_initFinishFlag && ballWidgetLists.length == 0){
+
+  isEmptyPage() {
+    if (_initFinishFlag && ballWidgetLists.length == 0) {
       return true;
-    }else {
+    } else {
       return false;
     }
+  }
+
+  @override
+  onBallListUpFromSearchTitle(List<FBallResDto> fBallResDtoList) {
+    if (_isFirstPage(_pageCount)) {
+      ballWidgetLists.clear();
+    }
+    ballWidgetLists.addAll(fBallResDtoList
+        .map((x) => BallStyle1Widget.create(fBallResDto: x))
+        .toList());
+    notifyListeners();
+  }
+
+  @override
+  onBallListUpFromSearchTitleBallTotalCount(int fBallTotalCount) {
+    throw UnimplementedError();
   }
 }

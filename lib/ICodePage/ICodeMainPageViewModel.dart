@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+
 
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
@@ -226,7 +226,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
         _currentMapPosition.target.longitude,
         pageCount,
         pageSize,
-        sorts.toQureyJson());
+        sorts.toQueryJson());
     _fBallListUpWrapDto = await _fBallRepository.listUpBallFromMapArea(reqDto);
 
     if (pageCount == 0) {

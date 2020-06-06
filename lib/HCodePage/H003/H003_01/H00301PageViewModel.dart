@@ -72,7 +72,7 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
         await _authUserCaseInputPort.userUid(),
         _pageCount,
         _limitSize,
-        wrapsorts.toQureyJson());
+        wrapsorts.toQueryJson());
     await _fBallPlayerListUpUseCaseIp.userPlayBallListUp(reqDto: userToPlayBallReqDto);
     isLoading = false;
   }

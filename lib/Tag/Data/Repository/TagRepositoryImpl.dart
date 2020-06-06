@@ -1,36 +1,33 @@
 import 'package:forutonafront/Common/FDio.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Entity/FBallListUpWrap.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import 'package:forutonafront/Tag/Data/Value/FBallTagRankingWrap.dart';
-import 'package:forutonafront/Tag/Data/Value/FBallTagWrap.dart';
-import 'package:forutonafront/Tag/Domain/Repository/ITagRepository.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Tag/Data/Entity/FBallTagWrap.dart';
+import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
+import 'package:forutonafront/Tag/Dto/RelationTagRankingFromTagNameReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingReqDto.dart';
-import 'package:forutonafront/Tag/Dto/TagSearchFromTextReqDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 
-class TagRepositoryImpl implements ITagRepository {
 
-  IFBallTagRemoteDataSource _ifBallTagRemoteDataSource = FBallTagRemoteDataSource();
+class TagRepositoryImpl implements TagRepository {
+
+  IFBallTagRemoteDataSource _fBallTagRemoteDataSource = FBallTagRemoteDataSource();
 
   @override
-  Future<FBallTagRankingWrap> getTagRanking(TagRankingReqDto reqDto) async {
-    return await _ifBallTagRemoteDataSource.getTagRanking(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+  Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto) async {
+    return await _fBallTagRemoteDataSource.getFTagRankingFromBallInfluencePower(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
-  @override
-  Future<FBallListUpWrap> tagSearchFromTextToBalls(TagSearchFromTextReqDto reqDto) async {
-    return await _ifBallTagRemoteDataSource.tagSearchFromTextToBalls(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
-  }
 
   @override
-  Future<FBallTagRankingWrap> tagSearchFromTextToTagRankings(TagSearchFromTextReqDto reqDto) async {
-    return await _ifBallTagRemoteDataSource.tagSearchFromTextToTagRankings(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+  Future<FBallTagRankingWrap> getRelationTagRankingFromTagNameOrderByBallPower(RelationTagRankingFromTagNameReqDto reqDto) async {
+    return await _fBallTagRemoteDataSource.getRelationTagRankingFromTagNameOrderByBallPower(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
   @override
   Future<FBallTagWrap> tagFromBallUuid(TagFromBallReqDto reqDto) async {
-    return await _ifBallTagRemoteDataSource.tagFromBallUuid(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return await _fBallTagRemoteDataSource.tagFromBallUuid(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
+
   
 
 }

@@ -1,5 +1,5 @@
 
-import 'package:forutonafront/Common/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
 
 class ID001ResultPopDto {
   bool isNeedRefreshBall;

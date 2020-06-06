@@ -7,10 +7,12 @@ import 'H00501DropdownItemType.dart';
 
 
 class H00501Page extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => H00501PageViewModel(context),
+    H00501PageViewModel _h00501pageViewModel = Provider.of(context);
+    return ChangeNotifierProvider.value(
+        value: _h00501pageViewModel,
         child: Consumer<H00501PageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -44,7 +46,7 @@ class H00501Page extends StatelessWidget {
                 )
               ),
             ),
-            model.getIsLoading() ? CommonLoadingComponent() : Container()
+            model.isLoading ? CommonLoadingComponent() : Container()
           ]);
         }));
   }

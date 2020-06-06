@@ -62,7 +62,7 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
         await _authUserCaseInputPort.userUid(),
         _pageCount,
         _limitSize,
-        searchOrder.toQureyJson());
+        searchOrder.toQueryJson());
     if (_isFirstPage()) {
       ballListUpWidgets.clear();
     }

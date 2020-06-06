@@ -20,7 +20,7 @@ class MultiSorts {
   factory MultiSorts.fromJson(Map<String, dynamic> json) => _$MultiSortsFromJson(json);
   Map<String, dynamic> toJson() => _$MultiSortsToJson(this);
 
-  String toQureyJson(){
+  String toQueryJson(){
     return json.encode(this);
   }
 

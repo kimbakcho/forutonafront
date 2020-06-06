@@ -5,7 +5,9 @@ import 'package:forutonafront/FBall/Data/Entity/UserToMakeBallWrap.dart';
 
 
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 import 'package:meta/meta.dart';
 
@@ -16,8 +18,8 @@ class FBallRepositoryImpl implements FBallRepository {
   FBallRepositoryImpl({@required this.fBallRemoteDataSource});
 
   @override
-  Future<FBallListUpWrap> listUpFromPosition({@required FBallListUpReqDto listUpReqDto}) async {
-    var result = await fBallRemoteDataSource.listUpFromPosition(fBallListUpReqDto: listUpReqDto, noneTokenFDio: FDio.noneToken());
+  Future<FBallListUpWrap> listUpFromInfluencePower({@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto}) async {
+    var result = await fBallRemoteDataSource.listUpFromInfluencePower(fBallListUpFromInfluencePowerReqDto: listUpReqDto, noneTokenFDio: FDio.noneToken());
     return result;
   }
 
@@ -26,4 +28,17 @@ class FBallRepositoryImpl implements FBallRepository {
     var result = await fBallRemoteDataSource.getUserToMakerBalls(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
     return result;
   }
+
+  @override
+  Future<FBallListUpWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto}) async {
+    var result = await fBallRemoteDataSource.listUpFromSearchTitle(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return result;
+  }
+
+  @override
+  Future<FBallListUpWrap> listUpFromTagName({@required  FBallListUpFromTagNameReqDto reqDto}) async {
+    var result = await fBallRemoteDataSource.listUpFromTagName(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return result;
+  }
+
 }

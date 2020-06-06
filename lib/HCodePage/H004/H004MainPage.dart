@@ -149,7 +149,6 @@ class _H004MainPageState extends State<H004MainPage> {
                   } else {
                     await model.onSave(value);
                     model.gotoH005Page(value);
-
                   }
                 },
                 maxLines: 1,

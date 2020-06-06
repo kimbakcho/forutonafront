@@ -7,7 +7,7 @@ import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:matcher/matcher.dart';
 import 'package:mockito/mockito.dart';
 
@@ -21,7 +21,7 @@ void main(){
     fBallRemoteDataSource = FBallRemoteSourceImpl();
     mockFDio = MockFDio();
   });
-  final FBallListUpReqDto searchCondition = new FBallListUpReqDto(
+  final FBallListUpFromBallInfluencePowerReqDto searchCondition = new FBallListUpFromBallInfluencePowerReqDto(
     latitude: 37.43469925835876,
     longitude: 126.79077610373497,
     ballLimit: 1000,
@@ -45,7 +45,7 @@ void main(){
     setWhenBallListUp(mockFDio);
     //act
        var fBallListUpWrapDto = await fBallRemoteDataSource
-           .listUpFromPosition(fBallListUpReqDto: searchCondition,noneTokenFDio: mockFDio);
+           .listUpFromInfluencePower(fBallListUpFromInfluencePowerReqDto: searchCondition,noneTokenFDio: mockFDio);
     //assert
       expect(fBallListUpWrapDto.balls.length > 0, isTrue);
       expect(fBallListUpWrapDto.balls[0], TypeMatcher<FBall>());

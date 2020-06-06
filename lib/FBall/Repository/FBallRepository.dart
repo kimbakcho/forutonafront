@@ -3,12 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
-import 'package:forutonafront/FBall/Dto/BallNameSearchReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallImageUploadResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallResDto.dart';
@@ -59,7 +60,7 @@ class FBallRepository {
     return fBallListUpWrapDto;
   }
 
-  Future<FBallListUpWrapDto> listUpBallFromSearchText(BallNameSearchReqDto reqDto) async {
+  Future<FBallListUpWrapDto> listUpBallFromSearchText(FBallListUpFromSearchTitleReqDto reqDto) async {
     FDio dio = new FDio("nonetoken");
     var response =
         await dio.get("/v1/FBall/BallListUpFromSearchText", queryParameters: reqDto.toJson());
@@ -73,7 +74,7 @@ class FBallRepository {
     return fBallListUpWrapDto;
   }
 
-  Future<FBallListUpWrapDto> listUpBall(FBallListUpReqDto reqDto) async {
+  Future<FBallListUpWrapDto> listUpBall(FBallListUpFromBallInfluencePowerReqDto reqDto) async {
     FDio dio = new FDio("nonetoken");
     var response =
         await dio.get("/v1/FBall/BallListUp", queryParameters: reqDto.toJson());
