@@ -1,7 +1,9 @@
 
+
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Data/Entity/UserToMakeBallWrap.dart';
+
 
 
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
@@ -16,6 +18,7 @@ abstract class FBallRemoteDataSource {
   Future<UserToMakeBallWrap> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallListUpWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallListUpWrap> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto,@required FDio noneTokenFDio});
+
 }
 
 class FBallRemoteSourceImpl implements FBallRemoteDataSource {
@@ -46,7 +49,4 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromTagName", queryParameters: reqDto.toJson());
     return FBallListUpWrap.fromJson(response.data);
   }
-
-
-
 }

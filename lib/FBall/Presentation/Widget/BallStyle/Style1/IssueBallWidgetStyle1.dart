@@ -15,7 +15,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
     implements BallStyle1Widget {
   IssueBall _issueBall;
   IssueBallWidgetStyle1({@required FBallResDto fBallResDto}){
-    _issueBall = IssueBall.FromFBallResDto(fBallResDto);
+    _issueBall = IssueBall.fromFBallResDto(fBallResDto);
   }
 
   @override
@@ -194,7 +194,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
                     return BallImageViewer(
-                        model.issueBall.desimages,
+                        model.issueBall.desImages,
                         model.issueBall.ballUuid +
                             "picturefromBigpicture");
                   }));
@@ -234,7 +234,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
                                 return BallImageViewer(
-                                    model.issueBall.desimages,
+                                    model.issueBall.desImages,
                                     model.issueBall.ballUuid +
                                         "picturefrombutton");
                               }));

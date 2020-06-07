@@ -111,7 +111,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                                            model.issueBall.ballUuid
                                        ),
                                        didver(4),
-                                       model.showFBallValuation()
+                                       model.showFBallValuation
                                            ? ballValuationBar(model)
                                            : Container()
                                      ]))),

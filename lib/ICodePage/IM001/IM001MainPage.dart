@@ -105,7 +105,7 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
                         child: bottomBar(model, context),
                       ),
                     ]))),
-            model.getIsLoading() ? CommonLoadingComponent() : Container()
+            model.isLoading ? CommonLoadingComponent() : Container()
           ]);
         }));
   }

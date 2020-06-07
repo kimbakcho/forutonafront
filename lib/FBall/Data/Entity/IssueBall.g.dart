@@ -24,11 +24,21 @@ IssueBall _$IssueBallFromJson(Map<String, dynamic> json) {
     ..makeTime = json['makeTime'] == null
         ? null
         : DateTime.parse(json['makeTime'] as String)
-    ..description = json['description'] as String
     ..uid = json['uid'] as String
     ..userLevel = (json['userLevel'] as num)?.toDouble()
     ..contributor = json['contributor'] as int
-    ..ballDeleteFlag = json['ballDeleteFlag'] as bool;
+    ..ballDeleteFlag = json['ballDeleteFlag'] as bool
+    ..tags = (json['tags'] as List)
+        ?.map((e) =>
+            e == null ? null : FBallTag.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..desImages = (json['desImages'] as List)
+        ?.map((e) => e == null
+            ? null
+            : FBallDesImages.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..descriptionText = json['descriptionText']
+    ..youtubeVideoId = json['youtubeVideoId'];
 }
 
 Map<String, dynamic> _$IssueBallToJson(IssueBall instance) => <String, dynamic>{
@@ -44,11 +54,14 @@ Map<String, dynamic> _$IssueBallToJson(IssueBall instance) => <String, dynamic>{
       'ballPower': instance.ballPower,
       'activationTime': instance.activationTime?.toIso8601String(),
       'makeTime': instance.makeTime?.toIso8601String(),
-      'description': instance.description,
       'uid': instance.uid,
       'userLevel': instance.userLevel,
       'contributor': instance.contributor,
       'ballDeleteFlag': instance.ballDeleteFlag,
+      'tags': instance.tags,
+      'desImages': instance.desImages,
+      'descriptionText': instance.descriptionText,
+      'youtubeVideoId': instance.youtubeVideoId,
     };
 
 T _$enumDecode<T>(

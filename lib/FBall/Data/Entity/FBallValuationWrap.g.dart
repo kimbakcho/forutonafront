@@ -1,24 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FBallValuationWrapResDto.dart';
+part of 'FBallValuationWrap.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FBallValuationWrapResDto _$FBallValuationWrapResDtoFromJson(
-    Map<String, dynamic> json) {
-  return FBallValuationWrapResDto()
+FBallValuationWrap _$FBallValuationWrapFromJson(Map<String, dynamic> json) {
+  return FBallValuationWrap()
     ..count = json['count'] as int
     ..contents = (json['contents'] as List)
         ?.map((e) => e == null
             ? null
-            : FBallValuationResDto.fromJson(e as Map<String, dynamic>))
+            : FBallValuation.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
-Map<String, dynamic> _$FBallValuationWrapResDtoToJson(
-        FBallValuationWrapResDto instance) =>
+Map<String, dynamic> _$FBallValuationWrapToJson(FBallValuationWrap instance) =>
     <String, dynamic>{
       'count': instance.count,
       'contents': instance.contents,

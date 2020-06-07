@@ -9,6 +9,7 @@ import 'package:forutonafront/FBall/Data/Value/IssueBallDescription.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/Tag/Data/Entity/FBallTag.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'IssueBall.g.dart';
@@ -17,14 +18,22 @@ part 'IssueBall.g.dart';
 @JsonSerializable()
 class IssueBall extends FBall{
 
-  IssueBall();
+  IssueBall(){
+    ballType = FBallType.IssueBall;
+  }
+  List<FBallTag> tags;
   IssueBallDescription _issueBallDescription;
 
-  factory IssueBall.FromFBallResDto(FBallResDto resDto){
+  factory IssueBall.fromFBallResDto(FBallResDto resDto){
     IssueBall issueBall = IssueBall.fromJson(resDto.toJson());
     issueBall._issueBallDescription = IssueBallDescription.fromJson(json.decode(resDto.description));
     return issueBall;
   }
+
+  get description {
+    return json.encode(_issueBallDescription.toJson());
+  }
+
   factory IssueBall.fromJson(Map<String, dynamic> json) =>
       _$IssueBallFromJson(json);
 
@@ -32,6 +41,9 @@ class IssueBall extends FBall{
 
   bool isAliveBall(){
     return activationTime.isAfter(DateTime.now());
+  }
+  bool isDeadBall(){
+    return activationTime.isBefore(DateTime.now());
   }
 
   bool isMainPicture(){
@@ -122,8 +134,12 @@ class IssueBall extends FBall{
     ballHits++;
   }
 
-  List<FBallDesImages> get desimages {
+  List<FBallDesImages> get desImages {
     return this._issueBallDescription.desimages;
+  }
+
+  set desImages(List<FBallDesImages> desImages){
+    this._issueBallDescription.desimages = desImages;
   }
 
   get descriptionText {
@@ -132,6 +148,9 @@ class IssueBall extends FBall{
     }else {
       return _issueBallDescription.text;
     }
+  }
+  set descriptionText(String value) {
+    this._issueBallDescription.text = value;
   }
 
   Future<bool> isCanModify() async {
@@ -150,4 +169,33 @@ class IssueBall extends FBall{
   get youtubeVideoId {
     return _issueBallDescription.youtubeVideoId;
   }
+  set youtubeVideoId(String value) {
+    _issueBallDescription.youtubeVideoId = value;
+  }
+
+  plusBallLike(int point){
+    this.ballLikes += point;
+  }
+  minusBallLike(int point){
+    this.ballLikes -= point;
+  }
+  plusBallDisLike(int point){
+    this.ballDisLikes += point;
+  }
+  minusBallDisLike(int point){
+    this.ballDisLikes -= point;
+  }
+
+  minusContributorCount(){
+    this.contributor--;
+  }
+
+  bool hasTags() {
+    if(tags.length == 0){
+      return false;
+    }else {
+      return true;
+    }
+  }
+
 }

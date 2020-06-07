@@ -1,23 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FBallInsertReqDto.dart';
+part of 'IssueBallInsertReqDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FBallInsertReqDto _$FBallInsertReqDtoFromJson(Map<String, dynamic> json) {
-  return FBallInsertReqDto()
+IssueBallInsertReqDto _$IssueBallInsertReqDtoFromJson(
+    Map<String, dynamic> json) {
+  return IssueBallInsertReqDto()
     ..ballUuid = json['ballUuid'] as String
     ..longitude = (json['longitude'] as num)?.toDouble()
     ..latitude = (json['latitude'] as num)?.toDouble()
     ..ballName = json['ballName'] as String
     ..ballType = _$enumDecodeNullable(_$FBallTypeEnumMap, json['ballType'])
     ..placeAddress = json['placeAddress'] as String
-    ..administrativeArea = json['administrativeArea'] as String
-    ..country = json['country'] as String
-    ..ballPassword = json['ballPassword'] as String
-    ..maximumPlayers = json['maximumPlayers'] as int
     ..description = json['description'] as String
     ..tags = (json['tags'] as List)
         ?.map((e) => e == null
@@ -26,7 +23,8 @@ FBallInsertReqDto _$FBallInsertReqDtoFromJson(Map<String, dynamic> json) {
         ?.toList();
 }
 
-Map<String, dynamic> _$FBallInsertReqDtoToJson(FBallInsertReqDto instance) =>
+Map<String, dynamic> _$IssueBallInsertReqDtoToJson(
+        IssueBallInsertReqDto instance) =>
     <String, dynamic>{
       'ballUuid': instance.ballUuid,
       'longitude': instance.longitude,
@@ -34,10 +32,6 @@ Map<String, dynamic> _$FBallInsertReqDtoToJson(FBallInsertReqDto instance) =>
       'ballName': instance.ballName,
       'ballType': _$FBallTypeEnumMap[instance.ballType],
       'placeAddress': instance.placeAddress,
-      'administrativeArea': instance.administrativeArea,
-      'country': instance.country,
-      'ballPassword': instance.ballPassword,
-      'maximumPlayers': instance.maximumPlayers,
       'description': instance.description,
       'tags': instance.tags,
     };

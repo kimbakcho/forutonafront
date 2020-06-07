@@ -27,7 +27,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
   String distanceDisplayText = "";
 
   IssueBallWidgetStyle2ViewModel({@required this.context,@required FBallResDto userBallResDto}){
-    issueBall = IssueBall.FromFBallResDto(userBallResDto);
+    issueBall = IssueBall.fromFBallResDto(userBallResDto);
     geoLocationUtilUseCaseIp.reqBallDistanceDisplayText
       (lat: issueBall.latitude,lng: issueBall.longitude,geoLocationUtilUseCaseOp: this);
   }
@@ -77,7 +77,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
 
   @override
   void onSelectBall(FBallResDto fBallResDto) {
-    issueBall = IssueBall.FromFBallResDto(fBallResDto);
+    issueBall = IssueBall.fromFBallResDto(fBallResDto);
     notifyListeners();
   }
 
@@ -99,5 +99,15 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
   onBallDistanceDisplayText({String displayDistanceText}) {
     this.distanceDisplayText = displayDistanceText;
     notifyListeners();
+  }
+
+  @override
+  void onInsertBall() {
+    throw("here don't have action");
+  }
+
+  @override
+  void onUpdateBall() {
+    throw("here don't have action");
   }
 }

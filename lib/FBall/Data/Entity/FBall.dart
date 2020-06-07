@@ -1,6 +1,7 @@
 
 import 'package:forutonafront/FBall/Data/Value/FBallState.dart';
 import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
+import 'package:forutonafront/Tag/Data/Entity/FBallTag.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -29,7 +30,6 @@ class FBall {
   double userLevel;
   int contributor;
   bool ballDeleteFlag;
-
 
   FBall();
 

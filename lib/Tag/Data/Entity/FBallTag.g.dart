@@ -7,9 +7,10 @@ part of 'FBallTag.dart';
 // **************************************************************************
 
 FBallTag _$FBallTagFromJson(Map<String, dynamic> json) {
-  return FBallTag()
-    ..ballUuid = json['ballUuid'] as String
-    ..tagItem = json['tagItem'] as String;
+  return FBallTag(
+    ballUuid: json['ballUuid'] as String,
+    tagItem: json['tagItem'] as String,
+  );
 }
 
 Map<String, dynamic> _$FBallTagToJson(FBallTag instance) => <String, dynamic>{

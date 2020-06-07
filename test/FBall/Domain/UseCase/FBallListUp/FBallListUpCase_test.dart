@@ -7,9 +7,9 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromPosition/FBallListUpFromInfluencePowerUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromPosition/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromPosition/FBallListUpFromInfluencePowerUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,18 +18,18 @@ import 'package:matcher/matcher.dart';
 import '../../../../fixtures/fixture_reader.dart';
 
 class MockIFBallRepository extends Mock implements FBallRepository{}
-class MockFBallListUpCaseOp extends Mock implements FBallListUpFromPositionUseCaseOutputPort{}
+class MockFBallListUpCaseOp extends Mock implements FBallListUpFromInfluencePowerUseCaseOutputPort{}
 class MockGeoLocationUtil extends Mock implements GeoLocationUtilUseCase{}
 void main(){
   MockIFBallRepository mockIFBallRepository;
-  FBallListUpFromPositionUseCaseInputPort ballListUpUseCase;
+  FBallListUpFromInfluencePowerUseCaseInputPort ballListUpUseCase;
   MockFBallListUpCaseOp mockFBallListUpCaseOp;
   MockGeoLocationUtil mockGeoLocationUtil;
   setUp((){
     mockIFBallRepository = MockIFBallRepository();
     mockFBallListUpCaseOp = MockFBallListUpCaseOp();
     mockGeoLocationUtil = MockGeoLocationUtil();
-    ballListUpUseCase = FBallListUpFromPositionUseCase(fBallListUpUseCaseOutputPort: mockFBallListUpCaseOp
+    ballListUpUseCase = FBallListUpFromInfluencePowerUseCase(fBallListUpUseCaseOutputPort: mockFBallListUpCaseOp
         ,fBallRepository: mockIFBallRepository,geoLocationUtil: mockGeoLocationUtil);
 
   });
@@ -48,9 +48,9 @@ void main(){
         when(mockIFBallRepository.listUpFromInfluencePower(listUpReqDto: anyNamed('listUpReqDto')))
             .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
         //act
-        var positionSearchListUpBall = await ballListUpUseCase.ballListUpFromPosition(searchReqDto: fBallListUpReqDto);
+        var positionSearchListUpBall = await ballListUpUseCase.ballListUpFromInfluencePower(searchReqDto: fBallListUpReqDto);
         //assert
-        verify(mockFBallListUpCaseOp.onListUpBallFromPosition(fBallResDtos: anyNamed('fBallResDtos'),address: anyNamed('address')));
+        verify(mockFBallListUpCaseOp.onListUpBallFromBallInfluencePower(fBallResDtos: anyNamed('fBallResDtos'),address: anyNamed('address')));
         expect(positionSearchListUpBall, TypeMatcher<List<FBallResDto>>());
       });
 
@@ -60,7 +60,7 @@ void main(){
         when(mockIFBallRepository.listUpFromInfluencePower(listUpReqDto: anyNamed('listUpReqDto')))
             .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
         //act
-        var positionSearchListUpBall = await ballListUpUseCase.ballListUpFromPosition(searchReqDto: fBallListUpReqDto);
+        var positionSearchListUpBall = await ballListUpUseCase.ballListUpFromInfluencePower(searchReqDto: fBallListUpReqDto);
         var repositoryListUpBall = await mockIFBallRepository.listUpFromInfluencePower(listUpReqDto: fBallListUpReqDto);
         //assert
         expect(positionSearchListUpBall[0].latitude, repositoryListUpBall.balls[0].latitude);
@@ -98,9 +98,9 @@ void main(){
             findAddress: false
         );
         //act
-        await ballListUpUseCase.ballListUpFromPosition(searchReqDto: fBallListUpReqDtoFindAddressOption);
+        await ballListUpUseCase.ballListUpFromInfluencePower(searchReqDto: fBallListUpReqDtoFindAddressOption);
         //assert
-        verify(mockFBallListUpCaseOp.onListUpBallFromPosition(fBallResDtos: anyNamed('fBallResDtos'), address: null));
+        verify(mockFBallListUpCaseOp.onListUpBallFromBallInfluencePower(fBallResDtos: anyNamed('fBallResDtos'), address: null));
       });
 
 }

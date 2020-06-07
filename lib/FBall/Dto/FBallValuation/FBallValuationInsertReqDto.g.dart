@@ -8,11 +8,12 @@ part of 'FBallValuationInsertReqDto.dart';
 
 FBallValuationInsertReqDto _$FBallValuationInsertReqDtoFromJson(
     Map<String, dynamic> json) {
-  return FBallValuationInsertReqDto()
-    ..valueUuid = json['valueUuid'] as String
-    ..ballUuid = json['ballUuid'] as String
-    ..uid = json['uid'] as String
-    ..unAndDown = json['unAndDown'] as int;
+  return FBallValuationInsertReqDto(
+    valueUuid: json['valueUuid'] as String,
+    ballUuid: json['ballUuid'] as String,
+    uid: json['uid'] as String,
+    upAndDown: json['upAndDown'] as int,
+  );
 }
 
 Map<String, dynamic> _$FBallValuationInsertReqDtoToJson(
@@ -21,5 +22,5 @@ Map<String, dynamic> _$FBallValuationInsertReqDtoToJson(
       'valueUuid': instance.valueUuid,
       'ballUuid': instance.ballUuid,
       'uid': instance.uid,
-      'unAndDown': instance.unAndDown,
+      'upAndDown': instance.upAndDown,
     };

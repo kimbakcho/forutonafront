@@ -18,7 +18,7 @@ class IssueBallWidgetStyle3ViewModel extends ChangeNotifier implements IssueBall
   IssueBall issueBall;
   IssueBallUseCaseInputPort _issueBallUseCase = IssueBallUseCase();
   IssueBallWidgetStyle3ViewModel({@required this.context,@required FBallResDto fBallResDto}){
-    issueBall = IssueBall.FromFBallResDto(fBallResDto);
+    issueBall = IssueBall.fromFBallResDto(fBallResDto);
   }
 
   void goIssueDetailPage() async{
@@ -45,7 +45,17 @@ class IssueBallWidgetStyle3ViewModel extends ChangeNotifier implements IssueBall
 
   @override
   void onSelectBall(FBallResDto fBallResDto) {
-    issueBall = IssueBall.FromFBallResDto(fBallResDto);
+    issueBall = IssueBall.fromFBallResDto(fBallResDto);
     notifyListeners();
+  }
+
+  @override
+  void onInsertBall() {
+    throw("here don't have action");
+  }
+
+  @override
+  void onUpdateBall() {
+    throw("here don't have action");
   }
 }

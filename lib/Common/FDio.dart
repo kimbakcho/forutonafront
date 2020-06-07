@@ -26,7 +26,7 @@ class FDio extends DioForNative {
     return fDio;
   }
 
-  static makeAuthTokenFDio() async {
+  static Future<FDio> makeAuthTokenFDio() async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     var idToken = await firebaseUser.getIdToken(refresh: true);
     FDio dio = FDio(idToken.token);

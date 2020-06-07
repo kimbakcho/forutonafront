@@ -75,7 +75,7 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier implements GeoLocatio
 
   @override
   void onSelectBall(FBallResDto fBallResDto) {
-    issueBall = IssueBall.FromFBallResDto(fBallResDto);
+    issueBall = IssueBall.fromFBallResDto(fBallResDto);
     notifyListeners();
   }
 
@@ -83,5 +83,15 @@ class IssueBallWidgetSyle1ViewModel extends ChangeNotifier implements GeoLocatio
   void onDeleteBall() {
     issueBall.ballDeleteFlag = true;
     notifyListeners();
+  }
+
+  @override
+  void onInsertBall() {
+    throw("here don't have action");
+  }
+
+  @override
+  void onUpdateBall() {
+    throw("here don't have action");
   }
 }
