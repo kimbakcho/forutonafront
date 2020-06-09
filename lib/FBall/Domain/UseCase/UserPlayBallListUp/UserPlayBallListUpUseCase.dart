@@ -10,11 +10,11 @@ import 'UserPlayBallListUpUseCaseOutputPort.dart';
 
 class UserPlayBallListUpUseCase implements UserPlayBallListUpUseCaseInputPort{
 
-  FBallPlayerRepository _ifBallPlayerRepository = FBallPlayerRepositoryImpl(ifBallPlayerRemoteDataSource: new FBallPlayerRemoteDataSourceImpl());
+  FBallPlayerRepository _fBallPlayerRepository = FBallPlayerRepositoryImpl(fBallPlayerRemoteDataSource: new FBallPlayerRemoteDataSourceImpl());
 
   @override
-  Future<List<UserToPlayBallResDto>> userPlayBallListUp({@required UserToPlayBallReqDto reqDto,@required UserPlayBallListUpUseCaseOutputPort outputPort}) async{
-    var userToPlayBallWrap = await _ifBallPlayerRepository.getUserPlayBallList(reqDto);
+  Future<List<UserToPlayBallResDto>> userPlayBallListUp({@required UserToPlayBallReqDto reqDto, UserPlayBallListUpUseCaseOutputPort outputPort}) async{
+    var userToPlayBallWrap = await _fBallPlayerRepository.getUserPlayBallList(reqDto);
     final userToPlayBallResDtos = userToPlayBallWrap.contents.map((x) =>
         UserToPlayBallResDto.fromUserToPlayBall(x)).toList();
     if(outputPort != null){

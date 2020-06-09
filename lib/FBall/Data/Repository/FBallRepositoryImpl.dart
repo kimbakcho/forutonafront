@@ -8,6 +8,7 @@ import 'package:forutonafront/FBall/Data/Value/FBallImageUpload.dart';
 
 
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
@@ -41,6 +42,12 @@ class FBallRepositoryImpl implements FBallRepository {
   @override
   Future<FBallListUpWrap> listUpFromTagName({@required  FBallListUpFromTagNameReqDto reqDto}) async {
     var result = await fBallRemoteDataSource.listUpFromTagName(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return result;
+  }
+
+  @override
+  Future<FBallListUpWrap> ballListUpFromMapArea({@required BallFromMapAreaReqDto reqDto}) async {
+    var result = await fBallRemoteDataSource.listUpBallFromMapArea(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
     return result;
   }
 

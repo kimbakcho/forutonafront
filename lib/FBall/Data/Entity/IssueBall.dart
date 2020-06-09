@@ -20,8 +20,11 @@ class IssueBall extends FBall{
 
   IssueBall(){
     ballType = FBallType.IssueBall;
+    _issueBallDescription = new IssueBallDescription();
   }
-  List<FBallTag> tags;
+  @JsonKey(ignore: true)
+  List<FBallTag> tags = [];
+  @JsonKey(ignore: true)
   IssueBallDescription _issueBallDescription;
 
   factory IssueBall.fromFBallResDto(FBallResDto resDto){
@@ -58,7 +61,7 @@ class IssueBall extends FBall{
     return _issueBallDescription.pictureCount();
   }
 
-  String get ballName {
+  String getDisplayBallName() {
     if(ballDeleteFlag){
       return "(삭제됨)${super.ballName}";
     }else {
@@ -66,7 +69,7 @@ class IssueBall extends FBall{
     }
   }
 
-  String get placeAddress {
+  String getDisplayPlaceAddress() {
     if(ballDeleteFlag){
       return "";
     }else {
@@ -74,7 +77,7 @@ class IssueBall extends FBall{
     }
   }
 
-  String get profilePictureUrl {
+  String getDisplayProfilePictureUrl() {
     if(ballDeleteFlag){
       return Preference.basicProfileImageUrl;
     }else {
@@ -82,7 +85,7 @@ class IssueBall extends FBall{
     }
   }
 
-  String get nickName{
+  String getDisplayNickName(){
     if(ballDeleteFlag){
       return "";
     }else {
@@ -90,7 +93,7 @@ class IssueBall extends FBall{
     }
   }
 
-  String get remainingTime {
+  String getDisplayRemainingTime() {
     if(ballDeleteFlag){
       return "-";
     }else {
@@ -98,7 +101,7 @@ class IssueBall extends FBall{
     }
   }
 
-  String get displayMakeTime {
+  String getDisplayMakeTime() {
     if(ballDeleteFlag){
       return "-";
     }else {
@@ -106,7 +109,7 @@ class IssueBall extends FBall{
     }
   }
 
-  String get displayCommentCount{
+  String getDisplayCommentCount (){
     if(ballDeleteFlag){
       return "-";
     }else {
@@ -114,7 +117,7 @@ class IssueBall extends FBall{
     }
   }
 
-  get displayDisLikeCount {
+  String getDisplayDisLikeCount() {
     if(ballDeleteFlag){
       return "-";
     }else {
@@ -122,7 +125,7 @@ class IssueBall extends FBall{
     }
   }
 
-  get displayLikeCount{
+  String getDisplayLikeCount(){
     if(ballDeleteFlag){
       return "-";
     }else {
@@ -134,22 +137,28 @@ class IssueBall extends FBall{
     ballHits++;
   }
 
-  List<FBallDesImages> get desImages {
+
+  List<FBallDesImages> getDesImages() {
     return this._issueBallDescription.desimages;
   }
 
-  set desImages(List<FBallDesImages> desImages){
-    this._issueBallDescription.desimages = desImages;
+  setDesImages(List<FBallDesImages> desImages){
+    if(desImages == null){
+      this._issueBallDescription.desimages = [];
+    }else {
+      this._issueBallDescription.desimages = desImages;
+    }
   }
 
-  get descriptionText {
+  String getDisplayDescriptionText() {
     if(ballDeleteFlag){
       return "삭제됨";
     }else {
       return _issueBallDescription.text;
     }
   }
-  set descriptionText(String value) {
+
+  setDescriptionText(String value) {
     this._issueBallDescription.text = value;
   }
 
@@ -166,24 +175,25 @@ class IssueBall extends FBall{
     return _issueBallDescription.hasYoutubeVideo();
   }
 
-  get youtubeVideoId {
+  String getDisplayYoutubeVideoId() {
     return _issueBallDescription.youtubeVideoId;
   }
-  set youtubeVideoId(String value) {
+
+  setYoutubeVideoId(String value) {
     _issueBallDescription.youtubeVideoId = value;
   }
 
   plusBallLike(int point){
-    this.ballLikes += point;
+    this.ballLikes += point.abs();
   }
   minusBallLike(int point){
-    this.ballLikes -= point;
+    this.ballLikes -= point.abs();
   }
   plusBallDisLike(int point){
-    this.ballDisLikes += point;
+    this.ballDisLikes += point.abs();
   }
   minusBallDisLike(int point){
-    this.ballDisLikes -= point;
+    this.ballDisLikes -= point.abs();
   }
 
   minusContributorCount(){

@@ -10,18 +10,18 @@ import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallSelectReqDto.dart
 
 class FBallPlayerRepositoryImpl implements FBallPlayerRepository{
 
-  final FBallPlayerRemoteDataSource ifBallPlayerRemoteDataSource;
+  final FBallPlayerRemoteDataSource fBallPlayerRemoteDataSource;
 
-  FBallPlayerRepositoryImpl({@required this.ifBallPlayerRemoteDataSource});
+  FBallPlayerRepositoryImpl({@required this.fBallPlayerRemoteDataSource});
 
   @override
   Future<UserToPlayBallWrap> getUserPlayBallList(UserToPlayBallReqDto reqDto) async{
-    return await ifBallPlayerRemoteDataSource.getUserPlayBallList(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return await fBallPlayerRemoteDataSource.getUserPlayBallList(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
   @override
   Future<UserToPlayBall> getUserPlayBall(UserToPlayBallSelectReqDto reqDto) async{
-    return await ifBallPlayerRemoteDataSource.getUserPlayBall(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return await fBallPlayerRemoteDataSource.getUserPlayBall(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
 }

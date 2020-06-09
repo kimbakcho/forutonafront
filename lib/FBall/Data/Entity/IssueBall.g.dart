@@ -11,8 +11,10 @@ IssueBall _$IssueBallFromJson(Map<String, dynamic> json) {
     ..latitude = (json['latitude'] as num)?.toDouble()
     ..longitude = (json['longitude'] as num)?.toDouble()
     ..ballUuid = json['ballUuid'] as String
+    ..ballName = json['ballName'] as String
     ..ballType = _$enumDecodeNullable(_$FBallTypeEnumMap, json['ballType'])
     ..ballState = _$enumDecodeNullable(_$FBallStateEnumMap, json['ballState'])
+    ..placeAddress = json['placeAddress'] as String
     ..ballHits = json['ballHits'] as int
     ..ballLikes = json['ballLikes'] as int
     ..ballDisLikes = json['ballDisLikes'] as int
@@ -24,29 +26,22 @@ IssueBall _$IssueBallFromJson(Map<String, dynamic> json) {
     ..makeTime = json['makeTime'] == null
         ? null
         : DateTime.parse(json['makeTime'] as String)
+    ..nickName = json['nickName'] as String
+    ..profilePictureUrl = json['profilePictureUrl'] as String
     ..uid = json['uid'] as String
     ..userLevel = (json['userLevel'] as num)?.toDouble()
     ..contributor = json['contributor'] as int
-    ..ballDeleteFlag = json['ballDeleteFlag'] as bool
-    ..tags = (json['tags'] as List)
-        ?.map((e) =>
-            e == null ? null : FBallTag.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..desImages = (json['desImages'] as List)
-        ?.map((e) => e == null
-            ? null
-            : FBallDesImages.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..descriptionText = json['descriptionText']
-    ..youtubeVideoId = json['youtubeVideoId'];
+    ..ballDeleteFlag = json['ballDeleteFlag'] as bool;
 }
 
 Map<String, dynamic> _$IssueBallToJson(IssueBall instance) => <String, dynamic>{
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'ballUuid': instance.ballUuid,
+      'ballName': instance.ballName,
       'ballType': _$FBallTypeEnumMap[instance.ballType],
       'ballState': _$FBallStateEnumMap[instance.ballState],
+      'placeAddress': instance.placeAddress,
       'ballHits': instance.ballHits,
       'ballLikes': instance.ballLikes,
       'ballDisLikes': instance.ballDisLikes,
@@ -54,14 +49,12 @@ Map<String, dynamic> _$IssueBallToJson(IssueBall instance) => <String, dynamic>{
       'ballPower': instance.ballPower,
       'activationTime': instance.activationTime?.toIso8601String(),
       'makeTime': instance.makeTime?.toIso8601String(),
+      'nickName': instance.nickName,
+      'profilePictureUrl': instance.profilePictureUrl,
       'uid': instance.uid,
       'userLevel': instance.userLevel,
       'contributor': instance.contributor,
       'ballDeleteFlag': instance.ballDeleteFlag,
-      'tags': instance.tags,
-      'desImages': instance.desImages,
-      'descriptionText': instance.descriptionText,
-      'youtubeVideoId': instance.youtubeVideoId,
     };
 
 T _$enumDecode<T>(

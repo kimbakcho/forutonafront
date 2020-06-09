@@ -14,7 +14,7 @@ import 'package:http_parser/http_parser.dart';
 
 abstract class IssueBallTypeRemoteDateSource {
   Future<int> deleteBall({@required FBallReqDto reqDto,@required FDio fDio});
-  Future<int> insertBall({@required IssueBallInsertReqDto reqDto,@required FDio fDio});
+  Future<FBall> insertBall({@required IssueBallInsertReqDto reqDto,@required FDio fDio});
   Future<FBall> selectBall({@required  FBallReqDto reqDto,@required FDio fDio});
   Future<int> updateBall({@required IssueBallUpdateReqDto reqDto,@required FDio fDio});
   Future<int> joinBall({@required FBallJoinReqDto reqDto,@required FDio fDio});
@@ -38,9 +38,9 @@ class IssueBallTypeRemoteDateSourceImpl implements IssueBallTypeRemoteDateSource
   }
 
   @override
-  Future<int> insertBall({@required IssueBallInsertReqDto reqDto,@required FDio fDio}) async {
+  Future<FBall> insertBall({@required IssueBallInsertReqDto reqDto,@required FDio fDio}) async {
     var response = await fDio.post("/v1/FBall/Issue/Insert",data: reqDto.toJson());
-    return int.parse(response.data);
+    return FBall.fromJson(response.data);
   }
 
   @override

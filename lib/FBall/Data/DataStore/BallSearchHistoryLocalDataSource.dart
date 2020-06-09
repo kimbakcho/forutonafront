@@ -27,6 +27,7 @@ class BallSearchHistoryLocalDataSourceImpl implements BallSearchHistoryLocalData
       historyList.removeLast();
     }
     insertHistoryFirst(historyList, saveReq);
+    sharedPreferences.setString(shareBallSearchBarHistory, json.encode(historyList));
   }
 
   void removeHistory({@required BallSearchBarHistoryDto saveReq,@required SharedPreferences sharedPreferences}) {

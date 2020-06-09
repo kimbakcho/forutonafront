@@ -28,7 +28,9 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             Consumer<IssueBallWidgetSyle1ViewModel>(builder: (_, model, child) {
           return Stack(
             children: <Widget>[
+              model.issueBall.ballDeleteFlag ?  Container(key: UniqueKey(),height: 0) :
               Container(
+                  key: UniqueKey(),
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                   child: FlatButton(
                     padding: EdgeInsets.all(0),
@@ -49,7 +51,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text(model.issueBall.displayLikeCount,
+                            Text(model.issueBall.getDisplayLikeCount(),
                                 style: GoogleFonts.notoSans(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -60,7 +62,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                                 child: Icon(ForutonaIcon.thumbsup,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
-                            Text(model.issueBall.displayDisLikeCount,
+                            Text(model.issueBall.getDisplayDisLikeCount(),
                                 style: GoogleFonts.notoSans(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -71,7 +73,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                                 child: Icon(ForutonaIcon.thumbsdown,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
-                            Text(model.issueBall.displayCommentCount,
+                            Text(model.issueBall.getDisplayCommentCount(),
                                 style: GoogleFonts.notoSans(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -82,7 +84,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                                 child: Icon(ForutonaIcon.comment,
                                     color: Color(0xff78849E), size: 17)),
                             SizedBox(width: 19),
-                            Text(model.issueBall.remainingTime,
+                            Text(model.issueBall.getDisplayRemainingTime(),
                                 style: GoogleFonts.notoSans(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -129,7 +131,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
     return Container(
       width: MediaQuery.of(context).size.width - 64,
       padding: EdgeInsets.only(bottom: 23),
-      child: Text(model.issueBall.descriptionText,
+      child: Text(model.issueBall.getDisplayDescriptionText(),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: GoogleFonts.notoSans(
@@ -162,7 +164,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
           Positioned(
             left: 34,
             top: 0,
-            child: Text(model.issueBall.nickName,
+            child: Text(model.issueBall.getDisplayNickName(),
                 style: TextStyle(
                   fontFamily: "Gibson",
                   fontWeight: FontWeight.w600,
@@ -173,7 +175,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
           Positioned(
             left: 34,
             top: 16,
-            child: Text(model.issueBall.displayMakeTime,
+            child: Text(model.issueBall.getDisplayMakeTime(),
                 style: GoogleFonts.notoSans(
                   fontSize: 10,
                   color: Color(0xff454f63),
@@ -194,7 +196,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
                     return BallImageViewer(
-                        model.issueBall.desImages,
+                        model.issueBall.getDesImages(),
                         model.issueBall.ballUuid +
                             "picturefromBigpicture");
                   }));
@@ -234,7 +236,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
                                 return BallImageViewer(
-                                    model.issueBall.desImages,
+                                    model.issueBall.getDesImages(),
                                     model.issueBall.ballUuid +
                                         "picturefrombutton");
                               }));
@@ -288,7 +290,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             left: 44,
             width: MediaQuery.of(context).size.width-100,
             child: Container(
-                child: Text(model.issueBall.ballName,
+                child: Text(model.issueBall.getDisplayBallName(),
                     style: TextStyle(
                       fontFamily: "Noto Sans CJK KR",
                       fontWeight: FontWeight.w700,

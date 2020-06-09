@@ -46,6 +46,8 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpFromInfluencePowe
 
   bool _isLoading = false;
 
+  bool _subScrollerTopOver = false;
+
   get isLoading {
     return _isLoading;
   }
@@ -228,7 +230,16 @@ class H001ViewModel with ChangeNotifier implements  FBallListUpFromInfluencePowe
         this.ballWidgetLists.length);
   }
   bool _isScrollerTopOver(){
-    return h001CenterListViewController.offset <= h001CenterListViewController.position.minScrollExtent-100;
+    if(h001CenterListViewController.offset <= h001CenterListViewController.position.minScrollExtent-100){
+      _subScrollerTopOver = true;
+    }
+    if(_subScrollerTopOver &&
+        !h001CenterListViewController.position.outOfRange){
+      _subScrollerTopOver = false;
+      return true;
+    }else {
+      return false;
+    }
   }
   bool _isScrollerBottomOver() {
     return h001CenterListViewController.offset >=

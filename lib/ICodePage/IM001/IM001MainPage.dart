@@ -133,6 +133,8 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
     return Container(
       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: TextFormField(
+          autocorrect: false,
+          enableSuggestions: false,
           focusNode: model.tagEditFocusNode,
           controller: model.tagEditController,
           onChanged: model.onTagTextChanged,
@@ -212,6 +214,7 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
               top: 45,
               left: 16,
               child: Container(
+                width: MediaQuery.of(context).size.width-120,
                   child: model.validYoutubeLink == null
                       ? Text("동영상 링크를 복사해서 붙어넣기 하세요.",
                       style: TextStyle(
@@ -518,6 +521,8 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
     return TextField(
       controller: model.textContentEditController,
       focusNode: model.textContentFocusNode,
+      autocorrect: false,
+      enableSuggestions: false,
       maxLength: 2000,
       maxLines: null,
       minLines: 1,
@@ -565,6 +570,8 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
     return TextField(
       controller: model.titleEditController,
       focusNode: model.titleFocusNode,
+      autocorrect: false,
+      enableSuggestions: false,
       maxLength: 50,
       maxLines: 2,
       minLines: 2,

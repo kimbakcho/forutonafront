@@ -10,14 +10,16 @@ import 'package:permission_handler/permission_handler.dart' as Permit;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'GeoLocationUtilUseCaseIp.dart';
-import 'GeoLocationUtilUseCaseOp.dart';
+import 'GeoLocationUtilUseCaseInputPort.dart';
+import 'GeoLocationUtilUseCaseOutputPort.dart';
 
-class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseIp {
+class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
   ///GPS 가 사용 가능한지 알아보는 메소드
   ///만약 GPS off 면 on 요청 해줌 Flutter 권한 관련 오류로 요청 메세지를 던지기만 하고 타임 아웃으로 빠져 나옴
   Geolocator _geolocator = Geolocator();
   static final GeoLocationUtilUseCase _instance = GeoLocationUtilUseCase._internal();
+  Position _currentWithLastPosition;
+  String _currentWithLastAddress;
 
   factory GeoLocationUtilUseCase() {
     return _instance;
@@ -55,6 +57,23 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseIp {
     return true;
   }
 
+  Position getCurrentWithLastPositionInMemory(){
+    if(_currentWithLastPosition == null){
+      return Position(latitude: Preference.initPosition.latitude,longitude: Preference.initPosition.longitude);
+    }else {
+      return _currentWithLastPosition;
+    }
+  }
+
+  String getCurrentWithLastAddressInMemory(){
+    if(_currentWithLastAddress == null){
+      return "신도림";
+    }else {
+      return _currentWithLastAddress;
+    }
+
+  }
+
   Future<Position> getCurrentWithLastPosition() async{
     Location location = new Location();
     bool _serviceEnabled;
@@ -68,6 +87,8 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseIp {
       sharedPreferences.setDouble("currentlong", resultPosition.longitude);
       sharedPreferences.setDouble("currentlat", resultPosition.latitude);
     }
+    _currentWithLastPosition = resultPosition;
+    _currentWithLastAddress = await getPositionAddress(_currentWithLastPosition);
     return resultPosition;
   }
 
@@ -95,7 +116,7 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseIp {
     }
   }
 
-  void reqBallDistanceDisplayText({@required double lat,@required double lng,@required GeoLocationUtilUseCaseOp geoLocationUtilUseCaseOp}) async{
+  void reqBallDistanceDisplayText({@required double lat,@required double lng,@required GeoLocationUtilUseCaseOutputPort geoLocationUtilUseCaseOp}) async{
     var position = await getLastKnowPonePosition();
     var distance = await Geolocator().distanceBetween(lat, lng, position.latitude, position.longitude);
     geoLocationUtilUseCaseOp.onBallDistanceDisplayText(displayDistanceText: DistanceDisplayUtil.changeDisplayStr(distance));

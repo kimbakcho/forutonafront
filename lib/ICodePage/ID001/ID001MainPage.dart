@@ -285,7 +285,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                    child: FlatButton(
                        onPressed: () {
                          model.goYoutubeIntent(
-                             model.issueBall.youtubeVideoId);
+                             model.issueBall.getDisplayYoutubeVideoId());
                        },
                        padding: EdgeInsets.all(0),
                        child: Container(
@@ -363,7 +363,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
    Container issueTextContentBar(ID001MainPageViewModel model) {
      return Container(
          padding: EdgeInsets.fromLTRB(16, 23, 16, 24),
-         child: Text(model.issueBall.descriptionText,
+         child: Text(model.issueBall.getDisplayDescriptionText(),
              style: TextStyle(
                fontFamily: "Noto Sans CJK KR",
                fontSize: 14,
@@ -458,7 +458,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
            ),
            Container(
                margin: EdgeInsets.only(left: 4),
-               child: Text("${model.issueBall.displayLikeCount}회",
+               child: Text("${model.issueBall.getDisplayLikeCount()}회",
                    style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      fontSize: 12,
@@ -475,7 +475,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                )),
            Container(
                margin: EdgeInsets.only(left: 4),
-               child: Text("${model.issueBall.displayDisLikeCount}회",
+               child: Text("${model.issueBall.getDisplayDisLikeCount()}회",
                    style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      fontSize: 12,
@@ -510,7 +510,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
            ),
            Container(
                margin: EdgeInsets.only(left: 4),
-               child: Text(model.issueBall.displayMakeTime,
+               child: Text(model.issueBall.getDisplayMakeTime(),
                    style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      fontSize: 12,
@@ -636,7 +636,7 @@ class _ID001MainPageState extends State<ID001MainPage> with WidgetsBindingObserv
                child: Container(
                  width: MediaQuery.of(context).size.width-100,
                  child: Text(
-                     model.issueBall.remainingTime,
+                     model.issueBall.getDisplayRemainingTime(),
                      overflow: TextOverflow.ellipsis,
                      style: GoogleFonts.notoSans(
                        fontSize: 12,

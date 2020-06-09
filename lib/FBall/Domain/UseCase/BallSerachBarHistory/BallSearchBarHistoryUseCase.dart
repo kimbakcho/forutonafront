@@ -30,7 +30,7 @@ class BallSearchBarHistoryUseCase implements BallSearchBarHistoryUseCaseInputPor
 
   @override
   Future<void> saveHistory({@required BallSearchBarHistoryDto reqDto,BallSearchBarHistoryUseCaseOutputPort outputPort}) async {
-    await _ballSearchBarHistoryRepository.removeHistory(reqDto);
+    await _ballSearchBarHistoryRepository.saveHistory(reqDto);
     if(outputPort!= null){
       outputPort.onSaveHistory();
     }

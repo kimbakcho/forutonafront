@@ -34,7 +34,7 @@ class IssueBallDescription {
   }
 
   bool hasYoutubeVideo(){
-    if(youtubeVideoId.length == 0){
+    if(youtubeVideoId == null || youtubeVideoId.length == 0){
       return false;
     }else {
       return true;

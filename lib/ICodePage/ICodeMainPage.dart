@@ -69,7 +69,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
                           )),
                       GoogleMap(
                         key: googleMapKey,
-                        initialCameraPosition: model.initCameraPosition,
+                        initialCameraPosition: model.currentMapPosition,
                         onMapCreated: model.onCreateMap,
                         myLocationEnabled: true,
                         myLocationButtonEnabled: false,
@@ -107,7 +107,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
                         child: bottomBallListUp(model,context),
                       ),
                     ]))),
-            model.getIsLoading() ? CommonLoadingComponent() : Container()
+            model.isLoading ? CommonLoadingComponent() : Container()
           ]
 
           );

@@ -29,7 +29,7 @@ class IssueBallWidgetStyle3ViewModel extends ChangeNotifier implements IssueBall
     }
     await Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => ID001MainPage(issueBall: issueBall)));
-    _issueBallUseCase.selectBall(ballUuid: issueBall.ballUuid);
+    _issueBallUseCase.selectBall(ballUuid: issueBall.ballUuid,outputPort: this);
   }
 
   @override
@@ -50,7 +50,7 @@ class IssueBallWidgetStyle3ViewModel extends ChangeNotifier implements IssueBall
   }
 
   @override
-  void onInsertBall() {
+  void onInsertBall(FBallResDto resDto) {
     throw("here don't have action");
   }
 

@@ -24,6 +24,8 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
   int _limitSize = 10;
   bool _isInitFinish = false;
   bool _isLoading = false;
+  bool _subScrollerTopOver = false;
+
   get isLoading {
     return _isLoading;
   }
@@ -33,7 +35,7 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
   }
 
   AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
-  UserPlayBallListUpUseCaseInputPort _fBallPlayerListUpUseCaseIp = UserPlayBallListUpUseCase();
+  UserPlayBallListUpUseCaseInputPort _userPlayBallListUpUseCaseInputPort = UserPlayBallListUpUseCase();
 
 
   H00301PageViewModel(this._context) {
@@ -60,20 +62,19 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
   Future<void> ballListUp() async {
     isLoading = true;
     if(await _authUserCaseInputPort.checkLogin(authUserCaseOutputPort: this)){
-      isLoading = false;
-      return ;
+      List<MultiSort> sorts = new List<MultiSort>();
+      sorts.add(MultiSort("Alive", QueryOrders.DESC));
+      //startTime이 참여한 시작시간이다.
+      sorts.add(MultiSort("startTime", QueryOrders.DESC));
+      MultiSorts wrapsorts = new MultiSorts(sorts);
+      var userToPlayBallReqDto = UserToPlayBallReqDto(
+          await _authUserCaseInputPort.userUid(),
+          _pageCount,
+          _limitSize,
+          wrapsorts.toQueryJson());
+      await _userPlayBallListUpUseCaseInputPort.userPlayBallListUp(reqDto: userToPlayBallReqDto,outputPort: this);
     }
-    List<MultiSort> sorts = new List<MultiSort>();
-    sorts.add(MultiSort("Alive", QueryOrders.DESC));
-    //startTime이 참여한 시작시간이다.
-    sorts.add(MultiSort("startTime", QueryOrders.DESC));
-    MultiSorts wrapsorts = new MultiSorts(sorts);
-    var userToPlayBallReqDto = UserToPlayBallReqDto(
-        await _authUserCaseInputPort.userUid(),
-        _pageCount,
-        _limitSize,
-        wrapsorts.toQueryJson());
-    await _fBallPlayerListUpUseCaseIp.userPlayBallListUp(reqDto: userToPlayBallReqDto);
+
     isLoading = false;
   }
 
@@ -100,7 +101,7 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
             duration: Duration(milliseconds: 300), curve: Curves.linear );
       }
     }
-    if(isScrollerTopOver()){
+    if(_isScrollerTopOver()){
       setFirstPage();
       await ballListUp();
     }
@@ -108,10 +109,18 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
 
   int setFirstPage() => _pageCount = 0;
 
-  bool isScrollerTopOver(){
-    return scrollController.offset <= scrollController.position.minScrollExtent-100;
+  bool _isScrollerTopOver(){
+    if(scrollController.offset <= scrollController.position.minScrollExtent-100){
+      _subScrollerTopOver = true;
+    }
+    if(_subScrollerTopOver &&
+        !scrollController.position.outOfRange){
+      _subScrollerTopOver = false;
+      return true;
+    }else {
+      return false;
+    }
   }
-
 
   bool _hasBalls() {
     return !(_pageCount * _limitSize > ballListUpWidgets.length);

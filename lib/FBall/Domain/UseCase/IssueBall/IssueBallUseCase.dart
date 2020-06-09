@@ -47,10 +47,11 @@ class IssueBallUseCase implements IssueBallUseCaseInputPort {
   @override
   Future<int> deleteBall({String ballUuid,@required IssueBallUseCaseOutputPort outputPort}) async{
     FBallReqDto fBallReqDto = FBallReqDto(FBallType.IssueBall, ballUuid);
+
+    var result = await _issueBallTypeRepository.deleteBall(fBallReqDto);
     if(outputPort != null){
       outputPort.onDeleteBall();
     }
-    var result = await _issueBallTypeRepository.deleteBall(fBallReqDto);
     return result;
   }
 
@@ -80,10 +81,11 @@ class IssueBallUseCase implements IssueBallUseCaseInputPort {
   }
 
   @override
-  Future<int> insertBall({@required IssueBallInsertReqDto reqDto,@required IssueBallUseCaseOutputPort outputPort}) async {
-    var result = await _issueBallTypeRepository.insertBall(reqDto);
+  Future<FBallResDto> insertBall({@required IssueBallInsertReqDto reqDto,@required IssueBallUseCaseOutputPort outputPort}) async {
+    var saveFBall = await _issueBallTypeRepository.insertBall(reqDto);
+    var result = FBallResDto.fromFBall(saveFBall);
     if(outputPort != null){
-      outputPort.onInsertBall();
+      outputPort.onInsertBall(result);
     }
     return result;
   }

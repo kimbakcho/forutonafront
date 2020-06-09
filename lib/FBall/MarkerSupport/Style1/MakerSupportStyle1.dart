@@ -82,14 +82,14 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
     Set<Marker> markers = new Set<Marker>();
     for(int i=0;i<bitMapFromWidget.length;i++){
       markers.add(Marker(
-        markerId: MarkerId(widget.ballList[i].ballUuid),
+        markerId: MarkerId(widget.ballList[i].ballResDto.ballUuid),
         icon: BitmapDescriptor.fromBytes(bitMapFromWidget[i]),
         anchor: widget.ballList[i].isSelectBall ? Offset(0.5,1) : Offset(0.5,0.5),
         zIndex: widget.ballList[i].isSelectBall ? 2 : 1 ,
         onTap: (){
           widget.ballList[i].onTopEvent(widget.ballList[i]);
         },
-        position: LatLng(widget.ballList[i].latitude,widget.ballList[i].longitude),
+        position: LatLng(widget.ballList[i].ballResDto.latitude,widget.ballList[i].ballResDto.longitude),
       ));
     }
     widget.completer.complete(markers);
@@ -101,7 +101,7 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
 
     for (var ball in widget.ballList) {
       widgetBalls.add(MarkerStyle1Util.ballWidgetSelect(
-          ball.ballType, ball.isSelectBall));
+          ball.ballResDto.ballType, ball.isSelectBall));
     }
 
     return Transform.translate(

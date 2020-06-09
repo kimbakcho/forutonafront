@@ -79,6 +79,8 @@ class H007MainPageViewModel extends ChangeNotifier {
   onMapBallSearch(LatLng searchPosition) {
     MapSearchGeoDto mapSearchGeoDto = MapSearchGeoDto();
     mapSearchGeoDto.latLng = searchPosition;
+    mapSearchGeoDto.address = address;
+    mapSearchGeoDto.descriptionAddress = address;
     Navigator.of(_context).pop(mapSearchGeoDto);
   }
 

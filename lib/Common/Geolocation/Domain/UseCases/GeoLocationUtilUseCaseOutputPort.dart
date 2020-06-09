@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-abstract class GeoLocationUtilUseCaseOp {
+abstract class GeoLocationUtilUseCaseOutputPort {
   onBallDistanceDisplayText({@required String displayDistanceText});
 }

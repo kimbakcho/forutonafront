@@ -3,6 +3,7 @@
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Data/Entity/UserToMakeBallWrap.dart';
+import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 
 
 
@@ -18,6 +19,7 @@ abstract class FBallRemoteDataSource {
   Future<UserToMakeBallWrap> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallListUpWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallListUpWrap> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto,@required FDio noneTokenFDio});
+  Future<FBallListUpWrap> listUpBallFromMapArea({@required BallFromMapAreaReqDto reqDto,@required FDio noneTokenFDio});
 
 }
 
@@ -27,7 +29,7 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   Future<FBallListUpWrap> listUpFromInfluencePower(
       {@required FBallListUpFromBallInfluencePowerReqDto fBallListUpFromInfluencePowerReqDto,@required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get(
-        "/v1/FBall/ListUpFromInfluencePower",
+        "/v1/FBall/ListUpFromBallInfluencePower",
         queryParameters: fBallListUpFromInfluencePowerReqDto.toJson());
     return FBallListUpWrap.fromJson(response.data);
   }
@@ -47,6 +49,12 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   @override
   Future<FBallListUpWrap> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto,@required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromTagName", queryParameters: reqDto.toJson());
+    return FBallListUpWrap.fromJson(response.data);
+  }
+
+  @override
+  Future<FBallListUpWrap> listUpBallFromMapArea({@required  BallFromMapAreaReqDto reqDto,@required  FDio noneTokenFDio}) async {
+    var response = await noneTokenFDio.get("/v1/FBall/ListUpFromMapArea", queryParameters: reqDto.toJson());
     return FBallListUpWrap.fromJson(response.data);
   }
 }

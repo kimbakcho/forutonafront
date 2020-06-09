@@ -22,10 +22,10 @@ class FUserInfoSimple1 {
       return fUserInfoSimple1;
    }
    plusCumulativeInfluence(int point){
-      this.cumulativeInfluence += point;
+      this.cumulativeInfluence += point.abs();
    }
    minusCumulativeInfluence(int point){
-      this.cumulativeInfluence -= point;
+      this.cumulativeInfluence -= point.abs();
    }
 
 }

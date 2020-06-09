@@ -79,7 +79,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   //UnAndDown 관련
   String userNickName = "로 딩 중";
   IssueBallValuationUseCaseInputPort _issueBallValuationUseCaseInputPort = IssueBallValuationUseCase();
-  FBallValuation fBallValuation;
+  FBallValuation fBallValuation = FBallValuation();
 
   //UserInfo 관련
   UserInfoSimple1UseCaseInputPort _userInfoSimple1UseCaseInputPort =
@@ -109,7 +109,7 @@ class ID001MainPageViewModel extends ChangeNotifier
     initialCameraPosition = CameraPosition(
         target: LatLng(issueBall.latitude, issueBall.longitude), zoom: 14.425);
     if (issueBall.hasYoutubeVideo()) {
-      youtubeLoad(issueBall.youtubeVideoId);
+      youtubeLoad(issueBall.getDisplayYoutubeVideoId());
     }
     _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
         reqDto: TagFromBallReqDto(ballUuid: issueBall.ballUuid),
@@ -145,6 +145,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   @override
   onLoginCheck(bool isLogin) {
     if(isLogin){
+      userNickName = _authUserCaseInputPort.userNickName(context: context);
       showFBallValuation = true;
     }
     notifyListeners();
@@ -154,7 +155,7 @@ class ID001MainPageViewModel extends ChangeNotifier
     FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
     valuationReqDto.ballUuid = issueBall.ballUuid;
     valuationReqDto.uid = await _authUserCaseInputPort.userUid();
-    _issueBallValuationUseCaseInputPort.getFBallValuation(reqDto: valuationReqDto);
+    _issueBallValuationUseCaseInputPort.getFBallValuation(reqDto: valuationReqDto,outputPort: this);
   }
 
   @override
@@ -218,7 +219,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   jumpToBallImageViewer(int indexNumber) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return BallImageViewer(
-        issueBall.desImages,
+        issueBall.getDesImages(),
         null,
         initIndex: indexNumber,
       );
@@ -227,7 +228,7 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   Widget getImageContentBar(BuildContext context) {
     return BallDescriptionImageViewer.descriptionImages(
-            desImages: issueBall.desImages, context: context)
+            desImages: issueBall.getDesImages(), context: context)
         .getImageViewerWidget();
   }
 
@@ -268,10 +269,10 @@ class ID001MainPageViewModel extends ChangeNotifier
       return;
     }
     if (fBallValuation.isLikeState()) {
-      deleteValuation(-1);
-    } else if (fBallValuation.isDisLikeState()) {
       deleteValuation(1);
       valuationSave(-1);
+    } else if (fBallValuation.isDisLikeState()) {
+      deleteValuation(-1);
     } else {
       valuationSave(-1);
     }
@@ -286,7 +287,7 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   @override
   onDeleteFBallValuation(int deletePoint) {
-    fBallValuation = null;
+    fBallValuation = new FBallValuation();
     if (deletePoint > 0) {
       issueBall.minusBallLike(deletePoint.abs());
       makerUserInfo.minusCumulativeInfluence(deletePoint);
@@ -297,23 +298,30 @@ class ID001MainPageViewModel extends ChangeNotifier
     issueBall.minusContributorCount();
     notifyListeners();
   }
+  @override
+  onSave(FBallValuationResDto fBallValuationResDto) {
+    if(fBallValuationResDto.upAndDown > 0){
+      issueBall.plusBallLike(fBallValuationResDto.upAndDown);
+      makerUserInfo.plusCumulativeInfluence(fBallValuationResDto.upAndDown);
+    }else {
+      issueBall.plusBallDisLike(fBallValuationResDto.upAndDown);
+      makerUserInfo.minusCumulativeInfluence(fBallValuationResDto.upAndDown);
+    }
+    this.fBallValuation = FBallValuation.fromFBallValuationResDto(fBallValuationResDto);
+    notifyListeners();
+  }
 
 
   void valuationSave(int point) async {
     FBallValuationInsertReqDto reqDto = FBallValuationInsertReqDto(
-      ballUuid: issueBall.uid,
+      ballUuid: issueBall.ballUuid,
       uid: await _authUserCaseInputPort.userUid(),
       upAndDown: point,
       valueUuid: Uuid().v4()
     );
-    _issueBallValuationUseCaseInputPort.save(reqDto: reqDto);
+    _issueBallValuationUseCaseInputPort.save(reqDto: reqDto,outputPort: this);
   }
 
-  @override
-  onSave(FBallValuationResDto fBallValuationResDto) {
-    this.fBallValuation = FBallValuation.fromFBallValuationResDto(fBallValuationResDto);
-    notifyListeners();
-  }
 
 
 
@@ -434,6 +442,7 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   @override
   void onDeleteBall() {
+//    issueBall.ballDeleteFlag = true;
     Navigator.of(context).pop();
   }
 
@@ -445,7 +454,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   @override
-  void onInsertBall() {
+  void onInsertBall(FBallResDto resDto) {
     throw ("here don't have action");
   }
 

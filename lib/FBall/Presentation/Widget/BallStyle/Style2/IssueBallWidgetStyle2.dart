@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 
 import 'IssueBallWidgetStyle2ViewModel.dart';
 
-// ignore: must_be_immutable
 class IssueBallWidgetStyle2 extends StatelessWidget
     implements BallStyle2Widget {
 
@@ -51,7 +50,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
                           bottom: 63,
                           right: 16,
                           child: Container(
-                            child: Text(model.distanceDisplayText,
+                            child: Text(model.getDistanceDisplayText(),
                                 style: GoogleFonts.notoSans(
                                   fontSize: 10,
                                   color: Color(0xffFF4F9A),
@@ -63,7 +62,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
                 ],
               ),
               decoration: BoxDecoration(
-                  color: model.isAlive ? Color(0xffffffff) : Color(0xffF6F6F6),
+                  color: model.issueBall.isAliveBall() ? Color(0xffffffff) : Color(0xffF6F6F6),
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(0.00, 3.00),
@@ -96,7 +95,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     return Container(
         child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
       Container(
-        child: Text(model.issueBall.displayDisLikeCount,
+        child: Text(model.issueBall.getDisplayLikeCount(),
             style: TextStyle(
               fontFamily: "Gibson",
               fontWeight: FontWeight.w600,
@@ -114,7 +113,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         margin: EdgeInsets.only(right: 19),
       ),
       Container(
-        child: Text(model.issueBall.displayLikeCount,
+        child: Text(model.issueBall.getDisplayDisLikeCount(),
             style: TextStyle(
               fontFamily: "Gibson",
               fontWeight: FontWeight.w600,
@@ -132,7 +131,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         margin: EdgeInsets.only(right: 19),
       ),
       Container(
-        child: Text(model.issueBall.displayCommentCount,
+        child: Text(model.issueBall.getDisplayCommentCount(),
             style: TextStyle(
               fontFamily: "Gibson",
               fontWeight: FontWeight.w600,
@@ -150,7 +149,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         margin: EdgeInsets.only(right: 19),
       ),
       Container(
-        child: Text(model.issueBall.remainingTime,
+        child: Text(model.issueBall.getDisplayRemainingTime(),
             style: TextStyle(
               fontFamily: "Gibson",
               fontWeight: FontWeight.w600,
@@ -199,18 +198,18 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(model.issueBall.ballName,
+            Text(model.issueBall.getDisplayBallName(),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
-                  color: model.isAlive
+                  color: model.issueBall.isAliveBall()
                       ? Color(0xff454f63)
                       : Color(0xff454F63).withOpacity(0.7),
                 )),
-            Text(model.issueBall.placeAddress,
+            Text(model.issueBall.getDisplayPlaceAddress(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.notoSans(

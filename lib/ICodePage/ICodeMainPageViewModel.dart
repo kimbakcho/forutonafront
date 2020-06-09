@@ -2,98 +2,93 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 
 
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/MakerSupportStyle1.dart';
-import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
-import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
-class ICodeMainPageViewModel extends ChangeNotifier
-    implements BallStyle3WidgetInter {
-  final BuildContext _context;
-  bool _flagIdleIgore = true;
+class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromMapAreaUseCaseOutputPort{
+  final BuildContext context;
+  bool _flagIdleIgnore = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
-  FBallListUpWrapDto _fBallListUpWrapDto;
   bool _moveFromMapBallSelect = false;
-  CameraPosition _currentMapPosition;
-  CodeMainViewModel _codeMainViewModel;
-  FBallRepository _fBallRepository = new FBallRepository();
+  CameraPosition currentMapPosition;
+
+  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCase = GeoLocationUtilUseCase();
+
+  FBallListUpFromMapAreaUseCaseInputPort _fBallListUpFromMapAreaUseCaseInputPort = FBallListUpFromMapAreaUseCase();
 
 
-  CameraPosition initCameraPosition;
   String currentAddress = "";
   final Set<Marker> markers = {};
   GlobalKey mapContainerGlobalKey = GlobalKey();
   List<FBallResForMarker> listUpBalls = [];
   bool reFreshBtnActive = false;
 
+  double initMapZoom = 14.4746;
+
   PageController bottomPageController =
       new PageController(initialPage: 0, keepPage: true, viewportFraction: 0.9);
 
   bool _isLoading = false;
 
-  getIsLoading() {
+  get isLoading {
     return _isLoading;
   }
 
-  _setIsLoading(bool value) {
+  set isLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
   Completer<GoogleMapController> _googleMapController = Completer();
 
-  ICodeMainPageViewModel(this._context) {
-    _codeMainViewModel = Provider.of<CodeMainViewModel>(_context);
-    if (_codeMainViewModel != null &&
-        _codeMainViewModel.lastKnownPosition != null) {
-      _codeMainViewModel = Provider.of<CodeMainViewModel>(_context);
-      initCameraPosition = CameraPosition(
-          target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
-              _codeMainViewModel.lastKnownPosition.longitude),
-          zoom: 14.4746);
-      currentAddress = _codeMainViewModel.firstAddress;
-    } else {
-      initCameraPosition =
-          CameraPosition(target: Preference.initPosition, zoom: 14.4746);
-      currentAddress = "신도림";
-    }
-    _currentMapPosition = initCameraPosition;
+  ICodeMainPageViewModel(this.context) {
+    currentMapPosition = CameraPosition(
+          target: LatLng(_geoLocationUtilUseCase.getCurrentWithLastPositionInMemory().latitude,
+              _geoLocationUtilUseCase.getCurrentWithLastPositionInMemory().longitude),
+          zoom: initMapZoom);
     bottomPageController.addListener(onPageContollerListner);
+    currentAddress = _geoLocationUtilUseCase.getCurrentWithLastAddressInMemory();
 
   }
 
   ///Return 으로는 MapSearchGeoDto 받는다.
   onPlaceSearchTap() async {
-    MapSearchGeoDto mapSearchGeoDto = await Navigator.of(_context).push(
+    MapSearchGeoDto mapSearchGeoDto = await Navigator.of(context).push(
         MaterialPageRoute(
             settings: RouteSettings(name: "MapGeoSearchPage"),
             builder: (_) => MapGeoSearchPage(
                 currentAddress,
                 Position(
-                    latitude: _currentMapPosition.target.latitude,
-                    longitude: _currentMapPosition.target.longitude))));
+                    latitude: currentMapPosition.target.latitude,
+                    longitude: currentMapPosition.target.longitude))));
     final GoogleMapController controller = await _googleMapController.future;
-    _flagIdleIgore = true;
+    _flagIdleIgnore = true;
     currentAddress = mapSearchGeoDto.descriptionAddress;
     await controller.moveCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: mapSearchGeoDto.latLng, zoom: 14)));
-    await onRefreshBall();
-    _flagIdleIgore = false;
+    _flagIdleIgnore = false;
+    Future.delayed(Duration(seconds: 1),()async {
+      await onRefreshBall();
+    });
+
     notifyListeners();
   }
 
@@ -108,7 +103,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
       var zoomLevel = 14.0;
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target:
-              LatLng(listUpBalls[index].latitude, listUpBalls[index].longitude),
+              LatLng(listUpBalls[index].ballResDto.latitude, listUpBalls[index].ballResDto.longitude),
           zoom: zoomLevel)));
     }
   }
@@ -124,7 +119,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
             bottomPageController.position.maxScrollExtent &&
         !bottomPageController.position.outOfRange) {
       _pageCount++;
-      if (_pageCount * _ballPageLimitSize > _fBallListUpWrapDto.balls.length) {
+      if (_pageCount * _ballPageLimitSize > listUpBalls.length) {
         return;
       } else {
         getBallListUp();
@@ -138,14 +133,14 @@ class ICodeMainPageViewModel extends ChangeNotifier
   }
 
   onMoveMap(CameraPosition value) {
-    _currentMapPosition = value;
+    currentMapPosition = value;
   }
 
   onMapIdle() async {
-    if (!_flagIdleIgore) {
+    if (!_flagIdleIgnore) {
       currentAddress = await GeoLocationUtilUseCase().getPositionAddress(Position(
-          latitude: _currentMapPosition.target.latitude,
-          longitude: _currentMapPosition.target.longitude));
+          latitude: currentMapPosition.target.latitude,
+          longitude: currentMapPosition.target.longitude));
       notifyListeners();
     }
   }
@@ -153,7 +148,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
 
-    await GeoLocationUtilUseCase().useGpsReq(_context);
+    await GeoLocationUtilUseCase().useGpsReq(context);
     var currentLocation = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
@@ -161,88 +156,57 @@ class ICodeMainPageViewModel extends ChangeNotifier
   }
 
   onCreateMap(GoogleMapController controller) async {
-    _flagIdleIgore = true;
+    _flagIdleIgnore = true;
     _googleMapController.complete(controller);
     reFreshBtnActive = false;
-    if (_codeMainViewModel != null &&
-        _codeMainViewModel.lastKnownPosition != null) {
-      await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(_codeMainViewModel.lastKnownPosition.latitude,
-              _codeMainViewModel.lastKnownPosition.longitude),
-          zoom: 14.4746)));
+//    currentAddress =
+//          await GeoLocationUtilUseCase().getPositionAddress(Position(longitude: currentMapPosition.target.longitude,latitude: currentMapPosition.target.latitude));
+//      await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
+//          target: LatLng(currentMapPosition.target.latitude, currentMapPosition.target.longitude),
+//          zoom: 14.4746)));
       await onRefreshBall();
-      _flagIdleIgore = false;
-    } else {
-//      var position = await Geolocator().getLastKnownPosition();
-      var positionAddress =
-          await GeoLocationUtilUseCase().getPositionAddress(Position(longitude: _currentMapPosition.target.longitude,latitude: _currentMapPosition.target.latitude));
-      currentAddress = positionAddress;
-      await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(_currentMapPosition.target.latitude, _currentMapPosition.target.longitude),
-          zoom: 14.4746)));
-      await onRefreshBall();
-      _flagIdleIgore = false;
-    }
+      _flagIdleIgnore = false;
+
   }
 
   onRefreshBall() async {
-    _pageCount = 0;
+    setFirstPage();
     reFreshBtnActive = false;
     await getBallListUp();
   }
 
+  int setFirstPage() => _pageCount = 0;
+
   Future getBallListUp() async {
-    _setIsLoading(true);
+    isLoading = true;
     final GoogleMapController controller = await _googleMapController.future;
     final RenderBox mapRenderBoxRed =
         mapContainerGlobalKey.currentContext.findRenderObject();
-//    _currentMapPosition = initCameraPosition;
-    var southwestPoint = await getWidgetOffsetPositionToLatLngFromMap(
-        mapRenderBoxRed, controller, 16, MediaQuery.of(_context).size.height-180);
-    var northeastPoint = await getWidgetOffsetPositionToLatLngFromMap(
-        mapRenderBoxRed, controller, MediaQuery.of(_context).size.width-16, 108);
+    LatLng southwestPoint = await getWidgetOffsetPositionToLatLngFromMap(
+        mapRenderBoxRed, controller, 16, MediaQuery.of(context).size.height-180);
+    LatLng northeastPoint = await getWidgetOffsetPositionToLatLngFromMap(
+        mapRenderBoxRed, controller, MediaQuery.of(context).size.width-16, 108);
     List<MultiSort> sortList = [];
     sortList.add(MultiSort("ballPower", QueryOrders.DESC));
     MultiSorts sorts = MultiSorts(sortList);
     await onSearch(
         southwestPoint, northeastPoint, sorts, _ballPageLimitSize, _pageCount);
-    _setIsLoading(false);
+    isLoading = false;
   }
 
   Future<void> onSearch(LatLng southwestPoint, LatLng northeastPoint, MultiSorts sorts,
       int pageSize, int pageCount) async {
-    final GoogleMapController controller = await _googleMapController.future;
     BallFromMapAreaReqDto reqDto = BallFromMapAreaReqDto(
         southwestPoint.latitude,
         southwestPoint.longitude,
         northeastPoint.latitude,
         northeastPoint.longitude,
-        _currentMapPosition.target.latitude,
-        _currentMapPosition.target.longitude,
+        currentMapPosition.target.latitude,
+        currentMapPosition.target.longitude,
         pageCount,
         pageSize,
         sorts.toQueryJson());
-    _fBallListUpWrapDto = await _fBallRepository.listUpBallFromMapArea(reqDto);
-
-    if (pageCount == 0) {
-      this.listUpBalls.clear();
-    }
-
-    this.listUpBalls.addAll(_fBallListUpWrapDto.balls
-        .map((x) => new FBallResForMarker(
-            false, ballSelectFunction, x, BallStyle3WidgetController(x, this)))
-        .toList());
-
-    if (pageCount == 0) {
-      if (this.listUpBalls.length > 0) {
-        this.listUpBalls[0].isSelectBall = true;
-      }
-    }
-
-    notifyListeners();
-    await drawBall(this.listUpBalls);
-    this.markers.add(Marker(markerId: MarkerId("southwestPoint"),position: southwestPoint));
-    this.markers.add(Marker(markerId: MarkerId("northeastPoint"),position: northeastPoint));
+    _fBallListUpFromMapAreaUseCaseInputPort.ballListUpFromMapArea(reqDto: reqDto, outputPort: this);
 
   }
 
@@ -250,7 +214,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
   ballSelectFunction(FBallResForMarker resDto) async {
     clearBallSelect();
     int ballIndex =
-        this.listUpBalls.indexWhere((a) => (a.ballUuid == resDto.ballUuid));
+        this.listUpBalls.indexWhere((a) => (a.ballResDto.ballUuid == resDto.ballResDto.ballUuid));
     listUpBalls[ballIndex].isSelectBall = true;
     drawBall(listUpBalls);
     _moveFromMapBallSelect = true;
@@ -264,7 +228,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
   drawBall(List<FBallResForMarker> listUpBalls) async {
     final GoogleMapController controller = await _googleMapController.future;
     Completer<Set<Marker>> _markerCompleter = Completer();
-    MakerSupportStyle1(listUpBalls, _markerCompleter).generate(_context);
+    MakerSupportStyle1(listUpBalls, _markerCompleter).generate(context);
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
@@ -332,12 +296,36 @@ class ICodeMainPageViewModel extends ChangeNotifier
   }
 
 
+
   @override
-  onRequestReFreshBall(FBallResDto reFreshNeedBall) async {
-    _setIsLoading(true);
-    var ballStyle3ReFreshBallUtil = BallStyle3ReFreshBallUtil();
-    await ballStyle3ReFreshBallUtil.reFreshBallAndUiUpdate(listUpBalls, reFreshNeedBall, ballSelectFunction, this);
-    drawBall(listUpBalls);
-    _setIsLoading(false);
+  void onBallListUpFromMapArea(List<FBallResDto> resDtos,LatLng northeastLat , LatLng southwestLat) async {
+    if (isFirstPage()) {
+      this.listUpBalls.clear();
+    }
+    this.listUpBalls.addAll(resDtos
+        .map((x) => new FBallResForMarker(
+        isSelectBall: false,ballResDto: x,onTopEvent: ballSelectFunction))
+        .toList());
+
+    if (isFirstPage()) {
+      if (hasListUpBall()) {
+        selectFirstBall();
+      }
+    }
+    notifyListeners();
+    await drawBall(this.listUpBalls);
+    this.markers.add(Marker(markerId: MarkerId("northeastLat"),position:northeastLat ));
+    print(northeastLat);
+    this.markers.add(Marker(markerId: MarkerId("southwestLat"),position:southwestLat ));
+    print(southwestLat);
+    notifyListeners();
   }
+
+  void selectFirstBall() {
+    this.listUpBalls[0].isSelectBall = true;
+  }
+
+  bool hasListUpBall() => this.listUpBalls.length > 0;
+
+  bool isFirstPage() => _pageCount == 0;
 }

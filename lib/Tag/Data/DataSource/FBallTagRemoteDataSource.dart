@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Entity/FBallListUpWrap.dart';
+import 'package:forutonafront/Tag/Data/Entity/FBallTagWrap.dart';
 import 'package:forutonafront/Tag/Data/Value/FBallTagRankingWrap.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Tag/Data/Entity/FBallTagWrap.dart';
+
 import 'package:forutonafront/Tag/Dto/RelationTagRankingFromTagNameReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';

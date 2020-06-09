@@ -18,7 +18,10 @@ class TagFromBallUuidUseCase implements TagFromBallUuidUseCaseInputPort{
     TagFromBallUuidUseCaseOutputPort outputPort}) async {
     var fBallTagWrap = await _tagRepository.tagFromBallUuid(reqDto);
     var result = fBallTagWrap.tags.map((x) => FBallTagResDto.fromFBalltag(x)).toList();
-    outputPort.onTagFromBallUuid(result);
+    if(outputPort != null){
+      outputPort.onTagFromBallUuid(result);
+    }
+
     return result;
   }
 

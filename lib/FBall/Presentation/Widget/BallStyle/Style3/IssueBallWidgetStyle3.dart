@@ -91,7 +91,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(model.issueBall.displayLikeCount,
+          Text(model.issueBall.getDisplayLikeCount(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -103,7 +103,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
               child: Icon(ForutonaIcon.thumbsup,
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
-          Text(model.issueBall.displayDisLikeCount,
+          Text(model.issueBall.getDisplayDisLikeCount(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -115,7 +115,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
               child: Icon(ForutonaIcon.thumbsdown,
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
-          Text(model.issueBall.displayCommentCount,
+          Text(model.issueBall.getDisplayCommentCount(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -128,7 +128,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
           Text(
-              model.issueBall.remainingTime,
+              model.issueBall.getDisplayRemainingTime(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,

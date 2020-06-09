@@ -3,18 +3,15 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseIp.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
 import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
-import 'package:forutonafront/FBall/Repository/FBallRepository.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Ordersenum.dart';
 
@@ -49,7 +46,7 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
 
   final FBallListUpFromSearchTitleUseCaseInputPort
       fBallListUpFromSearchTitleUseCaseInputPort;
-  GeoLocationUtilUseCaseIp geoLocationUtilUseCaseIp = GeoLocationUtilUseCase();
+  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseIp = GeoLocationUtilUseCase();
   int _ballPageLimitSize = 20;
   int _pageCount = 0;
 
@@ -60,7 +57,7 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
       @required this.searchTitle,
       @required this.fBallListUpFromSearchTitleUseCaseInputPort}) {
     this.fBallListUpFromSearchTitleUseCaseInputPort.addBallListUpFromSearchTitleListener(outputPort: this);
-    this.fBallListUpFromSearchTitleUseCaseInputPort.addBallListUpFromSearchTitleTotalCountListener(outputPort: this);
+
     init();
   }
 
@@ -118,7 +115,7 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
 
   onChangeOrder() async {
     setFirstPage();
-
+    ballListUpFromSearchText();
   }
 
   int setFirstPage() => _pageCount = 0;

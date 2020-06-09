@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
+import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagNameUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagUseCaseInputPort.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
 import 'package:forutonafront/HCodePage/H005/H00502/H00502PageViewModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
@@ -29,9 +32,10 @@ class _H005MainPageState extends State<H005MainPage>
   TabController tabController;
   FBallListUpFromSearchTitleUseCaseInputPort
       _fBallListUpFromSearchTextUseCaseInputPort =
-      FBallListUpFromSearchTitleUseCase();
-  FBallListUpFromSearchTagNameUseCase _fBallListUpFromSearchTagNameUseCase =
-      FBallListUpFromSearchTagNameUseCase();
+      FBallListUpFromSearchTitleUseCase(fBallRepository: FBallRepositoryImpl(fBallRemoteDataSource: FBallRemoteSourceImpl()));
+
+  FBallListUpFromSearchTagNameUseCaseInputPort _fBallListUpFromSearchTagNameUseCaseInputPort =
+      FBallListUpFromSearchTagNameUseCase(fBallRepository: FBallRepositoryImpl(fBallRemoteDataSource: FBallRemoteSourceImpl()));
 
   @override
   void initState() {
@@ -56,17 +60,20 @@ class _H005MainPageState extends State<H005MainPage>
               create: (_) => H005MainPageViewModel(
                   context: context,
                   fBallListUpFromSearchTitleUseCaseInputPort: _fBallListUpFromSearchTextUseCaseInputPort,
+                  fBallListUpFromSearchTagUseCaseInputPort: _fBallListUpFromSearchTagNameUseCaseInputPort,
                   searchText: widget.searchText,
                   tabController: tabController)),
           ChangeNotifierProvider(
+            lazy: false,
               create: (_) => H00501PageViewModel(
                   context: context,
                   fBallListUpFromSearchTitleUseCaseInputPort: _fBallListUpFromSearchTextUseCaseInputPort,
                   searchTitle: widget.searchText)),
           ChangeNotifierProvider(
+              lazy: false,
               create: (_) => H00502PageViewModel(
                   context: context,
-                  fBallListUpFromSearchTagNameUseCaseInputPort: _fBallListUpFromSearchTagNameUseCase,
+                  fBallListUpFromSearchTagNameUseCaseInputPort: _fBallListUpFromSearchTagNameUseCaseInputPort,
                   searchTag: widget.searchText))
         ],
         child: Consumer<H005MainPageViewModel>(builder: (_, model, child) {

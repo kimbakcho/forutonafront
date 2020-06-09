@@ -7,6 +7,6 @@ import 'IssueBallValuationUseCaseOutputPort.dart';
 
 abstract class IssueBallValuationUseCaseInputPort {
   Future<void> deleteFBallValuation({@required String valueUuid,int deletePoint,IssueBallValuationUseCaseOutputPort outputPort});
-  Future<FBallValuationResDto> getFBallValuation({@required FBallValuationReqDto reqDto});
-  Future<FBallValuationResDto> save({@required FBallValuationInsertReqDto reqDto});
+  Future<FBallValuationResDto> getFBallValuation({@required FBallValuationReqDto reqDto,IssueBallValuationUseCaseOutputPort outputPort});
+  Future<FBallValuationResDto> save({@required FBallValuationInsertReqDto reqDto,IssueBallValuationUseCaseOutputPort outputPort});
 }

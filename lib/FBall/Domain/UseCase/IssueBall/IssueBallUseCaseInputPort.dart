@@ -14,6 +14,6 @@ abstract class IssueBallUseCaseInputPort {
   Future<FBallResDto> selectBall({@required String ballUuid,@required IssueBallUseCaseOutputPort outputPort});
   Future<int> deleteBall({@required String ballUuid,@required IssueBallUseCaseOutputPort outputPort});
   Future<List<BallImageItemDto>> ballImageListUpLoadAndFillUrls({@required List<BallImageItemDto> refSrcList});
-  Future<int> insertBall({@required IssueBallInsertReqDto reqDto,@required IssueBallUseCaseOutputPort outputPort});
+  Future<FBallResDto> insertBall({@required IssueBallInsertReqDto reqDto,@required IssueBallUseCaseOutputPort outputPort});
   Future<int> updateBall({@required IssueBallUpdateReqDto reqDto,@required IssueBallUseCaseOutputPort outputPort});
 }

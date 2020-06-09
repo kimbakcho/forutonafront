@@ -55,6 +55,7 @@ class FBallResDto {
     fBallResDto.activationTime = fBall.activationTime;
     fBallResDto.makeTime = fBall.makeTime;
     fBallResDto.description = fBall.description;
+    fBallResDto.profilePictureUrl = fBall.profilePictureUrl;
     fBallResDto.nickName = fBall.nickName;
     fBallResDto.uid = fBall.uid;
     fBallResDto.userLevel = fBall.userLevel;

@@ -71,6 +71,7 @@ class H00502PageViewModel extends ChangeNotifier
         .addBallListUpFromSearchTagNameListener(outputPort: this);
 
     ballListUpFromSearchTag();
+
     RelationTagRankingFromTagNameReqDto relationTagRankingFromTagNameReqDto =
         RelationTagRankingFromTagNameReqDto(searchTagName: searchTag);
     _rankingFromTagNameOrderByBallPowerUseCaseInputPort
@@ -118,6 +119,7 @@ class H00502PageViewModel extends ChangeNotifier
   }
 
   Future ballListUpFromSearchTag() async {
+    isLoading = true;
     var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     FBallListUpFromTagNameReqDto reqDto = new FBallListUpFromTagNameReqDto(
         searchTag: searchTag,
@@ -137,7 +139,7 @@ class H00502PageViewModel extends ChangeNotifier
 
   onChangeOrder() async {
     setFirstPage();
-    ballWidgetLists.clear();
+
     ballListUpFromSearchTag();
   }
 

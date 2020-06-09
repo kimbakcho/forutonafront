@@ -10,7 +10,7 @@ import 'package:forutonafront/FBall/Dto/IssueBallUpdateReqDto.dart';
 
 abstract class IssueBallTypeRepository {
   Future<int> deleteBall(FBallReqDto reqDto);
-  Future<int> insertBall(IssueBallInsertReqDto reqDto);
+  Future<FBall> insertBall(IssueBallInsertReqDto reqDto);
   Future<FBall> selectBall(FBallReqDto fBallReqDto);
   Future<int> updateBall(IssueBallUpdateReqDto reqDto);
   Future<int> joinBall(FBallJoinReqDto reqDto);

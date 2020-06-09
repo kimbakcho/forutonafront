@@ -30,7 +30,7 @@ class IssueBallTypeRepositoryImpl implements IssueBallTypeRepository{
   }
 
   @override
-  Future<int> insertBall(IssueBallInsertReqDto reqDto) async{
+  Future<FBall> insertBall(IssueBallInsertReqDto reqDto) async{
     return issueBallTypeRemoteDateSource.insertBall(reqDto: reqDto, fDio: await FDio.makeAuthTokenFDio());
   }
 

@@ -8,8 +8,8 @@ part of 'TagInsertReqDto.dart';
 
 TagInsertReqDto _$TagInsertReqDtoFromJson(Map<String, dynamic> json) {
   return TagInsertReqDto(
-    json['ballUuid'] as String,
-    json['tagItem'] as String,
+    ballUuid: json['ballUuid'] as String,
+    tagItem: json['tagItem'] as String,
   );
 }
 

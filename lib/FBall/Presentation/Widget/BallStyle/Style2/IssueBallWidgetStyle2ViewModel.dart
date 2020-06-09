@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseIp.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOp.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
@@ -17,13 +17,13 @@ import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
-class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBallUseCaseOutputPort,GeoLocationUtilUseCaseOp{
+class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBallUseCaseOutputPort,GeoLocationUtilUseCaseOutputPort{
 
-  bool isAlive = true;
+
   BuildContext context;
   IssueBall issueBall;
   IssueBallUseCaseInputPort issueBallUseCase = IssueBallUseCase();
-  GeoLocationUtilUseCaseIp geoLocationUtilUseCaseIp = GeoLocationUtilUseCase();
+  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseIp = GeoLocationUtilUseCase();
   String distanceDisplayText = "";
 
   IssueBallWidgetStyle2ViewModel({@required this.context,@required FBallResDto userBallResDto}){
@@ -102,7 +102,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
   }
 
   @override
-  void onInsertBall() {
+  void onInsertBall(FBallResDto resDto) {
     throw("here don't have action");
   }
 

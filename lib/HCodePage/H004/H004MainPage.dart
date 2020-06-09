@@ -131,6 +131,8 @@ class _H004MainPageState extends State<H004MainPage> {
               width: MediaQuery.of(context).size.width-80,
               height: 32,
               child: TextField(
+                autocorrect: false,
+                enableSuggestions: false,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
                 focusNode: model.searchFocusNode,

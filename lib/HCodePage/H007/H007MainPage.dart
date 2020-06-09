@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimation.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/GoogleMapSupport/MapCircleAnimation.dart';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -92,10 +93,12 @@ class _H007MainPageState extends State<H007MainPage>
               Positioned(
                 bottom: 24,
                 width: MediaQuery.of(context).size.width,
-                child: bottomSerarchBtn(model),
+                child: bottomSearchBtn(model),
               ),
                   Center(
-                    child:MapCircleAnimation(200)
+                    child: IgnorePointer(
+                      child: MapCircleAnimation(200),
+                    )
 
                   )
             ]))
@@ -103,7 +106,7 @@ class _H007MainPageState extends State<H007MainPage>
         }));
   }
 
-  Container bottomSerarchBtn(H007MainPageViewModel model) {
+  Container bottomSearchBtn(H007MainPageViewModel model) {
     return Container(
         margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
         height: 52.00,
