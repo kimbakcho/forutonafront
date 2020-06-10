@@ -17,8 +17,6 @@ class CodeMainpage extends StatefulWidget {
 class _CodeMainpageState extends State<CodeMainpage> {
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return MultiProvider(

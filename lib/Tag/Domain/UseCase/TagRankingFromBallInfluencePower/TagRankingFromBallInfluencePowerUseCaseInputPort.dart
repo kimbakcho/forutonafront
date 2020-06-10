@@ -5,5 +5,5 @@ import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dar
 import 'TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
 
 abstract class TagRankingFromBallInfluencePowerUseCaseInputPort {
-  Future<List<TagRankingDto>> getTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto,@required TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort});
+  Future<void> reqTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto});
 }

@@ -10,12 +10,13 @@ import 'TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
 
 
 class TagRankingFromBallInfluencePowerUseCase implements TagRankingFromBallInfluencePowerUseCaseInputPort{
-
-  TagRepository _tagRepository = TagRepositoryImpl(fBallTagRemoteDataSource: FBallTagRemoteDataSourceImpl());
+  TagRepository tagRepository;
+  TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort;
+  TagRankingFromBallInfluencePowerUseCase({@required this.tagRepository,@required this.outputPort});
 
   @override
-  Future<List<TagRankingDto>> getTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto,@required TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort}) async {
-    var fBallTagRankingWrap = await _tagRepository.getFTagRankingFromBallInfluencePower(reqDto);
+  Future<void> reqTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto}) async {
+    var fBallTagRankingWrap = await tagRepository.getFTagRankingFromBallInfluencePower(reqDto);
     var results = fBallTagRankingWrap.contents.map((x) => TagRankingDto.fromTagRanking(x)).toList();
     outputPort.onTagRankingFromBallInfluencePower(results);
     return results;

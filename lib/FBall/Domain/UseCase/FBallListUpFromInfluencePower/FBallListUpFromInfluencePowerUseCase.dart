@@ -14,59 +14,61 @@ import 'FBallListUpFromInfluencePowerUseCaseOutputPort.dart';
 class FBallListUpFromInfluencePowerUseCase implements FBallListUpFromInfluencePowerUseCaseInputPort {
   final FBallListUpFromInfluencePowerUseCaseOutputPort fBallListUpUseCaseOutputPort;
   final FBallRepository fBallRepository;
-  final GeoLocationUtilUseCase geoLocationUtil;
+
+  int _pageCount = 0;
+  int _ballPageLimitSize = 20;
+  int _ballSearchLimit = 1000;
+
 
   FBallListUpFromInfluencePowerUseCase(
       {@required this.fBallListUpUseCaseOutputPort,
-      @required this.fBallRepository,
-      @required this.geoLocationUtil});
+      @required this.fBallRepository});
 
   @override
-  Future<List<FBallResDto>> ballListUpFromInfluencePower(
-      {@required FBallListUpFromBallInfluencePowerReqDto searchReqDto}) async {
+  Future<void> reqBallListUpFromInfluencePower(
+      {@required Position searchReqDto}) async {
+    FBallListUpFromBallInfluencePowerReqDto ballListUpReqDto =
+    new FBallListUpFromBallInfluencePowerReqDto(
+        latitude: searchReqDto.latitude,
+        longitude: searchReqDto.longitude,
+        ballLimit: _ballSearchLimit,
+        page: _pageCount,
+        size: _ballPageLimitSize);
     var fBallListUpWrap =
-        await fBallRepository.listUpFromInfluencePower(listUpReqDto: searchReqDto);
+        await fBallRepository.listUpFromInfluencePower(listUpReqDto: ballListUpReqDto);
     var result = fBallListUpWrap.balls
         .map((e) => new FBallResDto.fromJson(e.toJson()))
         .toList();
-    String updateAddress;
-    updateAddress = await getAddress(searchReqDto);
     if(fBallListUpUseCaseOutputPort != null){
+      if(isFirstPage){
+        fBallListUpUseCaseOutputPort.onBallClear();
+      }
       fBallListUpUseCaseOutputPort.onListUpBallFromBallInfluencePower(
-          fBallResDtos: result,
-          address: updateAddress);
+          fBallResDtos: result);
     }
     return result;
   }
 
-  Future<String> getAddress(FBallListUpFromBallInfluencePowerReqDto searchReqDto) async {
-    if(searchReqDto.findAddress){
-      var address = await GeoLocationUtilUseCase().getPositionAddress(Position(
-          latitude: searchReqDto.latitude,
-          longitude: searchReqDto.longitude));
-      return address;
+  bool hasMoreListUpBall({int nowBallCount}){
+    return !(_pageCount * _ballPageLimitSize > nowBallCount);
+  }
+
+  get isFirstPage {
+    if (this._pageCount == 0) {
+      return true;
     } else {
-      return null;
+      return false;
     }
   }
 
   @override
-  Future<List<FBallResDto>> ballListUpFromLastKnowPosition(
-      {@required FBallListUpFromBallInfluencePowerReqDto searchReqDto,
-      @required BuildContext context}) async {
-    var result = ballListUpFromInfluencePower(
-        searchReqDto:
-            await makeLastPositionSearchReqDto(searchReqDto, context));
-    return result;
+  nextPage() {
+    _pageCount++;
   }
 
-  Future<FBallListUpFromBallInfluencePowerReqDto> makeLastPositionSearchReqDto(
-      FBallListUpFromBallInfluencePowerReqDto searchReqDto, BuildContext context) async {
-    FBallListUpFromBallInfluencePowerReqDto fBallListUpReqDto =
-        new FBallListUpFromBallInfluencePowerReqDto.fromJson(searchReqDto.toJson());
-    var position = await this.geoLocationUtil.getCurrentWithLastPosition();
-    var setLatLang =
-        fBallListUpReqDto.setLatLng(position.latitude, position.longitude);
-    return setLatLang;
+  @override
+  pageReset() {
+    _pageCount= 0;
   }
+
 }

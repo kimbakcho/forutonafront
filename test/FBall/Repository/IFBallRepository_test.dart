@@ -27,7 +27,6 @@ void main() {
       ballLimit: 1000,
       page: 0,
       size: 20,
-      sort: "Influence,DESC"
   );
 
   test('should be result type FBallListUpWrap', () async {

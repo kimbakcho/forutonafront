@@ -15,8 +15,6 @@ class H001Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     var h001ViewModel = Provider.of<H001ViewModel>(context);
@@ -90,7 +88,7 @@ class H001Page extends StatelessWidget {
                       color: Colors.white,
                     ),
                     padding: EdgeInsets.all(0),
-                    onPressed: model.goBallMakePage,
+                    onPressed: model.h001controller.goBallMakePage,
                   ),
                   height: 46.00,
                   width: 47.00,
@@ -138,7 +136,7 @@ class H001Page extends StatelessWidget {
                     child: FlatButton(
                       padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       onPressed: (){
-                        model.gotoTagSearch(model.tagRankingDtos[index].tagName);
+                        model.h001controller.gotoTagSearch(model.tagRankingDtos[index].tagName);
                       },
                       child:Row(children: <Widget>[
                         Text("${model.tagRankingDtos[index].ranking}.",
@@ -188,7 +186,7 @@ class H001Page extends StatelessWidget {
                     color: Color(0xffffffff),
                   )),
               onPressed: () {
-                model.inlineRanking = true;
+                model.h001controller.showInlineRankingWidget();
               }),
           height: 54.00,
           margin: EdgeInsets.fromLTRB(18, 0, 18, 0),
@@ -223,7 +221,7 @@ class H001Page extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       child: FlatButton(
                         onPressed: (){
-                          model.gotoTagSearch(model.tagRankingDtos[index].tagName);
+                          model.h001controller.gotoTagSearch(model.tagRankingDtos[index].tagName);
                         },
                         padding: EdgeInsets.all(0),
                         child :Row(children: <Widget>[
@@ -252,7 +250,7 @@ class H001Page extends StatelessWidget {
                             child: FlatButton(
                                 padding: EdgeInsets.all(0),
                                 onPressed: () {
-                                  model.inlineRanking = false;
+                                  model.h001controller.showUnInlineRankingWidget();
                                 },
                                 child: Icon(ForutonaIcon.down_arrow, size: 10)),
                           )
@@ -296,7 +294,7 @@ class H001Page extends StatelessWidget {
         ),
         child: FlatButton(
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            onPressed: model.moveToH007,
+            onPressed: model.h001controller.moveToH007,
             child: Container(
               alignment: Alignment.center,
               child: Text(model.selectPositionAddress,

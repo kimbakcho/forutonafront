@@ -15,7 +15,6 @@ FBallListUpFromBallInfluencePowerReqDto
     ballLimit: json['ballLimit'] as int,
     page: json['page'] as int,
     size: json['size'] as int,
-    sort: json['sort'] as String,
   );
 }
 
@@ -27,5 +26,4 @@ Map<String, dynamic> _$FBallListUpFromBallInfluencePowerReqDtoToJson(
       'ballLimit': instance.ballLimit,
       'page': instance.page,
       'size': instance.size,
-      'sort': instance.sort,
     };

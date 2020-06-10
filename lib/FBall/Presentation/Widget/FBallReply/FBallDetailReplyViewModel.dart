@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
@@ -11,7 +9,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyUti
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetViewController.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetViewModel.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
-import 'package:forutonafront/JCodePage/J001/J001View.dart';
+
 
 class FBallDetailReplyViewModel extends ChangeNotifier {
   FBallReplyRepository _fBallReplyRepository = new FBallReplyRepository();

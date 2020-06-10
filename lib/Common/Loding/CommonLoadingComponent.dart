@@ -8,11 +8,11 @@ class CommonLoadingComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return !isTouch?
       FlatButton(
+        onPressed: (){
 
+        },
       child : loadingContainer(context)
     ) : loadingContainer(context);
-
-
   }
 
   Container loadingContainer(BuildContext context) {
