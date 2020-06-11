@@ -9,8 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 
-
-
 class H001Page extends StatelessWidget {
 
   @override
@@ -153,13 +151,7 @@ class H001Page extends StatelessWidget {
                                 color: Color(0xff454F63)
                             )),
                         Spacer(),
-                        Text(
-                            "${ model.changeTagValueDisplay(model.tagRankingDtos[index].tagPower)}",
-                            style: GoogleFonts.notoSans(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Color(0xff454F63)
-                            )),
+
                         SizedBox(width: 12),
                       ])
                     ));
@@ -242,8 +234,7 @@ class H001Page extends StatelessWidget {
                                   color: Color(0xff454F63)
                               )),
                           Spacer(),
-                          Text(
-                              "${ model.changeTagValueDisplay(model.tagRankingDtos[index].tagPower)}"),
+
                           SizedBox(width: 12),
                           Container(
                             width: 12,

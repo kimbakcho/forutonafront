@@ -24,7 +24,7 @@ mixin PhoneFindValidMix on PhoneFindValidService {
   String _phonePwChangeErrorText = "";
 
   @override
-  Future<void> phoneEmailIdValid(PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto) async {
+  Future<void> phoneEmailIdValidWithReqPhoneSmsAuth(PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto) async {
     _isPhoneEmailError = false;
     _phoneEmailErrorText = "";
     PhoneAuthRepository _phoneAuthRepository = new PhoneAuthRepository();

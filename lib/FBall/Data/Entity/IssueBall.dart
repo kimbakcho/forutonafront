@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Data/Value/FBallState.dart';
@@ -22,6 +23,7 @@ class IssueBall extends FBall{
     ballType = FBallType.IssueBall;
     _issueBallDescription = new IssueBallDescription();
   }
+
   @JsonKey(ignore: true)
   List<FBallTag> tags = [];
   @JsonKey(ignore: true)
@@ -206,6 +208,10 @@ class IssueBall extends FBall{
     }else {
       return true;
     }
+  }
+
+  isUserBall({@required String myUid}){
+    return uid != myUid;
   }
 
 }

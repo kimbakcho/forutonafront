@@ -47,6 +47,7 @@ class H001Controller {
       tagRepository: TagRepositoryImpl(fBallTagRemoteDataSource: FBallTagRemoteDataSourceImpl()),
       outputPort: h001viewModel
     );
+
     _authUserCaseInputPort = FireBaseAuthUseCase();
 
     init();

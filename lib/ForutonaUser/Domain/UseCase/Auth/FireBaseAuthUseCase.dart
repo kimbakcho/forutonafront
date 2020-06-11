@@ -32,7 +32,7 @@ class FireBaseAuthUseCase implements AuthUserCaseInputPort{
   }
 
   @override
-  Future<String> userUid() async{
+  Future<String> myUid() async{
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     return firebaseUser.uid;
   }

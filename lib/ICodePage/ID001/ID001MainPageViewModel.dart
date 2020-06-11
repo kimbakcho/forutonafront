@@ -154,7 +154,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   Future<void> loadFBallValuation() async {
     FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
     valuationReqDto.ballUuid = issueBall.ballUuid;
-    valuationReqDto.uid = await _authUserCaseInputPort.userUid();
+    valuationReqDto.uid = await _authUserCaseInputPort.myUid();
     _issueBallValuationUseCaseInputPort.getFBallValuation(reqDto: valuationReqDto,outputPort: this);
   }
 
@@ -315,7 +315,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   void valuationSave(int point) async {
     FBallValuationInsertReqDto reqDto = FBallValuationInsertReqDto(
       ballUuid: issueBall.ballUuid,
-      uid: await _authUserCaseInputPort.userUid(),
+      uid: await _authUserCaseInputPort.myUid(),
       upAndDown: point,
       valueUuid: Uuid().v4()
     );

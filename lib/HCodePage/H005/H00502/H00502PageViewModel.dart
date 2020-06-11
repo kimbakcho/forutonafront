@@ -1,8 +1,8 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
+import 'package:forutonafront/Common/PageableDto/FSort.dart';
+import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagUseCaseOutputPort.dart';
@@ -94,12 +94,11 @@ class H00502PageViewModel extends ChangeNotifier
 
   int setNextPage() => _pageCount++;
 
-  MultiSorts _makeSearchOrders() {
-    List<MultiSort> sortList = new List<MultiSort>();
-    sortList.add(new MultiSort(
+  FSorts _makeSearchOrders() {
+    FSorts fSort = new FSorts();
+    fSort.sorts.add(new FSort(
         EnumToString.parse(selectOrder.value), selectOrder.orders));
-    MultiSorts sorts = new MultiSorts(sortList);
-    return sorts;
+    return fSort;
   }
 
   bool _hasBalls() =>

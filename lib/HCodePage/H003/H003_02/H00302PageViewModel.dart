@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
+import 'package:forutonafront/Common/PageableDto/FSort.dart';
+import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
@@ -53,9 +53,9 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
 
   Future ballListUp() async {
     isLoading = true;
-    MultiSorts searchOrder = _makeAliveMakeTimeOrder();
+    FSorts searchOrder = _makeAliveMakeTimeOrder();
     var userToMakerBallReqDto = UserToMakeBallReqDto(
-        await _authUserCaseInputPort.userUid(),
+        await _authUserCaseInputPort.myUid(),
         _pageCount,
         _limitSize,
         searchOrder.toQueryJson());
@@ -66,13 +66,12 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
     isLoading =false;
   }
 
-  MultiSorts _makeAliveMakeTimeOrder() {
-    List<MultiSort> sorts = new List<MultiSort>();
-    sorts.add(MultiSort("Alive", QueryOrders.DESC));
+  FSorts _makeAliveMakeTimeOrder() {
+    FSorts fSort = FSorts();
+    fSort.sorts.add(FSort("Alive", QueryOrders.DESC));
     //start가 Join sartTime
-    sorts.add(MultiSort("makeTime", QueryOrders.DESC));
-    MultiSorts wrapsorts = new MultiSorts(sorts);
-    return wrapsorts;
+    fSort.sorts.add(FSort("makeTime", QueryOrders.DESC));
+    return fSort;
   }
 
   bool _isFirstPage() => _pageCount == 0;

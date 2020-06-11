@@ -30,7 +30,7 @@ class IssueBallModifyService implements BallModifyService {
 
   @override
   Future<bool> isCanModify({@required String ballMakeUid}) async {
-    if(ballMakeUid == await _authUserCaseInputPort.userUid()){
+    if(ballMakeUid == await _authUserCaseInputPort.myUid()){
       return true;
     }else {
       return false;

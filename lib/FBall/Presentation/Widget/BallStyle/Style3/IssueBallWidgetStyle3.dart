@@ -42,7 +42,9 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
                     Positioned(top: 50, right: 0, child: ballBottomBar(model,context))
                   ],
                 ),
-                onPressed: model.goIssueDetailPage,
+                onPressed:(){
+                  model.controller.goIssueDetailPage(issueBall: model.issueBall,outputPort: model);
+                },
               ),
               decoration: BoxDecoration(
                   color: Color(0xffffffff),

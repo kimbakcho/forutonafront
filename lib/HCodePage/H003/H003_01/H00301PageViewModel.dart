@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
+import 'package:forutonafront/Common/PageableDto/FSort.dart';
+import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
@@ -62,16 +62,17 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
   Future<void> ballListUp() async {
     isLoading = true;
     if(await _authUserCaseInputPort.checkLogin(authUserCaseOutputPort: this)){
-      List<MultiSort> sorts = new List<MultiSort>();
-      sorts.add(MultiSort("Alive", QueryOrders.DESC));
+
+      FSorts fSort = new FSorts();
+      fSort.sorts.add(FSort("Alive", QueryOrders.DESC));
       //startTime이 참여한 시작시간이다.
-      sorts.add(MultiSort("startTime", QueryOrders.DESC));
-      MultiSorts wrapsorts = new MultiSorts(sorts);
+      fSort.sorts.add(FSort("startTime", QueryOrders.DESC));
+
       var userToPlayBallReqDto = UserToPlayBallReqDto(
-          await _authUserCaseInputPort.userUid(),
+          await _authUserCaseInputPort.myUid(),
           _pageCount,
           _limitSize,
-          wrapsorts.toQueryJson());
+          fSort.toQueryJson());
       await _userPlayBallListUpUseCaseInputPort.userPlayBallListUp(reqDto: userToPlayBallReqDto,outputPort: this);
     }
 

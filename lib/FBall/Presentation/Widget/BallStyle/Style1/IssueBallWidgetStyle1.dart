@@ -4,13 +4,14 @@ import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/IssueBallWidgetSyle1ViewModel.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/IssueBallWidgetStyle1ViewModel.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:meta/meta.dart';
 
+// ignore: must_be_immutable
 class IssueBallWidgetStyle1 extends StatelessWidget
     implements BallStyle1Widget {
   IssueBall _issueBall;
@@ -23,9 +24,9 @@ class IssueBallWidgetStyle1 extends StatelessWidget
     return ChangeNotifierProvider(
         key: UniqueKey(),
         create: (_) =>
-            IssueBallWidgetSyle1ViewModel(context: context,issueBall: _issueBall),
+            IssueBallWidgetStyle1ViewModel(context: context,issueBall: _issueBall),
         child:
-            Consumer<IssueBallWidgetSyle1ViewModel>(builder: (_, model, child) {
+            Consumer<IssueBallWidgetStyle1ViewModel>(builder: (_, model, child) {
           return Stack(
             children: <Widget>[
               model.issueBall.ballDeleteFlag ?  Container(key: UniqueKey(),height: 0) :
@@ -34,7 +35,9 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                   child: FlatButton(
                     padding: EdgeInsets.all(0),
-                    onPressed: model.goIssueDetailPage,
+                    onPressed: (){
+                      model.controller.goIssueDetailPage(issueBall: model.issueBall,outputPort: model);
+                    },
                     child: Column(children: <Widget>[
                       ballHeader(model,context),
                       divider(),
@@ -127,7 +130,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
   }
 
   Container ballTextBar(
-      IssueBallWidgetSyle1ViewModel model, BuildContext context) {
+      IssueBallWidgetStyle1ViewModel model, BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width - 64,
       padding: EdgeInsets.only(bottom: 23),
@@ -141,7 +144,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
     );
   }
 
-  Container ballProfileBar(IssueBallWidgetSyle1ViewModel model) {
+  Container ballProfileBar(IssueBallWidgetStyle1ViewModel model) {
     return Container(
       height: 60,
       padding: EdgeInsets.fromLTRB(14, 15, 14, 15),
@@ -187,7 +190,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
   }
 
   Widget ballMainPickture(
-      IssueBallWidgetSyle1ViewModel model, BuildContext context) {
+      IssueBallWidgetStyle1ViewModel model, BuildContext context) {
     return model.issueBall.isMainPicture()
         ? Stack(children: <Widget>[
             FlatButton(
@@ -268,7 +271,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
         : Container();
   }
 
-  Container ballHeader(IssueBallWidgetSyle1ViewModel model,BuildContext context) {
+  Container ballHeader(IssueBallWidgetStyle1ViewModel model,BuildContext context) {
     return Container(
       height: 68,
       child: Stack(children: <Widget>[

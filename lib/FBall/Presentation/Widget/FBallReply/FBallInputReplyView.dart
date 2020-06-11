@@ -37,12 +37,15 @@ class FBallInputReplyView extends StatelessWidget {
                                     alignment: Alignment.centerLeft,
                                     margin: EdgeInsets.only(right: 16),
                                     child: TextField(
+                                      autocorrect: false,
+                                        enableSuggestions: false,
                                         controller: model.replyTextController,
                                         style: TextStyle(fontSize: 20),
                                         autofocus: true,
                                         minLines: 1,
                                         maxLength: 300,
-                                        onChanged: model.onReplyInputChange,
+                                        keyboardType: TextInputType.text,
+                                        onSubmitted: model.onReplySubmitted,
                                         maxLines: 4,
                                         decoration: InputDecoration(
                                           counter: Container(),
@@ -73,11 +76,7 @@ class FBallInputReplyView extends StatelessWidget {
                                   shape: CircleBorder(),
                                   padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
                                   onPressed: () async {
-                                    if(_fBallReplyInsertReqDto.replyUuid != null){
-                                      model.updateReply();
-                                    }else {
-                                      model.insertReply();
-                                    }
+                                    model.reqInsertOrUpdate();
                                   },
                                   child: Icon(
                                     ForutonaIcon.replysendicon,

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/PwFindValid/PhoneFindValidService.dart';
 import 'package:forutonafront/Common/SignValid/PwFindValidImpl/PhoneFindValidImpl.dart';
+import 'package:forutonafront/Common/SmsReceiverUtil/SmsAuthSupportLanguage.dart';
+import 'package:forutonafront/Common/SmsReceiverUtil/SmsReceiverService.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
@@ -71,7 +73,7 @@ class J010ViewModel extends ChangeNotifier{
     reqDto.internationalizedPhoneNumber= _currentInternationalizedPhoneNumber;
     reqDto.email = globalModel.pwFindPhoneAuthReqDto.email;
     _setIsLoading(true);
-    await _phoneFindValidService.phoneEmailIdValid(reqDto);
+    await _phoneFindValidService.phoneEmailIdValidWithReqPhoneSmsAuth(reqDto);
     if(_phoneFindValidService.hasPhoneEmailError()){
       Fluttertoast.showToast(
           msg: _phoneFindValidService.phoneEmailErrorText(),
@@ -86,8 +88,18 @@ class J010ViewModel extends ChangeNotifier{
       globalModel.pwFindPhoneAuthReqDto.phoneNumber = _currentPhoneNumber;
       globalModel.pwFindPhoneAuthReqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
       _resPhoneAuth = _phoneFindValidService.getPhoneAuth();
+      startSmsReceiver();
     }
     _setIsLoading(false);
+  }
+
+  void startSmsReceiver() {
+    var smsAuthReceiverService = SmsAuthReceiverService(onSmsReceived,SmsAuthSupportLanguage.KoKr);
+    smsAuthReceiverService.startListening();
+  }
+  onSmsReceived(String message){
+    authNumberEditingController.text = message;
+    notifyListeners();
   }
 
   bool isCanRequest() {
@@ -159,4 +171,6 @@ class J010ViewModel extends ChangeNotifier{
     }
     _setIsLoading(false);
   }
+
+
 }

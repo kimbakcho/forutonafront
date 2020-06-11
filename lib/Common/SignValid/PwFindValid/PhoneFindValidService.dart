@@ -7,7 +7,7 @@ import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
 
 
 abstract class PhoneFindValidService extends SignUpValidService {
-  Future<void> phoneEmailIdValid(PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto);
+  Future<void> phoneEmailIdValidWithReqPhoneSmsAuth(PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto);
   bool hasPhoneEmailError();
   String phoneEmailErrorText();
   PwFindPhoneAuthResDto getPhoneAuth();

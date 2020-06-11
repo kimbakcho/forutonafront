@@ -88,11 +88,11 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
                         child: textMapSerachBar(model,context),
                       ),
                       Positioned(
-                          top: 108,
-                          right: 16,
+                          top: MediaQuery.of(context).padding.top + 80,
+                          right:  16,
                           child: myLocationButton(model)),
                       Positioned(
-                          top: 176,
+                          top: MediaQuery.of(context).padding.top + 150,
                           right: 16,
                           child: ballReFreshButton(model)),
                       Positioned(
@@ -147,7 +147,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
           ),
         ),
         decoration: BoxDecoration(
-          color: Color(0xffffffff),
+          color: Color(0xffffffff).withOpacity(0.8),
           boxShadow: [
             BoxShadow(
               offset: Offset(0.00, 12.00),

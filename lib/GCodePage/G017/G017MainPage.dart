@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:forutonafront/GCodePage/G017/G017MainPageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
 class G017MainPage extends StatelessWidget {
-  int _idx;
+  final int _idx;
 
   G017MainPage(this._idx);
 
@@ -55,8 +55,7 @@ class G017MainPage extends StatelessWidget {
           ? Column(
               children: <Widget>[
                 Text(model.personaSettingNoticeResDto.noticeName,
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: Color(0xff454f63),
@@ -104,9 +103,8 @@ class G017MainPage extends StatelessWidget {
                 child: Icon(Icons.arrow_back)),
             width: 48),
         Container(
-            child: Text("내용",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+            child: Text("공지사항 상세",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Color(0xff454f63),

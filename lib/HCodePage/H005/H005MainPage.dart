@@ -10,6 +10,7 @@ import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
 import 'package:forutonafront/HCodePage/H005/H00502/H00502PageViewModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'H00501/H00501PageViewModel.dart';
@@ -113,25 +114,32 @@ class _H005MainPageState extends State<H005MainPage>
                 onPressed: () {
                   Navigator.of(context).pop();
                 }),
-            Container(
-                height: 32.00,
-                width: MediaQuery.of(context).size.width - 80,
-                margin: EdgeInsets.only(left: 8),
-                alignment: Alignment.center,
-                child: Text(model.getSearchTextDisplay(),
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
-                      fontSize: 14,
-                      color: Color(0xff454f63),
-                    )),
-                decoration: BoxDecoration(
-                  color: Color(0xfff9f9f9),
-                  border: Border.all(
-                    width: 1.00,
-                    color: Color(0xfff6f6f6),
-                  ),
-                  borderRadius: BorderRadius.circular(12.00),
-                ))
+            FlatButton(
+              padding: EdgeInsets.all(0),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child:Container(
+
+                  height: 32.00,
+                  width: MediaQuery.of(context).size.width - 80,
+                  margin: EdgeInsets.only(left: 8),
+                  alignment: Alignment.center,
+                  child: Text(model.getSearchTextDisplay(),
+                      style: GoogleFonts.notoSans(
+                        fontSize: 14,
+                        color: Color(0xff454f63),
+                      )),
+                  decoration: BoxDecoration(
+                    color: Color(0xfff9f9f9),
+                    border: Border.all(
+                      width: 1.00,
+                      color: Color(0xfff6f6f6),
+                    ),
+                    borderRadius: BorderRadius.circular(12.00),
+                  )) ,
+            )
+
           ]),
         ],
       ),

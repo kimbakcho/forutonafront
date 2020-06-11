@@ -142,7 +142,7 @@ class J010View extends StatelessWidget {
                     height: 50,
                     child: TextField(
                         controller: model.authNumberEditingController,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                             hintText: "인증번호 입력",

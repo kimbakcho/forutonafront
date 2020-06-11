@@ -6,8 +6,8 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 
 
-import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
+import 'package:forutonafront/Common/PageableDto/FSort.dart';
+import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCaseInputPort.dart';
@@ -179,22 +179,27 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
 
   Future getBallListUp() async {
     isLoading = true;
+
     final GoogleMapController controller = await _googleMapController.future;
+
     final RenderBox mapRenderBoxRed =
         mapContainerGlobalKey.currentContext.findRenderObject();
+
     LatLng southwestPoint = await getWidgetOffsetPositionToLatLngFromMap(
         mapRenderBoxRed, controller, 16, MediaQuery.of(context).size.height-180);
     LatLng northeastPoint = await getWidgetOffsetPositionToLatLngFromMap(
         mapRenderBoxRed, controller, MediaQuery.of(context).size.width-16, 108);
-    List<MultiSort> sortList = [];
-    sortList.add(MultiSort("ballPower", QueryOrders.DESC));
-    MultiSorts sorts = MultiSorts(sortList);
+
+    FSorts fSort = FSorts();
+    fSort.sorts.add(FSort("ballPower", QueryOrders.DESC));
+
     await onSearch(
-        southwestPoint, northeastPoint, sorts, _ballPageLimitSize, _pageCount);
+        southwestPoint, northeastPoint, fSort, _ballPageLimitSize, _pageCount);
+
     isLoading = false;
   }
 
-  Future<void> onSearch(LatLng southwestPoint, LatLng northeastPoint, MultiSorts sorts,
+  Future<void> onSearch(LatLng southwestPoint, LatLng northeastPoint, FSorts sorts,
       int pageSize, int pageCount) async {
     BallFromMapAreaReqDto reqDto = BallFromMapAreaReqDto(
         southwestPoint.latitude,

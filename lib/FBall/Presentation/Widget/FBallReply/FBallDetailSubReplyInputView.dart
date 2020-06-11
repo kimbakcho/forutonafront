@@ -5,6 +5,7 @@ import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailSubReplyInputViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class FBallDetailSubReplyInputView extends StatelessWidget {
@@ -54,9 +55,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                           Expanded(
                                               child: Container(
                                             child: Text(mainReply.userNickName,
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      "Noto Sans CJK KR",
+                                                style: GoogleFonts.notoSans(
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 11,
                                                   color: Color(0xff454f63),
@@ -69,9 +68,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                             margin: EdgeInsets.fromLTRB(
                                                 16, 0, 32, 3),
                                             child: Text(mainReply.replyText,
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      "Noto Sans CJK KR",
+                                                style: GoogleFonts.notoSans(
                                                   fontSize: 10,
                                                   color: Color(0xff454f63),
                                                 ))),
@@ -84,9 +81,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                                     .getCalcToStrFromNow(
                                                         mainReply
                                                             .replyUploadDateTime),
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      "Noto Sans CJK KR",
+                                                style: GoogleFonts.notoSans(
                                                   fontSize: 9,
                                                   color: Color(0xffb1b1b1),
                                                 ))),
@@ -105,7 +100,8 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                         minLines: 1,
                                         maxLines: 4,
                                         maxLength: 300,
-                                        onChanged: model.onReplyInputChange,
+                                        onSubmitted: model.onReplySubmitted,
+                                        keyboardType: TextInputType.text,
                                         controller: model.subReplyController,
                                         autofocus: true,
                                         decoration: InputDecoration(

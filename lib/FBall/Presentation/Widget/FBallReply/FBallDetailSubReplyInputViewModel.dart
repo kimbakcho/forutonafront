@@ -41,6 +41,7 @@ class FBallDetailSubReplyInputViewModel extends ChangeNotifier{
       }
     });
   }
+
   @override
   void dispose() {
     _keyboard.cancel();
@@ -76,16 +77,10 @@ class FBallDetailSubReplyInputViewModel extends ChangeNotifier{
   }
 
 
-  void onReplyInputChange(String value) {
-    if(value.length >= 300){
-      Fluttertoast.showToast(
-          msg: "댓글/답글은 최대 300자까지 입력가능합니다",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Color(0xff454F63),
-          textColor: Colors.white,
-          fontSize: 12.0);
-    }
+
+
+
+  void onReplySubmitted(String value) {
+    sendSubReply(mainReply);
   }
 }

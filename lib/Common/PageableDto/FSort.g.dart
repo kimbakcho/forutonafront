@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'MultiSort.dart';
+part of 'FSort.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MultiSort _$MultiSortFromJson(Map<String, dynamic> json) {
-  return MultiSort(
+FSort _$FSortFromJson(Map<String, dynamic> json) {
+  return FSort(
     json['sort'] as String,
     _$enumDecodeNullable(_$QueryOrdersEnumMap, json['order']),
   );
 }
 
-Map<String, dynamic> _$MultiSortToJson(MultiSort instance) => <String, dynamic>{
+Map<String, dynamic> _$FSortToJson(FSort instance) => <String, dynamic>{
       'sort': instance.sort,
       'order': _$QueryOrdersEnumMap[instance.order],
     };

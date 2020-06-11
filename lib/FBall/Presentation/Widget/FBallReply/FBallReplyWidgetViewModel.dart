@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
@@ -9,7 +7,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailRe
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyContentBar.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetViewController.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
-import 'package:forutonafront/JCodePage/J001/J001View.dart';
+
 
 import 'FBallReplyUtil.dart';
 
@@ -51,8 +49,6 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
     }
   }
 
-
-
   void popUpDetailReply() async {
       await showGeneralDialog(
           context: _context,
@@ -91,6 +87,7 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
         fBallReplyWidgetViewController.replyContentBars.removeAt(3);
       }
       fBallReplyWidgetViewController.fBallReplyResWrapDto.replyTotalCount++;
+      notifyListeners();
     }
   }
 }

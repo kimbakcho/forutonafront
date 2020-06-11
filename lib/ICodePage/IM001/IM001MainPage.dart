@@ -10,6 +10,7 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -137,11 +138,12 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
           enableSuggestions: false,
           focusNode: model.tagEditFocusNode,
           controller: model.tagEditController,
+          maxLength: 10,
           onChanged: model.onTagTextChanged,
           onFieldSubmitted: model.onTagFieldSubmitted,
           decoration: InputDecoration(
-              labelStyle: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+            counter: Container(width: 0,height: 0),
+              labelStyle: GoogleFonts.notoSans(
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
                 color: Color(0xff3497fd),

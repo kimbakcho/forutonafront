@@ -35,10 +35,10 @@ class GCodeMainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
   onhCodePageChangeListners(){
-    if(gCodePagecontroller.page == 0.0){
+    if(gCodePagecontroller.page < 0.5){
       currentState = GCodePageState.G001Page;
       notifyListeners();
-    }else if(gCodePagecontroller.page == 1.0){
+    }else if(gCodePagecontroller.page > 0.5){
       currentState = GCodePageState.G003Page;
       notifyListeners();
     }

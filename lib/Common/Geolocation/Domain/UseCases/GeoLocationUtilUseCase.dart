@@ -5,6 +5,7 @@ import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as Permit;
 import 'package:provider/provider.dart';
@@ -14,10 +15,11 @@ import 'GeoLocationUtilUseCaseInputPort.dart';
 import 'GeoLocationUtilUseCaseOutputPort.dart';
 
 class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
-  ///GPS 가 사용 가능한지 알아보는 메소드
-  ///만약 GPS off 면 on 요청 해줌 Flutter 권한 관련 오류로 요청 메세지를 던지기만 하고 타임 아웃으로 빠져 나옴
+
   Geolocator _geolocator = Geolocator();
+
   static final GeoLocationUtilUseCase _instance = GeoLocationUtilUseCase._internal();
+
   Position _currentWithLastPosition;
   String _currentWithLastAddress;
 
@@ -35,7 +37,6 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
       Location location = new Location();
       bool _serviceEnabled;
       PermissionStatus _permissionGranted;
-      LocationData _locationData;
 
       _permissionGranted = await location.hasPermission();
       if (_permissionGranted == PermissionStatus.denied) {
@@ -116,9 +117,9 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
     }
   }
 
-  void reqBallDistanceDisplayText({@required double lat,@required double lng,@required GeoLocationUtilUseCaseOutputPort geoLocationUtilUseCaseOp}) async{
+  void reqBallDistanceDisplayText({@required LatLng ballLatLng ,@required GeoLocationUtilUseCaseOutputPort geoLocationUtilUseCaseOp}) async{
     var position = await getLastKnowPonePosition();
-    var distance = await Geolocator().distanceBetween(lat, lng, position.latitude, position.longitude);
+    var distance = await Geolocator().distanceBetween(ballLatLng.latitude, ballLatLng.longitude, position.latitude, position.longitude);
     geoLocationUtilUseCaseOp.onBallDistanceDisplayText(displayDistanceText: DistanceDisplayUtil.changeDisplayStr(distance));
   }
 
@@ -128,7 +129,7 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
     if(placeMarkList.length > 0){
       return replacePlacemarkToAddresStr(placeMarkList[0]);
     }else{
-      return "주 소 없 음";
+      return "주소를 알 수 없습니다";
     }
   }
 

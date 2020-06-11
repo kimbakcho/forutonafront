@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
-import 'package:forutonafront/Common/PageableDto/MultiSorts.dart';
+import 'package:forutonafront/Common/PageableDto/FSort.dart';
+import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseOutputPort.dart';
@@ -83,12 +83,11 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
     isLoading = false;
   }
 
-  MultiSorts _makeSearchOrders() {
-    List<MultiSort> sortList = new List<MultiSort>();
-    sortList.add(new MultiSort(
+  FSorts _makeSearchOrders() {
+    FSorts fSort = new FSorts();
+    fSort.sorts.add(new FSort(
         EnumToString.parse(selectOrder.value), selectOrder.orders));
-    MultiSorts sorts = new MultiSorts(sortList);
-    return sorts;
+    return fSort;
   }
 
   onScrollListener() async {

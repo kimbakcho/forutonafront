@@ -408,6 +408,79 @@ class IM001MainPageViewModel extends ChangeNotifier
   }
 
   void onTagTextChanged(String value) {
+    checkFirstCommaAndWarning(value);
+
+    checkSpecialCharactersAndRemoveSpecialCharacters(value);
+
+    checkSpaceCharactersAndRemoveSpaceCharacters(value);
+
+    checkTextSizeOverFlow(value);
+
+    checkCommaAndInsert(value);
+  }
+
+  void checkCommaAndInsert(String value) {
+    if (value.indexOf(",") > 0) {
+      value = value.substring(0, value.length - 1);
+      _issueBall.tags
+          .add(FBallTag(ballUuid: _issueBall.ballUuid, tagItem: value));
+      addTagChips(value);
+      tagEditController.clear();
+      moveToBottomScroller();
+      notifyListeners();
+    }
+  }
+  void checkSpecialCharactersAndRemoveSpecialCharacters(String value) {
+    RegExp specialCharactersReg = new RegExp(r'^(?=.*?[!@#\$&*~])');
+    bool hasSpecialCharacters = specialCharactersReg.hasMatch(value) ? true : false;
+    if(hasSpecialCharacters){
+      tagEditController.text = removeTagLastCharacter();
+        Fluttertoast.showToast(
+            msg: "태그에 특수문자는 사용할 수 없습니다",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Color(0xff454F63),
+            textColor: Colors.white,
+            fontSize: 12.0);
+      }
+    }
+
+  void checkSpaceCharactersAndRemoveSpaceCharacters(String value) {
+    RegExp spaceCharactersReg = new RegExp(r'^\s');
+    bool hasSpaceCharacters = spaceCharactersReg.hasMatch(value) ? true : false;
+    if(hasSpaceCharacters){
+      tagEditController.text = removeTagLastCharacter();
+      Fluttertoast.showToast(
+          msg: "태그에 띄어쓰기는 사용할 수 없습니다",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
+    }
+  }
+
+
+  String removeTagLastCharacter() => tagEditController.text.substring(0,tagEditController.text.length-1);
+
+
+  void checkTextSizeOverFlow(String value) {
+    if(value.length >= 10){
+      Fluttertoast.showToast(
+          msg: "태그는 최대 10글자만 입력가능합니다",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
+    }
+  }
+
+
+  void checkFirstCommaAndWarning(String value) {
     if (value.indexOf(",") == 0) {
       tagEditController.clear();
       Fluttertoast.showToast(
@@ -418,15 +491,6 @@ class IM001MainPageViewModel extends ChangeNotifier
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
-    }
-    if (value.indexOf(",") > 0) {
-      value = value.substring(0, value.length - 1);
-      _issueBall.tags
-          .add(FBallTag(ballUuid: _issueBall.ballUuid, tagItem: value));
-      addTagChips(value);
-      tagEditController.clear();
-      moveToBottomScroller();
-      notifyListeners();
     }
   }
 
@@ -459,7 +523,7 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   }
 
-  bool isTagChipLimitOver() => tagChips.length > 10;
+  bool isTagChipLimitOver() => tagChips.length >= 10;
 
   void addChipWidget(String value) {
     print("addChipWidget");
@@ -526,4 +590,8 @@ class IM001MainPageViewModel extends ChangeNotifier
   void onDeleteBall() {
     throw ("here don't have action");
   }
+
+
+
+
 }

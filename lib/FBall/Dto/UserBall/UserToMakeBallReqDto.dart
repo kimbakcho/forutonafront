@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 
-import 'package:forutonafront/Common/PageableDto/MultiSort.dart';
+import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'UserToMakeBallReqDto.g.dart';
