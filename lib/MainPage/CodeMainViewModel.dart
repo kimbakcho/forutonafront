@@ -4,7 +4,7 @@ import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/D
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum HCodeState { HCDOE, ICODE, JCODE, KCODE, GCODE  }
+enum HCodeState { HCDOE, ICODE, BCODE, KCODE, GCODE  }
 
 class CodeMainViewModel with ChangeNotifier {
   PageController pageController;
@@ -42,7 +42,7 @@ class CodeMainViewModel with ChangeNotifier {
       case HCodeState.ICODE:
         pageController.jumpToPage(1);
         break;
-      case HCodeState.JCODE:
+      case HCodeState.BCODE:
         pageController.jumpToPage(2);
         break;
       case HCodeState.KCODE:

@@ -45,11 +45,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 flex: 1,
                 child: FlatButton(
                     onPressed: () {
-                      model.jumpToPage(HCodeState.JCODE);
+                      model.jumpToPage(HCodeState.BCODE);
                     },
                     child: Icon(
                       ForutonaIcon.officialchannel,
-                      color: model.currentState == HCodeState.JCODE
+                      color: model.currentState == HCodeState.BCODE
                           ? Color(0xff454F63)
                           : Color(0xffE4E7E8),
                     ))),

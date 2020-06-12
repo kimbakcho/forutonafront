@@ -60,13 +60,17 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
   Completer<GoogleMapController> _googleMapController = Completer();
 
   ICodeMainPageViewModel(this.context) {
-    currentMapPosition = CameraPosition(
-          target: LatLng(_geoLocationUtilUseCase.getCurrentWithLastPositionInMemory().latitude,
-              _geoLocationUtilUseCase.getCurrentWithLastPositionInMemory().longitude),
-          zoom: initMapZoom);
+    setGoogleInitCameraPosition();
     bottomPageController.addListener(onPageContollerListner);
     currentAddress = _geoLocationUtilUseCase.getCurrentWithLastAddressInMemory();
 
+  }
+
+  CameraPosition setGoogleInitCameraPosition() {
+    return currentMapPosition = CameraPosition(
+        target: LatLng(_geoLocationUtilUseCase.getCurrentWithLastPositionInMemory().latitude,
+            _geoLocationUtilUseCase.getCurrentWithLastPositionInMemory().longitude),
+        zoom: initMapZoom);
   }
 
   ///Return 으로는 MapSearchGeoDto 받는다.
@@ -159,14 +163,16 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     _flagIdleIgnore = true;
     _googleMapController.complete(controller);
     reFreshBtnActive = false;
-//    currentAddress =
-//          await GeoLocationUtilUseCase().getPositionAddress(Position(longitude: currentMapPosition.target.longitude,latitude: currentMapPosition.target.latitude));
-//      await controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-//          target: LatLng(currentMapPosition.target.latitude, currentMapPosition.target.longitude),
-//          zoom: 14.4746)));
-      await onRefreshBall();
-      _flagIdleIgnore = false;
+    await delayAndBallRefreash();
+    _flagIdleIgnore = false;
+  }
 
+  Future delayAndBallRefreash() async {
+    //지도의 검색 범위 측정시 너무 빨리 잡을시 검색 범위에 문제가 생김
+    //해결책으로 지도가 그려줄 시간을 벌어주기 위해서 Delay
+    await Future.delayed(Duration(milliseconds:500),() async {
+      await onRefreshBall();
+    });
   }
 
   onRefreshBall() async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:forutonafront/BCodePage/JCodeMainPage.dart';
+import 'package:forutonafront/BCodePage/BCodeMainPage.dart';
 import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
@@ -39,7 +39,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
                     children: <Widget>[
                   HCodeMainPage(),
                   ICodeMainPage(),
-                  JCodeMainPage(),
+                  BCodeMainPage(),
                   Container(
                     child: Text("4"),
                   ),
