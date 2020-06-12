@@ -7,11 +7,11 @@ class Preference {
   static LatLng initPosition = LatLng(37.508797, 126.890605);
   static String basicProfileImageUrl = "https://storage.googleapis.com/publicforutona/profileimage/basicprofileimage.png";
   static String kaKaoNativeApiKey = "2e77dd42e5b6e1e79b8a0ec21e242e05";
+  static String officialSite="http://neoforutona.cafe24.com/official-channel/";
+
   //testDebug
-  static String baseBackEndUrl = "http://121.136.211.241:8443";
-
-
+//  static String baseBackEndUrl = "http://121.136.211.241:8443";
 //  // relese
-//   static String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
+   static String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
 
 }

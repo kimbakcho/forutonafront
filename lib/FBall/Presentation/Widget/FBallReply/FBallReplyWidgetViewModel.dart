@@ -7,6 +7,9 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailRe
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyContentBar.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetViewController.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
 
 
 import 'FBallReplyUtil.dart';
@@ -16,9 +19,11 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
   FBallReplyWidgetViewController fBallReplyWidgetViewController =FBallReplyWidgetViewController(FBallReplyResWrapDto(),[]);
 
   final String ballUuid;
-  BuildContext _context;
+  BuildContext context;
 
-  FBallReplyWidgetViewModel(this.ballUuid, this._context) {
+  AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
+
+  FBallReplyWidgetViewModel(this.ballUuid, this.context) {
     loadTop3Reply();
   }
 
@@ -36,7 +41,7 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
       fBallReplyWidgetViewController.replyContentBars.clear();
     }
     fBallReplyWidgetViewController.replyContentBars.addAll(replyItems
-        .map((e) => FBallReplyContentBar(e,false,true,false,MediaQuery.of(_context).size.width))
+        .map((e) => FBallReplyContentBar(e,false,true,false,MediaQuery.of(context).size.width))
         .toList());
     notifyListeners();
   }
@@ -50,13 +55,15 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
   }
 
   void popUpDetailReply() async {
+
+
       await showGeneralDialog(
-          context: _context,
+          context: context,
           barrierDismissible: true,
           transitionDuration: Duration(milliseconds: 300),
           barrierColor: Colors.black.withOpacity(0.3),
           barrierLabel:
-              MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
           pageBuilder:
               (_context, Animation animation, Animation secondaryAnimation) {
             return FBallDetailReplyView(ballUuid,fBallReplyWidgetViewController);
@@ -74,14 +81,22 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
 
       fBallReplyWidgetViewController
           .replyContentBars
-          .addAll(replyList.map((e) => FBallReplyContentBar(e.fBallReplyResDto,false,true,false,MediaQuery.of(_context).size.width)));
+          .addAll(replyList.map((e) => FBallReplyContentBar(e.fBallReplyResDto,false,true,false,MediaQuery.of(context).size.width)));
+  }
+
+  void gotoJ001Page() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_){
+        return J001View();
+      }
+    ));
   }
 
   void popupInputDisplay() async {
-    FBallReplyResDto fBallReplyResDto = await FBallReplyUtil().popupInputDisplay(_context,ballUuid);
+    FBallReplyResDto fBallReplyResDto = await FBallReplyUtil().popupInputDisplay(context,ballUuid);
     if(fBallReplyResDto != null){
       fBallReplyWidgetViewController.replyContentBars.insert(0,
-          FBallReplyContentBar(fBallReplyResDto,false,true,true,MediaQuery.of(_context).size.width)
+          FBallReplyContentBar(fBallReplyResDto,false,true,false,MediaQuery.of(context).size.width)
       );
       if(fBallReplyWidgetViewController.replyContentBars.length>3){
         fBallReplyWidgetViewController.replyContentBars.removeAt(3);

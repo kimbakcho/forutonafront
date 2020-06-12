@@ -97,4 +97,7 @@ class ForutonaIcon {
   static const IconData dislike = IconData(0xe849, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData like = IconData(0xe84a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData imageloding = IconData(0xe84b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData leftarrow = IconData(0xe84c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dots = IconData(0xe84d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData gps = IconData(0xe84e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

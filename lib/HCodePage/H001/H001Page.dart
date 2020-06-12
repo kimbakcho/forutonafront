@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,30 +14,27 @@ class H001Page extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
-    var h001ViewModel = Provider.of<H001ViewModel>(context);
-    return ChangeNotifierProvider.value(
-        value: h001ViewModel,
-        child: Stack(children: <Widget>[
-          Scaffold(
-              body: Container(
-                  color: Color(0xfff2f0f1),
-                  child: Consumer<H001ViewModel>(builder: (_, model, child) {
-                    return Stack(children: <Widget>[
-                      Column(children: <Widget>[
-                        addressDisplay(model,context),
-                        Expanded(
-                            child: Stack(children: <Widget>[
-                          model.isBallEmpty()
+    return Stack(children: <Widget>[
+        Scaffold(
+            body: Container(
+                color: Color(0xfff2f0f1),
+                child: Stack(children: <Widget>[
+                  Column(children: <Widget>[
+                    addressDisplay(context),
+                    Expanded(
+                        child: Stack(children: <Widget>[
+                          context.watch<H001ViewModel>().isBallEmpty()
                               ? ballEmptyPanel()
-                              : buildListUpPanel(model),
+                              : buildListUpPanel(context),
                         ]))
-                      ]),
-                      makeButton(model),
-                      model.isLoading ?
-                      CommonLoadingComponent() : Container()
-                    ]);
-                  })))
-        ]));
+                  ]),
+                  makeButton(context),
+                  context.watch<H001ViewModel>().isLoading ?
+                  CommonLoadingComponent() : Container()
+                ])))
+      ]);
+
+
   }
 
   Container ballEmptyPanel() {
@@ -53,28 +49,28 @@ class H001Page extends StatelessWidget {
                 textAlign: TextAlign.center)));
   }
 
-  ListView buildListUpPanel(H001ViewModel model) {
+  ListView buildListUpPanel(BuildContext context) {
     return ListView.separated(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 65),
       physics: BouncingScrollPhysics(),
-      itemCount: model.ballWidgetLists.length + 1,
+      itemCount: context.watch<H001ViewModel>().ballWidgetLists.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
-          return model.isFoldTagRanking()
-              ? inlineRanking(model)
-              : unInlineRaking(model,context);
+          return context.watch<H001ViewModel>().isFoldTagRanking()
+              ? inlineRanking(context)
+              : unInlineRaking(context);
         }
-        return model.ballWidgetLists[index - 1];
+        return context.watch<H001ViewModel>().ballWidgetLists[index - 1];
       },
-      controller: model.h001CenterListViewController,
+      controller: context.watch<H001ViewModel>().h001CenterListViewController,
       separatorBuilder: (context, index) {
         return SizedBox(height: 16);
       },
     );
   }
 
-  Widget makeButton(H001ViewModel model) {
-    return model.isFoldTagRanking()
+  Widget makeButton(BuildContext context) {
+    return context.watch<H001ViewModel>().isFoldTagRanking()
         ? Positioned(
             child: Hero(
               tag: "H001MakeButton",
@@ -86,7 +82,9 @@ class H001Page extends StatelessWidget {
                       color: Colors.white,
                     ),
                     padding: EdgeInsets.all(0),
-                    onPressed: model.h001controller.goBallMakePage,
+                    onPressed:(){
+                      context.read<H001ViewModel>().goBallMakePage();
+                    }
                   ),
                   height: 46.00,
                   width: 47.00,
@@ -101,7 +99,7 @@ class H001Page extends StatelessWidget {
                       shape: BoxShape.circle),
                   duration: Duration(milliseconds: 500),
                   margin: EdgeInsets.only(
-                      top: model.makeButtonDisplayShowFlag ? 0 : 120),
+                      top: context.watch<H001ViewModel>().makeButtonDisplayShowFlag ? 0 : 120),
                 ),
                 height: 120,
                 alignment: Alignment.topCenter,
@@ -113,14 +111,14 @@ class H001Page extends StatelessWidget {
         : Container();
   }
 
-  Column unInlineRaking(H001ViewModel model,BuildContext context) {
+  Column unInlineRaking(BuildContext context) {
     return Column(children: <Widget>[
       Container(
           margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: ListView.builder(
               padding: EdgeInsets.all(0),
               shrinkWrap: true,
-              itemCount: model.tagRankingDtos.length,
+              itemCount: context.watch<H001ViewModel>().tagRankingDtos.length,
               itemBuilder: (builder, index) {
                 return Container(
                     height: 40,
@@ -134,17 +132,17 @@ class H001Page extends StatelessWidget {
                     child: FlatButton(
                       padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       onPressed: (){
-                        model.h001controller.gotoTagSearch(model.tagRankingDtos[index].tagName);
+                        context.read<H001ViewModel>().gotoTagSearch(context.read<H001ViewModel>().tagRankingDtos[index].tagName);
                       },
                       child:Row(children: <Widget>[
-                        Text("${model.tagRankingDtos[index].ranking}.",
+                        Text("${context.watch<H001ViewModel>().tagRankingDtos[index].ranking}.",
                             style: GoogleFonts.notoSans(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                                 color: Color(0xff454F63)
                             )),
                         SizedBox(width: 12),
-                        Text("#${model.tagRankingDtos[index].tagName}",
+                        Text("#${context.watch<H001ViewModel>().tagRankingDtos[index].tagName}",
                             style: GoogleFonts.notoSans(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -171,14 +169,13 @@ class H001Page extends StatelessWidget {
       Container(
           child: FlatButton(
               child: Text("접기",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: Color(0xffffffff),
                   )),
               onPressed: () {
-                model.h001controller.showInlineRankingWidget();
+                context.read<H001ViewModel>().showInlineRankingWidget();
               }),
           height: 54.00,
           margin: EdgeInsets.fromLTRB(18, 0, 18, 0),
@@ -198,27 +195,27 @@ class H001Page extends StatelessWidget {
 
 
 
-  Container inlineRanking(H001ViewModel model) {
+  Container inlineRanking(BuildContext context) {
     return Container(
-        child: model.tagRankingDtos.length != 0
+        child: context.watch<H001ViewModel>().tagRankingDtos.length != 0
             ? Swiper(
-                itemCount: model.tagRankingDtos.length,
-                autoplay: model.rankingAutoPlay,
+                itemCount: context.watch<H001ViewModel>().tagRankingDtos.length,
+                autoplay: context.watch<H001ViewModel>().rankingAutoPlay,
                 scrollDirection: Axis.vertical,
                 autoplayDelay: 2000,
-                controller: model.rankingSwiperController,
+                controller: context.watch<H001ViewModel>().rankingSwiperController,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
                       height: 40,
                       padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
                       child: FlatButton(
                         onPressed: (){
-                          model.h001controller.gotoTagSearch(model.tagRankingDtos[index].tagName);
+                          context.read<H001ViewModel>().gotoTagSearch(context.read<H001ViewModel>().tagRankingDtos[index].tagName);
                         },
                         padding: EdgeInsets.all(0),
                         child :Row(children: <Widget>[
                           Text(
-                            "${model.tagRankingDtos[index].ranking}.",
+                            "${context.watch<H001ViewModel>().tagRankingDtos[index].ranking}.",
                             style: GoogleFonts.notoSans(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -227,43 +224,41 @@ class H001Page extends StatelessWidget {
                           ),
                           SizedBox(width: 12),
                           Text(
-                              "#${model.tagRankingDtos[index].tagName}",
+                              "#${context.watch<H001ViewModel>().tagRankingDtos[index].tagName}",
                               style: GoogleFonts.notoSans(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                   color: Color(0xff454F63)
                               )),
                           Spacer(),
-
                           SizedBox(width: 12),
                           Container(
                             width: 12,
                             child: FlatButton(
                                 padding: EdgeInsets.all(0),
                                 onPressed: () {
-                                  model.h001controller.showUnInlineRankingWidget();
+                                  context.read<H001ViewModel>().showUnInlineRankingWidget();
                                 },
                                 child: Icon(ForutonaIcon.down_arrow, size: 10)),
                           )
                         ])
-
                       ) 
                       );
                 },
               )
             : Container(),
         margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-        height: model.tagRankingDtos.length == 0 ? 0 : 40,
+        height: context.watch<H001ViewModel>().tagRankingDtos.length == 0 ? 0 : 40,
         decoration: BoxDecoration(
             color: Color(0xffe9faff),
             border: Border.all(width: 1.00, color: Color(0xff38caf5)),
             borderRadius: BorderRadius.circular(10.00)));
   }
 
-  AnimatedContainer addressDisplay(H001ViewModel model,BuildContext context) {
+  AnimatedContainer addressDisplay(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
-      height: model.addressDisplayShowFlag ? 73 : 0,
+      height: context.watch<H001ViewModel>().addressDisplayShowFlag ? 73 : 0,
       padding: EdgeInsets.fromLTRB(16, 11, 16, 16),
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
@@ -285,13 +280,14 @@ class H001Page extends StatelessWidget {
         ),
         child: FlatButton(
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            onPressed: model.h001controller.moveToH007,
+            onPressed:() {
+              context.read<H001ViewModel>().moveToH007();
+            },
             child: Container(
               alignment: Alignment.center,
-              child: Text(model.selectPositionAddress,
+              child: Text(context.watch<H001ViewModel>().selectPositionAddress,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 13,
                     color: Color(0xff454f63),

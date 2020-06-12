@@ -34,7 +34,12 @@ class FireBaseAuthUseCase implements AuthUserCaseInputPort{
   @override
   Future<String> myUid() async{
     var firebaseUser = await FirebaseAuth.instance.currentUser();
-    return firebaseUser.uid;
+    if(firebaseUser != null){
+      return firebaseUser.uid;
+    }else {
+      throw Exception("don't have Firebase User");
+    }
+
   }
 
   @override

@@ -44,7 +44,7 @@ class FBallReplyWidget extends StatelessWidget {
               top: 0,
               right: 6,
               child: Container(
-                  margin: EdgeInsets.only(bottom: 16),
+                  margin: EdgeInsets.only(bottom: 16,right: 16),
                   child: FlatButton(
                       padding: EdgeInsets.all(0),
                       onPressed: model.popUpDetailReply,
@@ -77,7 +77,7 @@ class FBallReplyWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12.00)))),
           Positioned(
               top: 47,
-              right: 16,
+              right: 19,
               child: Container(
                   width: 30,
                   height: 30,

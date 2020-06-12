@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/GCodePage/G001/G001MainPageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class G001MainPage extends StatelessWidget {
@@ -19,7 +20,7 @@ class G001MainPage extends StatelessWidget {
                 body: Container(
                     child: Stack(children: <Widget>[
               Positioned(
-                  top: 36,
+                  top:  36,
                   width: MediaQuery.of(context).size.width,
                   child: userProfileImage(model)),
               Positioned(
@@ -27,7 +28,7 @@ class G001MainPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: userNickName(model)),
               Positioned(
-                top: 150,
+                top: 151,
                 width: MediaQuery.of(context).size.width,
                 child: userCountry(model),
               ),
@@ -49,10 +50,9 @@ class G001MainPage extends StatelessWidget {
             child: model.getHaveUserSelfIntroduction()
                 ? Text(model.getUserSelfIntroduction(),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontSize: 12,
-                      color: Color(0xff454f63),
+                      color: Color(0xff454F63),
                     ))
                 : Container(
                     child: InkWell(
@@ -74,7 +74,13 @@ class G001MainPage extends StatelessWidget {
       children: <Widget>[
         Container(
           alignment: Alignment.center,
-          child: Text(model.getUserCountry()),
+          child: Text(model.getUserCountry(),
+              style: GoogleFonts.notoSans(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                color: Color(0xff454f63),
+              )
+          ),
         ),
       ],
     );
@@ -87,9 +93,8 @@ class G001MainPage extends StatelessWidget {
         Container(
             alignment: Alignment.center,
             child: Text(model.getUserNickName(),
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontWeight: FontWeight.w700,
+                style: GoogleFonts.notoSans(
+                  fontWeight: FontWeight.bold,
                   fontSize: 17,
                   color: Color(0xff454f63),
                 ))),

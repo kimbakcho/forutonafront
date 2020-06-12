@@ -38,8 +38,7 @@ class FBallDetailReplyView extends StatelessWidget {
                           model.getReplyResWrapDto().replyTotalCount != null
                               ? "댓글( ${model.getReplyResWrapDto().replyTotalCount} )"
                               : "로딩중",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
                             fontWeight: FontWeight.w700,
                             fontSize: 12,
                             color: Color(0xff454f63),

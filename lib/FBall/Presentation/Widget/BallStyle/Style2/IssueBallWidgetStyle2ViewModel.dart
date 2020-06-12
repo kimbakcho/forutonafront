@@ -11,8 +11,6 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/BallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Impl/IssueBallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/IssueBallWidgetStyle2Controller.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style3/IssueBallWidgetStyle3Controller.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
@@ -22,17 +20,57 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBallUseCaseOutputPort,GeoLocationUtilUseCaseOutputPort{
 
   BuildContext context;
+
   IssueBall issueBall;
 
   String distanceDisplayText = "";
 
-  IssueBallWidgetStyle2Controller controller;
+  IssueBallUseCaseInputPort issueBallUseCaseInputPort = IssueBallUseCase();
+
+  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort = GeoLocationUtilUseCase();
 
   IssueBallWidgetStyle2ViewModel({@required this.context,@required FBallResDto userBallResDto}){
     issueBall = IssueBall.fromFBallResDto(userBallResDto);
-    controller = IssueBallWidgetStyle2Controller(context: context,viewModel: this);
+    geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText
+      (ballLatLng: LatLng(issueBall.latitude,issueBall.longitude),geoLocationUtilUseCaseOp: this);
+  }
+  void goIssueDetailPage() async {
+    if(issueBall.ballDeleteFlag){
+      Fluttertoast.showToast(
+          msg: "삭제된 Ball 입니다.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
+    }else {
+      await Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => ID001MainPage(issueBall: issueBall)));
+      issueBallUseCaseInputPort.selectBall(ballUuid: issueBall.ballUuid,outputPort: this);
+    }
   }
 
+  void showBallSetting() async {
+    BallModifyService ballModifyService = IssueBallModifyService();
+    if (await issueBall.isCanModify()) {
+      CommonBallModifyWidgetResultType result = await ballModifyService
+          .showModifySelectDialog(context: context);
+      if (result == CommonBallModifyWidgetResultType.Update) {
+        await Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) {
+              return IM001MainPage(
+                  LatLng(issueBall.latitude, issueBall.longitude),
+                  issueBall.placeAddress, issueBall.ballUuid,
+                  IM001MainPageEnterMode.Update);
+            }
+        ));
+        issueBallUseCaseInputPort.selectBall(ballUuid: issueBall.ballUuid, outputPort: this);
+      } else {
+        issueBallUseCaseInputPort.deleteBall(ballUuid: issueBall.ballUuid, outputPort: this);
+      }
+    }
+  }
 
   @override
   void onBallHit() {

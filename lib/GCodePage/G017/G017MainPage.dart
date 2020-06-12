@@ -24,7 +24,7 @@ class G017MainPage extends StatelessWidget {
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
                       Positioned(top: 0, left: 0, child: topBar(model,context)),
-                      Positioned(top: 56, left: 0, child: topTitleBar(model,context)),
+                      Positioned(top: 57, left: 0, child: topTitleBar(model,context)),
                       Positioned(
                           top: 136, left: 0, child: noticeContentBar(model,context))
                     ])))
@@ -58,30 +58,17 @@ class G017MainPage extends StatelessWidget {
                     style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
-                      color: Color(0xff454f63),
-                      shadows: [
-                        Shadow(
-                          offset: Offset(0.00, 3.00),
-                          color: Color(0xff000000).withOpacity(0.16),
-                          blurRadius: 6,
-                        ),
-                      ],
+                      color: Color(0xff454f63)
                     )),
                 Text(
                     DateFormat("yy.MM.dd").format(
                         model.personaSettingNoticeResDto.noticeWriteDateTime),
-                    style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
+
                         fontWeight: FontWeight.w300,
                         fontSize: 10,
                         color: Color(0xff454f63),
-                        shadows: [
-                          Shadow(
-                            offset: Offset(0.00, 3.00),
-                            color: Color(0xff000000).withOpacity(0.16),
-                            blurRadius: 6,
-                          )
-                        ]))
+                      ))
               ],
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,

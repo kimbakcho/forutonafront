@@ -42,7 +42,7 @@ class IssueBallTypeRepositoryImpl implements IssueBallTypeRepository{
 
   @override
   Future<FBall> selectBall(FBallReqDto fBallReqDto) async{
-    return await issueBallTypeRemoteDateSource.selectBall(reqDto: fBallReqDto, fDio: await FDio.makeAuthTokenFDio());
+    return await issueBallTypeRemoteDateSource.selectBall(reqDto: fBallReqDto, noneTokenFDio: FDio.noneToken());
   }
 
   @override

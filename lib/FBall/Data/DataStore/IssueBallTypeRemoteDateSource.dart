@@ -15,7 +15,7 @@ import 'package:http_parser/http_parser.dart';
 abstract class IssueBallTypeRemoteDateSource {
   Future<int> deleteBall({@required FBallReqDto reqDto,@required FDio fDio});
   Future<FBall> insertBall({@required IssueBallInsertReqDto reqDto,@required FDio fDio});
-  Future<FBall> selectBall({@required  FBallReqDto reqDto,@required FDio fDio});
+  Future<FBall> selectBall({@required  FBallReqDto reqDto,@required FDio noneTokenFDio});
   Future<int> updateBall({@required IssueBallUpdateReqDto reqDto,@required FDio fDio});
   Future<int> joinBall({@required FBallJoinReqDto reqDto,@required FDio fDio});
   Future<int> ballHit({@required FBallReqDto reqDto,@required FDio noneTokenFDio});
@@ -50,8 +50,8 @@ class IssueBallTypeRemoteDateSourceImpl implements IssueBallTypeRemoteDateSource
     }
 
   @override
-  Future<FBall> selectBall({@required FBallReqDto reqDto,@required FDio fDio}) async {
-    var response = await fDio.post("/v1/FBall/Issue/Select",queryParameters: reqDto.toJson());
+  Future<FBall> selectBall({@required FBallReqDto reqDto,@required FDio noneTokenFDio}) async {
+    var response = await noneTokenFDio.post("/v1/FBall/Issue/Select",queryParameters: reqDto.toJson());
     return FBall.fromJson(response.data);
   }
 

@@ -38,6 +38,7 @@ import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuid
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
@@ -49,6 +50,7 @@ class ID001MainPageViewModel extends ChangeNotifier
         IssueBallValuationUseCaseOutputPort,
         IssueBallUseCaseOutputPort,
         AuthUserCaseOutputPort{
+
   final BuildContext context;
   IssueBall issueBall;
 
@@ -87,52 +89,68 @@ class ID001MainPageViewModel extends ChangeNotifier
   AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
 
   bool isInitFinish = false;
-  bool _isLoading = false;
+  bool isLoading = false;
   bool showFBallValuation =false;
 
-  get isLoading {
-    return _isLoading;
-  }
 
-  set isLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
 
   ID001MainPageViewModel({@required this.context, @required this.issueBall}) {
     _init();
   }
 
   _init() async {
-    _authUserCaseInputPort.checkLogin(authUserCaseOutputPort: this);
-    mainScrollController.addListener(onScrollControllerListener);
-    initialCameraPosition = CameraPosition(
-        target: LatLng(issueBall.latitude, issueBall.longitude), zoom: 14.425);
-    if (issueBall.hasYoutubeVideo()) {
-      youtubeLoad(issueBall.getDisplayYoutubeVideoId());
-    }
-    _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-        reqDto: TagFromBallReqDto(ballUuid: issueBall.ballUuid),
-        outputPort: this);
+    turnUserScreen();
 
-    _userInfoSimple1UseCaseInputPort.getUserInfoSimple1(
-        reqDto: FUserReqDto(issueBall.uid), outputPort: this);
+    googleMapInitCameraPositionSetting();
+
+    issueBallYoutubeSetting();
+
+    loadTagFromBall();
+
+    reqBallMakerInfo();
+
 
     loadFBallValuation();
+
     isInitFinish = true;
+
+    mainScrollController.addListener(mainScrollListener);
 
     notifyListeners();
   }
 
+  Future<FUserInfoSimple1ResDto> reqBallMakerInfo() {
+    return _userInfoSimple1UseCaseInputPort.getBallMakerInfo(
+      makerUid: FUserReqDto(issueBall.uid), outputPort: this);
+  }
+
+  Future<List<FBallTagResDto>> loadTagFromBall() {
+    return _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
+      reqDto: TagFromBallReqDto(ballUuid: issueBall.ballUuid),
+      outputPort: this);
+  }
+
+  void turnUserScreen() {
+    _authUserCaseInputPort.checkLogin(authUserCaseOutputPort: this);
+  }
+
+  void issueBallYoutubeSetting() {
+    if (issueBall.hasYoutubeVideo()) {
+      youtubeLoad(issueBall.getDisplayYoutubeVideoId());
+    }
+  }
+
+  void googleMapInitCameraPositionSetting() {
+    initialCameraPosition = CameraPosition(
+        target: LatLng(issueBall.latitude, issueBall.longitude), zoom: 14.425);
+  }
+
   @override
-  onUserInfoSimple1(FUserInfoSimple1ResDto fUserInfoSimple1ResDto) {
+  onBallMakerInfo(FUserInfoSimple1ResDto fUserInfoSimple1ResDto) {
     makerUserInfo = FUserInfoSimple1.fromFUserInfoSimple1ResDto(fUserInfoSimple1ResDto);
     notifyListeners();
   }
 
-  onScrollControllerListener() {
-    notifyListeners();
-  }
 
   isBallNameScrollOver() {
     if (mainScrollController.hasClients && mainScrollController.offset > 305) {
@@ -152,10 +170,12 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   Future<void> loadFBallValuation() async {
-    FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
-    valuationReqDto.ballUuid = issueBall.ballUuid;
-    valuationReqDto.uid = await _authUserCaseInputPort.myUid();
-    _issueBallValuationUseCaseInputPort.getFBallValuation(reqDto: valuationReqDto,outputPort: this);
+    if(await _authUserCaseInputPort.checkLogin()){
+      FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
+      valuationReqDto.ballUuid = issueBall.ballUuid;
+      valuationReqDto.uid = await _authUserCaseInputPort.myUid();
+      _issueBallValuationUseCaseInputPort.getFBallValuation(reqDto: valuationReqDto,outputPort: this);
+    }
   }
 
   @override
@@ -166,44 +186,48 @@ class ID001MainPageViewModel extends ChangeNotifier
 
 
   youtubeLoad(String videoId) async {
-    var video = await _youtubeExplode.getVideo(videoId);
-    if (video.thumbnailSet.highResUrl != null) {
-      currentYoutubeImage = video.thumbnailSet.highResUrl;
-    } else if (video.thumbnailSet.mediumResUrl != null) {
-      currentYoutubeImage = video.thumbnailSet.mediumResUrl;
+    var video = await _youtubeExplode.videos.get(videoId);
+    if (video.thumbnails.highResUrl != null) {
+      currentYoutubeImage = video.thumbnails.highResUrl;
+    } else if (video.thumbnails.mediumResUrl != null) {
+      currentYoutubeImage = video.thumbnails.mediumResUrl;
     } else {
-      currentYoutubeImage = video.thumbnailSet.lowResUrl;
+      currentYoutubeImage = video.thumbnails.lowResUrl;
     }
     currentYoutubeTitle = video.title;
     currentYoutubeAuthor = video.author;
-    currentYoutubeView = video.statistics.viewCount;
+    currentYoutubeView = video.engagement.viewCount;
     currentYoutubeUploadDate = video.uploadDate;
+
     notifyListeners();
   }
 
   @override
   onTagFromBallUuid(List<FBallTagResDto> ballTags) {
     tagChips.clear();
+    addTagWidget(ballTags);
+    notifyListeners();
+  }
+
+  void addTagWidget(List<FBallTagResDto> ballTags) {
     for (var o in ballTags) {
       tagChips.add(Chip(
         backgroundColor: Color(0xffE4E7E8),
         label: Text("#${o.tagItem}",
-            style: TextStyle(
-              fontFamily: "Noto Sans CJK KR",
+            style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w500,
               fontSize: 13,
               color: Color(0xff454f63),
             )),
       ));
     }
-    notifyListeners();
   }
 
-  void onBackBtn() {
+  void backBtnTap() {
     Navigator.of(context).pop();
   }
 
-  void showMoreDetailToggle() {
+  void toggleMoreDetailToggle() {
     showMoreDetailFlag = !showMoreDetailFlag;
     notifyListeners();
   }
@@ -248,7 +272,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
 
-  void onPlusBtn() async {
+  void plusBtnTap() async {
     if (issueBall.isDeadBall()) {
       return;
     }
@@ -262,9 +286,7 @@ class ID001MainPageViewModel extends ChangeNotifier
     }
   }
 
-
-
-  void onMinusBtn() async {
+  void minusBtnTap() async {
     if (issueBall.isDeadBall()) {
       return;
     }
@@ -288,7 +310,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   @override
   onDeleteFBallValuation(int deletePoint) {
     fBallValuation = new FBallValuation();
-    if (deletePoint > 0) {
+    if (isDeleteBeforeStateLike(deletePoint)) {
       issueBall.minusBallLike(deletePoint.abs());
       makerUserInfo.minusCumulativeInfluence(deletePoint);
     } else {
@@ -298,9 +320,12 @@ class ID001MainPageViewModel extends ChangeNotifier
     issueBall.minusContributorCount();
     notifyListeners();
   }
+
+  bool isDeleteBeforeStateLike(int deletePoint) => deletePoint > 0;
+
   @override
   onSave(FBallValuationResDto fBallValuationResDto) {
-    if(fBallValuationResDto.upAndDown > 0){
+    if(isUserSaveValuationLike(fBallValuationResDto)){
       issueBall.plusBallLike(fBallValuationResDto.upAndDown);
       makerUserInfo.plusCumulativeInfluence(fBallValuationResDto.upAndDown);
     }else {
@@ -310,6 +335,8 @@ class ID001MainPageViewModel extends ChangeNotifier
     this.fBallValuation = FBallValuation.fromFBallValuationResDto(fBallValuationResDto);
     notifyListeners();
   }
+
+  bool isUserSaveValuationLike(FBallValuationResDto fBallValuationResDto) => fBallValuationResDto.upAndDown > 0;
 
 
   void valuationSave(int point) async {
@@ -321,8 +348,6 @@ class ID001MainPageViewModel extends ChangeNotifier
     );
     _issueBallValuationUseCaseInputPort.save(reqDto: reqDto,outputPort: this);
   }
-
-
 
 
   getFBallValuationText() {
@@ -339,93 +364,124 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   getValuationIconAndTextColor(FBallValuationState state) {
     if (state == FBallValuationState.Like) {
-      if (!fBallValuation.hasValuation()) {
-        return Color(0xff454F63);
-      } else if (fBallValuation.isLikeState()) {
-        return Colors.white;
-      } else if (fBallValuation.isDisLikeState()) {
-        return Color(0xffB1B1B1);
-      } else {
-        return Color(0xff454F63);
-      }
+      return getValuationLikeStateColor();
     } else {
-      if (!fBallValuation.hasValuation()) {
-        return Color(0xff454F63);
-      } else if (fBallValuation.isLikeState()) {
-        return Color(0xffB1B1B1);
-      } else if (fBallValuation.isDisLikeState()) {
-        return Colors.white;
-      } else {
-        return Color(0xff454F63);
-      }
+      return getValuationDisLikeColor();
+    }
+  }
+
+  Color getValuationDisLikeColor() {
+    if (!fBallValuation.hasValuation()) {
+      return Color(0xff454F63);
+    } else if (fBallValuation.isLikeState()) {
+      return Color(0xffB1B1B1);
+    } else if (fBallValuation.isDisLikeState()) {
+      return Colors.white;
+    } else {
+      return Color(0xff454F63);
+    }
+  }
+
+  Color getValuationLikeStateColor() {
+    if (!fBallValuation.hasValuation()) {
+      return Color(0xff454F63);
+    } else if (fBallValuation.isLikeState()) {
+      return Colors.white;
+    } else if (fBallValuation.isDisLikeState()) {
+      return Color(0xffB1B1B1);
+    } else {
+      return Color(0xff454F63);
     }
   }
 
   getValuationBorderColor(FBallValuationState state) {
     if (state == FBallValuationState.Like) {
-      if (!fBallValuation.hasValuation()) {
-        return Color(0xff454F63);
-      } else if (fBallValuation.isLikeState()) {
-        return Color(0xff4F72FF);
-      } else if (fBallValuation.isDisLikeState()) {
-        return Color(0xffC1C2C2);
-      } else {
-        return Color(0xff454F63);
-      }
+      return getLikeValuationBorderColor();
     } else {
-      if (!fBallValuation.hasValuation()) {
-        return Color(0xff454F63);
-      } else if (fBallValuation.isLikeState()) {
-        return Color(0xffC1C2C2);
-      } else if (fBallValuation.isDisLikeState()) {
-        return Color(0xff4F72FF);
-      } else {
-        return Color(0xff454F63);
-      }
+      return getDisLikeValuationBorderColor();
+    }
+  }
+
+  Color getDisLikeValuationBorderColor() {
+    if (!fBallValuation.hasValuation()) {
+      return Color(0xff454F63);
+    } else if (fBallValuation.isLikeState()) {
+      return Color(0xffC1C2C2);
+    } else if (fBallValuation.isDisLikeState()) {
+      return Color(0xff4F72FF);
+    } else {
+      return Color(0xff454F63);
+    }
+  }
+
+  Color getLikeValuationBorderColor() {
+    if (!fBallValuation.hasValuation()) {
+      return Color(0xff454F63);
+    } else if (fBallValuation.isLikeState()) {
+      return Color(0xff4F72FF);
+    } else if (fBallValuation.isDisLikeState()) {
+      return Color(0xffC1C2C2);
+    } else {
+      return Color(0xff454F63);
     }
   }
 
   getValuationBoxColor(FBallValuationState state) {
     if (state == FBallValuationState.Like) {
-      if (!fBallValuation.hasValuation()) {
-        return Colors.white;
-      } else if (fBallValuation.isLikeState()) {
-        return Color(0xff4F72FF);
-      } else if (fBallValuation.isDisLikeState()) {
-        return Colors.white;
-      } else {
-        return Colors.white;
-      }
+      return getLikeValuationBoxColor();
     } else {
-      if (!fBallValuation.hasValuation()) {
-        return Colors.white;
-      } else if (fBallValuation.isLikeState()) {
-        return Colors.white;
-      } else if (fBallValuation.isDisLikeState()) {
-        return Color(0xff4F72FF);
-      } else {
-        return Colors.white;
-      }
+      return getDisLikeValuationBoxColor();
+    }
+  }
+
+  Color getDisLikeValuationBoxColor() {
+    if (!fBallValuation.hasValuation()) {
+      return Colors.white;
+    } else if (fBallValuation.isLikeState()) {
+      return Colors.white;
+    } else if (fBallValuation.isDisLikeState()) {
+      return Color(0xff4F72FF);
+    } else {
+      return Colors.white;
+    }
+  }
+
+  Color getLikeValuationBoxColor() {
+    if (!fBallValuation.hasValuation()) {
+      return Colors.white;
+    } else if (fBallValuation.isLikeState()) {
+      return Color(0xff4F72FF);
+    } else if (fBallValuation.isDisLikeState()) {
+      return Colors.white;
+    } else {
+      return Colors.white;
     }
   }
 
   void showBallSetting() async {
     BallModifyService ballModifyService = IssueBallModifyService();
     if (await ballModifyService.isCanModify(ballMakeUid: issueBall.uid)) {
-      var result = await ballModifyService.showModifySelectDialog(context: context);
-      if (result == CommonBallModifyWidgetResultType.Delete) {
-        _issueBallUseCaseInputPort.deleteBall(ballUuid: issueBall.ballUuid, outputPort: this);
-
-      } else if (result == CommonBallModifyWidgetResultType.Update) {
-        await Navigator.of(context).push(MaterialPageRoute(
-          builder: (_){
-            return IM001MainPage(LatLng(issueBall.latitude,issueBall.longitude), issueBall.placeAddress,
-                issueBall.ballUuid,IM001MainPageEnterMode.Update);
-          }
-        ));
-        reFreshBall();
-      }
+      await showModifyDialog(ballModifyService);
     }
+  }
+
+  Future showModifyDialog(BallModifyService ballModifyService) async {
+    var result = await ballModifyService.showModifySelectDialog(context: context);
+    if (result == CommonBallModifyWidgetResultType.Delete) {
+      _issueBallUseCaseInputPort.deleteBall(ballUuid: issueBall.ballUuid, outputPort: this);
+    } else if (result == CommonBallModifyWidgetResultType.Update) {
+      await gotoIM001Page();
+      reFreshBall();
+    }
+  }
+
+  Future gotoIM001Page() async {
+    return await Navigator.of(context).push(MaterialPageRoute(
+      builder: (_){
+        return IM001MainPage(LatLng(issueBall.latitude,issueBall.longitude), issueBall.placeAddress,
+            issueBall.ballUuid,IM001MainPageEnterMode.Update);
+      }
+    ));
   }
 
   Future<void> reFreshBall() async {
@@ -433,7 +489,6 @@ class ID001MainPageViewModel extends ChangeNotifier
     await _issueBallUseCaseInputPort.selectBall(ballUuid: issueBall.ballUuid, outputPort: this);
     isLoading = false;
   }
-
 
   @override
   void onBallHit() {
@@ -463,6 +518,25 @@ class ID001MainPageViewModel extends ChangeNotifier
     throw("here don't have action");
   }
 
+  showLoading(){
+    isLoading = true;
+    notifyListeners();
+  }
+
+  hideLoading(){
+    isLoading = false;
+    notifyListeners();
+  }
+
+  mainScrollListener() {
+      notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _youtubeExplode.close();
+  }
 }
 
 enum FBallValuationState { Like, DisLike }

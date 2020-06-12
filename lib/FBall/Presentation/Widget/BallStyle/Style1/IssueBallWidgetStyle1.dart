@@ -36,7 +36,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                   child: FlatButton(
                     padding: EdgeInsets.all(0),
                     onPressed: (){
-                      model.controller.goIssueDetailPage(issueBall: model.issueBall,outputPort: model);
+                      model.goIssueDetailPage(issueBall: model.issueBall,outputPort: model);
                     },
                     child: Column(children: <Widget>[
                       ballHeader(model,context),

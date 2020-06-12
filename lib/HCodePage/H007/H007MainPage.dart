@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimation.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -69,11 +68,6 @@ class _H007MainPageState extends State<H007MainPage>
                 zoomControlsEnabled: false,
               ),
               Positioned(
-                top: 0,
-                left: 0,
-                child: topGradiantEffect(),
-              ),
-              Positioned(
                 top: MediaQuery.of(context).padding.top + 16,
                 width: MediaQuery.of(context).size.width,
                 child: topAddressBar(model),
@@ -83,24 +77,22 @@ class _H007MainPageState extends State<H007MainPage>
                 right: 16,
                 child: myLocationBtn(model),
               ),
-              Center(
-                child: Icon(
-                  ForutonaIcon.anchor,
-                  color: Color(0xff454F63),
-                  size: 22,
-                ),
-              ),
               Positioned(
                 bottom: 24,
                 width: MediaQuery.of(context).size.width,
                 child: bottomSearchBtn(model),
               ),
-                  Center(
-                    child: IgnorePointer(
-                      child: MapCircleAnimation(200),
-                    )
-
-                  )
+              Center(
+                  child: IgnorePointer(
+                child: MapCircleAnimation(200),
+              )),
+              Center(
+                  child: IgnorePointer(
+                      child: Icon(
+                ForutonaIcon.anchor,
+                color: Color(0xff454F63),
+                size: 22,
+              )))
             ]))
           ]);
         }));
@@ -147,7 +139,11 @@ class _H007MainPageState extends State<H007MainPage>
           onPressed: () {
             model.onMyLocation();
           },
-          child: Icon(Icons.my_location),
+          child: Icon(
+            ForutonaIcon.gps,
+            color: Color(0xff454F63),
+            size: 22,
+          ),
         ),
         decoration: BoxDecoration(
           color: Color(0xffffffff).withOpacity(0.80),
@@ -214,19 +210,6 @@ class _H007MainPageState extends State<H007MainPage>
                 ),
               ],
               borderRadius: BorderRadius.circular(12.00),
-            )));
-  }
-
-  IgnorePointer topGradiantEffect() {
-    return IgnorePointer(
-        child: Container(
-            height: 165,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0.3, 1],
-                  colors: [Colors.white, Colors.white.withOpacity(0)]),
             )));
   }
 }

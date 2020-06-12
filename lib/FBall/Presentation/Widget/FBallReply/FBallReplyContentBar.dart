@@ -8,7 +8,10 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailRe
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailSubReplyInputView.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyUtil.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,6 +21,8 @@ class FBallReplyContentBar extends StatefulWidget {
   final bool _showBottomDivider;
   final double _maxWidth;
   final bool _showEditButton;
+
+
 
   FBallReplyContentBar(this.fBallReplyResDto, this._showSubReply,
       this._showBottomDivider, this._showEditButton, this._maxWidth);
@@ -31,6 +36,8 @@ class FBallReplyContentBar extends StatefulWidget {
 class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
   List<Widget> subFBallReplyContentBar = [];
   bool subReplyOpenFlag = false;
+
+  AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
 
   _FBallReplyContentBarState();
 
@@ -59,6 +66,10 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
         FlatButton(
           onPressed: widget._showSubReply && !widget.fBallReplyResDto.deleteFlag
               ? () async {
+                  if(!await _authUserCaseInputPort.checkLogin()){
+                    gotoJ001Page(context);
+                    return ;
+                  }
                   FBallReplyResDto resDto = await showGeneralDialog(
                       context: context,
                       barrierDismissible: true,
@@ -73,8 +84,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                       });
                   setState(() {
                     if(resDto != null){
-                      subFBallReplyContentBar.insert(
-                          0,
+                      subFBallReplyContentBar.add(
                           Container(
                             key: UniqueKey(),
                             margin: EdgeInsets.only(left: 50),
@@ -96,6 +106,14 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
             : Container()
       ],
     );
+  }
+
+  Future gotoJ001Page(BuildContext context) {
+    return Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_){
+                      return J001View();
+                    }
+                  ));
   }
 
   isOpenSubReply() {
@@ -151,15 +169,15 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                                     Text(getUserNickName(),
                                         style: GoogleFonts.notoSans(
                                           fontWeight: FontWeight.w700,
-
                                           fontSize: 11,
                                           color: Color(0xff454f63),
                                         )))
                           ]),
+                          SizedBox(height: 2),
                           Row(children: <Widget>[
                             Container(
                               width: widget._maxWidth-92,
-                                child: Text(getBallText(),
+                                child: Text(getBallReplyText(),
                                     style: GoogleFonts.notoSans(
                                       fontSize: 10,
                                       color: Color(0xff454f63),
@@ -176,7 +194,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                             ],
                           )
                         ]))),
-            !widget.fBallReplyResDto.deleteFlag
+            !widget.fBallReplyResDto.deleteFlag && widget._showEditButton
                 ? Container(
                     width: 16,
                     height: 16,
@@ -259,7 +277,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
     }
   }
 
-  String getBallText() {
+  String getBallReplyText() {
     if (widget.fBallReplyResDto.deleteFlag) {
       return "삭제됨";
     } else {

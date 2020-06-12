@@ -43,7 +43,7 @@ class CodeMainViewModel with ChangeNotifier {
         pageController.jumpToPage(1);
         break;
       case HCodeState.JCODE:
-//        pageController.jumpToPage(2);
+        pageController.jumpToPage(2);
         break;
       case HCodeState.KCODE:
 //        pageController.jumpToPage(3);

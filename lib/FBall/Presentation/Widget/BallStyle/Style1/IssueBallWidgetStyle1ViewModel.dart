@@ -6,10 +6,13 @@ import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyleMixin.dart';
 
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/IssueBallWidgetStyle1Controller.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier implements GeoLocationUtilUseCaseOutputPort, IssueBallUseCaseOutputPort  {
+class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier
+    with IssueBallBasicStyleMixin
+    implements GeoLocationUtilUseCaseOutputPort, IssueBallUseCaseOutputPort  {
   bool _isLoading = false;
 
   IssueBall issueBall;
@@ -25,12 +28,13 @@ class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier implements GeoLocat
     notifyListeners();
   }
 
-  IssueBallWidgetStyle1Controller controller;
 
   IssueBallWidgetStyle1ViewModel(
-      {@required BuildContext context, @required IssueBall issueBall}) {
-    this.issueBall = issueBall;
-    this.controller = new IssueBallWidgetStyle1Controller(context: context,viewModel: this);
+      {@required BuildContext context, @required  this.issueBall}) {
+    this.context = context;
+    geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
+        ballLatLng: LatLng(issueBall.latitude,issueBall.longitude),
+        geoLocationUtilUseCaseOp: this);
   }
 
   @override

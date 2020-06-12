@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/BCodePage/JCodeMainPage.dart';
 import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
@@ -18,12 +19,14 @@ class _CodeMainpageState extends State<CodeMainpage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
+        statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.dark));
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<CodeMainViewModel>(
             create: (_) => CodeMainViewModel(context)),
-        ChangeNotifierProvider<H001ViewModel>(create: (_) => H001ViewModel(context))
+        ChangeNotifierProvider<H001ViewModel>(
+            create: (_) => H001ViewModel(context: context))
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {
         return Scaffold(
@@ -36,9 +39,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
                     children: <Widget>[
                   HCodeMainPage(),
                   ICodeMainPage(),
-                  Container(
-                    child: Text("3"),
-                  ),
+                  JCodeMainPage(),
                   Container(
                     child: Text("4"),
                   ),

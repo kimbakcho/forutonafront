@@ -43,7 +43,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
                   ],
                 ),
                 onPressed:(){
-                  model.controller.goIssueDetailPage(issueBall: model.issueBall,outputPort: model);
+                  model.goIssueDetailPage(issueBall: model.issueBall,outputPort: model);
                 },
               ),
               decoration: BoxDecoration(

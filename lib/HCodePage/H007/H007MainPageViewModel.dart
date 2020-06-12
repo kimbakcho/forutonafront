@@ -29,7 +29,6 @@ class H007MainPageViewModel extends ChangeNotifier {
     currentCameraPosition = initCameraPosition;
   }
 
-  ///Return 으로는 MapSearchGeoDto 받는다.
   onPlaceSearchTap() async {
     MapSearchGeoDto mapSearchGeoDto = await Navigator.of(_context).push(MaterialPageRoute(
         settings: RouteSettings(name: "MapGeoSearchPage"),
@@ -63,7 +62,6 @@ class H007MainPageViewModel extends ChangeNotifier {
 
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
-
     await GeoLocationUtilUseCase().useGpsReq(_context);
     var currentLocation = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(

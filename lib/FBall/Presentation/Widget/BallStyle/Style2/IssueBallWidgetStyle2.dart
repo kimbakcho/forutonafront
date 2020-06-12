@@ -29,7 +29,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
                 children: <Widget>[
                   FlatButton(
                       padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      onPressed: model.controller.goIssueDetailPage,
+                      onPressed: model.goIssueDetailPage,
                       child: Stack(children: <Widget>[
                         Positioned(
                           top: 16,
@@ -82,7 +82,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
             width: 30,
             child: FlatButton(
               padding: EdgeInsets.all(0),
-              onPressed: model.controller.showBallSetting,
+              onPressed: model.showBallSetting,
               shape: CircleBorder(),
               child: Icon(
                 ForutonaIcon.pointdash,

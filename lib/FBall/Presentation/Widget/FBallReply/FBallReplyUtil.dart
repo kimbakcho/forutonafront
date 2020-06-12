@@ -40,8 +40,8 @@ class FBallReplyUtil {
         return x1.replyUploadDateTime
             .difference(x2.replyUploadDateTime)
             .isNegative
-            ? 1
-            : -1;
+            ? -1
+            : 1;
       });
       item.subReply = subReplyList;
       fBallSubReplyResDto.add(item);

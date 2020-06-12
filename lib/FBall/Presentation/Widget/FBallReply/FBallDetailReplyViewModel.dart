@@ -80,11 +80,12 @@ class FBallDetailReplyViewModel extends ChangeNotifier {
         await FBallReplyUtil().popupInputDisplay(_context,ballUuid);
     if (replyResDto != null) {
       FBallSubReplyResDto subReplyResDto = FBallSubReplyResDto.fromFBallReplyResDto(replyResDto);
-
       _fBallReplyWidgetViewController.replyContentBars.insert(
           0,
           FBallReplyContentBar(subReplyResDto, true, false, true,
               MediaQuery.of(_context).size.width));
+      _fBallReplyWidgetViewController.fBallReplyResWrapDto.replyTotalCount++;
+
     }
   }
 }

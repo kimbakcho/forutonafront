@@ -165,7 +165,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
       width: 52.00,
       child: FlatButton(
         onPressed: model.onMyLocation,
-        child: Icon(Icons.my_location, color: Color(0xff454F63), size: 18),
+        child: Icon(ForutonaIcon.gps, color: Color(0xff454F63), size: 22),
       ),
       decoration: BoxDecoration(
         color: Color(0xffffffff).withOpacity(0.8),
