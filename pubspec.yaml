@@ -33,7 +33,7 @@ dependencies:
   firebase_auth: ^0.15.5+3
   #FaceBook인증을 위해서 사용
   flutter_facebook_login: ^3.0.0
-  #추후 지역황 ㅔ사용
+  #추후 다국적 언어 지원에 사용
   flutter_localizations: # add this
     sdk: flutter
   #JSON 직렬화에 사용
@@ -50,7 +50,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   #허가 관리
   permission_handler: ^3.3.0
-  #생년월일을 선택할때 사용
+  #전화 번호 입력을 할때 사용 GUI Lib
   international_phone_input: ^1.0.2
   uuid: ^2.0.1
   #인증 문자 메세지에서 사용
@@ -97,14 +97,17 @@ dependencies:
   youtube_parser: ^1.1.0
   #이미지 압축을 위해서 사용
   flutter_image_compress: ^0.6.8
-  #이미지 MetaData를 추출 위해서 사용
+  #이미지 MetaData 를 추출 위해서 사용
   image: ^2.1.12
   #이미지 캐쉬 및 로딩에 사용
   cached_network_image: ^2.2.0+1
-  #Mutex
+  #Mutex GPS 요청 사항이 Mutex 하지 않을때 Native 에서 에러나서 사용함
   mutex: ^1.0.3
   #test할때 사용
   mockito: ^4.1.1
+  #Native Background Plugin 목적으로 사용
+  background_fetch: '^0.5.1'
+
 
 
 dev_dependencies:

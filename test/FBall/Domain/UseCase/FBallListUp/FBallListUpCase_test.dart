@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
@@ -12,6 +13,7 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mockito/mockito.dart';
 import 'package:matcher/matcher.dart';
@@ -81,7 +83,8 @@ void main(){
             page: 1,
         );
         //act
-
+        ballListUpUseCase.reqBallListUpFromInfluencePower(
+            searchReqDto: Position(latitude: Preference.initPosition.latitude,longitude: Preference.initPosition.latitude));
         //assert
         verify(mockFBallListUpCaseOp.onListUpBallFromBallInfluencePower(fBallResDtos: anyNamed('fBallResDtos')));
       });

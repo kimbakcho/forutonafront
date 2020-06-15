@@ -15,6 +15,7 @@ class IssueBallWidgetStyle3ViewModel extends ChangeNotifier
   IssueBall issueBall;
 
   IssueBallWidgetStyle3ViewModel({@required BuildContext context,@required FBallResDto fBallResDto}){
+    this.context = context;
     issueBall = IssueBall.fromFBallResDto(fBallResDto);
   }
 

@@ -25,7 +25,7 @@ mixin  IssueBallBasicStyleMixin  {
   void goIssueDetailPage({@required IssueBall issueBall,@required IssueBallUseCaseOutputPort outputPort}) async {
     reqBallHit(issueBall: issueBall,outputPort: outputPort);
     if (await _authUserCaseInputPort.checkLogin()){
-      reqJoinBall(issueBall: issueBall);
+        reqJoinBall(issueBall: issueBall);
     }
     await Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => ID001MainPage(issueBall: issueBall)));
