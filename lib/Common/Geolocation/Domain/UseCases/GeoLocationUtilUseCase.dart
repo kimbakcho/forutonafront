@@ -20,12 +20,14 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
 
   static final GeoLocationUtilUseCase _instance = GeoLocationUtilUseCase._internal();
 
-  Position _currentWithLastPosition;
-  String _currentWithLastAddress;
-
   factory GeoLocationUtilUseCase() {
     return _instance;
   }
+
+  Position _currentWithLastPosition;
+  String _currentWithLastAddress;
+
+
 
   GeoLocationUtilUseCase._internal();
 
