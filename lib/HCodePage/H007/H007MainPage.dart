@@ -4,6 +4,7 @@ import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimation.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -190,8 +191,7 @@ class _H007MainPageState extends State<H007MainPage>
                       alignment: Alignment.centerLeft,
                       child: Text(model.address,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
                             fontSize: 14,
                             color: Color(0xff454f63),
                           )),

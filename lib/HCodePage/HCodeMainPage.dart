@@ -21,8 +21,7 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
+
     return ChangeNotifierProvider(
         create: (_) => HCodeMainPageViewModel(),
         child: Consumer<HCodeMainPageViewModel>(builder: (_, model, child) {

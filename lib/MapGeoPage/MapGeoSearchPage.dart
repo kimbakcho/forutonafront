@@ -150,25 +150,22 @@ class MapGeoSearchPage extends StatelessWidget {
                 )),
           ),
           Positioned(
-              right: 32,
-              top: 25,
+              right: 28,
+              top: 17,
               child: model.isClearButtonShow()
                   ? Container(
-                      height: 14.00,
-                      width: 14.00,
-                      child: FlatButton(
-                        onPressed: model.isClearButtonActive()
-                            ? () {
-                                model.clearSearchText();
-                              }
-                            : null,
-                        padding: EdgeInsets.all(0),
-                        child: Icon(Icons.close,
-                            size: 9,
-                            color: model.isClearButtonActive()
-                                ? Color(0xff454F63)
-                                : Color(0xffCCCCCC)),
-                      ),
+                height: 30,
+                width: 30,
+                child: FlatButton(
+                  onPressed: model.isClearButtonActive()
+                      ? () {
+                    model.clearSearchText();
+                  }
+                      : null,
+                  padding: EdgeInsets.all(0),
+                  child: Container(
+                    width: 12,
+                    height: 12,
                       decoration: BoxDecoration(
                         color: Color(0xffffffff),
                         border: Border.all(
@@ -178,8 +175,14 @@ class MapGeoSearchPage extends StatelessWidget {
                               : Color(0xffcccccc),
                         ),
                         shape: BoxShape.circle,
-                      ))
-                  : Container())
+                      ),
+                    child:Icon(Icons.close,
+                        size: 9,
+                        color: model.isClearButtonActive()
+                            ? Color(0xff454F63)
+                            : Color(0xffCCCCCC))
+                  ),
+                )): Container())
         ]));
   }
 }

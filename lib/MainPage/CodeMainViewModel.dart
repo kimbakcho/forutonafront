@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
-
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 enum HCodeState { HCDOE, ICODE, BCODE, KCODE, GCODE  }
 
 class CodeMainViewModel with ChangeNotifier {
@@ -22,6 +20,8 @@ class CodeMainViewModel with ChangeNotifier {
   }
 
   init()async {
+    await FlutterStatusbarcolor.setStatusBarColor(Colors.white, animate: true);
+    await FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
     await GeoLocationUtilUseCase().useGpsReq(_context);
     this.lastKnownPosition = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
     var placeMarkList = await Geolocator()

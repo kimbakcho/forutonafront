@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViewerViewModel.dart';
 import 'package:photo_view/photo_view.dart';
@@ -17,7 +18,6 @@ class BallImageViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     timeDilation = 1.8;
     return ChangeNotifierProvider(
         create: (_) => BallImageViewerViewModel(initIndex: this.initIndex),

@@ -106,7 +106,9 @@ dependencies:
   #test할때 사용
   mockito: ^4.1.1
   #Native Background Plugin 목적으로 사용
-  background_fetch: '^0.5.1'
+  background_fetch: '^0.5.6'
+  #statusBarColor 변경을 목적으로 사용
+  flutter_statusbarcolor: ^0.2.3
 
 
 

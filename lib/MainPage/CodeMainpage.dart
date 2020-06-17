@@ -18,9 +18,6 @@ class CodeMainpage extends StatefulWidget {
 class _CodeMainpageState extends State<CodeMainpage> {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark));
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<CodeMainViewModel>(
@@ -29,24 +26,25 @@ class _CodeMainpageState extends State<CodeMainpage> {
             create: (_) => H001ViewModel(context: context))
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {
-        return Scaffold(
-          backgroundColor: Color(0xffF2F0F1),
-          body: Stack(children: <Widget>[
-            Container(
-                child: PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: model.pageController,
-                    children: <Widget>[
-                  HCodeMainPage(),
-                  ICodeMainPage(),
-                  BCodeMainPage(),
-                  Container(
-                    child: Text("4"),
-                  ),
-                  GCodeMainPage()
-                ]))
-          ]),
-        );
+        return
+          Scaffold(
+              backgroundColor: Color(0xffF2F0F1),
+              body: Stack(children: <Widget>[
+                Container(
+                    child: PageView(
+                        physics: NeverScrollableScrollPhysics(),
+                        controller: model.pageController,
+                        children: <Widget>[
+                          HCodeMainPage(),
+                          ICodeMainPage(),
+                          BCodeMainPage(),
+                          Container(
+                            child: Text("4"),
+                          ),
+                          GCodeMainPage()
+                        ]))
+              ]),
+            );
       }),
     );
   }

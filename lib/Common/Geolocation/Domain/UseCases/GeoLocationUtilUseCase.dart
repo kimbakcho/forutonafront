@@ -140,23 +140,26 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
     if (placemark.administrativeArea != null &&
         placemark.administrativeArea.length != 0) {
       resultAddress += placemark.administrativeArea;
-      if (placemark.subLocality != null && placemark.subLocality.length != 0) {
-        resultAddress += (" " + placemark.subLocality);
-      } else {
-        resultAddress += (" " + placemark.locality);
-      }
-
-      if (placemark.thoroughfare != null &&
-          placemark.thoroughfare.length != 0) {
-        resultAddress += (" " + placemark.thoroughfare);
-        if (placemark.subThoroughfare != null &&
-            placemark.subThoroughfare.length != 0) {
-          resultAddress += (" " + placemark.subThoroughfare);
-        }
-      }
     } else {
       resultAddress = "";
     }
+
+    if (placemark.subLocality != null && placemark.subLocality.length != 0) {
+      resultAddress += (" " + placemark.subLocality);
+    } else {
+      resultAddress += (" " + placemark.locality);
+    }
+
+    if (placemark.thoroughfare != null &&
+        placemark.thoroughfare.length != 0) {
+      resultAddress += (" " + placemark.thoroughfare);
+    }
+
+    if (placemark.subThoroughfare != null &&
+        placemark.subThoroughfare.length != 0) {
+      resultAddress += (" " + placemark.subThoroughfare);
+    }
+
     return resultAddress;
   }
 }

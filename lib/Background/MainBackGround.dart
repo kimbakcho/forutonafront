@@ -31,7 +31,8 @@ class MainBackGroundImpl implements MainBackGround{
       backGroundService = _userPositionSendService;
     }
     try{
-      backGroundService.loop();
+      if(hasService(backGroundService))
+        backGroundService.loop();
     }catch (e){
       throw e;
     }finally{
@@ -55,6 +56,10 @@ class MainBackGroundImpl implements MainBackGround{
   void startUserPositionSendService() {
     _createInstanceUserPositionSendService();
     _userPositionSendService.startServiceSchedule();
+  }
+
+  bool hasService(BaseBackGroundService backGroundService) {
+    return backGroundService != null;
   }
 
 

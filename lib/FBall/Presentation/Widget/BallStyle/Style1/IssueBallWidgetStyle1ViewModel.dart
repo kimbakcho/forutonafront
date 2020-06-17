@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 
@@ -7,6 +8,7 @@ import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOut
 
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyleMixin.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -28,10 +30,11 @@ class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier
     notifyListeners();
   }
 
+  BuildContext context;
+
 
   IssueBallWidgetStyle1ViewModel(
-      {@required BuildContext context, @required  this.issueBall}) {
-    this.context = context;
+      {@required this.context, @required  this.issueBall}) {
     geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
         ballLatLng: LatLng(issueBall.latitude,issueBall.longitude),
         geoLocationUtilUseCaseOp: this);
@@ -77,6 +80,16 @@ class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier
     } else {
       return distanceDisplayText;
     }
+  }
+
+  gotoBallImageViewer()async{
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) {
+      return BallImageViewer(
+          issueBall.getDesImages(),
+          issueBall.ballUuid +
+              "picturefromBigpicture");
+    }));
   }
 
 }

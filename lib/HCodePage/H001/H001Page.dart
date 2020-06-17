@@ -12,8 +12,6 @@ class H001Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return Stack(children: <Widget>[
         Scaffold(
             body: Container(

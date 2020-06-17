@@ -42,7 +42,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                       ballHeader(model,context),
                       divider(),
                       !model.issueBall.ballDeleteFlag
-                          ? ballMainPickture(model, context)
+                          ? ballMainPicture(model, context)
                           : Container(),
                       ballProfileBar(model),
                       ballTextBar(model, context),
@@ -189,20 +189,14 @@ class IssueBallWidgetStyle1 extends StatelessWidget
     );
   }
 
-  Widget ballMainPickture(
+  Widget ballMainPicture(
       IssueBallWidgetStyle1ViewModel model, BuildContext context) {
     return model.issueBall.isMainPicture()
         ? Stack(children: <Widget>[
             FlatButton(
                 padding: EdgeInsets.all(0),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return BallImageViewer(
-                        model.issueBall.getDesImages(),
-                        model.issueBall.ballUuid +
-                            "picturefromBigpicture");
-                  }));
+                onPressed: ()  {
+                  model.gotoBallImageViewer();
                 },
                 child: Hero(
                     tag: model.issueBall.ballUuid +

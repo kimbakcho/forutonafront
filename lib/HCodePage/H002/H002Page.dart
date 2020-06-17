@@ -14,10 +14,8 @@ class H002Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
+        statusBarColor: Colors.white.withOpacity(0.8), statusBarIconBrightness: Brightness.dark));
     //Hero Animation Speed
     timeDilation = 1.5;
     return ChangeNotifierProvider(

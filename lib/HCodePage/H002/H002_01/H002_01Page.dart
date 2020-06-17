@@ -4,6 +4,7 @@ import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H002/H002_01/H002_01PageViewModel.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -75,12 +76,12 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
                     child: UpDownPinBottm(),
                   ),
                   Positioned(
-                      top: 28,
+                      top: MediaQuery.of(context).padding.top+16,
                       left: 0,
                       width: MediaQuery.of(context).size.width,
                       child: topAddressBar(model, context)),
                   Positioned(
-                    top: 96,
+                    top: MediaQuery.of(context).padding.top+80,
                     right: 16,
                     child: myLocationBtn(model),
                   ),
@@ -168,10 +169,10 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
           onPressed: () {
             model.onMyLocation();
           },
-          child: Icon(Icons.my_location),
+          child: Icon(ForutonaIcon.gps),
         ),
         decoration: BoxDecoration(
-          color: Color(0xffffffff),
+          color: Color(0xffffffff).withOpacity(0.8),
           boxShadow: [
             BoxShadow(
               offset: Offset(0.00, 12.00),
@@ -186,7 +187,7 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
   Container topAddressBar(H002_01PageViewModel model, BuildContext context) {
     return Container(
         child: Container(
-            margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            margin: EdgeInsets.fromLTRB(16,0 , 16, 0),
             height: 52.00,
             child: Row(
               children: <Widget>[
@@ -215,8 +216,8 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
                       alignment: Alignment.centerLeft,
                       child: Text(model.address,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
+                            fontWeight: FontWeight.bold,
                             fontSize: 14,
                             color: Color(0xff454f63),
                           )),
@@ -226,7 +227,7 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
               ],
             ),
             decoration: BoxDecoration(
-              color: Color(0xffffffff),
+              color: Color(0xffffffff).withOpacity(0.8),
               boxShadow: [
                 BoxShadow(
                   offset: Offset(0.00, 12.00),

@@ -12,10 +12,7 @@ import 'H003_02/H00302PageViewModel.dart';
 class H003MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
+
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<H003MainPageModel>(
