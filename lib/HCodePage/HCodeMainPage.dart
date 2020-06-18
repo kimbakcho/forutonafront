@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/H001Page.dart';
@@ -21,7 +22,8 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
     return ChangeNotifierProvider(
         create: (_) => HCodeMainPageViewModel(),
         child: Consumer<HCodeMainPageViewModel>(builder: (_, model, child) {

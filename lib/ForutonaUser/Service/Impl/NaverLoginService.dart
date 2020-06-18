@@ -23,7 +23,12 @@ class NaverLoginService extends SnsLoginService {
 
   @override
   Future<bool> tryLogin() async {
-    NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
+    NaverLoginResult naverLoginResult;
+    try{
+      naverLoginResult = await FlutterNaverLogin.logIn();
+    }catch(ex){
+      throw ex;
+    }
     switch(naverLoginResult.status) {
       case NaverLoginStatus.loggedIn:
         var currentAccessToken =  await FlutterNaverLogin.currentAccessToken;

@@ -212,6 +212,6 @@ class GCodeMainPage extends StatelessWidget {
         child: FlatButton(
             padding: EdgeInsets.all(0),
             onPressed: model.jumpToSettingPage,
-            child: Icon(ForutonaIcon.cog)));
+            child: Icon(ForutonaIcon.cog,color: Color(0xffB1B1B1),)));
   }
 }

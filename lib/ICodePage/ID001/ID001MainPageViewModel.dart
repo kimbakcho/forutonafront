@@ -18,10 +18,10 @@ import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallDescriptionImageViewer/BallDesciprtionImageViwer.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/BallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Impl/IssueBallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfoSimple1.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
@@ -31,6 +31,8 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimple1ResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
+import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
+import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
@@ -49,8 +51,7 @@ class ID001MainPageViewModel extends ChangeNotifier
         UserInfoSimple1UseCaseOutputPort,
         IssueBallValuationUseCaseOutputPort,
         IssueBallUseCaseOutputPort,
-        AuthUserCaseOutputPort{
-
+        AuthUserCaseOutputPort {
   final BuildContext context;
   IssueBall issueBall;
 
@@ -77,10 +78,12 @@ class ID001MainPageViewModel extends ChangeNotifier
   TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort =
       TagFromBallUuidUseCase();
   List<Chip> tagChips = [];
+  double tagChipHeight = 20.0;
 
   //UnAndDown 관련
   String userNickName = "로 딩 중";
-  IssueBallValuationUseCaseInputPort _issueBallValuationUseCaseInputPort = IssueBallValuationUseCase();
+  IssueBallValuationUseCaseInputPort _issueBallValuationUseCaseInputPort =
+      IssueBallValuationUseCase();
   FBallValuation fBallValuation = FBallValuation();
 
   //UserInfo 관련
@@ -90,7 +93,7 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   bool isInitFinish = false;
   bool isLoading = false;
-  bool showFBallValuation =false;
+  bool showFBallValuation = false;
 
 
 
@@ -109,7 +112,6 @@ class ID001MainPageViewModel extends ChangeNotifier
 
     reqBallMakerInfo();
 
-
     loadFBallValuation();
 
     isInitFinish = true;
@@ -121,13 +123,13 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   Future<FUserInfoSimple1ResDto> reqBallMakerInfo() {
     return _userInfoSimple1UseCaseInputPort.getBallMakerInfo(
-      makerUid: FUserReqDto(issueBall.uid), outputPort: this);
+        makerUid: FUserReqDto(issueBall.uid), outputPort: this);
   }
 
   Future<List<FBallTagResDto>> loadTagFromBall() {
     return _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-      reqDto: TagFromBallReqDto(ballUuid: issueBall.ballUuid),
-      outputPort: this);
+        reqDto: TagFromBallReqDto(ballUuid: issueBall.ballUuid),
+        outputPort: this);
   }
 
   void turnUserScreen() {
@@ -147,10 +149,10 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   @override
   onBallMakerInfo(FUserInfoSimple1ResDto fUserInfoSimple1ResDto) {
-    makerUserInfo = FUserInfoSimple1.fromFUserInfoSimple1ResDto(fUserInfoSimple1ResDto);
+    makerUserInfo =
+        FUserInfoSimple1.fromFUserInfoSimple1ResDto(fUserInfoSimple1ResDto);
     notifyListeners();
   }
-
 
   isBallNameScrollOver() {
     if (mainScrollController.hasClients && mainScrollController.offset > 305) {
@@ -162,7 +164,7 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   @override
   onLoginCheck(bool isLogin) {
-    if(isLogin){
+    if (isLogin) {
       userNickName = _authUserCaseInputPort.userNickName(context: context);
       showFBallValuation = true;
     }
@@ -170,20 +172,21 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   Future<void> loadFBallValuation() async {
-    if(await _authUserCaseInputPort.checkLogin()){
+    if (await _authUserCaseInputPort.checkLogin()) {
       FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
       valuationReqDto.ballUuid = issueBall.ballUuid;
       valuationReqDto.uid = await _authUserCaseInputPort.myUid();
-      _issueBallValuationUseCaseInputPort.getFBallValuation(reqDto: valuationReqDto,outputPort: this);
+      _issueBallValuationUseCaseInputPort.getFBallValuation(
+          reqDto: valuationReqDto, outputPort: this);
     }
   }
 
   @override
   onFBallValuation(FBallValuationResDto fBallValuationResDto) {
-    this.fBallValuation = FBallValuation.fromFBallValuationResDto(fBallValuationResDto);
+    this.fBallValuation =
+        FBallValuation.fromFBallValuationResDto(fBallValuationResDto);
     notifyListeners();
   }
-
 
   youtubeLoad(String videoId) async {
     var video = await _youtubeExplode.videos.get(videoId);
@@ -212,15 +215,30 @@ class ID001MainPageViewModel extends ChangeNotifier
   void addTagWidget(List<FBallTagResDto> ballTags) {
     for (var o in ballTags) {
       tagChips.add(Chip(
-        backgroundColor: Color(0xffE4E7E8),
-        label: Text("#${o.tagItem}",
-            style: GoogleFonts.notoSans(
-              fontWeight: FontWeight.w500,
-              fontSize: 13,
-              color: Color(0xff454f63),
-            )),
-      ));
+          backgroundColor: Color(0xffE4E7E8),
+          label: Container(
+            height: tagChipHeight,
+            child: InkWell(
+              onTap: (){
+                gotoH005TagInitPage(tagText: o.tagItem);
+              },
+              child: Text("#${o.tagItem}",
+                  style: GoogleFonts.notoSans(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13,
+                    color: Color(0xff454f63),
+                  )),
+            ),
+          )));
     }
+  }
+
+  void gotoH005TagInitPage({@required String tagText}) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_){
+        return  H005MainPage(searchText: tagText,initPageState: H005PageState.Tag);
+      }
+    ));
   }
 
   void backBtnTap() {
@@ -271,7 +289,6 @@ class ID001MainPageViewModel extends ChangeNotifier
     }
   }
 
-
   void plusBtnTap() async {
     if (issueBall.isDeadBall()) {
       return;
@@ -302,9 +319,10 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   void deleteValuation(int deletePoint) {
-    _issueBallValuationUseCaseInputPort.deleteFBallValuation(valueUuid: fBallValuation.valueUuid
-        ,deletePoint: deletePoint
-        ,outputPort: this);
+    _issueBallValuationUseCaseInputPort.deleteFBallValuation(
+        valueUuid: fBallValuation.valueUuid,
+        deletePoint: deletePoint,
+        outputPort: this);
   }
 
   @override
@@ -325,30 +343,29 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   @override
   onSave(FBallValuationResDto fBallValuationResDto) {
-    if(isUserSaveValuationLike(fBallValuationResDto)){
+    if (isUserSaveValuationLike(fBallValuationResDto)) {
       issueBall.plusBallLike(fBallValuationResDto.upAndDown);
       makerUserInfo.plusCumulativeInfluence(fBallValuationResDto.upAndDown);
-    }else {
+    } else {
       issueBall.plusBallDisLike(fBallValuationResDto.upAndDown);
       makerUserInfo.minusCumulativeInfluence(fBallValuationResDto.upAndDown);
     }
-    this.fBallValuation = FBallValuation.fromFBallValuationResDto(fBallValuationResDto);
+    this.fBallValuation =
+        FBallValuation.fromFBallValuationResDto(fBallValuationResDto);
     notifyListeners();
   }
 
-  bool isUserSaveValuationLike(FBallValuationResDto fBallValuationResDto) => fBallValuationResDto.upAndDown > 0;
-
+  bool isUserSaveValuationLike(FBallValuationResDto fBallValuationResDto) =>
+      fBallValuationResDto.upAndDown > 0;
 
   void valuationSave(int point) async {
     FBallValuationInsertReqDto reqDto = FBallValuationInsertReqDto(
-      ballUuid: issueBall.ballUuid,
-      uid: await _authUserCaseInputPort.myUid(),
-      upAndDown: point,
-      valueUuid: Uuid().v4()
-    );
-    _issueBallValuationUseCaseInputPort.save(reqDto: reqDto,outputPort: this);
+        ballUuid: issueBall.ballUuid,
+        uid: await _authUserCaseInputPort.myUid(),
+        upAndDown: point,
+        valueUuid: Uuid().v4());
+    _issueBallValuationUseCaseInputPort.save(reqDto: reqDto, outputPort: this);
   }
-
 
   getFBallValuationText() {
     if (issueBall.isDeadBall()) {
@@ -466,9 +483,11 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   Future showModifyDialog(BallModifyService ballModifyService) async {
-    var result = await ballModifyService.showModifySelectDialog(context: context);
+    var result =
+        await ballModifyService.showModifySelectDialog(context: context);
     if (result == CommonBallModifyWidgetResultType.Delete) {
-      _issueBallUseCaseInputPort.deleteBall(ballUuid: issueBall.ballUuid, outputPort: this);
+      _issueBallUseCaseInputPort.deleteBall(
+          ballUuid: issueBall.ballUuid, outputPort: this);
     } else if (result == CommonBallModifyWidgetResultType.Update) {
       await gotoIM001Page();
       reFreshBall();
@@ -476,17 +495,19 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   Future gotoIM001Page() async {
-    return await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_){
-        return IM001MainPage(LatLng(issueBall.latitude,issueBall.longitude), issueBall.placeAddress,
-            issueBall.ballUuid,IM001MainPageEnterMode.Update);
-      }
-    ));
+    return await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return IM001MainPage(
+          LatLng(issueBall.latitude, issueBall.longitude),
+          issueBall.placeAddress,
+          issueBall.ballUuid,
+          IM001MainPageEnterMode.Update);
+    }));
   }
 
   Future<void> reFreshBall() async {
     isLoading = true;
-    await _issueBallUseCaseInputPort.selectBall(ballUuid: issueBall.ballUuid, outputPort: this);
+    await _issueBallUseCaseInputPort.selectBall(
+        ballUuid: issueBall.ballUuid, outputPort: this);
     isLoading = false;
   }
 
@@ -515,21 +536,21 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   @override
   void onUpdateBall() {
-    throw("here don't have action");
+    throw ("here don't have action");
   }
 
-  showLoading(){
+  showLoading() {
     isLoading = true;
     notifyListeners();
   }
 
-  hideLoading(){
+  hideLoading() {
     isLoading = false;
     notifyListeners();
   }
 
   mainScrollListener() {
-      notifyListeners();
+    notifyListeners();
   }
 
   @override

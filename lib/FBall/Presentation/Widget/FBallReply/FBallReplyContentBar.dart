@@ -220,7 +220,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                         child: Icon(
                           ForutonaIcon.pointdash,
                           size:
-                              widget.fBallReplyResDto.replyDepth == 0 ? 15 : 8,
+                              widget.fBallReplyResDto.replyDepth == 0 ? 15 : 13,
                         )))
                 : Container()
           ],
@@ -301,17 +301,15 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                 child: RichText(
                   text: TextSpan(
                       text: subReplyOpenFlag ? "▲" : "▼",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 10,
                         color: Color(0xff3497fd),
                       ),
                       children: [
                         TextSpan(
-                            text: "답글 숨기기(${subFBallReplyContentBar.length})",
-                            style: TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
+                            text: "답글 보기(${subFBallReplyContentBar.length})",
+                            style: GoogleFonts.notoSans(
                               fontWeight: FontWeight.w700,
                               fontSize: 10,
                               color: Color(0xff3497fd),

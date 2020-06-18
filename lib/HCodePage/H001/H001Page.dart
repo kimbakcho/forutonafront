@@ -205,7 +205,7 @@ class H001Page extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
                       height: 40,
-                      padding: EdgeInsets.fromLTRB(18, 0, 18, 0),
+                      padding: EdgeInsets.fromLTRB(18, 0, 10, 0),
                       child: FlatButton(
                         onPressed: (){
                           context.read<H001ViewModel>().gotoTagSearch(context.read<H001ViewModel>().tagRankingDtos[index].tagName);
@@ -231,7 +231,8 @@ class H001Page extends StatelessWidget {
                           Spacer(),
                           SizedBox(width: 12),
                           Container(
-                            width: 12,
+                            width: 30,
+                            height: 30,
                             child: FlatButton(
                                 padding: EdgeInsets.all(0),
                                 onPressed: () {

@@ -48,9 +48,6 @@ class _ID001MainPageState extends State<ID001MainPage>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider<ID001MainPageViewModel>(
         lazy: false,
         create: (_) => ID001MainPageViewModel(
@@ -832,7 +829,7 @@ class _ID001MainPageState extends State<ID001MainPage>
               child: Icon(
                 ForutonaIcon.leftarrow,
                 color: Color(0xff454F63),
-                size: 13,
+                size: 15,
               )),
           alignment: Alignment.center,
         ),
@@ -863,7 +860,7 @@ class _ID001MainPageState extends State<ID001MainPage>
               child: Icon(
                 ForutonaIcon.share,
                 color: Color(0xff454F63),
-                size: 18,
+                size: 20,
               )),
           alignment: Alignment.center,
         ),
@@ -879,7 +876,7 @@ class _ID001MainPageState extends State<ID001MainPage>
               child: Icon(
                 ForutonaIcon.dots,
                 color: Color(0xff454F63),
-                size: 13,
+                size: 16,
               )),
           alignment: Alignment.center,
         )

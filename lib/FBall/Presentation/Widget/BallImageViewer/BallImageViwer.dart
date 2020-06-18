@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViewerViewModel.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViewerViewModel.dart';
+
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';

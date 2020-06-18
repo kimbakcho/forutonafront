@@ -60,7 +60,7 @@ class FBallDetailReplyView extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     height: 52,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F0F1),
+                      color: Color(0xffF5F5F5),
                     ),
                     child: Row(
                       children: <Widget>[

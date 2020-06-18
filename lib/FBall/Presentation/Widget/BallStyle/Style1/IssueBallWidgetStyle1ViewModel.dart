@@ -7,8 +7,9 @@ import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyleMixin.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
+
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

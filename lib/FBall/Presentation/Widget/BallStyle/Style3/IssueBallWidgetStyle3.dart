@@ -189,7 +189,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
 
   Container issueBallIcon() {
     return Container(
-        padding: EdgeInsets.only(left: 1, bottom: 1),
+        padding: EdgeInsets.only(left: 2,top: 2),
         child: Icon(ForutonaIcon.issue, size: 17, color: Colors.white),
         height: 30.00,
         width: 30.00,

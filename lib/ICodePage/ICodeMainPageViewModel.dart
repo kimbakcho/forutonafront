@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 
@@ -34,7 +35,6 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
 
   FBallListUpFromMapAreaUseCaseInputPort _fBallListUpFromMapAreaUseCaseInputPort = FBallListUpFromMapAreaUseCase();
 
-
   String currentAddress = "";
   final Set<Marker> markers = {};
   GlobalKey mapContainerGlobalKey = GlobalKey();
@@ -63,7 +63,8 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     setGoogleInitCameraPosition();
     bottomPageController.addListener(onPageContollerListner);
     currentAddress = _geoLocationUtilUseCase.getCurrentWithLastAddressInMemory();
-
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white.withOpacity(0.6));
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
   }
 
   CameraPosition setGoogleInitCameraPosition() {
@@ -339,4 +340,12 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
   bool hasListUpBall() => this.listUpBalls.length > 0;
 
   bool isFirstPage() => _pageCount == 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+  }
+
 }

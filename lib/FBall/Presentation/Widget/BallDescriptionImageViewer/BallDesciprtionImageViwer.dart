@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallDescriptionImageViewer/OneBallDescriptionImageMode.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
+
 
 import 'ForeBallDescriptionImageMode.dart';
 import 'ManyBallDescriptionImageMode.dart';

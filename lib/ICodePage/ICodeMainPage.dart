@@ -43,9 +43,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white.withOpacity(0.6),
-        statusBarIconBrightness: Brightness.dark));
+
     return ChangeNotifierProvider(
         create: (_) => ICodeMainPageViewModel(context),
         child: Consumer<ICodeMainPageViewModel>(builder: (_, model, child) {
@@ -143,6 +141,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
           },
           child: Icon(
             ForutonaIcon.repost,
+            color: Color(0xff454F63),
             size: model.reFreshBtnActive ? 10 : 0,
           ),
         ),
@@ -217,7 +216,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
         Positioned(
           right: 32,
           top: 16,
-          child: Icon(ForutonaIcon.search),
+          child: Icon(ForutonaIcon.search,color: Color(0xff454F63)),
         )
       ],
     );

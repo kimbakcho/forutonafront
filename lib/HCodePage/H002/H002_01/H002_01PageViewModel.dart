@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
@@ -34,6 +35,8 @@ class H002_01PageViewModel extends ChangeNotifier {
         target: LatLng(_initPosition.latitude, _initPosition.longitude),
         zoom: 14.4746);
     currentCameraPosition = initCameraPosition;
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white.withOpacity(0), animate: true);
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
   }
 
   void onCreateMap(GoogleMapController controller) async {
@@ -96,5 +99,12 @@ class H002_01PageViewModel extends ChangeNotifier {
     Navigator.of(_context).push(MaterialPageRoute(
       builder: (_)=>IM001MainPage(target,address,null,IM001MainPageEnterMode.Insert),
     ));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white, animate: true);
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
   }
 }

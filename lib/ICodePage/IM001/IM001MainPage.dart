@@ -218,16 +218,14 @@ class _IM001MainPageState extends State<IM001MainPage> with WidgetsBindingObserv
               child: Container(
                 width: MediaQuery.of(context).size.width-120,
                   child: model.validYoutubeLink == null
-                      ? Text("동영상 링크를 복사해서 붙어넣기 하세요.",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      ? Text("동영상 링크를 복사해서 붙혀넣기 하세요.",
+                      style: GoogleFonts.notoSans(
                         fontSize: 13,
                         color: Color(0xff78849e),
                       ))
                       : Text(model.validYoutubeLink,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontSize: 14,
                         color: Color(0xff78849e),
                       )))),

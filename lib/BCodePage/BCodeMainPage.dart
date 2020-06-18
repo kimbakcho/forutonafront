@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 class BCodeMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
         create: (_) => BCodeMainPageViewModel(),
         lazy: false,
@@ -24,9 +22,7 @@ class BCodeMainPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: WebviewScaffold(
-
                       url: Preference.officialSite,
-
                     ),
                   ),
                   BottomNavigation(),
@@ -36,4 +32,5 @@ class BCodeMainPage extends StatelessWidget {
           ]);
         });
   }
+
 }

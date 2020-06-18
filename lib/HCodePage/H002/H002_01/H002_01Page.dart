@@ -23,12 +23,7 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
   Position initPosition;
   String address;
   UniqueKey googleMapKey = UniqueKey();
-  _H002_01PageState(this.initPosition, this.address){
-    var statueBar = SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white.withOpacity(0),
-        statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(statueBar);
-  }
+  _H002_01PageState(this.initPosition, this.address);
 
   @override
   void initState() {

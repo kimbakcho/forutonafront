@@ -1,3 +1,4 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -112,12 +113,15 @@ class J001ViewModel extends ChangeNotifier {
   Future snsLoginLogic(SnsLoginService snsLoginService) async {
     try {
       _setIsLoading(true);
+      if(!await DataConnectionChecker().hasConnection){
+        throw ("네트워크 접속에 실패했습니다. 네트워크 연결 상태를 확인해주세요.");
+      }
       if (await snsLoginService.tryLogin()) {
         GlobalModel globalModel = Provider.of(_context, listen: false);
         await globalModel.setFUserInfoDto();
         Navigator.of(_context).popUntil(ModalRoute.withName('/'));
       }
-      _setIsLoading(false);
+
     } on NotJoinException catch (e) {
       GlobalModel globalModel =
           Provider.of<GlobalModel>(_context, listen: false);
@@ -145,6 +149,8 @@ class J001ViewModel extends ChangeNotifier {
           textColor: Colors.white,
           fontSize: 12.0);
     }
+    _setIsLoading(false);
+
   }
 
   void jumpToJ002() {

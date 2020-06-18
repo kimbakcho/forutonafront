@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/IssueBallWidgetStyle1ViewModel.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallSupport/BallImageViwer.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -288,8 +288,8 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             width: MediaQuery.of(context).size.width-100,
             child: Container(
                 child: Text(model.issueBall.getDisplayBallName(),
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
+                      letterSpacing: 2,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                       color: Color(0xff454f63),
