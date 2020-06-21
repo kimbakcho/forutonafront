@@ -13,7 +13,7 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 
 abstract class FBallRepository {
-  Future<FBallListUpWrap> listUpFromInfluencePower({@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto});
+  Future<FBallListUpWrap> listUpFromInfluencePower(FBallListUpFromBallInfluencePowerReqDto listUpReqDto);
   Future<UserToMakeBallWrap> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto});
   Future<FBallListUpWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto});
   Future<FBallListUpWrap> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto});

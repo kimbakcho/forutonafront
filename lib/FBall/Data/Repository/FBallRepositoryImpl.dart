@@ -1,12 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Data/Entity/UserToMakeBallWrap.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallImageUpload.dart';
-
-
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
@@ -19,10 +14,10 @@ class FBallRepositoryImpl implements FBallRepository {
 
   final FBallRemoteDataSource fBallRemoteDataSource;
 
-  FBallRepositoryImpl({@required this.fBallRemoteDataSource});
+  FBallRepositoryImpl({@required this.fBallRemoteDataSource}):assert(fBallRemoteDataSource!=null);
 
   @override
-  Future<FBallListUpWrap> listUpFromInfluencePower({@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto}) async {
+  Future<FBallListUpWrap> listUpFromInfluencePower(FBallListUpFromBallInfluencePowerReqDto listUpReqDto) async {
     var result = await fBallRemoteDataSource.listUpFromInfluencePower(listUpReqDto,FDio.noneToken());
     return result;
   }
