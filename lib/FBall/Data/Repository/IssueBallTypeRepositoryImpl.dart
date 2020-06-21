@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/Common/FireBaseAdapter/FireBaseAdapter.dart';
 import 'package:forutonafront/FBall/Data/DataStore/IssueBallTypeRemoteDateSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Data/Value/FBallImageUpload.dart';
@@ -26,18 +27,21 @@ class IssueBallTypeRepositoryImpl implements IssueBallTypeRepository{
 
   @override
   Future<int> deleteBall(FBallReqDto reqDto) async {
-    return issueBallTypeRemoteDateSource.deleteBall(reqDto: reqDto, fDio: await FDio.makeAuthTokenFDio());
+    return issueBallTypeRemoteDateSource.deleteBall(reqDto: reqDto, fDio: FDio.token(
+        idToken: await FireBaseAdapter().getFireBaseIdToken()));
   }
 
   @override
   Future<FBall> insertBall(IssueBallInsertReqDto reqDto) async{
-    return issueBallTypeRemoteDateSource.insertBall(reqDto: reqDto, fDio: await FDio.makeAuthTokenFDio());
+    return issueBallTypeRemoteDateSource.insertBall(reqDto: reqDto, fDio: FDio.token(
+        idToken: await FireBaseAdapter().getFireBaseIdToken()));
   }
 
   @override
   Future<int> joinBall(FBallJoinReqDto reqDto) async {
     return issueBallTypeRemoteDateSource.joinBall(
-          reqDto: reqDto, fDio: await FDio.makeAuthTokenFDio());
+          reqDto: reqDto, fDio: FDio.token(
+        idToken: await FireBaseAdapter().getFireBaseIdToken()));
   }
 
   @override
@@ -47,12 +51,14 @@ class IssueBallTypeRepositoryImpl implements IssueBallTypeRepository{
 
   @override
   Future<int> updateBall(IssueBallUpdateReqDto reqDto) async {
-    return await issueBallTypeRemoteDateSource.updateBall(reqDto: reqDto, fDio: await FDio.makeAuthTokenFDio());
+    return await issueBallTypeRemoteDateSource.updateBall(reqDto: reqDto, fDio: FDio.token(
+        idToken: await FireBaseAdapter().getFireBaseIdToken()));
   }
 
   @override
   Future<FBallImageUpload> ballImageUpload({@required List<Uint8List> images}) async {
-    var fBallImageUpload = await issueBallTypeRemoteDateSource.ballImageUpload(images: images, tokenFDio: await FDio.makeAuthTokenFDio());
+    var fBallImageUpload = await issueBallTypeRemoteDateSource.ballImageUpload(images: images, tokenFDio: FDio.token(
+        idToken: await FireBaseAdapter().getFireBaseIdToken()));
     return fBallImageUpload;
   }
 }

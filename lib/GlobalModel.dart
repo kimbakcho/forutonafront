@@ -29,6 +29,9 @@ class GlobalModel with ChangeNotifier {
     fUserInfoDto = await _fUserRepository.getForutonaGetMe();
   }
 
+  String userNickName(){
+    return fUserInfoDto.nickName;
+  }
 
   Future<void> signOutFUserInfoDto() async {
     fUserInfoDto = null;

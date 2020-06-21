@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/native_imp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Preference.dart';
 
 class FDio extends DioForNative {
@@ -26,10 +27,13 @@ class FDio extends DioForNative {
     return fDio;
   }
 
-  static Future<FDio> makeAuthTokenFDio() async {
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    var idToken = await firebaseUser.getIdToken(refresh: true);
-    FDio dio = FDio(idToken.token);
-    return dio;
+  factory FDio.token({@required String idToken}){
+    if(idToken == null){
+      FDio fDio = new FDio("noneToken");
+      return fDio;
+    }else {
+      FDio dio = FDio(idToken);
+      return dio;
+    }
   }
 }

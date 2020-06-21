@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Background/MainBackGround.dart';
+import 'package:forutonafront/Background/Domain/UseCase/BackgroundUserPositionUseCaseInputPort.dart';
+
 import 'package:forutonafront/GlobalModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
+
+import 'Background/Presentation/MainBackGround.dart';
 
 class MainModel with ChangeNotifier {
   final BuildContext _context;
@@ -16,8 +20,9 @@ class MainModel with ChangeNotifier {
   }
 
   void startBackGroundService() {
-    MainBackGround mainBackGround = MainBackGroundImpl();
+    MainBackGround mainBackGround = sl();
     mainBackGround.startBackGroundService();
-    mainBackGround.startUserPositionSendService();
+    BackgroundUserPositionUseCaseInputPort backgroundUserPositionUseCaseInputPort = sl();
+    mainBackGround.addBackGroundUserCase(backgroundUserPositionUseCaseInputPort);
   }
 }

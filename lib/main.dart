@@ -7,10 +7,11 @@ import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Splash/SplashPage.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:provider/provider.dart';
-
+import 'package:forutonafront/ServiceLocator.dart' as di;
 //flutter pub run build_runner watch
 
 void main() {
+  di.init();
   runApp(
     ChangeNotifierProvider(
         create: (_) => GlobalModel(),

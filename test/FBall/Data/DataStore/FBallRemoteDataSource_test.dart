@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,15 +12,14 @@ import 'package:mockito/mockito.dart';
 
 import '../../../fixtures/fixture_reader.dart';
 
-class MockFDio extends Mock implements FDio{}
-void main(){
+class MockFDio extends Mock implements FDio {}
+
+void main() {
   FBallRemoteDataSource fBallRemoteDataSource;
   MockFDio mockFDio;
-  setUp((){
-    fBallRemoteDataSource = FBallRemoteSourceImpl();
-    mockFDio = MockFDio();
-  });
-  final FBallListUpFromBallInfluencePowerReqDto searchCondition = new FBallListUpFromBallInfluencePowerReqDto(
+
+  final FBallListUpFromBallInfluencePowerReqDto searchCondition =
+      new FBallListUpFromBallInfluencePowerReqDto(
     latitude: 37.43469925835876,
     longitude: 126.79077610373497,
     ballLimit: 1000,
@@ -29,36 +27,28 @@ void main(){
     size: 20,
   );
 
-  test('should MockDio test', () async {
-    //arrange
-    setWhenBallListUp(mockFDio);
-    //act
-    var response = await mockFDio.get("/v1/FBall/BallListUp");
-    var listUpWrap = FBallListUpWrap.fromJson(response.data) ;
-    //assert
-    expect(listUpWrap, TypeMatcher<FBallListUpWrap>());
+  setUp(() {
+    fBallRemoteDataSource = FBallRemoteSourceImpl();
+    mockFDio = MockFDio();
   });
 
-  test('should search Position from ListUp Ball Type Change Test', () async {
+  test('Ball 영향력순 검색', () async {
     //arrange
-    setWhenBallListUp(mockFDio);
+    when(mockFDio.get("/v1/FBall/ListUpFromBallInfluencePower",
+            queryParameters: anyNamed('queryParameters')))
+        .thenAnswer((_) async => Response<dynamic>(
+            statusCode: 200,
+            data: json.decode(fixture(
+                'FBall/Data/DataSource/BallListUpPositionWrapDto.json')),
+            headers: Headers.fromMap({
+              "Content-Type": ['application/json', 'charset=utf-8']
+            })));
     //act
-       var fBallListUpWrapDto = await fBallRemoteDataSource
-           .listUpFromInfluencePower(fBallListUpFromInfluencePowerReqDto: searchCondition,noneTokenFDio: mockFDio);
+    var fBallListUpWrapDto = await fBallRemoteDataSource
+        .listUpFromInfluencePower(searchCondition, mockFDio);
     //assert
-      expect(fBallListUpWrapDto.balls.length > 0, isTrue);
-      expect(fBallListUpWrapDto.balls[0], TypeMatcher<FBall>());
-      expect(fBallListUpWrapDto.balls, isList);
+    expect(fBallListUpWrapDto.balls.length > 0, isTrue);
+    expect(fBallListUpWrapDto.balls[0], TypeMatcher<FBall>());
+    expect(fBallListUpWrapDto.balls, isList);
   });
-
-}
-
-void setWhenBallListUp(MockFDio mockFDio) {
-  when(mockFDio.get("/v1/FBall/BallListUp",queryParameters: anyNamed('queryParameters'))).thenAnswer((realInvocation) async => Response<dynamic>(
-      statusCode: 200,
-      data: json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json')),
-      headers:Headers.fromMap({
-        "Content-Type":['application/json','charset=utf-8']
-      })
-  ));
 }

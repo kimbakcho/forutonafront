@@ -14,8 +14,7 @@ import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 import 'package:meta/meta.dart';
 
 abstract class FBallRemoteDataSource {
-  Future<FBallListUpWrap> listUpFromInfluencePower(
-    {@required FBallListUpFromBallInfluencePowerReqDto fBallListUpFromInfluencePowerReqDto,@required FDio noneTokenFDio});
+  Future<FBallListUpWrap> listUpFromInfluencePower(FBallListUpFromBallInfluencePowerReqDto fBallListUpFromInfluencePowerReqDto,FDio noneTokenFDio);
   Future<UserToMakeBallWrap> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallListUpWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallListUpWrap> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto,@required FDio noneTokenFDio});
@@ -27,7 +26,7 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<FBallListUpWrap> listUpFromInfluencePower(
-      {@required FBallListUpFromBallInfluencePowerReqDto fBallListUpFromInfluencePowerReqDto,@required FDio noneTokenFDio}) async {
+  FBallListUpFromBallInfluencePowerReqDto fBallListUpFromInfluencePowerReqDto,FDio noneTokenFDio) async {
     var response = await noneTokenFDio.get(
         "/v1/FBall/ListUpFromBallInfluencePower",
         queryParameters: fBallListUpFromInfluencePowerReqDto.toJson());

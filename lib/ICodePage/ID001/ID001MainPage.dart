@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimationWithContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -51,7 +51,9 @@ class _ID001MainPageState extends State<ID001MainPage>
     return ChangeNotifierProvider<ID001MainPageViewModel>(
         lazy: false,
         create: (_) => ID001MainPageViewModel(
-            context: context, issueBall: widget.issueBall),
+            context: context,
+            issueBall: widget.issueBall,
+            globalModel: context.watch<GlobalModel>()),
         builder: (context, _) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -141,18 +143,17 @@ class _ID001MainPageState extends State<ID001MainPage>
 
   FlatButton issueBallTitleWithStatueBar(BuildContext context) {
     return FlatButton(
-            onPressed: context
-                .watch<ID001MainPageViewModel>()
-                .toggleMoreDetailToggle,
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                issueBallTitleBar(context),
-                conditionStatueBar(context)
-              ],
-            ));
+        onPressed:
+            context.watch<ID001MainPageViewModel>().toggleMoreDetailToggle,
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            issueBallTitleBar(context),
+            conditionStatueBar(context)
+          ],
+        ));
   }
 
   Container ballValuationBar(BuildContext context) {

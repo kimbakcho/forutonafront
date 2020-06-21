@@ -44,7 +44,7 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
 
   init() async {
     scrollController.addListener(scrollListener);
-    if(await _authUserCaseInputPort.checkLogin()){
+    if(await _authUserCaseInputPort.isLogin()){
       await ballListUp();
     }
     _isInitFinish= true;

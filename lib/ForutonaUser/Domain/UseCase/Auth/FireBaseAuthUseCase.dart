@@ -1,51 +1,28 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/Common/FireBaseAdapter/FireBaseAdapter.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
-import 'package:forutonafront/GlobalModel.dart';
-import 'package:provider/provider.dart';
 
-class FireBaseAuthUseCase implements AuthUserCaseInputPort{
-  static final FireBaseAuthUseCase _singleton = new FireBaseAuthUseCase._internal();
 
-  factory FireBaseAuthUseCase() { return _singleton; }
+class FireBaseAuthUseCase implements AuthUserCaseInputPort {
+  FireBaseAdapter fireBaseAdapter;
 
-  FirebaseAuth _firebaseAuth;
-
-  FireBaseAuthUseCase._internal() {
-    _firebaseAuth = FirebaseAuth.instance;
-  }
+  FireBaseAuthUseCase(
+      {@required this.fireBaseAdapter})
+      : assert(fireBaseAdapter != null);
 
   @override
-  Future<bool> checkLogin({AuthUserCaseOutputPort authUserCaseOutputPort}) async {
-     var firebaseUser = await _firebaseAuth.currentUser();
-     bool isLogin;
-     if(firebaseUser != null){
-       isLogin = true;
-     }else {
-       isLogin = false;
-     }
-     if(authUserCaseOutputPort != null){
-       authUserCaseOutputPort.onLoginCheck(isLogin);
-     }
-     return isLogin;
-  }
-
-  @override
-  Future<String> myUid() async{
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    if(firebaseUser != null){
-      return firebaseUser.uid;
-    }else {
-      throw Exception("don't have Firebase User");
+  Future<bool> isLogin({AuthUserCaseOutputPort authUserCaseOutputPort}) async {
+    var isLogin = await fireBaseAdapter.isLogin();
+    if (authUserCaseOutputPort != null) {
+      authUserCaseOutputPort.onLoginCheck(isLogin);
     }
-
+    return isLogin;
   }
 
   @override
-  String userNickName({@required BuildContext context}) {
-    GlobalModel globalModel = Provider.of(context,listen: false);
-    return globalModel.fUserInfoDto.nickName;
+  Future<String> myUid() async {
+    return await fireBaseAdapter.userUid();
   }
 
 }

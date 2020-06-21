@@ -45,7 +45,7 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
 
   init() async {
     scrollController.addListener(scrollListener);
-    if(await _authUserCaseInputPort.checkLogin(authUserCaseOutputPort: this)){
+    if(await _authUserCaseInputPort.isLogin(authUserCaseOutputPort: this)){
       await ballListUp();
     }
     _isInitFinish = true;
@@ -61,7 +61,7 @@ class H00301PageViewModel extends ChangeNotifier implements UserPlayBallListUpUs
 
   Future<void> ballListUp() async {
     isLoading = true;
-    if(await _authUserCaseInputPort.checkLogin(authUserCaseOutputPort: this)){
+    if(await _authUserCaseInputPort.isLogin(authUserCaseOutputPort: this)){
 
       FSorts fSort = new FSorts();
       fSort.sorts.add(FSort("Alive", QueryOrders.DESC));

@@ -66,7 +66,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
         FlatButton(
           onPressed: widget._showSubReply && !widget.fBallReplyResDto.deleteFlag
               ? () async {
-                  if(!await _authUserCaseInputPort.checkLogin()){
+                  if(!await _authUserCaseInputPort.isLogin()){
                     gotoJ001Page(context);
                     return ;
                   }

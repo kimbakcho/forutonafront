@@ -23,7 +23,7 @@ class FBallRepositoryImpl implements FBallRepository {
 
   @override
   Future<FBallListUpWrap> listUpFromInfluencePower({@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto}) async {
-    var result = await fBallRemoteDataSource.listUpFromInfluencePower(fBallListUpFromInfluencePowerReqDto: listUpReqDto, noneTokenFDio: FDio.noneToken());
+    var result = await fBallRemoteDataSource.listUpFromInfluencePower(listUpReqDto,FDio.noneToken());
     return result;
   }
 

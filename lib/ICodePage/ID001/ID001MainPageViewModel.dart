@@ -31,6 +31,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimple1ResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
+import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
@@ -95,9 +96,15 @@ class ID001MainPageViewModel extends ChangeNotifier
   bool isLoading = false;
   bool showFBallValuation = false;
 
+  GlobalModel globalModel;
 
-
-  ID001MainPageViewModel({@required this.context, @required this.issueBall}) {
+  ID001MainPageViewModel(
+      {@required this.context,
+      @required this.issueBall,
+      @required this.globalModel})
+      : assert(context != null),
+        assert(issueBall != null),
+        assert(globalModel != null) {
     _init();
   }
 
@@ -133,7 +140,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   void turnUserScreen() {
-    _authUserCaseInputPort.checkLogin(authUserCaseOutputPort: this);
+    _authUserCaseInputPort.isLogin(authUserCaseOutputPort: this);
   }
 
   void issueBallYoutubeSetting() {
@@ -165,14 +172,14 @@ class ID001MainPageViewModel extends ChangeNotifier
   @override
   onLoginCheck(bool isLogin) {
     if (isLogin) {
-      userNickName = _authUserCaseInputPort.userNickName(context: context);
+      userNickName = globalModel.userNickName();
       showFBallValuation = true;
     }
     notifyListeners();
   }
 
   Future<void> loadFBallValuation() async {
-    if (await _authUserCaseInputPort.checkLogin()) {
+    if (await _authUserCaseInputPort.isLogin()) {
       FBallValuationReqDto valuationReqDto = FBallValuationReqDto();
       valuationReqDto.ballUuid = issueBall.ballUuid;
       valuationReqDto.uid = await _authUserCaseInputPort.myUid();
@@ -219,7 +226,7 @@ class ID001MainPageViewModel extends ChangeNotifier
           label: Container(
             height: tagChipHeight,
             child: InkWell(
-              onTap: (){
+              onTap: () {
                 gotoH005TagInitPage(tagText: o.tagItem);
               },
               child: Text("#${o.tagItem}",
@@ -234,11 +241,10 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   void gotoH005TagInitPage({@required String tagText}) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_){
-        return  H005MainPage(searchText: tagText,initPageState: H005PageState.Tag);
-      }
-    ));
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return H005MainPage(
+          searchText: tagText, initPageState: H005PageState.Tag);
+    }));
   }
 
   void backBtnTap() {

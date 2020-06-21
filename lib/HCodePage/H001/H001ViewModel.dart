@@ -18,6 +18,7 @@ import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import 'package:forutonafront/Tag/Data/Repository/TagRepositoryImpl.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCase.dart';
@@ -44,7 +45,8 @@ class H001ViewModel
 
   FBallListUpFromInfluencePowerUseCaseInputPort _fBallListUpFromInfluencePowerUseCaseInputPort;
   TagRankingFromBallInfluencePowerUseCaseInputPort _tagRankingFromPositionUseCaseInputPort;
-  AuthUserCaseInputPort _authUserCaseInputPort;
+
+  AuthUserCaseInputPort _authUserCaseInputPort = sl();
 
   String selectPositionAddress = "";
   bool rankingAutoPlay = false;
@@ -80,7 +82,6 @@ class H001ViewModel
 
     h001CenterListViewController.addListener(this.h001CenterListViewControllerListener);
 
-    _authUserCaseInputPort = FireBaseAuthUseCase();
     init();
   }
 
@@ -234,7 +235,7 @@ class H001ViewModel
   }
 
   void goBallMakePage() async {
-    if (await _authUserCaseInputPort.checkLogin()) {
+    if (await _authUserCaseInputPort.isLogin()) {
       await gotoH002Page();
       _currentSearchPosition = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
       await searchFirstPage();

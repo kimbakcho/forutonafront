@@ -11,6 +11,7 @@ import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 
 mixin  IssueBallBasicStyleMixin  {
   BuildContext context;
@@ -19,12 +20,12 @@ mixin  IssueBallBasicStyleMixin  {
 
   GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort = GeoLocationUtilUseCase();
 
-  AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
+  AuthUserCaseInputPort _authUserCaseInputPort = sl();
 
 
   void goIssueDetailPage({@required IssueBall issueBall,@required IssueBallUseCaseOutputPort outputPort}) async {
     reqBallHit(issueBall: issueBall,outputPort: outputPort);
-    if (await _authUserCaseInputPort.checkLogin()){
+    if (await _authUserCaseInputPort.isLogin()){
         reqJoinBall(issueBall: issueBall);
     }
     await Navigator.of(context).push(
@@ -42,7 +43,7 @@ mixin  IssueBallBasicStyleMixin  {
   }
 
   Future reqBallHit({@required IssueBall issueBall,@required IssueBallUseCaseOutputPort outputPort}) async {
-    if (await _authUserCaseInputPort.checkLogin()) {
+    if (await _authUserCaseInputPort.isLogin()) {
       _issueBallUseCaseInputPort.ballHit(
           reqDto: FBallReqDto(issueBall.ballType, issueBall.ballUuid),
           outputPort: outputPort);

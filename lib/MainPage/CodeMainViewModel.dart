@@ -3,6 +3,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 enum HCodeState { HCDOE, ICODE, BCODE, KCODE, GCODE  }
@@ -16,7 +17,7 @@ class CodeMainViewModel with ChangeNotifier {
   String firstAddress = "";
   BuildContext _context;
 
-  AuthUserCaseInputPort authUserCaseInputPort = FireBaseAuthUseCase();
+  AuthUserCaseInputPort authUserCaseInputPort = sl();
 
   CodeMainViewModel(this._context) {
     pageController = new PageController();
@@ -61,7 +62,7 @@ class CodeMainViewModel with ChangeNotifier {
     notifyListeners();
   }
   checkUser() async {
-    return authUserCaseInputPort.checkLogin();
+    return authUserCaseInputPort.isLogin();
   }
 
   gotoJ001Page(BuildContext context) async {
