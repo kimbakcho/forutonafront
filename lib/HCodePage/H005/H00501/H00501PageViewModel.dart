@@ -14,6 +14,7 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Ordersenum.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 
 class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearchTitleUseCaseOutputPort{
   final BuildContext context;
@@ -46,7 +47,7 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
 
   final FBallListUpFromSearchTitleUseCaseInputPort
       fBallListUpFromSearchTitleUseCaseInputPort;
-  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseIp = GeoLocationUtilUseCase();
+  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseIp = sl();
   int _ballPageLimitSize = 20;
   int _pageCount = 0;
 

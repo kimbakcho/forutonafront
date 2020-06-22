@@ -18,24 +18,16 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
 
   Geolocator _geolocator = Geolocator();
 
-  static final GeoLocationUtilUseCase _instance = GeoLocationUtilUseCase._internal();
-
-  factory GeoLocationUtilUseCase() {
-    return _instance;
-  }
+  GeoLocationUtilUseCase();
 
   Position _currentWithLastPosition;
   String _currentWithLastAddress;
 
-
-
   GeoLocationUtilUseCase._internal();
-
 
   Future<bool> useGpsReq(BuildContext context) async {
       GlobalModel globalModel = Provider.of(context,listen: false);
       await globalModel.geoRequestMutex.acquire();
-
       Location location = new Location();
       bool _serviceEnabled;
       PermissionStatus _permissionGranted;

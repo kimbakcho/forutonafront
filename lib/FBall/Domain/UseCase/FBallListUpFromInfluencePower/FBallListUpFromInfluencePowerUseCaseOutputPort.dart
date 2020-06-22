@@ -3,5 +3,4 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 abstract class FBallListUpFromInfluencePowerUseCaseOutputPort {
   onListUpBallFromBallInfluencePower(List<FBallResDto> fBallResDtos);
-  void onBallClear();
 }

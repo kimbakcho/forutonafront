@@ -8,7 +8,7 @@ import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 
 abstract class FBallTagRemoteDataSource {
-  Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto,@required FDio noneTokenFDio});
+  Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto,FDio noneTokenFDio);
   Future<FBallTagRankingWrap> getRelationTagRankingFromTagNameOrderByBallPower({@required RelationTagRankingFromTagNameReqDto reqDto,@required FDio noneTokenFDio});
   Future<FBallTagWrap> tagFromBallUuid({@required TagFromBallReqDto reqDto,@required @required FDio noneTokenFDio});
 }
@@ -17,7 +17,7 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource{
   FBallTagRemoteDataSourceImpl();
 
   @override
-  Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto,@required FDio noneTokenFDio}) async {
+  Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto,FDio noneTokenFDio) async {
     var response = await noneTokenFDio.get("/v1/FTag/RankingFromBallInfluencePower",
         queryParameters: reqDto.toJson()
     );

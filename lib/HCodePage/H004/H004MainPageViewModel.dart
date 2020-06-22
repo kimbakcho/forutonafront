@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseOutputPort.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 
 import '../../FBall/Dto/BallSearchBarHistoryDto.dart';
 
@@ -16,6 +18,8 @@ class H004MainPageViewModel extends ChangeNotifier implements BallSearchBarHisto
 
   List<BallSearchBarHistoryDto> searchHistoryList = [];
   BallSearchBarHistoryUseCaseInputPort _ballSearchBarHistoryUseCaseInputPort = BallSearchBarHistoryUseCase();
+
+  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
 
   H004MainPageViewModel(this.context) {
     searchFocusNode.addListener(onSearchFocusNode);
@@ -96,7 +100,7 @@ class H004MainPageViewModel extends ChangeNotifier implements BallSearchBarHisto
   }
 
   gotoH005Page(String searchText) async {
-    await GeoLocationUtilUseCase().useGpsReq(context);
+    await _geoLocationUtilUseCaseInputPort.useGpsReq(context);
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) {
       return H005MainPage(searchText: searchText,initPageState: H005PageState.Title);

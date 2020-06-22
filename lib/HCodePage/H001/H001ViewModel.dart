@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
-import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
-import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
@@ -42,13 +42,17 @@ class H001ViewModel
   bool _subScrollerTopOver = false;
 
   FBallListUpFromInfluencePowerUseCaseInputPort
-      _fBallListUpFromInfluencePowerUseCaseInputPort;
+      _fBallListUpFromInfluencePowerUseCaseInputPort = sl();
+
   TagRankingFromBallInfluencePowerUseCaseInputPort
-      _tagRankingFromPositionUseCaseInputPort;
+      _tagRankingFromPositionUseCaseInputPort = sl();
 
   AuthUserCaseInputPort _authUserCaseInputPort = sl();
 
+  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
+
   String selectPositionAddress = "";
+
   bool rankingAutoPlay = false;
 
   SwiperController rankingSwiperController = new SwiperController();
@@ -67,15 +71,11 @@ class H001ViewModel
 
   bool isInitFinish = false;
 
-  H001ViewModel({@required this.context}):assert(context != null) {
-    _fBallListUpFromInfluencePowerUseCaseInputPort =
-        FBallListUpFromInfluencePowerUseCase(fBallRepository: sl());
+  int _ballPageCount = 0;
+  int _ballPageLimitSize = 20;
+  int _ballSearchLimit = 1000;
 
-    _tagRankingFromPositionUseCaseInputPort =
-        TagRankingFromBallInfluencePowerUseCase(
-            tagRepository: TagRepositoryImpl(
-                fBallTagRemoteDataSource: FBallTagRemoteDataSourceImpl()),
-            outputPort: this);
+  H001ViewModel({@required this.context}) : assert(context != null) {
 
     h001CenterListViewController
         .addListener(this.h001CenterListViewControllerListener);
@@ -88,10 +88,10 @@ class H001ViewModel
 
     setDisplayAddressText("로딩중");
 
-    await GeoLocationUtilUseCase().useGpsReq(context);
+    await _geoLocationUtilUseCaseInputPort.useGpsReq(context);
 
     _currentSearchPosition =
-        await GeoLocationUtilUseCase().getCurrentWithLastPosition();
+        await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
 
     _currentSearchAddress = await getCurrentSearchPositionAddress();
 
@@ -104,6 +104,7 @@ class H001ViewModel
     _searchTagRankingFromBallInfluencePowerWithCurrentSearchPosition();
 
     initFinish();
+
     hideLoading();
   }
 
@@ -116,21 +117,51 @@ class H001ViewModel
       _searchTagRankingFromBallInfluencePowerWithCurrentSearchPosition() async {
     await _tagRankingFromPositionUseCaseInputPort
         .reqTagRankingFromBallInfluencePower(
-            reqDto: TagRankingFromBallInfluencePowerReqDto(
-                position: _currentSearchPosition, limit: 10));
+            TagRankingFromBallInfluencePowerReqDto(
+                position: _currentSearchPosition,limit: 10),
+            this);
+  }
+
+  @override
+  void onTagRankingFromBallInfluencePower(List<TagRankingDto> tagRankingDtos) {
+    this.tagRankingDtos = tagRankingDtos;
+    rankingSwiperController.move(0);
+    rankingAutoPlay = true;
+    notifyListeners();
   }
 
   Future<String> getCurrentSearchPositionAddress() async {
-    return await GeoLocationUtilUseCase().getPositionAddress(Position(
+    return await _geoLocationUtilUseCaseInputPort.getPositionAddress(Position(
         latitude: _currentSearchPosition.latitude,
         longitude: _currentSearchPosition.longitude));
   }
 
   Future _searchFBallFromBallInfluencePowerWithCurrentSearchPosition() async {
     showLoading();
+
+    FBallListUpFromBallInfluencePowerReqDto reqDto = new FBallListUpFromBallInfluencePowerReqDto(
+        latitude: _currentSearchPosition.latitude,
+        longitude: _currentSearchPosition.longitude,
+        ballLimit: _ballSearchLimit,
+        page: _ballPageCount,
+        size: _ballPageLimitSize);
     await _fBallListUpFromInfluencePowerUseCaseInputPort
-        .reqBallListUpFromInfluencePower(_currentSearchPosition,this);
+        .reqBallListUpFromInfluencePower(reqDto, this);
+
     hideLoading();
+  }
+
+  @override
+  onListUpBallFromBallInfluencePower(List<FBallResDto> fBallResDtos) async {
+    if(isFirstPage()){
+      ballClear();
+    }
+    this.ballWidgetLists.addAll(fBallResDtos
+        .map((x) => BallStyle1Widget.create(
+      fBallResDto: x,
+    ))
+        .toList());
+    notifyListeners();
   }
 
   h001CenterListViewControllerListener() async {
@@ -168,9 +199,11 @@ class H001ViewModel
   }
 
   Future searchFirstPage() async {
-    _fBallListUpFromInfluencePowerUseCaseInputPort.pageReset();
+    pageReset();
     await _searchFBallFromBallInfluencePowerWithCurrentSearchPosition();
   }
+
+  int pageReset() => _ballPageCount = 0;
 
   moveToH007() async {
     MapSearchGeoDto position = await gotoH007Page();
@@ -204,11 +237,17 @@ class H001ViewModel
   }
 
   void _scrollerOver() async {
-    if (_fBallListUpFromInfluencePowerUseCaseInputPort.hasMoreListUpBall(currentBallWidgetCount)) {
-      _fBallListUpFromInfluencePowerUseCaseInputPort.nextPage();
+    if (this.hasMoreListUpBall(currentBallWidgetCount)) {
+      nextPage();
       await _searchFBallFromBallInfluencePowerWithCurrentSearchPosition();
       moveScrollerDown();
     }
+  }
+
+  int nextPage() => _ballPageCount++;
+
+  bool hasMoreListUpBall(int nowBallCount) {
+    return !(((_ballPageCount+1) * _ballPageLimitSize) > nowBallCount);
   }
 
   bool _isUserScrollerForward() {
@@ -235,7 +274,7 @@ class H001ViewModel
     if (await _authUserCaseInputPort.isLogin()) {
       await gotoH002Page();
       _currentSearchPosition =
-          await GeoLocationUtilUseCase().getCurrentWithLastPosition();
+          await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
       await searchFirstPage();
     } else {
       gotoJ001Page();
@@ -280,17 +319,9 @@ class H001ViewModel
     notifyListeners();
   }
 
-  @override
-  onListUpBallFromBallInfluencePower(List<FBallResDto> fBallResDtos) async {
-    this.ballWidgetLists.addAll(fBallResDtos
-        .map((x) => BallStyle1Widget.create(
-              fBallResDto: x,
-            ))
-        .toList());
-    notifyListeners();
-  }
+  bool isFirstPage() => _ballPageCount == 0;
 
-  onBallClear() {
+  ballClear() {
     this.ballWidgetLists.clear();
   }
 
@@ -329,13 +360,7 @@ class H001ViewModel
     notifyListeners();
   }
 
-  @override
-  void onTagRankingFromBallInfluencePower(List<TagRankingDto> tagRankingDtos) {
-    this.tagRankingDtos = tagRankingDtos;
-    rankingSwiperController.move(0);
-    rankingAutoPlay = true;
-    notifyListeners();
-  }
+
 
   void showUnInlineRankingWidget() {
     _inlineRanking = false;

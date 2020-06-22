@@ -8,18 +8,23 @@ import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dar
 import 'TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
 import 'TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
 
-
-class TagRankingFromBallInfluencePowerUseCase implements TagRankingFromBallInfluencePowerUseCaseInputPort{
+class TagRankingFromBallInfluencePowerUseCase
+    implements TagRankingFromBallInfluencePowerUseCaseInputPort {
   TagRepository tagRepository;
-  TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort;
-  TagRankingFromBallInfluencePowerUseCase({@required this.tagRepository,@required this.outputPort});
+
+  TagRankingFromBallInfluencePowerUseCase({@required this.tagRepository})
+      : assert(tagRepository != null);
 
   @override
-  Future<void> reqTagRankingFromBallInfluencePower({@required TagRankingFromBallInfluencePowerReqDto reqDto}) async {
-    var fBallTagRankingWrap = await tagRepository.getFTagRankingFromBallInfluencePower(reqDto);
-    var results = fBallTagRankingWrap.contents.map((x) => TagRankingDto.fromTagRanking(x)).toList();
+  Future<void> reqTagRankingFromBallInfluencePower(
+      TagRankingFromBallInfluencePowerReqDto reqDto,
+      TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort) async {
+    var fBallTagRankingWrap =
+        await tagRepository.getFTagRankingFromBallInfluencePower(reqDto);
+    var results = fBallTagRankingWrap.contents
+        .map((x) => TagRankingDto.fromTagRanking(x))
+        .toList();
     outputPort.onTagRankingFromBallInfluencePower(results);
     return results;
   }
-
 }

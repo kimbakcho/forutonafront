@@ -20,6 +20,7 @@ import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.da
 import 'package:forutonafront/FBall/MarkerSupport/Style1/MakerSupportStyle1.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -31,9 +32,11 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
   bool _moveFromMapBallSelect = false;
   CameraPosition currentMapPosition;
 
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCase = GeoLocationUtilUseCase();
+  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCase = sl();
 
   FBallListUpFromMapAreaUseCaseInputPort _fBallListUpFromMapAreaUseCaseInputPort = FBallListUpFromMapAreaUseCase();
+
+  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
 
   String currentAddress = "";
   final Set<Marker> markers = {};
@@ -143,7 +146,7 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
 
   onMapIdle() async {
     if (!_flagIdleIgnore) {
-      currentAddress = await GeoLocationUtilUseCase().getPositionAddress(Position(
+      currentAddress = await _geoLocationUtilUseCaseInputPort.getPositionAddress(Position(
           latitude: currentMapPosition.target.latitude,
           longitude: currentMapPosition.target.longitude));
       notifyListeners();
@@ -153,8 +156,8 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
 
-    await GeoLocationUtilUseCase().useGpsReq(context);
-    var currentLocation = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
+    await _geoLocationUtilUseCaseInputPort.useGpsReq(context);
+    var currentLocation = await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: 14.4746)));

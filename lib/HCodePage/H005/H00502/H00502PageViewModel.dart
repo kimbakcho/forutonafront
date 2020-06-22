@@ -1,6 +1,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
@@ -10,6 +11,7 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
@@ -44,9 +46,12 @@ class H00502PageViewModel extends ChangeNotifier
 
   final FBallListUpFromSearchTagNameUseCaseInputPort
       fBallListUpFromSearchTagNameUseCaseInputPort;
+
   final RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
       _rankingFromTagNameOrderByBallPowerUseCaseInputPort =
       RelationTagRankingFromTagNameOrderByBallPowerUseCase();
+
+  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
 
   H005MainPageViewModel _h005MainModel;
   List<H00502DropdownItemType> _ordersItems =
@@ -119,7 +124,7 @@ class H00502PageViewModel extends ChangeNotifier
 
   Future ballListUpFromSearchTag() async {
     isLoading = true;
-    var position = await GeoLocationUtilUseCase().getCurrentWithLastPosition();
+    var position = await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
     FBallListUpFromTagNameReqDto reqDto = new FBallListUpFromTagNameReqDto(
         searchTag: searchTag,
         sortsJsonText: _makeSearchOrders().toQueryJson(),

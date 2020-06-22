@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,7 +13,7 @@ class TagRankingFromBallInfluencePowerReqDto {
   double longitude;
   int limit;
 
-  TagRankingFromBallInfluencePowerReqDto({Position position, this.limit}){
+  TagRankingFromBallInfluencePowerReqDto({@required Position position,this.limit}):assert(position != null),assert(limit != null){
     this.latitude = position.latitude;
     this.longitude = position.longitude;
   }

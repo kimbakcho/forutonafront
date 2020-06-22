@@ -35,72 +35,25 @@ void main(){
   });
 
 
-  test('검색된 결과를 Output Port 로 전달 ',
+  test('검색된 결과를 Output Port 로 전달 Repository 실행',
           () async {
         //arrange
         when(mockFBallRepository.listUpFromInfluencePower(any))
             .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
         //act
-        await fBallListUpFromInfluencePowerUseCaseInputPort.reqBallListUpFromInfluencePower( new Position(latitude: 127.0,longitude: 31.0), mockFBallListUpFromInfluencePowerUseCaseOutputPort);
+
+        var reqDto = new FBallListUpFromBallInfluencePowerReqDto(
+            latitude: 127.0,
+            longitude: 31.0,
+            ballLimit: 1000,
+            page: 0,
+            size: 20);
+
+        await fBallListUpFromInfluencePowerUseCaseInputPort.reqBallListUpFromInfluencePower( reqDto, mockFBallListUpFromInfluencePowerUseCaseOutputPort);
         //assert
         verify(mockFBallRepository.listUpFromInfluencePower(any));
         verify(mockFBallListUpFromInfluencePowerUseCaseOutputPort.onListUpBallFromBallInfluencePower(any));
 
       });
 
-
-  test('첫번째 페이지의 경우 Ball Clear 요청' ,
-          () async {
-        //arrange
-        when(mockFBallRepository.listUpFromInfluencePower(any))
-            .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
-        fBallListUpFromInfluencePowerUseCaseInputPort.pageReset();
-        //act
-        await fBallListUpFromInfluencePowerUseCaseInputPort.reqBallListUpFromInfluencePower( new Position(latitude: 127.0,longitude: 31.0), mockFBallListUpFromInfluencePowerUseCaseOutputPort);
-        //assert
-        verifyInOrder([
-          verify(mockFBallListUpFromInfluencePowerUseCaseOutputPort.onBallClear()),
-            verify(mockFBallRepository.listUpFromInfluencePower(any)),
-          verify(mockFBallListUpFromInfluencePowerUseCaseOutputPort.onListUpBallFromBallInfluencePower(any))
-        ]);
-      });
-
-  test('검색할 Ball 이 더 있는지 판단', () async {
-    //arrange
-
-    //act
-      fBallListUpFromInfluencePowerUseCaseInputPort.pageReset();
-      bool result1 = fBallListUpFromInfluencePowerUseCaseInputPort.hasMoreListUpBall(20);
-
-      fBallListUpFromInfluencePowerUseCaseInputPort.pageReset();
-      bool result2 = fBallListUpFromInfluencePowerUseCaseInputPort.hasMoreListUpBall(10);
-
-      fBallListUpFromInfluencePowerUseCaseInputPort.pageReset();
-      fBallListUpFromInfluencePowerUseCaseInputPort.nextPage();
-      bool result3 = fBallListUpFromInfluencePowerUseCaseInputPort.hasMoreListUpBall(30);
-
-      fBallListUpFromInfluencePowerUseCaseInputPort.pageReset();
-      fBallListUpFromInfluencePowerUseCaseInputPort.nextPage();
-      bool result4 = fBallListUpFromInfluencePowerUseCaseInputPort.hasMoreListUpBall(40);
-    //assert
-      expect(result1, true);
-      expect(result2, false);
-      expect(result3, false);
-      expect(result4, true);
-
-  });
-
-  test('페이지 증가 확인 ', () async {
-    //arrange
-    when(mockFBallRepository.listUpFromInfluencePower(any))
-        .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
-    //act
-    fBallListUpFromInfluencePowerUseCaseInputPort.pageReset();
-    fBallListUpFromInfluencePowerUseCaseInputPort.nextPage();
-    await fBallListUpFromInfluencePowerUseCaseInputPort.reqBallListUpFromInfluencePower( new Position(latitude: 127.0,longitude: 31.0), mockFBallListUpFromInfluencePowerUseCaseOutputPort);
-    //assert
-    verify(mockFBallListUpFromInfluencePowerUseCaseOutputPort.onListUpBallFromBallInfluencePower(any));
-    FBallListUpFromBallInfluencePowerReqDto callParams = verify(mockFBallRepository.listUpFromInfluencePower(captureAny)).captured.single;
-    expect(callParams.page, 1);
-  });
 }

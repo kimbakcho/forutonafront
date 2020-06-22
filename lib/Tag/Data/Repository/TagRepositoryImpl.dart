@@ -14,12 +14,12 @@ class TagRepositoryImpl implements TagRepository {
 
   final FBallTagRemoteDataSource fBallTagRemoteDataSource;
 
-  TagRepositoryImpl({@required this.fBallTagRemoteDataSource});
+  TagRepositoryImpl({@required this.fBallTagRemoteDataSource}):assert(fBallTagRemoteDataSource!=null);
 
 
   @override
   Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto) async {
-    return await fBallTagRemoteDataSource.getFTagRankingFromBallInfluencePower(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+    return await fBallTagRemoteDataSource.getFTagRankingFromBallInfluencePower(reqDto,FDio.noneToken());
   }
 
 

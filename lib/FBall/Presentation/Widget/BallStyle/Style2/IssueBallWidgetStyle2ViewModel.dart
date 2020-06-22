@@ -14,6 +14,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/Common
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
@@ -27,7 +28,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
 
   IssueBallUseCaseInputPort issueBallUseCaseInputPort = IssueBallUseCase();
 
-  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort = GeoLocationUtilUseCase();
+  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort = sl();
 
   IssueBallWidgetStyle2ViewModel({@required this.context,@required FBallResDto userBallResDto}){
     issueBall = IssueBall.fromFBallResDto(userBallResDto);

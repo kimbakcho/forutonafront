@@ -18,7 +18,7 @@ mixin  IssueBallBasicStyleMixin  {
 
   IssueBallUseCaseInputPort _issueBallUseCaseInputPort = new IssueBallUseCase();
 
-  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort = GeoLocationUtilUseCase();
+  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort = sl();
 
   AuthUserCaseInputPort _authUserCaseInputPort = sl();
 
