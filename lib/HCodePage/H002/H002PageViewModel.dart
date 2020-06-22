@@ -19,5 +19,6 @@ class H002PageViewModel extends ChangeNotifier {
     Navigator.of(_context).push(MaterialPageRoute(
       builder: (_) => H002_01Page(currentPosition,address)
     ));
+
   }
 }
