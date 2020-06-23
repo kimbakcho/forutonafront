@@ -18,7 +18,7 @@ void main() {
     fDio = MockFDio();
   });
 
-  test('should getUserInfoSimple1', () async {
+  test('should getUserInfoSimple1 API Call', () async {
     //arrange
     var resResult = FUserInfoSimple1();
     resResult.nickName = "test";
@@ -38,7 +38,7 @@ void main() {
     expect(result.followCount, 0);
   });
 
-  test('should updateUserPosition', () async {
+  test('should updateUserPosition API Call', () async {
     //arrange
     when(fDio.put("/v1/ForutonaUser/UserPosition", data: anyNamed('data')))
         .thenAnswer((_) async => Response<dynamic>(data: 1));

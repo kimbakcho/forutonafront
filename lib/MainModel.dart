@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Background/Domain/UseCase/BackgroundUserPositionUseCaseInputPort.dart';
+import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
 
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/ServiceLocator.dart';
@@ -17,6 +19,7 @@ class MainModel with ChangeNotifier {
     GlobalModel globalModel = Provider.of(_context);
     globalModel.setFUserInfoDto();
     startBackGroundService();
+    startFireBaseMessageService();
   }
 
   void startBackGroundService() {
@@ -24,5 +27,10 @@ class MainModel with ChangeNotifier {
     mainBackGround.startBackGroundService();
     BackgroundUserPositionUseCaseInputPort backgroundUserPositionUseCaseInputPort = sl();
     mainBackGround.addBackGroundUserCase(backgroundUserPositionUseCaseInputPort);
+  }
+
+  void startFireBaseMessageService() {
+    FireBaseMessageController fireBaseMessageController = sl();
+    fireBaseMessageController.controllerStartService();
   }
 }

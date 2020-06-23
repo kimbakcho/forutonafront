@@ -32,7 +32,7 @@ void main() {
     mockFDio = MockFDio();
   });
 
-  test('Ball 영향력순 검색 BackEnd Data 디코딩', () async {
+  test('Ball 영향력순 검색 API Call', () async {
     //arrange
     when(mockFDio.get("/v1/FBall/ListUpFromBallInfluencePower",
             queryParameters: anyNamed('queryParameters')))

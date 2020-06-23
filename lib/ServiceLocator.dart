@@ -4,6 +4,15 @@ import 'package:forutonafront/Common/FireBaseAdapter/FireBaseAdapter.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageAdapter.dart';
+import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenReFreshUseCase/FireBaseTokenReFreshUseCase.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenReFreshUseCase/FireBaseTokenReFreshUseCaseInputPort.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/LaunchMessageUseCase/LaunchMessageUseCase.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/ResumeMessageUseCase/ResumeMessageUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
 import 'package:forutonafront/ForutonaUser/Data/Repository/FUserRepositoryImpl.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
@@ -64,4 +73,23 @@ init() {
 
   sl.registerSingleton<TagRankingFromBallInfluencePowerUseCaseInputPort>(
       TagRankingFromBallInfluencePowerUseCase(tagRepository: sl()));
+
+  sl.registerSingleton<FireBaseMessageAdapter>(FireBaseMessageAdapter());
+
+  sl.registerSingleton<BaseMessageUseCaseInputPort>(BackGroundMessageUseCase(),instanceName: "BackGroundMessageUseCase");
+  sl.registerSingleton<BaseMessageUseCaseInputPort>(LaunchMessageUseCase(),instanceName: "LaunchMessageUseCase");
+  sl.registerSingleton<BaseMessageUseCaseInputPort>(BaseMessageUseCase(),instanceName: "BaseMessageUseCase");
+  sl.registerSingleton<BaseMessageUseCaseInputPort>(ResumeMessageUseCase(),instanceName: "ResumeMessageUseCase");
+
+  sl.registerSingleton<FireBaseTokenReFreshUseCaseInputPort>(FireBaseTokenReFreshUseCase());
+
+  sl.registerSingleton<FireBaseMessageController>(FireBaseMessageController(
+    baseMessageUseCase: sl.get(instanceName: "BaseMessageUseCase"),
+    launchMessageUseCase: sl.get(instanceName: "LaunchMessageUseCase"),
+    resumeMessageUseCase: sl.get(instanceName: "ResumeMessageUseCase"),
+    fireBaseMessageAdapter: sl(),
+    fireBaseTokenReFreshUseCaseInputPort: sl()
+  ));
+
+
 }

@@ -24,7 +24,7 @@ void main() {
     when(mockFireBaseAdapter.getFireBaseIdToken()).thenAnswer((realInvocation) async=> "token");
   });
 
-  test('updateUserPosition', () async {
+  test('updateUserPosition DataSource call', () async {
     //arrange
     when(mockUserRemoteDataSource.updateUserPosition(LatLng(121.0,37.0),any))
         .thenAnswer((_) async => 1);
@@ -35,7 +35,7 @@ void main() {
     expect(result, 1);
   });
 
-  test('getUserInfoSimple1', () async {
+  test('FUserInfoSimple1 DataSource Call', () async {
     //arrange
     var resResult = FUserInfoSimple1();
     resResult.nickName = "test";

@@ -35,7 +35,7 @@ void main() {
         fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
   });
 
-  test('영향력순 으로 Ball ListUp ', () async {
+  test('영향력순 으로 Ball ListUp DataSource Call ', () async {
     //arrange
 
     //act
