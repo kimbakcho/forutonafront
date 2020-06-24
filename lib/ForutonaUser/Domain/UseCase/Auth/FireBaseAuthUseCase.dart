@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/Common/FireBaseAdapter/FireBaseAdapter.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
 
 class FireBaseAuthUseCase implements AuthUserCaseInputPort {
-  FireBaseAdapter fireBaseAdapter;
+  FireBaseAuthAdapterForUseCase fireBaseAdapter;
 
   FireBaseAuthUseCase(
       {@required this.fireBaseAdapter})

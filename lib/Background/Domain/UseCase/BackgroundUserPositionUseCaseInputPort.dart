@@ -1,8 +1,9 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/Common/FireBaseAdapter/FireBaseAdapter.dart';
+
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'BaseBackGroundUseCase.dart';
@@ -18,15 +19,15 @@ class BackgroundUserPositionUseCase
 
   FUserRepository fUserRepository;
 
-  FireBaseAdapter fireBaseAdapter;
+  FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
 
   BackgroundUserPositionUseCase(
       {@required this.geoLocationUtilUseCaseInputPort,
       @required this.fUserRepository,
-      @required this.fireBaseAdapter})
+      @required this.fireBaseAuthAdapterForUseCase})
       : assert(geoLocationUtilUseCaseInputPort != null),
         assert(fUserRepository != null),
-        assert(fireBaseAdapter != null);
+        assert(fireBaseAuthAdapterForUseCase != null);
 
   @override
   void startServiceSchedule() {
@@ -45,7 +46,7 @@ class BackgroundUserPositionUseCase
   @override
   Future<void> loop() async {
     print("UserPositionSendService loop");
-    if(await fireBaseAdapter.isLogin()){
+    if(await fireBaseAuthAdapterForUseCase.isLogin()){
       var position =
       await geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
       fUserRepository

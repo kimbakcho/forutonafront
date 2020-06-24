@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageAdapter.dart';
+import 'package:forutonafront/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
+
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
 import 'package:mockito/mockito.dart';
@@ -37,7 +38,6 @@ void main() {
         onMessage: anyNamed("onMessage"),
         onLaunch: anyNamed("onLaunch"),
         onResume: anyNamed("onResume")));
-    verify(mockFireBaseMessageAdapter.setRefreshTokenUseCase(any));
 
   });
 }

@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
 import 'package:forutonafront/Common/SignValid/SignIn/SignInValidWithSignInService.dart';
+import 'package:forutonafront/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 
 class FireBaseSignInValidImpl implements SignInValidWithSignInService{
   bool _signInError = false;
   String _signInErrorText = "";
+
 
 
   @override
@@ -24,6 +27,7 @@ class FireBaseSignInValidImpl implements SignInValidWithSignInService{
     _signInErrorText = "";
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pw);
+
     }on PlatformException catch (e) {
       FireBaseValidErrorUtil fireBaseValidErrorUtil = new FireBaseValidErrorUtil();
       _signInError = true;

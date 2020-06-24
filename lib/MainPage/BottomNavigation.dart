@@ -72,11 +72,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   onPressed: () async {
                     //BPage 의 WebviewScaffold 가 Navigator를 Push 해도 띄어져 있는 버그가 있어
                     //해결이 안되 GCODE 페이지로 PageController 로 옮긴 다음에 처리
-                    if(model.currentState == HCodeState.BCODE){
-                      model.jumpToPage(HCodeState.GCODE);
-                    }
 
-                    if (!await model.checkUser()) {
+
+                    if (await model.checkUser()) {
+                      model.jumpToPage(HCodeState.GCODE);
+
+                    }else {
+                      if(model.currentState == HCodeState.BCODE){
+                       model.jumpToPage(HCodeState.GCODE);
+                      }
                       await model.gotoJ001Page(context);
                       if (!await model.checkUser()) {
                         model.jumpToPage(HCodeState.HCDOE);

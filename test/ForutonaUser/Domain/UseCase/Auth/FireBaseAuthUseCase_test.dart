@@ -1,12 +1,13 @@
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Common/FireBaseAdapter/FireBaseAdapter.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:mockito/mockito.dart';
 import 'package:matcher/matcher.dart';
-class MockFireBaseAdapter extends Mock implements FireBaseAdapter{}
+class MockFireBaseAdapter extends Mock implements FireBaseAuthAdapterForUseCase{}
 class MockAuthUserCaseOutputPort extends Mock implements AuthUserCaseOutputPort{}
 void main (){
 

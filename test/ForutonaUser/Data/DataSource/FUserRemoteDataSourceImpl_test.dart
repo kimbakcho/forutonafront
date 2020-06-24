@@ -49,4 +49,16 @@ void main() {
     verify(fDio.put("/v1/ForutonaUser/UserPosition", data: anyNamed('data')));
     expect(result, 1);
   });
+
+
+  test('should be API Call updateFireBaseMessageToken', () async {
+    //arrange
+    when(fDio.put("/v1/ForutonaUser/FireBaseMessageToken", queryParameters: anyNamed('queryParameters')))
+        .thenAnswer((_) async => Response<dynamic>(data: 1));
+    //act
+    var result = await fUserRemoteDataSource.updateFireBaseMessageToken("test","testToken",fDio);
+    //assert
+    verify(fDio.put("/v1/ForutonaUser/FireBaseMessageToken", queryParameters: anyNamed('queryParameters')));
+    expect(result, 1);
+  });
 }

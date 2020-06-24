@@ -1,18 +1,18 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Background/Domain/UseCase/BackgroundUserPositionUseCaseInputPort.dart';
-import 'package:forutonafront/Common/FireBaseAdapter/FireBaseAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Data/Repository/FUserRepositoryImpl.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/mockito.dart';
 
 class MockGeoLocationUtilUseCase extends Mock implements GeoLocationUtilUseCaseInputPort{}
 class MockFUserRepository extends Mock implements FUserRepository{}
-class MockFireBaseAdapter extends Mock implements FireBaseAdapter{}
+class MockFireBaseAdapter extends Mock implements FireBaseAuthAdapterForUseCase{}
 void main(){
 
   BackgroundUserPositionUseCaseInputPort userPositionUseCase;
@@ -28,7 +28,7 @@ void main(){
 
     userPositionUseCase =
         BackgroundUserPositionUseCase(geoLocationUtilUseCaseInputPort: mockGeoLocationUtilUseCase,
-        fUserRepository: mockFUserRepository,fireBaseAdapter: mockFireBaseAdapter);
+        fUserRepository: mockFUserRepository,fireBaseAuthAdapterForUseCase: mockFireBaseAdapter);
   });
 
   test('로그인 상황 일때 최근 위치값 업데이트 하기', () async {

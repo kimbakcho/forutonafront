@@ -9,6 +9,7 @@ abstract class FUserRemoteDataSource {
 
   Future<FUserInfoSimple1> getUserInfoSimple1(FUserReqDto reqDto,FDio noneTokenFDio);
   Future<int> updateUserPosition(LatLng latLng,FDio tokenFDio);
+  Future<int> updateFireBaseMessageToken(String uid,String token,FDio tokenFDio);
 
 }
 
@@ -26,6 +27,16 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource{
       lng: latLng.longitude,
       lat: latLng.latitude,
     ).toJson());
+    return response.data;
+  }
+
+  @override
+  Future<int> updateFireBaseMessageToken(String uid, String token,FDio tokenFDio) async {
+    var response = await tokenFDio.put("/v1/ForutonaUser/FireBaseMessageToken",
+    queryParameters: {
+      "uid":uid,
+      "token":token
+    });
     return response.data;
   }
 

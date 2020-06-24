@@ -12,12 +12,14 @@ import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallUpdateReqDto.dart';
 import 'package:forutonafront/ICodePage/IM001/BallImageItemDto.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'IssueBallUseCaseInputPort.dart';
 import 'IssueBallUseCaseOutputPort.dart';
 
 class IssueBallUseCase implements IssueBallUseCaseInputPort {
   IssueBallTypeRepository _issueBallTypeRepository =
       new IssueBallTypeRepositoryImpl(
+        fireBaseAuthBaseAdapter: sl(),
           issueBallTypeRemoteDateSource: new IssueBallTypeRemoteDateSourceImpl());
 
   @override

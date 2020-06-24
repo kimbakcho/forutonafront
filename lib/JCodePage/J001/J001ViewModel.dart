@@ -12,6 +12,7 @@ import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart'
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
 import 'package:forutonafront/JCodePage/J008/J008View.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class J001ViewModel extends ChangeNotifier {

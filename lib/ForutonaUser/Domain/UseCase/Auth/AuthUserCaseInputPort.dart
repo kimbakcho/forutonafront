@@ -5,4 +5,5 @@ import 'AuthUserCaseOutputPort.dart';
 abstract class AuthUserCaseInputPort {
   Future<bool> isLogin({AuthUserCaseOutputPort authUserCaseOutputPort});
   Future<String> myUid();
+
 }
