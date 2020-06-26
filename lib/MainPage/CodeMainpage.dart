@@ -5,6 +5,7 @@ import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
 import 'package:forutonafront/ICodePage/ICodeMainPage.dart';
+import 'package:forutonafront/KCodePage/KCodeMainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -38,9 +39,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
                           HCodeMainPage(),
                           ICodeMainPage(),
                           BCodeMainPage(),
-                          Container(
-                            child: Text("4"),
-                          ),
+                          KCodeMainPage(),
                           GCodeMainPage()
                         ]))
               ]),

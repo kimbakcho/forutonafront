@@ -100,4 +100,5 @@ class ForutonaIcon {
   static const IconData leftarrow = IconData(0xe84c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData dots = IconData(0xe84d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData gps = IconData(0xe84e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData snsservicemenu = IconData(0xe84f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

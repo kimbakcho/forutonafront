@@ -5,27 +5,25 @@ import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMes
 
 
 class FireBaseMessageController {
-  FireBaseMessageAdapter fireBaseMessageAdapter;
-  BaseMessageUseCaseInputPort launchMessageUseCase;
-  BaseMessageUseCaseInputPort baseMessageUseCase;
-  BaseMessageUseCaseInputPort resumeMessageUseCase;
+  FireBaseMessageAdapter _fireBaseMessageAdapter;
+  BaseMessageUseCaseInputPort _launchMessageUseCase;
+  BaseMessageUseCaseInputPort _baseMessageUseCase;
+  BaseMessageUseCaseInputPort _resumeMessageUseCase;
 
   FireBaseMessageController(
-      {@required this.fireBaseMessageAdapter,
-      @required this.launchMessageUseCase,
-      @required this.baseMessageUseCase,
-      @required this.resumeMessageUseCase})
-      : assert(fireBaseMessageAdapter != null),
-        assert(launchMessageUseCase != null),
-        assert(baseMessageUseCase != null),
-        assert(resumeMessageUseCase != null);
+      {@required FireBaseMessageAdapter fireBaseMessageAdapter,
+      @required BaseMessageUseCaseInputPort launchMessageUseCase,
+      @required BaseMessageUseCaseInputPort baseMessageUseCase,
+      @required BaseMessageUseCaseInputPort resumeMessageUseCase})
+      : _fireBaseMessageAdapter = fireBaseMessageAdapter,
+        _launchMessageUseCase = launchMessageUseCase,
+        _baseMessageUseCase = baseMessageUseCase,
+        _resumeMessageUseCase = resumeMessageUseCase;
 
   controllerStartService(){
-    fireBaseMessageAdapter.configure(
-        onLaunch: launchMessageUseCase.message,
-        onMessage: baseMessageUseCase.message,
-        onResume: resumeMessageUseCase.message);
-
-
+    _fireBaseMessageAdapter.configure(
+        onLaunch: _launchMessageUseCase.message,
+        onMessage: _baseMessageUseCase.message,
+        onResume: _resumeMessageUseCase.message);
   }
 }

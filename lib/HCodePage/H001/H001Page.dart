@@ -31,8 +31,6 @@ class H001Page extends StatelessWidget {
                   CommonLoadingComponent() : Container()
                 ])))
       ]);
-
-
   }
 
   Container ballEmptyPanel() {

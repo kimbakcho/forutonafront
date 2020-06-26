@@ -18,7 +18,8 @@ void main() {
     mockBackgroundUserPositionUseCaseInputPort = MockBackgroundUserPositionUseCaseInputPort();
     mockBackgroundFetchAdapter = MockBackgroundFetchAdapter();
     mainBackGround = MainBackGroundImpl(
-        backgroundFetchAdapter: mockBackgroundFetchAdapter);
+        backgroundFetchAdapter: mockBackgroundFetchAdapter,
+      backgroundUserPositionUseCaseInputPort:mockBackgroundUserPositionUseCaseInputPort );
   });
 
   test('should config with Loop 메소드 등록', () async {
@@ -36,7 +37,6 @@ void main() {
    when(mockBackgroundUserPositionUseCaseInputPort.getServiceTaskId).thenReturn('com.wing.forutonafront.UserPositionService');
    //act
    mainBackGround.startBackGroundService();
-   mainBackGround.addBackGroundUserCase(mockBackgroundUserPositionUseCaseInputPort);
    mainBackGround.backGroundServiceLoop('com.wing.forutonafront.UserPositionService');
    //assert
    verifyInOrder([

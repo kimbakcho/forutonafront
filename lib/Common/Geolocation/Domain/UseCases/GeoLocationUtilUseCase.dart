@@ -23,7 +23,6 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
   Position _currentWithLastPosition;
   String _currentWithLastAddress;
 
-  GeoLocationUtilUseCase._internal();
 
   Future<bool> useGpsReq(BuildContext context) async {
       GlobalModel globalModel = Provider.of(context,listen: false);

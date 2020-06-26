@@ -61,7 +61,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     model.jumpToPage(HCodeState.KCODE);
                   },
                   child: Icon(
-                    ForutonaIcon.social,
+                    ForutonaIcon.snsservicemenu,
+                    size: 19,
                     color: model.currentState == HCodeState.KCODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
@@ -72,11 +73,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   onPressed: () async {
                     //BPage 의 WebviewScaffold 가 Navigator를 Push 해도 띄어져 있는 버그가 있어
                     //해결이 안되 GCODE 페이지로 PageController 로 옮긴 다음에 처리
-
-
                     if (await model.checkUser()) {
                       model.jumpToPage(HCodeState.GCODE);
-
                     }else {
                       if(model.currentState == HCodeState.BCODE){
                        model.jumpToPage(HCodeState.GCODE);

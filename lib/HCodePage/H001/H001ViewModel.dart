@@ -34,6 +34,7 @@ class H001ViewModel
     implements
         FBallListUpFromInfluencePowerUseCaseOutputPort,
         TagRankingFromBallInfluencePowerUseCaseOutputPort {
+
   final BuildContext context;
 
   Position _currentSearchPosition;

@@ -8,14 +8,15 @@ import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallSty
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/IssueBallWidgetStyle1ViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:meta/meta.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class IssueBallWidgetStyle1 extends StatelessWidget
     implements BallStyle1Widget {
   IssueBall _issueBall;
-  IssueBallWidgetStyle1({@required FBallResDto fBallResDto}){
+
+  IssueBallWidgetStyle1({@required FBallResDto fBallResDto}) {
     _issueBall = IssueBall.fromFBallResDto(fBallResDto);
   }
 
@@ -23,96 +24,98 @@ class IssueBallWidgetStyle1 extends StatelessWidget
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         key: UniqueKey(),
-        create: (_) =>
-            IssueBallWidgetStyle1ViewModel(context: context,issueBall: _issueBall),
-        child:
-            Consumer<IssueBallWidgetStyle1ViewModel>(builder: (_, model, child) {
+        create: (_) => IssueBallWidgetStyle1ViewModel(
+            context: context, issueBall: _issueBall),
+        child: Consumer<IssueBallWidgetStyle1ViewModel>(
+            builder: (_, model, child) {
           return Stack(
             children: <Widget>[
-              model.issueBall.ballDeleteFlag ?  Container(key: UniqueKey(),height: 0) :
-              Container(
-                  key: UniqueKey(),
-                  margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: (){
-                      model.goIssueDetailPage(issueBall: model.issueBall,outputPort: model);
-                    },
-                    child: Column(children: <Widget>[
-                      ballHeader(model,context),
-                      divider(),
-                      !model.issueBall.ballDeleteFlag
-                          ? ballMainPicture(model, context)
-                          : Container(),
-                      ballProfileBar(model),
-                      ballTextBar(model, context),
-                      divider(),
-                      Container(
-                        height: 48.00,
-                        padding: EdgeInsets.fromLTRB(14, 0, 14, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(model.issueBall.getDisplayLikeCount(),
-                                style: GoogleFonts.notoSans(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: Color(0xff78849e),
-                                )),
-                            Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 1),
-                                child: Icon(ForutonaIcon.thumbsup,
-                                    color: Color(0xff78849E), size: 17)),
-                            SizedBox(width: 19),
-                            Text(model.issueBall.getDisplayDisLikeCount(),
-                                style: GoogleFonts.notoSans(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: Color(0xff78849e),
-                                )),
-                            Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                child: Icon(ForutonaIcon.thumbsdown,
-                                    color: Color(0xff78849E), size: 17)),
-                            SizedBox(width: 19),
-                            Text(model.issueBall.getDisplayCommentCount(),
-                                style: GoogleFonts.notoSans(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Color(0xff78849e),
-                                )),
-                            Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                child: Icon(ForutonaIcon.comment,
-                                    color: Color(0xff78849E), size: 17)),
-                            SizedBox(width: 19),
-                            Text(model.issueBall.getDisplayRemainingTime(),
-                                style: GoogleFonts.notoSans(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Color(0xff78849e),
-                                )),
-                            Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                child: Icon(ForutonaIcon.accesstime,
-                                    color: Color(0xff78849E), size: 17)),
-                          ],
-                        ),
-                      )
-                    ]),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xffffffff),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0.00, 4.00),
-                        color: Color(0xff455b63).withOpacity(0.08),
-                        blurRadius: 16,
+              model.issueBall.ballDeleteFlag
+                  ? Container(key: UniqueKey(), height: 0)
+                  : Container(
+                      key: UniqueKey(),
+                      margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {
+                          model.goIssueDetailPage(
+                              issueBall: model.issueBall, outputPort: model);
+                        },
+                        child: Column(children: <Widget>[
+                          ballHeader(model, context),
+                          divider(),
+                          !model.issueBall.ballDeleteFlag
+                              ? ballMainPicture(model, context)
+                              : Container(),
+                          ballProfileBar(model),
+                          ballTextBar(model, context),
+                          divider(),
+                          Container(
+                            height: 48.00,
+                            padding: EdgeInsets.fromLTRB(14, 0, 14, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(model.issueBall.getDisplayLikeCount(),
+                                    style: GoogleFonts.notoSans(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      color: Color(0xff78849e),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(5, 0, 0, 1),
+                                    child: Icon(ForutonaIcon.thumbsup,
+                                        color: Color(0xff78849E), size: 17)),
+                                SizedBox(width: 19),
+                                Text(model.issueBall.getDisplayDisLikeCount(),
+                                    style: GoogleFonts.notoSans(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      color: Color(0xff78849e),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                    child: Icon(ForutonaIcon.thumbsdown,
+                                        color: Color(0xff78849E), size: 17)),
+                                SizedBox(width: 19),
+                                Text(model.issueBall.getDisplayCommentCount(),
+                                    style: GoogleFonts.notoSans(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Color(0xff78849e),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                    child: Icon(ForutonaIcon.comment,
+                                        color: Color(0xff78849E), size: 17)),
+                                SizedBox(width: 19),
+                                Text(model.issueBall.getDisplayRemainingTime(),
+                                    style: GoogleFonts.notoSans(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Color(0xff78849e),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                    child: Icon(ForutonaIcon.accesstime,
+                                        color: Color(0xff78849E), size: 17)),
+                              ],
+                            ),
+                          )
+                        ]),
                       ),
-                    ],
-                    borderRadius: BorderRadius.circular(12.00),
-                  )),
+                      decoration: BoxDecoration(
+                        color: Color(0xffffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0.00, 4.00),
+                            color: Color(0xff455b63).withOpacity(0.08),
+                            blurRadius: 16,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(12.00),
+                      )),
               model.isLoading ? CommonLoadingComponent() : Container()
             ],
           );
@@ -195,12 +198,11 @@ class IssueBallWidgetStyle1 extends StatelessWidget
         ? Stack(children: <Widget>[
             FlatButton(
                 padding: EdgeInsets.all(0),
-                onPressed: ()  {
+                onPressed: () {
                   model.gotoBallImageViewer();
                 },
                 child: Hero(
-                    tag: model.issueBall.ballUuid +
-                        "picturefromBigpicture",
+                    tag: model.issueBall.ballUuid + "picturefromBigpicture",
                     child: CachedNetworkImage(
                       imageUrl: model.issueBall.mainPictureSrc(),
                       imageBuilder: (context, imageProvider) => Container(
@@ -212,10 +214,14 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                           ))),
                       placeholder: (context, url) => Container(
                         height: 200,
-                        child:  Container(
+                        child: Container(
                           color: Color(0xfff2f0f1),
                           child: Center(
-                            child: Icon(ForutonaIcon.imageloding,color: Color(0xffE4E7E8),size: 100,),
+                            child: Icon(
+                              ForutonaIcon.imageloding,
+                              color: Color(0xffE4E7E8),
+                              size: 100,
+                            ),
                           ),
                         ),
                       ),
@@ -239,13 +245,14 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                               }));
                             },
                             padding: EdgeInsets.all(0),
-                            child: Text("+${model.issueBall.pictureCount() - 1}",
-                                style: TextStyle(
-                                  fontFamily: "Noto Sans CJK KR",
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                  color: Color(0xffffffff),
-                                )),
+                            child:
+                                Text("+${model.issueBall.pictureCount() - 1}",
+                                    style: TextStyle(
+                                      fontFamily: "Noto Sans CJK KR",
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12,
+                                      color: Color(0xffffffff),
+                                    )),
                           ),
                           height: 26.00,
                           width: 31.00,
@@ -265,7 +272,8 @@ class IssueBallWidgetStyle1 extends StatelessWidget
         : Container();
   }
 
-  Container ballHeader(IssueBallWidgetStyle1ViewModel model,BuildContext context) {
+  Container ballHeader(
+      IssueBallWidgetStyle1ViewModel model, BuildContext context) {
     return Container(
       height: 68,
       child: Stack(children: <Widget>[
@@ -285,11 +293,10 @@ class IssueBallWidgetStyle1 extends StatelessWidget
         Positioned(
             top: 0,
             left: 44,
-            width: MediaQuery.of(context).size.width-100,
+            width: MediaQuery.of(context).size.width - 100,
             child: Container(
                 child: Text(model.issueBall.getDisplayBallName(),
                     style: GoogleFonts.notoSans(
-                      letterSpacing: 2,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                       color: Color(0xff454f63),
@@ -299,7 +306,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
         Positioned(
           top: 19,
           left: 44,
-          width: MediaQuery.of(context).size.width-100,
+          width: MediaQuery.of(context).size.width - 100,
           child: Container(
             child: Text(model.issueBall.placeAddress,
                 style: GoogleFonts.notoSans(
@@ -327,5 +334,4 @@ class IssueBallWidgetStyle1 extends StatelessWidget
       padding: EdgeInsets.fromLTRB(13, 16, 12, 14),
     );
   }
-
 }

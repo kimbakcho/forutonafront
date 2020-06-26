@@ -15,41 +15,41 @@ abstract class FireBaseAuthAdapterForUseCase
 class FireBaseAuthAdapterForUseCaseImpl
     implements FireBaseAuthAdapterForUseCase {
 
-  final FireBaseMessageAdapter fireBaseMessageAdapter;
+  final FireBaseMessageAdapter _fireBaseMessageAdapter;
 
   final FireBaseMessageTokenUpdateUseCaseInputPort
-      fireBaseMessageTokenUpdateUseCaseInputPort;
+      _fireBaseMessageTokenUpdateUseCaseInputPort;
 
-  final FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter;
+  final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
 
   FireBaseAuthAdapterForUseCaseImpl(
-      {@required this.fireBaseAuthBaseAdapter,
-      @required this.fireBaseMessageAdapter,
-      @required this.fireBaseMessageTokenUpdateUseCaseInputPort})
-      : assert(fireBaseAuthBaseAdapter != null),
-        assert(fireBaseMessageAdapter != null),
-        assert(fireBaseMessageTokenUpdateUseCaseInputPort != null);
+      {@required FireBaseMessageAdapter fireBaseMessageAdapter,
+      @required FireBaseMessageTokenUpdateUseCaseInputPort fireBaseMessageTokenUpdateUseCaseInputPort,
+      @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter})
+      : _fireBaseMessageAdapter = fireBaseMessageAdapter,
+        _fireBaseMessageTokenUpdateUseCaseInputPort = fireBaseMessageTokenUpdateUseCaseInputPort,
+        _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter;
 
   startOnAuthStateChangedListen(){
-    FirebaseAuth.instance.onAuthStateChanged.listen(onAuthStateChange);
+    FirebaseAuth.instance.onAuthStateChanged.listen(_onAuthStateChange);
   }
 
   Future<String> getFireBaseIdToken() async {
-   return await fireBaseAuthBaseAdapter.getFireBaseIdToken();
+   return await _fireBaseAuthBaseAdapter.getFireBaseIdToken();
   }
 
   Future<bool> isLogin() async {
-    return await fireBaseAuthBaseAdapter.isLogin();
+    return await _fireBaseAuthBaseAdapter.isLogin();
   }
 
   Future<String> userUid() async {
-    return await fireBaseAuthBaseAdapter.userUid();
+    return await _fireBaseAuthBaseAdapter.userUid();
   }
 
-  onAuthStateChange(FirebaseUser user) async {
+  _onAuthStateChange(FirebaseUser user) async {
     if(await isLogin()){
-      fireBaseMessageTokenUpdateUseCaseInputPort.updateFireBaseMessageToken(
-          user.uid, await fireBaseMessageAdapter.getCurrentToken());
+      _fireBaseMessageTokenUpdateUseCaseInputPort.updateFireBaseMessageToken(
+          user.uid, await _fireBaseMessageAdapter.getCurrentToken());
     }
   }
 }

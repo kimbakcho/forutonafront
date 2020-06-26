@@ -1,56 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Background/BackgroundFetchAdapter/BackgroundFetchAdapter.dart';
-import 'package:forutonafront/Background/Domain/UseCase/BaseBackGroundUseCase.dart';
+import 'package:forutonafront/Background/Domain/UseCase/BackgroundUserPositionUseCaseInputPort.dart';
+import 'package:forutonafront/Background/Domain/UseCase/BaseBackGroundUseCaseInputPort.dart';
 
 abstract class MainBackGround {
   void startBackGroundService();
-
-  void addBackGroundUserCase(BaseBackGroundUseCaseInputPort useCaseInputPort);
 
   void backGroundServiceLoop(String taskId);
 }
 
 class MainBackGroundImpl implements MainBackGround {
 
-  BackgroundFetchAdapter backgroundFetchAdapter;
-  MainBackGroundImpl({@required this.backgroundFetchAdapter})
-      : assert(backgroundFetchAdapter != null);
-  List<BaseBackGroundUseCaseInputPort> baseBackGroundUseCaseInputPortList = [];
+  final BackgroundUserPositionUseCaseInputPort
+      _backgroundUserPositionUseCaseInputPort;
+
+  final BackgroundFetchAdapter _backgroundFetchAdapter;
+
+  MainBackGroundImpl(
+      {@required
+          BackgroundFetchAdapter backgroundFetchAdapter,
+      @required
+          BackgroundUserPositionUseCaseInputPort
+              backgroundUserPositionUseCaseInputPort})
+      : _backgroundFetchAdapter = backgroundFetchAdapter,
+        _backgroundUserPositionUseCaseInputPort =
+            backgroundUserPositionUseCaseInputPort;
+
+  List<BaseBackGroundUseCaseInputPort> _baseBackGroundUseCaseInputPortList = [];
 
   @override
   void startBackGroundService() {
-    backgroundFetchAdapter.configWithLoopFuncRegister(backGroundServiceLoop);
+    _backgroundFetchAdapter.configWithLoopFuncRegister(backGroundServiceLoop);
+    _addBackGroundUserCase(_backgroundUserPositionUseCaseInputPort);
   }
 
   void backGroundServiceLoop(String taskId) {
-    baseBackGroundUseCaseInputPortList.forEach((useCaseItem) {
-      if (isUseCaseTask(useCaseItem, taskId)) {
-        startBackGroundLoop(useCaseItem, taskId);
+    _baseBackGroundUseCaseInputPortList.forEach((useCaseItem) {
+      if (_isUseCaseTask(useCaseItem, taskId)) {
+        _startBackGroundLoop(useCaseItem, taskId);
       }
     });
   }
 
-  @override
-  void addBackGroundUserCase(BaseBackGroundUseCaseInputPort useCaseInputPort) {
-    baseBackGroundUseCaseInputPortList.add(useCaseInputPort);
+  void _addBackGroundUserCase(BaseBackGroundUseCaseInputPort useCaseInputPort) {
+    _baseBackGroundUseCaseInputPortList.add(useCaseInputPort);
     useCaseInputPort.startServiceSchedule();
   }
 
-  bool isUseCaseTask(
+  bool _isUseCaseTask(
           BaseBackGroundUseCaseInputPort useCaseItem, String taskId) =>
       useCaseItem.getServiceTaskId == taskId;
 
-  void startBackGroundLoop(
+  void _startBackGroundLoop(
       BaseBackGroundUseCaseInputPort backGroundService, String taskId) {
     try {
       backGroundService.loop();
     } catch (e) {
       throw e;
     } finally {
-      backgroundFetchAdapter.backgroundFetchFinish(taskId);
+      _backgroundFetchAdapter.backgroundFetchFinish(taskId);
     }
   }
-
-
-
 }

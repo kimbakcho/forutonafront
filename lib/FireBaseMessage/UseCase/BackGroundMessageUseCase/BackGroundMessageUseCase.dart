@@ -8,5 +8,4 @@ class BackGroundMessageUseCase implements BaseMessageUseCaseInputPort{
     // TODO: implement message
     throw UnimplementedError();
   }
-
 }

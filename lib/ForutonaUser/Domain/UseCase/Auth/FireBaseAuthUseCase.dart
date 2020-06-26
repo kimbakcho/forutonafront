@@ -3,17 +3,15 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInput
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
-
 class FireBaseAuthUseCase implements AuthUserCaseInputPort {
-  FireBaseAuthAdapterForUseCase fireBaseAdapter;
+  FireBaseAuthAdapterForUseCase _fireBaseAdapter;
 
-  FireBaseAuthUseCase(
-      {@required this.fireBaseAdapter})
-      : assert(fireBaseAdapter != null);
+  FireBaseAuthUseCase({@required FireBaseAuthAdapterForUseCase fireBaseAdapter})
+      : _fireBaseAdapter = fireBaseAdapter;
 
   @override
   Future<bool> isLogin({AuthUserCaseOutputPort authUserCaseOutputPort}) async {
-    var isLogin = await fireBaseAdapter.isLogin();
+    var isLogin = await _fireBaseAdapter.isLogin();
     if (authUserCaseOutputPort != null) {
       authUserCaseOutputPort.onLoginCheck(isLogin);
     }
@@ -22,7 +20,6 @@ class FireBaseAuthUseCase implements AuthUserCaseInputPort {
 
   @override
   Future<String> myUid() async {
-    return await fireBaseAdapter.userUid();
+    return await _fireBaseAdapter.userUid();
   }
-
 }

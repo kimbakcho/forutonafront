@@ -8,30 +8,31 @@ import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseA
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FUserRepositoryImpl implements FUserRepository {
-  final FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter;
 
-  final FUserRemoteDataSource fUserRemoteDataSource;
+  final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
+
+  final FUserRemoteDataSource _fUserRemoteDataSource;
 
   FUserRepositoryImpl(
-      {@required this.fUserRemoteDataSource,
-      @required this.fireBaseAuthBaseAdapter})
-      : assert(fUserRemoteDataSource != null),
-        assert(FireBaseAuthBaseAdapter != null);
+      {@required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
+      @required FUserRemoteDataSource fUserRemoteDataSource})
+      : _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
+        _fUserRemoteDataSource = fUserRemoteDataSource;
 
   @override
   Future<FUserInfoSimple1> getUserInfoSimple1(FUserReqDto reqDto) {
-    return fUserRemoteDataSource.getUserInfoSimple1(reqDto, FDio.noneToken());
+    return _fUserRemoteDataSource.getUserInfoSimple1(reqDto, FDio.noneToken());
   }
 
   @override
   Future<int> updateUserPosition(LatLng latLng) async {
-    return await fUserRemoteDataSource.updateUserPosition(
-        latLng, FDio(await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+    return await _fUserRemoteDataSource.updateUserPosition(
+        latLng, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
   Future<int> updateFireBaseMessageToken(String uid, String token) async {
-    return await fUserRemoteDataSource.updateFireBaseMessageToken(
-        uid, token, FDio(await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+    return await _fUserRemoteDataSource.updateFireBaseMessageToken(
+        uid, token, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 }

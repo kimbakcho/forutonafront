@@ -1,5 +1,8 @@
 import 'package:forutonafront/Background/Domain/UseCase/BackgroundUserPositionUseCaseInputPort.dart';
 import 'package:forutonafront/Background/Presentation/MainBackGround.dart';
+import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
+import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
+import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
@@ -28,6 +31,8 @@ import 'package:get_it/get_it.dart';
 import 'Background/BackgroundFetchAdapter/BackgroundFetchAdapter.dart';
 import 'Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
+import 'Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
 import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
 import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
 import 'FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
@@ -71,7 +76,7 @@ init() {
   sl.registerSingleton<BackgroundFetchAdapter>(BackgroundFetchAdapter());
 
   sl.registerFactory<MainBackGround>(
-      () => MainBackGroundImpl(backgroundFetchAdapter: sl()));
+      () => MainBackGroundImpl(backgroundFetchAdapter: sl(),backgroundUserPositionUseCaseInputPort: sl()));
 
   sl.registerSingleton<AuthUserCaseInputPort>(
       FireBaseAuthUseCase(fireBaseAdapter: sl()));
@@ -108,5 +113,9 @@ init() {
     fireBaseMessageAdapter: sl(),
   ));
 
+  sl.registerSingleton<BaseOpenTalkInputPort>(InquireAboutAnythingUseCase(),instanceName: "InquireAboutAnythingUseCase");
+
+  sl.registerSingleton<BaseGoogleSurveyInputPort>(GoogleProposalOnServiceSurveyUseCase(),instanceName: "GoogleProposalOnServiceSurveyUseCase");
+  sl.registerSingleton<BaseGoogleSurveyInputPort>(GoogleSurveyErrorReportUseCase(),instanceName: "GoogleSurveyErrorReportUseCase");
 
 }

@@ -1,21 +1,17 @@
-
 import 'package:flutter/cupertino.dart';
-
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
-
 
 import 'FireBaseMessageTokenUpdateUseCaseInputPort.dart';
 
+class FireBaseMessageTokenUpdateUseCase
+    implements FireBaseMessageTokenUpdateUseCaseInputPort {
+  final FUserRepository _fUserRepository;
 
-class FireBaseMessageTokenUpdateUseCase implements FireBaseMessageTokenUpdateUseCaseInputPort{
-
-  final FUserRepository fUserRepository;
-
-  FireBaseMessageTokenUpdateUseCase({@required this.fUserRepository}):assert(fUserRepository!=null);
+  FireBaseMessageTokenUpdateUseCase({@required FUserRepository fUserRepository})
+      : _fUserRepository = fUserRepository;
 
   @override
-  Future<int> updateFireBaseMessageToken(String uid,String token) {
-    return fUserRepository.updateFireBaseMessageToken(uid,token);
+  Future<int> updateFireBaseMessageToken(String uid, String token) {
+    return _fUserRepository.updateFireBaseMessageToken(uid, token);
   }
-
 }
