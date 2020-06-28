@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
@@ -17,9 +17,8 @@ import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
-class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBallUseCaseOutputPort,GeoLocationUtilUseCaseOutputPort{
-
+class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
+    implements IssueBallUseCaseOutputPort, GeoLocationUtilUseCaseOutputPort {
   BuildContext context;
 
   IssueBall issueBall;
@@ -30,13 +29,17 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
 
   GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort = sl();
 
-  IssueBallWidgetStyle2ViewModel({@required this.context,@required FBallResDto userBallResDto}){
+  IssueBallWidgetStyle2ViewModel(
+      {@required this.context, @required FBallResDto userBallResDto}) {
     issueBall = IssueBall.fromFBallResDto(userBallResDto);
-    geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText
-      (ballLatLng: LatLng(issueBall.latitude,issueBall.longitude),geoLocationUtilUseCaseOp: this);
+    geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
+        ballLatLng: Position(
+            latitude: issueBall.latitude, longitude: issueBall.longitude),
+        geoLocationUtilUseCaseOp: this);
   }
+
   void goIssueDetailPage() async {
-    if(issueBall.ballDeleteFlag){
+    if (issueBall.ballDeleteFlag) {
       Fluttertoast.showToast(
           msg: "삭제된 Ball 입니다.",
           toastLength: Toast.LENGTH_SHORT,
@@ -45,30 +48,32 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
-    }else {
-      await Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ID001MainPage(issueBall: issueBall)));
-      issueBallUseCaseInputPort.selectBall(ballUuid: issueBall.ballUuid,outputPort: this);
+    } else {
+      await Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => ID001MainPage(issueBall: issueBall)));
+      issueBallUseCaseInputPort.selectBall(
+          ballUuid: issueBall.ballUuid, outputPort: this);
     }
   }
 
   void showBallSetting() async {
     BallModifyService ballModifyService = IssueBallModifyService();
     if (await issueBall.isCanModify()) {
-      CommonBallModifyWidgetResultType result = await ballModifyService
-          .showModifySelectDialog(context: context);
+      CommonBallModifyWidgetResultType result =
+          await ballModifyService.showModifySelectDialog(context: context);
       if (result == CommonBallModifyWidgetResultType.Update) {
-        await Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) {
-              return IM001MainPage(
-                  LatLng(issueBall.latitude, issueBall.longitude),
-                  issueBall.placeAddress, issueBall.ballUuid,
-                  IM001MainPageEnterMode.Update);
-            }
-        ));
-        issueBallUseCaseInputPort.selectBall(ballUuid: issueBall.ballUuid, outputPort: this);
+        await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return IM001MainPage(
+              LatLng(issueBall.latitude, issueBall.longitude),
+              issueBall.placeAddress,
+              issueBall.ballUuid,
+              IM001MainPageEnterMode.Update);
+        }));
+        issueBallUseCaseInputPort.selectBall(
+            ballUuid: issueBall.ballUuid, outputPort: this);
       } else {
-        issueBallUseCaseInputPort.deleteBall(ballUuid: issueBall.ballUuid, outputPort: this);
+        issueBallUseCaseInputPort.deleteBall(
+            ballUuid: issueBall.ballUuid, outputPort: this);
       }
     }
   }
@@ -90,10 +95,10 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
     notifyListeners();
   }
 
-  String getDistanceDisplayText(){
-    if(issueBall.ballDeleteFlag){
+  String getDistanceDisplayText() {
+    if (issueBall.ballDeleteFlag) {
       return "";
-    }else {
+    } else {
       return distanceDisplayText;
     }
   }
@@ -106,11 +111,11 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier implements IssueBall
 
   @override
   void onInsertBall(FBallResDto resDto) {
-    throw("here don't have action");
+    throw ("here don't have action");
   }
 
   @override
   void onUpdateBall() {
-    throw("here don't have action");
+    throw ("here don't have action");
   }
 }

@@ -12,6 +12,7 @@ import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,10 @@ class J007ViewModel extends ChangeNotifier {
   bool _isChangeProfileImage = false;
   bool _haveNickNameConfirm = false;
   bool _isLoading = false;
+
+  Preference _preference = sl();
+
+
   getIsLoading() {
     return _isLoading;
   }
@@ -45,7 +50,7 @@ class J007ViewModel extends ChangeNotifier {
       currentCountryCode = globalModel.fUserInfoJoinReqDto.countryCode;
     }
     if (globalModel.fUserInfoJoinReqDto.userProfileImageUrl == null) {
-      globalModel.fUserInfoJoinReqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
+      globalModel.fUserInfoJoinReqDto.userProfileImageUrl = _preference.basicProfileImageUrl;
     }
     currentProfileImage =
         NetworkImage(globalModel.fUserInfoJoinReqDto.userProfileImageUrl);
@@ -116,7 +121,7 @@ class J007ViewModel extends ChangeNotifier {
     if (_isChangeProfileImage) {
       if (_currentPickProfileImage == null) {
         globalModel.fUserInfoJoinReqDto.userProfileImageUrl =
-            Preference.basicProfileImageUrl;
+            _preference.basicProfileImageUrl;
       }
     }
     SnsLoginService snsLoginService =

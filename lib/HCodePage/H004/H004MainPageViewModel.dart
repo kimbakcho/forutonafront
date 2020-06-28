@@ -100,7 +100,7 @@ class H004MainPageViewModel extends ChangeNotifier implements BallSearchBarHisto
   }
 
   gotoH005Page(String searchText) async {
-    await _geoLocationUtilUseCaseInputPort.useGpsReq(context);
+    await _geoLocationUtilUseCaseInputPort.useGpsReq();
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) {
       return H005MainPage(searchText: searchText,initPageState: H005PageState.Title);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
@@ -25,7 +26,7 @@ import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePowe
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
-import 'package:geolocator/geolocator.dart';
+
 
 enum H001PageState { H001_01, H003_01 }
 
@@ -89,7 +90,7 @@ class H001ViewModel
 
     setDisplayAddressText("로딩중");
 
-    await _geoLocationUtilUseCaseInputPort.useGpsReq(context);
+    await _geoLocationUtilUseCaseInputPort.useGpsReq();
 
     _currentSearchPosition =
         await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();

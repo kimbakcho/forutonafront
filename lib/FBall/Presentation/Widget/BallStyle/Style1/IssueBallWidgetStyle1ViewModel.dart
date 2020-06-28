@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 
@@ -33,11 +34,10 @@ class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier
 
   BuildContext context;
 
-
   IssueBallWidgetStyle1ViewModel(
       {@required this.context, @required  this.issueBall}) {
     geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
-        ballLatLng: LatLng(issueBall.latitude,issueBall.longitude),
+        ballLatLng: Position(latitude: issueBall.latitude,longitude: issueBall.longitude),
         geoLocationUtilUseCaseOp: this);
   }
 

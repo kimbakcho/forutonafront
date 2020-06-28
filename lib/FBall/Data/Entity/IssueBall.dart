@@ -10,6 +10,7 @@ import 'package:forutonafront/FBall/Data/Value/IssueBallDescription.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:forutonafront/Tag/Data/Entity/FBallTag.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -18,6 +19,8 @@ part 'IssueBall.g.dart';
 
 @JsonSerializable()
 class IssueBall extends FBall{
+
+  Preference _preference = sl();
 
   IssueBall(){
     ballType = FBallType.IssueBall;
@@ -81,7 +84,7 @@ class IssueBall extends FBall{
 
   String getDisplayProfilePictureUrl() {
     if(ballDeleteFlag){
-      return Preference.basicProfileImageUrl;
+      return _preference.basicProfileImageUrl;
     }else {
       return super.profilePictureUrl;
     }

@@ -16,7 +16,7 @@ class GlobalModel with ChangeNotifier {
   PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto = PwFindPhoneAuthReqDto();
   FUserRepository _fUserRepository = new FUserRepository();
   Position currentAddress = Position();
-  Mutex geoRequestMutex = new Mutex();
+
 
   GlobalModel(){
     init();

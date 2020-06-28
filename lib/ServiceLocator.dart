@@ -23,6 +23,7 @@ import 'package:forutonafront/ForutonaUser/Data/Repository/FUserRepositoryImpl.d
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import 'package:forutonafront/Tag/Data/Repository/TagRepositoryImpl.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
@@ -45,6 +46,9 @@ import 'Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallIn
 final sl = GetIt.instance;
 
 init() {
+
+  sl.registerSingleton<Preference>(Preference());
+
   sl.registerSingleton<GeoLocationUtilUseCaseInputPort>(GeoLocationUtilUseCase());
 
   sl.registerSingleton<FireBaseAuthBaseAdapter>(FireBaseAuthBaseAdapterImpl());

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 
@@ -10,7 +11,7 @@ import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:forutonafront/ServiceLocator.dart';
-import 'package:geolocator/geolocator.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class H002_01PageViewModel extends ChangeNotifier {
@@ -91,7 +92,7 @@ class H002_01PageViewModel extends ChangeNotifier {
 
   void onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
-    await _geoLocationUtilUseCaseInputPort.useGpsReq(_context);
+    await _geoLocationUtilUseCaseInputPort.useGpsReq();
     var currentLocation = await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),

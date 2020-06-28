@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:geolocator/geolocator.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:provider/provider.dart';
-
 import 'MapGeoSearchPageViewModel.dart';
 
 class MapGeoSearchPage extends StatelessWidget {

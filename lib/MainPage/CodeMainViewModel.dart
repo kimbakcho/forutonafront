@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator.dart';
-import 'package:geolocator/geolocator.dart';
+
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 enum HCodeState { HCDOE, ICODE, BCODE, KCODE, GCODE  }
 
@@ -22,6 +24,9 @@ class CodeMainViewModel with ChangeNotifier {
 
   GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
 
+  //TODO DI 생성자 만들어야함
+  GeolocatorAdapter _geolocatorAdapter;
+
   CodeMainViewModel(this._context) {
     pageController = new PageController();
     currentState = HCodeState.HCDOE;
@@ -31,9 +36,9 @@ class CodeMainViewModel with ChangeNotifier {
   init()async {
     await FlutterStatusbarcolor.setStatusBarColor(Colors.white, animate: true);
     await FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    await _geoLocationUtilUseCaseInputPort.useGpsReq(_context);
+    await _geoLocationUtilUseCaseInputPort.useGpsReq();
     this.lastKnownPosition = await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
-    var placeMarkList = await Geolocator()
+    var placeMarkList = await _geolocatorAdapter
         .placemarkFromPosition(lastKnownPosition, localeIdentifier: "ko");
     firstAddress = _geoLocationUtilUseCaseInputPort.replacePlacemarkToAddresStr(placeMarkList[0]);
   }

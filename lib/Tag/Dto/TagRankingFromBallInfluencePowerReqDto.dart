@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/cupertino.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'TagRankingFromBallInfluencePowerReqDto.g.dart';

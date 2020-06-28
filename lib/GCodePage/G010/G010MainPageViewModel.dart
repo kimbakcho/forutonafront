@@ -11,10 +11,11 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
+import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../../Preference.dart';
 
 class G010MainPageViewModel extends ChangeNotifier {
   final BuildContext _context;
@@ -35,6 +36,8 @@ class G010MainPageViewModel extends ChangeNotifier {
   bool _haveNickNameConfirm = false;
 
   FocusNode nickNameFocusNode = FocusNode();
+
+  Preference _preference = sl();
 
   bool _isLoading = false;
   getIsLoading(){
@@ -80,7 +83,7 @@ class G010MainPageViewModel extends ChangeNotifier {
       String imageUrl = await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
       reqDto.userProfileImageUrl = imageUrl;
     }else if(_isChangeProfileImage && _currentPickProfileImage == null){
-      reqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
+      reqDto.userProfileImageUrl = _preference.basicProfileImageUrl;
     }else {
       reqDto.userProfileImageUrl = _fUserInfoResDto.profilePictureUrl;
     }

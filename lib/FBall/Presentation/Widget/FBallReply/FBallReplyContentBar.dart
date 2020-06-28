@@ -13,6 +13,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCa
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FBallReplyContentBar extends StatefulWidget {
@@ -21,8 +22,6 @@ class FBallReplyContentBar extends StatefulWidget {
   final bool _showBottomDivider;
   final double _maxWidth;
   final bool _showEditButton;
-
-
 
   FBallReplyContentBar(this.fBallReplyResDto, this._showSubReply,
       this._showBottomDivider, this._showEditButton, this._maxWidth);
@@ -36,6 +35,8 @@ class FBallReplyContentBar extends StatefulWidget {
 class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
   List<Widget> subFBallReplyContentBar = [];
   bool subReplyOpenFlag = false;
+
+  Preference _preference = sl();
 
   AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
 
@@ -253,7 +254,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
 
   String getUserPorfilePicktureUrl() {
     if (widget.fBallReplyResDto.deleteFlag) {
-      return Preference.basicProfileImageUrl;
+      return _preference.basicProfileImageUrl;
     } else {
       return widget.fBallReplyResDto.userProfilePictureUrl;
     }

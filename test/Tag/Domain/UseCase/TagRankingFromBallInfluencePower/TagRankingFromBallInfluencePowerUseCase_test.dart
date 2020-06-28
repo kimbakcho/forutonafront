@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Tag/Data/Value/FBallTagRankingWrap.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCase.dart';
@@ -8,7 +9,7 @@ import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePowe
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingWrapDto.dart';
-import 'package:geolocator/geolocator.dart';
+
 import 'package:mockito/mockito.dart';
 
 import '../../../../fixtures/fixture_reader.dart';

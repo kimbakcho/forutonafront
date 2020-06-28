@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:uuid/uuid.dart';
@@ -20,11 +21,14 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
   bool searchClearButtonShow = true;
   String sessionToken;
 
-  GooglePlace _googlePlace = GooglePlace(Preference.kGoogleApiKey);
+  Preference _preference = sl();
 
+
+  GooglePlace _googlePlace;
   List<AutocompletePrediction> predictions = [];
 
   MapGeoSearchPageViewModel(this._initAddress, this._initPosition,this._context) {
+    _googlePlace = GooglePlace(_preference.kGoogleApiKey);
     sessionToken = Uuid().v4();
     searchFocusNode.addListener(onSearchFocusNode);
     init();
