@@ -31,8 +31,13 @@ class FUserRepositoryImpl implements FUserRepository {
   }
 
   @override
-  Future<int> updateFireBaseMessageToken(String uid, String token) async {
+  Future<int> updateFireBaseMessageToken(String uid, String fcmToken) async {
     return await _fUserRemoteDataSource.updateFireBaseMessageToken(
-        uid, token, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        uid, fcmToken, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
+
+  Future<bool> checkNickNameDuplication(String nickName) async {
+    return await _fUserRemoteDataSource.checkNickNameDuplication(nickName, FDio.noneToken());
+  }
+
 }

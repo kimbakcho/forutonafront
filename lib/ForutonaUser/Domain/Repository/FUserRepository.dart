@@ -8,6 +8,6 @@ abstract class FUserRepository {
   Future<FUserInfoSimple1> getUserInfoSimple1(FUserReqDto reqDto);
   Future<int> updateUserPosition(LatLng latLng);
   Future<int> updateFireBaseMessageToken(String uid, String token);
-
+  Future<bool> checkNickNameDuplication(String nickName);
 
 }

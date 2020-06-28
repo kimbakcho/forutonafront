@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/SignValid/PwFindValid/PwFindValidService.dart';
-import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
-import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidUseCase.dart';
 
 import '../FireBaseValidErrorUtil.dart';
 
-class PwFindValidImpl extends PwFindValidService with DefaultSignValidMix,DefaultPwFindValidMix {
+class PwFindValidImpl extends PwFindValidService with DefaultSignValidUseCaseMix,DefaultPwFindValidMix {
 
 }
 
-mixin DefaultPwFindValidMix on SignUpValidService  {
+mixin DefaultPwFindValidMix on SignUpValidUseCaseInputPort  {
   bool _isFireBaseIdTextError = true;
   String _idFireBaseTextErrorText = "";
 

@@ -9,6 +9,8 @@ import 'package:forutonafront/KCodePage/KCodeMainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
+import '../ServiceLocator.dart';
+
 class CodeMainpage extends StatefulWidget {
   CodeMainpage({Key key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<CodeMainViewModel>(
-            create: (_) => CodeMainViewModel(context)),
+            create: (_) => CodeMainViewModel()),
         ChangeNotifierProvider<H001ViewModel>(
             create: (_) => H001ViewModel(context: context))
       ],

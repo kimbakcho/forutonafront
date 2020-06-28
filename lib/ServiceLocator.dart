@@ -1,8 +1,11 @@
 import 'package:forutonafront/Background/Domain/UseCase/BackgroundUserPositionUseCaseInputPort.dart';
 import 'package:forutonafront/Background/Presentation/MainBackGround.dart';
+import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
+import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
+import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
@@ -49,7 +52,18 @@ init() {
 
   sl.registerSingleton<Preference>(Preference());
 
-  sl.registerSingleton<GeoLocationUtilUseCaseInputPort>(GeoLocationUtilUseCase());
+  sl.registerSingleton<GeolocatorAdapter>(GeolocatorAdapterImpl());
+
+  sl.registerSingleton<LocationAdapter>(LocationAdapterImpl());
+
+  sl.registerSingleton<SharedPreferencesAdapter>(SharedPreferencesAdapterImpl());
+
+  sl.registerSingleton<GeoLocationUtilUseCaseInputPort>(GeoLocationUtilUseCase(
+    geolocatorAdapter: sl(),
+    locationAdapter: sl(),
+    sharedPreferencesAdapter: sl(),
+    preference: sl()
+  ));
 
   sl.registerSingleton<FireBaseAuthBaseAdapter>(FireBaseAuthBaseAdapterImpl());
 

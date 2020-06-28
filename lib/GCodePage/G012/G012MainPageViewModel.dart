@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
-import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
 
@@ -26,7 +26,7 @@ class G012MainPageViewModel extends ChangeNotifier {
   TextEditingController newPwController = new TextEditingController();
   TextEditingController checkPwController = new TextEditingController();
 
-  SignUpValidService _signUpValidService = DefaultSignValidImpl();
+  SignUpValidUseCaseInputPort _signUpValidService = DefaultSignValidUseCase();
 
   G012MainPageViewModel(this._context) {
     checkPwController.addListener(_onCheckPwControllerListener);

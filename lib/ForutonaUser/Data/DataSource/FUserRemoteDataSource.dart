@@ -10,7 +10,7 @@ abstract class FUserRemoteDataSource {
   Future<FUserInfoSimple1> getUserInfoSimple1(FUserReqDto reqDto,FDio noneTokenFDio);
   Future<int> updateUserPosition(LatLng latLng,FDio tokenFDio);
   Future<int> updateFireBaseMessageToken(String uid,String token,FDio tokenFDio);
-
+  Future<bool> checkNickNameDuplication(String nickName,FDio noneTokenFDio);
 }
 
 class FUserRemoteDataSourceImpl implements FUserRemoteDataSource{
@@ -37,6 +37,13 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource{
       "uid":uid,
       "token":token
     });
+    return response.data;
+  }
+
+  @override
+  Future<bool> checkNickNameDuplication(String nickName,FDio noneTokenFDio) async{
+    var response = await noneTokenFDio.get("/v1/ForutonaUser/checkNickNameDuplication",
+        queryParameters: {"nickName": nickName});
     return response.data;
   }
 

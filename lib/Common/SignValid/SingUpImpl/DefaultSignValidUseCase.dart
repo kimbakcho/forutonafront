@@ -1,13 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
-import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
-import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
-class DefaultSignValidImpl extends SignUpValidService with DefaultSignValidMix {
-
+class DefaultSignValidUseCase extends SignUpValidUseCaseInputPort
+    with DefaultSignValidUseCaseMix {
+  DefaultSignValidUseCase({
+    @required FUserRepository fUserRepository,
+    @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase
+  }) {
+    this.fUserRepository = fUserRepository;
+    this.fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
+  }
 
 }
-mixin DefaultSignValidMix on SignUpValidService {
+
+mixin DefaultSignValidUseCaseMix on SignUpValidUseCaseInputPort {
+  FUserRepository fUserRepository;
+  FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
+
   bool _isIdTextError = true;
   String _idTextErrorText = "";
   bool _pwTextError = true;
@@ -76,7 +89,7 @@ mixin DefaultSignValidMix on SignUpValidService {
       _pwTextErrorText = "영문, 소문자, 대문자, 특수문자 중 3개 이상 조합";
     } else {
       _pwTextError = false;
-      _pwTextErrorText =  "";
+      _pwTextErrorText = "";
     }
   }
 
@@ -91,13 +104,13 @@ mixin DefaultSignValidMix on SignUpValidService {
   }
 
   @override
-  void pwCheckValid(String pw,String pwCheck) {
+  void pwCheckValid(String pw, String pwCheck) {
     _pwCheckError = false;
     _pwCheckErrorText = "";
-    if(pwCheck.length < 8){
+    if (pwCheck.length < 8) {
       _pwCheckError = true;
       _pwCheckErrorText = "";
-      return ;
+      return;
     }
     if (pw != pwCheck) {
       _pwCheckError = true;
@@ -106,28 +119,26 @@ mixin DefaultSignValidMix on SignUpValidService {
       _pwCheckError = false;
       _pwCheckErrorText = "";
     }
-    return ;
+    return;
   }
 
   @override
   Future<void> nickNameValid(String nickName) async {
     _nickNameError = false;
     _nickNameErrorText = "";
-    if (nickName.length <2 ) {
+    if (nickName.length < 2) {
       _nickNameError = true;
       _nickNameErrorText = "닉네임은 최소 2글자 이상이어야 합니다.";
-      return ;
+      return;
     }
     RegExp regExp1 = new RegExp(r'^(?=.*?[!@#\$&*~\s])');
     if (regExp1.hasMatch(nickName)) {
       _nickNameError = true;
       _nickNameErrorText = "띄어쓰기와 특수문자는 닉네임에 사용할 수 없습니다.";
-      return ;
+      return;
     }
-    FUserRepository _fUserRepository = new FUserRepository();
-    var nickNameDuplicationCheckResDto = await _fUserRepository
-        .checkNickNameDuplication(nickName);
-    if (nickNameDuplicationCheckResDto.haveNickName) {
+
+    if (await fUserRepository.checkNickNameDuplication(nickName)) {
       _nickNameError = true;
       _nickNameErrorText = "이미 있는 닉네임입니다.";
     } else {
@@ -135,6 +146,7 @@ mixin DefaultSignValidMix on SignUpValidService {
       _nickNameErrorText = "";
     }
   }
+
   @override
   bool hasNickNameError() {
     return _nickNameError;
@@ -155,25 +167,23 @@ mixin DefaultSignValidMix on SignUpValidService {
       return true;
   }
 
-  Future<void> currentPwValid(String pw) async{
-     _currentPwError = false;
-     _currentPwErrorText = "";
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
+  Future<void> currentPwValid(String pw) async {
+    _currentPwError = false;
+    _currentPwErrorText = "";
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: firebaseUser.email, password: pw);
+      await fireBaseAuthAdapterForUseCase
+          .signInWithEmailAndPassword(await fireBaseAuthAdapterForUseCase.userEmail(), pw);
     } catch (ex) {
       _currentPwError = true;
       _currentPwErrorText = FireBaseValidErrorUtil().getErrorText(ex);
     }
   }
 
-  bool hasCurrentPwError(){
+  bool hasCurrentPwError() {
     return _currentPwError;
   }
 
-  String currentPwErrorText(){
+  String currentPwErrorText() {
     return _currentPwErrorText;
   }
-
 }

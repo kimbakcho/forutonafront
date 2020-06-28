@@ -52,4 +52,15 @@ class FireBaseAuthAdapterForUseCaseImpl
           user.uid, await _fireBaseMessageAdapter.getCurrentToken());
     }
   }
+
+  @override
+  Future<String> userEmail() async {
+    return await _fireBaseAuthBaseAdapter.userEmail();
+  }
+
+  @override
+  Future<String> signInWithEmailAndPassword(String email, String pw) async {
+    return await _fireBaseAuthBaseAdapter.signInWithEmailAndPassword(email, pw);
+  }
+
 }

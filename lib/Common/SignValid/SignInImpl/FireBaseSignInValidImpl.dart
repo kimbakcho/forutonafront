@@ -9,8 +9,6 @@ class FireBaseSignInValidImpl implements SignInValidWithSignInService{
   bool _signInError = false;
   String _signInErrorText = "";
 
-
-
   @override
   String signInErrorText() {
     return _signInErrorText;

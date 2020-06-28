@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
-import 'package:forutonafront/Common/SignValid/SingUpImpl/IdDuplicationCheckSignValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SignValid/SingUpImpl/IdDuplicationCheckSignValidUseCase.dart';
 
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J007/J007View.dart';
@@ -13,7 +13,7 @@ class J006ViewModel extends ChangeNotifier {
   TextEditingController idEditingController = TextEditingController();
   TextEditingController pwEditingController = TextEditingController();
   TextEditingController pwCheckEditingController = TextEditingController();
-  SignUpValidService _signValidService = IdDuplicationCheckSignValidImpl();
+  SignUpValidUseCaseInputPort _signValidService = IdDuplicationCheckSignValidUseCase();
   bool hasIdComplete = false;
 
   bool _isLoading = false;

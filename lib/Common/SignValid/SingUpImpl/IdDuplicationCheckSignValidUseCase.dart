@@ -1,17 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
-import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidUseCaseInputPort.dart';
 
 
-import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
-class IdDuplicationCheckSignValidImpl extends SignUpValidService with DefaultSignValidMix,IdDuplicationCheckSignValidMix{
+class IdDuplicationCheckSignValidUseCase extends SignUpValidUseCaseInputPort with DefaultSignValidUseCaseMix,IdDuplicationCheckSignValidUseCaseMix{
+  IdDuplicationCheckSignValidUseCase({
+    @required FUserRepository fUserRepository,
+    @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase
+  }){
+    this.fUserRepository = fUserRepository;
+    this.fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
+  }
 
 }
-mixin IdDuplicationCheckSignValidMix on SignUpValidService {
+mixin IdDuplicationCheckSignValidUseCaseMix on SignUpValidUseCaseInputPort {
   bool _isFireBaseIdTextError = true;
   String _idFireBaseTextErrorText = "";
+
 
   hasEmailError(){
     if(_isFireBaseIdTextError){

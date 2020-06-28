@@ -10,6 +10,8 @@ abstract class FireBaseAuthBaseAdapter {
   Future<String> getFireBaseIdToken();
   Future<bool> isLogin();
   Future<String> userUid();
+  Future<String> userEmail();
+  signInWithEmailAndPassword(String email,String pw);
 }
 
 class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
@@ -40,6 +42,22 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
     } else {
       throw new FireBaseAdapterException("no Login statue");
     }
+  }
+
+  @override
+  Future<String> userEmail() async {
+    if (await isLogin()) {
+      var firebaseUser = await FirebaseAuth.instance.currentUser();
+      return firebaseUser.email;
+    }else {
+      throw new FireBaseAdapterException("no Login statue");
+    }
+  }
+
+  @override
+  Future<String> signInWithEmailAndPassword(String email, String pw) async {
+    AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pw);
+    return result.user.uid;
   }
 
 }

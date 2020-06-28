@@ -1,5 +1,5 @@
 import 'package:forutonafront/Common/SignValid/PwFindValid/PhoneFindValidService.dart';
-import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
@@ -9,7 +9,7 @@ import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/PhoneAuthRepository.dart';
 import 'PwFindValidImpl.dart';
 
-class PhoneFindValidImpl extends PhoneFindValidService with DefaultSignValidMix,DefaultPwFindValidMix,PhoneFindValidMix{
+class PhoneFindValidImpl extends PhoneFindValidService with DefaultSignValidUseCaseMix,DefaultPwFindValidMix,PhoneFindValidMix{
 
 
 }

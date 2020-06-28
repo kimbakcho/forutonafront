@@ -5,8 +5,8 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
-import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidService.dart';
-import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SignValid/SingUpImpl/DefaultSignValidUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
 import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
@@ -32,7 +32,7 @@ class G010MainPageViewModel extends ChangeNotifier {
   int userIntroduceInputTextLength = 0;
   bool isCanNotUseNickNameDisPlay = false;
   ImageProvider currentProfileImage;
-  SignUpValidService _signValidService = new DefaultSignValidImpl();
+  SignUpValidUseCaseInputPort _signValidService = new DefaultSignValidUseCase();
   bool _haveNickNameConfirm = false;
 
   FocusNode nickNameFocusNode = FocusNode();

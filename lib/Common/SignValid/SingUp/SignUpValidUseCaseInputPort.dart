@@ -1,4 +1,4 @@
-abstract class SignUpValidService {
+abstract class SignUpValidUseCaseInputPort {
   Future<void> emailIdValid(String email);
   bool hasEmailError();
   String emailErrorText();

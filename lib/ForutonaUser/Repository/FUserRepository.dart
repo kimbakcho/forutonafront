@@ -15,7 +15,6 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/NickNameDuplicationCheckResDto.dart';
 
 class FUserRepository {
   Future<FUserInfoResDto> getForutonaGetMe() async {
@@ -32,13 +31,6 @@ class FUserRepository {
 
   }
 
-  Future<NickNameDuplicationCheckResDto> checkNickNameDuplication(
-      String nickName) async {
-    FDio dio = FDio("none");
-    var response = await dio.get("/v1/ForutonaUser/checkNickNameDuplication",
-        queryParameters: {"nickName": nickName});
-    return NickNameDuplicationCheckResDto.fromJson(response.data);
-  }
 
   //파일 업로드 동시에 UserProfileUrl 에 BackEnd 에서  UserInfo 의 정보에 이미지 Url 을 넣어준다.
   Future<String> updateUserProfileImage(File file) async {
@@ -80,12 +72,7 @@ class FUserRepository {
 
   }
 
-  ///클라이언트에서 개인 정보를 취득하는것을 막기위해 인증이 필요 없는 데이터만 가져 오기 위한 Simple 쿼리
-  Future<FUserInfoResDto> getUserInfoSimple1(FUserReqDto reqDto) async {
-    FDio dio = FDio("none");
-    var response = await dio.get("/v1/ForutonaUser/UserInfoSimple1",queryParameters: reqDto.toJson());
-    return FUserInfoResDto.fromJson(response.data) ;
-  }
+
 
   Future<FUserSnsCheckJoinResDto> getSnsUserJoinCheckInfo(FUserSnSLoginReqDto reqDto) async{
     FDio dio = FDio("none");
