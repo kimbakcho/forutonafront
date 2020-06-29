@@ -9,8 +9,8 @@ class SmsAuthReceiverService {
 
   SmsAuthReceiverService(this.onReceiverMessage,this._smsAuthSupportLanguage){
     _smsReceiver =new SmsReceiver(_onLocalReceiverMessage);
-
   }
+
   startListening(){
     _smsReceiver.startListening();
   }

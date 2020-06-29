@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
     ));
     return ChangeNotifierProvider(
         create: (_) => MainModel(
-            globalModel: Provider.of(context),
             fireBaseAuthAdapterForUseCase: sl(),
             fireBaseMessageController: sl(),
             mainBackGround: sl()),

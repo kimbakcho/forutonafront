@@ -9,19 +9,14 @@ class MainModel with ChangeNotifier {
   final MainBackGround _mainBackGround;
   final FireBaseMessageController _fireBaseMessageController;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
-  final GlobalModel _globalModel;
 
   MainModel(
       {@required MainBackGround mainBackGround,
       @required FireBaseMessageController fireBaseMessageController,
-      @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      @required GlobalModel globalModel})
+      @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
       : _mainBackGround = mainBackGround,
         _fireBaseMessageController = fireBaseMessageController,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
-        _globalModel = globalModel {
-
-    _globalModel.setFUserInfoDto();
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
     _mainBackGround.startBackGroundService();
     _fireBaseMessageController.controllerStartService();
     _fireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen();

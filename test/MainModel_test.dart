@@ -15,7 +15,6 @@ class MockMainBackGround extends Mock implements MainBackGround{}
 
 void main(){
 
-  MockGlobalModel mockGlobalModel = MockGlobalModel();
   MockFireBaseMessageController mockFireBaseMessageController = MockFireBaseMessageController();
   MockFireBaseAuthAdapterForUseCase mockFireBaseAuthAdapterForUseCase = MockFireBaseAuthAdapterForUseCase();
   MockMainBackGround mockMainBackGround = MockMainBackGround();
@@ -27,13 +26,11 @@ void main(){
 
     //act
     mainModel = MainModel(
-      globalModel: mockGlobalModel,
       fireBaseMessageController: mockFireBaseMessageController,
       fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
       mainBackGround: mockMainBackGround,
     );
     //assert
-    verify(mockGlobalModel.setFUserInfoDto());
     verify(mockMainBackGround.startBackGroundService());
     verify(mockFireBaseMessageController.controllerStartService());
     verify(mockFireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen());
