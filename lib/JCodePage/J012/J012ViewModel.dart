@@ -2,8 +2,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/SignValid/PwFindValid/PwFindValidService.dart';
-import 'package:forutonafront/Common/SignValid/PwFindValidImpl/PwFindValidImpl.dart';
 import 'package:forutonafront/JCodePage/J013/J013View.dart';
 
 class J012ViewModel extends ChangeNotifier{

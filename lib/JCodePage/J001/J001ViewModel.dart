@@ -2,8 +2,6 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:forutonafront/Common/SignValid/SignIn/SignInValidWithSignInService.dart';
-import 'package:forutonafront/Common/SignValid/SignInImpl/FireBaseSignInValidImpl.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Service/Impl/NotJoinException.dart';

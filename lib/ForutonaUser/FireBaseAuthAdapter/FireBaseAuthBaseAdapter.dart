@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenUpdateUseCase/FireBaseMessageTokenUpdateUseCaseInputPort.dart';
 
@@ -12,6 +13,7 @@ abstract class FireBaseAuthBaseAdapter {
   Future<String> userUid();
   Future<String> userEmail();
   signInWithEmailAndPassword(String email,String pw);
+  fetchSignInMethodsForEmail(String email);
 }
 
 class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
@@ -58,6 +60,11 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
   Future<String> signInWithEmailAndPassword(String email, String pw) async {
     AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pw);
     return result.user.uid;
+  }
+
+  @override
+  Future<List<String>> fetchSignInMethodsForEmail(String email) async {
+     return await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: email);
   }
 
 }

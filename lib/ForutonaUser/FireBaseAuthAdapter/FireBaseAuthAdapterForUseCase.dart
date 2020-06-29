@@ -63,4 +63,11 @@ class FireBaseAuthAdapterForUseCaseImpl
     return await _fireBaseAuthBaseAdapter.signInWithEmailAndPassword(email, pw);
   }
 
+  @override
+  fetchSignInMethodsForEmail(String email) async {
+    return await _fireBaseAuthBaseAdapter.fetchSignInMethodsForEmail(email);
+  }
+
+
+
 }

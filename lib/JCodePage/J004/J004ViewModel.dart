@@ -8,7 +8,7 @@ import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthResDto.dart';
-import 'package:forutonafront/ForutonaUser/Repository/PhoneAuthRepository.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J006/J006View.dart';
 import 'package:provider/provider.dart';

@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:forutonafront/Common/SignValid/SingUp/SignUpValidUseCaseInputPort.dart';
-import 'package:forutonafront/Common/SignValid/SingUpImpl/IdDuplicationCheckSignValidUseCase.dart';
+import 'package:forutonafront/Common/SignValid/SignValid.dart';
 
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J007/J007View.dart';
@@ -14,6 +13,7 @@ class J006ViewModel extends ChangeNotifier {
   TextEditingController pwEditingController = TextEditingController();
   TextEditingController pwCheckEditingController = TextEditingController();
   SignUpValidUseCaseInputPort _signValidService = IdDuplicationCheckSignValidUseCase();
+  SignValid signUpEmailValid = EmailValidImpl();
   bool hasIdComplete = false;
 
   bool _isLoading = false;
@@ -31,15 +31,15 @@ class J006ViewModel extends ChangeNotifier {
   Future<void> onIdEditComplete() async {
     _setIsLoading(true);
     hasIdComplete= true;
-    await _signValidService.emailIdValid(idEditingController.text);
+    await signUpEmailValid.valid(idEditingController.text);
     _setIsLoading(false);
   }
   hasEmailError() {
-     return _signValidService.hasEmailError();
+     return signUpEmailValid.hasError();
   }
   String emailErrorText() {
     if(hasIdComplete){
-      return _signValidService.emailErrorText();
+      return signUpEmailValid.errorText();
     }else {
       return "";
     }
@@ -86,7 +86,7 @@ class J006ViewModel extends ChangeNotifier {
     _setIsLoading(false);
   }
   Future finalCheckValid() async {
-    await _signValidService.emailIdValid(idEditingController.text);
+    await signUpEmailValid.valid(idEditingController.text);
     hasIdComplete = true;
     _signValidService.pwValid(pwEditingController.text);
     _signValidService.pwCheckValid(pwEditingController.text, pwCheckEditingController.text);
