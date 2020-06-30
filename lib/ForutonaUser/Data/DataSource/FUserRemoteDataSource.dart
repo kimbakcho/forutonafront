@@ -84,7 +84,7 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource{
   @override
   Future<int> pWChange(FUserInfoPwChangeReqDto changePwReqDto, FDio tokenFDio) async {
     var response = await tokenFDio.put("/v1/ForutonaUser/PwChange",data: changePwReqDto.toJson());
-    return int.parse(response.data);
+    return response.data;
   }
 
   @override
