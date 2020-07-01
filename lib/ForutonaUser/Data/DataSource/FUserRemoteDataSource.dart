@@ -22,7 +22,7 @@ abstract class FUserRemoteDataSource {
   Future<int> updateFireBaseMessageToken(String uid,String token,FDio tokenFDio);
   Future<bool> checkNickNameDuplication(String nickName,FDio noneTokenFDio);
   Future<FUserInfo> getForutonaGetMe(FDio tokenFDio);
-  Future<String> updateUserProfileImage(FormData formData,FDio tokenFDio);
+  Future<String> uploadUserProfileImage(FormData formData,FDio tokenFDio);
   Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto,FDio tokenFDio);
   Future<int> pWChange(FUserInfoPwChangeReqDto changePwReqDto,FDio tokenFDio);
   Future<FUserSnsCheckJoin> getSnsUserJoinCheckInfo(FUserSnSLoginReqDto reqDto,FDio noneTokenFDio);
@@ -70,7 +70,7 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource{
   }
 
   @override
-  Future<String> updateUserProfileImage(FormData formData,FDio tokenFDio) async {
+  Future<String> uploadUserProfileImage(FormData formData,FDio tokenFDio) async {
     var response = await tokenFDio.put("/v1/ForutonaUser/ProfileImage",data: formData);
     return response.data;
   }

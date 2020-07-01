@@ -131,7 +131,7 @@ class J007ViewModel extends ChangeNotifier {
     if (fUserInfoJoinResDto.joinComplete) {
       if (_currentPickProfileImage != null) {
 
-        await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
+        await _fUserRepository.uploadUserProfileImage(_currentPickProfileImage);
       }
       await globalModel.setFUserInfoDto();
       Navigator.of(_context).popUntil(ModalRoute.withName('/'));

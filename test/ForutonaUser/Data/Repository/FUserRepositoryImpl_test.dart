@@ -61,7 +61,6 @@ void main() {
   });
 
 
-
   test('FUserInfoSimple1 DataSource Call', () async {
     //arrange
     var resResult = FUserInfoSimple1();
@@ -74,5 +73,68 @@ void main() {
     //assert
     verify(mockUserRemoteDataSource.getUserInfoSimple1(any,any));
     expect(result.nickName, "test");
+  });
+
+  test('should be checkNickNameDuplication ', () async {
+    //TODO checkNickNameDuplication Repository Test impl
+    //arrange
+
+    //act
+
+    //assert
+  });
+
+  test('should be getForutonaGetMe ', () async {
+    //TODO getForutonaGetMe Repository Test impl
+    //arrange
+
+    //act
+
+    //assert
+  });
+
+  test('should be uploadUserProfileImage ', () async {
+    //TODO uploadUserProfileImage Repository Test impl
+    //arrange
+
+    //act
+
+    //assert
+  });
+
+  test('should be updateAccountUserInfo ', () async {
+    //TODO updateAccountUserInfo Repository Test impl
+    //arrange
+
+    //act
+
+    //assert
+  });
+
+  test('should be pWChange ', () async {
+    //TODO pWChange Repository Test impl
+    //arrange
+
+    //act
+
+    //assert
+  });
+
+  test('should be getSnsUserJoinCheckInfo ', () async {
+    //TODO pWChange getSnsUserJoinCheckInfo Test impl
+    //arrange
+
+    //act
+
+    //assert
+  });
+
+  test('should be joinUser ', () async {
+    //TODO pWChange joinUser Test impl
+    //arrange
+
+    //act
+
+    //assert
   });
 }

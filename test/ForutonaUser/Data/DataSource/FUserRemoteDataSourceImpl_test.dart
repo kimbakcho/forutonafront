@@ -95,7 +95,7 @@ void main() {
     verify(fDio.get("/v1/ForutonaUser/Me"));
   });
 
-  test('should be API Call updateUserProfileImage', () async {
+  test('should be API Call uploadUserProfileImage', () async {
     //arrange
     FormData formData = FormData.fromMap({
       "ProfileImage": MultipartFile.fromBytes([2,3,4,5],contentType: MediaType("image", "jpeg"),filename: "ProfileImage.jpg")
@@ -103,7 +103,7 @@ void main() {
     when(fDio.put("/v1/ForutonaUser/ProfileImage",data: formData ))
         .thenAnswer((_) async => Response<dynamic>(data: "imageUrl"));
     //act
-    var result = await fUserRemoteDataSource.updateUserProfileImage(formData,fDio);
+    await fUserRemoteDataSource.uploadUserProfileImage(formData,fDio);
     //assert
     verify(fDio.put("/v1/ForutonaUser/ProfileImage",data: formData));
   });

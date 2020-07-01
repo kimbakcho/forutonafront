@@ -55,8 +55,8 @@ class FUserRepositoryImpl implements FUserRepository {
   }
 
   @override
-  Future<String> updateUserProfileImage(FormData formData) async {
-    return await _fUserRemoteDataSource.updateUserProfileImage(
+  Future<String> uploadUserProfileImage(FormData formData) async {
+    return await _fUserRemoteDataSource.uploadUserProfileImage(
         formData, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 

@@ -18,7 +18,7 @@ abstract class FUserRepository {
   Future<int> updateFireBaseMessageToken(String uid, String token);
   Future<bool> checkNickNameDuplication(String nickName);
   Future<FUserInfo> getForutonaGetMe(String uid);
-  Future<String> updateUserProfileImage(FormData formData);
+  Future<String> uploadUserProfileImage(FormData formData);
   Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto);
   Future<int> pWChange(FUserInfoPwChangeReqDto changePwReqDto);
   Future<FUserSnsCheckJoin> getSnsUserJoinCheckInfo(FUserSnSLoginReqDto reqDto);

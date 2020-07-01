@@ -79,7 +79,7 @@ class G010MainPageViewModel extends ChangeNotifier {
     FuserAccountUpdateReqdto reqDto = new FuserAccountUpdateReqdto(_currentIsoCode,nickNameController.text,userIntroduceController.text);
     //프로필 이미지 변경 체크 및 업데이트
     if(_isChangeProfileImage && _currentPickProfileImage != null){
-      String imageUrl = await _fUserRepository.updateUserProfileImage(_currentPickProfileImage);
+      String imageUrl = await _fUserRepository.uploadUserProfileImage(_currentPickProfileImage);
       reqDto.userProfileImageUrl = imageUrl;
     }else if(_isChangeProfileImage && _currentPickProfileImage == null){
       reqDto.userProfileImageUrl = _preference.basicProfileImageUrl;

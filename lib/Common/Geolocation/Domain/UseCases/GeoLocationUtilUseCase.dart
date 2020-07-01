@@ -46,6 +46,7 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
     PermissionStatus _permissionGranted;
 
     _permissionGranted = await _locationAdapter.hasPermission();
+
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await _locationAdapter.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
