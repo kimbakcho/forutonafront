@@ -1,18 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:forutonafront/ServiceLocator.dart';
+
 
 abstract class SnsLoginService {
 
-  FUserRepository _fUserRepository = new FUserRepository();
+  FUserRepository _fUserRepository = sl();
 
-  SnsSupportService getSupportSnsService();
-
-  String getToken();
+//  SnsSupportService getSupportSnsService();
+//
+//  String getToken();
 
   Future<bool> tryLogin();
 
