@@ -35,9 +35,9 @@ void main() {
     fireBaseMessageController.controllerStartService();
     //assert
     verify(mockFireBaseMessageAdapter.configure(
-        onMessage: anyNamed("onMessage"),
-        onLaunch: anyNamed("onLaunch"),
-        onResume: anyNamed("onResume")));
+        onMessage: baseMessageUseCase.message,
+        onLaunch: launchMessageUseCase.message,
+        onResume: resumeMessageUseCase.message));
 
   });
 }
