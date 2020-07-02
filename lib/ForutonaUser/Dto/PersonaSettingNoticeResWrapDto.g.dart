@@ -8,13 +8,13 @@ part of 'PersonaSettingNoticeResWrapDto.dart';
 
 PersonaSettingNoticeResWrapDto _$PersonaSettingNoticeResWrapDtoFromJson(
     Map<String, dynamic> json) {
-  return PersonaSettingNoticeResWrapDto(
-    (json['content'] as List)
+  return PersonaSettingNoticeResWrapDto()
+    ..content = (json['content'] as List)
         ?.map((e) => e == null
             ? null
             : PersonaSettingNoticeResDto.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  )..last = json['last'] as bool;
+        ?.toList()
+    ..last = json['last'] as bool;
 }
 
 Map<String, dynamic> _$PersonaSettingNoticeResWrapDtoToJson(

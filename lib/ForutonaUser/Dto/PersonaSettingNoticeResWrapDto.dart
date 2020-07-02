@@ -11,7 +11,7 @@ class PersonaSettingNoticeResWrapDto {
   bool last = false;
 
 
-  PersonaSettingNoticeResWrapDto(this.content);
+  PersonaSettingNoticeResWrapDto();
 
   factory PersonaSettingNoticeResWrapDto.fromJson(Map<String, dynamic> json) => _$PersonaSettingNoticeResWrapDtoFromJson(json);
   Map<String, dynamic> toJson() => _$PersonaSettingNoticeResWrapDtoToJson(this);
