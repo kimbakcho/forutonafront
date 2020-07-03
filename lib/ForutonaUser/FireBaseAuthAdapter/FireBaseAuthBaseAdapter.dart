@@ -12,8 +12,9 @@ abstract class FireBaseAuthBaseAdapter {
   Future<bool> isLogin();
   Future<String> userUid();
   Future<String> userEmail();
-  signInWithEmailAndPassword(String email,String pw);
-  fetchSignInMethodsForEmail(String email);
+  Future<String> signInWithEmailAndPassword(String email,String pw);
+  Future<List<String>> fetchSignInMethodsForEmail(String email);
+  Future<String> signInWithCustomToken(String token);
 }
 
 class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
@@ -65,6 +66,12 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
   @override
   Future<List<String>> fetchSignInMethodsForEmail(String email) async {
      return await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: email);
+  }
+
+  @override
+  Future<String> signInWithCustomToken(String token) async {
+    var authResult = await FirebaseAuth.instance.signInWithCustomToken(token: token);
+    return authResult.user.uid;
   }
 
 }

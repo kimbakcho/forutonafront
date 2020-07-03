@@ -20,7 +20,7 @@ void main() {
   test('FireBaseSignInValidUseCaseImpl 로그인 정상', () async {
     //arrange
     when(mockFireBaseAuthAdapterForUseCase.signInWithEmailAndPassword("TEST1@google.com", "Aa123123"))
-        .thenAnswer((_) => "TEST123");
+        .thenAnswer((_) async => "TEST123");
     //act
     await fireBaseSignInValidUseCase.signInValidWithSignIn("TEST1@google.com", "Aa123123");
     //assert

@@ -10,6 +10,7 @@ import 'FireBaseAuthBaseAdapter.dart';
 abstract class FireBaseAuthAdapterForUseCase
     extends FireBaseAuthBaseAdapter {
   void startOnAuthStateChangedListen();
+
 }
 
 class FireBaseAuthAdapterForUseCaseImpl
@@ -64,10 +65,14 @@ class FireBaseAuthAdapterForUseCaseImpl
   }
 
   @override
-  fetchSignInMethodsForEmail(String email) async {
+  Future<List<String>> fetchSignInMethodsForEmail(String email) async {
     return await _fireBaseAuthBaseAdapter.fetchSignInMethodsForEmail(email);
   }
 
+  @override
+  Future<String> signInWithCustomToken(String token) async {
+    return await _fireBaseAuthBaseAdapter.signInWithCustomToken(token);
+  }
 
 
 }

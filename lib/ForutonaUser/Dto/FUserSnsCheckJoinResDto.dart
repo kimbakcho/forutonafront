@@ -1,3 +1,4 @@
+import 'package:forutonafront/ForutonaUser/Data/Value/FUserSnsCheckJoin.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserSnsCheckJoinResDto.g.dart';
@@ -14,6 +15,18 @@ class FUserSnsCheckJoinResDto {
   String firebaseCustomToken;
 
   FUserSnsCheckJoinResDto();
+
+  factory FUserSnsCheckJoinResDto.fromFUserSnsCheckJoin(FUserSnsCheckJoin fUserSnsCheckJoin){
+    FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto = FUserSnsCheckJoinResDto();
+    fUserSnsCheckJoinResDto.snsUid = fUserSnsCheckJoin.snsUid;
+    fUserSnsCheckJoinResDto.pictureUrl = fUserSnsCheckJoin.pictureUrl;
+    fUserSnsCheckJoinResDto.email = fUserSnsCheckJoin.email;
+    fUserSnsCheckJoinResDto.userSnsName = fUserSnsCheckJoin.userSnsName;
+    fUserSnsCheckJoinResDto.join = fUserSnsCheckJoin.join;
+    fUserSnsCheckJoinResDto.firebaseCustomToken = fUserSnsCheckJoin.firebaseCustomToken;
+    return fUserSnsCheckJoinResDto;
+  }
+
   factory FUserSnsCheckJoinResDto.fromJson(Map<String, dynamic> json) => _$FUserSnsCheckJoinResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FUserSnsCheckJoinResDtoToJson(this);
 }
