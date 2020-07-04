@@ -1,4 +1,5 @@
 
+import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -30,4 +31,26 @@ class FUserInfoJoinReqDto {
   Map<String, dynamic> toJson() => _$FUserInfoJoinReqDtoToJson(this);
 
   FUserInfoJoinReqDto();
+
+  factory FUserInfoJoinReqDto.fromFUserInfoJoinReq(FUserInfoJoinReq item){
+    FUserInfoJoinReqDto reqDto = new FUserInfoJoinReqDto();
+    reqDto.forutonaAgree = item.forutonaAgree;
+    reqDto.forutonaManagementAgree = item.forutonaManagementAgree;
+    reqDto.privateAgree = item.privateAgree;
+    reqDto.positionAgree = item.positionAgree;
+    reqDto.martketingAgree = item.martketingAgree;
+    reqDto.ageLimitAgree = item.ageLimitAgree;
+    reqDto.nickName = item.nickName;
+    reqDto.email = item.email;
+    reqDto.userProfileImageUrl = item.userProfileImageUrl;
+    reqDto.snsSupportService = item.snsSupportService;
+    reqDto.countryCode = item.countryCode;
+    reqDto.snsToken = item.snsToken;
+    reqDto.userIntroduce = item.userIntroduce;
+    reqDto.internationalizedPhoneNumber = item.internationalizedPhoneNumber;
+    reqDto.phoneAuthToken = item.phoneAuthToken;
+    reqDto.password = item.password;
+    reqDto.emailUserUid = item.emailUserUid;
+    return reqDto;
+  }
 }

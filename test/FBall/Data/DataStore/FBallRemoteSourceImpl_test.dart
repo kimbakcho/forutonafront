@@ -7,6 +7,8 @@ import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/Preference.dart';
+import 'package:get_it/get_it.dart';
 import 'package:matcher/matcher.dart';
 import 'package:mockito/mockito.dart';
 
@@ -38,7 +40,7 @@ void main() {
             queryParameters: anyNamed('queryParameters')))
         .thenAnswer((_) async => Response<dynamic>(
             statusCode: 200,
-            data: json.decode(fixture(
+            data: json.decode(fixtureString(
                 'FBall/Data/DataSource/BallListUpPositionWrapDto.json')),
             headers: Headers.fromMap({
               "Content-Type": ['application/json', 'charset=utf-8']

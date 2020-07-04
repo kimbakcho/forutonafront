@@ -6,16 +6,22 @@ import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/Preference.dart';
+import 'package:get_it/get_it.dart';
 import 'package:matcher/matcher.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../fixtures/fixture_reader.dart';
+import '../../../fixtures/fixture_reader.dart';
 
 class MockIFBallRemoteDataSource extends Mock implements FBallRemoteDataSource {}
 void main() {
 
+  final sl = GetIt.instance;
+  sl.registerSingleton<Preference>(Preference());
+
   MockIFBallRemoteDataSource mockIFBallRemoteDataSource;
   FBallRepository fBallRepository;
+
 
   final FBallListUpFromBallInfluencePowerReqDto searchCondition =
       new FBallListUpFromBallInfluencePowerReqDto(
@@ -32,7 +38,7 @@ void main() {
         FBallRepositoryImpl(fBallRemoteDataSource: mockIFBallRemoteDataSource);
     when(mockIFBallRemoteDataSource.listUpFromInfluencePower(any, any))
         .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(
-        fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
+        fixtureString('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
   });
 
   test('영향력순 으로 Ball ListUp DataSource Call ', () async {

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/ForutonaUser/Data/Value/FUserSnsCheckJoin.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
@@ -10,6 +11,8 @@ import 'SingUpUseCaseInputPort.dart';
 
 class SingUpUseCase implements SingUpUseCaseInputPort {
   FUserRepository _fUserRepository;
+
+  FUserInfoJoinReq fUserInfoJoinReq = FUserInfoJoinReq();
 
   SingUpUseCase({@required FUserRepository fUserRepository})
       : _fUserRepository = fUserRepository;
@@ -25,6 +28,5 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
     var fUserInfoJoin = await _fUserRepository.joinUser(reqDto);
    return FUserInfoJoinResDto.fromFUserInfoJoin(fUserInfoJoin);
   }
-
 
 }

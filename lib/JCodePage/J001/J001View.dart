@@ -8,14 +8,10 @@ import 'package:provider/provider.dart';
 class J001View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (_) => J001ViewModel(context),
+            create: (_) => J001ViewModel(),
           ),
         ],
         child: Consumer<J001ViewModel>(builder: (_, model, child) {

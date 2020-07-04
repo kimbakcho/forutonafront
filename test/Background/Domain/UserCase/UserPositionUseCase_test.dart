@@ -66,6 +66,7 @@ void main(){
 
   test('최근 위치값을 서버에 저장', () async {
     //arrange
+    when(mockFireBaseAdapter.isLogin()).thenAnswer((_) async => true);
     when(mockGeoLocationUtilUseCase.getCurrentWithLastPosition()).thenAnswer((realInvocation)async =>
       Position(
         latitude: 127.1,

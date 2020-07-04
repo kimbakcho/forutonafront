@@ -9,8 +9,7 @@ import 'ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
 import 'ServiceLocator.dart';
 
 class GlobalModel with ChangeNotifier {
-  FUserInfoResDto fUserInfoDto;
-  FUserInfoJoinReqDto fUserInfoJoinReqDto = FUserInfoJoinReqDto();
+
   PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto = PwFindPhoneAuthReqDto();
   FUserRepository _fUserRepository = new FUserRepositoryImpl(
       fireBaseAuthBaseAdapter: sl(), fUserRemoteDataSource: sl());

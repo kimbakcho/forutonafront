@@ -27,7 +27,7 @@ void main(){
     mockTagRankingFromBallInfluencePowerUseCaseOutputPort = MockTagRankingFromBallInfluencePowerUseCaseOutputPort();
     tagRankingFromBallInfluencePowerUseCaseInputPort  = TagRankingFromBallInfluencePowerUseCase(tagRepository: mockTagRepository);
     when(mockTagRepository.getFTagRankingFromBallInfluencePower(any))
-        .thenAnswer((_) async => FBallTagRankingWrap.fromJson(json.decode(fixture('FTag/Data/DataSource/InfluenceTagRankingWrapDto.json'))));
+        .thenAnswer((_) async => FBallTagRankingWrap.fromJson(json.decode(fixtureString('FTag/Data/DataSource/InfluenceTagRankingWrapDto.json'))));
   });
 
   test('레포지토리에 데이터 요청', () async {

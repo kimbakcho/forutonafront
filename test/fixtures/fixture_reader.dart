@@ -1,4 +1,20 @@
 
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:path/path.dart';
 
-String fixture(String name) => File('test/fixtures/$name').readAsStringSync();
+String fixtureString(String name) {
+  final testDirectory = join(
+    Directory.current.path,
+    Directory.current.path.endsWith('test') ? '' : 'test',
+  );
+  return File('$testDirectory/fixtures/$name').readAsStringSync();
+}
+
+File fixtureFile(String name) {
+  final testDirectory = join(
+    Directory.current.path,
+    Directory.current.path.endsWith('test') ? '' : 'test',
+  );
+  return File('$testDirectory/fixtures/$name');
+}

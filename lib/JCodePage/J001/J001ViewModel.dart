@@ -2,11 +2,14 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/NotJoinException.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:forutonafront/ForutonaUser/Service/Impl/NotJoinException.dart';
-import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
-import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
 import 'package:forutonafront/JCodePage/J008/J008View.dart';
@@ -14,12 +17,31 @@ import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class J001ViewModel extends ChangeNotifier {
+  SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  SingUpUseCaseInputPort _singUpUseCaseInputPort;
+  FireBaseSignInValidUseCase _fireBaseSignInValidUseCase;
   BuildContext _context;
+
   TextEditingController idTextFieldController = TextEditingController();
   TextEditingController pwTextFieldController = TextEditingController();
   FocusNode idTextFocusNode = FocusNode();
   FocusNode pwTextFocusNode = FocusNode();
   bool _isLoading = false;
+
+  J001ViewModel(
+      {@required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      @required FireBaseSignInValidUseCase fireBaseSignInValidUseCase,
+      @required SingUpUseCaseInputPort singUpUseCaseInputPort,
+      @required BuildContext context})
+      : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
+        _fireBaseSignInValidUseCase = fireBaseSignInValidUseCase,
+        _singUpUseCaseInputPort = singUpUseCaseInputPort,
+        _context = context {
+    idTextFieldController.addListener(onIdTextFieldController);
+    pwTextFieldController.addListener(onPwTextFieldController);
+    idTextFocusNode.addListener(onIdTextFocusNode);
+    pwTextFocusNode.addListener(onPwTextFocusNode);
+  }
 
   getIsLoading() {
     return _isLoading;
@@ -32,15 +54,6 @@ class J001ViewModel extends ChangeNotifier {
 
   SignInValidWithSignInService _signInValidWithSignInService =
       new FireBaseSignInValidImpl();
-
-  J001ViewModel(this._context) {
-    GlobalModel globalModel = Provider.of<GlobalModel>(_context, listen: false);
-    globalModel.fUserInfoJoinReqDto = FUserInfoJoinReqDto();
-    idTextFieldController.addListener(onIdTextFieldController);
-    pwTextFieldController.addListener(onPwTextFieldController);
-    idTextFocusNode.addListener(onIdTextFocusNode);
-    pwTextFocusNode.addListener(onPwTextFocusNode);
-  }
 
   onIdTextFocusNode() {
     notifyListeners();
@@ -69,11 +82,11 @@ class J001ViewModel extends ChangeNotifier {
 
   onLoginBtnClick() async {
     _setIsLoading(true);
-    await _signInValidWithSignInService.signInValidWithSignIn(
+    await _fireBaseSignInValidUseCase.signInValidWithSignIn(
         idTextFieldController.text, pwTextFieldController.text);
-    if (_signInValidWithSignInService.hasSignInError()) {
+    if (_fireBaseSignInValidUseCase.hasSignInError()) {
       Fluttertoast.showToast(
-          msg: _signInValidWithSignInService.signInErrorText(),
+          msg: _fireBaseSignInValidUseCase.signInErrorText(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIos: 1,
@@ -81,57 +94,39 @@ class J001ViewModel extends ChangeNotifier {
           textColor: Colors.white,
           fontSize: 12.0);
     } else {
-      GlobalModel globalModel = Provider.of(_context, listen: false);
-      globalModel.setFUserInfoDto();
       Navigator.of(_context).popUntil(ModalRoute.withName('/'));
     }
     _setIsLoading(false);
   }
 
   void onFaceBookLogin() async {
-    SnsLoginService snsLoginService =
-        SnsSupportServiceFactory.createSnsSupportService(
-            SnsSupportService.FaceBook);
-    await snsLoginLogic(snsLoginService);
+    await snsLoginLogic(sl.get(instanceName: "LoginUseCaseFaceBook"));
   }
 
   void onKakaoLogin() async {
-    SnsLoginService snsLoginService =
-        SnsSupportServiceFactory.createSnsSupportService(
-            SnsSupportService.Kakao);
-    await snsLoginLogic(snsLoginService);
+    await snsLoginLogic(sl.get(instanceName: "LoginUseCaseKakao"));
   }
 
   void onNaverLogin() async {
-    SnsLoginService snsLoginService =
-        SnsSupportServiceFactory.createSnsSupportService(
-            SnsSupportService.Naver);
-    await snsLoginLogic(snsLoginService);
+    await snsLoginLogic(sl.get(instanceName: "LoginUseCaseNaver"));
   }
 
-  Future snsLoginLogic(SnsLoginService snsLoginService) async {
+  Future snsLoginLogic(LoginUseCaseInputPort snsLoginUseCase) async {
     try {
       _setIsLoading(true);
-      if(!await DataConnectionChecker().hasConnection){
+      if (!await DataConnectionChecker().hasConnection) {
         throw ("네트워크 접속에 실패했습니다. 네트워크 연결 상태를 확인해주세요.");
       }
-      if (await snsLoginService.tryLogin()) {
-        GlobalModel globalModel = Provider.of(_context, listen: false);
-        await globalModel.setFUserInfoDto();
+      if (await snsLoginUseCase.tryLogin()) {
         Navigator.of(_context).popUntil(ModalRoute.withName('/'));
       }
-
     } on NotJoinException catch (e) {
-      GlobalModel globalModel =
-          Provider.of<GlobalModel>(_context, listen: false);
-      globalModel.fUserInfoJoinReqDto.nickName =
-          e.snsCheckJoinResDto.userSnsName;
-      globalModel.fUserInfoJoinReqDto.email = e.snsCheckJoinResDto.email;
-      globalModel.fUserInfoJoinReqDto.userProfileImageUrl =
-          e.snsCheckJoinResDto.pictureUrl;
-      globalModel.fUserInfoJoinReqDto.snsSupportService =
-          snsLoginService.getSupportSnsService();
-      globalModel.fUserInfoJoinReqDto.snsToken = snsLoginService.getToken();
+      _singUpUseCaseInputPort.setUserName(e.snsCheckJoinResDto.userSnsName);
+      _singUpUseCaseInputPort.setEmail(e.snsCheckJoinResDto.email);
+      _singUpUseCaseInputPort.setUserProfileImageUrl(e.snsCheckJoinResDto.pictureUrl);
+      _singUpUseCaseInputPort.setSupportSnsService(snsLoginUseCase.getSnsSupportService());
+
+      globalModel.fUserInfoJoinReqDto.snsToken = snsLoginUseCase.getToken();
       await Navigator.of(_context).push(MaterialPageRoute(
         builder: (context) {
           return J002View();
@@ -149,7 +144,6 @@ class J001ViewModel extends ChangeNotifier {
           fontSize: 12.0);
     }
     _setIsLoading(false);
-
   }
 
   void jumpToJ002() {

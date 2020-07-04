@@ -13,6 +13,7 @@ abstract class BackgroundUserPositionUseCaseInputPort
 
 class BackgroundUserPositionUseCase
     implements BackgroundUserPositionUseCaseInputPort {
+
   String getServiceTaskId = 'com.wing.forutonafront.UserPositionService';
 
   final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
@@ -28,6 +29,8 @@ class BackgroundUserPositionUseCase
       : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
         _fUserRepository = fUserRepository,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
+
+
 
   @override
   void startServiceSchedule() {
@@ -53,4 +56,5 @@ class BackgroundUserPositionUseCase
           .updateUserPosition(LatLng(position.latitude, position.longitude));
     }
   }
+
 }

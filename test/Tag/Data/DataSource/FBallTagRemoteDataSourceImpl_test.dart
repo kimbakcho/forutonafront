@@ -33,7 +33,7 @@ void main() {
         queryParameters: reqDto.toJson())).thenAnswer((realInvocation) async =>
         Response<dynamic>(
             statusCode: 200,
-            data: json.decode(fixture(
+            data: json.decode(fixtureString(
                 'FTag/Data/DataSource/InfluenceTagRankingWrapDto.json')),
             headers: Headers.fromMap({
               "Content-Type": ['application/json', 'charset=utf-8']

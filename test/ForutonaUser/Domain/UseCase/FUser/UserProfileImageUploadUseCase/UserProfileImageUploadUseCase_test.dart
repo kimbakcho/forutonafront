@@ -9,6 +9,8 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImage
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../../fixtures/fixture_reader.dart';
+
 class MockFUserRepository extends Mock implements FUserRepository {}
 
 class MockFlutterImageCompressAdapter extends Mock
@@ -27,8 +29,9 @@ void main() {
 
   test('Profile Image should be Upload fast? Server ', () async {
     //given
-    File imageFile = new File("test/fixtures/FUser/profileImage.png");
-    Uint8List originImage = await imageFile.readAsBytes();
+
+    File imageFile = fixtureFile("FUser/profileImage.png");
+    Uint8List originImage = imageFile.readAsBytesSync();
     List<int> compressImage = [1, 2, 3];
     when(mockFlutterImageCompressAdapter.compressImage(originImage, 70))
         .thenAnswer((_) async => compressImage);

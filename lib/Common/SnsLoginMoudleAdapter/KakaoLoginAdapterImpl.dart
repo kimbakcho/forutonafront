@@ -1,3 +1,4 @@
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 
 import 'SnsLoginModuleAdapter.dart';
@@ -20,4 +21,7 @@ class KakaoLoginAdapterImpl implements SnsLoginModuleAdapter{
     }
 
   }
+
+  @override
+  SnsSupportService snsSupportService = SnsSupportService.Kakao;
 }

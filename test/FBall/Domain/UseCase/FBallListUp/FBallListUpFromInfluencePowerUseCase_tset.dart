@@ -39,7 +39,7 @@ void main(){
           () async {
         //arrange
         when(mockFBallRepository.listUpFromInfluencePower(any))
-            .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixture('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
+            .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(fixtureString('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
         //act
 
         var reqDto = new FBallListUpFromBallInfluencePowerReqDto(

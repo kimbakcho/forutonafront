@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class G001MainPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     SystemUiOverlayStyle.light.copyWith(
