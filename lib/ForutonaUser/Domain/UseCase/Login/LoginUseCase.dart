@@ -32,16 +32,22 @@ import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapt
      }
      FUserSnSLoginReqDto _reqDto = FUserSnSLoginReqDto();
      _reqDto.accessToken = snsUserInfoResDto.accessToken;
-     _reqDto.snsService = SnsSupportService.Kakao;
-     _reqDto.fUserUid = "${SnsSupportService.Kakao}${snsUserInfoResDto.uid}";
+     _reqDto.snsService = _snsLoginModuleAdapter.snsSupportService;
+     _reqDto.fUserUid = "${_reqDto.snsService}${snsUserInfoResDto.uid}";
      _reqDto.snsUid = snsUserInfoResDto.uid;
+     _reqDto.userNickName = snsUserInfoResDto.userNickName;
+     _reqDto.email = snsUserInfoResDto.email;
+     _reqDto.userProfileImageUrl = snsUserInfoResDto.userProfileImageUrl;
+
      var fUserSnsCheckJoin = await _singUpUseCaseInputPort.snsUidJoinCheck(_reqDto);
+
      if (isNotJoin(fUserSnsCheckJoin)) {
-       throw new NotJoinException("not Join", fUserSnsCheckJoin);
+       throw new NotJoinException("not Join", _reqDto);
      } else {
        await _fireBaseAuthAdapterForUseCase
            .signInWithCustomToken(fUserSnsCheckJoin.firebaseCustomToken);
      }
+
      return true;
    }
 

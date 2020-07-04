@@ -2,7 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndicator.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/EmailValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/PwCheckValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -11,38 +15,46 @@ import 'J006ViewModel.dart';
 class J006View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => J006ViewModel(context),
-        child: Consumer<J006ViewModel>(builder: (_, model, child) {
-          return Stack(children: <Widget>[
-            Scaffold(
-                backgroundColor: Color(0xffF2F0F1),
-                body: Container(
-                    padding: EdgeInsets.fromLTRB(
-                        0, MediaQuery.of(context).padding.top, 0, 0),
-                    child: Stack(
-                      children: <Widget>[
-                        Column(children: <Widget>[
-                          topBar(model),
-                          Expanded(
-                              child: ListView(
-                                  padding: EdgeInsets.all(0),
-                                  children: <Widget>[
-                                idDescriptionBar(context),
-                                idTextInputBar(model),
-                                emailErrorDisplayBar(model),
-                                pwTextInputBar(model),
-                                pwTextErrorDisplayBar(model),
-                                pwCheckInputBar(model),
-                                pwCheckErrorDisplayBar(model)
-                              ]))
-                        ]),
-                        joinProgressBar(context),
-                        model.getIsLoading() ? CommonLoadingComponent() : Container()
-                      ],
-                    ))),
-          ]);
-        }));
+    return ChangeNotifierProvider(create: (_) {
+      var pwValidImpl = PwValidImpl();
+      return J006ViewModel(
+          context: context,
+          singUpUseCaseInputPort: sl(),
+          signUpEmailValid: EmailValidImpl(),
+          pwValidImpl: pwValidImpl,
+          pwCheckValid: PwCheckValidImpl(pwValidImpl));
+    }, child: Consumer<J006ViewModel>(builder: (_, model, child) {
+      return Stack(children: <Widget>[
+        Scaffold(
+            backgroundColor: Color(0xffF2F0F1),
+            body: Container(
+                padding: EdgeInsets.fromLTRB(
+                    0, MediaQuery.of(context).padding.top, 0, 0),
+                child: Stack(
+                  children: <Widget>[
+                    Column(children: <Widget>[
+                      topBar(model),
+                      Expanded(
+                          child: ListView(
+                              padding: EdgeInsets.all(0),
+                              children: <Widget>[
+                            idDescriptionBar(context),
+                            idTextInputBar(model),
+                            emailErrorDisplayBar(model),
+                            pwTextInputBar(model),
+                            pwTextErrorDisplayBar(model),
+                            pwCheckInputBar(model),
+                            pwCheckErrorDisplayBar(model)
+                          ]))
+                    ]),
+                    joinProgressBar(context),
+                    model.getIsLoading()
+                        ? CommonLoadingComponent()
+                        : Container()
+                  ],
+                ))),
+      ]);
+    }));
   }
 
   Positioned joinProgressBar(BuildContext context) {
@@ -62,9 +74,9 @@ class J006View extends StatelessWidget {
     return model.hasPwCheckError()
         ? Container(
             alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(top: 8,bottom: 10),
-      height: 38,
-      margin: EdgeInsets.only(left: 22),
+            padding: EdgeInsets.only(top: 8, bottom: 10),
+            height: 38,
+            margin: EdgeInsets.only(left: 22),
             child: Text(model.pwCheckErrorText(),
                 style: GoogleFonts.notoSans(
                   fontSize: 12,
@@ -125,8 +137,8 @@ class J006View extends StatelessWidget {
     return model.hasPwError()
         ? Container(
             alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(top: 8,bottom: 10),
-      height: 38,
+            padding: EdgeInsets.only(top: 8, bottom: 10),
+            height: 38,
             margin: EdgeInsets.only(left: 22),
             child: Text(model.pwErrorText(),
                 style: GoogleFonts.notoSans(
@@ -189,7 +201,7 @@ class J006View extends StatelessWidget {
         ? Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(left: 22),
-            padding: EdgeInsets.only(top: 8,bottom: 10),
+            padding: EdgeInsets.only(top: 8, bottom: 10),
             height: 38,
             child: Text(model.emailErrorText(),
                 style: GoogleFonts.notoSans(
@@ -274,10 +286,9 @@ class J006View extends StatelessWidget {
             left: 16,
             child: Text("아이디는 실제 사용하시는 이메일로 작성해주세요.\n패스워드 분실시 복구에 사용됩니다.",
                 style: GoogleFonts.notoSans(
-                  fontSize: 13,
-                  color: Color(0xff454f63),
-                  fontWeight: FontWeight.normal
-                )),
+                    fontSize: 13,
+                    color: Color(0xff454f63),
+                    fontWeight: FontWeight.normal)),
           )
         ],
       ),

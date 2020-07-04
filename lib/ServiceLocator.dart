@@ -6,6 +6,9 @@ import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseG
 import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/EmailValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/NaverLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
@@ -181,4 +184,6 @@ init() {
           fireBaseAuthAdapterForUseCase: sl(),
           snsLoginModuleAdapter: sl.get(instanceName: "NaverLoginAdapter")),
       instanceName: "LoginUseCaseNaver");
+
+
 }

@@ -1,23 +1,25 @@
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:kakao_flutter_sdk/all.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
-class NaverLoginAdapterImpl implements SnsLoginModuleAdapter{
+class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
   @override
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {
     NaverLoginResult naverLoginResult;
-    try{
+    try {
       naverLoginResult = await FlutterNaverLogin.logIn();
-    }catch(ex){
+    } catch (ex) {
       throw ex;
     }
-    switch(naverLoginResult.status) {
+    switch (naverLoginResult.status) {
       case NaverLoginStatus.loggedIn:
-        var currentAccessToken =  await FlutterNaverLogin.currentAccessToken;
-        return SnsLoginModuleResDto(naverLoginResult.account.id, currentAccessToken.accessToken);
+        var currentAccessToken = await FlutterNaverLogin.currentAccessToken;
+        return SnsLoginModuleResDto(
+            naverLoginResult.account.id, currentAccessToken.accessToken,
+            userNickName: naverLoginResult.account.nickname,
+            email: naverLoginResult.account.email,
+            userProfileImageUrl: naverLoginResult.account.profileImage);
       case NaverLoginStatus.cancelledByUser:
         throw ("cancelledByUser");
         break;

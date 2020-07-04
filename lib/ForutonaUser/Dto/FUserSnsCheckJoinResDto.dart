@@ -14,6 +14,7 @@ class FUserSnsCheckJoinResDto {
   //기존 유저시 토큰 부여
   String firebaseCustomToken;
 
+
   FUserSnsCheckJoinResDto();
 
   factory FUserSnsCheckJoinResDto.fromFUserSnsCheckJoin(FUserSnsCheckJoin fUserSnsCheckJoin){

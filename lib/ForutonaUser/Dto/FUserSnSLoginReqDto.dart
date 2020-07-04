@@ -11,6 +11,9 @@ class FUserSnSLoginReqDto {
   String snsUid;
   SnsSupportService snsService;
   String fUserUid;
+  String userNickName;
+  String email;
+  String userProfileImageUrl;
 
   FUserSnSLoginReqDto();
   factory FUserSnSLoginReqDto.fromJson(Map<String, dynamic> json) => _$FUserSnSLoginReqDtoFromJson(json);

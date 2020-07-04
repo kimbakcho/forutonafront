@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndicator.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,10 @@ class J004View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => J004ViewModel(context),
+        create: (_) => J004ViewModel(
+            context: context,
+            singUpUseCaseInputPort: sl(),
+            pwAuthFromPhoneUseCaseInputPort: sl()),
         child: Consumer<J004ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -135,7 +139,7 @@ class J004View extends StatelessWidget {
                 child: Container(
                     height: 50,
                     child: TextField(
-                      keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.number,
                         controller: model.authNumberEditingController,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
@@ -221,8 +225,7 @@ class J004View extends StatelessWidget {
             width: 48),
         Container(
             child: Text("휴대폰 인증",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Color(0xff454f63),

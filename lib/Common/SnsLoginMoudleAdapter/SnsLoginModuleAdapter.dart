@@ -8,5 +8,8 @@ abstract class SnsLoginModuleAdapter {
 class SnsLoginModuleResDto {
   String uid;
   String accessToken;
-  SnsLoginModuleResDto(this.uid, this.accessToken);
+  String userNickName;
+  String email;
+  String userProfileImageUrl;
+  SnsLoginModuleResDto(this.uid, this.accessToken,{this.userNickName,this.email,this.userProfileImageUrl});
 }

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndicator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J002/J002ViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class J002View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => J002ViewModel(context),
+        create: (_) => J002ViewModel(context: context,singUpUseCaseInputPort: sl()),
         child: Consumer<J002ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(

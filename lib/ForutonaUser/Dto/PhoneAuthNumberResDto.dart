@@ -1,3 +1,4 @@
+import 'package:forutonafront/ForutonaUser/Data/Value/PhoneAuthNumber.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'PhoneAuthNumberResDto.g.dart';
 @JsonSerializable()
@@ -12,4 +13,14 @@ class PhoneAuthNumberResDto {
   PhoneAuthNumberResDto();
   factory PhoneAuthNumberResDto.fromJson(Map<String, dynamic> json) => _$PhoneAuthNumberResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$PhoneAuthNumberResDtoToJson(this);
+
+  factory PhoneAuthNumberResDto.fromPhoneAuthNumber(PhoneAuthNumber phoneAuthNumber) {
+    PhoneAuthNumberResDto resDto = PhoneAuthNumberResDto();
+    resDto.phoneAuthToken = phoneAuthNumber.phoneAuthToken;
+    resDto.phoneNumber = phoneAuthNumber.phoneNumber;
+    resDto.internationalizedPhoneNumber = phoneAuthNumber.internationalizedPhoneNumber;
+    resDto.errorFlag = phoneAuthNumber.errorFlag;
+    resDto.errorCause = phoneAuthNumber.errorCause;
+    return resDto;
+  }
 }

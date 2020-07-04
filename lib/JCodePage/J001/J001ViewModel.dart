@@ -3,40 +3,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/NotJoinException.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
 import 'package:forutonafront/JCodePage/J008/J008View.dart';
 import 'package:forutonafront/ServiceLocator.dart';
-import 'package:provider/provider.dart';
 
 class J001ViewModel extends ChangeNotifier {
-  SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  BuildContext context;
   SingUpUseCaseInputPort _singUpUseCaseInputPort;
   FireBaseSignInValidUseCase _fireBaseSignInValidUseCase;
-  BuildContext _context;
+  TextEditingController idTextFieldController;
+  TextEditingController pwTextFieldController;
+  FocusNode idTextFocusNode;
+  FocusNode pwTextFocusNode ;
 
-  TextEditingController idTextFieldController = TextEditingController();
-  TextEditingController pwTextFieldController = TextEditingController();
-  FocusNode idTextFocusNode = FocusNode();
-  FocusNode pwTextFocusNode = FocusNode();
   bool _isLoading = false;
 
   J001ViewModel(
-      {@required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required FireBaseSignInValidUseCase fireBaseSignInValidUseCase,
+      {@required FireBaseSignInValidUseCase fireBaseSignInValidUseCase,
       @required SingUpUseCaseInputPort singUpUseCaseInputPort,
-      @required BuildContext context})
-      : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
-        _fireBaseSignInValidUseCase = fireBaseSignInValidUseCase,
-        _singUpUseCaseInputPort = singUpUseCaseInputPort,
-        _context = context {
+      @required this.idTextFieldController,
+      @required this.pwTextFieldController,
+      @required this.idTextFocusNode,
+      @required this.pwTextFocusNode,
+      @required this.context})
+      : _fireBaseSignInValidUseCase = fireBaseSignInValidUseCase,
+        _singUpUseCaseInputPort = singUpUseCaseInputPort{
     idTextFieldController.addListener(onIdTextFieldController);
     pwTextFieldController.addListener(onPwTextFieldController);
     idTextFocusNode.addListener(onIdTextFocusNode);
@@ -51,9 +46,6 @@ class J001ViewModel extends ChangeNotifier {
     _isLoading = value;
     notifyListeners();
   }
-
-  SignInValidWithSignInService _signInValidWithSignInService =
-      new FireBaseSignInValidImpl();
 
   onIdTextFocusNode() {
     notifyListeners();
@@ -94,7 +86,7 @@ class J001ViewModel extends ChangeNotifier {
           textColor: Colors.white,
           fontSize: 12.0);
     } else {
-      Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+      Navigator.of(context).popUntil(ModalRoute.withName('/'));
     }
     _setIsLoading(false);
   }
@@ -118,16 +110,17 @@ class J001ViewModel extends ChangeNotifier {
         throw ("네트워크 접속에 실패했습니다. 네트워크 연결 상태를 확인해주세요.");
       }
       if (await snsLoginUseCase.tryLogin()) {
-        Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+        Navigator.of(context).popUntil(ModalRoute.withName('/'));
       }
     } on NotJoinException catch (e) {
-      _singUpUseCaseInputPort.setUserName(e.snsCheckJoinResDto.userSnsName);
-      _singUpUseCaseInputPort.setEmail(e.snsCheckJoinResDto.email);
-      _singUpUseCaseInputPort.setUserProfileImageUrl(e.snsCheckJoinResDto.pictureUrl);
-      _singUpUseCaseInputPort.setSupportSnsService(snsLoginUseCase.getSnsSupportService());
-
-      globalModel.fUserInfoJoinReqDto.snsToken = snsLoginUseCase.getToken();
-      await Navigator.of(_context).push(MaterialPageRoute(
+      _singUpUseCaseInputPort.setNickName(e.fUserSnSLoginReqDto.userNickName);
+      _singUpUseCaseInputPort.setEmail(e.fUserSnSLoginReqDto.email);
+      _singUpUseCaseInputPort
+          .setUserProfileImageUrl(e.fUserSnSLoginReqDto.userProfileImageUrl);
+      _singUpUseCaseInputPort
+          .setSupportSnsService(snsLoginUseCase.getSnsSupportService());
+      _singUpUseCaseInputPort.setSnsToken(e.fUserSnSLoginReqDto.accessToken);
+      await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) {
           return J002View();
         },
@@ -146,18 +139,21 @@ class J001ViewModel extends ChangeNotifier {
     _setIsLoading(false);
   }
 
-  void jumpToJ002() {
-    GlobalModel globalModel = Provider.of(_context, listen: false);
-    globalModel.fUserInfoJoinReqDto.snsSupportService =
-        SnsSupportService.Forutona;
-    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => J002View()));
+  void forutonaSingUpJumpToJ002() {
+    _singUpUseCaseInputPort.setSupportSnsService(SnsSupportService.Forutona);
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) {
+        return J002View();
+      },
+      settings: RouteSettings(name: "/J002"),
+    ));
   }
 
   void onClose() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   void jumpToJ008Page() {
-    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => J008View()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => J008View()));
   }
 }

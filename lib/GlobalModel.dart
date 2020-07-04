@@ -26,10 +26,8 @@ class GlobalModel with ChangeNotifier {
 
 
   String userNickName() {
-    return fUserInfoDto.nickName;
+    return "TESTNICKNAME";
   }
 
-  Future<void> signOutFUserInfoDto() async {
-    fUserInfoDto = null;
-  }
+
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/GCodePage/G022/G022MainPage.dart';
 import 'package:forutonafront/GlobalModel.dart';
@@ -7,11 +9,15 @@ import 'package:forutonafront/JCodePage/J004/J004View.dart';
 import 'package:forutonafront/JCodePage/J007/J007View.dart';
 import 'package:provider/provider.dart';
 
-
 class J002ViewModel extends ChangeNotifier {
-  final BuildContext _context;
+  final BuildContext context;
 
-  J002ViewModel(this._context);
+  final SingUpUseCaseInputPort _singUpUseCaseInputPort;
+
+  J002ViewModel(
+      {@required this.context,
+      @required SingUpUseCaseInputPort singUpUseCaseInputPort})
+      : _singUpUseCaseInputPort = singUpUseCaseInputPort;
 
   bool allAgree = false;
   bool serviceUseAgree = false;
@@ -22,7 +28,7 @@ class J002ViewModel extends ChangeNotifier {
   bool ageOverAgree = false;
 
   void onBackTap() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   void onAllAgreeClick() {
@@ -84,7 +90,7 @@ class J002ViewModel extends ChangeNotifier {
   void checkAllAgree() {
     if (isAllAgree()) {
       allAgree = true;
-    }else {
+    } else {
       allAgree = false;
     }
     notifyListeners();
@@ -92,78 +98,70 @@ class J002ViewModel extends ChangeNotifier {
 
   bool isAllAgree() {
     return serviceUseAgree &&
-      serviceManagement &&
-      personalInformationCollectionAgree &&
-      positionInformationCollectionAgree &&
-      marketingInformationReceiveAgree &&
-      ageOverAgree;
+        serviceManagement &&
+        personalInformationCollectionAgree &&
+        positionInformationCollectionAgree &&
+        marketingInformationReceiveAgree &&
+        ageOverAgree;
   }
-  bool nextBtnFlag(){
-    if(isSatisfied()){
+
+  bool nextBtnFlag() {
+    if (isSatisfied()) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
 
   bool isSatisfied() {
     return serviceUseAgree &&
-      serviceManagement &&
-      personalInformationCollectionAgree &&
-      positionInformationCollectionAgree &&
-      ageOverAgree;
+        serviceManagement &&
+        personalInformationCollectionAgree &&
+        positionInformationCollectionAgree &&
+        ageOverAgree;
   }
-  void onNextBtnClick(){
-    GlobalModel globalModel = Provider.of<GlobalModel>(_context,listen: false);
-    globalModel.fUserInfoJoinReqDto.forutonaAgree = serviceUseAgree;
-    globalModel.fUserInfoJoinReqDto.forutonaManagementAgree = serviceManagement;
-    globalModel.fUserInfoJoinReqDto.martketingAgree = marketingInformationReceiveAgree;
-    globalModel.fUserInfoJoinReqDto.positionAgree = positionInformationCollectionAgree;
-    globalModel.fUserInfoJoinReqDto.privateAgree = personalInformationCollectionAgree;
-    globalModel.fUserInfoJoinReqDto.ageLimitAgree = ageOverAgree;
-    globalModel.fUserInfoJoinReqDto.countryCode = "KR";
 
-    Navigator.of(_context).push(MaterialPageRoute(
-      builder: (context){
-        if(globalModel.fUserInfoJoinReqDto.snsSupportService != SnsSupportService.Forutona){
-          return J007View();
-        }else {
-          return J004View();
-        }
-
+  void onNextBtnClick() {
+    _singUpUseCaseInputPort.setForutonaAgree(serviceUseAgree);
+    _singUpUseCaseInputPort.setForutonaManagementAgree(serviceManagement);
+    _singUpUseCaseInputPort.setMartketingAgree(marketingInformationReceiveAgree);
+    _singUpUseCaseInputPort.setPositionAgree(positionInformationCollectionAgree);
+    _singUpUseCaseInputPort.setPrivateAgree(personalInformationCollectionAgree);
+    _singUpUseCaseInputPort.setAgeLimitAgree(ageOverAgree);
+    _singUpUseCaseInputPort.setCountryCode("KR");
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      if (isForutonaSignUpSelect()) {
+        return J007View();
+      } else {
+        return J004View();
       }
-    ));
+    }));
+  }
+
+  bool isForutonaSignUpSelect() {
+    return _singUpUseCaseInputPort.getSnsSupportService() !=
+        SnsSupportService.Forutona;
   }
 
   void onServiceUseAgreePolicyViewer() {
-    Navigator.of(_context).push(
-        MaterialPageRoute(
-            builder: (_)=>G022MainPage("서비스 이용약관 동의","forutonaUseAgreement")
-        )
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => G022MainPage("서비스 이용약관 동의", "forutonaUseAgreement")));
   }
 
   void onServiceManagementPolicyViewer() {
-    Navigator.of(_context).push(
-        MaterialPageRoute(
-            builder: (_)=>G022MainPage("서비스 운영 정책 동의","forutonaManagement")
-        )
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => G022MainPage("서비스 운영 정책 동의", "forutonaManagement")));
   }
 
   void onPersonalInformationCollectionPolicyViewer() {
-    Navigator.of(_context).push(
-        MaterialPageRoute(
-            builder: (_)=>G022MainPage("개인정보 수집 이용 동의","personalInformationCollection")
-        )
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) =>
+            G022MainPage("개인정보 수집 이용 동의", "personalInformationCollection")));
   }
 
   void onPositionInformationCollectionPolicyViewer() {
-    Navigator.of(_context).push(
-        MaterialPageRoute(
-            builder: (_)=>G022MainPage("위치정보 활용 동의","positionInformationProtection")
-        )
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) =>
+            G022MainPage("위치정보 활용 동의", "positionInformationProtection")));
   }
 }

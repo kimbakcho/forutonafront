@@ -2,16 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/JCodePage/J001/J001ViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class J001View extends StatelessWidget {
+
+  TextEditingController idTextFieldController = TextEditingController();
+  TextEditingController pwTextFieldController = TextEditingController();
+  FocusNode idTextFocusNode = FocusNode();
+  FocusNode pwTextFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (_) => J001ViewModel(),
+            create: (_) => J001ViewModel(
+              singUpUseCaseInputPort: sl(),
+              context: context,
+              fireBaseSignInValidUseCase: sl(),
+              idTextFieldController: idTextFieldController,
+              pwTextFieldController: pwTextFieldController,
+              idTextFocusNode: idTextFocusNode,
+              pwTextFocusNode: pwTextFocusNode
+            ),
           ),
         ],
         child: Consumer<J001ViewModel>(builder: (_, model, child) {
@@ -59,7 +73,7 @@ class J001View extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.fromLTRB(36, 0, 36, 0),
       child: FlatButton(
-        onPressed: model.jumpToJ002,
+        onPressed: model.forutonaSingUpJumpToJ002,
         child: RichText(
           text: TextSpan(
               text: "아직 회원이 아니신가요?",
@@ -235,14 +249,14 @@ class J001View extends StatelessWidget {
             fontSize: 14,
             color: Color(0xff78849E),
           ),
-          focusNode: model.pwTextFocusNode,
-          controller: model.pwTextFieldController,
+          focusNode: pwTextFocusNode,
+          controller: pwTextFieldController,
           obscureText: true,
           decoration: InputDecoration(
               labelText: "비밀번호",
               labelStyle: GoogleFonts.notoSans(
                 fontSize: 14,
-                color: model.pwTextFocusNode.hasFocus
+                color: pwTextFocusNode.hasFocus
                     ? Color(0xff3497fd)
                     : Color(0xff78849E),
               ),
@@ -262,8 +276,8 @@ class J001View extends StatelessWidget {
     return Container(
       margin: EdgeInsets.fromLTRB(36, 16, 36, 0),
       child: TextField(
-        controller: model.idTextFieldController,
-        focusNode: model.idTextFocusNode,
+        controller: idTextFieldController,
+        focusNode: idTextFocusNode,
         style: GoogleFonts.notoSans(
           fontSize: 14,
           color: Color(0xff78849E),
@@ -272,7 +286,7 @@ class J001View extends StatelessWidget {
             labelText: "아이디(이메일 주소)",
             labelStyle: GoogleFonts.notoSans(
               fontSize: 14,
-              color: model.idTextFocusNode.hasFocus
+              color: idTextFocusNode.hasFocus
                   ? Color(0xff3497fd)
                   : Color(0xff78849E),
             ),
