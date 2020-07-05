@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/JCodePage/J013/J013ViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,11 @@ class J013View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => J013ViewModel(context, email),
+        create: (_) => J013ViewModel(
+          context: context,
+          email: email,
+          pwFindEmailUseCaseInputPort: sl()
+        ),
         child: Consumer<J013ViewModel>(builder: (_, model, child) {
           return Stack(
             children: <Widget>[

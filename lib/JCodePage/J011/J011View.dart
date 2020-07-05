@@ -1,43 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/PwCheckValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J011/J011ViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class J011View extends StatelessWidget {
+  final TextEditingController pwEditingController = TextEditingController();
+  final TextEditingController pwCheckEditingController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => J011ViewModel(context),
-        child: Consumer<J011ViewModel>(builder: (_, model, child) {
-          return Stack(children: <Widget>[
-            Scaffold(
-                body: Container(
-                    padding: EdgeInsets.fromLTRB(
-                        0, MediaQuery.of(context).padding.top, 0, 0),
-                    child: Stack(
-                      children: <Widget>[
-                        Column(children: <Widget>[
-                          topBar(model),
-                          Expanded(
-                              child: ListView(
-                                  padding: EdgeInsets.all(0),
-                                  shrinkWrap: true,
-                                  children: <Widget>[
-                                cautionBar(context),
-                                pwTextInputBar(model),
-                                pwTextErrorDisplayBar(model),
-                                pwCheckInputBar(model),
-                                pwCheckErrorDisplayBar(model)
-                              ]))
-                        ]),
-                        joinProgressBar(context)
-                      ],
-                    ))),
-            model.getIsLoading() ? CommonLoadingComponent() : Container()
-          ]);
-        }));
+    return ChangeNotifierProvider(create: (_) {
+      SignValid pwValid = PwValidImpl();
+      return J011ViewModel(
+          context: context,
+          pwFindPhoneUseCaseInputPort: sl(),
+          pwValid: pwValid,
+          pwCheckValid: PwCheckValidImpl(pwValid),
+          pwCheckEditingController: pwCheckEditingController,
+          pwEditingController: pwEditingController);
+    }, child: Consumer<J011ViewModel>(builder: (_, model, child) {
+      return Stack(children: <Widget>[
+        Scaffold(
+            body: Container(
+                padding: EdgeInsets.fromLTRB(
+                    0, MediaQuery.of(context).padding.top, 0, 0),
+                child: Stack(
+                  children: <Widget>[
+                    Column(children: <Widget>[
+                      topBar(model),
+                      Expanded(
+                          child: ListView(
+                              padding: EdgeInsets.all(0),
+                              shrinkWrap: true,
+                              children: <Widget>[
+                            cautionBar(context),
+                            pwTextInputBar(model),
+                            pwTextErrorDisplayBar(model),
+                            pwCheckInputBar(model),
+                            pwCheckErrorDisplayBar(model)
+                          ]))
+                    ]),
+                    joinProgressBar(context)
+                  ],
+                ))),
+        model.getIsLoading() ? CommonLoadingComponent() : Container()
+      ]);
+    }));
   }
 
   Container pwCheckErrorDisplayBar(J011ViewModel model) {
@@ -245,7 +260,7 @@ class J011View extends StatelessWidget {
           margin: EdgeInsets.only(right: 16),
           child: FlatButton(
             onPressed:
-                model.isValidComplete() ? model.onCompeleteBtnClick : null,
+                model.isValidComplete() ? model.onCompleteBtnClick : null,
             child: Text("완료",
                 style: TextStyle(
                   fontFamily: "Noto Sans CJK KR",

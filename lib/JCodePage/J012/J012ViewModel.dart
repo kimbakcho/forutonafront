@@ -1,47 +1,54 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/SignValid/SignValid.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseOutputPort.dart';
 import 'package:forutonafront/JCodePage/J013/J013View.dart';
 
-class J012ViewModel extends ChangeNotifier{
-  final BuildContext _context;
-  TextEditingController idEditingController = new TextEditingController();
+class J012ViewModel extends ChangeNotifier implements PwFindEmailUseCaseOutputPort{
+  final BuildContext context;
+  final TextEditingController idEditingController;
+  final SignValid _duplicationEmailValid;
+  final PwFindEmailUseCaseInputPort _pwFindEmailUseCaseInputPort;
 
-  J012ViewModel(this._context);
+  J012ViewModel(
+      {this.context,
+      this.idEditingController,
+      SignValid duplicationEmailValid,
+      PwFindEmailUseCaseInputPort pwFindEmailUseCaseInputPort})
+      : _duplicationEmailValid = duplicationEmailValid,
+        _pwFindEmailUseCaseInputPort = pwFindEmailUseCaseInputPort;
+
   bool _idEditCompleteFlag = false;
   bool _isLoading = false;
 
   getIsLoading() {
     return _isLoading;
   }
+
   _setIsLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
-  PwFindValidService _pwFindValidService = PwFindValidImpl();
-
-
   void onBackTap() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   bool isCanNextBtn() {
-    if(idEditingController.text.length > 0){
+    if (idEditingController.text.length > 0) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
 
-  onNextComplete() async{
+  onNextComplete() async {
     _idEditCompleteFlag = true;
     _setIsLoading(true);
-    await _pwFindValidService.emailIdValid(idEditingController.text);
-    if (!_pwFindValidService.hasEmailError()) {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: idEditingController.text);
-      Navigator.of(_context).push(MaterialPageRoute(builder: (_)=>J013View(idEditingController.text)));
+    await _duplicationEmailValid.valid(idEditingController.text);
+    if (!_duplicationEmailValid.hasError()) {
+      await _pwFindEmailUseCaseInputPort.sendPasswordResetEmail(idEditingController.text,outputPort: this);
     }
     _setIsLoading(false);
   }
@@ -53,20 +60,25 @@ class J012ViewModel extends ChangeNotifier{
 
   Future<void> onIdEditComplete() async {
     _idEditCompleteFlag = true;
-    await _pwFindValidService.emailIdValid(idEditingController.text);
+    await _duplicationEmailValid.valid(idEditingController.text);
     notifyListeners();
   }
-  bool hasEmailError(){
-      return _pwFindValidService.hasEmailError();
+
+  bool hasEmailError() {
+    return _duplicationEmailValid.hasError();
   }
-  String emailErrorText(){
-    if(_idEditCompleteFlag){
-      return _pwFindValidService.emailErrorText();
-    }else {
+
+  String emailErrorText() {
+    if (_idEditCompleteFlag) {
+      return _duplicationEmailValid.errorText();
+    } else {
       return "";
     }
-
   }
 
-
+  @override
+  void onSendPasswordResetEmail() {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => J013View(idEditingController.text)));
+  }
 }

@@ -4,26 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
-
-import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
-import 'package:forutonafront/ForutonaUser/Service/SnsSupportServiceFatory.dart';
-import 'package:forutonafront/GlobalModel.dart';
+import 'package:forutonafront/Common/SignValid/SignValid.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 class J007ViewModel extends ChangeNotifier {
-  final BuildContext _context;
+  final BuildContext context;
+  final SingUpUseCaseInputPort _singUpUseCaseInputPort;
+  final SignValid _nickNameValid;
+  final UserProfileImageUploadUseCaseInputPort
+      _userProfileImageUploadUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCase;
+  final TextEditingController nickNameController;
+  final TextEditingController userIntroduceController;
+
   ImageProvider currentProfileImage;
 
   int nickNameInputTextLength = 0;
-  TextEditingController nickNameController = new TextEditingController();
-  TextEditingController userIntroduceController = new TextEditingController();
+
   int userIntroduceInputTextLength = 0;
   String currentCountryCode = "KR";
-  SignUpValidUseCaseInputPort _signValidService = new DefaultSignValidUseCase();
 
   File _currentPickProfileImage;
   bool _isChangeProfileImage = false;
@@ -31,7 +35,6 @@ class J007ViewModel extends ChangeNotifier {
   bool _isLoading = false;
 
   Preference _preference = sl();
-
 
   getIsLoading() {
     return _isLoading;
@@ -42,22 +45,32 @@ class J007ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  J007ViewModel(this._context) {
-    GlobalModel globalModel = Provider.of(_context, listen: false);
-    if (globalModel.fUserInfoJoinReqDto.countryCode != null) {
-      currentCountryCode = globalModel.fUserInfoJoinReqDto.countryCode;
-    }
-    if (globalModel.fUserInfoJoinReqDto.userProfileImageUrl == null) {
-      globalModel.fUserInfoJoinReqDto.userProfileImageUrl = _preference.basicProfileImageUrl;
-    }
+  J007ViewModel(
+      {@required
+          this.context,
+      @required
+          SingUpUseCaseInputPort singUpUseCaseInputPort,
+      @required
+          SignValid nickNameValid,
+      @required
+          UserProfileImageUploadUseCaseInputPort
+              userProfileImageUploadUseCaseInputPort,
+      @required
+          SignInUserInfoUseCaseInputPort signInUserInfoUseCase,
+      @required
+          this.nickNameController,
+      @required
+          this.userIntroduceController})
+      : _singUpUseCaseInputPort = singUpUseCaseInputPort,
+        _nickNameValid = nickNameValid,
+        _userProfileImageUploadUseCaseInputPort =
+            userProfileImageUploadUseCaseInputPort,
+        _signInUserInfoUseCase = signInUserInfoUseCase {
+    currentCountryCode = _singUpUseCaseInputPort.getCountryCode();
     currentProfileImage =
-        NetworkImage(globalModel.fUserInfoJoinReqDto.userProfileImageUrl);
-
-    if (globalModel.fUserInfoJoinReqDto.nickName != null) {
-      nickNameController.text = globalModel.fUserInfoJoinReqDto.nickName;
-      nickNameInputTextLength = nickNameController.text.length;
-    }
-
+        NetworkImage(_singUpUseCaseInputPort.getUserProfileImageUrl());
+    nickNameController.text = _singUpUseCaseInputPort.getNickName();
+    nickNameInputTextLength = nickNameController.text.length;
     userIntroduceController.addListener(__onUserIntroduceControllerListener);
   }
 
@@ -77,10 +90,9 @@ class J007ViewModel extends ChangeNotifier {
   onEditCompleteNickName() async {
     _setIsLoading(true);
     _haveNickNameConfirm = true;
-    await _signValidService.nickNameValid(nickNameController.text);
+    await _nickNameValid.valid(nickNameController.text);
     _setIsLoading(false);
   }
-
 
   void onChangeNickName(String value) {
     _haveNickNameConfirm = false;
@@ -89,52 +101,47 @@ class J007ViewModel extends ChangeNotifier {
   }
 
   bool hasNickNameError() {
-    if(_haveNickNameConfirm) {
-      return _signValidService.hasNickNameError();
-    }else {
+    if (_haveNickNameConfirm) {
+      return _nickNameValid.hasError();
+    } else {
       return false;
     }
   }
+
   String nickNameErrorText() {
-    return _signValidService.nickNameErrorText();
-  }
-  void onBackTap() {
-    Navigator.of(_context).pop();
+    return _nickNameValid.errorText();
   }
 
+  void onBackTap() {
+    Navigator.of(context).pop();
+  }
 
   void onCompeleteBtnClick() async {
-    //닉네임 중복 체크
     _setIsLoading(true);
-    await _signValidService.nickNameValid(nickNameController.text);
+    await _nickNameValid.valid(nickNameController.text);
     _haveNickNameConfirm = true;
-    if(_signValidService.hasNickNameError()){
+    if (_nickNameValid.hasError()) {
       _setIsLoading(false);
-      return ;
+      return;
     }
-    GlobalModel globalModel = Provider.of(_context, listen: false);
-    globalModel.fUserInfoJoinReqDto.nickName = nickNameController.text;
-    globalModel.fUserInfoJoinReqDto.userIntroduce =
-        userIntroduceController.text;
+    _singUpUseCaseInputPort.setNickName(nickNameController.text);
+
+    _singUpUseCaseInputPort.setUserIntroduce(userIntroduceController.text);
+
     if (_isChangeProfileImage) {
       if (_currentPickProfileImage == null) {
-        globalModel.fUserInfoJoinReqDto.userProfileImageUrl =
-            _preference.basicProfileImageUrl;
+        _singUpUseCaseInputPort
+            .setUserProfileImageUrl(_preference.basicProfileImageUrl);
       }
     }
-    SnsLoginService snsLoginService =
-        SnsSupportServiceFactory.createSnsSupportService(
-            globalModel.fUserInfoJoinReqDto.snsSupportService);
-    var fUserInfoJoinResDto =
-        await snsLoginService.joinUser(globalModel.fUserInfoJoinReqDto);
-    FUserRepository _fUserRepository = new FUserRepository();
+
+    var fUserInfoJoinResDto = await _singUpUseCaseInputPort.joinUser();
     if (fUserInfoJoinResDto.joinComplete) {
       if (_currentPickProfileImage != null) {
-
-        await _fUserRepository.uploadUserProfileImage(_currentPickProfileImage);
+        await _userProfileImageUploadUseCaseInputPort
+            .upload(_currentPickProfileImage);
       }
-      await globalModel.setFUserInfoDto();
-      Navigator.of(_context).popUntil(ModalRoute.withName('/'));
+      Navigator.of(context).popUntil(ModalRoute.withName('/'));
     } else {
       Fluttertoast.showToast(
           msg: "가입 실패",
@@ -155,7 +162,7 @@ class J007ViewModel extends ChangeNotifier {
 
   void onCountryChange() async {
     var result =
-        await Navigator.of(_context).push(MaterialPageRoute(builder: (_) {
+        await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return CountrySelectPage(countryCode: currentCountryCode);
     }));
     if (result != null) {
@@ -165,13 +172,13 @@ class J007ViewModel extends ChangeNotifier {
   }
 
   void onChangeProfileImageTab() async {
-    var result = await showGeneralDialog(
-        context: _context,
+    await showGeneralDialog(
+        context: context,
         barrierDismissible: true,
         transitionDuration: Duration(milliseconds: 300),
         barrierColor: Colors.black.withOpacity(0.3),
         barrierLabel:
-            MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pageBuilder:
             (_context, Animation animation, Animation secondaryAnimation) {
           return Scaffold(
@@ -208,7 +215,7 @@ class J007ViewModel extends ChangeNotifier {
                             onPressed: () async {
                               File file = await ImagePicker.pickImage(
                                   source: ImageSource.camera);
-                              if(file != null){
+                              if (file != null) {
                                 _currentPickProfileImage = file;
                                 currentProfileImage = FileImage(file);
                                 _isChangeProfileImage = true;
@@ -232,7 +239,7 @@ class J007ViewModel extends ChangeNotifier {
                             onPressed: () async {
                               File file = await ImagePicker.pickImage(
                                   source: ImageSource.gallery);
-                              if(file != null){
+                              if (file != null) {
                                 _currentPickProfileImage = file;
                                 currentProfileImage = FileImage(file);
                                 _isChangeProfileImage = true;
@@ -278,8 +285,9 @@ class J007ViewModel extends ChangeNotifier {
         });
     textFieldUnFocus();
   }
-  textFieldUnFocus(){
-    FocusScope.of(_context).requestFocus(new FocusNode());
+
+  textFieldUnFocus() {
+    FocusScope.of(context).requestFocus(new FocusNode());
   }
 
   Container didver(BuildContext context) {
@@ -289,9 +297,4 @@ class J007ViewModel extends ChangeNotifier {
       color: Color(0xffe4e7e8),
     );
   }
-
-
-
-
-
 }

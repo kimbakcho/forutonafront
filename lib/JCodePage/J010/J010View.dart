@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/SignValid/PhonePwFindValidUseCase/PhoneFindValidUseCase.dart';
 import 'package:forutonafront/JCodePage/J010/J010ViewModel.dart';
-
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:provider/provider.dart';
 
 class J010View extends StatelessWidget {
+  final TextEditingController authNumberEditingController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_)=>J010ViewModel(context),
+      create: (_) => J010ViewModel(
+          context: context,
+          authNumberEditingController: authNumberEditingController,
+          phoneFindValidUseCase:
+              PhoneFindValidUseCaseImpl(phoneAuthRepository: sl()),
+          pwFindPhoneUseCaseInputPort: sl()
+      ),
       child: Consumer<J010ViewModel>(
-        builder: (_,model,child){
+        builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
                 backgroundColor: Color(0xffF2F0F1),
@@ -74,12 +84,12 @@ class J010View extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: 16,
               color:
-              model.isCanAuthNumberReq() ? Colors.white : Color(0xff7a7a7a),
+                  model.isCanAuthNumberReq() ? Colors.white : Color(0xff7a7a7a),
             )),
       ),
       decoration: BoxDecoration(
         color:
-        model.isCanAuthNumberReq() ? Color(0xff3497FD) : Color(0xffd4d4d4),
+            model.isCanAuthNumberReq() ? Color(0xff3497FD) : Color(0xffd4d4d4),
         border: Border.all(
           width: 1.00,
           color: model.isCanAuthNumberReq()
@@ -157,12 +167,12 @@ class J010View extends StatelessWidget {
                                 borderSide: BorderSide(
                                     width: 0, color: Color(0xffF2F0F1)),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
+                                    BorderRadius.all(Radius.circular(12))),
                             focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     width: 0, color: Color(0xff3497FD)),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(12))))))),
+                                    BorderRadius.all(Radius.circular(12))))))),
             Container(
                 margin: EdgeInsets.only(left: 16),
                 width: 111,

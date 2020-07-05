@@ -8,7 +8,7 @@ import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 
 abstract class SingUpUseCaseInputPort {
   Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto reqDto);
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto);
+  Future<FUserInfoJoinResDto> joinUser();
 
   void setNickName(String userNickName);
   void setEmail(String email);
@@ -22,13 +22,13 @@ abstract class SingUpUseCaseInputPort {
   void setPrivateAgree(bool privateAgree);
   void setAgeLimitAgree(bool ageOverAgree);
   void setCountryCode(String countryCode);
-
   SnsSupportService getSnsSupportService();
-
   void setInternationalizedPhoneNumber(String internationalizedPhoneNumber);
-
   void setPhoneAuthToken(String phoneAuthToken);
-
   void setPassword(String pw);
+  void setUserIntroduce(String userIntroduce);
+  String getCountryCode();
+  String getUserProfileImageUrl();
+  String getNickName();
 
 }

@@ -83,41 +83,4 @@ void main() {
     expect(phoneFindValidUseCase.hasPhoneAuthNumberError(), false);
   });
 
-  test('should 폰으로 PassWord 변경시 에러 발생', () async {
-    //arrange
-    PwChangeFromPhoneAuth result = PwChangeFromPhoneAuth();
-    result.errorFlag = true;
-    result.cause = "원인 알수 없는 에러";
-    when(mockPhoneAuthRepository.reqChangePwAuthPhone(any)).thenAnswer((_) async => result);
-
-    PwChangeFromPhoneAuthReqDto reqDto = PwChangeFromPhoneAuthReqDto();
-    reqDto.emailPhoneAuthToken = "TESTTEST";
-    reqDto.password = "Aa123123";
-    reqDto.internationalizedPhoneNumber = "+82010000000";
-    reqDto.email = "tetst@gmail.com";
-
-    //act
-    await phoneFindValidUseCase.phonePwChangeWithValid(reqDto);
-    //assert
-    expect(phoneFindValidUseCase.hasPhonePwChangeError(), true);
-  });
-
-  test('should 폰으로 PassWord 변경시 에러 발생', () async {
-    //arrange
-    PwChangeFromPhoneAuth result = PwChangeFromPhoneAuth();
-    result.errorFlag = false;
-    result.cause = "";
-    when(mockPhoneAuthRepository.reqChangePwAuthPhone(any)).thenAnswer((_) async => result);
-
-    PwChangeFromPhoneAuthReqDto reqDto = PwChangeFromPhoneAuthReqDto();
-    reqDto.emailPhoneAuthToken = "TESTTEST";
-    reqDto.password = "Aa123123";
-    reqDto.internationalizedPhoneNumber = "+82010000000";
-    reqDto.email = "tetst@gmail.com";
-
-    //act
-    await phoneFindValidUseCase.phonePwChangeWithValid(reqDto);
-    //assert
-    expect(phoneFindValidUseCase.hasPhonePwChangeError(), false);
-  });
 }

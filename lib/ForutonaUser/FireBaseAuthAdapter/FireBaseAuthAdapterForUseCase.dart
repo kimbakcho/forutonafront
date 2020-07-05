@@ -81,5 +81,10 @@ class FireBaseAuthAdapterForUseCaseImpl
     return await _fireBaseAuthBaseAdapter.signInWithCustomToken(token);
   }
 
+  @override
+  Future<void> sendPasswordResetEmail(String email) {
+    return _fireBaseAuthBaseAdapter.sendPasswordResetEmail(email);
+  }
+
 
 }

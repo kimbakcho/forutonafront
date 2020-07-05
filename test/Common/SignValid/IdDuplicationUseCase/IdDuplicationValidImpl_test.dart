@@ -1,4 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/DontHaveIdError.dart';
+import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/HasIdError.dart';
 import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicationValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
@@ -23,9 +25,11 @@ void main() {
     idDuplicationValid = IdDuplicationValidImpl(
         fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
         emailValid: mockEmailValid,
-        duplicationMessage: "이미 ID가 있습니다.");
+        duplicationErrorLogin: HasIdError());
     List<String> resultList1 = ['email'];
     List<String> resultList2 = [];
+    when(mockEmailValid.hasError()).thenReturn(false);
+    when(mockEmailValid.errorText()).thenReturn("");
     when(mockFireBaseAuthAdapterForUseCase.fetchSignInMethodsForEmail("test1@naver.com")).thenAnswer((_) async => resultList1 );
     when(mockFireBaseAuthAdapterForUseCase.fetchSignInMethodsForEmail("test2@naver.com")).thenAnswer((_) async => resultList2);
     //act
@@ -42,18 +46,20 @@ void main() {
     idDuplicationValid = IdDuplicationValidImpl(
         fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
         emailValid: mockEmailValid,
-        duplicationMessage: "해당 아이디로 가입되어 있습니다.");
+        duplicationErrorLogin: DontHaveIdError());
     List<String> resultList1 = ['email'];
     List<String> resultList2 = [];
+    when(mockEmailValid.hasError()).thenReturn(false);
+    when(mockEmailValid.errorText()).thenReturn("");
     when(mockFireBaseAuthAdapterForUseCase.fetchSignInMethodsForEmail("test1@naver.com")).thenAnswer((_) async => resultList1 );
     when(mockFireBaseAuthAdapterForUseCase.fetchSignInMethodsForEmail("test2@naver.com")).thenAnswer((_) async => resultList2);
     //act
     await idDuplicationValid.valid("test1@naver.com");
     //assert
-    expect(idDuplicationValid.hasError(), true);
+    expect(idDuplicationValid.hasError(), false);
     //act
     await idDuplicationValid.valid("test2@naver.com");
     //assert
-    expect(idDuplicationValid.hasError(), false);
+    expect(idDuplicationValid.hasError(), true);
   });
 }

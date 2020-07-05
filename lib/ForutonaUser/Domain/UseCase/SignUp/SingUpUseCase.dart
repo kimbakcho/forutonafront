@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoinReq.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserSnsCheckJoin.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
@@ -19,15 +18,17 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
       : _fUserRepository = fUserRepository;
 
   @override
-  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto reqDto) async {
-    var fUserSnsCheckJoin = await _fUserRepository.getSnsUserJoinCheckInfo(reqDto);
+  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(
+      FUserSnSLoginReqDto reqDto) async {
+    var fUserSnsCheckJoin =
+        await _fUserRepository.getSnsUserJoinCheckInfo(reqDto);
     return FUserSnsCheckJoinResDto.fromFUserSnsCheckJoin(fUserSnsCheckJoin);
   }
 
   @override
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto) async {
-    var fUserInfoJoin = await _fUserRepository.joinUser(reqDto);
-   return FUserInfoJoinResDto.fromFUserInfoJoin(fUserInfoJoin);
+  Future<FUserInfoJoinResDto> joinUser() async {
+    return FUserInfoJoinResDto.fromFUserInfoJoin(await _fUserRepository
+        .joinUser(FUserInfoJoinReqDto.fromFUserInfoJoinReq(fUserInfoJoinReq)));
   }
 
   @override
@@ -81,7 +82,7 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
   }
 
   @override
-  void setPositionAgree(bool positionAgree){
+  void setPositionAgree(bool positionAgree) {
     fUserInfoJoinReq.positionAgree = positionAgree;
   }
 
@@ -92,7 +93,8 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
 
   @override
   void setInternationalizedPhoneNumber(String internationalizedPhoneNumber) {
-    fUserInfoJoinReq.internationalizedPhoneNumber = internationalizedPhoneNumber;
+    fUserInfoJoinReq.internationalizedPhoneNumber =
+        internationalizedPhoneNumber;
   }
 
   @override
@@ -110,6 +112,23 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
     fUserInfoJoinReq.password = pw;
   }
 
+  @override
+  void setUserIntroduce(String userIntroduce) {
+    fUserInfoJoinReq.userIntroduce = userIntroduce;
+  }
 
+  @override
+  String getCountryCode() {
+    return fUserInfoJoinReq.countryCode;
+  }
 
+  @override
+  String getUserProfileImageUrl() {
+    return fUserInfoJoinReq.userProfileImageUrl;
+  }
+
+  @override
+  String getNickName() {
+    return fUserInfoJoinReq.nickName;
+  }
 }

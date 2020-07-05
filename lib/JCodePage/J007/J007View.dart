@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/NickNameValidImpl.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J007/J007ViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class J007View extends StatelessWidget {
+  final TextEditingController nickNameController = new TextEditingController();
+  final TextEditingController userIntroduceController =
+      new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => J007ViewModel(context),
+        create: (_) => J007ViewModel(
+            context: context,
+            singUpUseCaseInputPort: sl(),
+            nickNameValid: NickNameValidImpl(fUserRepository: sl()),
+            signInUserInfoUseCase: sl(),
+            userProfileImageUploadUseCaseInputPort: sl(),
+            nickNameController: nickNameController,
+            userIntroduceController: userIntroduceController),
+
         child: Consumer<J007ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -83,10 +97,9 @@ class J007View extends StatelessWidget {
                   minLines: 1,
                   maxLines: null,
                   maxLength: 100,
-                  controller: model.userIntroduceController,
+                  controller: userIntroduceController,
                   style: GoogleFonts.notoSans(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14),
+                      fontWeight: FontWeight.bold, fontSize: 14),
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                       hintText: "자기소개를 입력해주세요.",
@@ -144,10 +157,9 @@ class J007View extends StatelessWidget {
                   child: TextField(
                       onEditingComplete: model.onEditCompleteNickName,
                       onChanged: model.onChangeNickName,
-                      controller: model.nickNameController,
+                      controller: nickNameController,
                       style: GoogleFonts.notoSans(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
+                          fontWeight: FontWeight.bold, fontSize: 14),
                       maxLength: 20,
                       decoration: InputDecoration(
                         hintText: "닉네임을 입력해주세요",
@@ -178,9 +190,7 @@ class J007View extends StatelessWidget {
                   ? Container(
                       child: Text(model.nickNameErrorText(),
                           style: GoogleFonts.notoSans(
-
-                              fontSize: 12,
-                              color: Color(0xffff4f9a))))
+                              fontSize: 12, color: Color(0xffff4f9a))))
                   : Container())
         ]),
         decoration: BoxDecoration(
@@ -208,10 +218,10 @@ class J007View extends StatelessWidget {
           onPressed: model.onCountryChange,
           child: Container(
             width: MediaQuery.of(context).size.width,
-            child: Text(model.getCountryName(model.currentCountryCode),
+            child: Text(
+              model.getCountryName(model.currentCountryCode),
               style: GoogleFonts.notoSans(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14),
+                  fontWeight: FontWeight.bold, fontSize: 14),
             ),
           ),
         ))

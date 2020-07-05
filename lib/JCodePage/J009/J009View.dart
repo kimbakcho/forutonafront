@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/EmailValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/DontHaveIdError.dart';
+import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicationValidImpl.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J009/J009ViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class J009View extends StatelessWidget {
+  final TextEditingController idEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => J009ViewModel(context),
+        create: (_) => J009ViewModel(
+            context: context,
+            duplicationEmailValid: IdDuplicationValidImpl(
+              emailValid: EmailValidImpl(),
+              fireBaseAuthAdapterForUseCase: sl(),
+              duplicationErrorLogin: DontHaveIdError(),
+            ),
+            idEditingController: idEditingController,
+            pwFindPhoneUseCase: sl()),
         child: Consumer<J009ViewModel>(builder: (_, model, child) {
           return Stack(
             children: <Widget>[
               Scaffold(
-                backgroundColor: Color(0xffF2F0F1),
+                  backgroundColor: Color(0xffF2F0F1),
                   body: Container(
                       padding: EdgeInsets.fromLTRB(
                           0, MediaQuery.of(context).padding.top, 0, 0),

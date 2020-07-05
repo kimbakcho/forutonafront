@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
-import 'package:forutonafront/GlobalModel.dart';
+import 'package:forutonafront/Common/SignValid/SignValid.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCase.dart';
 import 'package:forutonafront/JCodePage/J010/J010View.dart';
-import 'package:provider/provider.dart';
 
 class J009ViewModel extends ChangeNotifier {
-  final BuildContext _context;
+  final BuildContext context;
+  final SignValid _duplicationEmailValid;
+  final PwFindPhoneUseCase _pwFindPhoneUseCase;
+  final TextEditingController idEditingController;
 
-  TextEditingController idEditingController = TextEditingController();
-  PhoneFindValidService _phoneFindValidService = PhoneFindValidImpl();
   bool _isLoading = false;
 
   getIsLoading() {
@@ -22,13 +22,16 @@ class J009ViewModel extends ChangeNotifier {
 
   bool _hasComplete = false;
 
-  J009ViewModel(this._context) {
-    GlobalModel globalModel = Provider.of(_context, listen: false);
-    globalModel.pwFindPhoneAuthReqDto = PwFindPhoneAuthReqDto();
-  }
+  J009ViewModel(
+      {@required this.context,
+      @required SignValid duplicationEmailValid,
+      @required PwFindPhoneUseCase pwFindPhoneUseCase,
+      @required this.idEditingController})
+      : _duplicationEmailValid = duplicationEmailValid,
+        _pwFindPhoneUseCase = pwFindPhoneUseCase;
 
   void onBackTap() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   bool isCanNextBtn() {
@@ -38,15 +41,14 @@ class J009ViewModel extends ChangeNotifier {
       return false;
     }
   }
+
   onNextComplete() async {
     _setIsLoading(true);
-    await _phoneFindValidService.emailIdValid(idEditingController.text);
+    await _duplicationEmailValid.valid(idEditingController.text);
     _hasComplete = true;
-    if (!_phoneFindValidService.hasEmailError()) {
-      GlobalModel globalModel = Provider.of(_context, listen: false);
-      globalModel.pwFindPhoneAuthReqDto.email = idEditingController.text;
-      Navigator.of(_context)
-          .push(MaterialPageRoute(builder: (_) => J010View()));
+    if (!_duplicationEmailValid.hasError()) {
+      _pwFindPhoneUseCase.email = idEditingController.text;
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J010View()));
     }
     _setIsLoading(false);
   }
@@ -58,23 +60,22 @@ class J009ViewModel extends ChangeNotifier {
 
   Future<void> onIdEditComplete() async {
     _setIsLoading(true);
-    await _phoneFindValidService.emailIdValid(idEditingController.text);
+    await _duplicationEmailValid.valid(idEditingController.text);
     _hasComplete = true;
     _setIsLoading(false);
   }
 
   bool hasEmailError() {
-    if(_hasComplete){
-      return _phoneFindValidService.hasEmailError();
-    }else {
+    if (_hasComplete) {
+      return _duplicationEmailValid.hasError();
+    } else {
       return true;
     }
-
   }
 
   String emailErrorText() {
     if (_hasComplete) {
-      return _phoneFindValidService.emailErrorText();
+      return _duplicationEmailValid.errorText();
     } else {
       return "";
     }

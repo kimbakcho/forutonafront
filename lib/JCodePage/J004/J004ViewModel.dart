@@ -16,9 +16,9 @@ import 'package:forutonafront/JCodePage/J006/J006View.dart';
 class J004ViewModel extends ChangeNotifier
     implements PwAuthFromPhoneUseCaseOutputPort {
   final BuildContext context;
-
   final PwAuthFromPhoneUseCaseInputPort _pwAuthFromPhoneUseCaseInputPort;
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
+  final TextEditingController authNumberEditingController;
 
   String _currentPhoneNumber;
   String _currentInternationalizedPhoneNumber;
@@ -36,14 +36,15 @@ class J004ViewModel extends ChangeNotifier
 
   int remindTimeSec = 120;
   PhoneAuthResDto resPhoneAuth;
-  TextEditingController authNumberEditingController = TextEditingController();
+
   Timer secTick;
 
-  J004ViewModel(
-      {this.context,
-      PwAuthFromPhoneUseCaseInputPort pwAuthFromPhoneUseCaseInputPort,
-      SingUpUseCaseInputPort singUpUseCaseInputPort})
-      : _pwAuthFromPhoneUseCaseInputPort = pwAuthFromPhoneUseCaseInputPort,
+  J004ViewModel({
+    @required this.context,
+    @required PwAuthFromPhoneUseCaseInputPort pwAuthFromPhoneUseCaseInputPort,
+    @required SingUpUseCaseInputPort singUpUseCaseInputPort,
+    @required this.authNumberEditingController,
+  })  : _pwAuthFromPhoneUseCaseInputPort = pwAuthFromPhoneUseCaseInputPort,
         _singUpUseCaseInputPort = singUpUseCaseInputPort {
     startSecTickerForPhoneAuthTimer();
   }

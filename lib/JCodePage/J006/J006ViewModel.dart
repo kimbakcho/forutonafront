@@ -11,13 +11,11 @@ class J006ViewModel extends ChangeNotifier {
   final SignValid _pwValid;
   final SignValid _pwCheckValid;
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
-
-  TextEditingController idEditingController = TextEditingController();
-  TextEditingController pwEditingController = TextEditingController();
-  TextEditingController pwCheckEditingController = TextEditingController();
+  final TextEditingController idEditingController;
+  final TextEditingController pwEditingController;
+  final TextEditingController pwCheckEditingController;
 
   bool hasIdComplete = false;
-
   bool _isLoading = false;
 
   getIsLoading() {
@@ -34,7 +32,11 @@ class J006ViewModel extends ChangeNotifier {
       @required SignValid signUpEmailValid,
       @required SignValid pwValidImpl,
       @required SignValid pwCheckValid,
-      @required SingUpUseCaseInputPort singUpUseCaseInputPort})
+      @required SingUpUseCaseInputPort singUpUseCaseInputPort,
+        @required this.idEditingController,
+        @required this.pwEditingController,
+        @required this.pwCheckEditingController,
+      })
       : _signUpEmailValid = signUpEmailValid,
         _pwValid = pwValidImpl,
         _pwCheckValid = pwCheckValid,

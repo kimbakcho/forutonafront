@@ -9,13 +9,17 @@ import 'package:provider/provider.dart';
 import 'J004ViewModel.dart';
 
 class J004View extends StatelessWidget {
+  TextEditingController authNumberEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => J004ViewModel(
             context: context,
             singUpUseCaseInputPort: sl(),
-            pwAuthFromPhoneUseCaseInputPort: sl()),
+            pwAuthFromPhoneUseCaseInputPort: sl(),
+            authNumberEditingController:authNumberEditingController
+        ),
         child: Consumer<J004ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(

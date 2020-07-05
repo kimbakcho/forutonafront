@@ -5,6 +5,8 @@ import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndic
 import 'package:forutonafront/Common/SignValid/BasicUseCase/EmailValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/BasicUseCase/PwCheckValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/HasIdError.dart';
+import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicationValidImpl.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +15,11 @@ import 'package:provider/provider.dart';
 import 'J006ViewModel.dart';
 
 class J006View extends StatelessWidget {
+  final TextEditingController idEditingController = TextEditingController();
+  final TextEditingController pwEditingController = TextEditingController();
+  final TextEditingController pwCheckEditingController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (_) {
@@ -20,9 +27,16 @@ class J006View extends StatelessWidget {
       return J006ViewModel(
           context: context,
           singUpUseCaseInputPort: sl(),
-          signUpEmailValid: EmailValidImpl(),
+          signUpEmailValid: IdDuplicationValidImpl(
+              emailValid: EmailValidImpl(),
+              fireBaseAuthAdapterForUseCase: sl(),
+              duplicationErrorLogin: HasIdError()),
           pwValidImpl: pwValidImpl,
-          pwCheckValid: PwCheckValidImpl(pwValidImpl));
+          pwCheckValid: PwCheckValidImpl(pwValidImpl),
+          idEditingController: idEditingController,
+          pwEditingController: pwEditingController,
+          pwCheckEditingController: pwCheckEditingController);
+
     }, child: Consumer<J006ViewModel>(builder: (_, model, child) {
       return Stack(children: <Widget>[
         Scaffold(
@@ -94,7 +108,7 @@ class J006View extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(16, 0, 24, 0),
         child: Stack(children: <Widget>[
           TextField(
-            controller: model.pwCheckEditingController,
+            controller: pwCheckEditingController,
             onChanged: model.onPwCheckEditChangeText,
             onEditingComplete: model.onPwCheckComplete,
             obscureText: true,
@@ -157,7 +171,7 @@ class J006View extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(16, 0, 24, 0),
         child: Stack(children: <Widget>[
           TextField(
-            controller: model.pwEditingController,
+            controller: pwEditingController,
             onChanged: model.onPwEditChangeText,
             onEditingComplete: model.onPwEditComplete,
             obscureText: true,
@@ -224,7 +238,7 @@ class J006View extends StatelessWidget {
             autocorrect: false,
             enableSuggestions: false,
             keyboardType: TextInputType.emailAddress,
-            controller: model.idEditingController,
+            controller: idEditingController,
             onChanged: model.onIdEditChangeText,
             onEditingComplete: model.onIdEditComplete,
             decoration: InputDecoration(

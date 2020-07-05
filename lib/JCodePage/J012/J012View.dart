@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/EmailValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/DontHaveIdError.dart';
+import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicationValidImpl.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J012/J012ViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../ServiceLocator.dart';
+
 class J012View extends StatelessWidget {
+  TextEditingController idEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => J012ViewModel(context),
+        create: (_) => J012ViewModel(context: context,
+        idEditingController: idEditingController,
+          duplicationEmailValid: IdDuplicationValidImpl(
+            emailValid: EmailValidImpl(),
+            fireBaseAuthAdapterForUseCase: sl(),
+            duplicationErrorLogin: DontHaveIdError(),
+          ),
+          pwFindEmailUseCaseInputPort: sl()
+        ),
         child: Consumer<J012ViewModel>(builder: (_, model, child) {
           return Stack(
             children: <Widget>[

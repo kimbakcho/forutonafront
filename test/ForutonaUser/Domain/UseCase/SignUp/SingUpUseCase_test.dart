@@ -44,7 +44,7 @@ void main() {
     fUserInfoJoin.joinComplete = true;
     when(mockFUserRepository.joinUser(any)).thenAnswer((realInvocation) async => fUserInfoJoin);
     //act
-    await singUpUseCase.joinUser(reqDto);
+    await singUpUseCase.joinUser();
     //assert
     verify(mockFUserRepository.joinUser(any));
   });

@@ -20,7 +20,7 @@ abstract class PhoneFindValidUseCase {
 
   String phoneEmailErrorText();
 
-  PwFindPhoneAuth getPhoneAuth();
+  PwFindPhoneAuthResDto getPhoneAuth();
 
   Future<void> phoneAuthNumberValid(
       PwFindPhoneAuthNumberReqDto pwFindPhoneAuthReqDto);
@@ -31,11 +31,6 @@ abstract class PhoneFindValidUseCase {
 
   PwFindPhoneAuthNumber getPwFindPhoneAuthNumber();
 
-  Future<void> phonePwChangeWithValid(PwChangeFromPhoneAuthReqDto reqDto);
-
-  bool hasPhonePwChangeError();
-
-  String phonePwChangeErrorText();
 }
 
 class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
@@ -103,8 +98,8 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
   }
 
   @override
-  PwFindPhoneAuth getPhoneAuth() {
-    return _resPhoneAuth;
+  PwFindPhoneAuthResDto getPhoneAuth() {
+    return PwFindPhoneAuthResDto.fromPwFindPhoneAuth(_resPhoneAuth) ;
   }
 
   @override
@@ -117,23 +112,4 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
     return _phoneEmailErrorText;
   }
 
-  Future<void> phonePwChangeWithValid(
-      PwChangeFromPhoneAuthReqDto reqDto) async {
-    _isPhonePwChangeError = false;
-    _phonePwChangeErrorText = "";
-    PwChangeFromPhoneAuth pwChangeFromPhoneAuthResDto =
-        await _phoneAuthRepository.reqChangePwAuthPhone(reqDto);
-    if (pwChangeFromPhoneAuthResDto.errorFlag) {
-      _isPhonePwChangeError = true;
-      _phonePwChangeErrorText = pwChangeFromPhoneAuthResDto.cause;
-    }
-  }
-
-  bool hasPhonePwChangeError() {
-    return _isPhonePwChangeError;
-  }
-
-  String phonePwChangeErrorText() {
-    return _phonePwChangeErrorText;
-  }
 }

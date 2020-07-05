@@ -1,21 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseOutputPort.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class J013ViewModel extends ChangeNotifier {
-  final BuildContext _context;
-  final String _email;
+class J013ViewModel extends ChangeNotifier implements PwFindEmailUseCaseOutputPort{
+  final BuildContext context;
+  final String email;
+  final PwFindEmailUseCaseInputPort _pwFindEmailUseCaseInputPort;
 
-  J013ViewModel(this._context, this._email);
+  J013ViewModel({
+    this.context,
+    this.email,
+    @required PwFindEmailUseCaseInputPort pwFindEmailUseCaseInputPort
+  }): _pwFindEmailUseCaseInputPort =pwFindEmailUseCaseInputPort;
 
   void onBackTap() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   void jumpReTryLoginPage() {
     Navigator.pushAndRemoveUntil(
-        _context,
+        context,
         MaterialPageRoute(
             settings: RouteSettings(name: "/J001"),
             builder: (context) {
@@ -26,7 +33,7 @@ class J013ViewModel extends ChangeNotifier {
 
   void popupReTrySendEmail() async {
     await showDialog(
-        context: _context,
+        context: context,
         barrierDismissible: true,
         builder: (context) {
           return Scaffold(
@@ -72,9 +79,8 @@ class J013ViewModel extends ChangeNotifier {
                                         color: Color(0xffE4E7E8), width: 1))),
                             child: FlatButton(
                                 onPressed: () async {
-                                  await FirebaseAuth.instance
-                                      .sendPasswordResetEmail(email: _email);
-                                  Navigator.of(context).pop();
+                                  await _pwFindEmailUseCaseInputPort.sendPasswordResetEmail(email,outputPort: this);
+
                                 },
                                 child: Text("재발송",
                                     style: GoogleFonts.notoSans(
@@ -105,5 +111,10 @@ class J013ViewModel extends ChangeNotifier {
                     borderRadius: BorderRadius.all(Radius.circular(12))),
               )));
         });
+  }
+
+  @override
+  void onSendPasswordResetEmail() {
+    Navigator.of(context).pop();
   }
 }
