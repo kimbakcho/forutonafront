@@ -58,6 +58,8 @@ class FireBaseAuthAdapterForUseCaseImpl
       _fireBaseMessageTokenUpdateUseCaseInputPort.updateFireBaseMessageToken(
           user.uid, await _fireBaseMessageAdapter.getCurrentToken());
       await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(user.uid);
+    }else {
+      _signInUserInfoUseCaseInputPort.clearUserInfo();
     }
   }
 
@@ -84,6 +86,11 @@ class FireBaseAuthAdapterForUseCaseImpl
   @override
   Future<void> sendPasswordResetEmail(String email) {
     return _fireBaseAuthBaseAdapter.sendPasswordResetEmail(email);
+  }
+
+  @override
+  Future<void> logout() async{
+    return await _fireBaseAuthBaseAdapter.logout();
   }
 
 

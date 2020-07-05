@@ -26,4 +26,10 @@ class FaceBookLoginAdapterImpl implements SnsLoginModuleAdapter{
   @override
   SnsSupportService snsSupportService = SnsSupportService.FaceBook;
 
+  @override
+  Future<void> logout() async {
+    final facebookLogin = FacebookLogin();
+    await facebookLogin.logOut();
+  }
+
 }

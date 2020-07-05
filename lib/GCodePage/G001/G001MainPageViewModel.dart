@@ -1,90 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
-import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
-import 'package:forutonafront/GCodePage/G001/G001MainPageInter.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
-import 'package:provider/provider.dart';
+import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseOutputPort.dart';
 
-class G001MainPageViewModel extends ChangeNotifier implements G001MainPageInter{
-  FUserInfoResDto _fUserInfoResDto;
-  FUserRepository _fUserRepository = new FUserRepository();
+class G001MainPageViewModel extends ChangeNotifier
+    implements SignInUserInfoUseCaseOutputPort {
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final AuthUserCaseInputPort _authUserCaseInputPort;
+  final BuildContext context;
+
   CodeCountry _countryCode = new CodeCountry();
-  final BuildContext _context;
 
-  G001MainPageViewModel(this._context) {
-    _init();
+  FUserInfo _userInfo;
+
+  G001MainPageViewModel(
+      {@required this.context,
+      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      @required AuthUserCaseInputPort authUserCaseInputPort})
+      : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
+        _authUserCaseInputPort = authUserCaseInputPort {
+    _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory(outputPort: this);
+    getUserInfoBackEndApi();
   }
-
-  _init() async {
-    _fUserInfoResDto = await _fUserRepository.getForutonaGetMe();
-    notifyListeners();
-  }
-
-  @override
-  reFreshUserInfo() async{
-    _fUserInfoResDto = null;
-    _fUserInfoResDto = await _fUserRepository.getForutonaGetMe();
-    CodeMainViewModel codeMainViewModel = Provider.of(_context,listen: false);
-    if(_fUserInfoResDto != null){
-      codeMainViewModel.jumpToPage(HCodeState.GCODE);
-    }else {
-      codeMainViewModel.jumpToPage(HCodeState.HCDOE);
-    }
-    notifyListeners();
-  }
-
 
   ImageProvider getUserProfileImage() {
-    if (_fUserInfoResDto != null) {
-      return NetworkImage(_fUserInfoResDto.profilePictureUrl);
-    } else {
-      return AssetImage("assets/basicprofileimage.png");
-    }
+    return NetworkImage(_userInfo.profilePictureUrl);
   }
 
   String getUserNickName() {
-    if (_fUserInfoResDto != null) {
-      return _fUserInfoResDto.nickName;
-    } else {
-      return "로 딩 중";
-    }
+    return _userInfo.nickName;
   }
 
   String getUserCountry() {
-    if (_fUserInfoResDto != null) {
-      return _countryCode.findCountryName(_fUserInfoResDto.isoCode);
-    } else {
-      return "";
-    }
+    return _countryCode.findCountryName(_userInfo.isoCode);
   }
 
-  String getUserSelfIntroduction(){
-    if (_fUserInfoResDto != null) {
-      if(_fUserInfoResDto.selfIntroduction == null || _fUserInfoResDto.selfIntroduction.trim().length == 0){
-        return "여기를 눌러 소개글을 작성하실 수 있습니다.";
-      }else {
-        return _fUserInfoResDto.selfIntroduction;
-      }
-    } else {
-      return "";
-    }
+  String getUserSelfIntroduction() {
+    return _userInfo.selfIntroduction;
   }
-  bool getHaveUserSelfIntroduction(){
-    if (_fUserInfoResDto != null) {
-      if(_fUserInfoResDto.selfIntroduction == null || _fUserInfoResDto.selfIntroduction.trim().length == 0){
-        return false;
-      }else {
-        return true;
-      }
+
+  bool haveUserSelfIntroduction() {
+    if (_userInfo.selfIntroduction == null ||
+        _userInfo.selfIntroduction.length == 0) {
+      return false;
     } else {
       return true;
     }
   }
 
+  @override
+  void onSignInUserInfoFromMemory(FUserInfo fUserInfo) async {
+    _userInfo = fUserInfo;
+  }
 
-
-
-
-
+  void getUserInfoBackEndApi() async {
+    _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(
+        await _authUserCaseInputPort.myUid(),outputPort: this);
+  }
 }

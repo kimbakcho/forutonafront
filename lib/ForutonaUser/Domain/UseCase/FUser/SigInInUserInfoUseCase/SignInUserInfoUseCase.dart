@@ -15,16 +15,26 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
 
   @override
   FUserInfo reqSignInUserInfoFromMemory(
-      SignInUserInfoUseCaseOutputPort outputPort) {
+  {SignInUserInfoUseCaseOutputPort outputPort}) {
     if(_fUserInfo == null){
       throw  Exception("Don't Have UserInfo in Memory use to saveSignInInfoInMemoryFromAPiServer");
     }
-    outputPort.onSignInUserInfoFromMemory(_fUserInfo);
+    if(outputPort != null){
+      outputPort.onSignInUserInfoFromMemory(_fUserInfo);
+    }
     return _fUserInfo;
   }
 
   @override
-  Future<void> saveSignInInfoInMemoryFromAPiServer(String uid) async {
+  Future<void> saveSignInInfoInMemoryFromAPiServer(String uid,{SignInUserInfoUseCaseOutputPort outputPort}) async {
     _fUserInfo = await _fUserRepository.getForutonaGetMe(uid);
+    if(outputPort != null){
+      outputPort.onSignInUserInfoFromMemory(_fUserInfo);
+    }
+  }
+
+  @override
+  void clearUserInfo() {
+    _fUserInfo = null;
   }
 }

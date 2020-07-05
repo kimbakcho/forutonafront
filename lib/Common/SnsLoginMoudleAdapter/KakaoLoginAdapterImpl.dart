@@ -26,4 +26,11 @@ class KakaoLoginAdapterImpl implements SnsLoginModuleAdapter {
 
   @override
   SnsSupportService snsSupportService = SnsSupportService.Kakao;
+
+  @override
+  Future<void> logout() async {
+    UserApi _userApi = UserApi.instance;
+    await _userApi.logout();
+    await AccessTokenStore.instance.clear();
+  }
 }

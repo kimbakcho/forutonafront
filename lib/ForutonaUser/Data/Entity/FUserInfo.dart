@@ -1,5 +1,7 @@
 
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/Preference.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserInfo.g.dart';
@@ -9,7 +11,7 @@ class FUserInfo {
 
    String uid;
    String nickName;
-   String profilePictureUrl;
+   String _profilePictureUrl;
    int gender;
    DateTime ageDate;
    String email;
@@ -49,8 +51,19 @@ class FUserInfo {
    int deactivation;
 
 
+
    FUserInfo();
 
+   get profilePictureUrl {
+      Preference preference = sl();
+      if(_profilePictureUrl == null || _profilePictureUrl.length == 0){
+         return preference.basicProfileImageUrl;
+      }
+   }
+
+   set profilePictureUrl(String value) {
+      _profilePictureUrl = value;
+   }
   factory FUserInfo.fromJson(Map<String, dynamic> json) => _$FUserInfoFromJson(json);
   Map<String, dynamic> toJson() => _$FUserInfoToJson(this);
 

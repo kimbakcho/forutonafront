@@ -3,78 +3,79 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:forutonafront/ForutonaUser/Service/SnsLoginService.dart';
 import 'package:forutonafront/GCodePage/G010/G010MainPage.dart';
 import 'package:forutonafront/GCodePage/G011/G011MainPage.dart';
 import 'package:forutonafront/GCodePage/G015/G015MainPage.dart';
 import 'package:forutonafront/GCodePage/G016/G016MainPage.dart';
 import 'package:forutonafront/GCodePage/G019/G019MainPage.dart';
-import 'package:forutonafront/GlobalModel.dart';
-import 'package:forutonafront/MainPage/CodeMainpage.dart';
-import 'package:provider/provider.dart';
-import 'package:kakao_flutter_sdk/all.dart';
 
-class G009MainPageViewModel extends ChangeNotifier {
-  final BuildContext _context;
+class G009MainPageViewModel extends ChangeNotifier
+    implements LogoutUseCaseOutputPort, SignInUserInfoUseCaseOutputPort {
+  final BuildContext context;
+  final LogoutUseCaseInputPort _logoutUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
-  G009MainPageViewModel(this._context);
+  FUserInfo _fUserInfo;
+
+  G009MainPageViewModel({
+    @required this.context,
+    @required LogoutUseCaseInputPort logoutUseCaseInputPort,
+    @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+  })  : _logoutUseCaseInputPort = logoutUseCaseInputPort,
+        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
+    signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory(outputPort: this);
+  }
 
   void onBackTap() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   void goAccountSettingPage() {
-    Navigator.of(_context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => G010MainPage(), settings: RouteSettings(name: "G010")));
   }
 
   void goSecurityPage() {
-    Navigator.of(_context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => G011MainPage(), settings: RouteSettings(name: "G011")));
   }
 
   void logout() async {
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    if (firebaseUser.uid.indexOf("Kakao") == 0) {
-       await UserApi.instance.logout();
-    }
-    if (firebaseUser.uid.indexOf("Naver") == 0) {
-      await FlutterNaverLogin.logOut();
-    }
-    if (firebaseUser.uid.indexOf("Facebook") == 0) {
-      await FacebookLogin().logOut();
-    }
-    await FirebaseAuth.instance.signOut();
-
-    GlobalModel globalModel = Provider.of(_context, listen: false);
-    globalModel.signOutFUserInfoDto();
-
-    Navigator.of(_context).popUntil(ModalRoute.withName('/'));
-
+    _logoutUseCaseInputPort.tryLogout(outputPort: this);
   }
 
   void goAlarmSettingPage() {
-    Navigator.of(_context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => G015MainPage(), settings: RouteSettings(name: "G015")));
   }
 
   void goNoticePage() {
-    Navigator.of(_context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => G016MainPage(), settings: RouteSettings(name: "G016")));
   }
 
   void goCustomCenter() {
-    Navigator.of(_context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => G019MainPage(), settings: RouteSettings(name: "G019")));
   }
 
-  bool isForutonaUser(){
-    GlobalModel globalModel = Provider.of(_context,listen: false);
-    if(globalModel.fUserInfoDto.snsService ==SnsSupportService.Forutona){
-      return true;
-    }else {
-      return false;
-    }
+  bool isForutonaUser() {
+    return _fUserInfo.snsService == SnsSupportService.Forutona ? true : false;
+  }
+
+  @override
+  void onLogout() {
+    Navigator.of(context).popUntil(ModalRoute.withName('/'));
+  }
+
+  @override
+  void onSignInUserInfoFromMemory(FUserInfo fUserInfo) {
+    _fUserInfo = fUserInfo;
   }
 }

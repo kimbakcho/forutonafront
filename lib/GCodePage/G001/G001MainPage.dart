@@ -8,10 +8,6 @@ class G001MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     var g001MainPageViewModel = Provider.of<G001MainPageViewModel>(context);
     return ChangeNotifierProvider.value(
         value: g001MainPageViewModel,
@@ -48,7 +44,7 @@ class G001MainPage extends StatelessWidget {
       children: <Widget>[
         Container(
             alignment: Alignment.center,
-            child: model.getHaveUserSelfIntroduction()
+            child: model.haveUserSelfIntroduction()
                 ? Text(model.getUserSelfIntroduction(),
                     textAlign: TextAlign.center,
                     style: GoogleFonts.notoSans(

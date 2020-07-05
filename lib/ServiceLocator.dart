@@ -30,6 +30,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInput
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
@@ -185,5 +186,17 @@ init() {
           snsLoginModuleAdapter: sl.get(instanceName: "NaverLoginAdapter")),
       instanceName: "LoginUseCaseNaver");
 
+
+  sl.registerFactoryParam((param1, param2) {
+    if(param1 == SnsSupportService.Naver) {
+      return sl.get(instanceName: "NaverLoginAdapter");
+    }else if(param1 == SnsSupportService.Kakao){
+      return sl.get(instanceName: "KakaoLoginAdapter");
+    }else if(param1 == SnsSupportService.FaceBook){
+      return sl.get(instanceName: "FaceBookLoginAdapter");
+    }else {
+      return null;
+    }
+  },instanceName: "SnsLoginModuleAdapter");
 
 }

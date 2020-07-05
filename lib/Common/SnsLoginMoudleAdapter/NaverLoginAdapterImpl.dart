@@ -31,4 +31,9 @@ class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
 
   @override
   SnsSupportService snsSupportService = SnsSupportService.Naver;
+
+  @override
+  Future<void> logout() async{
+    await FlutterNaverLogin.logOut();
+  }
 }

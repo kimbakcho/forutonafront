@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/GCodePage/G009/G009MainPageViewModel.dart';
-import 'package:forutonafront/GlobalModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class G009MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G009MainPageViewModel(context),
+        create: (_) => G009MainPageViewModel(
+          context: context,
+          logoutUseCaseInputPort: sl(),
+          signInUserInfoUseCaseInputPort: sl()
+        ),
         child: Consumer<G009MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(

@@ -40,7 +40,7 @@ void main () {
     when(mockFUserRepository.getForutonaGetMe("testUid")).thenAnswer((realInvocation)async => fUserInfo);
     //act
     await signInUserInfoUseCase.saveSignInInfoInMemoryFromAPiServer(fUserInfo.uid);
-    signInUserInfoUseCase.reqSignInUserInfoFromMemory(mockSignInUserInfoUseCaseOutputPort);
+    signInUserInfoUseCase.reqSignInUserInfoFromMemory(outputPort: mockSignInUserInfoUseCaseOutputPort);
     //assert
     var captured2 = verify(mockSignInUserInfoUseCaseOutputPort.onSignInUserInfoFromMemory(captureAny)).captured;
     var arg = captured2[0] as FUserInfo;
@@ -54,8 +54,21 @@ void main () {
     //act
 
     //assert
-    expect(()=>signInUserInfoUseCase.reqSignInUserInfoFromMemory(mockSignInUserInfoUseCaseOutputPort),
+    expect(()=>signInUserInfoUseCase.reqSignInUserInfoFromMemory(outputPort: mockSignInUserInfoUseCaseOutputPort),
         throwsA(TypeMatcher<Exception>())
     );
   });
+
+  test('유저 정보 서버로 부터 가져온뒤에 onSignInUserInfoFromMemory 실행 ', () async {
+    //arrange
+    FUserInfo fUserInfo = new FUserInfo();
+    fUserInfo.uid = "testUid";
+    fUserInfo.nickName = "testNickName";
+    when(mockFUserRepository.getForutonaGetMe("testUid")).thenAnswer((realInvocation)async => fUserInfo);
+    //act
+    await signInUserInfoUseCase.saveSignInInfoInMemoryFromAPiServer(fUserInfo.uid,outputPort: mockSignInUserInfoUseCaseOutputPort);
+    //assert
+    verify(mockSignInUserInfoUseCaseOutputPort.onSignInUserInfoFromMemory(any));
+  });
+
 }

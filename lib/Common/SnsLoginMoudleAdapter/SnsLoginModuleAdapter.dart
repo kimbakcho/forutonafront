@@ -3,6 +3,7 @@ import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 abstract class SnsLoginModuleAdapter {
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo();
   SnsSupportService snsSupportService;
+  Future<void> logout();
 }
 
 class SnsLoginModuleResDto {

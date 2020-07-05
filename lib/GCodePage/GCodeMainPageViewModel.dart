@@ -1,48 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/GCodePage/G001/G001MainPageController.dart';
-import 'package:forutonafront/GCodePage/G001/G001MainPageViewModel.dart';
 import 'package:forutonafront/GCodePage/G009/G009MainPage.dart';
 import 'package:forutonafront/GCodePage/GCodePageState.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
-
 
 class GCodeMainPageViewModel extends ChangeNotifier {
-  final BuildContext _context;
+  final BuildContext context;
   GCodePageState currentState;
-  G001MainPageController _g001mainPageController;
-  PageController gCodePagecontroller = new PageController();
+  PageController gCodePageController;
 
-  GCodeMainPageViewModel(this._context,this._g001mainPageController){
+  GCodeMainPageViewModel(
+      {@required this.context, @required this.gCodePageController}) {
     currentState = GCodePageState.G001Page;
-    gCodePagecontroller.addListener(onhCodePageChangeListners);
-
+    gCodePageController.addListener(onhCodePageChangeListners);
   }
-  void jumpToSettingPage()async {
-    await Navigator.of(_context).push(MaterialPageRoute(builder: (_)=>G009MainPage()));
-    _g001mainPageController.reFreshUserInfo();
 
-    print("test");
-
+  void jumpToSettingPage() async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => G009MainPage()));
   }
+
   void jumpTopPage(GCodePageState gcode) {
     currentState = gcode;
-    if(gcode == GCodePageState.G001Page){
-      gCodePagecontroller.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeInOutSine);
-    }else if(gcode == GCodePageState.G003Page){
-      gCodePagecontroller.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.easeInOutSine);
+    if (gcode == GCodePageState.G001Page) {
+      gCodePageController.animateToPage(0,
+          duration: Duration(milliseconds: 300), curve: Curves.easeInOutSine);
+    } else if (gcode == GCodePageState.G003Page) {
+      gCodePageController.animateToPage(1,
+          duration: Duration(milliseconds: 300), curve: Curves.easeInOutSine);
     }
     notifyListeners();
   }
-  onhCodePageChangeListners(){
-    if(gCodePagecontroller.page < 0.5){
+
+  onhCodePageChangeListners() {
+    if (gCodePageController.page < 0.5) {
       currentState = GCodePageState.G001Page;
       notifyListeners();
-    }else if(gCodePagecontroller.page > 0.5){
+    } else if (gCodePageController.page > 0.5) {
       currentState = GCodePageState.G003Page;
       notifyListeners();
     }
   }
-
-
 }

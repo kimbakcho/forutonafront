@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/GCodePage/G001/G001MainPage.dart';
-import 'package:forutonafront/GCodePage/G001/G001MainPageController.dart';
 import 'package:forutonafront/GCodePage/GCodePageState.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
-
-import 'G001/G001MainPageViewModel.dart';
 import 'GCodeMainPageViewModel.dart';
 
 class GCodeMainPage extends StatelessWidget {
 
-  G001MainPageController g001mainPageController = G001MainPageController();
-
+  PageController gCodePageController =  PageController();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<G001MainPageViewModel>(
-            create: (_)  {
-            g001mainPageController.g001mainPageInter = G001MainPageViewModel(context);
-              return g001mainPageController.g001mainPageInter;
-            }),
         ChangeNotifierProvider<GCodeMainPageViewModel>(
           create: (_)  {
-            return GCodeMainPageViewModel(context,g001mainPageController);
+            return GCodeMainPageViewModel(context: context,gCodePageController: gCodePageController);
           }
         )
       ],
@@ -42,7 +32,7 @@ class GCodeMainPage extends StatelessWidget {
                 topNavibar(model),
                 Expanded(
                     child: PageView(
-                  controller: model.gCodePagecontroller,
+                  controller: gCodePageController,
                   children: <Widget>[
                     G001MainPage(),
                     Container(
