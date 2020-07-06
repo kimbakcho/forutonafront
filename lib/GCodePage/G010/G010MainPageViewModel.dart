@@ -8,6 +8,7 @@ import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCaeInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCase.dart';
@@ -65,14 +66,14 @@ class G010MainPageViewModel extends ChangeNotifier
       @required
           this.userIntroduceController,
       @required
-          SignInUserInfoUseCase signInUserInfoUseCase,
+          SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
       @required
           UserProfileImageUploadUseCaseInputPort
               userProfileImageUploadUseCaseInputPort,
       @required
           UserInfoUpdateUseCaeInputPort userInfoUpdateUseCaeInputPort})
       : _nickNameValid = nickNameValid,
-        _signInUserInfoUseCase = signInUserInfoUseCase,
+        _signInUserInfoUseCase = signInUserInfoUseCaseInputPort,
         _userProfileImageUploadUseCaseInputPort =
             userProfileImageUploadUseCaseInputPort,
         _userInfoUpdateUseCaeInputPort = userInfoUpdateUseCaeInputPort {

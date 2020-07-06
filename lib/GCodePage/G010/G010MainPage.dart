@@ -17,10 +17,10 @@ class G010MainPage extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => G010MainPageViewModel(
           context: context,
-          userIntroduceController: sl(),
+          userIntroduceController: userIntroduceController,
           nickNameController: nickNameController,
           userProfileImageUploadUseCaseInputPort: sl(),
-          signInUserInfoUseCase: sl(),
+          signInUserInfoUseCaseInputPort: sl(),
           nickNameValid: NickNameValidImpl(fUserRepository: sl()),
           userInfoUpdateUseCaeInputPort: sl()
         ),

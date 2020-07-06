@@ -6,12 +6,9 @@ import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseG
 import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
-import 'package:forutonafront/Common/SignValid/BasicUseCase/EmailValidImpl.dart';
-import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
-import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/Common/SnsLoginMoudleAdapter/NaverLoginAdapterImpl.dart';
-import 'package:forutonafront/Common/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
+import 'package:forutonafront/Common/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
+import 'package:forutonafront/Common/SnsLoginMoudleAdapter/NaverLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
@@ -28,8 +25,13 @@ import 'package:forutonafront/ForutonaUser/Data/DataSource/FUserRemoteDataSource
 import 'package:forutonafront/ForutonaUser/Data/Repository/FUserRepositoryImpl.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCaeInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/Preference.dart';
@@ -48,6 +50,9 @@ import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInflue
 import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
 import 'FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import 'ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCase.dart';
+import 'ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCase.dart';
+import 'ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 import 'ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart';
 import 'ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
@@ -79,6 +84,9 @@ init() {
   sl.registerSingleton<FUserRepository>(FUserRepositoryImpl(
       fireBaseAuthBaseAdapter: sl(), fUserRemoteDataSource: sl()));
 
+  sl.registerSingleton<SignInUserInfoUseCaseInputPort>(
+      SignInUserInfoUseCase(fUserRepository: sl()));
+
   sl.registerSingleton<FireBaseMessageTokenUpdateUseCaseInputPort>(
       FireBaseMessageTokenUpdateUseCase(fUserRepository: sl()));
 
@@ -90,7 +98,8 @@ init() {
       FireBaseAuthAdapterForUseCaseImpl(
           fireBaseMessageAdapter: sl(),
           fireBaseAuthBaseAdapter: sl(),
-          fireBaseMessageTokenUpdateUseCaseInputPort: sl()));
+          fireBaseMessageTokenUpdateUseCaseInputPort: sl(),
+          signInUserInfoUseCaseInputPort: sl()));
 
   sl.registerFactory<BackgroundUserPositionUseCaseInputPort>(() =>
       BackgroundUserPositionUseCase(
@@ -186,17 +195,23 @@ init() {
           snsLoginModuleAdapter: sl.get(instanceName: "NaverLoginAdapter")),
       instanceName: "LoginUseCaseNaver");
 
-
   sl.registerFactoryParam((param1, param2) {
-    if(param1 == SnsSupportService.Naver) {
+    if (param1 == SnsSupportService.Naver) {
       return sl.get(instanceName: "NaverLoginAdapter");
-    }else if(param1 == SnsSupportService.Kakao){
+    } else if (param1 == SnsSupportService.Kakao) {
       return sl.get(instanceName: "KakaoLoginAdapter");
-    }else if(param1 == SnsSupportService.FaceBook){
+    } else if (param1 == SnsSupportService.FaceBook) {
       return sl.get(instanceName: "FaceBookLoginAdapter");
-    }else {
+    } else {
       return null;
     }
-  },instanceName: "SnsLoginModuleAdapter");
+  }, instanceName: "SnsLoginModuleAdapter");
 
+  sl.registerSingleton<LogoutUseCaseInputPort>(LogoutUseCase(
+      signInUserInfoUseCaseInputPort: sl(),
+      fireBaseAuthAdapterForUseCase: sl()));
+
+  sl.registerSingleton<UserProfileImageUploadUseCaseInputPort>(UserProfileImageUploadUseCase());
+
+  sl.registerSingleton<UserInfoUpdateUseCaeInputPort>(UserInfoUpdateUseCase());
 }

@@ -58,6 +58,8 @@ class FUserInfo {
       Preference preference = sl();
       if(_profilePictureUrl == null || _profilePictureUrl.length == 0){
          return preference.basicProfileImageUrl;
+      }else {
+         return _profilePictureUrl;
       }
    }
 
