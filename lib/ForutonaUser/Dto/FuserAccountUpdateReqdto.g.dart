@@ -8,11 +8,11 @@ part of 'FuserAccountUpdateReqdto.dart';
 
 FuserAccountUpdateReqdto _$FuserAccountUpdateReqdtoFromJson(
     Map<String, dynamic> json) {
-  return FuserAccountUpdateReqdto(
-    json['isoCode'] as String,
-    json['nickName'] as String,
-    json['selfIntroduction'] as String,
-  )..userProfileImageUrl = json['userProfileImageUrl'] as String;
+  return FuserAccountUpdateReqdto()
+    ..isoCode = json['isoCode'] as String
+    ..nickName = json['nickName'] as String
+    ..selfIntroduction = json['selfIntroduction'] as String
+    ..userProfileImageUrl = json['userProfileImageUrl'] as String;
 }
 
 Map<String, dynamic> _$FuserAccountUpdateReqdtoToJson(

@@ -10,7 +10,6 @@ FUserInfo _$FUserInfoFromJson(Map<String, dynamic> json) {
   return FUserInfo()
     ..uid = json['uid'] as String
     ..nickName = json['nickName'] as String
-    ..profilePictureUrl = json['profilePictureUrl'] as String
     ..gender = json['gender'] as int
     ..ageDate = json['ageDate'] == null
         ? null
@@ -57,13 +56,13 @@ FUserInfo _$FUserInfoFromJson(Map<String, dynamic> json) {
     ..alarmReplyAndReply = json['alarmReplyAndReply'] as int
     ..alarmFollowNewContent = json['alarmFollowNewContent'] as int
     ..alarmSponNewContent = json['alarmSponNewContent'] as int
-    ..deactivation = json['deactivation'] as int;
+    ..deactivation = json['deactivation'] as int
+    ..profilePictureUrl = json['profilePictureUrl'];
 }
 
 Map<String, dynamic> _$FUserInfoToJson(FUserInfo instance) => <String, dynamic>{
       'uid': instance.uid,
       'nickName': instance.nickName,
-      'profilePictureUrl': instance.profilePictureUrl,
       'gender': instance.gender,
       'ageDate': instance.ageDate?.toIso8601String(),
       'email': instance.email,
@@ -102,6 +101,7 @@ Map<String, dynamic> _$FUserInfoToJson(FUserInfo instance) => <String, dynamic>{
       'alarmFollowNewContent': instance.alarmFollowNewContent,
       'alarmSponNewContent': instance.alarmSponNewContent,
       'deactivation': instance.deactivation,
+      'profilePictureUrl': instance.profilePictureUrl,
     };
 
 T _$enumDecode<T>(

@@ -1,15 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/NickNameValidImpl.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/GCodePage/G010/G010MainPageViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class G010MainPage extends StatelessWidget {
+  TextEditingController nickNameController = new TextEditingController();
+  TextEditingController userIntroduceController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G010MainPageViewModel(context),
+        create: (_) => G010MainPageViewModel(
+          context: context,
+          userIntroduceController: sl(),
+          nickNameController: nickNameController,
+          userProfileImageUploadUseCaseInputPort: sl(),
+          signInUserInfoUseCase: sl(),
+          nickNameValid: NickNameValidImpl(fUserRepository: sl()),
+          userInfoUpdateUseCaeInputPort: sl()
+        ),
         child: Consumer<G010MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -125,9 +139,7 @@ class G010MainPage extends StatelessWidget {
                   child: TextField(
                       onEditingComplete: model.onEditCompleteNickName,
                       controller: model.nickNameController,
-                      focusNode: model.nickNameFocusNode,
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
                         color: Color(0xff454f63),
@@ -135,8 +147,7 @@ class G010MainPage extends StatelessWidget {
                       maxLength: 20,
                       decoration: InputDecoration(
                         hintText: "닉네임을 입력해주세요",
-                        hintStyle: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
+                        hintStyle: GoogleFonts.notoSans(
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
                           color: Color(0xffd4d4d4),
@@ -293,8 +304,7 @@ class G010MainPage extends StatelessWidget {
                 child: FlatButton(
                   onPressed: model.onCompleteTap,
                   child: Text("완료",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: Color(0xff454f63),
@@ -320,8 +330,7 @@ class G010MainPage extends StatelessWidget {
                 width: 75.00,
                 child: FlatButton(
                   child: Text("완료",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: Color(0xffb1b1b1),

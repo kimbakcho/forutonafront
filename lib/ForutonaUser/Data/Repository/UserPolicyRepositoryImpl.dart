@@ -12,7 +12,7 @@ class UserPolicyRepositoryImpl implements UserPolicyRepository {
       : _userPolicyRemoteDataSource = userPolicyRemoteDataSource;
 
   @override
-  Future<UserPolicy> getPersonaSettingNotice(String policy) async {
+  Future<UserPolicy> getUserPolicy(String policy) async {
     var userPolicyResDto = await _userPolicyRemoteDataSource.getPersonaSettingNotice(policy, FDio.noneToken());
     return UserPolicy.fromUserPolicyResDto(userPolicyResDto);
   }

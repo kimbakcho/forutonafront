@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'G023MainPageViewModel.dart';
 
@@ -49,16 +50,14 @@ class G023MainPage extends StatelessWidget {
           Row(
             children: <Widget>[
               Text("상호:",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Color(0xff7a7a7a),
                   )),
               Spacer(),
               Text("(주)FORUTONA",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: Color(0xff454f63),
@@ -71,16 +70,14 @@ class G023MainPage extends StatelessWidget {
           Row(
             children: <Widget>[
               Text("대표:",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Color(0xff7a7a7a),
                   )),
               Spacer(),
               Text("유호영",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: Color(0xff454f63),
@@ -93,16 +90,14 @@ class G023MainPage extends StatelessWidget {
           Row(
             children: <Widget>[
               Text("주소:",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Color(0xff7a7a7a),
                   )),
               Spacer(),
               Text("경기도 시흥시 신천천동로 7, 403호",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: Color(0xff454f63),
@@ -115,16 +110,14 @@ class G023MainPage extends StatelessWidget {
           Row(
             children: <Widget>[
               Text("사업자등록 번호:",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Color(0xff7a7a7a),
                   )),
               Spacer(),
               Text("",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: Color(0xff454f63),
@@ -137,16 +130,14 @@ class G023MainPage extends StatelessWidget {
           Row(
             children: <Widget>[
               Text("통신판매업신고번호:",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Color(0xff7a7a7a),
                   )),
               Spacer(),
               Text("7470400107",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: Color(0xff454f63),
@@ -172,8 +163,7 @@ class G023MainPage extends StatelessWidget {
             width: 48),
         Container(
             child: Text("회사 소개",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Color(0xff454f63),

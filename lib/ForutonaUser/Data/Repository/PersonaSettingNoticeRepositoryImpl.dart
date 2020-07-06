@@ -35,8 +35,8 @@ class PersonaSettingNoticeRepositoryImpl
 
   @override
   Future<PersonaSettingNotice> getPersonaSettingNoticePage(int idx) async {
-    var personaSettingNoticeResDto = await _personaSettingNoticeRemoteDataSource
+    var personaSettingNotice = await _personaSettingNoticeRemoteDataSource
         .getPersonaSettingNoticePage(idx, FDio.noneToken());
-    return PersonaSettingNotice.fromPersonaSettingNoticeResDto(personaSettingNoticeResDto);
+    return PersonaSettingNotice.fromPersonaSettingNoticeResDto(personaSettingNotice);
   }
 }

@@ -1,8 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseOutputPort.dart';
@@ -29,7 +26,7 @@ class G009MainPageViewModel extends ChangeNotifier
     @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
   })  : _logoutUseCaseInputPort = logoutUseCaseInputPort,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
-    signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory(outputPort: this);
+    _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory(outputPort: this);
   }
 
   void onBackTap() {

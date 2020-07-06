@@ -12,7 +12,10 @@ FUserSnSLoginReqDto _$FUserSnSLoginReqDtoFromJson(Map<String, dynamic> json) {
     ..snsUid = json['snsUid'] as String
     ..snsService =
         _$enumDecodeNullable(_$SnsSupportServiceEnumMap, json['snsService'])
-    ..fUserUid = json['fUserUid'] as String;
+    ..fUserUid = json['fUserUid'] as String
+    ..userNickName = json['userNickName'] as String
+    ..email = json['email'] as String
+    ..userProfileImageUrl = json['userProfileImageUrl'] as String;
 }
 
 Map<String, dynamic> _$FUserSnSLoginReqDtoToJson(
@@ -22,6 +25,9 @@ Map<String, dynamic> _$FUserSnSLoginReqDtoToJson(
       'snsUid': instance.snsUid,
       'snsService': _$SnsSupportServiceEnumMap[instance.snsService],
       'fUserUid': instance.fUserUid,
+      'userNickName': instance.userNickName,
+      'email': instance.email,
+      'userProfileImageUrl': instance.userProfileImageUrl,
     };
 
 T _$enumDecode<T>(

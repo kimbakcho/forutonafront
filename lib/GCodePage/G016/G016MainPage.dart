@@ -1,14 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/GCodePage/G016/G016MainPageViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class G016MainPage extends StatelessWidget {
+  ScrollController mainScrollController = new ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G016MainPageViewModel(context),
+        create: (_) => G016MainPageViewModel(
+            context: context,
+            mainScrollController: mainScrollController,
+            personaSettingNoticeUseCaseInputPort: sl()),
         child: Consumer<G016MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -22,14 +28,14 @@ class G016MainPage extends StatelessWidget {
                         height: 8,
                       ),
                       Expanded(
-                        child: noticeListView(model,context),
+                        child: noticeListView(model, context),
                       )
                     ])))
           ]);
         }));
   }
 
-  ListView noticeListView(G016MainPageViewModel model,BuildContext context) {
+  ListView noticeListView(G016MainPageViewModel model, BuildContext context) {
     return ListView.builder(
         controller: model.mainScrollController,
         shrinkWrap: true,
@@ -39,7 +45,6 @@ class G016MainPage extends StatelessWidget {
         itemBuilder: (_, index) {
           return Container(
             height: 64,
-
             child: FlatButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {
@@ -79,7 +84,6 @@ class G016MainPage extends StatelessWidget {
 
   Container topBar(G016MainPageViewModel model) {
     return Container(
-
       height: 56,
       color: Colors.white,
       child: Row(children: [

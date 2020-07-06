@@ -113,7 +113,7 @@ void main() {
     when(fDio.put("/v1/ForutonaUser/AccountUserInfo",data: anyNamed('data')))
         .thenAnswer((_) async => Response<dynamic>(data: 1));
     //act
-    await fUserRemoteDataSource.updateAccountUserInfo(FuserAccountUpdateReqdto("test","test","test"),fDio);
+    await fUserRemoteDataSource.updateAccountUserInfo(FuserAccountUpdateReqdto(),fDio);
     //assert
     verify(fDio.put("/v1/ForutonaUser/AccountUserInfo",data: anyNamed('data')));
   });

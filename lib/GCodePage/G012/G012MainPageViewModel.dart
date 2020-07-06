@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:forutonafront/Common/SignValid/SignValid.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPasswordChangeUseCase/UserPasswordChangeUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Repository/FUserRepository.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class G012MainPageViewModel extends ChangeNotifier {
-  final BuildContext _context;
+  final BuildContext context;
+
+  final TextEditingController currentPwController;
+  final TextEditingController newPwController;
+  final TextEditingController checkPwController;
+
+  final SignValid _pwValid;
+  final SignValid _pwCheckValid;
+  final SignValid _currentPwValid;
+
+  final UserPasswordChangeUseCaseInputPort _userPasswordChangeUseCaseInputPort;
 
   //에러 체크 시도 구분
   bool _isCurrentConfirm = false;
-  FUserRepository _fUserRepository = new FUserRepository();
 
   bool _isLoading = false;
+
   getIsLoading() {
     return _isLoading;
   }
@@ -21,13 +32,29 @@ class G012MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  TextEditingController currentPwController = new TextEditingController();
-  TextEditingController newPwController = new TextEditingController();
-  TextEditingController checkPwController = new TextEditingController();
-
-  SignUpValidUseCaseInputPort _signUpValidService = DefaultSignValidUseCase();
-
-  G012MainPageViewModel(this._context) {
+  G012MainPageViewModel(
+      {@required
+          this.context,
+      @required
+          this.currentPwController,
+      @required
+          this.newPwController,
+      @required
+          this.checkPwController,
+      @required
+          SignValid pwValid,
+      @required
+          SignValid pwCheckValid,
+      @required
+          SignValid currentPwValid,
+      @required
+          UserPasswordChangeUseCaseInputPort
+              userPasswordChangeUseCaseInputPort})
+      : _pwValid = pwValid,
+        _pwCheckValid = pwCheckValid,
+        _currentPwValid = currentPwValid,
+        _userPasswordChangeUseCaseInputPort =
+            userPasswordChangeUseCaseInputPort {
     checkPwController.addListener(_onCheckPwControllerListener);
     newPwController.addListener(_onNewPwControllerListener);
     currentPwController.addListener(_onCurrentPwControllerListener);
@@ -46,11 +73,11 @@ class G012MainPageViewModel extends ChangeNotifier {
   }
 
   void onBackBtnTap() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   isCurrentPasswordError() {
-    if (_isCurrentConfirm && _signUpValidService.hasCurrentPwError()) {
+    if (_isCurrentConfirm && _currentPwValid.hasError()) {
       return true;
     } else {
       return false;
@@ -65,26 +92,26 @@ class G012MainPageViewModel extends ChangeNotifier {
   Future onCurrentPwEditComplete() async {
     _isCurrentConfirm = true;
     _setIsLoading(true);
-    await _signUpValidService.currentPwValid(currentPwController.text);
+    await _currentPwValid.valid(currentPwController.text);
     _setIsLoading(false);
   }
 
   String getCurrentPasswordErrorText() {
-    return _signUpValidService.currentPwErrorText();
+    return _currentPwValid.errorText();
   }
 
   void onNewPwEditChange(String value) {
-    _signUpValidService.pwValid(newPwController.text);
+    _pwValid.valid(newPwController.text);
     notifyListeners();
   }
 
   void onNewPwEditComplete() async {
-    _signUpValidService.pwValid(newPwController.text);
+    _pwValid.valid(newPwController.text);
     notifyListeners();
   }
 
   bool isNewPasswordError() {
-    if (newPwController.text.length > 0 && _signUpValidService.hasPwError()) {
+    if (newPwController.text.length > 0 && _pwValid.hasError()) {
       return true;
     } else {
       return false;
@@ -92,24 +119,21 @@ class G012MainPageViewModel extends ChangeNotifier {
   }
 
   String getNewPasswordErrorText() {
-    return _signUpValidService.pwErrorText();
+    return _pwValid.errorText();
   }
 
   void checkPwEditChange(String value) {
-    _signUpValidService.pwCheckValid(
-        newPwController.text, checkPwController.text);
+    _pwCheckValid.valid(checkPwController.text);
     notifyListeners();
   }
 
   void onCheckEditComplete() {
-    _signUpValidService.pwCheckValid(
-        newPwController.text, checkPwController.text);
+    _pwCheckValid.valid(checkPwController.text);
     notifyListeners();
   }
 
   bool isCheckPasswordError() {
-    if (checkPwController.text.length > 0 &&
-        _signUpValidService.hasPwCheckError()) {
+    if (checkPwController.text.length > 0 && _pwCheckValid.hasError()) {
       return true;
     } else {
       return false;
@@ -117,7 +141,7 @@ class G012MainPageViewModel extends ChangeNotifier {
   }
 
   String getCheckPasswordErrorText() {
-    return _signUpValidService.pwCheckErrorText();
+    return _pwCheckValid.errorText();
   }
 
   isCanComplete() {
@@ -132,37 +156,39 @@ class G012MainPageViewModel extends ChangeNotifier {
   void onPwChangeComplete() async {
     _isCurrentConfirm = true;
     _setIsLoading(true);
-    await _signUpValidService.currentPwValid(currentPwController.text);
-    _signUpValidService.pwValid(newPwController.text);
-    _signUpValidService.pwCheckValid(newPwController.text, checkPwController.text);
-    if (_signUpValidService.hasCurrentPwError() || _signUpValidService.hasPwError() || _signUpValidService.hasPwCheckError()) {
+    await _currentPwValid.valid(currentPwController.text);
+    _pwValid.valid(newPwController.text);
+    _pwCheckValid.valid(checkPwController.text);
+    if (_currentPwValid.hasError() ||
+        _pwValid.hasError() ||
+        _pwCheckValid.hasError()) {
       _setIsLoading(false);
       return;
     }
-      try {
-        if (await _fUserRepository
-                .pWChange(FUserInfoPwChangeReqDto(newPwController.text)) ==
-            1) {
-          await showCompleteChangePwDialog();
-          Navigator.of(_context).pop();
-        }
-      } catch (ex) {
-        Fluttertoast.showToast(
-            msg: ex.toString(),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Color(0xff454F63),
-            textColor: Colors.white,
-            fontSize: 12.0);
+    try {
+      if (await _userPasswordChangeUseCaseInputPort
+              .pwChange(FUserInfoPwChangeReqDto(newPwController.text)) ==
+          1) {
+        await showCompleteChangePwDialog();
+        Navigator.of(context).pop();
       }
+    } catch (ex) {
+      Fluttertoast.showToast(
+          msg: ex.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
+    }
     _setIsLoading(false);
   }
 
   Future showCompleteChangePwDialog() async {
     return await showDialog(
         barrierDismissible: false,
-        context: _context,
+        context: context,
         useRootNavigator: true,
         child: AlertDialog(
             shape: RoundedRectangleBorder(
@@ -177,8 +203,7 @@ class G012MainPageViewModel extends ChangeNotifier {
                   Container(
                       alignment: Alignment.centerLeft,
                       child: Text("패스워드 변경",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
                             fontWeight: FontWeight.w700,
                             fontSize: 20,
                             color: Color(0xff000000),
@@ -187,8 +212,7 @@ class G012MainPageViewModel extends ChangeNotifier {
                     margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
                     alignment: Alignment.centerLeft,
                     child: Text("패스워드를 변경하였습니다.",
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
+                        style: GoogleFonts.notoSans(
                           fontWeight: FontWeight.w300,
                           fontSize: 14,
                           color: Color(0xff454f63),
@@ -197,15 +221,14 @@ class G012MainPageViewModel extends ChangeNotifier {
                   Spacer(),
                   Container(
                       height: 32.00,
-                      width: MediaQuery.of(_context).size.width,
+                      width: MediaQuery.of(context).size.width,
                       child: FlatButton(
                         padding: EdgeInsets.all(0),
                         onPressed: () {
-                          Navigator.of(_context).pop();
+                          Navigator.of(context).pop();
                         },
                         child: Text("확인",
-                            style: TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
+                            style: GoogleFonts.notoSans(
                               fontWeight: FontWeight.w700,
                               fontSize: 13,
                               color: Color(0xff3497fd),

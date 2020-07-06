@@ -138,7 +138,7 @@ void main() {
 
   test('should be updateAccountUserInfo DataSource Call', () async {
     //arrange
-    FuserAccountUpdateReqdto fuserAccountUpdateReqdto = FuserAccountUpdateReqdto("Kr","TestNickName","introduce");
+    FuserAccountUpdateReqdto fuserAccountUpdateReqdto = FuserAccountUpdateReqdto();
 
     when(mockUserRemoteDataSource.updateAccountUserInfo(fuserAccountUpdateReqdto,any))
         .thenAnswer((_)async => 1);

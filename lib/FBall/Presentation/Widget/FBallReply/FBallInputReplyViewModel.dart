@@ -8,6 +8,7 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -15,8 +16,9 @@ import 'package:uuid/uuid.dart';
 class FBallInputReplyViewModel extends ChangeNotifier {
   StreamSubscription keyboard;
   bool isBackSendButton = false;
-  final BuildContext _context;
-  final FBallReplyInsertReqDto _fBallReplyInsertReqDto;
+  final BuildContext context;
+  final FBallReplyInsertReqDto fBallReplyInsertReqDto;
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
   TextEditingController replyTextController = new TextEditingController();
   FBallReplyRepository _fBallReplyRepository = new FBallReplyRepository();
@@ -29,15 +31,20 @@ class FBallInputReplyViewModel extends ChangeNotifier {
     _isLoading = value;
     notifyListeners();
   }
-  FBallInputReplyViewModel(this._fBallReplyInsertReqDto,this._context) {
-    if(_fBallReplyInsertReqDto.replyUuid!=null){
-      replyTextController.text = _fBallReplyInsertReqDto.replyText;
+  FBallInputReplyViewModel({
+    @required this.fBallReplyInsertReqDto,
+    @required this.context,
+    @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort}):
+  _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort
+  {
+    if(fBallReplyInsertReqDto.replyUuid!=null){
+      replyTextController.text = fBallReplyInsertReqDto.replyText;
     }
     keyboard = KeyboardVisibility.onChange.listen((value) {
       if (!value) {
         keyboard.cancel();
         if (!isBackSendButton) {
-          Navigator.of(_context).pop();
+          Navigator.of(context).pop();
         }
       }
     });
@@ -47,44 +54,44 @@ class FBallInputReplyViewModel extends ChangeNotifier {
     isBackSendButton = true;
     FBallReplyResDto fBallReplyResDto = await fBallReplyInsert();
     replyTextController.clear();
-    Navigator.of(_context).pop(fBallReplyResDto);
+    Navigator.of(context).pop(fBallReplyResDto);
   }
 
   Future<FBallReplyResDto> fBallReplyInsert() async{
     _setIsLoading(true);
-    _fBallReplyInsertReqDto.replyUuid = Uuid().v4();
-    _fBallReplyInsertReqDto.replyNumber = -1;
-    _fBallReplyInsertReqDto.replyDepth = 0;
-    _fBallReplyInsertReqDto.replySort = 0;
-    _fBallReplyInsertReqDto.replyText = replyTextController.text;
-    var fBallReplyResDto = await _fBallReplyRepository.insertFBallReply(_fBallReplyInsertReqDto);
+    fBallReplyInsertReqDto.replyUuid = Uuid().v4();
+    fBallReplyInsertReqDto.replyNumber = -1;
+    fBallReplyInsertReqDto.replyDepth = 0;
+    fBallReplyInsertReqDto.replySort = 0;
+    fBallReplyInsertReqDto.replyText = replyTextController.text;
+    var fBallReplyResDto = await _fBallReplyRepository.insertFBallReply(fBallReplyInsertReqDto);
     _setIsLoading(false);
     return fBallReplyResDto;
   }
 
   void updateReply() async {
     isBackSendButton = true;
-    _fBallReplyInsertReqDto.replyText = replyTextController.text;
-    _fBallReplyRepository.updateFBallReply(_fBallReplyInsertReqDto);
+    fBallReplyInsertReqDto.replyText = replyTextController.text;
+    _fBallReplyRepository.updateFBallReply(fBallReplyInsertReqDto);
 
     FBallReplyResDto replyResDto = new FBallReplyResDto();
-    replyResDto.ballUuid = _fBallReplyInsertReqDto.ballUuid;
-    replyResDto.replyUuid = _fBallReplyInsertReqDto.replyUuid;
+    replyResDto.ballUuid = fBallReplyInsertReqDto.ballUuid;
+    replyResDto.replyUuid = fBallReplyInsertReqDto.replyUuid;
     replyResDto.deleteFlag = false;
     replyResDto.replyUpdateDateTime = DateTime.now();
-    replyResDto.replyDepth = _fBallReplyInsertReqDto.replyDepth;
-    replyResDto.replySort = _fBallReplyInsertReqDto.replySort ;
-    replyResDto.replyText = _fBallReplyInsertReqDto.replyText;
-    GlobalModel globalModel = Provider.of(_context,listen: false);
-    replyResDto.uid = globalModel.fUserInfoDto.uid;
-    replyResDto.userNickName =  globalModel.fUserInfoDto.nickName;
-    replyResDto.userProfilePictureUrl = globalModel.fUserInfoDto.profilePictureUrl;
-    replyResDto.replyNumber = _fBallReplyInsertReqDto.replyNumber;
-    Navigator.of(_context).pop(replyResDto);
+    replyResDto.replyDepth = fBallReplyInsertReqDto.replyDepth;
+    replyResDto.replySort = fBallReplyInsertReqDto.replySort ;
+    replyResDto.replyText = fBallReplyInsertReqDto.replyText;
+    var fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+    replyResDto.uid = fUserInfo.uid;
+    replyResDto.userNickName =  fUserInfo.nickName;
+    replyResDto.userProfilePictureUrl = fUserInfo.profilePictureUrl;
+    replyResDto.replyNumber = fBallReplyInsertReqDto.replyNumber;
+    Navigator.of(context).pop(replyResDto);
   }
 
   reqInsertOrUpdate(){
-    if(_fBallReplyInsertReqDto.replyUuid != null){
+    if(fBallReplyInsertReqDto.replyUuid != null){
       updateReply();
     }else {
       insertReply();

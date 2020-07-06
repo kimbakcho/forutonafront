@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
 import 'package:forutonafront/ForutonaUser/Data/Repository/PersonaSettingNoticeRepositoryImpl.dart';
+import 'package:forutonafront/ForutonaUser/Data/Value/PersonaSettingNotice.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/PersonaSettingNoticeRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResWrapDto.dart';
@@ -31,10 +32,10 @@ void main() {
     //arrange
     var pageable = Pageable(0, 10, "WriteTime,Desc");
     PersonaSettingNoticeResWrapDto resWrapDto = new PersonaSettingNoticeResWrapDto();
-    PersonaSettingNoticeResDto personaSettingNoticeResDto = new PersonaSettingNoticeResDto();
-    personaSettingNoticeResDto.idx = 10;
-    personaSettingNoticeResDto.noticeName  = "test";
-    resWrapDto.content = [personaSettingNoticeResDto];
+    PersonaSettingNoticeResDto personaSettingNotice = new PersonaSettingNoticeResDto();
+    personaSettingNotice.idx = 10;
+    personaSettingNotice.noticeName  = "test";
+    resWrapDto.content = [personaSettingNotice];
     resWrapDto.last = false;
     when(mockPersonaSettingNoticeRemoteDataSource.getPersonaSettingNotice(pageable, any))
         .thenAnswer((_) async => resWrapDto);

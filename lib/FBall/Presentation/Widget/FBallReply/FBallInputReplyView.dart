@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 import 'FBallInputReplyViewModel.dart';
 
 class FBallInputReplyView extends StatelessWidget {
-
   final FBallReplyInsertReqDto _fBallReplyInsertReqDto;
+
   FBallInputReplyView(this._fBallReplyInsertReqDto);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_)=>FBallInputReplyViewModel(_fBallReplyInsertReqDto,context),
+      create: (_) => FBallInputReplyViewModel(
+          context: context,
+          fBallReplyInsertReqDto: _fBallReplyInsertReqDto,
+          signInUserInfoUseCaseInputPort: sl()),
       child: Consumer<FBallInputReplyViewModel>(
-        builder: (_,model,child){
+        builder: (_, model, child) {
           return Scaffold(
               backgroundColor: Color(0x00000000),
               body: Stack(children: <Widget>[
@@ -37,7 +39,7 @@ class FBallInputReplyView extends StatelessWidget {
                                     alignment: Alignment.centerLeft,
                                     margin: EdgeInsets.only(right: 16),
                                     child: TextField(
-                                      autocorrect: false,
+                                        autocorrect: false,
                                         enableSuggestions: false,
                                         controller: model.replyTextController,
                                         style: TextStyle(fontSize: 20),
@@ -48,7 +50,7 @@ class FBallInputReplyView extends StatelessWidget {
                                         onSubmitted: model.onReplySubmitted,
                                         maxLines: 4,
                                         decoration: InputDecoration(
-                                          counter: Container(),
+                                            counter: Container(),
                                             isDense: true,
                                             contentPadding: EdgeInsets.fromLTRB(
                                                 16, 4, 16, 4),

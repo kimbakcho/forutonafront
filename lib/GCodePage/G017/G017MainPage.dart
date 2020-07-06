@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:forutonafront/GCodePage/G017/G017MainPageViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,10 @@ class G017MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G017MainPageViewModel(context, _idx),
+        create: (_) => G017MainPageViewModel(
+            context: context,
+            idx: _idx,
+            personaSettingNoticeUseCaseInputPort: sl()),
         child: Consumer<G017MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -23,21 +26,25 @@ class G017MainPage extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
-                      Positioned(top: 0, left: 0, child: topBar(model,context)),
-                      Positioned(top: 57, left: 0, child: topTitleBar(model,context)),
                       Positioned(
-                          top: 136, left: 0, child: noticeContentBar(model,context))
+                          top: 0, left: 0, child: topBar(model, context)),
+                      Positioned(
+                          top: 57, left: 0, child: topTitleBar(model, context)),
+                      Positioned(
+                          top: 136,
+                          left: 0,
+                          child: noticeContentBar(model, context))
                     ])))
           ]);
         }));
   }
 
-  Container noticeContentBar(G017MainPageViewModel model,BuildContext context) {
+  Container noticeContentBar(
+      G017MainPageViewModel model, BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width-32,
+      width: MediaQuery.of(context).size.width - 32,
       height: MediaQuery.of(context).size.height - 180,
       margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-
       child: model.personaSettingNoticeResDto != null
           ? WebviewScaffold(url: model.htmlUrl)
           : Container(),
@@ -45,7 +52,7 @@ class G017MainPage extends StatelessWidget {
     );
   }
 
-  Container topTitleBar(G017MainPageViewModel model,BuildContext context) {
+  Container topTitleBar(G017MainPageViewModel model, BuildContext context) {
     return Container(
       height: 64,
       width: MediaQuery.of(context).size.width,
@@ -56,19 +63,17 @@ class G017MainPage extends StatelessWidget {
               children: <Widget>[
                 Text(model.personaSettingNoticeResDto.noticeName,
                     style: GoogleFonts.notoSans(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                      color: Color(0xff454f63)
-                    )),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Color(0xff454f63))),
                 Text(
                     DateFormat("yy.MM.dd").format(
                         model.personaSettingNoticeResDto.noticeWriteDateTime),
                     style: GoogleFonts.notoSans(
-
-                        fontWeight: FontWeight.w300,
-                        fontSize: 10,
-                        color: Color(0xff454f63),
-                      ))
+                      fontWeight: FontWeight.w300,
+                      fontSize: 10,
+                      color: Color(0xff454f63),
+                    ))
               ],
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -77,7 +82,7 @@ class G017MainPage extends StatelessWidget {
     );
   }
 
-  Container topBar(G017MainPageViewModel model,BuildContext context) {
+  Container topBar(G017MainPageViewModel model, BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 56,

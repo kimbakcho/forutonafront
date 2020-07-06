@@ -5,6 +5,7 @@ import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailSubReplyInputViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,11 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => FBallDetailSubReplyInputViewModel(mainReply, context),
+        create: (_) => FBallDetailSubReplyInputViewModel(
+          mainReply: mainReply,
+          context: context,
+          signInUserInfoUseCaseInputPort: sl()
+        ),
         child: Consumer<FBallDetailSubReplyInputViewModel>(
             builder: (_, model, child) {
           return Scaffold(

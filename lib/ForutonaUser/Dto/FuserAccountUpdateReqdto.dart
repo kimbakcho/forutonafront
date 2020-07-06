@@ -10,7 +10,7 @@ class FuserAccountUpdateReqdto {
   String selfIntroduction;
   String userProfileImageUrl;
 
-  FuserAccountUpdateReqdto(this.isoCode, this.nickName, this.selfIntroduction);
+  FuserAccountUpdateReqdto();
 
   factory FuserAccountUpdateReqdto.fromJson(Map<String, dynamic> json) => _$FuserAccountUpdateReqdtoFromJson(json);
   Map<String, dynamic> toJson() => _$FuserAccountUpdateReqdtoToJson(this);

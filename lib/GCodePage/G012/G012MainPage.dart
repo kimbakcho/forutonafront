@@ -1,42 +1,63 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/CurrentPwValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/PwCheckValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
+import 'package:forutonafront/Common/SignValid/SignValid.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 import 'G012MainPageViewModel.dart';
 
 class G012MainPage extends StatelessWidget {
+  TextEditingController currentPwController = new TextEditingController();
+  TextEditingController newPwController = new TextEditingController();
+  TextEditingController checkPwController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => G012MainPageViewModel(context),
-        child: Consumer<G012MainPageViewModel>(builder: (_, model, child) {
-          return Stack(children: <Widget>[
-            Scaffold(
-                body: Container(
-                    color: Color(0xfff2f0f1),
-                    padding: EdgeInsets.fromLTRB(
-                        0, MediaQuery.of(context).padding.top, 0, 0),
-                    child: Column(children: <Widget>[
-                      topBar(model),
-                      Expanded(
-                          child: Container(
-                              child: ListView(
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.all(0),
-                                  children: <Widget>[
-                            discriptionBar(context),
-                            currentPwTextField(model),
-                            currentPwErrorBar(model),
-                            newPwTextField(model),
-                            newPwErrorBar(model),
-                            checkPwTextField(model),
-                            checkPwErrorBar(model),
-                          ])))
-                    ]))),
-            model.getIsLoading() ? CommonLoadingComponent(isTouch: false) : Container()
-          ]);
-        }));
+    return ChangeNotifierProvider(create: (_) {
+      SignValid pwCheckValid = PwValidImpl();
+      return G012MainPageViewModel(
+          context: context,
+          pwValid: pwCheckValid,
+          pwCheckValid: PwCheckValidImpl(pwCheckValid),
+          currentPwValid:
+              CurrentPwValidImpl(fireBaseAuthAdapterForUseCase: sl()),
+          checkPwController: checkPwController,
+          currentPwController: currentPwController,
+          newPwController: newPwController,
+          userPasswordChangeUseCaseInputPort: sl());
+    }, child: Consumer<G012MainPageViewModel>(builder: (_, model, child) {
+      return Stack(children: <Widget>[
+        Scaffold(
+            body: Container(
+                color: Color(0xfff2f0f1),
+                padding: EdgeInsets.fromLTRB(
+                    0, MediaQuery.of(context).padding.top, 0, 0),
+                child: Column(children: <Widget>[
+                  topBar(model),
+                  Expanded(
+                      child: Container(
+                          child: ListView(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.all(0),
+                              children: <Widget>[
+                        discriptionBar(context),
+                        currentPwTextField(model),
+                        currentPwErrorBar(model),
+                        newPwTextField(model),
+                        newPwErrorBar(model),
+                        checkPwTextField(model),
+                        checkPwErrorBar(model),
+                      ])))
+                ]))),
+        model.getIsLoading()
+            ? CommonLoadingComponent(isTouch: false)
+            : Container()
+      ]);
+    }));
   }
 
   Container checkPwErrorBar(G012MainPageViewModel model) {

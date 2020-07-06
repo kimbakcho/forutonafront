@@ -25,12 +25,11 @@ void main() {
   test('should be DataSource Call', () async {
     //arrange
     String policy = "testPolicy";
-    UserPolicyResDto userPolicyResDto = UserPolicyResDto(
-        policy, "test", "test", DateTime.now());
+    UserPolicyResDto userPolicyResDto = UserPolicyResDto();
     when(mockUserPolicyRemoteDataSource.getPersonaSettingNotice(policy, any))
         .thenAnswer((realInvocation) async => userPolicyResDto);
     //act
-    await userPolicyRepository.getPersonaSettingNotice(policy);
+    await userPolicyRepository.getUserPolicy(policy);
     //assert
     verify(mockUserPolicyRemoteDataSource.getPersonaSettingNotice(policy, any));
   });

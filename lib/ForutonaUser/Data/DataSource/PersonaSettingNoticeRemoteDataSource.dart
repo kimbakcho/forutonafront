@@ -1,5 +1,7 @@
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/ForutonaUser/Data/Value/PersonaSettingNotice.dart';
+import 'package:forutonafront/ForutonaUser/Data/Value/PersonaSettingNoticeResWrap.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResWrapDto.dart';
 

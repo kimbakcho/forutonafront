@@ -20,7 +20,7 @@ class UserProfileImageUploadUseCase
 
 
   @override
-  Future<void> upload(File imageFile) async {
+  Future<String> upload(File imageFile) async {
     var imageBytes = await imageFile.readAsBytes();
     var compressImage = await _flutterImageCompressAdapter.compressImage(
         imageBytes, 70);
@@ -29,6 +29,6 @@ class UserProfileImageUploadUseCase
           compressImage, contentType: MediaType("image", "jpeg"),
           filename: "ProfileImage.jpg")
     });
-    await _fUserRepository.uploadUserProfileImage(formData);
+    return await _fUserRepository.uploadUserProfileImage(formData);
   }
 }

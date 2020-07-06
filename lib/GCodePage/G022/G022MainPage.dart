@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:forutonafront/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'G022MainPageViewModel.dart';
@@ -7,7 +9,6 @@ import 'G022MainPageViewModel.dart';
 class G022MainPage extends StatelessWidget {
   String policyTitle;
 
-  //DB에서 가져올 이름 (필터)
   String _policyName;
 
   G022MainPage(this.policyTitle, this._policyName);
@@ -15,7 +16,12 @@ class G022MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G022MainPageViewModel(context, policyTitle, _policyName),
+        create: (_) => G022MainPageViewModel(
+          context: context,
+          policyName: _policyName,
+          policyTitle: policyTitle,
+          userPolicyUseCase: sl()
+        ),
         child: Consumer<G022MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -40,7 +46,7 @@ class G022MainPage extends StatelessWidget {
     return Container(
         height: MediaQuery.of(context).size.height - 100,
         margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: model.userPolicyResDto != null
+        child: model.userPolicy != null
             ? WebviewScaffold(url: model.htmlUrl)
             : Container(),
         decoration: BoxDecoration(
@@ -69,8 +75,7 @@ class G022MainPage extends StatelessWidget {
             width: 48),
         Container(
             child: Text(model.policyTitle,
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Color(0xff454f63),

@@ -7,14 +7,13 @@ part of 'UserPolicyResDto.dart';
 // **************************************************************************
 
 UserPolicyResDto _$UserPolicyResDtoFromJson(Map<String, dynamic> json) {
-  return UserPolicyResDto(
-    json['policyName'] as String,
-    json['policyContent'] as String,
-    json['lang'] as String,
-    json['writeDateTime'] == null
+  return UserPolicyResDto()
+    ..policyName = json['policyName'] as String
+    ..policyContent = json['policyContent'] as String
+    ..lang = json['lang'] as String
+    ..writeDateTime = json['writeDateTime'] == null
         ? null
-        : DateTime.parse(json['writeDateTime'] as String),
-  );
+        : DateTime.parse(json['writeDateTime'] as String);
 }
 
 Map<String, dynamic> _$UserPolicyResDtoToJson(UserPolicyResDto instance) =>

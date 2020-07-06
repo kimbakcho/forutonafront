@@ -17,7 +17,7 @@ void main(){
 
   test('should API Call REST ', () async {
     String policy = "testPolicy";
-    UserPolicyResDto resDto = UserPolicyResDto("testPolicy","testcontent","ko",DateTime.now());
+    UserPolicyResDto resDto = UserPolicyResDto();
     //arrange
     when(fDio.get("/v1/ForutonaUser/UserPolicy/"+policy))
         .thenAnswer((_) async => Response<dynamic>(data: resDto.toJson()));
