@@ -24,7 +24,11 @@ class _CodeMainpageState extends State<CodeMainpage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<CodeMainViewModel>(
-            create: (_) => CodeMainViewModel()),
+            create: (_) => CodeMainViewModel(
+              geoLocationUtilUseCaseInputPort: sl(),
+              authUserCaseInputPort: sl(),
+              codeMainPageController: sl()
+            )),
         ChangeNotifierProvider<H001ViewModel>(
             create: (_) => H001ViewModel(context: context))
       ],

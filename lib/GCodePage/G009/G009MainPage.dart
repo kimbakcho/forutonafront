@@ -10,7 +10,8 @@ class G009MainPage extends StatelessWidget {
         create: (_) => G009MainPageViewModel(
           context: context,
           logoutUseCaseInputPort: sl(),
-          signInUserInfoUseCaseInputPort: sl()
+          signInUserInfoUseCaseInputPort: sl(),
+            codeMainPageController: sl()
         ),
         child: Consumer<G009MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[

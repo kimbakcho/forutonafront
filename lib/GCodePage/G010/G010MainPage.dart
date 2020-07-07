@@ -260,8 +260,7 @@ class G010MainPage extends StatelessWidget {
                 left: 16,
                 child: Container(
                     child: Text(model.getUserCountry(),
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
+                        style: GoogleFonts.notoSans(
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
                           color: Color(0xff454f63),

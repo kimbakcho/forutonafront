@@ -56,7 +56,8 @@ class G011MainPageViewModel extends ChangeNotifier {
       return;
     }
 
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => G012MainPage()));
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => G012MainPage(),settings: RouteSettings(name: "/G012")));
+
   }
 }

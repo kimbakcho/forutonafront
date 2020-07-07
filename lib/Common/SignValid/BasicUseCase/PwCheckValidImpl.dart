@@ -23,8 +23,8 @@ class PwCheckValidImpl implements SignValid{
   Future<void> valid(String checkPw) async {
     _isTextError = false;
     _errorText = "";
-    if (checkPw.length < 8) {
-      _isTextError = true;
+    if (checkPw.length == 0) {
+      _isTextError = false;
       _errorText = "";
       return;
     }

@@ -11,22 +11,28 @@ import 'package:forutonafront/GCodePage/G011/G011MainPage.dart';
 import 'package:forutonafront/GCodePage/G015/G015MainPage.dart';
 import 'package:forutonafront/GCodePage/G016/G016MainPage.dart';
 import 'package:forutonafront/GCodePage/G019/G019MainPage.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 
 class G009MainPageViewModel extends ChangeNotifier
     implements LogoutUseCaseOutputPort, SignInUserInfoUseCaseOutputPort {
   final BuildContext context;
   final LogoutUseCaseInputPort _logoutUseCaseInputPort;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final CodeMainPageController _codeMainPageController;
 
   FUserInfo _fUserInfo;
 
-  G009MainPageViewModel({
-    @required this.context,
-    @required LogoutUseCaseInputPort logoutUseCaseInputPort,
-    @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-  })  : _logoutUseCaseInputPort = logoutUseCaseInputPort,
-        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
-    _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory(outputPort: this);
+  G009MainPageViewModel(
+      {@required this.context,
+      @required LogoutUseCaseInputPort logoutUseCaseInputPort,
+      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      @required CodeMainPageController codeMainPageController})
+      : _logoutUseCaseInputPort = logoutUseCaseInputPort,
+        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
+        _codeMainPageController = codeMainPageController {
+    _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory(
+        outputPort: this);
   }
 
   void onBackTap() {
@@ -35,12 +41,12 @@ class G009MainPageViewModel extends ChangeNotifier
 
   void goAccountSettingPage() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G010MainPage(), settings: RouteSettings(name: "G010")));
+        builder: (_) => G010MainPage(), settings: RouteSettings(name: "/G010")));
   }
 
-  void goSecurityPage() {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G011MainPage(), settings: RouteSettings(name: "G011")));
+  void goSecurityPage() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => G011MainPage(), settings: RouteSettings(name: "/G011")));
   }
 
   void logout() async {
@@ -49,17 +55,17 @@ class G009MainPageViewModel extends ChangeNotifier
 
   void goAlarmSettingPage() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G015MainPage(), settings: RouteSettings(name: "G015")));
+        builder: (_) => G015MainPage(), settings: RouteSettings(name: "/G015")));
   }
 
   void goNoticePage() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G016MainPage(), settings: RouteSettings(name: "G016")));
+        builder: (_) => G016MainPage(), settings: RouteSettings(name: "/G016")));
   }
 
   void goCustomCenter() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G019MainPage(), settings: RouteSettings(name: "G019")));
+        builder: (_) => G019MainPage(), settings: RouteSettings(name: "/G019")));
   }
 
   bool isForutonaUser() {
@@ -68,7 +74,8 @@ class G009MainPageViewModel extends ChangeNotifier
 
   @override
   void onLogout() {
-    Navigator.of(context).popUntil(ModalRoute.withName('/'));
+    _codeMainPageController.moveToPage(HCodeState.HCDOE);
+    Navigator.of(context).popUntil((route) => route.settings.name == "/");
   }
 
   @override

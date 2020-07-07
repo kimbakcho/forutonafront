@@ -7,6 +7,7 @@ import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorRepor
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
+import 'package:forutonafront/Common/SnsLoginMoudleAdapter/ForutonaLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/NaverLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
@@ -28,12 +29,15 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCa
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCaeInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPasswordChangeUseCase/UserPasswordChangeUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPasswordChangeUseCase/UserPasswordChangeUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import 'package:forutonafront/Tag/Data/Repository/TagRepositoryImpl.dart';
@@ -41,6 +45,7 @@ import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:get_it/get_it.dart';
 
 import 'Background/BackgroundFetchAdapter/BackgroundFetchAdapter.dart';
+import 'Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import 'Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
@@ -174,6 +179,9 @@ init() {
   sl.registerSingleton<SnsLoginModuleAdapter>(NaverLoginAdapterImpl(),
       instanceName: "NaverLoginAdapter");
 
+  sl.registerSingleton<SnsLoginModuleAdapter>(ForutonaLoginAdapterImpl(),
+      instanceName: "ForutonaLoginAdapter");
+
   sl.registerSingleton<LoginUseCaseInputPort>(
       LoginUseCase(
           singUpUseCaseInputPort: sl(),
@@ -195,13 +203,16 @@ init() {
           snsLoginModuleAdapter: sl.get(instanceName: "NaverLoginAdapter")),
       instanceName: "LoginUseCaseNaver");
 
-  sl.registerFactoryParam((param1, param2) {
+  sl.registerFactoryParam<SnsLoginModuleAdapter, SnsSupportService, String>(
+      (param1, param2) {
     if (param1 == SnsSupportService.Naver) {
       return sl.get(instanceName: "NaverLoginAdapter");
     } else if (param1 == SnsSupportService.Kakao) {
       return sl.get(instanceName: "KakaoLoginAdapter");
     } else if (param1 == SnsSupportService.FaceBook) {
       return sl.get(instanceName: "FaceBookLoginAdapter");
+    } else if (param1 == SnsSupportService.Forutona) {
+      return sl.get(instanceName: "ForutonaLoginAdapter");
     } else {
       return null;
     }
@@ -211,7 +222,18 @@ init() {
       signInUserInfoUseCaseInputPort: sl(),
       fireBaseAuthAdapterForUseCase: sl()));
 
-  sl.registerSingleton<UserProfileImageUploadUseCaseInputPort>(UserProfileImageUploadUseCase());
+  sl.registerSingleton<UserInfoUpdateUseCaeInputPort>(
+      UserInfoUpdateUseCase(fUserRepository: sl()));
 
-  sl.registerSingleton<UserInfoUpdateUseCaeInputPort>(UserInfoUpdateUseCase());
+  sl.registerSingleton<FlutterImageCompressAdapter>(
+      FlutterImageCompressAdapterImpl());
+
+  sl.registerSingleton<UserProfileImageUploadUseCaseInputPort>(
+      UserProfileImageUploadUseCase(
+          fUserRepository: sl(), flutterImageCompressAdapter: sl()));
+
+  sl.registerSingleton<UserPasswordChangeUseCaseInputPort>(
+      UserPasswordChangeUseCase(fUserRepository: sl()));
+
+  sl.registerSingleton<CodeMainPageController>(CodeMainPageControllerImpl());
 }

@@ -81,13 +81,6 @@ class G010MainPageViewModel extends ChangeNotifier
     userIntroduceController.addListener(__onUserIntroduceControllerListener);
     _signInUserInfoUseCase.reqSignInUserInfoFromMemory(outputPort: this);
   }
-
-  _init() async {
-    _setIsLoading(true);
-
-    _setIsLoading(false);
-  }
-
   onCompleteTap() async {
     _setIsLoading(true);
     FuserAccountUpdateReqdto reqDto = new FuserAccountUpdateReqdto();
@@ -103,6 +96,9 @@ class G010MainPageViewModel extends ChangeNotifier
     await setProfileImage(reqDto);
 
     setSelfIntroduce(reqDto);
+
+    reqDto.isoCode = _currentIsoCode;
+
 
     var result = await _userInfoUpdateUseCaeInputPort.updateAccountUserInfo(reqDto);
 
@@ -206,8 +202,7 @@ class G010MainPageViewModel extends ChangeNotifier
                               }
                             },
                             child: Text("카메라",
-                                style: TextStyle(
-                                  fontFamily: "Noto Sans CJK KR",
+                                style: GoogleFonts.notoSans(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14,
                                   color: Color(0xff454f63),

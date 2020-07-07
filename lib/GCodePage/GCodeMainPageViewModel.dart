@@ -16,7 +16,7 @@ class GCodeMainPageViewModel extends ChangeNotifier {
 
   void jumpToSettingPage() async {
     await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => G009MainPage()));
+        .push(MaterialPageRoute(builder: (_) => G009MainPage(),settings: RouteSettings(name: "/G009")));
   }
 
   void jumpTopPage(GCodePageState gcode) {

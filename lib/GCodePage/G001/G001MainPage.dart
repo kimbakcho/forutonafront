@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/GCodePage/G001/G001MainPageViewModel.dart';
 import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +8,6 @@ import 'package:provider/provider.dart';
 class G001MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
         create: (_) => G001MainPageViewModel(
             context: context,
@@ -16,26 +16,28 @@ class G001MainPage extends StatelessWidget {
         child: Consumer<G001MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
-                body: Container(
-                    child: Stack(children: <Widget>[
-              Positioned(
-                  top: 36,
-                  width: MediaQuery.of(context).size.width,
-                  child: userProfileImage(model)),
-              Positioned(
-                  top: 126,
-                  width: MediaQuery.of(context).size.width,
-                  child: userNickName(model)),
-              Positioned(
-                top: 151,
-                width: MediaQuery.of(context).size.width,
-                child: userCountry(model),
-              ),
-              Positioned(
-                  top: 179,
-                  width: MediaQuery.of(context).size.width,
-                  child: userIntroduce(model)),
-            ])))
+                body: model.isLoading
+                    ? CommonLoadingComponent()
+                    : Container(
+                        child: Stack(children: <Widget>[
+                        Positioned(
+                            top: 36,
+                            width: MediaQuery.of(context).size.width,
+                            child: userProfileImage(model)),
+                        Positioned(
+                            top: 126,
+                            width: MediaQuery.of(context).size.width,
+                            child: userNickName(model)),
+                        Positioned(
+                          top: 151,
+                          width: MediaQuery.of(context).size.width,
+                          child: userCountry(model),
+                        ),
+                        Positioned(
+                            top: 179,
+                            width: MediaQuery.of(context).size.width,
+                            child: userIntroduce(model)),
+                      ])))
           ]);
         }));
   }

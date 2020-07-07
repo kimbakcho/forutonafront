@@ -6,6 +6,7 @@ import 'package:forutonafront/Common/SignValid/BasicUseCase/PwCheckValidImpl.dar
 import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'G012MainPageViewModel.dart';
@@ -28,7 +29,9 @@ class G012MainPage extends StatelessWidget {
           checkPwController: checkPwController,
           currentPwController: currentPwController,
           newPwController: newPwController,
-          userPasswordChangeUseCaseInputPort: sl());
+          userPasswordChangeUseCaseInputPort: sl(),
+          codeMainPageController: sl(),
+          logoutUseCaseInputPort: sl());
     }, child: Consumer<G012MainPageViewModel>(builder: (_, model, child) {
       return Stack(children: <Widget>[
         Scaffold(
@@ -88,8 +91,7 @@ class G012MainPage extends StatelessWidget {
               fillColor: Colors.white,
               contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
               hintText: " 새 패스워드 확인",
-              hintStyle: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              hintStyle: GoogleFonts.notoSans(
                 fontSize: 14,
                 color: Color(0xffb1b1b1),
               ),
@@ -122,8 +124,7 @@ class G012MainPage extends StatelessWidget {
               fillColor: Colors.white,
               contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
               hintText: " 새 패스워드",
-              hintStyle: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              hintStyle: GoogleFonts.notoSans(
                 fontSize: 14,
                 color: Color(0xffb1b1b1),
               ),
@@ -147,8 +148,7 @@ class G012MainPage extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
       child: model.isNewPasswordError()
           ? Text(model.getNewPasswordErrorText(),
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              style: GoogleFonts.notoSans(
                 fontSize: 12,
                 color: Color(0xffff4f9a),
               ))

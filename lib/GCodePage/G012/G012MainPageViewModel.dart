@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPasswordChangeUseCase/UserPasswordChangeUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class G012MainPageViewModel extends ChangeNotifier {
@@ -17,6 +20,10 @@ class G012MainPageViewModel extends ChangeNotifier {
   final SignValid _currentPwValid;
 
   final UserPasswordChangeUseCaseInputPort _userPasswordChangeUseCaseInputPort;
+
+  final CodeMainPageController _codeMainPageController;
+
+  final LogoutUseCaseInputPort _logoutUseCaseInputPort;
 
   //에러 체크 시도 구분
   bool _isCurrentConfirm = false;
@@ -48,13 +55,18 @@ class G012MainPageViewModel extends ChangeNotifier {
       @required
           SignValid currentPwValid,
       @required
-          UserPasswordChangeUseCaseInputPort
-              userPasswordChangeUseCaseInputPort})
+          UserPasswordChangeUseCaseInputPort userPasswordChangeUseCaseInputPort,
+      @required
+          CodeMainPageController codeMainPageController,
+      @required
+          LogoutUseCaseInputPort logoutUseCaseInputPort})
       : _pwValid = pwValid,
         _pwCheckValid = pwCheckValid,
         _currentPwValid = currentPwValid,
         _userPasswordChangeUseCaseInputPort =
-            userPasswordChangeUseCaseInputPort {
+            userPasswordChangeUseCaseInputPort,
+        _codeMainPageController = codeMainPageController,
+        _logoutUseCaseInputPort = logoutUseCaseInputPort {
     checkPwController.addListener(_onCheckPwControllerListener);
     newPwController.addListener(_onNewPwControllerListener);
     currentPwController.addListener(_onCurrentPwControllerListener);
@@ -170,7 +182,9 @@ class G012MainPageViewModel extends ChangeNotifier {
               .pwChange(FUserInfoPwChangeReqDto(newPwController.text)) ==
           1) {
         await showCompleteChangePwDialog();
-        Navigator.of(context).pop();
+        await _logoutUseCaseInputPort.tryLogout();
+        _codeMainPageController.moveToPage(HCodeState.HCDOE);
+        Navigator.of(context).popUntil(ModalRoute.withName("/"));
       }
     } catch (ex) {
       Fluttertoast.showToast(
@@ -226,6 +240,7 @@ class G012MainPageViewModel extends ChangeNotifier {
                         padding: EdgeInsets.all(0),
                         onPressed: () {
                           Navigator.of(context).pop();
+
                         },
                         child: Text("확인",
                             style: GoogleFonts.notoSans(
