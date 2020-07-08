@@ -11,7 +11,11 @@ class PwValidImpl implements PwValid {
 
 
   @override
+  bool hasValidTry = false;
+
+  @override
   String errorText() {
+
     return _errorText;
   }
 
@@ -23,7 +27,8 @@ class PwValidImpl implements PwValid {
 
   @override
   Future<void> valid(String pw) async{
-    _isTextError = false;
+    hasValidTry= true;
+    _isTextError = true;
     currentPw = pw;
     _errorText = "";
     RegExp regExp1 = new RegExp(r'^(?=.*?[A-Z])');
@@ -51,5 +56,7 @@ class PwValidImpl implements PwValid {
 
   @override
   String currentPw = "";
+
+
 
 }

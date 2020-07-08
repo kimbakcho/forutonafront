@@ -11,6 +11,8 @@ class IdDuplicationValidImpl implements SignValid {
   final DuplicationErrorLogin _duplicationErrorLogin;
   bool _isTextError = false;
   String _errorText = "";
+  @override
+  bool hasValidTry = false;
 
   IdDuplicationValidImpl(
       {@required SignValid emailValid,
@@ -40,7 +42,8 @@ class IdDuplicationValidImpl implements SignValid {
   @override
   Future<void> valid(String email) async {
     List<String> list;
-    _isTextError = false;
+    hasValidTry = true;
+    _isTextError = true;
     _errorText = "";
     try {
       list = await _fireBaseAuthAdapterForUseCase
@@ -56,6 +59,7 @@ class IdDuplicationValidImpl implements SignValid {
       _errorText = error.getErrorText(e);
       return;
     }
+    _isTextError = false;
     return _emailValid.valid(email);
   }
 }

@@ -4,12 +4,10 @@ import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Data/Value/PwChangeFromPhoneAuth.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseOutputPort.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
-import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
-import 'package:provider/provider.dart';
 
-class J011ViewModel extends ChangeNotifier implements PwFindPhoneUseCaseOutputPort{
+class J011ViewModel extends ChangeNotifier
+    implements PwFindPhoneUseCaseOutputPort {
   final BuildContext context;
   final TextEditingController pwEditingController;
   final TextEditingController pwCheckEditingController;
@@ -55,8 +53,6 @@ class J011ViewModel extends ChangeNotifier implements PwFindPhoneUseCaseOutputPo
   onCompleteBtnClick() async {
     if (!_pwValid.hasError() && !_pwCheckValid.hasError()) {
       _pwFindPhoneUseCaseInputPort.password = pwEditingController.text;
-
-
       _setIsLoading(true);
       await _pwFindPhoneUseCaseInputPort.phonePwChange(outputPort: this);
       _setIsLoading(false);
@@ -65,24 +61,25 @@ class J011ViewModel extends ChangeNotifier implements PwFindPhoneUseCaseOutputPo
 
   void onPwEditComplete() {
     _pwValid.valid(pwEditingController.text);
+    _pwCheckValid.valid(pwCheckEditingController.text);
     notifyListeners();
   }
 
   void onPwEditChangeText(String value) {
     _pwValid.valid(pwEditingController.text);
+    _pwCheckValid.valid(pwCheckEditingController.text);
     notifyListeners();
   }
 
   bool hasPwError() {
+    if(!_pwValid.hasValidTry){
+      return true;
+    }
     return _pwValid.hasError();
   }
 
   String pwErrorText() {
-    if (pwEditingController.text.length > 0) {
-      return _pwValid.errorText();
-    } else {
-      return "";
-    }
+    return _pwValid.errorText();
   }
 
   void onPwCheckComplete() {
@@ -96,15 +93,14 @@ class J011ViewModel extends ChangeNotifier implements PwFindPhoneUseCaseOutputPo
   }
 
   bool hasPwCheckError() {
+    if(!_pwCheckValid.hasValidTry){
+      return true;
+    }
     return _pwCheckValid.hasError();
   }
 
   String pwCheckErrorText() {
-    if (pwEditingController.text.length > 0) {
-      return _pwCheckValid.errorText();
-    } else {
-      return "";
-    }
+    return _pwCheckValid.errorText();
   }
 
   @override

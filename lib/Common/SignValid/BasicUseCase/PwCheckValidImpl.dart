@@ -7,6 +7,9 @@ class PwCheckValidImpl implements SignValid{
   bool _isTextError = false;
   String _errorText = "";
   PwValid _originPwValid;
+  @override
+  bool hasValidTry = false;
+
   PwCheckValidImpl(this._originPwValid);
 
   @override
@@ -21,7 +24,8 @@ class PwCheckValidImpl implements SignValid{
 
   @override
   Future<void> valid(String checkPw) async {
-    _isTextError = false;
+    hasValidTry = true;
+    _isTextError = true;
     _errorText = "";
     if (checkPw.length == 0) {
       _isTextError = false;
@@ -37,5 +41,7 @@ class PwCheckValidImpl implements SignValid{
     }
     return;
   }
+
+
 
 }

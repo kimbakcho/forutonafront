@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseInputPort.dart';
 import 'package:forutonafront/JCodePage/J010/J010View.dart';
 
 class J009ViewModel extends ChangeNotifier {
@@ -25,7 +26,7 @@ class J009ViewModel extends ChangeNotifier {
   J009ViewModel(
       {@required this.context,
       @required SignValid duplicationEmailValid,
-      @required PwFindPhoneUseCase pwFindPhoneUseCase,
+      @required PwFindPhoneUseCaseInputPort pwFindPhoneUseCase,
       @required this.idEditingController})
       : _duplicationEmailValid = duplicationEmailValid,
         _pwFindPhoneUseCase = pwFindPhoneUseCase;

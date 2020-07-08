@@ -20,7 +20,7 @@ class G022MainPage extends StatelessWidget {
           context: context,
           policyName: _policyName,
           policyTitle: policyTitle,
-          userPolicyUseCase: sl()
+          userPolicyUseCaseInputPort: sl()
         ),
         child: Consumer<G022MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[

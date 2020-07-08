@@ -23,9 +23,20 @@ import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenUpdateUseCase
 import 'package:forutonafront/FireBaseMessage/UseCase/LaunchMessageUseCase/LaunchMessageUseCase.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/ResumeMessageUseCase/ResumeMessageUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
+import 'package:forutonafront/ForutonaUser/Data/DataSource/PhoneAuthRemoteDataSource.dart';
+import 'package:forutonafront/ForutonaUser/Data/DataSource/UserPolicyRemoteDataSource.dart';
 import 'package:forutonafront/ForutonaUser/Data/Repository/FUserRepositoryImpl.dart';
+import 'package:forutonafront/ForutonaUser/Data/Repository/PersonaSettingNoticeRepositoryImpl.dart';
+import 'package:forutonafront/ForutonaUser/Data/Repository/PhoneAuthRepositoryImpl.dart';
+import 'package:forutonafront/ForutonaUser/Data/Repository/UserPolicyRepositoryImpl.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Repository/UserPolicyRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwAuthFromPhoneUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCaeInputPort.dart';
@@ -35,6 +46,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dar
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateEtcUserUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
@@ -54,12 +66,22 @@ import 'Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
 import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
 import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
 import 'FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
+import 'ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
 import 'ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'ForutonaUser/Domain/Repository/PersonaSettingNoticeRepository.dart';
+import 'ForutonaUser/Domain/UseCase/Auth/PwAuthFromPhoneUseCase.dart';
+import 'ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
 import 'ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCase.dart';
 import 'ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCase.dart';
 import 'ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
+import 'ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCase.dart';
+import 'ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart';
+import 'ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateForutonaUserUseCase.dart';
+import 'ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateUserUseCaseInputPort.dart';
 import 'ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart';
 import 'ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
+import 'ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCase.dart';
+import 'ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart';
 import 'ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCase.dart';
 import 'Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
@@ -167,8 +189,10 @@ init() {
   sl.registerSingleton<FireBaseSignInValidUseCase>(
       FireBaseSignInValidUseCaseImpl(fireBaseAuthAdapterForUseCase: sl()));
 
-  sl.registerSingleton<SingUpUseCaseInputPort>(
-      SingUpUseCase(fUserRepository: sl()));
+  sl.registerSingleton<SingUpUseCaseInputPort>(SingUpUseCase(
+      fUserRepository: sl(),
+      preference: sl(),
+      fireBaseAuthAdapterForUseCase: sl()));
 
   sl.registerSingleton<SnsLoginModuleAdapter>(FaceBookLoginAdapterImpl(),
       instanceName: "FaceBookLoginAdapter");
@@ -236,4 +260,56 @@ init() {
       UserPasswordChangeUseCase(fUserRepository: sl()));
 
   sl.registerSingleton<CodeMainPageController>(CodeMainPageControllerImpl());
+
+  sl.registerSingleton<PersonaSettingNoticeRemoteDataSource>(
+      PersonaSettingNoticeRemoteDataSourceImpl());
+
+  sl.registerSingleton<PersonaSettingNoticeRepository>(
+      PersonaSettingNoticeRepositoryImpl(
+          personaSettingNoticeRemoteDataSource: sl()));
+
+  sl.registerSingleton<PersonaSettingNoticeUseCaseInputPort>(
+      PersonaSettingNoticeUseCase(personaSettingNoticeRepository: sl()));
+
+  sl.registerSingleton<UserPolicyRemoteDataSource>(
+      UserPolicyRemoteDataSourceImpl());
+
+  sl.registerSingleton<UserPolicyRepository>(
+      UserPolicyRepositoryImpl(userPolicyRemoteDataSource: sl()));
+
+  sl.registerSingleton<UserPolicyUseCaseInputPort>(
+      UserPolicyUseCase(userPolicyRepository: sl()));
+
+  sl.registerSingleton<PhoneAuthRemoteSource>(PhoneAuthRemoteSourceImpl());
+
+  sl.registerSingleton<PhoneAuthRepository>(
+      PhoneAuthRepositoryImpl(phoneAuthRemoteSource: sl()));
+
+  sl.registerSingleton<PwAuthFromPhoneUseCaseInputPort>(
+      PwAuthFromPhoneUseCase(phoneAuthRepository: sl()));
+
+  sl.registerSingleton<FireBaseCreateUserUseCaseInputPort>(
+      FireBaseCreateForutonaUserUseCase(fireBaseAuthAdapterForUseCase: sl()),
+      instanceName: "FireBaseCreateForutonaUserUseCase");
+
+  sl.registerSingleton<FireBaseCreateUserUseCaseInputPort>(
+      FireBaseCreateEtcUserUseCase(),
+      instanceName: "FireBaseCreateEtcUserUseCase");
+
+  sl.registerFactoryParam<FireBaseCreateUserUseCaseInputPort, SnsSupportService,
+      String>((param1, param2) {
+    if (param1 == SnsSupportService.Forutona) {
+      return sl.get(instanceName: "FireBaseCreateForutonaUserUseCase");
+    } else {
+      return sl.get(instanceName: "FireBaseCreateEtcUserUseCase");
+    }
+  }, instanceName: "FireBaseCreateUserUseCaseInputPort");
+
+
+  sl.registerSingleton<PwFindPhoneUseCaseInputPort>(
+      PwFindPhoneUseCase(phoneAuthRepository: sl()));
+
+  sl.registerSingleton<PwFindEmailUseCaseInputPort>(PwFindEmailUseCase(
+    fireBaseAuthAdapterForUseCase: sl()
+  ));
 }

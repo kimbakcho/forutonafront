@@ -12,6 +12,7 @@ abstract class FireBaseAuthBaseAdapter {
   Future<String> signInWithCustomToken(String token);
   Future<void> sendPasswordResetEmail(String email);
   Future<void> logout();
+  Future<String> createUserWithEmailAndPassword(String email,String pw);
 }
 
 class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
@@ -79,6 +80,12 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
   @override
   Future<void> logout() async{
     await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  Future<String> createUserWithEmailAndPassword(String email,String pw) async{
+    AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pw);
+    return result.user.uid;
   }
 
 }

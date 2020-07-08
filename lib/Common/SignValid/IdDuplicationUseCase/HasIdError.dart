@@ -7,5 +7,5 @@ class HasIdError implements DuplicationErrorLogin{
   }
 
   @override
-  String errorMessage = "이미 가입한 ID가 있습니다/";
+  String errorMessage = "이미 가입한 ID가 있습니다";
 }

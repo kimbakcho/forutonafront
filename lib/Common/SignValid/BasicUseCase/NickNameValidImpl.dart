@@ -6,6 +6,10 @@ class NickNameValidImpl implements SignValid {
   bool _isTextError = false;
   String _errorText = "";
 
+
+  @override
+  bool hasValidTry = false;
+
   FUserRepository _fUserRepository;
 
   NickNameValidImpl({@required FUserRepository fUserRepository})
@@ -23,7 +27,8 @@ class NickNameValidImpl implements SignValid {
 
   @override
   Future<void> valid(String nickNameText) async {
-    _isTextError = false;
+    hasValidTry = true;
+    _isTextError = true;
     _errorText = "";
     if (nickNameText.length < 2) {
       _isTextError = true;
@@ -45,4 +50,5 @@ class NickNameValidImpl implements SignValid {
       _errorText = "";
     }
   }
+
 }

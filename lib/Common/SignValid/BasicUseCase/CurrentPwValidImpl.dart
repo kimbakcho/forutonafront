@@ -5,6 +5,8 @@ import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapt
 
 class CurrentPwValidImpl implements SignValid {
   FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  @override
+  bool hasValidTry = false;
 
   bool _isTextError = false;
   String _errorText = "";
@@ -25,6 +27,7 @@ class CurrentPwValidImpl implements SignValid {
 
   @override
   Future<void> valid(String validText) async {
+    hasValidTry =true;
     _isTextError = false;
     _errorText = "";
     try {
@@ -35,4 +38,6 @@ class CurrentPwValidImpl implements SignValid {
       _errorText = FireBaseValidErrorUtil().getErrorText(ex);
     }
   }
+
+
 }

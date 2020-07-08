@@ -1,11 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseOutputPort.dart';
 import 'package:forutonafront/JCodePage/J013/J013View.dart';
 
-class J012ViewModel extends ChangeNotifier implements PwFindEmailUseCaseOutputPort{
+class J012ViewModel extends ChangeNotifier
+    implements PwFindEmailUseCaseOutputPort {
   final BuildContext context;
   final TextEditingController idEditingController;
   final SignValid _duplicationEmailValid;
@@ -48,7 +48,8 @@ class J012ViewModel extends ChangeNotifier implements PwFindEmailUseCaseOutputPo
     _setIsLoading(true);
     await _duplicationEmailValid.valid(idEditingController.text);
     if (!_duplicationEmailValid.hasError()) {
-      await _pwFindEmailUseCaseInputPort.sendPasswordResetEmail(idEditingController.text,outputPort: this);
+      await _pwFindEmailUseCaseInputPort
+          .sendPasswordResetEmail(idEditingController.text, outputPort: this);
     }
     _setIsLoading(false);
   }
@@ -65,20 +66,19 @@ class J012ViewModel extends ChangeNotifier implements PwFindEmailUseCaseOutputPo
   }
 
   bool hasEmailError() {
+    if(!_duplicationEmailValid.hasValidTry){
+      return true;
+    }
     return _duplicationEmailValid.hasError();
   }
 
   String emailErrorText() {
-    if (_idEditCompleteFlag) {
-      return _duplicationEmailValid.errorText();
-    } else {
-      return "";
-    }
+    return _duplicationEmailValid.errorText();
   }
 
   @override
   void onSendPasswordResetEmail() {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => J013View(idEditingController.text)));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => J013View(idEditingController.text)));
   }
 }

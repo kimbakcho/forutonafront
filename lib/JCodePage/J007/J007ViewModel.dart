@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/Preference.dart';
@@ -18,7 +17,6 @@ class J007ViewModel extends ChangeNotifier {
   final SignValid _nickNameValid;
   final UserProfileImageUploadUseCaseInputPort
       _userProfileImageUploadUseCaseInputPort;
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCase;
   final TextEditingController nickNameController;
   final TextEditingController userIntroduceController;
 
@@ -56,16 +54,13 @@ class J007ViewModel extends ChangeNotifier {
           UserProfileImageUploadUseCaseInputPort
               userProfileImageUploadUseCaseInputPort,
       @required
-          SignInUserInfoUseCaseInputPort signInUserInfoUseCase,
-      @required
           this.nickNameController,
       @required
           this.userIntroduceController})
       : _singUpUseCaseInputPort = singUpUseCaseInputPort,
         _nickNameValid = nickNameValid,
         _userProfileImageUploadUseCaseInputPort =
-            userProfileImageUploadUseCaseInputPort,
-        _signInUserInfoUseCase = signInUserInfoUseCase {
+            userProfileImageUploadUseCaseInputPort {
     currentCountryCode = _singUpUseCaseInputPort.getCountryCode();
     currentProfileImage =
         NetworkImage(_singUpUseCaseInputPort.getUserProfileImageUrl());
@@ -135,7 +130,11 @@ class J007ViewModel extends ChangeNotifier {
       }
     }
 
-    var fUserInfoJoinResDto = await _singUpUseCaseInputPort.joinUser();
+    var fUserInfoJoinResDto = await _singUpUseCaseInputPort.joinUser(sl.get(
+        instanceName: "FireBaseCreateUserUseCaseInputPort",
+        param1: _singUpUseCaseInputPort.getSnsSupportService(),
+        param2: ""));
+
     if (fUserInfoJoinResDto.joinComplete) {
       if (_currentPickProfileImage != null) {
         await _userProfileImageUploadUseCaseInputPort

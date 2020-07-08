@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
-import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/JCodePage/J007/J007View.dart';
-import 'package:provider/provider.dart';
 
 class J006ViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -27,17 +25,16 @@ class J006ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  J006ViewModel(
-      {@required this.context,
-      @required SignValid signUpEmailValid,
-      @required SignValid pwValidImpl,
-      @required SignValid pwCheckValid,
-      @required SingUpUseCaseInputPort singUpUseCaseInputPort,
-        @required this.idEditingController,
-        @required this.pwEditingController,
-        @required this.pwCheckEditingController,
-      })
-      : _signUpEmailValid = signUpEmailValid,
+  J006ViewModel({
+    @required this.context,
+    @required SignValid signUpEmailValid,
+    @required SignValid pwValidImpl,
+    @required SignValid pwCheckValid,
+    @required SingUpUseCaseInputPort singUpUseCaseInputPort,
+    @required this.idEditingController,
+    @required this.pwEditingController,
+    @required this.pwCheckEditingController,
+  })  : _signUpEmailValid = signUpEmailValid,
         _pwValid = pwValidImpl,
         _pwCheckValid = pwCheckValid,
         _singUpUseCaseInputPort = singUpUseCaseInputPort;
@@ -54,23 +51,24 @@ class J006ViewModel extends ChangeNotifier {
   }
 
   hasEmailError() {
+    if (!_signUpEmailValid.hasValidTry) {
+      return true;
+    }
     return _signUpEmailValid.hasError();
   }
 
   String emailErrorText() {
-    if (hasIdComplete) {
-      return _signUpEmailValid.errorText();
-    } else {
-      return "";
-    }
+    return _signUpEmailValid.errorText();
   }
 
   hasPwCheckError() {
-    if (pwCheckEditingController.text.length > 0) {
-      return _pwCheckValid.hasError();
-    } else {
+    if(pwCheckEditingController.text.length == 0){
       return true;
     }
+    if(!_pwCheckValid.hasValidTry){
+      return true;
+    }
+    return _pwCheckValid.hasError();
   }
 
   void onPwEditComplete() {
@@ -79,6 +77,12 @@ class J006ViewModel extends ChangeNotifier {
   }
 
   hasPwError() {
+    if(pwEditingController.text.length == 0){
+      return true;
+    }
+    if (!_pwValid.hasValidTry) {
+      return true;
+    }
     return _pwValid.hasError();
   }
 
@@ -135,10 +139,6 @@ class J006ViewModel extends ChangeNotifier {
   }
 
   String pwCheckErrorText() {
-    if (pwCheckEditingController.text.length > 0) {
-      return _pwCheckValid.errorText();
-    } else {
-      return "";
-    }
+    return _pwCheckValid.errorText();
   }
 }

@@ -145,7 +145,7 @@ class J004ViewModel extends ChangeNotifier
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.isoCode = _currentIsoCode;
     reqDto.authNumber = authNumberEditingController.text;
-    await _pwAuthFromPhoneUseCaseInputPort.reqNumberAuthReq(reqDto);
+    await _pwAuthFromPhoneUseCaseInputPort.reqNumberAuthReq(reqDto,outputPort: this);
   }
 
   @override

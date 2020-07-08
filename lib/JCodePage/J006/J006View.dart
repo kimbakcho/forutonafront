@@ -333,8 +333,7 @@ class J006View extends StatelessWidget {
             width: 48),
         Container(
             child: Text("아이디 등록",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Color(0xff454f63),

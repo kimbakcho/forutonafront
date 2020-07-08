@@ -1,5 +1,6 @@
 import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/ForutonaUser/Data/Value/FUserSnsCheckJoin.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateUserUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
@@ -8,7 +9,7 @@ import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 
 abstract class SingUpUseCaseInputPort {
   Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(FUserSnSLoginReqDto reqDto);
-  Future<FUserInfoJoinResDto> joinUser();
+  Future<FUserInfoJoinResDto> joinUser(FireBaseCreateUserUseCaseInputPort fireBaseCreateUserUseCaseInputPort);
 
   void setNickName(String userNickName);
   void setEmail(String email);

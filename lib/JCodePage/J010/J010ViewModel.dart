@@ -166,7 +166,7 @@ class J010ViewModel extends ChangeNotifier {
     } else {
 
       _pwFindPhoneUseCaseInputPort.emailPhoneAuthToken =
-          _phoneFindValidUseCase.getPwFindPhoneAuthNumber().phoneAuthToken;
+          _phoneFindValidUseCase.getPwFindPhoneAuthNumber().emailPhoneAuthToken;
 
       _pwFindPhoneUseCaseInputPort.internationalizedPhoneNumber =
           _phoneFindValidUseCase

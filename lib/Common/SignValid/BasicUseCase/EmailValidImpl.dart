@@ -5,6 +5,9 @@ class EmailValidImpl implements SignValid{
   String _errorText = "";
 
   @override
+  bool hasValidTry = false;
+
+  @override
   String errorText() {
     return _errorText;
   }
@@ -16,7 +19,8 @@ class EmailValidImpl implements SignValid{
 
   @override
   Future<void> valid(String email,{String optionValidText}) async {
-     _isTextError = false;
+    hasValidTry = true;
+     _isTextError = true;
     _errorText = "";
     if (!_isEmailTypeValid(email)) {
       _isTextError = true;

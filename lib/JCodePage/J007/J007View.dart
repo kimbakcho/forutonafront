@@ -19,7 +19,6 @@ class J007View extends StatelessWidget {
             context: context,
             singUpUseCaseInputPort: sl(),
             nickNameValid: NickNameValidImpl(fUserRepository: sl()),
-            signInUserInfoUseCase: sl(),
             userProfileImageUploadUseCaseInputPort: sl(),
             nickNameController: nickNameController,
             userIntroduceController: userIntroduceController),

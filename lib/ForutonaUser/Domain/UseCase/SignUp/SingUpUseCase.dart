@@ -1,21 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateUserUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Preference.dart';
 
 import 'SingUpUseCaseInputPort.dart';
 
 class SingUpUseCase implements SingUpUseCaseInputPort {
   FUserRepository _fUserRepository;
+  Preference _preference;
+  FUserInfoJoinReq fUserInfoJoinReq;
+  FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
-  FUserInfoJoinReq fUserInfoJoinReq = FUserInfoJoinReq();
-
-  SingUpUseCase({@required FUserRepository fUserRepository})
-      : _fUserRepository = fUserRepository;
+  SingUpUseCase(
+      {@required
+          FUserRepository fUserRepository,
+      @required
+          Preference preference,
+        FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+      : _fUserRepository = fUserRepository,
+        _preference = preference,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase{
+    fUserInfoJoinReq = FUserInfoJoinReq(preference: _preference);
+  }
 
   @override
   Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(
@@ -26,13 +39,19 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
   }
 
   @override
-  Future<FUserInfoJoinResDto> joinUser() async {
-    return FUserInfoJoinResDto.fromFUserInfoJoin(await _fUserRepository
+  Future<FUserInfoJoinResDto> joinUser(FireBaseCreateUserUseCaseInputPort fireBaseCreateUserUseCaseInputPort) async {
+    fUserInfoJoinReq.emailUserUid = await fireBaseCreateUserUseCaseInputPort.createUser(
+        email: fUserInfoJoinReq.email, pw: fUserInfoJoinReq.password);
+    fUserInfoJoinReq.clearPassword();
+    var fUserInfoJoinResDto = FUserInfoJoinResDto.fromFUserInfoJoin(await _fUserRepository
         .joinUser(FUserInfoJoinReqDto.fromFUserInfoJoinReq(fUserInfoJoinReq)));
+    await _fireBaseAuthAdapterForUseCase.signInWithCustomToken(fUserInfoJoinResDto.customToken);
+    return fUserInfoJoinResDto;
   }
 
   @override
   void setEmail(String email) {
+    fUserInfoJoinReq.emailUserUid = email;
     fUserInfoJoinReq.email = email;
   }
 

@@ -93,5 +93,10 @@ class FireBaseAuthAdapterForUseCaseImpl
     return await _fireBaseAuthBaseAdapter.logout();
   }
 
+  @override
+  Future<String> createUserWithEmailAndPassword(String email, String pw) async {
+    return await _fireBaseAuthBaseAdapter.createUserWithEmailAndPassword(email, pw);
+  }
+
 
 }

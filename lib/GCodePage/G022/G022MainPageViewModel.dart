@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/ForutonaUser/Data/Value/UserPolicy.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart';
 
 class G022MainPageViewModel extends ChangeNotifier {
   final BuildContext context;
   final String policyTitle;
   final String policyName;
-  final UserPolicyUseCase _userPolicyUseCase;
+  final UserPolicyUseCaseInputPort _userPolicyUseCaseInputPort;
 
   UserPolicy userPolicy;
   String htmlUrl;
@@ -15,14 +16,14 @@ class G022MainPageViewModel extends ChangeNotifier {
       {@required this.context,
       @required this.policyTitle,
       @required this.policyName,
-      @required UserPolicyUseCase userPolicyUseCase})
-      : _userPolicyUseCase = userPolicyUseCase {
+      @required UserPolicyUseCaseInputPort userPolicyUseCaseInputPort})
+      : _userPolicyUseCaseInputPort = userPolicyUseCaseInputPort {
     init();
   }
 
   void init() async {
     userPolicy = UserPolicy.fromUserPolicyResDto(
-        await _userPolicyUseCase.getUserPolicy(policyName));
+        await _userPolicyUseCaseInputPort.getUserPolicy(policyName));
     _loadHtml(userPolicy.policyContent);
     notifyListeners();
   }
