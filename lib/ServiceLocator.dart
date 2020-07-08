@@ -11,9 +11,15 @@ import 'package:forutonafront/Common/SnsLoginMoudleAdapter/ForutonaLoginAdapterI
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/NaverLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
+import 'package:forutonafront/FBall/Data/DataStore/FBallPlayerRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
+import 'package:forutonafront/FBall/Data/Repository/FBallPlayerRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
+import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
@@ -65,6 +71,7 @@ import 'Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythi
 import 'Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
 import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
 import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
+import 'FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCase.dart';
 import 'FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import 'ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
 import 'ForutonaUser/Domain/Repository/FUserRepository.dart';
@@ -312,4 +319,19 @@ init() {
   sl.registerSingleton<PwFindEmailUseCaseInputPort>(PwFindEmailUseCase(
     fireBaseAuthAdapterForUseCase: sl()
   ));
+
+  sl.registerSingleton<FBallPlayerRemoteDataSource>(FBallPlayerRemoteDataSourceImpl());
+
+  sl.registerSingleton<FBallPlayerRepository>(FBallPlayerRepositoryImpl(
+    fBallPlayerRemoteDataSource: sl()
+  ));
+
+  sl.registerSingleton<UserPlayBallListUpUseCaseInputPort>(UserPlayBallListUpUseCase(
+    fBallPlayerRepository: sl()
+  ));
+
+  sl.registerSingleton<UserMakeBallListUpUseCaseInputPort>(UserMakeBallListUpUseCase(
+    fBallRepository: sl()
+  ));
+
 }

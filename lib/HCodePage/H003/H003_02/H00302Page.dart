@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'H00302PageViewModel.dart';
 
 class H00302Page extends StatelessWidget {
+  ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    var viewModel = Provider.of<H00302PageViewModel>(context);
-    return ChangeNotifierProvider.value(
-        value: viewModel,
+    return ChangeNotifierProvider(
+        create: (_) => H00302PageViewModel(
+          context: context,
+          authUserCaseInputPort: sl(),
+          userMakeBallListUpUseCaseInputPort: sl(),
+          scrollController: scrollController
+
+        ),
         child: Consumer<H00302PageViewModel>(builder: (_, model, child) {
           return Container(
-            color: Color(0xffF2F0F1),
+              color: Color(0xffF2F0F1),
               margin: EdgeInsets.only(bottom: 53),
               child: Stack(children: <Widget>[
-                !viewModel.isEmptyPage()
+                !model.isEmptyPage()
                     ? buildListView(model)
                     : Container(
                         child: Center(
@@ -35,8 +42,8 @@ class H00302Page extends StatelessWidget {
 
   ListView buildListView(H00302PageViewModel model) {
     return ListView.builder(
-      padding: EdgeInsets.all(0),
-        controller: model.scrollController,
+        padding: EdgeInsets.all(0),
+        controller: scrollController,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return model.ballListUpWidgets[index];

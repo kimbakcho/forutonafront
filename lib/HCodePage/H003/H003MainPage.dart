@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forutonafront/HCodePage/H003/H003MainPageModel.dart';
 import 'package:forutonafront/HCodePage/H003/H003PageState.dart';
 import 'package:forutonafront/HCodePage/H003/H003_01/H00301Page.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 import 'H003_01/H00301PageViewModel.dart';
@@ -12,15 +12,10 @@ import 'H003_02/H00302PageViewModel.dart';
 class H003MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<H003MainPageModel>(
               create: (_) => H003MainPageModel()),
-          ChangeNotifierProvider<H00301PageViewModel>(
-              create: (_) => H00301PageViewModel(context)),
-          ChangeNotifierProvider<H00302PageViewModel>(
-              create: (_) => H00302PageViewModel(context)),
         ],
         child: Consumer<H003MainPageModel>(builder: (_, model, child) {
           return Scaffold(

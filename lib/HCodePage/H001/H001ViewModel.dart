@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
@@ -18,15 +16,10 @@ import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
-import 'package:forutonafront/ServiceLocator.dart';
-import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
-import 'package:forutonafront/Tag/Data/Repository/TagRepositoryImpl.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCase.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
-
 
 enum H001PageState { H001_01, H003_01 }
 
@@ -35,23 +28,22 @@ class H001ViewModel
     implements
         FBallListUpFromInfluencePowerUseCaseOutputPort,
         TagRankingFromBallInfluencePowerUseCaseOutputPort {
-
   final BuildContext context;
+
+  final FBallListUpFromInfluencePowerUseCaseInputPort
+      _fBallListUpFromInfluencePowerUseCaseInputPort;
+
+  final TagRankingFromBallInfluencePowerUseCaseInputPort
+      _tagRankingFromPositionUseCaseInputPort;
+
+  final AuthUserCaseInputPort _authUserCaseInputPort;
+
+  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   Position _currentSearchPosition;
   String _currentSearchAddress;
 
   bool _subScrollerTopOver = false;
-
-  FBallListUpFromInfluencePowerUseCaseInputPort
-      _fBallListUpFromInfluencePowerUseCaseInputPort = sl();
-
-  TagRankingFromBallInfluencePowerUseCaseInputPort
-      _tagRankingFromPositionUseCaseInputPort = sl();
-
-  AuthUserCaseInputPort _authUserCaseInputPort = sl();
-
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
 
   String selectPositionAddress = "";
 
@@ -77,7 +69,25 @@ class H001ViewModel
   int _ballPageLimitSize = 20;
   int _ballSearchLimit = 1000;
 
-  H001ViewModel({@required this.context}) : assert(context != null) {
+  H001ViewModel(
+      {@required
+          this.context,
+      @required
+          FBallListUpFromInfluencePowerUseCaseInputPort
+              fBallListUpFromInfluencePowerUseCaseInputPort,
+      @required
+          TagRankingFromBallInfluencePowerUseCaseInputPort
+              tagRankingFromPositionUseCaseInputPort,
+      @required
+          AuthUserCaseInputPort authUserCaseInputPort,
+      @required
+          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort})
+      : _fBallListUpFromInfluencePowerUseCaseInputPort =
+            fBallListUpFromInfluencePowerUseCaseInputPort,
+        _tagRankingFromPositionUseCaseInputPort =
+            tagRankingFromPositionUseCaseInputPort,
+        _authUserCaseInputPort = authUserCaseInputPort,
+        _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
 
     h001CenterListViewController
         .addListener(this.h001CenterListViewControllerListener);
@@ -120,7 +130,7 @@ class H001ViewModel
     await _tagRankingFromPositionUseCaseInputPort
         .reqTagRankingFromBallInfluencePower(
             TagRankingFromBallInfluencePowerReqDto(
-                position: _currentSearchPosition,limit: 10),
+                position: _currentSearchPosition, limit: 10),
             this);
   }
 
@@ -141,12 +151,13 @@ class H001ViewModel
   Future _searchFBallFromBallInfluencePowerWithCurrentSearchPosition() async {
     showLoading();
 
-    FBallListUpFromBallInfluencePowerReqDto reqDto = new FBallListUpFromBallInfluencePowerReqDto(
-        latitude: _currentSearchPosition.latitude,
-        longitude: _currentSearchPosition.longitude,
-        ballLimit: _ballSearchLimit,
-        page: _ballPageCount,
-        size: _ballPageLimitSize);
+    FBallListUpFromBallInfluencePowerReqDto reqDto =
+        new FBallListUpFromBallInfluencePowerReqDto(
+            latitude: _currentSearchPosition.latitude,
+            longitude: _currentSearchPosition.longitude,
+            ballLimit: _ballSearchLimit,
+            page: _ballPageCount,
+            size: _ballPageLimitSize);
     await _fBallListUpFromInfluencePowerUseCaseInputPort
         .reqBallListUpFromInfluencePower(reqDto, this);
 
@@ -155,13 +166,13 @@ class H001ViewModel
 
   @override
   onListUpBallFromBallInfluencePower(List<FBallResDto> fBallResDtos) async {
-    if(isFirstPage()){
+    if (isFirstPage()) {
       ballClear();
     }
     this.ballWidgetLists.addAll(fBallResDtos
         .map((x) => BallStyle1Widget.create(
-      fBallResDto: x,
-    ))
+              fBallResDto: x,
+            ))
         .toList());
     notifyListeners();
   }
@@ -249,7 +260,7 @@ class H001ViewModel
   int nextPage() => _ballPageCount++;
 
   bool hasMoreListUpBall(int nowBallCount) {
-    return !(((_ballPageCount+1) * _ballPageLimitSize) > nowBallCount);
+    return !(((_ballPageCount + 1) * _ballPageLimitSize) > nowBallCount);
   }
 
   bool _isUserScrollerForward() {
@@ -361,8 +372,6 @@ class H001ViewModel
     makeButtonDisplayShowFlag = false;
     notifyListeners();
   }
-
-
 
   void showUnInlineRankingWidget() {
     _inlineRanking = false;

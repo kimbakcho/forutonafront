@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
@@ -11,19 +9,18 @@ import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2Widget.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
 
-class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUseCaseOutputPort,AuthUserCaseOutputPort{
+class H00302PageViewModel extends ChangeNotifier
+    implements UserMakeBallListUpUseCaseOutputPort, AuthUserCaseOutputPort {
   final BuildContext context;
+  final ScrollController scrollController;
+  final AuthUserCaseInputPort _authUserCaseInputPort;
+  final UserMakeBallListUpUseCaseInputPort _userMakeBallListUpUseCaseInputPort;
 
-  ScrollController scrollController = ScrollController();
   List<BallStyle2Widget> ballListUpWidgets = [];
   bool _isInitFinish = false;
   bool _isLoading = false;
   bool _subScrollerTopOver = false;
-  AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
-  UserMakeBallListUpUseCaseInputPort _userMakeBallListUpUseCaseInputPort = UserMakeBallListUpUseCase();
-
 
 
   get isLoading {
@@ -38,18 +35,28 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
   int _pageCount = 0;
   int _limitSize = 10;
 
-  H00302PageViewModel(this.context) {
+  H00302PageViewModel(
+      {@required
+          this.context,
+      @required
+          AuthUserCaseInputPort authUserCaseInputPort,
+      @required
+          UserMakeBallListUpUseCaseInputPort
+              userMakeBallListUpUseCaseInputPort,
+      @required this.scrollController})
+      : _authUserCaseInputPort = authUserCaseInputPort,
+        _userMakeBallListUpUseCaseInputPort =
+            userMakeBallListUpUseCaseInputPort {
     this.init();
   }
 
   init() async {
     scrollController.addListener(scrollListener);
-    if(await _authUserCaseInputPort.isLogin()){
+    if (await _authUserCaseInputPort.isLogin()) {
       await ballListUp();
     }
-    _isInitFinish= true;
+    _isInitFinish = true;
   }
-
 
   Future ballListUp() async {
     isLoading = true;
@@ -62,8 +69,9 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
     if (_isFirstPage()) {
       ballListUpWidgets.clear();
     }
-    await _userMakeBallListUpUseCaseInputPort.userMakeBallListUp(reqDto: userToMakerBallReqDto,outputPort: this);
-    isLoading =false;
+    await _userMakeBallListUpUseCaseInputPort.userMakeBallListUp(
+        reqDto: userToMakerBallReqDto, outputPort: this);
+    isLoading = false;
   }
 
   FSorts _makeAliveMakeTimeOrder() {
@@ -83,11 +91,13 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
         return;
       } else {
         await ballListUp();
-        scrollController.animateTo(scrollController.offset+(MediaQuery.of(context).size.height/2),
-            duration: Duration(milliseconds: 300), curve: Curves.linear );
+        scrollController.animateTo(
+            scrollController.offset + (MediaQuery.of(context).size.height / 2),
+            duration: Duration(milliseconds: 300),
+            curve: Curves.linear);
       }
     }
-    if(_isScrollerTopOver()){
+    if (_isScrollerTopOver()) {
       setFirstPage();
       await ballListUp();
     }
@@ -95,15 +105,15 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
 
   int setFirstPage() => _pageCount = 0;
 
-  bool _isScrollerTopOver(){
-    if(scrollController.offset <= scrollController.position.minScrollExtent-100){
+  bool _isScrollerTopOver() {
+    if (scrollController.offset <=
+        scrollController.position.minScrollExtent - 100) {
       _subScrollerTopOver = true;
     }
-    if(_subScrollerTopOver &&
-        !scrollController.position.outOfRange){
+    if (_subScrollerTopOver && !scrollController.position.outOfRange) {
       _subScrollerTopOver = false;
       return true;
-    }else {
+    } else {
       return false;
     }
   }
@@ -126,10 +136,10 @@ class H00302PageViewModel extends ChangeNotifier implements UserMakeBallListUpUs
     notifyListeners();
   }
 
-  isEmptyPage(){
-    if(ballListUpWidgets.length == 0 && _isInitFinish){
+  isEmptyPage() {
+    if (ballListUpWidgets.length == 0 && _isInitFinish) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forutonafront/BCodePage/BCodeMainPage.dart';
 import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
@@ -25,31 +24,34 @@ class _CodeMainpageState extends State<CodeMainpage> {
       providers: [
         ChangeNotifierProvider<CodeMainViewModel>(
             create: (_) => CodeMainViewModel(
-              geoLocationUtilUseCaseInputPort: sl(),
-              authUserCaseInputPort: sl(),
-              codeMainPageController: sl()
-            )),
+                geoLocationUtilUseCaseInputPort: sl(),
+                authUserCaseInputPort: sl(),
+                codeMainPageController: sl())),
         ChangeNotifierProvider<H001ViewModel>(
-            create: (_) => H001ViewModel(context: context))
+            create: (_) => H001ViewModel(
+                context: context,
+                authUserCaseInputPort: sl(),
+                geoLocationUtilUseCaseInputPort: sl(),
+                fBallListUpFromInfluencePowerUseCaseInputPort: sl(),
+                tagRankingFromPositionUseCaseInputPort: sl()))
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {
-        return
-          Scaffold(
-              backgroundColor: Color(0xffF2F0F1),
-              body: Stack(children: <Widget>[
-                Container(
-                    child: PageView(
-                        physics: NeverScrollableScrollPhysics(),
-                        controller: model.pageController,
-                        children: <Widget>[
-                          HCodeMainPage(),
-                          ICodeMainPage(),
-                          BCodeMainPage(),
-                          KCodeMainPage(),
-                          GCodeMainPage()
-                        ]))
-              ]),
-            );
+        return Scaffold(
+          backgroundColor: Color(0xffF2F0F1),
+          body: Stack(children: <Widget>[
+            Container(
+                child: PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: model.pageController,
+                    children: <Widget>[
+                  HCodeMainPage(),
+                  ICodeMainPage(),
+                  BCodeMainPage(),
+                  KCodeMainPage(),
+                  GCodeMainPage()
+                ]))
+          ]),
+        );
       }),
     );
   }
