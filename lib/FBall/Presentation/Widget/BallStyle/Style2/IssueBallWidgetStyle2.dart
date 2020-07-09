@@ -96,8 +96,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
       Container(
         child: Text(model.issueBall.getDisplayLikeCount(),
-            style: TextStyle(
-              fontFamily: "Gibson",
+            style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w600,
               fontSize: 12,
               color: Color(0xff78849e),

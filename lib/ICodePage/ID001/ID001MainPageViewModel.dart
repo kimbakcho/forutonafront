@@ -6,13 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallValuation.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseOutputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationResDto.dart';
@@ -25,18 +21,16 @@ import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/Common
 import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfoSimple1.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimple1ResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
-import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
@@ -51,17 +45,20 @@ class ID001MainPageViewModel extends ChangeNotifier
         TagFromBallUuidUseCaseOutputPort,
         UserInfoSimple1UseCaseOutputPort,
         IssueBallValuationUseCaseOutputPort,
-        IssueBallUseCaseOutputPort,
         AuthUserCaseOutputPort {
   final BuildContext context;
-  IssueBall issueBall;
+  final ScrollController mainScrollController;
+  final IssueBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final UserInfoSimple1UseCaseInputPort _userInfoSimple1UseCaseInputPort;
+  final AuthUserCaseInputPort _authUserCaseInputPort;
+  final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
+  final IssueBallValuationUseCaseInputPort _issueBallValuationUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
-  ScrollController mainScrollController = new ScrollController();
+  IssueBall issueBall;
 
   bool showMoreDetailFlag = false;
   FUserInfoSimple1 makerUserInfo;
-
-  IssueBallUseCaseInputPort _issueBallUseCaseInputPort = IssueBallUseCase();
 
   //googleMap 관련
   CameraPosition initialCameraPosition;
@@ -75,36 +72,35 @@ class ID001MainPageViewModel extends ChangeNotifier
   int currentYoutubeView;
   DateTime currentYoutubeUploadDate;
 
-  //Tag 관련
-  TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort =
-      TagFromBallUuidUseCase();
   List<Chip> tagChips = [];
   double tagChipHeight = 20.0;
 
-  //UnAndDown 관련
   String userNickName = "로 딩 중";
-  IssueBallValuationUseCaseInputPort _issueBallValuationUseCaseInputPort =
-      IssueBallValuationUseCase();
-  FBallValuation fBallValuation = FBallValuation();
 
-  //UserInfo 관련
-  UserInfoSimple1UseCaseInputPort _userInfoSimple1UseCaseInputPort =
-      UserInfoSimple1UseCase();
-  AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
+  FBallValuation fBallValuation = FBallValuation();
 
   bool isInitFinish = false;
   bool isLoading = false;
   bool showFBallValuation = false;
 
-  GlobalModel globalModel;
-
-  ID001MainPageViewModel(
-      {@required this.context,
-      @required this.issueBall,
-      @required this.globalModel})
-      : assert(context != null),
-        assert(issueBall != null),
-        assert(globalModel != null) {
+  ID001MainPageViewModel({
+    @required this.context,
+    @required this.issueBall,
+    @required this.mainScrollController,
+    @required IssueBallUseCaseInputPort issueBallUseCaseInputPort,
+    @required UserInfoSimple1UseCaseInputPort userInfoSimple1UseCaseInputPort,
+    @required AuthUserCaseInputPort authUserCaseInputPort,
+    @required TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort,
+    @required
+        IssueBallValuationUseCaseInputPort issueBallValuationUseCaseInputPort,
+    @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+  })  : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
+        _userInfoSimple1UseCaseInputPort = userInfoSimple1UseCaseInputPort,
+        _authUserCaseInputPort = authUserCaseInputPort,
+        _tagFromBallUuidUseCaseInputPort = tagFromBallUuidUseCaseInputPort,
+        _issueBallValuationUseCaseInputPort =
+            issueBallValuationUseCaseInputPort,
+        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
     _init();
   }
 
@@ -172,7 +168,9 @@ class ID001MainPageViewModel extends ChangeNotifier
   @override
   onLoginCheck(bool isLogin) {
     if (isLogin) {
-      userNickName = globalModel.userNickName();
+      var fUserInfo =
+          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      userNickName = fUserInfo.nickName;
       showFBallValuation = true;
     }
     notifyListeners();
@@ -482,7 +480,9 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   void showBallSetting() async {
-    BallModifyService ballModifyService = IssueBallModifyService();
+    BallModifyService ballModifyService = IssueBallModifyService(
+      authUserCaseInputPort: sl()
+    );
     if (await ballModifyService.isCanModify(ballMakeUid: issueBall.uid)) {
       await showModifyDialog(ballModifyService);
     }
@@ -492,8 +492,8 @@ class ID001MainPageViewModel extends ChangeNotifier
     var result =
         await ballModifyService.showModifySelectDialog(context: context);
     if (result == CommonBallModifyWidgetResultType.Delete) {
-      _issueBallUseCaseInputPort.deleteBall(
-          ballUuid: issueBall.ballUuid, outputPort: this);
+      await _issueBallUseCaseInputPort.deleteBall(ballUuid: issueBall.ballUuid);
+      onDeleteBall();
     } else if (result == CommonBallModifyWidgetResultType.Update) {
       await gotoIM001Page();
       reFreshBall();
@@ -512,37 +512,10 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   Future<void> reFreshBall() async {
     isLoading = true;
-    await _issueBallUseCaseInputPort.selectBall(
-        ballUuid: issueBall.ballUuid, outputPort: this);
+    var fBallResDto = await _issueBallUseCaseInputPort.selectBall(
+        ballUuid: issueBall.ballUuid);
+    issueBall.reFreshFromBallResDto(fBallResDto);
     isLoading = false;
-  }
-
-  @override
-  void onBallHit() {
-    throw ("here don't have action");
-  }
-
-  @override
-  void onDeleteBall() {
-//    issueBall.ballDeleteFlag = true;
-    Navigator.of(context).pop();
-  }
-
-  @override
-  void onSelectBall(FBallResDto fBallResDto) {
-    this.issueBall = IssueBall.fromFBallResDto(fBallResDto);
-    _init();
-    notifyListeners();
-  }
-
-  @override
-  void onInsertBall(FBallResDto resDto) {
-    throw ("here don't have action");
-  }
-
-  @override
-  void onUpdateBall() {
-    throw ("here don't have action");
   }
 
   showLoading() {
@@ -563,6 +536,11 @@ class ID001MainPageViewModel extends ChangeNotifier
   void dispose() {
     super.dispose();
     _youtubeExplode.close();
+  }
+
+  void onDeleteBall() {
+    issueBall.ballDeleteFlag = true;
+    notifyListeners();
   }
 }
 

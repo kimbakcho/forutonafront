@@ -9,7 +9,6 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailSu
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyUtil.dart';
 import 'package:forutonafront/FBall/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/FireBaseAuthUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/Preference.dart';
@@ -38,7 +37,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
 
   Preference _preference = sl();
 
-  AuthUserCaseInputPort _authUserCaseInputPort = FireBaseAuthUseCase();
+  AuthUserCaseInputPort _authUserCaseInputPort = sl();
 
   _FBallReplyContentBarState();
 
@@ -53,7 +52,7 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                 key: UniqueKey(),
                 margin: EdgeInsets.only(left: 50),
                 child: FBallReplyContentBar(
-                    e, false, false, true, widget._maxWidth-40),
+                    e, false, false, true, widget._maxWidth - 40),
               ))
           .toList());
     }
@@ -67,9 +66,9 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
         FlatButton(
           onPressed: widget._showSubReply && !widget.fBallReplyResDto.deleteFlag
               ? () async {
-                  if(!await _authUserCaseInputPort.isLogin()){
+                  if (!await _authUserCaseInputPort.isLogin()) {
                     gotoJ001Page(context);
-                    return ;
+                    return;
                   }
                   FBallReplyResDto resDto = await showGeneralDialog(
                       context: context,
@@ -84,14 +83,13 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                             widget.fBallReplyResDto);
                       });
                   setState(() {
-                    if(resDto != null){
-                      subFBallReplyContentBar.add(
-                          Container(
-                            key: UniqueKey(),
-                            margin: EdgeInsets.only(left: 50),
-                            child: FBallReplyContentBar(
-                                resDto, false, false, true, widget._maxWidth-40),
-                          ));
+                    if (resDto != null) {
+                      subFBallReplyContentBar.add(Container(
+                        key: UniqueKey(),
+                        margin: EdgeInsets.only(left: 50),
+                        child: FBallReplyContentBar(
+                            resDto, false, false, true, widget._maxWidth - 40),
+                      ));
                     }
                   });
                 }
@@ -110,11 +108,9 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
   }
 
   Future gotoJ001Page(BuildContext context) {
-    return Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_){
-                      return J001View();
-                    }
-                  ));
+    return Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return J001View();
+    }));
   }
 
   isOpenSubReply() {
@@ -166,18 +162,17 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
                         children: <Widget>[
                           Row(children: <Widget>[
                             Container(
-                                child:
-                                    Text(getUserNickName(),
-                                        style: GoogleFonts.notoSans(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 11,
-                                          color: Color(0xff454f63),
-                                        )))
+                                child: Text(getUserNickName(),
+                                    style: GoogleFonts.notoSans(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 11,
+                                      color: Color(0xff454f63),
+                                    )))
                           ]),
                           SizedBox(height: 2),
                           Row(children: <Widget>[
                             Container(
-                              width: widget._maxWidth-92,
+                                width: widget._maxWidth - 92,
                                 child: Text(getBallReplyText(),
                                     style: GoogleFonts.notoSans(
                                       fontSize: 10,
@@ -238,9 +233,12 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
     fBallReplyInsertReqDto.replyDepth = widget.fBallReplyResDto.replyDepth;
     fBallReplyInsertReqDto.replySort = widget.fBallReplyResDto.replySort;
     FBallReplyResDto fBallReplyResDto = await FBallReplyUtil()
-        .popupInputDisplay(context,fBallReplyInsertReqDto.ballUuid,reqDto: fBallReplyInsertReqDto);
+        .popupInputDisplay(context, fBallReplyInsertReqDto.ballUuid,
+            reqDto: fBallReplyInsertReqDto);
     setState(() {
-      widget.fBallReplyResDto.replyText = fBallReplyResDto.replyText;
+      if (fBallReplyResDto != null) {
+        widget.fBallReplyResDto.replyText = fBallReplyResDto.replyText;
+      }
     });
   }
 
@@ -274,7 +272,6 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
       return "";
     } else {
       return widget.fBallReplyResDto.userNickName;
-
     }
   }
 
@@ -320,4 +317,3 @@ class _FBallReplyContentBarState extends State<FBallReplyContentBar> {
         : Container();
   }
 }
-

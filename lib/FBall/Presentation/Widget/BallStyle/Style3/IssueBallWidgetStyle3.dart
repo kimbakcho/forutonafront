@@ -1,28 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style3/IssueBallWidgetStyle3ViewModel.dart';
-
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 import 'BallStyle3Widget.dart';
 
 // ignore: must_be_immutable
-class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
+class IssueBallWidgetStyle3 extends StatelessWidget
+    implements BallStyle3Widget {
   final FBallResDto fBallResDto;
 
   IssueBallWidgetStyle3({@required this.fBallResDto});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      key: UniqueKey(),
-        create: (_) => IssueBallWidgetStyle3ViewModel(context: context,fBallResDto: fBallResDto),
+        key: UniqueKey(),
+        create: (_) => IssueBallWidgetStyle3ViewModel(
+              fBallResDto: fBallResDto,
+              issueBallBasicStyle: IssueBallBasicStyleImpl(
+                  context: context,
+                  issueBallUseCaseInputPort: sl(),
+                  authUserCaseInputPort: sl()),
+            ),
         child: Consumer<IssueBallWidgetStyle3ViewModel>(
             builder: (_, model, child) {
           return Container(
               margin: EdgeInsets.only(right: 6),
               height: 90.00,
-              width: MediaQuery.of(context).size.width-48,
+              width: MediaQuery.of(context).size.width - 48,
               child: FlatButton(
                 padding: EdgeInsets.all(0),
                 child: Stack(
@@ -33,17 +42,18 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
                       child: issueBallIcon(),
                     ),
                     Positioned(
-                        top: 11, left: 54, child: ballNameText(model,context)),
+                        top: 11, left: 54, child: ballNameText(model, context)),
                     Positioned(
-                        top: 31, left: 54, child: makerInfoBar(model,context)),
+                        top: 31, left: 54, child: makerInfoBar(model, context)),
                     Positioned(
                         right: 0, top: 0, child: ballMainimageBox(model)),
                     Positioned(top: 54, left: 0, child: divider(context)),
-                    Positioned(top: 50, right: 0, child: ballBottomBar(model,context))
+                    Positioned(
+                        top: 50, right: 0, child: ballBottomBar(model, context))
                   ],
                 ),
-                onPressed:(){
-                  model.goIssueDetailPage(issueBall: model.issueBall,outputPort: model);
+                onPressed: () {
+                  model.goIssueDetailPage();
                 },
               ),
               decoration: BoxDecoration(
@@ -59,9 +69,12 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
         }));
   }
 
-  Container makerInfoBar(IssueBallWidgetStyle3ViewModel model,BuildContext context) {
+  Container makerInfoBar(
+      IssueBallWidgetStyle3ViewModel model, BuildContext context) {
     return Container(
-      width: model.issueBall.isMainPicture() ? MediaQuery.of(context).size.width-182 : MediaQuery.of(context).size.width-108,
+      width: model.issueBall.isMainPicture()
+          ? MediaQuery.of(context).size.width - 182
+          : MediaQuery.of(context).size.width - 108,
       child: RichText(
         text: TextSpan(
             text: model.issueBall.nickName,
@@ -74,20 +87,23 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
             children: <TextSpan>[
               TextSpan(text: "    "),
               TextSpan(
-                  text: "${model.issueBall.userLevel.toStringAsFixed(0)}  lv",style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",fontWeight: FontWeight.w700,
-                fontSize: 9,
-                color:Color(0xff454f63).withOpacity(0.56),
-              )),
+                  text: "${model.issueBall.userLevel.toStringAsFixed(0)}  lv",
+                  style: TextStyle(
+                    fontFamily: "Noto Sans CJK KR",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 9,
+                    color: Color(0xff454f63).withOpacity(0.56),
+                  )),
             ]),
       ),
     );
   }
 
-  Container ballBottomBar(IssueBallWidgetStyle3ViewModel model,BuildContext context) {
+  Container ballBottomBar(
+      IssueBallWidgetStyle3ViewModel model, BuildContext context) {
     return Container(
       height: 48.00,
-        width: MediaQuery.of(context).size.width-32,
+      width: MediaQuery.of(context).size.width - 32,
       padding: EdgeInsets.fromLTRB(14, 0, 14, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -129,8 +145,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
               child: Icon(ForutonaIcon.comment,
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
-          Text(
-              model.issueBall.getDisplayRemainingTime(),
+          Text(model.issueBall.getDisplayRemainingTime(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -149,7 +164,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
   Container divider(BuildContext context) {
     return Container(
       height: 0.50,
-        width: MediaQuery.of(context).size.width-48,
+      width: MediaQuery.of(context).size.width - 48,
       color: Color(0xffe4e4e4),
     );
   }
@@ -162,8 +177,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
             decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(
-                      model.issueBall.mainPictureSrc())),
+                  image: NetworkImage(model.issueBall.mainPictureSrc())),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(12.00),
               ),
@@ -172,9 +186,12 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
         : Container();
   }
 
-  Container ballNameText(IssueBallWidgetStyle3ViewModel model,BuildContext context) {
+  Container ballNameText(
+      IssueBallWidgetStyle3ViewModel model, BuildContext context) {
     return Container(
-      width: model.issueBall.isMainPicture() ? MediaQuery.of(context).size.width-182 : MediaQuery.of(context).size.width-108,
+      width: model.issueBall.isMainPicture()
+          ? MediaQuery.of(context).size.width - 182
+          : MediaQuery.of(context).size.width - 108,
       height: 18,
       child: Text(model.issueBall.ballName,
           overflow: TextOverflow.ellipsis,
@@ -189,7 +206,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
 
   Container issueBallIcon() {
     return Container(
-        padding: EdgeInsets.only(left: 2,top: 2),
+        padding: EdgeInsets.only(left: 2, top: 2),
         child: Icon(ForutonaIcon.issue, size: 17, color: Colors.white),
         height: 30.00,
         width: 30.00,
@@ -198,5 +215,4 @@ class IssueBallWidgetStyle3 extends StatelessWidget implements BallStyle3Widget{
           shape: BoxShape.circle,
         ));
   }
-
 }

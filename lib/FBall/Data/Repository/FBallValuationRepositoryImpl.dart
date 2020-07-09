@@ -11,38 +11,39 @@ import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapt
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 
 class FBallValuationRepositoryImpl implements FBallValuationRepository {
-  final FBallValuationRemoteDataSource fBallValuationRemoteDataSource;
+  final FBallValuationRemoteDataSource _fBallValuationRemoteDataSource;
 
-  final FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter;
+  final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
 
   FBallValuationRepositoryImpl(
-      {@required this.fBallValuationRemoteDataSource,
-      @required this.fireBaseAuthBaseAdapter})
-      : assert(fBallValuationRemoteDataSource != null),
-        assert(fireBaseAuthBaseAdapter != null);
+      {@required FBallValuationRemoteDataSource fBallValuationRemoteDataSource,
+        @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter})
+      : _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
+        _fBallValuationRemoteDataSource = fBallValuationRemoteDataSource;
 
   @override
   Future<void> deleteFBallValuation({@required String valueUuid}) async {
-    await fBallValuationRemoteDataSource.deleteFBallValuation(
+    await _fBallValuationRemoteDataSource.deleteFBallValuation(
         valueUuid: valueUuid,
         tokenFDio:
-            FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        FDio.token(
+            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
     return;
   }
 
   @override
   Future<FBallValuationWrap> getFBallValuation(
       {@required FBallValuationReqDto reqDto}) async {
-    return await fBallValuationRemoteDataSource.getFBallValuation(
+    return await _fBallValuationRemoteDataSource.getFBallValuation(
         reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
   @override
   Future<FBallValuation> save(
       {@required FBallValuationInsertReqDto reqDto}) async {
-    return await fBallValuationRemoteDataSource.save(
+    return await _fBallValuationRemoteDataSource.save(
         reqDto: reqDto,
         tokenFDio:
-            FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 }

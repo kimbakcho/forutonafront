@@ -4,9 +4,11 @@ import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/IssueBallWidgetStyle1ViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +27,13 @@ class IssueBallWidgetStyle1 extends StatelessWidget
     return ChangeNotifierProvider(
         key: UniqueKey(),
         create: (_) => IssueBallWidgetStyle1ViewModel(
-            context: context, issueBall: _issueBall),
+            context: context,
+            issueBall: _issueBall,
+            issueBallBasicStyle: IssueBallBasicStyleImpl(
+                authUserCaseInputPort: sl(),
+                issueBallUseCaseInputPort: sl(),
+                context: context),
+            geoLocationUtilUseCaseInputPort: sl()),
         child: Consumer<IssueBallWidgetStyle1ViewModel>(
             builder: (_, model, child) {
           return Stack(
@@ -38,8 +46,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                       child: FlatButton(
                         padding: EdgeInsets.all(0),
                         onPressed: () {
-                          model.goIssueDetailPage(
-                              issueBall: model.issueBall, outputPort: model);
+                          model.goIssueDetailPage();
                         },
                         child: Column(children: <Widget>[
                           ballHeader(model, context),

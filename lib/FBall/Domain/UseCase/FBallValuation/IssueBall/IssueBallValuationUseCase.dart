@@ -11,40 +11,48 @@ import 'IssueBallValuationUseCaseInputPort.dart';
 import 'IssueBallValuationUseCaseOutputPort.dart';
 
 class IssueBallValuationUseCase implements IssueBallValuationUseCaseInputPort {
-  FBallValuationRepository _fBallValuationRepository =
-      FBallValuationRepositoryImpl(
-          fBallValuationRemoteDataSource: FBallValuationRemoteDataSourceImpl());
+  FBallValuationRepository _fBallValuationRepository;
 
-  Future<void> deleteFBallValuation({@required String valueUuid,int deletePoint,IssueBallValuationUseCaseOutputPort outputPort}) async {
-    if(outputPort != null){
+  IssueBallValuationUseCase({
+    @required FBallValuationRepository fBallValuationRepository
+  }) :_fBallValuationRepository = fBallValuationRepository;
+
+  Future<void> deleteFBallValuation(
+      {@required String valueUuid, int deletePoint, IssueBallValuationUseCaseOutputPort outputPort}) async {
+    if (outputPort != null) {
       outputPort.onDeleteFBallValuation(deletePoint);
     }
     await _fBallValuationRepository.deleteFBallValuation(valueUuid: valueUuid);
   }
 
   @override
-  Future<FBallValuationResDto> getFBallValuation({@required FBallValuationReqDto reqDto,IssueBallValuationUseCaseOutputPort outputPort}) async{
-    FBallValuationWrap fBallValuationWrap = await _fBallValuationRepository.getFBallValuation(reqDto: reqDto);
+  Future<FBallValuationResDto> getFBallValuation(
+      {@required FBallValuationReqDto reqDto, IssueBallValuationUseCaseOutputPort outputPort}) async {
+    FBallValuationWrap fBallValuationWrap = await _fBallValuationRepository
+        .getFBallValuation(reqDto: reqDto);
     FBallValuationResDto fBallValuationResDto;
-    if(fBallValuationWrap.hasFBallValuation()){
-      fBallValuationResDto = FBallValuationResDto.fromFBallValuation(fBallValuationWrap.getFBallValuation());
+    if (fBallValuationWrap.hasFBallValuation()) {
+      fBallValuationResDto = FBallValuationResDto.fromFBallValuation(
+          fBallValuationWrap.getFBallValuation());
     }
-    if(outputPort != null){
+    if (outputPort != null) {
       outputPort.onFBallValuation(fBallValuationResDto);
     }
     return fBallValuationResDto;
   }
 
   @override
-  Future<FBallValuationResDto> save({@required FBallValuationInsertReqDto reqDto,IssueBallValuationUseCaseOutputPort outputPort}) async{
-
-    var tempFBallValuation = FBallValuationResDto.fromFBallValuationInsertReqDto(reqDto);
-    if(outputPort != null){
+  Future<FBallValuationResDto> save(
+      {@required FBallValuationInsertReqDto reqDto, IssueBallValuationUseCaseOutputPort outputPort}) async {
+    var tempFBallValuation = FBallValuationResDto
+        .fromFBallValuationInsertReqDto(reqDto);
+    if (outputPort != null) {
       outputPort.onSave(tempFBallValuation);
     }
     var fBallValuation = await _fBallValuationRepository.save(reqDto: reqDto);
 
-    var fBallValuationResDto = FBallValuationResDto.fromFBallValuation(fBallValuation);
+    var fBallValuationResDto = FBallValuationResDto.fromFBallValuation(
+        fBallValuation);
     return fBallValuationResDto;
   }
 

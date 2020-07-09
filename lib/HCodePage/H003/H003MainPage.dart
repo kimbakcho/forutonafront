@@ -3,6 +3,7 @@ import 'package:forutonafront/HCodePage/H003/H003MainPageModel.dart';
 import 'package:forutonafront/HCodePage/H003/H003PageState.dart';
 import 'package:forutonafront/HCodePage/H003/H003_01/H00301Page.dart';
 import 'package:forutonafront/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'H003_01/H00301PageViewModel.dart';
@@ -57,8 +58,7 @@ class H003MainPage extends StatelessWidget {
             ? FlatButton(
                 onPressed: () {},
                 child: Text("PLAY",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                       color: Color(0xff454f63),
@@ -70,8 +70,7 @@ class H003MainPage extends StatelessWidget {
                   model.changePage(H003PageState.H003_01Page);
                 },
                 child: Text("PLAY",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                       color: Color(0xffcccccc),
@@ -101,8 +100,7 @@ class H003MainPage extends StatelessWidget {
             ? FlatButton(
                 onPressed: () {},
                 child: Text("MAKE",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                       color: Color(0xff454f63),
@@ -114,8 +112,7 @@ class H003MainPage extends StatelessWidget {
                   model.changePage(H003PageState.H003_02Page);
                 },
                 child: Text("MAKE",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                       color: Color(0xffcccccc),

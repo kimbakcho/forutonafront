@@ -11,69 +11,68 @@ import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 
 class IssueBallTypeRepositoryImpl implements IssueBallTypeRepository {
-  final IssueBallTypeRemoteDateSourceImpl issueBallTypeRemoteDateSource;
-  final FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter;
+  final IssueBallTypeRemoteDateSource _issueBallTypeRemoteDateSource;
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthBaseAdapter;
 
   IssueBallTypeRepositoryImpl(
-      {@required this.issueBallTypeRemoteDateSource,
-      @required this.fireBaseAuthBaseAdapter})
-      : assert(issueBallTypeRemoteDateSource != null),
-        assert(fireBaseAuthBaseAdapter != null);
+      {@required IssueBallTypeRemoteDateSource issueBallTypeRemoteDateSource,
+      @required FireBaseAuthAdapterForUseCase fireBaseAuthBaseAdapter})
+      : _issueBallTypeRemoteDateSource = issueBallTypeRemoteDateSource,
+        _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter;
 
   @override
   Future<int> ballHit(FBallReqDto reqDto) async {
-    return await issueBallTypeRemoteDateSource.ballHit(
+    return await _issueBallTypeRemoteDateSource.ballHit(
         reqDto: reqDto, noneTokenFDio: FDio.noneToken());
   }
 
   @override
   Future<int> deleteBall(FBallReqDto reqDto) async {
-    return issueBallTypeRemoteDateSource.deleteBall(
+    return _issueBallTypeRemoteDateSource.deleteBall(
         reqDto: reqDto,
-        fDio:
-            FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        fDio: FDio.token(
+            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
   Future<FBall> insertBall(IssueBallInsertReqDto reqDto) async {
-    return issueBallTypeRemoteDateSource.insertBall(
+    return _issueBallTypeRemoteDateSource.insertBall(
         reqDto: reqDto,
-        fDio:
-            FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        fDio: FDio.token(
+            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
   Future<int> joinBall(FBallJoinReqDto reqDto) async {
-    return issueBallTypeRemoteDateSource.joinBall(
+    return _issueBallTypeRemoteDateSource.joinBall(
         reqDto: reqDto,
-        fDio:
-            FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        fDio: FDio.token(
+            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
   Future<FBall> selectBall(FBallReqDto fBallReqDto) async {
-    return await issueBallTypeRemoteDateSource.selectBall(
+    return await _issueBallTypeRemoteDateSource.selectBall(
         reqDto: fBallReqDto, noneTokenFDio: FDio.noneToken());
   }
 
   @override
   Future<int> updateBall(IssueBallUpdateReqDto reqDto) async {
-    return await issueBallTypeRemoteDateSource.updateBall(
+    return await _issueBallTypeRemoteDateSource.updateBall(
         reqDto: reqDto,
-        fDio:
-            FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        fDio: FDio.token(
+            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
   Future<FBallImageUpload> ballImageUpload(
       {@required List<Uint8List> images}) async {
-    var fBallImageUpload = await issueBallTypeRemoteDateSource.ballImageUpload(
+    var fBallImageUpload = await _issueBallTypeRemoteDateSource.ballImageUpload(
         images: images,
-        tokenFDio:
-            FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        tokenFDio: FDio.token(
+            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
     return fBallImageUpload;
   }
 }

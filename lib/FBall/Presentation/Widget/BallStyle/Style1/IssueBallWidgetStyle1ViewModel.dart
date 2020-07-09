@@ -1,25 +1,21 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
-
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyleMixin.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
 
+class IssueBallWidgetStyle1ViewModel extends ChangeNotifier
+    implements GeoLocationUtilUseCaseOutputPort {
+  final BuildContext context;
+  final IssueBall issueBall;
+  final IssueBallBasicStyle _issueBallBasicStyle;
+  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier
-    with IssueBallBasicStyleMixin
-    implements GeoLocationUtilUseCaseOutputPort, IssueBallUseCaseOutputPort  {
   bool _isLoading = false;
-
-  IssueBall issueBall;
 
   String distanceDisplayText = "";
 
@@ -32,47 +28,32 @@ class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier
     notifyListeners();
   }
 
-  BuildContext context;
-
   IssueBallWidgetStyle1ViewModel(
-      {@required this.context, @required  this.issueBall}) {
+      {@required
+          this.context,
+      @required
+          this.issueBall,
+      @required
+          IssueBallBasicStyle issueBallBasicStyle,
+      @required
+          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort})
+      : _issueBallBasicStyle = issueBallBasicStyle,
+        _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
-        ballLatLng: Position(latitude: issueBall.latitude,longitude: issueBall.longitude),
+        ballLatLng: Position(
+            latitude: issueBall.latitude, longitude: issueBall.longitude),
         geoLocationUtilUseCaseOp: this);
+  }
+
+  void goIssueDetailPage()async {
+    await _issueBallBasicStyle.goIssueDetailPage(issueBall);
+    notifyListeners();
   }
 
   @override
   onBallDistanceDisplayText({String displayDistanceText}) {
     this.distanceDisplayText = displayDistanceText;
     notifyListeners();
-  }
-
-  @override
-  void onBallHit() {
-    issueBall.ballHit();
-    notifyListeners();
-  }
-
-  @override
-  void onSelectBall(FBallResDto fBallResDto) {
-    issueBall = IssueBall.fromFBallResDto(fBallResDto);
-    notifyListeners();
-  }
-
-  @override
-  void onDeleteBall() {
-    issueBall.ballDeleteFlag = true;
-    notifyListeners();
-  }
-
-  @override
-  void onInsertBall(FBallResDto resDto) {
-    throw ("here don't have action");
-  }
-
-  @override
-  void onUpdateBall() {
-    throw ("here don't have action");
   }
 
   String getDistanceDisplayText() {
@@ -83,14 +64,10 @@ class IssueBallWidgetStyle1ViewModel  extends ChangeNotifier
     }
   }
 
-  gotoBallImageViewer()async{
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) {
-      return BallImageViewer(
-          issueBall.getDesImages(),
-          issueBall.ballUuid +
-              "picturefromBigpicture");
+  gotoBallImageViewer() async {
+    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return BallImageViewer(issueBall.getDesImages(),
+          issueBall.ballUuid + "picturefromBigpicture");
     }));
   }
-
 }

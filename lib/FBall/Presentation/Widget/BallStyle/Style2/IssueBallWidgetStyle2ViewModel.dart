@@ -57,7 +57,8 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
   }
 
   void showBallSetting() async {
-    BallModifyService ballModifyService = IssueBallModifyService();
+    BallModifyService ballModifyService =
+        IssueBallModifyService(authUserCaseInputPort: sl());
     if (await issueBall.isCanModify()) {
       CommonBallModifyWidgetResultType result =
           await ballModifyService.showModifySelectDialog(context: context);

@@ -8,6 +8,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWid
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -46,27 +47,38 @@ class _ID001MainPageState extends State<ID001MainPage>
 
   UniqueKey reRenderGoogleMap() => googleMapKey = UniqueKey();
 
+  ScrollController mainScrollController = new ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ID001MainPageViewModel>(
-        lazy: false,
         create: (_) => ID001MainPageViewModel(
             context: context,
             issueBall: widget.issueBall,
-            globalModel: context.watch<GlobalModel>()),
-        builder: (context, _) {
-          return Stack(children: <Widget>[
-            Scaffold(
-                body: Container(
-                    color: Colors.white,
-                    child: context.watch<ID001MainPageViewModel>().isInitFinish
-                        ? mainBodyStack(context)
-                        : Container())),
-            context.watch<ID001MainPageViewModel>().isLoading
-                ? CommonLoadingComponent()
-                : Container()
-          ]);
-        });
+            authUserCaseInputPort: sl(),
+          signInUserInfoUseCaseInputPort: sl(),
+          mainScrollController: mainScrollController,
+          issueBallUseCaseInputPort: sl(),
+          issueBallValuationUseCaseInputPort: sl(),
+          tagFromBallUuidUseCaseInputPort: sl(),
+          userInfoSimple1UseCaseInputPort:sl(),
+        ),
+        child: Builder(
+          builder: (context) {
+            return Stack(children: <Widget>[
+              Scaffold(
+                  body: Container(
+                      color: Colors.white,
+                      child:
+                          context.watch<ID001MainPageViewModel>().isInitFinish
+                              ? mainBodyStack(context)
+                              : Container())),
+              context.watch<ID001MainPageViewModel>().isLoading
+                  ? CommonLoadingComponent()
+                  : Container()
+            ]);
+          },
+        ));
   }
 
   Stack mainBodyStack(BuildContext context) {

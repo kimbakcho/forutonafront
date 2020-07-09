@@ -9,7 +9,6 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/YoutubeUtil/YoutubeIdParser.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
@@ -20,7 +19,6 @@ import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/Tag/Data/Entity/FBallTag.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
@@ -35,8 +33,11 @@ import 'BallImageItemDto.dart';
 
 class IM001MainPageViewModel extends ChangeNotifier
     implements IssueBallUseCaseOutputPort, TagFromBallUuidUseCaseOutputPort {
-  final BuildContext _context;
-  final LatLng _setUpPosition;
+  final BuildContext context;
+  final LatLng setUpPosition;
+  final IssueBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
+
   String ballUuid;
 
   final String address;
@@ -73,10 +74,6 @@ class IM001MainPageViewModel extends ChangeNotifier
   bool youtubeAttachVisibility = false;
   bool tagBarVisibility = false;
 
-  IssueBallUseCaseInputPort _issueBallUseCaseInputPort = IssueBallUseCase();
-  TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort =
-      TagFromBallUuidUseCase();
-
   //Loading
   bool _isLoading = false;
 
@@ -91,8 +88,18 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   IM001MainPageEnterMode mode;
 
-  IM001MainPageViewModel(this._context, this._setUpPosition, this.address,
-      this.ballUuid, this.mode) {
+  IM001MainPageViewModel(
+      {this.context,
+      this.setUpPosition,
+      this.address,
+      this.ballUuid,
+      this.mode,
+      @required
+          IssueBallUseCaseInputPort issueBallUseCaseInputPort,
+      @required
+          TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort})
+      : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
+        _tagFromBallUuidUseCaseInputPort = tagFromBallUuidUseCaseInputPort {
     _init();
   }
 
@@ -106,7 +113,7 @@ class IM001MainPageViewModel extends ChangeNotifier
       keyboardVisibility = visible;
     });
     initCameraPosition =
-        new CameraPosition(target: _setUpPosition, zoom: 14.4746);
+        new CameraPosition(target: setUpPosition, zoom: 14.4746);
     if (mode == IM001MainPageEnterMode.Insert) {
       insertInit();
     } else if (mode == IM001MainPageEnterMode.Update) {
@@ -120,8 +127,8 @@ class IM001MainPageViewModel extends ChangeNotifier
   void insertInit() {
     _issueBall = IssueBall();
 
-    _issueBall.longitude = _setUpPosition.longitude;
-    _issueBall.latitude = _setUpPosition.latitude;
+    _issueBall.longitude = setUpPosition.longitude;
+    _issueBall.latitude = setUpPosition.latitude;
     _issueBall.placeAddress = address;
     _issueBall.ballDeleteFlag = false;
     this.topNameTitle = "이슈볼 만들기";
@@ -148,7 +155,8 @@ class IM001MainPageViewModel extends ChangeNotifier
     _issueBall = IssueBall.fromFBallResDto(fBallResDto);
     if (_issueBall.hasYoutubeVideo()) {
       this.youtubeAttachVisibility = true;
-      this.validYoutubeLink = "https://youtu.be/${_issueBall.getDisplayYoutubeVideoId()}";
+      this.validYoutubeLink =
+          "https://youtu.be/${_issueBall.getDisplayYoutubeVideoId()}";
     }
     var tagDTOs = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
         reqDto: TagFromBallReqDto(ballUuid: _issueBall.ballUuid));
@@ -162,7 +170,10 @@ class IM001MainPageViewModel extends ChangeNotifier
     });
     titleEditController.text = _issueBall.ballName;
     textContentEditController.text = _issueBall.getDisplayDescriptionText();
-    ballImageList = _issueBall.getDesImages().map((x) => BallImageItemDto.fromFBallDesImagesDto(x)).toList();
+    ballImageList = _issueBall
+        .getDesImages()
+        .map((x) => BallImageItemDto.fromFBallDesImagesDto(x))
+        .toList();
   }
 
   void onTextContentFocusNode() {
@@ -189,7 +200,7 @@ class IM001MainPageViewModel extends ChangeNotifier
   }
 
   void onBackBtnTap() {
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
   }
 
   isValidComplete() {
@@ -231,14 +242,16 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   @override
   void onInsertBall(FBallResDto resDto) {
-    Navigator.of(_context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => ID001MainPage(issueBall: IssueBall.fromFBallResDto(resDto))),
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (_) =>
+                ID001MainPage(issueBall: IssueBall.fromFBallResDto(resDto))),
         ModalRoute.withName('/'));
   }
 
   @override
   void onUpdateBall() {
-    Navigator.of(_context).pop(mode);
+    Navigator.of(context).pop(mode);
   }
 
   bool hasYoutubeLink() => validYoutubeLink != null;
@@ -254,7 +267,7 @@ class IM001MainPageViewModel extends ChangeNotifier
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
-      Navigator.of(_context).pop();
+      Navigator.of(context).pop();
       notifyListeners();
       return;
     }
@@ -276,7 +289,7 @@ class IM001MainPageViewModel extends ChangeNotifier
         ballImageList.add(itemDto);
       }
     }
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
     moveToBottomScroller();
     notifyListeners();
   }
@@ -287,20 +300,20 @@ class IM001MainPageViewModel extends ChangeNotifier
     BallImageItemDto itemDto = new BallImageItemDto();
     itemDto.imageByte = imageData.buffer.asUint8List();
     ballImageList.add(itemDto);
-    Navigator.of(_context).pop();
+    Navigator.of(context).pop();
     moveToBottomScroller();
     notifyListeners();
   }
 
   void onShowSelectPictureDialog() async {
     var result = await showGeneralDialog(
-        context: _context,
+        context: context,
         barrierDismissible: true,
         transitionDuration: Duration(milliseconds: 300),
         //This is time
         barrierColor: Colors.black.withOpacity(0.3),
         barrierLabel:
-            MaterialLocalizations.of(_context).modalBarrierDismissLabel,
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pageBuilder:
             (_context, Animation animation, Animation secondaryAnimation) {
           return Stack(children: <Widget>[
@@ -391,8 +404,9 @@ class IM001MainPageViewModel extends ChangeNotifier
           textColor: Colors.white,
           fontSize: 12.0);
     } else {
-      this.validYoutubeLink =currentClipBoardData ;
-      _issueBall.setYoutubeVideoId(YoutubeIdParser.getIdFromUrl(validYoutubeLink));
+      this.validYoutubeLink = currentClipBoardData;
+      _issueBall
+          .setYoutubeVideoId(YoutubeIdParser.getIdFromUrl(validYoutubeLink));
     }
     notifyListeners();
   }
@@ -430,26 +444,28 @@ class IM001MainPageViewModel extends ChangeNotifier
       notifyListeners();
     }
   }
+
   void checkSpecialCharactersAndRemoveSpecialCharacters(String value) {
     RegExp specialCharactersReg = new RegExp(r'^(?=.*?[!@#\$&*~])');
-    bool hasSpecialCharacters = specialCharactersReg.hasMatch(value) ? true : false;
-    if(hasSpecialCharacters){
+    bool hasSpecialCharacters =
+        specialCharactersReg.hasMatch(value) ? true : false;
+    if (hasSpecialCharacters) {
       tagEditController.text = removeTagLastCharacter();
-        Fluttertoast.showToast(
-            msg: "태그에 특수문자는 사용할 수 없습니다",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Color(0xff454F63),
-            textColor: Colors.white,
-            fontSize: 12.0);
-      }
+      Fluttertoast.showToast(
+          msg: "태그에 특수문자는 사용할 수 없습니다",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Color(0xff454F63),
+          textColor: Colors.white,
+          fontSize: 12.0);
     }
+  }
 
   void checkSpaceCharactersAndRemoveSpaceCharacters(String value) {
     RegExp spaceCharactersReg = new RegExp(r'^\s');
     bool hasSpaceCharacters = spaceCharactersReg.hasMatch(value) ? true : false;
-    if(hasSpaceCharacters){
+    if (hasSpaceCharacters) {
       tagEditController.text = removeTagLastCharacter();
       Fluttertoast.showToast(
           msg: "태그에 띄어쓰기는 사용할 수 없습니다",
@@ -462,12 +478,11 @@ class IM001MainPageViewModel extends ChangeNotifier
     }
   }
 
-
-  String removeTagLastCharacter() => tagEditController.text.substring(0,tagEditController.text.length-1);
-
+  String removeTagLastCharacter() =>
+      tagEditController.text.substring(0, tagEditController.text.length - 1);
 
   void checkTextSizeOverFlow(String value) {
-    if(value.length >= 10){
+    if (value.length >= 10) {
       Fluttertoast.showToast(
           msg: "태그는 최대 10글자만 입력가능합니다",
           toastLength: Toast.LENGTH_SHORT,
@@ -478,7 +493,6 @@ class IM001MainPageViewModel extends ChangeNotifier
           fontSize: 12.0);
     }
   }
-
 
   void checkFirstCommaAndWarning(String value) {
     if (value.indexOf(",") == 0) {
@@ -520,7 +534,6 @@ class IM001MainPageViewModel extends ChangeNotifier
       return;
     }
     addChipWidget(value);
-
   }
 
   bool isTagChipLimitOver() => tagChips.length >= 10;
@@ -541,9 +554,9 @@ class IM001MainPageViewModel extends ChangeNotifier
             }
           });
           _issueBall.tags.removeWhere((tagItem) {
-            if(tagItem.tagItem == value) {
+            if (tagItem.tagItem == value) {
               return true;
-            }else {
+            } else {
               return false;
             }
           });
@@ -590,8 +603,4 @@ class IM001MainPageViewModel extends ChangeNotifier
   void onDeleteBall() {
     throw ("here don't have action");
   }
-
-
-
-
 }

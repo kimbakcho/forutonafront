@@ -217,4 +217,29 @@ class IssueBall extends FBall{
     return uid != myUid;
   }
 
+  void reFreshFromBallResDto(FBallResDto fBallResDto) {
+    latitude = fBallResDto.latitude;
+     longitude = fBallResDto.longitude;
+     ballUuid = fBallResDto.ballUuid;
+     ballName = fBallResDto.ballName;
+     ballType = fBallResDto.ballType;
+     ballState = fBallResDto.ballState;
+     placeAddress = fBallResDto.placeAddress;
+     ballHits = fBallResDto.ballHits;
+     ballLikes = fBallResDto.ballLikes;
+     ballDisLikes= fBallResDto.ballDisLikes;
+     commentCount = fBallResDto.commentCount;
+     ballPower = fBallResDto.ballPower ;
+     activationTime = fBallResDto.activationTime ;
+     makeTime = fBallResDto.makeTime ;
+     description = fBallResDto.description;
+     nickName  = fBallResDto.nickName;
+     profilePictureUrl = fBallResDto.profilePictureUrl;
+     uid  = fBallResDto.uid;
+     userLevel = fBallResDto.userLevel;
+     contributor  = fBallResDto.contributor;
+     ballDeleteFlag = fBallResDto.ballDeleteFlag;
+    _issueBallDescription = IssueBallDescription.fromJson(json.decode(fBallResDto.description));
+  }
+
 }

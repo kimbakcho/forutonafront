@@ -82,6 +82,8 @@ class FBallReplyWidgetViewModel extends ChangeNotifier {
       fBallReplyWidgetViewController
           .replyContentBars
           .addAll(replyList.map((e) => FBallReplyContentBar(e.fBallReplyResDto,false,true,false,MediaQuery.of(context).size.width)));
+
+      notifyListeners();
   }
 
   void gotoJ001Page() {
