@@ -23,11 +23,11 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
 
   Preference _preference = sl();
 
-
   GooglePlace _googlePlace;
   List<AutocompletePrediction> predictions = [];
 
-  MapGeoSearchPageViewModel(this._initAddress, this._initPosition,this._context) {
+  MapGeoSearchPageViewModel(
+      this._initAddress, this._initPosition, this._context) {
     _googlePlace = GooglePlace(_preference.kGoogleApiKey);
     sessionToken = Uuid().v4();
     searchFocusNode.addListener(onSearchFocusNode);
@@ -39,12 +39,14 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
     searchTextController.text = _initAddress;
   }
 
-  ///주소 선택시 리턴값으로 detailsResponse.result 상세 정보를 리턴
   onPredictionTab(AutocompletePrediction prediction) async {
-    DetailsResponse detailsResponse = await _googlePlace.details.get(prediction.placeId,language: "ko",sessionToken:sessionToken);
+    DetailsResponse detailsResponse = await _googlePlace.details
+        .get(prediction.placeId, language: "ko", sessionToken: sessionToken);
     MapSearchGeoDto mapSearchGeoDto = MapSearchGeoDto();
     mapSearchGeoDto.descriptionAddress = prediction.description;
-    mapSearchGeoDto.latLng = LatLng(detailsResponse.result.geometry.location.lat,detailsResponse.result.geometry.location.lng);
+    mapSearchGeoDto.latLng = LatLng(
+        detailsResponse.result.geometry.location.lat,
+        detailsResponse.result.geometry.location.lng);
     mapSearchGeoDto.address = detailsResponse.result.adrAddress;
     searchTextController.removeListener(onSearchTextListener);
     Navigator.of(_context).pop(mapSearchGeoDto);
@@ -54,7 +56,7 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
     if (searchTextController.text.trim().length == 0) {
       predictions = [];
     } else {
-      Component kr = Component("country","kr");
+      Component kr = Component("country", "kr");
       AutocompleteResponse response = await _googlePlace.autocomplete.get(
           searchTextController.text,
           language: "ko",
@@ -107,7 +109,7 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
   }
 
   void onSubmit(String value) {
-    if(predictions.length == 0){
+    if (predictions.length == 0) {
       Fluttertoast.showToast(
           msg: "검색결과가 없습니다.",
           toastLength: Toast.LENGTH_SHORT,

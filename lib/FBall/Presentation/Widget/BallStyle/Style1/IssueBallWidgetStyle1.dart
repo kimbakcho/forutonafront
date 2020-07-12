@@ -254,8 +254,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                             padding: EdgeInsets.all(0),
                             child:
                                 Text("+${model.issueBall.pictureCount() - 1}",
-                                    style: TextStyle(
-                                      fontFamily: "Noto Sans CJK KR",
+                                    style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12,
                                       color: Color(0xffffffff),

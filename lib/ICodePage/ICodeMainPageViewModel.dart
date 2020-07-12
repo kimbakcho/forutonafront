@@ -4,40 +4,34 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
-
-
+import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/MakerSupportStyle1.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
-import 'package:forutonafront/ServiceLocator.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromMapAreaUseCaseOutputPort{
+class ICodeMainPageViewModel extends ChangeNotifier
+    implements FBallListUpFromMapAreaUseCaseOutputPort {
   final BuildContext context;
+  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCase;
+  final FBallListUpFromMapAreaUseCaseInputPort
+      _fBallListUpFromMapAreaUseCaseInputPort;
+  final MapScreenPositionUseCaseInputPort _mapScreenPositionUseCaseInputPort;
+
   bool _flagIdleIgnore = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
   bool _moveFromMapBallSelect = false;
   CameraPosition currentMapPosition;
-
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCase = sl();
-
-  FBallListUpFromMapAreaUseCaseInputPort _fBallListUpFromMapAreaUseCaseInputPort = FBallListUpFromMapAreaUseCase();
-
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
 
   String currentAddress = "";
   final Set<Marker> markers = {};
@@ -63,22 +57,38 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
 
   Completer<GoogleMapController> _googleMapController = Completer();
 
-  ICodeMainPageViewModel(this.context) {
+  ICodeMainPageViewModel({
+    this.context,
+    @required GeoLocationUtilUseCaseInputPort geoLocationUtilUseCase,
+    @required
+        FBallListUpFromMapAreaUseCaseInputPort
+            fBallListUpFromMapAreaUseCaseInputPort,
+    @required
+        MapScreenPositionUseCaseInputPort mapScreenPositionUseCaseInputPort,
+  })  : _geoLocationUtilUseCase = geoLocationUtilUseCase,
+        _fBallListUpFromMapAreaUseCaseInputPort =
+            fBallListUpFromMapAreaUseCaseInputPort,
+        _mapScreenPositionUseCaseInputPort = mapScreenPositionUseCaseInputPort {
     setGoogleInitCameraPosition();
-    bottomPageController.addListener(onPageContollerListner);
-    currentAddress = _geoLocationUtilUseCase.getCurrentWithLastAddressInMemory();
+    bottomPageController.addListener(onPageControllerListener);
+    currentAddress =
+        _geoLocationUtilUseCase.getCurrentWithLastAddressInMemory();
     FlutterStatusbarcolor.setStatusBarColor(Colors.white.withOpacity(0.6));
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
   }
 
   CameraPosition setGoogleInitCameraPosition() {
     return currentMapPosition = CameraPosition(
-        target: LatLng(_geoLocationUtilUseCase.getCurrentWithLastPositionInMemory().latitude,
-            _geoLocationUtilUseCase.getCurrentWithLastPositionInMemory().longitude),
+        target: LatLng(
+            _geoLocationUtilUseCase
+                .getCurrentWithLastPositionInMemory()
+                .latitude,
+            _geoLocationUtilUseCase
+                .getCurrentWithLastPositionInMemory()
+                .longitude),
         zoom: initMapZoom);
   }
 
-  ///Return 으로는 MapSearchGeoDto 받는다.
   onPlaceSearchTap() async {
     MapSearchGeoDto mapSearchGeoDto = await Navigator.of(context).push(
         MaterialPageRoute(
@@ -94,7 +104,7 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     await controller.moveCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: mapSearchGeoDto.latLng, zoom: 14)));
     _flagIdleIgnore = false;
-    Future.delayed(Duration(seconds: 1),()async {
+    Future.delayed(Duration(seconds: 1), () async {
       await onRefreshBall();
     });
 
@@ -107,12 +117,12 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
       final GoogleMapController controller = await _googleMapController.future;
       clearBallSelect();
       listUpBalls[index].isSelectBall = true;
-      drawBall(this.listUpBalls);
+      drawBallMarker(this.listUpBalls);
       notifyListeners();
       var zoomLevel = 14.0;
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target:
-              LatLng(listUpBalls[index].ballResDto.latitude, listUpBalls[index].ballResDto.longitude),
+          target: LatLng(listUpBalls[index].ballResDto.latitude,
+              listUpBalls[index].ballResDto.longitude),
           zoom: zoomLevel)));
     }
   }
@@ -123,7 +133,7 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     }
   }
 
-  onPageContollerListner() {
+  onPageControllerListener() {
     if (bottomPageController.offset >=
             bottomPageController.position.maxScrollExtent &&
         !bottomPageController.position.outOfRange) {
@@ -131,7 +141,7 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
       if (_pageCount * _ballPageLimitSize > listUpBalls.length) {
         return;
       } else {
-        getBallListUp();
+        reqBallListUp();
       }
     }
   }
@@ -147,9 +157,10 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
 
   onMapIdle() async {
     if (!_flagIdleIgnore) {
-      currentAddress = await _geoLocationUtilUseCaseInputPort.getPositionAddress(Position(
-          latitude: currentMapPosition.target.latitude,
-          longitude: currentMapPosition.target.longitude));
+      currentAddress = await _geoLocationUtilUseCase.getPositionAddress(
+          Position(
+              latitude: currentMapPosition.target.latitude,
+              longitude: currentMapPosition.target.longitude));
       notifyListeners();
     }
   }
@@ -157,8 +168,9 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
 
-    await _geoLocationUtilUseCaseInputPort.useGpsReq();
-    var currentLocation = await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
+    await _geoLocationUtilUseCase.useGpsReq();
+    var currentLocation =
+        await _geoLocationUtilUseCase.getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: 14.4746)));
@@ -168,14 +180,14 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     _flagIdleIgnore = true;
     _googleMapController.complete(controller);
     reFreshBtnActive = false;
-    await delayAndBallRefreash();
+    await delayAndBallRefresh();
     _flagIdleIgnore = false;
   }
 
-  Future delayAndBallRefreash() async {
+  Future delayAndBallRefresh() async {
     //지도의 검색 범위 측정시 너무 빨리 잡을시 검색 범위에 문제가 생김
     //해결책으로 지도가 그려줄 시간을 벌어주기 위해서 Delay
-    await Future.delayed(Duration(milliseconds:500),() async {
+    await Future.delayed(Duration(milliseconds: 500), () async {
       await onRefreshBall();
     });
   }
@@ -183,12 +195,12 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
   onRefreshBall() async {
     setFirstPage();
     reFreshBtnActive = false;
-    await getBallListUp();
+    await reqBallListUp();
   }
 
   int setFirstPage() => _pageCount = 0;
 
-  Future getBallListUp() async {
+  Future reqBallListUp() async {
     isLoading = true;
 
     final GoogleMapController controller = await _googleMapController.future;
@@ -196,10 +208,16 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     final RenderBox mapRenderBoxRed =
         mapContainerGlobalKey.currentContext.findRenderObject();
 
-    LatLng southwestPoint = await getWidgetOffsetPositionToLatLngFromMap(
-        mapRenderBoxRed, controller, 16, MediaQuery.of(context).size.height-180);
-    LatLng northeastPoint = await getWidgetOffsetPositionToLatLngFromMap(
-        mapRenderBoxRed, controller, MediaQuery.of(context).size.width-16, 108);
+    LatLng southwestPoint = await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
+        mapRenderBoxRed,
+        controller,
+        16,
+        MediaQuery.of(context).size.height - 180);
+    LatLng northeastPoint = await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
+        mapRenderBoxRed,
+        controller,
+        MediaQuery.of(context).size.width - 16,
+        108);
 
     FSorts fSort = FSorts();
     fSort.sorts.add(FSort("ballPower", QueryOrders.DESC));
@@ -210,8 +228,8 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     isLoading = false;
   }
 
-  Future<void> onSearch(LatLng southwestPoint, LatLng northeastPoint, FSorts sorts,
-      int pageSize, int pageCount) async {
+  Future<void> onSearch(LatLng southwestPoint, LatLng northeastPoint,
+      FSorts sorts, int pageSize, int pageCount) async {
     BallFromMapAreaReqDto reqDto = BallFromMapAreaReqDto(
         southwestPoint.latitude,
         southwestPoint.longitude,
@@ -222,27 +240,23 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
         pageCount,
         pageSize,
         sorts.toQueryJson());
-    _fBallListUpFromMapAreaUseCaseInputPort.ballListUpFromMapArea(reqDto: reqDto, outputPort: this);
-
+    _fBallListUpFromMapAreaUseCaseInputPort.ballListUpFromMapArea(
+        reqDto: reqDto, outputPort: this);
   }
 
-  //Ball이 화면에서 선택 될때 콜백 되는 함수
-  ballSelectFunction(FBallResForMarker resDto) async {
+  onBallSelectFunction(FBallResForMarker resDto) async {
     clearBallSelect();
-    int ballIndex =
-        this.listUpBalls.indexWhere((a) => (a.ballResDto.ballUuid == resDto.ballResDto.ballUuid));
+    int ballIndex = this.listUpBalls.indexWhere(
+        (a) => (a.ballResDto.ballUuid == resDto.ballResDto.ballUuid));
     listUpBalls[ballIndex].isSelectBall = true;
-    drawBall(listUpBalls);
+    drawBallMarker(listUpBalls);
     _moveFromMapBallSelect = true;
     await bottomPageController.animateToPage(ballIndex,
         duration: Duration(milliseconds: 500), curve: Curves.linear);
     _moveFromMapBallSelect = false;
   }
 
-  //마커를 그리는 메소드
-  //ICodeMain은 MarkerStyle1Util 에서 선택한 Widget을 화면에 그린다.
-  drawBall(List<FBallResForMarker> listUpBalls) async {
-    final GoogleMapController controller = await _googleMapController.future;
+  drawBallMarker(List<FBallResForMarker> listUpBalls) async {
     Completer<Set<Marker>> _markerCompleter = Completer();
     MakerSupportStyle1(listUpBalls, _markerCompleter).generate(context);
     Set<Marker> markers = await _markerCompleter.future;
@@ -251,76 +265,17 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     notifyListeners();
   }
 
-  /**
-   * Latlng 을 구글 Map Widget의 Offset 으로 변경함
-   */
-  Future<Point> getScreenPointFromMapLatlng(
-      RenderBox mapRenderBoxRed,
-      GoogleMapController controller,
-      LatLng latLng,
-      double widgetWidth,
-      double widgetHeight) async {
-    ScreenCoordinate screenCoordinate = await controller
-        .getScreenCoordinate(LatLng(latLng.latitude, latLng.longitude));
-    //지도를 그리는 Box Size
-    Size size = mapRenderBoxRed.size;
-    LatLngBounds visibleRegion = await controller.getVisibleRegion();
-    //현재 맵 스크린 좌표 받아옴
-    ScreenCoordinate southwestPoint = await controller.getScreenCoordinate(
-        LatLng(visibleRegion.southwest.latitude,
-            visibleRegion.southwest.longitude));
-
-    //현재 맵 스크린 좌표 받아옴
-    ScreenCoordinate northeastPoint = await controller.getScreenCoordinate(
-        LatLng(visibleRegion.northeast.latitude,
-            visibleRegion.northeast.longitude));
-
-    //위젯의 스케일 받기
-    var yScale = southwestPoint.y / mapRenderBoxRed.size.height;
-    var xScale = northeastPoint.x / mapRenderBoxRed.size.width;
-    double offsetX = screenCoordinate.x / xScale;
-    offsetX -= (widgetWidth / 2);
-    double offsetY = screenCoordinate.y / yScale;
-    offsetY -= (widgetHeight / 2);
-    return Point(offsetX, offsetY);
-  }
-
-  Future<LatLng> getWidgetOffsetPositionToLatLngFromMap(
-      RenderBox mapRenderBoxRed,
-      GoogleMapController controller,
-      double offsetX,
-      double offsetY) async {
-    //지도를 그리는 Box Size
-    Size size = mapRenderBoxRed.size;
-    LatLngBounds visibleRegion = await controller.getVisibleRegion();
-    //현재 맵 스크린 좌표 받아옴
-    ScreenCoordinate southwestPoint = await controller.getScreenCoordinate(
-        LatLng(visibleRegion.southwest.latitude,
-            visibleRegion.southwest.longitude));
-
-    //현재 맵 스크린 좌표 받아옴
-    ScreenCoordinate northeastPoint = await controller.getScreenCoordinate(
-        LatLng(visibleRegion.northeast.latitude,
-            visibleRegion.northeast.longitude));
-
-    //위젯의 스케일 받기
-    var yScale = southwestPoint.y / mapRenderBoxRed.size.height;
-    var xScale = northeastPoint.x / mapRenderBoxRed.size.width;
-
-    return await controller.getLatLng(ScreenCoordinate(
-        x: (offsetX * xScale).toInt(), y: (offsetY * yScale).toInt()));
-  }
-
-
-
   @override
-  void onBallListUpFromMapArea(List<FBallResDto> resDtos,LatLng northeastLat , LatLng southwestLat) async {
+  void onBallListUpFromMapArea(List<FBallResDto> resDtos, LatLng northeastLat,
+      LatLng southwestLat) async {
     if (isFirstPage()) {
       this.listUpBalls.clear();
     }
     this.listUpBalls.addAll(resDtos
         .map((x) => new FBallResForMarker(
-        isSelectBall: false,ballResDto: x,onTopEvent: ballSelectFunction))
+            isSelectBall: false,
+            ballResDto: x,
+            onTopEvent: onBallSelectFunction))
         .toList());
 
     if (isFirstPage()) {
@@ -329,10 +284,12 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
       }
     }
     notifyListeners();
-    await drawBall(this.listUpBalls);
-    this.markers.add(Marker(markerId: MarkerId("northeastLat"),position:northeastLat ));
+    await drawBallMarker(this.listUpBalls);
+    this.markers.add(
+        Marker(markerId: MarkerId("northeastLat"), position: northeastLat));
     print(northeastLat);
-    this.markers.add(Marker(markerId: MarkerId("southwestLat"),position:southwestLat ));
+    this.markers.add(
+        Marker(markerId: MarkerId("southwestLat"), position: southwestLat));
     print(southwestLat);
     notifyListeners();
   }
@@ -351,5 +308,4 @@ class ICodeMainPageViewModel extends ChangeNotifier implements  FBallListUpFromM
     FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
   }
-
 }

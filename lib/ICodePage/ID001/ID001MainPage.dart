@@ -52,17 +52,18 @@ class _ID001MainPageState extends State<ID001MainPage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ID001MainPageViewModel>(
-        create: (_) => ID001MainPageViewModel(
-            context: context,
-            issueBall: widget.issueBall,
-            authUserCaseInputPort: sl(),
-          signInUserInfoUseCaseInputPort: sl(),
-          mainScrollController: mainScrollController,
-          issueBallUseCaseInputPort: sl(),
-          issueBallValuationUseCaseInputPort: sl(),
-          tagFromBallUuidUseCaseInputPort: sl(),
-          userInfoSimple1UseCaseInputPort:sl(),
-        ),
+        create: (_) =>
+            ID001MainPageViewModel(
+              context: context,
+              issueBall: widget.issueBall,
+              authUserCaseInputPort: sl(),
+              signInUserInfoUseCaseInputPort: sl(),
+              mainScrollController: mainScrollController,
+              issueBallUseCaseInputPort: sl(),
+              issueBallValuationUseCaseInputPort: sl(),
+              tagFromBallUuidUseCaseInputPort: sl(),
+              userInfoSimple1UseCaseInputPort: sl(),
+            ),
         child: Builder(
           builder: (context) {
             return Stack(children: <Widget>[
@@ -70,10 +71,14 @@ class _ID001MainPageState extends State<ID001MainPage>
                   body: Container(
                       color: Colors.white,
                       child:
-                          context.watch<ID001MainPageViewModel>().isInitFinish
-                              ? mainBodyStack(context)
-                              : Container())),
-              context.watch<ID001MainPageViewModel>().isLoading
+                      context
+                          .watch<ID001MainPageViewModel>()
+                          .isInitFinish
+                          ? mainBodyStack(context)
+                          : Container())),
+              context
+                  .watch<ID001MainPageViewModel>()
+                  .isLoading
                   ? CommonLoadingComponent()
                   : Container()
             ]);
@@ -85,13 +90,28 @@ class _ID001MainPageState extends State<ID001MainPage>
     return Stack(
       children: <Widget>[
         Positioned(
-            top: MediaQuery.of(context).padding.top,
+            top: MediaQuery
+                .of(context)
+                .padding
+                .top,
             left: 0,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height -
-                MediaQuery.of(context).padding.top,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height -
+                MediaQuery
+                    .of(context)
+                    .padding
+                    .top,
             child: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 child: Column(children: <Widget>[
                   topHeaderBar(context),
                   Expanded(
@@ -105,7 +125,9 @@ class _ID001MainPageState extends State<ID001MainPage>
   ListView mainBodyListView(BuildContext context) {
     return ListView(
         controller:
-            context.watch<ID001MainPageViewModel>().mainScrollController,
+        context
+            .watch<ID001MainPageViewModel>()
+            .mainScrollController,
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         children: <Widget>[
@@ -113,41 +135,69 @@ class _ID001MainPageState extends State<ID001MainPage>
           issueBallNameBar(),
           issueBallTitleWithStatueBar(context),
           didver(2),
-          context.watch<ID001MainPageViewModel>().showMoreDetailFlag
+          context
+              .watch<ID001MainPageViewModel>()
+              .showMoreDetailFlag
               ? placeAddressBar(context)
               : Container(),
-          context.watch<ID001MainPageViewModel>().showMoreDetailFlag
+          context
+              .watch<ID001MainPageViewModel>()
+              .showMoreDetailFlag
               ? activeTimeBar(context)
               : Container(),
-          context.watch<ID001MainPageViewModel>().showMoreDetailFlag
+          context
+              .watch<ID001MainPageViewModel>()
+              .showMoreDetailFlag
               ? contributorBar(context)
               : Container(),
-          context.watch<ID001MainPageViewModel>().showMoreDetailFlag
+          context
+              .watch<ID001MainPageViewModel>()
+              .showMoreDetailFlag
               ? didver(2)
               : Container(),
           makerProfileBar(context),
           didver(2),
           issueTextContentBar(context),
           context.watch<ID001MainPageViewModel>().getImageContentBar(context),
-          context.watch<ID001MainPageViewModel>().issueBall.isMainPicture()
+          context
+              .watch<ID001MainPageViewModel>()
+              .issueBall
+              .isMainPicture()
               ? didver(2)
               : Container(),
-          context.watch<ID001MainPageViewModel>().issueBall.hasYoutubeVideo()
+          context
+              .watch<ID001MainPageViewModel>()
+              .issueBall
+              .hasYoutubeVideo()
               ? youtubeBar(context)
               : Container(),
-          context.watch<ID001MainPageViewModel>().issueBall.hasYoutubeVideo()
+          context
+              .watch<ID001MainPageViewModel>()
+              .issueBall
+              .hasYoutubeVideo()
               ? didver(2)
               : Container(),
-          context.watch<ID001MainPageViewModel>().tagChips.length > 0
+          context
+              .watch<ID001MainPageViewModel>()
+              .tagChips
+              .length > 0
               ? tagBar(context)
               : Container(),
-          context.watch<ID001MainPageViewModel>().tagChips.length > 0
+          context
+              .watch<ID001MainPageViewModel>()
+              .tagChips
+              .length > 0
               ? didver(2)
               : Container(),
           FBallReplyWidget(
-              context.watch<ID001MainPageViewModel>().issueBall.ballUuid),
+              context
+                  .watch<ID001MainPageViewModel>()
+                  .issueBall
+                  .ballUuid),
           didver(4),
-          context.watch<ID001MainPageViewModel>().showFBallValuation
+          context
+              .watch<ID001MainPageViewModel>()
+              .showFBallValuation
               ? ballValuationBar(context)
               : Container()
         ]);
@@ -156,7 +206,9 @@ class _ID001MainPageState extends State<ID001MainPage>
   FlatButton issueBallTitleWithStatueBar(BuildContext context) {
     return FlatButton(
         onPressed:
-            context.watch<ID001MainPageViewModel>().toggleMoreDetailToggle,
+        context
+            .watch<ID001MainPageViewModel>()
+            .toggleMoreDetailToggle,
         padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -187,23 +239,25 @@ class _ID001MainPageState extends State<ID001MainPage>
               child: RichText(
                   text: TextSpan(
                       text:
-                          context.watch<ID001MainPageViewModel>().userNickName,
+                      context
+                          .watch<ID001MainPageViewModel>()
+                          .userNickName,
                       style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                         color: Color(0xff3497FD),
                       ),
                       children: [
-                TextSpan(
-                    text: context
-                        .watch<ID001MainPageViewModel>()
-                        .getFBallValuationText(),
-                    style: GoogleFonts.notoSans(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                      color: Color(0xff454f63),
-                    )),
-              ]))),
+                        TextSpan(
+                            text: context
+                                .watch<ID001MainPageViewModel>()
+                                .getFBallValuationText(),
+                            style: GoogleFonts.notoSans(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: Color(0xff454f63),
+                            )),
+                      ]))),
           Container(
               margin: EdgeInsets.only(top: 20),
               child: Row(children: <Widget>[
@@ -212,7 +266,9 @@ class _ID001MainPageState extends State<ID001MainPage>
                     width: 70.00,
                     child: FlatButton(
                         onPressed:
-                            context.watch<ID001MainPageViewModel>().plusBtnTap,
+                        context
+                            .watch<ID001MainPageViewModel>()
+                            .plusBtnTap,
                         padding: EdgeInsets.all(0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -222,7 +278,7 @@ class _ID001MainPageState extends State<ID001MainPage>
                               color: context
                                   .watch<ID001MainPageViewModel>()
                                   .getValuationIconAndTextColor(
-                                      FBallValuationState.Like),
+                                  FBallValuationState.Like),
                               size: 15,
                             ),
                             Container(
@@ -234,7 +290,7 @@ class _ID001MainPageState extends State<ID001MainPage>
                                       color: context
                                           .watch<ID001MainPageViewModel>()
                                           .getValuationIconAndTextColor(
-                                              FBallValuationState.Like),
+                                          FBallValuationState.Like),
                                     )))
                           ],
                         )),
@@ -263,7 +319,9 @@ class _ID001MainPageState extends State<ID001MainPage>
                     margin: EdgeInsets.only(left: 16),
                     child: FlatButton(
                         onPressed:
-                            context.watch<ID001MainPageViewModel>().minusBtnTap,
+                        context
+                            .watch<ID001MainPageViewModel>()
+                            .minusBtnTap,
                         padding: EdgeInsets.all(0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -273,7 +331,7 @@ class _ID001MainPageState extends State<ID001MainPage>
                               color: context
                                   .watch<ID001MainPageViewModel>()
                                   .getValuationIconAndTextColor(
-                                      FBallValuationState.DisLike),
+                                  FBallValuationState.DisLike),
                               size: 15,
                             ),
                             Container(
@@ -285,7 +343,7 @@ class _ID001MainPageState extends State<ID001MainPage>
                                       color: context
                                           .watch<ID001MainPageViewModel>()
                                           .getValuationIconAndTextColor(
-                                              FBallValuationState.DisLike),
+                                          FBallValuationState.DisLike),
                                     )))
                           ],
                         )),
@@ -298,7 +356,7 @@ class _ID001MainPageState extends State<ID001MainPage>
                         color: context
                             .watch<ID001MainPageViewModel>()
                             .getValuationBorderColor(
-                                FBallValuationState.DisLike),
+                            FBallValuationState.DisLike),
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -320,7 +378,9 @@ class _ID001MainPageState extends State<ID001MainPage>
         direction: Axis.horizontal,
         crossAxisAlignment: WrapCrossAlignment.start,
         spacing: 10,
-        children: context.watch<ID001MainPageViewModel>().tagChips,
+        children: context
+            .watch<ID001MainPageViewModel>()
+            .tagChips,
       ),
     );
   }
@@ -334,103 +394,111 @@ class _ID001MainPageState extends State<ID001MainPage>
               top: 0,
               left: 0,
               child: context
-                          .watch<ID001MainPageViewModel>()
-                          .currentYoutubeImage !=
-                      null
+                  .watch<ID001MainPageViewModel>()
+                  .currentYoutubeImage !=
+                  null
                   ? Container(
-                      height: 90.00,
-                      width: 124.00,
-                      child: FlatButton(
-                          onPressed: () {
-                            context
-                                .read<ID001MainPageViewModel>()
-                                .goYoutubeIntent(context
-                                    .read<ID001MainPageViewModel>()
-                                    .issueBall
-                                    .getDisplayYoutubeVideoId());
-                          },
-                          padding: EdgeInsets.all(0),
-                          child: Container(
-                              height: 50.00,
-                              width: 50.00,
-                              child:
-                                  Icon(ForutonaIcon.yplay, color: Colors.white),
-                              decoration: BoxDecoration(
-                                color: Color(0xff454f63).withOpacity(0.3),
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: Offset(0.00, 6.00),
-                                    color: Color(0xff321636).withOpacity(0.7),
-                                    blurRadius: 12,
-                                  )
-                                ],
-                                shape: BoxShape.circle,
-                              ))),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(context
-                                .watch<ID001MainPageViewModel>()
-                                .currentYoutubeImage),
-                          ),
-                          borderRadius: BorderRadius.circular(12.00)))
+                  height: 90.00,
+                  width: 124.00,
+                  child: FlatButton(
+                      onPressed: () {
+                        context
+                            .read<ID001MainPageViewModel>()
+                            .goYoutubeIntent(context
+                            .read<ID001MainPageViewModel>()
+                            .issueBall
+                            .getDisplayYoutubeVideoId());
+                      },
+                      padding: EdgeInsets.all(0),
+                      child: Container(
+                          height: 50.00,
+                          width: 50.00,
+                          child:
+                          Icon(ForutonaIcon.yplay, color: Colors.white),
+                          decoration: BoxDecoration(
+                            color: Color(0xff454f63).withOpacity(0.3),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(0.00, 6.00),
+                                color: Color(0xff321636).withOpacity(0.7),
+                                blurRadius: 12,
+                              )
+                            ],
+                            shape: BoxShape.circle,
+                          ))),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(context
+                            .watch<ID001MainPageViewModel>()
+                            .currentYoutubeImage),
+                      ),
+                      borderRadius: BorderRadius.circular(12.00)))
                   : Container(
-                      height: 90.00, width: 124.00, child: Text("로딩중"))),
+                  height: 90.00, width: 124.00, child: Text("로딩중"))),
           Positioned(
               top: 0,
               left: 139,
               child: Container(
-                  width: MediaQuery.of(context).size.width - 170,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 170,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         context
-                                    .watch<ID001MainPageViewModel>()
-                                    .currentYoutubeTitle !=
-                                null
+                            .watch<ID001MainPageViewModel>()
+                            .currentYoutubeTitle !=
+                            null
                             ? Container(
-                                child: Text(
-                                    context
-                                        .watch<ID001MainPageViewModel>()
-                                        .currentYoutubeTitle,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.notoSans(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 12,
-                                      color: Color(0xff454f63),
-                                    )),
-                                margin: EdgeInsets.only(bottom: 10),
-                              )
+                          child: Text(
+                              context
+                                  .watch<ID001MainPageViewModel>()
+                                  .currentYoutubeTitle,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.notoSans(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                                color: Color(0xff454f63),
+                              )),
+                          margin: EdgeInsets.only(bottom: 10),
+                        )
                             : Container(),
                         context
-                                    .watch<ID001MainPageViewModel>()
-                                    .currentYoutubeAuthor !=
-                                null
+                            .watch<ID001MainPageViewModel>()
+                            .currentYoutubeAuthor !=
+                            null
                             ? Container(
-                                child: Text(
-                                    context
-                                        .watch<ID001MainPageViewModel>()
-                                        .currentYoutubeAuthor,
-                                    style: GoogleFonts.notoSans(
-                                      fontSize: 10,
-                                      color: Color(0xff78849e),
-                                    )),
-                              )
+                          child: Text(
+                              context
+                                  .watch<ID001MainPageViewModel>()
+                                  .currentYoutubeAuthor,
+                              style: GoogleFonts.notoSans(
+                                fontSize: 10,
+                                color: Color(0xff78849e),
+                              )),
+                        )
                             : Container(),
                         context
-                                    .watch<ID001MainPageViewModel>()
-                                    .currentYoutubeView !=
-                                null
+                            .watch<ID001MainPageViewModel>()
+                            .currentYoutubeView !=
+                            null
                             ? Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                    "조회수${context.watch<ID001MainPageViewModel>().currentYoutubeView}회•"
-                                    "${DateFormat("yyyy.MM.dd").format(context.watch<ID001MainPageViewModel>().currentYoutubeUploadDate.toLocal())}",
-                                    style: GoogleFonts.notoSans(
-                                      fontSize: 10,
-                                      color: Color(0xff78849e),
-                                    )),
-                              )
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                              "조회수${context
+                                  .watch<ID001MainPageViewModel>()
+                                  .currentYoutubeView}회•"
+                                  "${DateFormat("yyyy.MM.dd").format(context
+                                  .watch<ID001MainPageViewModel>()
+                                  .currentYoutubeUploadDate
+                                  .toLocal())}",
+                              style: GoogleFonts.notoSans(
+                                fontSize: 10,
+                                color: Color(0xff78849e),
+                              )),
+                        )
                             : Container()
                       ])))
         ]));
@@ -493,15 +561,23 @@ class _ID001MainPageState extends State<ID001MainPage>
             top: 18,
             left: 48,
             child: Container(
-                child: context.watch<ID001MainPageViewModel>().makerUserInfo !=
-                        null
+                child: context
+                    .watch<ID001MainPageViewModel>()
+                    .makerUserInfo !=
+                    null
                     ? Text(
-                        "유저영향력 ${context.watch<ID001MainPageViewModel>().makerUserInfo.cumulativeInfluence}BP • "
-                        "팔로워 ${context.watch<ID001MainPageViewModel>().makerUserInfo.followCount}명",
-                        style: GoogleFonts.notoSans(
-                          fontSize: 12,
-                          color: Color(0xff78849e),
-                        ))
+                    "유저영향력 ${context
+                        .watch<ID001MainPageViewModel>()
+                        .makerUserInfo
+                        .cumulativeInfluence}BP • "
+                        "팔로워 ${context
+                        .watch<ID001MainPageViewModel>()
+                        .makerUserInfo
+                        .followCount}명",
+                    style: GoogleFonts.notoSans(
+                      fontSize: 12,
+                      color: Color(0xff78849e),
+                    ))
                     : Container()),
           )
         ]));
@@ -545,7 +621,10 @@ class _ID001MainPageState extends State<ID001MainPage>
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text(
-                  "${context.watch<ID001MainPageViewModel>().issueBall.getDisplayLikeCount()}회",
+                  "${context
+                      .watch<ID001MainPageViewModel>()
+                      .issueBall
+                      .getDisplayLikeCount()}회",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
@@ -563,7 +642,10 @@ class _ID001MainPageState extends State<ID001MainPage>
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text(
-                  "${context.watch<ID001MainPageViewModel>().issueBall.getDisplayDisLikeCount()}회",
+                  "${context
+                      .watch<ID001MainPageViewModel>()
+                      .issueBall
+                      .getDisplayDisLikeCount()}회",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
@@ -581,7 +663,10 @@ class _ID001MainPageState extends State<ID001MainPage>
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text(
-                  "${context.watch<ID001MainPageViewModel>().issueBall.ballHits}회",
+                  "${context
+                      .watch<ID001MainPageViewModel>()
+                      .issueBall
+                      .ballHits}회",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
@@ -615,17 +700,25 @@ class _ID001MainPageState extends State<ID001MainPage>
 
   Container issueBallTitleBar(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         child: Stack(children: <Widget>[
           Container(
               padding: EdgeInsets.only(left: 0, right: 48),
               child: Text(
-                  context.watch<ID001MainPageViewModel>().issueBall.ballName,
+                  context
+                      .watch<ID001MainPageViewModel>()
+                      .issueBall
+                      .ballName,
                   overflow: TextOverflow.ellipsis,
                   maxLines:
-                      context.watch<ID001MainPageViewModel>().showMoreDetailFlag
-                          ? 3
-                          : 2,
+                  context
+                      .watch<ID001MainPageViewModel>()
+                      .showMoreDetailFlag
+                      ? 3
+                      : 2,
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -641,8 +734,8 @@ class _ID001MainPageState extends State<ID001MainPage>
                       padding: EdgeInsets.all(0),
                       child: Icon(
                         context
-                                .watch<ID001MainPageViewModel>()
-                                .showMoreDetailFlag
+                            .watch<ID001MainPageViewModel>()
+                            .showMoreDetailFlag
                             ? ForutonaIcon.up_arrow
                             : ForutonaIcon.down_arrow,
                         color: Color(0xff78849E),
@@ -687,9 +780,15 @@ class _ID001MainPageState extends State<ID001MainPage>
                 top: 21,
                 left: 44,
                 child: Container(
-                  width: MediaQuery.of(context).size.width - 100,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 100,
                   child: Text(
-                      '${context.watch<ID001MainPageViewModel>().issueBall.contributor}명이 반응 하였습니다.',
+                      '${context
+                          .watch<ID001MainPageViewModel>()
+                          .issueBall
+                          .contributor}명이 반응 하였습니다.',
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.notoSans(
                         fontSize: 12,
@@ -735,7 +834,10 @@ class _ID001MainPageState extends State<ID001MainPage>
               top: 21,
               left: 44,
               child: Container(
-                width: MediaQuery.of(context).size.width - 100,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 100,
                 child: Text(
                     context
                         .watch<ID001MainPageViewModel>()
@@ -785,7 +887,10 @@ class _ID001MainPageState extends State<ID001MainPage>
               top: 21,
               left: 44,
               child: Container(
-                width: MediaQuery.of(context).size.width - 100,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 100,
                 child: Text(
                     context
                         .watch<ID001MainPageViewModel>()
@@ -807,18 +912,23 @@ class _ID001MainPageState extends State<ID001MainPage>
             key: googleMapKey,
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
               new Factory<OneSequenceGestureRecognizer>(
-                () => new EagerGestureRecognizer(),
+                    () => new EagerGestureRecognizer(),
               ),
             ].toSet(),
             initialCameraPosition:
-                context.watch<ID001MainPageViewModel>().initialCameraPosition,
+            context
+                .watch<ID001MainPageViewModel>()
+                .initialCameraPosition,
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
           ),
           Center(child: MapCircleAnimationWithContainer.fromIssueBall()),
           Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               height: 244,
               child: FlatButton(
                 onPressed: () {},
@@ -830,7 +940,10 @@ class _ID001MainPageState extends State<ID001MainPage>
   Container topHeaderBar(BuildContext context) {
     return Container(
       height: 56,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       child: Row(children: <Widget>[
         Container(
           width: 32,
@@ -838,7 +951,9 @@ class _ID001MainPageState extends State<ID001MainPage>
           padding: EdgeInsets.only(left: 8),
           child: FlatButton(
               padding: EdgeInsets.all(0),
-              onPressed: context.watch<ID001MainPageViewModel>().backBtnTap,
+              onPressed: context
+                  .watch<ID001MainPageViewModel>()
+                  .backBtnTap,
               child: Icon(
                 ForutonaIcon.leftarrow,
                 color: Color(0xff454F63),
@@ -848,20 +963,20 @@ class _ID001MainPageState extends State<ID001MainPage>
         ),
         context.watch<ID001MainPageViewModel>().isBallNameScrollOver()
             ? Expanded(
-                child: Container(
-                    margin: EdgeInsets.fromLTRB(13, 0, 13, 0),
-                    child: Text(
-                      context
-                          .watch<ID001MainPageViewModel>()
-                          .issueBall
-                          .ballName,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.notoSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    )))
+            child: Container(
+                margin: EdgeInsets.fromLTRB(13, 0, 13, 0),
+                child: Text(
+                  context
+                      .watch<ID001MainPageViewModel>()
+                      .issueBall
+                      .ballName,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.notoSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                )))
             : Spacer(),
         Container(
           width: 32,
@@ -885,7 +1000,9 @@ class _ID001MainPageState extends State<ID001MainPage>
           child: FlatButton(
               padding: EdgeInsets.all(0),
               onPressed:
-                  context.watch<ID001MainPageViewModel>().showBallSetting,
+              context
+                  .watch<ID001MainPageViewModel>()
+                  .showBallSetting,
               child: Icon(
                 ForutonaIcon.dots,
                 color: Color(0xff454F63),

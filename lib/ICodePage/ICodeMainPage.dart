@@ -1,12 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/IssueBallStyle1MarkerWidget.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/QuestBallStyle1MarkerWidget.dart';
-
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +16,8 @@ class ICodeMainPage extends StatefulWidget {
   _ICodeMainPageState createState() => _ICodeMainPageState();
 }
 
-class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserver {
+class _ICodeMainPageState extends State<ICodeMainPage>
+    with WidgetsBindingObserver {
   AppLifecycleState _lastLifecycleState;
   UniqueKey googleMapKey = UniqueKey();
 
@@ -34,18 +34,21 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state)   {
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     googleMapKey = UniqueKey();
-    setState(()  {
+    setState(() {
       _lastLifecycleState = state;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
-        create: (_) => ICodeMainPageViewModel(context),
+        create: (_) => ICodeMainPageViewModel(
+            context: context,
+            fBallListUpFromMapAreaUseCaseInputPort: sl(),
+            geoLocationUtilUseCase: sl(),
+            mapScreenPositionUseCaseInputPort: sl()),
         child: Consumer<ICodeMainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -80,14 +83,14 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
                       ),
 
                       Positioned(
-                        top: MediaQuery.of(context).padding.top+16,
+                        top: MediaQuery.of(context).padding.top + 16,
                         left: 0,
                         width: MediaQuery.of(context).size.width,
-                        child: textMapSerachBar(model,context),
+                        child: textMapSearchBar(model, context),
                       ),
                       Positioned(
                           top: MediaQuery.of(context).padding.top + 80,
-                          right:  16,
+                          right: 16,
                           child: myLocationButton(model)),
                       Positioned(
                           top: MediaQuery.of(context).padding.top + 150,
@@ -102,17 +105,16 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
                       Positioned(
                         bottom: 69,
                         left: 0,
-                        child: bottomBallListUp(model,context),
+                        child: bottomBallListUp(model, context),
                       ),
                     ]))),
             model.isLoading ? CommonLoadingComponent() : Container()
-          ]
-
-          );
+          ]);
         }));
   }
 
-  Container bottomBallListUp(ICodeMainPageViewModel model,BuildContext context) {
+  Container bottomBallListUp(
+      ICodeMainPageViewModel model, BuildContext context) {
     return Container(
       height: 90,
       width: MediaQuery.of(context).size.width,
@@ -180,7 +182,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
     );
   }
 
-  Stack textMapSerachBar(ICodeMainPageViewModel model,BuildContext context) {
+  Stack textMapSearchBar(ICodeMainPageViewModel model, BuildContext context) {
     return Stack(
       children: <Widget>[
         Container(
@@ -200,7 +202,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
                       color: Color(0xff454f63),
                     )),
               ),
-              onPressed:model.onPlaceSearchTap,
+              onPressed: model.onPlaceSearchTap,
             ),
             decoration: BoxDecoration(
               color: Color(0xffffffff).withOpacity(0.8),
@@ -216,7 +218,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> with WidgetsBindingObserv
         Positioned(
           right: 32,
           top: 16,
-          child: Icon(ForutonaIcon.search,color: Color(0xff454F63)),
+          child: Icon(ForutonaIcon.search, color: Color(0xff454F63)),
         )
       ],
     );

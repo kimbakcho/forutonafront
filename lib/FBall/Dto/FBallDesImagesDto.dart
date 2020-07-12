@@ -1,5 +1,5 @@
 
-import 'package:forutonafront/ICodePage/IM001/BallImageItemDto.dart';
+import 'package:forutonafront/ICodePage/IM001/BallImageItem.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FBallDesImagesDto.g.dart';
@@ -15,7 +15,7 @@ class FBallDesImages {
      fBallDesImagesDto.src = src;
      return fBallDesImagesDto;
   }
-  factory FBallDesImages.fromBallImageItemDto(int index,BallImageItemDto item){
+  factory FBallDesImages.fromBallImageItemDto(int index,BallImageItem item){
     var fBallDesImagesDto = FBallDesImages();
     fBallDesImagesDto.index = index;
     fBallDesImagesDto.src = item.imageUrl;

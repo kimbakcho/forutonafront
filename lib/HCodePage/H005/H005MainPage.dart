@@ -10,6 +10,7 @@ import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
 import 'package:forutonafront/HCodePage/H005/H00502/H00502PageViewModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -31,12 +32,6 @@ class H005MainPage extends StatefulWidget {
 class _H005MainPageState extends State<H005MainPage>
     with SingleTickerProviderStateMixin {
   TabController tabController;
-  FBallListUpFromSearchTitleUseCaseInputPort
-      _fBallListUpFromSearchTextUseCaseInputPort =
-      FBallListUpFromSearchTitleUseCase(fBallRepository: FBallRepositoryImpl(fBallRemoteDataSource: FBallRemoteSourceImpl()));
-
-  FBallListUpFromSearchTagNameUseCaseInputPort _fBallListUpFromSearchTagNameUseCaseInputPort =
-      FBallListUpFromSearchTagNameUseCase(fBallRepository: FBallRepositoryImpl(fBallRemoteDataSource: FBallRemoteSourceImpl()));
 
   @override
   void initState() {
@@ -51,30 +46,30 @@ class _H005MainPageState extends State<H005MainPage>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark));
-
+    var h005mainPageViewModel = H005MainPageViewModel(
+        context: context,
+        searchText: widget.searchText,
+        tabController: tabController);
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-              create: (_) => H005MainPageViewModel(
-                  context: context,
-                  fBallListUpFromSearchTitleUseCaseInputPort: _fBallListUpFromSearchTextUseCaseInputPort,
-                  fBallListUpFromSearchTagUseCaseInputPort: _fBallListUpFromSearchTagNameUseCaseInputPort,
-                  searchText: widget.searchText,
-                  tabController: tabController)),
+              create: (_) => h005mainPageViewModel),
           ChangeNotifierProvider(
             lazy: false,
               create: (_) => H00501PageViewModel(
                   context: context,
-                  fBallListUpFromSearchTitleUseCaseInputPort: _fBallListUpFromSearchTextUseCaseInputPort,
+                  fBallListUpFromSearchTitleUseCaseInputPort: sl(),
+                  geoLocationUtilUseCaseIp: sl(),
+                  onSearchTitleItemCount: h005mainPageViewModel.onBallListUpFromSearchTitleBallTotalCount,
                   searchTitle: widget.searchText)),
           ChangeNotifierProvider(
               lazy: false,
               create: (_) => H00502PageViewModel(
                   context: context,
-                  fBallListUpFromSearchTagNameUseCaseInputPort: _fBallListUpFromSearchTagNameUseCaseInputPort,
+                  fBallListUpFromSearchTagNameUseCaseInputPort: sl(),
+                  geoLocationUtilUseCaseInputPort: sl(),
+                  rankingFromTagNameOrderByBallPowerUseCaseInputPort: sl(),
+                  emitBallListUpFromSearchTagNameBallTotalCount: h005mainPageViewModel.onBallListUpFromSearchTagNameBallTotalCount,
                   searchTag: widget.searchText))
         ],
         child: Consumer<H005MainPageViewModel>(builder: (_, model, child) {

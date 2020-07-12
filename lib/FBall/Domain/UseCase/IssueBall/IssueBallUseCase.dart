@@ -9,7 +9,7 @@ import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/IssueBallUpdateReqDto.dart';
-import 'package:forutonafront/ICodePage/IM001/BallImageItemDto.dart';
+import 'package:forutonafront/ICodePage/IM001/BallImageItem.dart';
 
 import 'IssueBallUseCaseInputPort.dart';
 import 'IssueBallUseCaseOutputPort.dart';
@@ -62,10 +62,10 @@ class IssueBallUseCase implements IssueBallUseCaseInputPort {
   }
 
   @override
-  Future<List<BallImageItemDto>> ballImageListUpLoadAndFillUrls(
-      {List<BallImageItemDto> refSrcList}) async {
+  Future<List<BallImageItem>> ballImageListUpLoadAndFillUrls(
+      List<BallImageItem> refSrcList) async {
     List<Uint8List> images = [];
-    List<BallImageItemDto> uploadListImageItemDto = [];
+    List<BallImageItem> uploadListImageItemDto = [];
     for (var o in refSrcList) {
       if (o.imageByte != null) {
         var image = await decodeImageFromList(o.imageByte);

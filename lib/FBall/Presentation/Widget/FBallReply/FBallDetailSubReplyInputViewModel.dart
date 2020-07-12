@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
@@ -10,7 +11,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoU
 import 'package:uuid/uuid.dart';
 
 class FBallDetailSubReplyInputViewModel extends ChangeNotifier {
-  final FBallSubReplyResDto mainReply;
+  final FBallReply mainReply;
   final BuildContext context;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   bool _isBackSendButton = false;
@@ -27,7 +28,7 @@ class FBallDetailSubReplyInputViewModel extends ChangeNotifier {
 
   StreamSubscription _keyboard;
   TextEditingController subReplyController = new TextEditingController();
-  FBallReplyRepository _fBallReplyRepository = FBallReplyRepository();
+
 
   FBallDetailSubReplyInputViewModel(
       {@required this.mainReply,

@@ -6,10 +6,9 @@ part 'FBallReplyReqDto.g.dart';
 class FBallReplyReqDto {
   String ballUuid;
   int replyNumber;
-  bool detail;
+  bool reqOnlySubReply;
   int size;
   int page;
-  String sort;
 
   FBallReplyReqDto();
   factory FBallReplyReqDto.fromJson(Map<String, dynamic> json) =>

@@ -4,7 +4,6 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -25,14 +24,23 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
 
   String distanceDisplayText = "";
 
-  IssueBallUseCaseInputPort issueBallUseCaseInputPort = IssueBallUseCase();
+  IssueBallUseCaseInputPort _issueBallUseCaseInputPort;
 
-  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort = sl();
+  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   IssueBallWidgetStyle2ViewModel(
-      {@required this.context, @required FBallResDto userBallResDto}) {
+      {@required
+          this.context,
+      @required
+          FBallResDto userBallResDto,
+      @required
+          IssueBallUseCaseInputPort issueBallUseCaseInputPort,
+      @required
+          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort})
+      : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
+        _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     issueBall = IssueBall.fromFBallResDto(userBallResDto);
-    geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
+    _geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
         ballLatLng: Position(
             latitude: issueBall.latitude, longitude: issueBall.longitude),
         geoLocationUtilUseCaseOp: this);
@@ -51,7 +59,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
     } else {
       await Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => ID001MainPage(issueBall: issueBall)));
-      issueBallUseCaseInputPort.selectBall(
+      _issueBallUseCaseInputPort.selectBall(
           ballUuid: issueBall.ballUuid, outputPort: this);
     }
   }
@@ -70,10 +78,10 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
               issueBall.ballUuid,
               IM001MainPageEnterMode.Update);
         }));
-        issueBallUseCaseInputPort.selectBall(
+        _issueBallUseCaseInputPort.selectBall(
             ballUuid: issueBall.ballUuid, outputPort: this);
       } else {
-        issueBallUseCaseInputPort.deleteBall(
+        _issueBallUseCaseInputPort.deleteBall(
             ballUuid: issueBall.ballUuid, outputPort: this);
       }
     }

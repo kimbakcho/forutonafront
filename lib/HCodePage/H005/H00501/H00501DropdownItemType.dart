@@ -4,7 +4,7 @@ import 'H00501Ordersenum.dart';
 
 class H00501DropdownItemType {
   String display;
-  H00501Ordersenum value;
+  H00501OrdersEnum value;
   QueryOrders orders;
 
   H00501DropdownItemType(this.display, this.value,this.orders);

@@ -9,45 +9,6 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallInputRep
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 
 class FBallReplyUtil {
-  List<FBallSubReplyResDto> replyResWrapToSubReplyResDtoList(FBallReplyResWrapDto fBallReplyResWrapDto) {
-    var contents = fBallReplyResWrapDto.contents;
-    List<FBallSubReplyResDto> fBallSubReplyResDto = [];
-    var replyList = contents.where((item) {
-      return item.replySort == 0;
-    });
-    var mainReplyList = replyList.toList();
-    mainReplyList.sort((x1, x2) {
-      return x1.replyUploadDateTime
-          .difference(x2.replyUploadDateTime)
-          .isNegative
-          ? 1
-          : -1;
-    });
-    for (var mainReply in mainReplyList) {
-      FBallSubReplyResDto item =
-      FBallSubReplyResDto.fromFBallReplyResDto(mainReply);
-      var subReply = contents.where((item) {
-        if (item.replySort == 0) {
-          return false;
-        } else if (item.replyNumber == mainReply.replyNumber) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      var subReplyList = subReply.toList();
-      subReplyList.sort((x1, x2) {
-        return x1.replyUploadDateTime
-            .difference(x2.replyUploadDateTime)
-            .isNegative
-            ? -1
-            : 1;
-      });
-      item.subReply = subReplyList;
-      fBallSubReplyResDto.add(item);
-    }
-    return fBallSubReplyResDto;
-  }
 
   Future<ModifyReturnValue> modifyPopup(BuildContext context) async {
     ModifyReturnValue result = await showGeneralDialog(

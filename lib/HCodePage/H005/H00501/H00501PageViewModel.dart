@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
@@ -14,17 +12,21 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Ordersenum.dart';
-import 'package:forutonafront/ServiceLocator.dart';
 
-class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearchTitleUseCaseOutputPort{
+class H00501PageViewModel extends ChangeNotifier
+    implements FBallListUpFromSearchTitleUseCaseOutputPort {
   final BuildContext context;
-
+  final FBallListUpFromSearchTitleUseCaseInputPort
+      _fBallListUpFromSearchTitleUseCaseInputPort;
+  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseIp;
+  final Function(int count) onSearchTitleItemCount;
   List<DropdownMenuItem<H00501DropdownItemType>> dropDownItems =
       new List<DropdownMenuItem<H00501DropdownItemType>>();
   List<H00501DropdownItemType> ordersItems = new List<H00501DropdownItemType>();
   ScrollController mainDropDownBtnController = new ScrollController();
   List<BallStyle1Widget> ballWidgetLists = [];
   H00501DropdownItemType _selectOrder;
+
   H00501DropdownItemType get selectOrder => _selectOrder;
 
   set selectOrder(H00501DropdownItemType value) {
@@ -45,20 +47,26 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
 
   String searchTitle;
 
-  final FBallListUpFromSearchTitleUseCaseInputPort
-      fBallListUpFromSearchTitleUseCaseInputPort;
-  GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseIp = sl();
   int _ballPageLimitSize = 20;
   int _pageCount = 0;
 
   bool _initFinishFlag = false;
 
   H00501PageViewModel(
-      {@required this.context,
-      @required this.searchTitle,
-      @required this.fBallListUpFromSearchTitleUseCaseInputPort}) {
-    this.fBallListUpFromSearchTitleUseCaseInputPort.addBallListUpFromSearchTitleListener(outputPort: this);
-
+      {@required
+          this.context,
+      @required
+          this.searchTitle,
+      @required
+          FBallListUpFromSearchTitleUseCaseInputPort
+              fBallListUpFromSearchTitleUseCaseInputPort,
+      @required
+          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseIp,
+      @required
+          this.onSearchTitleItemCount})
+      : _fBallListUpFromSearchTitleUseCaseInputPort =
+            fBallListUpFromSearchTitleUseCaseInputPort,
+        _geoLocationUtilUseCaseIp = geoLocationUtilUseCaseIp {
     init();
   }
 
@@ -71,7 +79,7 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
 
   Future ballListUpFromSearchText() async {
     isLoading = true;
-    var position = await geoLocationUtilUseCaseIp.getCurrentWithLastPosition();
+    var position = await _geoLocationUtilUseCaseIp.getCurrentWithLastPosition();
     var fBallListUpFromSearchTitleReqDto = new FBallListUpFromSearchTitleReqDto(
         searchText: searchTitle,
         sortsJsonText: _makeSearchOrders().toQueryJson(),
@@ -79,15 +87,15 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
         size: _ballPageLimitSize,
         longitude: position.longitude,
         latitude: position.latitude);
-    await fBallListUpFromSearchTitleUseCaseInputPort.ballListUpFromSearchTitle(
-        reqDto: fBallListUpFromSearchTitleReqDto);
+    await _fBallListUpFromSearchTitleUseCaseInputPort.ballListUpFromSearchTitle(
+        reqDto: fBallListUpFromSearchTitleReqDto, outputPort: this);
     isLoading = false;
   }
 
   FSorts _makeSearchOrders() {
     FSorts fSort = new FSorts();
-    fSort.sorts.add(new FSort(
-        EnumToString.parse(selectOrder.value), selectOrder.orders));
+    fSort.sorts.add(
+        new FSort(EnumToString.parse(selectOrder.value), selectOrder.orders));
     return fSort;
   }
 
@@ -124,11 +132,11 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
 
   _initOrdersItems() {
     ordersItems.add(H00501DropdownItemType(
-        "파워순", H00501Ordersenum.ballPower, QueryOrders.DESC));
+        "파워순", H00501OrdersEnum.ballPower, QueryOrders.DESC));
     ordersItems.add(H00501DropdownItemType(
-        "최신순", H00501Ordersenum.makeTime, QueryOrders.DESC));
+        "최신순", H00501OrdersEnum.makeTime, QueryOrders.DESC));
     ordersItems.add(H00501DropdownItemType(
-        "거리순", H00501Ordersenum.distance, QueryOrders.ASC));
+        "거리순", H00501OrdersEnum.distance, QueryOrders.ASC));
 
     dropDownItems = ordersItems.map<DropdownMenuItem<H00501DropdownItemType>>(
         (H00501DropdownItemType item) {
@@ -144,7 +152,6 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
     }).toList();
     selectOrder = ordersItems[0];
   }
-
 
   isEmptyPage() {
     if (_initFinishFlag && ballWidgetLists.length == 0) {
@@ -167,6 +174,6 @@ class H00501PageViewModel extends ChangeNotifier implements FBallListUpFromSearc
 
   @override
   onBallListUpFromSearchTitleBallTotalCount(int fBallTotalCount) {
-    throw UnimplementedError();
+    onSearchTitleItemCount(fBallTotalCount);
   }
 }

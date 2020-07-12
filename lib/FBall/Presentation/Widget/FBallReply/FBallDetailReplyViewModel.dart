@@ -60,7 +60,7 @@ class FBallDetailReplyViewModel extends ChangeNotifier {
       getReplyResWrapDto().contents.clear();
     }
     _fBallReplyWidgetViewController.fBallReplyResWrapDto =
-        await _fBallReplyRepository.getFBallReply(reqDto);
+        await _fBallReplyRepository.reqFBallReply(reqDto);
     List<FBallSubReplyResDto> subReplyDto =
         FBallReplyUtil().replyResWrapToSubReplyResDtoList(getReplyResWrapDto());
     getReplyContentBars().addAll(subReplyDto

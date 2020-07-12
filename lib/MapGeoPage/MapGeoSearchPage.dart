@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'MapGeoSearchPageViewModel.dart';
 
@@ -12,9 +13,6 @@ class MapGeoSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white.withOpacity(0.6),
-        statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
         create: (_) => MapGeoSearchPageViewModel(_initAddress, _initPosition,context),
         child: Consumer<MapGeoSearchPageViewModel>(builder: (_, model, child) {
@@ -63,8 +61,7 @@ class MapGeoSearchPage extends StatelessWidget {
                                               model.predictions[index]
                                                   .description,
                                               overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontFamily: "Noto Sans CJK KR",
+                                              style: GoogleFonts.notoSans(
                                                 fontSize: 14,
                                                 color: Color(0xff454f63),
                                               )),
@@ -125,12 +122,10 @@ class MapGeoSearchPage extends StatelessWidget {
                       fillColor: Color(0xffF9F9F9),
                       hintText: model.getSearchHintText(),
                       hintStyle: model.hasSearchTextFocus
-                          ? TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
+                          ? GoogleFonts.notoSans(
                               fontSize: 14,
                               color: Color(0xffcccccc))
-                          : TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
+                          : GoogleFonts.notoSans(
                               fontSize: 14,
                               color: Color(0xff454f63),
                             ),

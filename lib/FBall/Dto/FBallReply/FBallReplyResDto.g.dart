@@ -23,7 +23,13 @@ FBallReplyResDto _$FBallReplyResDtoFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['replyUpdateDateTime'] as String)
     ..userNickName = json['userNickName'] as String
     ..userProfilePictureUrl = json['userProfilePictureUrl'] as String
-    ..deleteFlag = json['deleteFlag'] as bool;
+    ..deleteFlag = json['deleteFlag'] as bool
+    ..subReplyCount = json['subReplyCount'] as int
+    ..fBallReplyResDtos = (json['fBallReplyResDtos'] as List)
+        ?.map((e) => e == null
+            ? null
+            : FBallReplyResDto.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$FBallReplyResDtoToJson(FBallReplyResDto instance) =>
@@ -40,4 +46,6 @@ Map<String, dynamic> _$FBallReplyResDtoToJson(FBallReplyResDto instance) =>
       'userNickName': instance.userNickName,
       'userProfilePictureUrl': instance.userProfilePictureUrl,
       'deleteFlag': instance.deleteFlag,
+      'subReplyCount': instance.subReplyCount,
+      'fBallReplyResDtos': instance.fBallReplyResDtos,
     };

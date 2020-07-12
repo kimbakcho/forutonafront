@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2Widget.dart';
-
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -11,15 +11,19 @@ import 'IssueBallWidgetStyle2ViewModel.dart';
 
 class IssueBallWidgetStyle2 extends StatelessWidget
     implements BallStyle2Widget {
-
   final FBallResDto fBallResDto;
+
   IssueBallWidgetStyle2({@required this.fBallResDto});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         key: UniqueKey(),
-        create: (_) => IssueBallWidgetStyle2ViewModel(context: context,userBallResDto: fBallResDto),
+        create: (_) => IssueBallWidgetStyle2ViewModel(
+            context: context,
+            userBallResDto: fBallResDto,
+            geoLocationUtilUseCaseInputPort: sl(),
+            issueBallUseCaseInputPort: sl()),
         child: Consumer<IssueBallWidgetStyle2ViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -45,7 +49,9 @@ class IssueBallWidgetStyle2 extends StatelessWidget
                           child: divider(context),
                         ),
                         Positioned(
-                            right: 16, bottom: 16, child: valueBottomBar(model)),
+                            right: 16,
+                            bottom: 16,
+                            child: valueBottomBar(model)),
                         Positioned(
                           bottom: 63,
                           right: 16,
@@ -62,7 +68,9 @@ class IssueBallWidgetStyle2 extends StatelessWidget
                 ],
               ),
               decoration: BoxDecoration(
-                  color: model.issueBall.isAliveBall() ? Color(0xffffffff) : Color(0xffF6F6F6),
+                  color: model.issueBall.isAliveBall()
+                      ? Color(0xffffffff)
+                      : Color(0xffF6F6F6),
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(0.00, 3.00),
@@ -113,8 +121,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
       ),
       Container(
         child: Text(model.issueBall.getDisplayDisLikeCount(),
-            style: TextStyle(
-              fontFamily: "Gibson",
+            style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w600,
               fontSize: 12,
               color: Color(0xff78849e),
@@ -131,8 +138,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
       ),
       Container(
         child: Text(model.issueBall.getDisplayCommentCount(),
-            style: TextStyle(
-              fontFamily: "Gibson",
+            style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w600,
               fontSize: 12,
               color: Color(0xff78849e),
@@ -149,8 +155,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
       ),
       Container(
         child: Text(model.issueBall.getDisplayRemainingTime(),
-            style: TextStyle(
-              fontFamily: "Gibson",
+            style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w600,
               fontSize: 12,
               color: Color(0xff78849e),
@@ -197,8 +202,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
             Text(model.issueBall.getDisplayBallName(),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
                   color: model.issueBall.isAliveBall()
@@ -215,5 +219,4 @@ class IssueBallWidgetStyle2 extends StatelessWidget
           ],
         ));
   }
-
 }

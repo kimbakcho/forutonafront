@@ -4,6 +4,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/Iss
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style3/IssueBallWidgetStyle3ViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'BallStyle3Widget.dart';
@@ -78,8 +79,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
       child: RichText(
         text: TextSpan(
             text: model.issueBall.nickName,
-            style: TextStyle(
-              fontFamily: "Noto Sans CJK KR",
+            style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w700,
               fontSize: 10,
               color: Color(0xff78849e),
@@ -88,8 +88,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
               TextSpan(text: "    "),
               TextSpan(
                   text: "${model.issueBall.userLevel.toStringAsFixed(0)}  lv",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 9,
                     color: Color(0xff454f63).withOpacity(0.56),

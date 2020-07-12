@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/HCodePage/H005/H00502/H00502PageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'H00502DropdownItemType.dart';
@@ -77,8 +78,7 @@ class H00502Page extends StatelessWidget {
             width: 91.00,
             child: DropdownButton<H00502DropdownItemType>(
               isExpanded: true,
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              style: GoogleFonts.notoSans(
                 fontWeight: FontWeight.w500,
                 fontSize: 13,
                 color: Color(0xff454f63),
@@ -121,8 +121,7 @@ class H00502Page extends StatelessWidget {
                   child: InkWell(
                       onTap: () {},
                       child: Text(model.relationTagRankings[index].tagName,
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
                             fontWeight: FontWeight.w500,
                             fontSize: 13,
                             color: Color(0xff454f63),

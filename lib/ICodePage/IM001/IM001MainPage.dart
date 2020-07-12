@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'BallImageItemDto.dart';
+import 'BallImageItem.dart';
 
 class IM001MainPage extends StatefulWidget {
   LatLng setUpPosition;
@@ -94,10 +94,10 @@ class _IM001MainPageState extends State<IM001MainPage>
                               googleMapBar(model, context),
                               titleLabelBar(model),
                               titleEditBar(model),
-                              contentDivder(),
+                              contentDivider(),
                               textContentLabel(model),
                               textContentEditBar(model),
-                              contentDivder(),
+                              contentDivider(),
                               imageListBar(model),
                               youtubeBar(model),
                               tagBar(model, context),
@@ -152,8 +152,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                 color: Color(0xff3497fd),
               ),
               hintText: "태그를 입력해 주세요(000, 로 구분합니다.)",
-              hintStyle: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              hintStyle: GoogleFonts.notoSans(
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
                 color: Color(0xffe4e7e8),
@@ -186,8 +185,7 @@ class _IM001MainPageState extends State<IM001MainPage>
         Container(
             child: model.tagEditFocusNode.hasFocus
                 ? Text("${model.tagChips.length}/10",
-                    style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w500,
                         fontSize: 13,
                         color: Color(0xffb1b1b1)))
@@ -208,8 +206,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                     top: 17,
                     left: 16,
                     child: Text("YOUTUBE 동영상 첨부",
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
+                        style: GoogleFonts.notoSans(
                           fontWeight: FontWeight.w500,
                           fontSize: 15,
                           color: Color(0xff454f63),
@@ -250,8 +247,7 @@ class _IM001MainPageState extends State<IM001MainPage>
           child: FlatButton(
               padding: EdgeInsets.all(0),
               child: Text("붙혀넣기",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 11,
                     color: Color(0xffcccccc),
@@ -277,8 +273,7 @@ class _IM001MainPageState extends State<IM001MainPage>
           child: FlatButton(
               padding: EdgeInsets.all(0),
               child: Text("붙혀넣기",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 11,
                     color: Color(0xffffffff),
@@ -304,8 +299,7 @@ class _IM001MainPageState extends State<IM001MainPage>
           child: FlatButton(
               padding: EdgeInsets.all(0),
               child: Text("삭제",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 11,
                     color: Color(0xffffffff),
@@ -337,8 +331,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                   top: 16,
                   left: 16,
                   child: Text("이미지",
-                      style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                           fontWeight: FontWeight.w500,
                           fontSize: 15,
                           color: Color(0xff454f63)))),
@@ -346,8 +339,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                   top: 16,
                   right: 16,
                   child: Text("${model.ballImageList.length}/20",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w500,
                         fontSize: 13,
                         color: Color(0xffb1b1b1),
@@ -412,14 +404,14 @@ class _IM001MainPageState extends State<IM001MainPage>
         });
   }
 
-  Container ballImageFromDto(BallImageItemDto reqDto) {
-    if (reqDto.imageUrl != null) {
+  Container ballImageFromDto(BallImageItem imageItem) {
+    if (imageItem.hasImageUrl()) {
       return Container(
         height: 62,
         width: 75,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(reqDto.imageUrl), fit: BoxFit.cover),
+              image: NetworkImage(imageItem.imageUrl), fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(12.00),
         ),
       );
@@ -430,7 +422,7 @@ class _IM001MainPageState extends State<IM001MainPage>
         decoration: BoxDecoration(
           image: DecorationImage(
               image: MemoryImage(
-                reqDto.imageByte,
+                imageItem.imageByte,
               ),
               fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(12.00),
@@ -533,8 +525,7 @@ class _IM001MainPageState extends State<IM001MainPage>
       decoration: InputDecoration(
           counter: Container(),
           hintText: "어떤 이슈인가요?",
-          hintStyle: TextStyle(
-            fontFamily: "Noto Sans CJK KR",
+          hintStyle: GoogleFonts.notoSans(
             fontWeight: FontWeight.w500,
             fontSize: 14,
             color: Color(0xffe4e7e8),
@@ -551,8 +542,7 @@ class _IM001MainPageState extends State<IM001MainPage>
     return Container(
       padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Text("내용",
-          style: TextStyle(
-            fontFamily: "Noto Sans CJK KR",
+          style: GoogleFonts.notoSans(
             fontWeight: FontWeight.w500,
             fontSize: 15,
             color: model.textContentFocusNode.hasFocus
@@ -562,7 +552,7 @@ class _IM001MainPageState extends State<IM001MainPage>
     );
   }
 
-  Container contentDivder() {
+  Container contentDivider() {
     return Container(
       height: 1,
       width: 360,
@@ -582,8 +572,7 @@ class _IM001MainPageState extends State<IM001MainPage>
       decoration: InputDecoration(
           counter: Container(),
           hintText: "제목을 지어주세요!",
-          hintStyle: TextStyle(
-            fontFamily: "Noto Sans CJK KR",
+          hintStyle: GoogleFonts.notoSans(
             fontWeight: FontWeight.w500,
             fontSize: 14,
             color: Color(0xffe4e7e8),
@@ -600,8 +589,7 @@ class _IM001MainPageState extends State<IM001MainPage>
     return Container(
       padding: EdgeInsets.fromLTRB(16, 16, 0, 8),
       child: Text("제목",
-          style: TextStyle(
-            fontFamily: "Noto Sans CJK KR",
+          style: GoogleFonts.notoSans(
             fontWeight: FontWeight.w500,
             fontSize: 15,
             color: model.titleFocusNode.hasFocus
@@ -639,8 +627,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                   children: <Widget>[
                     Icon(Icons.location_on, color: Color(0xff78849E), size: 15),
                     Text(model.address,
-                        style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
+                        style: GoogleFonts.notoSans(
                           fontSize: 14,
                           color: Color(0xff454f63),
                         ))
@@ -674,8 +661,7 @@ class _IM001MainPageState extends State<IM001MainPage>
             width: 48),
         Container(
             child: Text(model.topNameTitle,
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Color(0xff454f63),
@@ -689,8 +675,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                 child: FlatButton(
                   onPressed: model.onCompleteTap,
                   child: Text("완료",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: Color(0xff454f63),
@@ -716,8 +701,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                 width: 75.00,
                 child: FlatButton(
                   child: Text("완료",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: Color(0xffb1b1b1),

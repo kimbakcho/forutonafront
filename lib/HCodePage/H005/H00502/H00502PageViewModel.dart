@@ -1,6 +1,5 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
@@ -11,7 +10,6 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
-import 'package:forutonafront/ServiceLocator.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
@@ -45,13 +43,14 @@ class H00502PageViewModel extends ChangeNotifier
   }
 
   final FBallListUpFromSearchTagNameUseCaseInputPort
-      fBallListUpFromSearchTagNameUseCaseInputPort;
+      _fBallListUpFromSearchTagNameUseCaseInputPort;
 
   final RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
-      _rankingFromTagNameOrderByBallPowerUseCaseInputPort =
-      RelationTagRankingFromTagNameOrderByBallPowerUseCase();
+      _rankingFromTagNameOrderByBallPowerUseCaseInputPort;
 
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
+  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+
+  final Function(int count) emitBallListUpFromSearchTagNameBallTotalCount;
 
   H005MainPageViewModel _h005MainModel;
   List<H00502DropdownItemType> _ordersItems =
@@ -63,17 +62,32 @@ class H00502PageViewModel extends ChangeNotifier
   String searchTag;
 
   H00502PageViewModel(
-      {@required this.context,
-      @required this.fBallListUpFromSearchTagNameUseCaseInputPort,
-      @required this.searchTag}) {
+      {@required
+          this.context,
+      @required
+          FBallListUpFromSearchTagNameUseCaseInputPort
+              fBallListUpFromSearchTagNameUseCaseInputPort,
+      @required
+          RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
+              rankingFromTagNameOrderByBallPowerUseCaseInputPort,
+      @required
+          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort,
+      @required
+          this.searchTag,
+      @required this.emitBallListUpFromSearchTagNameBallTotalCount
+      })
+      : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
+        _fBallListUpFromSearchTagNameUseCaseInputPort =
+            fBallListUpFromSearchTagNameUseCaseInputPort,
+        _rankingFromTagNameOrderByBallPowerUseCaseInputPort =
+            rankingFromTagNameOrderByBallPowerUseCaseInputPort {
     init();
   }
 
   init() async {
     _initOrdersItems();
     mainDropDownBtnController.addListener(onScrollListener);
-    fBallListUpFromSearchTagNameUseCaseInputPort
-        .addBallListUpFromSearchTagNameListener(outputPort: this);
+
 
     ballListUpFromSearchTag();
 
@@ -101,8 +115,8 @@ class H00502PageViewModel extends ChangeNotifier
 
   FSorts _makeSearchOrders() {
     FSorts fSort = new FSorts();
-    fSort.sorts.add(new FSort(
-        EnumToString.parse(selectOrder.value), selectOrder.orders));
+    fSort.sorts.add(
+        new FSort(EnumToString.parse(selectOrder.value), selectOrder.orders));
     return fSort;
   }
 
@@ -124,7 +138,8 @@ class H00502PageViewModel extends ChangeNotifier
 
   Future ballListUpFromSearchTag() async {
     isLoading = true;
-    var position = await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
+    var position =
+        await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
     FBallListUpFromTagNameReqDto reqDto = new FBallListUpFromTagNameReqDto(
         searchTag: searchTag,
         sortsJsonText: _makeSearchOrders().toQueryJson(),
@@ -132,8 +147,8 @@ class H00502PageViewModel extends ChangeNotifier
         longitude: position.longitude,
         size: _ballPageLimitSize,
         page: _pageCount);
-    await fBallListUpFromSearchTagNameUseCaseInputPort
-        .ballListUpFromSearchTagName(reqDto: reqDto);
+    await _fBallListUpFromSearchTagNameUseCaseInputPort
+        .ballListUpFromSearchTagName(reqDto: reqDto,outputPort: this);
     isLoading = false;
   }
 
@@ -190,12 +205,13 @@ class H00502PageViewModel extends ChangeNotifier
   }
 
   @override
-  onBallListUpFromSearchTagNameBallTotalCount(int fBall) {
-    throw UnimplementedError();
+  onBallListUpFromSearchTagNameBallTotalCount(int fBallCount) {
+    emitBallListUpFromSearchTagNameBallTotalCount(fBallCount);
   }
 
   @override
-  onRelationTagRankingFromTagNameOrderByBallPower(List<TagRankingDto> tagRankingDtos) {
+  onRelationTagRankingFromTagNameOrderByBallPower(
+      List<TagRankingDto> tagRankingDtos) {
     this.relationTagRankings = tagRankingDtos;
     notifyListeners();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501PageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'H00501DropdownItemType.dart';
@@ -61,8 +62,7 @@ class H00501Page extends StatelessWidget {
             width: 91.00,
             child: DropdownButton<H00501DropdownItemType>(
               isExpanded: true,
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              style: GoogleFonts.notoSans(
                 fontWeight: FontWeight.w500,
                 fontSize: 13,
                 color: Color(0xff454f63),

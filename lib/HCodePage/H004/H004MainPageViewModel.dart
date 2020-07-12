@@ -10,18 +10,26 @@ import 'package:forutonafront/ServiceLocator.dart';
 
 import '../../FBall/Dto/BallSearchBarHistoryDto.dart';
 
-class H004MainPageViewModel extends ChangeNotifier implements BallSearchBarHistoryUseCaseOutputPort{
+class H004MainPageViewModel extends ChangeNotifier
+    implements BallSearchBarHistoryUseCaseOutputPort {
   final BuildContext context;
+  final BallSearchBarHistoryUseCaseInputPort _ballSearchBarHistoryUseCaseInputPort;
+  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+
   FocusNode searchFocusNode = FocusNode();
   TextEditingController searchTextController = new TextEditingController();
   bool hasSearchTextFocus = true;
 
   List<BallSearchBarHistoryDto> searchHistoryList = [];
-  BallSearchBarHistoryUseCaseInputPort _ballSearchBarHistoryUseCaseInputPort = BallSearchBarHistoryUseCase();
 
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort = sl();
 
-  H004MainPageViewModel(this.context) {
+  H004MainPageViewModel({
+    @required this.context,
+    BallSearchBarHistoryUseCaseInputPort ballSearchBarHistoryUseCaseInputPort,
+    GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort
+  })
+      :_ballSearchBarHistoryUseCaseInputPort = ballSearchBarHistoryUseCaseInputPort,
+        _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     searchFocusNode.addListener(onSearchFocusNode);
     searchTextController.addListener(onSearchTextController);
     _init();
@@ -36,7 +44,8 @@ class H004MainPageViewModel extends ChangeNotifier implements BallSearchBarHisto
   }
 
   removeSearchText(BallSearchBarHistoryDto reqDto) async {
-    await _ballSearchBarHistoryUseCaseInputPort.removeHistory(reqDto: reqDto,outputPort: this);
+    await _ballSearchBarHistoryUseCaseInputPort.removeHistory(
+        reqDto: reqDto, outputPort: this);
     _loadSearchHistory();
   }
 
@@ -56,14 +65,16 @@ class H004MainPageViewModel extends ChangeNotifier implements BallSearchBarHisto
   onSearch(value) async {
     BallSearchBarHistoryDto saveReq = BallSearchBarHistoryDto(
         value, DateTime.now());
-     await _ballSearchBarHistoryUseCaseInputPort.saveHistory(reqDto: saveReq,outputPort: this);
-     _loadSearchHistory();
+    await _ballSearchBarHistoryUseCaseInputPort.saveHistory(
+        reqDto: saveReq, outputPort: this);
+    _loadSearchHistory();
   }
 
   onSave(value) async {
     BallSearchBarHistoryDto saveReq = BallSearchBarHistoryDto(
         value, DateTime.now());
-    await _ballSearchBarHistoryUseCaseInputPort.saveHistory(reqDto: saveReq,outputPort: this);
+    await _ballSearchBarHistoryUseCaseInputPort.saveHistory(
+        reqDto: saveReq, outputPort: this);
     _loadSearchHistory();
   }
 
@@ -103,7 +114,8 @@ class H004MainPageViewModel extends ChangeNotifier implements BallSearchBarHisto
     await _geoLocationUtilUseCaseInputPort.useGpsReq();
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) {
-      return H005MainPage(searchText: searchText,initPageState: H005PageState.Title);
+      return H005MainPage(
+          searchText: searchText, initPageState: H005PageState.Title);
     }));
   }
 

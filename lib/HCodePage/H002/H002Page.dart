@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/services.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H002/H002PageViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -15,34 +17,37 @@ class H002Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white.withOpacity(0.8), statusBarIconBrightness: Brightness.dark));
+        statusBarColor: Colors.white.withOpacity(0.8),
+        statusBarIconBrightness: Brightness.dark));
     //Hero Animation Speed
     timeDilation = 1.5;
     return ChangeNotifierProvider(
-        create: (_) => H002PageViewModel(context),
+        create: (_) => H002PageViewModel(
+            context: context, geoLocationUtilUseCaseInputPort: sl()),
         child: Consumer<H002PageViewModel>(builder: (_, model, child) {
           return Hero(
               tag: this.heroTag,
               child: Stack(children: <Widget>[
                 Scaffold(
                     body: Container(
-                        margin: EdgeInsets.fromLTRB(0, 22, 0, 0),
-                        child: Stack(children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              headerBar(context),
-                              issueBallMakeButton(model,context),
-                              questBallMakeButton(context)
-                            ],
-                          )
-                        ]),
-                    color: Color(0xffF2F0F1),
-                    ))
+                  margin: EdgeInsets.fromLTRB(0, 22, 0, 0),
+                  child: Stack(children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        headerBar(context),
+                        issueBallMakeButton(model, context),
+                        questBallMakeButton(context)
+                      ],
+                    )
+                  ]),
+                  color: Color(0xffF2F0F1),
+                )),
+                model.isLoading ? CommonLoadingComponent() : Container()
               ]));
         }));
   }
 
-  Container issueBallMakeButton(H002PageViewModel model,BuildContext context) {
+  Container issueBallMakeButton(H002PageViewModel model, BuildContext context) {
     return Container(
         height: 130,
         margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -72,7 +77,7 @@ class H002Page extends StatelessWidget {
             Positioned(
               top: 14,
               left: 16,
-              child:  Container(
+              child: Container(
                 padding: EdgeInsets.fromLTRB(1, 1, 0, 0),
                 height: 30.00,
                 width: 30.00,
@@ -91,8 +96,7 @@ class H002Page extends StatelessWidget {
               top: 14,
               left: 62,
               child: Text("이슈볼",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 17,
                     color: Color(0xff454f63),
@@ -102,7 +106,7 @@ class H002Page extends StatelessWidget {
               top: 79,
               left: 16,
               child: Container(
-                width: MediaQuery.of(context).size.width-64,
+                width: MediaQuery.of(context).size.width - 64,
                 child: Text(
                     "실제 세상에서 일어나는 크고 작은 소식들을 지도 "
                     "위에 표시하고 공유할 수 있어요",
@@ -155,7 +159,7 @@ class H002Page extends StatelessWidget {
             Positioned(
               top: 14,
               left: 16,
-              child:  Container(
+              child: Container(
                 padding: EdgeInsets.fromLTRB(1, 1, 0, 0),
                 height: 30.00,
                 width: 30.00,
@@ -174,8 +178,7 @@ class H002Page extends StatelessWidget {
               top: 14,
               left: 62,
               child: Text("퀘스트 볼",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 17,
                     color: Color(0xff454f63),
@@ -183,7 +186,7 @@ class H002Page extends StatelessWidget {
             ),
             Positioned(
               top: 79,
-              width: MediaQuery.of(context).size.width-32,
+              width: MediaQuery.of(context).size.width - 32,
               child: Container(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: Text(
@@ -225,8 +228,7 @@ class H002Page extends StatelessWidget {
               },
               color: Colors.black),
           Text("볼 선택하기",
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              style: GoogleFonts.notoSans(
                 fontWeight: FontWeight.w700,
                 fontSize: 20,
                 color: Color(0xff454f63),

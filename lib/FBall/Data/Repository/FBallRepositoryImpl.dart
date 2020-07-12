@@ -11,40 +11,48 @@ import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 import 'package:meta/meta.dart';
 
 class FBallRepositoryImpl implements FBallRepository {
+  final FBallRemoteDataSource _fBallRemoteDataSource;
 
-  final FBallRemoteDataSource fBallRemoteDataSource;
-
-  FBallRepositoryImpl({@required this.fBallRemoteDataSource}):assert(fBallRemoteDataSource!=null);
+  FBallRepositoryImpl({@required FBallRemoteDataSource fBallRemoteDataSource})
+      : _fBallRemoteDataSource = fBallRemoteDataSource;
 
   @override
-  Future<FBallListUpWrap> listUpFromInfluencePower(FBallListUpFromBallInfluencePowerReqDto listUpReqDto) async {
-    var result = await fBallRemoteDataSource.listUpFromInfluencePower(listUpReqDto,FDio.noneToken());
+  Future<FBallListUpWrap> listUpFromInfluencePower(
+      FBallListUpFromBallInfluencePowerReqDto listUpReqDto) async {
+    var result = await _fBallRemoteDataSource.listUpFromInfluencePower(
+        listUpReqDto, FDio.noneToken());
     return result;
   }
 
   @override
-  Future<UserToMakeBallWrap> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto}) async {
-    var result = await fBallRemoteDataSource.getUserToMakerBalls(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+  Future<UserToMakeBallWrap> getUserToMakerBalls(
+      {@required UserToMakeBallReqDto reqDto}) async {
+    var result = await _fBallRemoteDataSource.getUserToMakerBalls(
+        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
     return result;
   }
 
   @override
-  Future<FBallListUpWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto}) async {
-    var result = await fBallRemoteDataSource.listUpFromSearchTitle(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+  Future<FBallListUpWrap> listUpFromSearchTitle(
+      {@required FBallListUpFromSearchTitleReqDto reqDto}) async {
+    var result = await _fBallRemoteDataSource.listUpFromSearchTitle(
+        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
     return result;
   }
 
   @override
-  Future<FBallListUpWrap> listUpFromTagName({@required  FBallListUpFromTagNameReqDto reqDto}) async {
-    var result = await fBallRemoteDataSource.listUpFromTagName(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+  Future<FBallListUpWrap> listUpFromTagName(
+      {@required FBallListUpFromTagNameReqDto reqDto}) async {
+    var result = await _fBallRemoteDataSource.listUpFromTagName(
+        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
     return result;
   }
 
   @override
-  Future<FBallListUpWrap> ballListUpFromMapArea({@required BallFromMapAreaReqDto reqDto}) async {
-    var result = await fBallRemoteDataSource.listUpBallFromMapArea(reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+  Future<FBallListUpWrap> ballListUpFromMapArea(
+      {@required BallFromMapAreaReqDto reqDto}) async {
+    var result = await _fBallRemoteDataSource.listUpBallFromMapArea(
+        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
     return result;
   }
-
-
 }

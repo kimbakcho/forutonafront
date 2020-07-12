@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H004/H004MainPageViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -19,12 +21,11 @@ class _H004MainPageState extends State<H004MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
-        create: (_) => H004MainPageViewModel(context),
+        create: (_) => H004MainPageViewModel(
+            context: context,
+            geoLocationUtilUseCaseInputPort: sl(),
+            ballSearchBarHistoryUseCaseInputPort: sl()),
         child: Consumer<H004MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -55,7 +56,6 @@ class _H004MainPageState extends State<H004MainPage> {
       height: model.isClearButtonActive()
           ? 0.0
           : (52.0 * model.searchHistoryList.length),
-
       child: ListView.builder(
           padding: EdgeInsets.all(0),
           shrinkWrap: true,
@@ -66,15 +66,15 @@ class _H004MainPageState extends State<H004MainPage> {
               height: 52,
               child: FlatButton(
                   onPressed: () {
-                    model.gotoH005Page(model.searchHistoryList[index].searchText);
+                    model.gotoH005Page(
+                        model.searchHistoryList[index].searchText);
                   },
                   child: Row(children: <Widget>[
-                    Expanded (
+                    Expanded(
                       child: Container(
                         child: Text(model.searchHistoryList[index].searchText,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: "Noto Sans CJK KR",
+                            style: GoogleFonts.notoSans(
                               fontSize: 14,
                               color: Color(0xff454f63),
                             )),
@@ -82,10 +82,10 @@ class _H004MainPageState extends State<H004MainPage> {
                     ),
                     Container(
                       child: Text(
-                          DateFormat("yy.MM.dd").format(
-                              model.searchHistoryList[index].searchTime.toLocal()),
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          DateFormat("yy.MM.dd").format(model
+                              .searchHistoryList[index].searchTime
+                              .toLocal()),
+                          style: GoogleFonts.notoSans(
                             fontSize: 14,
                             color: Color(0xffcccccc),
                           )),
@@ -128,7 +128,7 @@ class _H004MainPageState extends State<H004MainPage> {
           ),
           Container(
               margin: EdgeInsets.only(left: 8),
-              width: MediaQuery.of(context).size.width-80,
+              width: MediaQuery.of(context).size.width - 80,
               height: 32,
               child: TextField(
                 autocorrect: false,
@@ -165,12 +165,9 @@ class _H004MainPageState extends State<H004MainPage> {
                     fillColor: Color(0xffF9F9F9),
                     hintText: model.getSearchHintText(),
                     hintStyle: model.hasSearchTextFocus
-                        ? TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontSize: 14,
-                            color: Color(0xffcccccc))
-                        : TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                        ? GoogleFonts.notoSans(
+                            fontSize: 14, color: Color(0xffcccccc))
+                        : GoogleFonts.notoSans(
                             fontSize: 14,
                             color: Color(0xff454f63),
                           ),

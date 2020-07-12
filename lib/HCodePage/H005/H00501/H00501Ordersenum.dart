@@ -1,3 +1,3 @@
-enum H00501Ordersenum {
+enum H00501OrdersEnum {
   ballPower,makeTime,distance
 }

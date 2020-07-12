@@ -29,7 +29,7 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:youtube_parser/youtube_parser.dart';
 
-import 'BallImageItemDto.dart';
+import 'BallImageItem.dart';
 
 class IM001MainPageViewModel extends ChangeNotifier
     implements IssueBallUseCaseOutputPort, TagFromBallUuidUseCaseOutputPort {
@@ -62,10 +62,10 @@ class IM001MainPageViewModel extends ChangeNotifier
   TextEditingController textContentEditController = TextEditingController();
   TextEditingController titleEditController = TextEditingController();
   ScrollController mainScrollController = ScrollController();
-  TextEditingController tagEditController = new TextEditingController();
+  TextEditingController tagEditController = TextEditingController();
 
   //WidgetList
-  List<BallImageItemDto> ballImageList = [];
+  List<BallImageItem> ballImageList = [];
   List<Chip> tagChips = [];
   List<FBallResForMarkerStyle2Dto> ballList;
 
@@ -172,7 +172,7 @@ class IM001MainPageViewModel extends ChangeNotifier
     textContentEditController.text = _issueBall.getDisplayDescriptionText();
     ballImageList = _issueBall
         .getDesImages()
-        .map((x) => BallImageItemDto.fromFBallDesImagesDto(x))
+        .map((x) => BallImageItem.fromFBallDesImagesDto(x))
         .toList();
   }
 
@@ -230,9 +230,8 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   Future<List<FBallDesImages>> fBallImageUpload() async {
     List<FBallDesImages> imageList = [];
-    List<BallImageItemDto> fillUrlBallImageList =
-        await _issueBallUseCaseInputPort.ballImageListUpLoadAndFillUrls(
-            refSrcList: this.ballImageList);
+    List<BallImageItem> fillUrlBallImageList = await _issueBallUseCaseInputPort
+        .ballImageListUpLoadAndFillUrls(this.ballImageList);
     for (var index = 0; index < fillUrlBallImageList.length; index++) {
       imageList.add(FBallDesImages.fromBallImageItemDto(
           index, fillUrlBallImageList[index]));
@@ -284,7 +283,7 @@ class IM001MainPageViewModel extends ChangeNotifier
     if (images != null) {
       for (var i in images) {
         ByteData imageData = await i.getByteData(quality: 88);
-        BallImageItemDto itemDto = new BallImageItemDto();
+        BallImageItem itemDto = new BallImageItem();
         itemDto.imageByte = imageData.buffer.asUint8List();
         ballImageList.add(itemDto);
       }
@@ -297,7 +296,7 @@ class IM001MainPageViewModel extends ChangeNotifier
   onCameraPick() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     Uint8List imageData = await image.readAsBytes();
-    BallImageItemDto itemDto = new BallImageItemDto();
+    BallImageItem itemDto = new BallImageItem();
     itemDto.imageByte = imageData.buffer.asUint8List();
     ballImageList.add(itemDto);
     Navigator.of(context).pop();

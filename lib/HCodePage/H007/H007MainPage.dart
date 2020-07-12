@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimation.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -49,11 +49,12 @@ class _H007MainPageState extends State<H007MainPage>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.white.withOpacity(0.6),
-        statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
-        create: (_) => H007MainPageViewModel(initPosition, address, context),
+        create: (_) => H007MainPageViewModel(
+            geoLocationUtilUseCaseInputPort: sl(),
+            context: context,
+            address: address,
+            initPosition: initPosition),
         child: Consumer<H007MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(
@@ -108,8 +109,7 @@ class _H007MainPageState extends State<H007MainPage>
             model.onMapBallSearch(model.currentCameraPosition.target);
           },
           child: Text("이 근처의 볼을 검색합니다.",
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              style: GoogleFonts.notoSans(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
                 color: Color(0xfff9f9f9),

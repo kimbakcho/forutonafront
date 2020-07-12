@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
+import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailSubReplyInputViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -10,7 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class FBallDetailSubReplyInputView extends StatelessWidget {
-  final FBallSubReplyResDto mainReply;
+  final FBallReply mainReply;
 
   FBallDetailSubReplyInputView(this.mainReply);
 
