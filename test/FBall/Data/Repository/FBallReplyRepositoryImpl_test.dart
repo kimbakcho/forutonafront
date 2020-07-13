@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Data/Repository/FBallReplyRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Value/FBallReplyResWrap.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
@@ -10,7 +11,7 @@ import 'package:forutonafront/Preference.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Repository/FBallReplyRepositoryImpl.dart';
+
 
 class MockFireBaseAuthBaseAdapter extends Mock
     implements FireBaseAuthBaseAdapter {}
@@ -77,7 +78,9 @@ void main() {
     //arrange
     FBallReplyInsertReqDto reqDto = FBallReplyInsertReqDto();
     reqDto.ballUuid = "testBallUuid";
-    when(mockFBallReplyDataSource.updateFBallReply(any,any)).thenAnswer((realInvocation)  async => 1);
+    FBallReply fBallReply = FBallReply();
+    fBallReply.replyUuid = "testUUid";
+    when(mockFBallReplyDataSource.updateFBallReply(any,any)).thenAnswer((realInvocation)  async => fBallReply);
     //act
     await fBallReplyRepository.updateFBallReply(reqDto);
     //assert

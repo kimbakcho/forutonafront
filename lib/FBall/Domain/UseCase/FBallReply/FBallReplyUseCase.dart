@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
@@ -8,13 +10,15 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 
 class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
-  FBallReplyRepository _fBallReplyRepository;
+  final FBallReplyRepository _fBallReplyRepository;
+
 
   FBallReplyUseCase({@required FBallReplyRepository fBallReplyRepository})
       : _fBallReplyRepository = fBallReplyRepository;
 
   @override
-  Future<int> deleteFBallReply(String replyUuid) async {
+  Future<int> deleteFBallReply(String replyUuid,{FBallReplyUseCaseOutputPort outputPort}) async {
+    outputPort.onDeleteFBallReply(replyUuid);
     return await _fBallReplyRepository.deleteFBallReply(replyUuid);
   }
 
@@ -25,7 +29,7 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
     var fBallReplyResWrapDto =
         FBallReplyResWrapDto.fromFBallReplyResWrap(fBallReplyWrap);
     if (outputPort != null) {
-      outputPort.onFBallReply(fBallReplyResWrapDto.contents);
+      outputPort.onFBallReply(fBallReplyResWrapDto);
       outputPort.onFBallReplyTotalCount(fBallReplyResWrapDto.replyTotalCount);
     }
     return fBallReplyResWrapDto;
@@ -33,13 +37,19 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
 
   @override
   Future<FBallReplyResDto> insertFBallReply(
-      FBallReplyInsertReqDto reqDto) async {
+      FBallReplyInsertReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
     var fBallReply = await _fBallReplyRepository.insertFBallReply(reqDto);
-    return FBallReplyResDto.fromFBallReply(fBallReply);
+    var fBallReplyResDto = FBallReplyResDto.fromFBallReply(fBallReply);
+    outputPort.onInsertFBallReply(fBallReplyResDto);
+    return fBallReplyResDto;
   }
 
   @override
-  Future<int> updateFBallReply(FBallReplyInsertReqDto reqDto) async {
-    return await _fBallReplyRepository.updateFBallReply(reqDto);
+  Future<FBallReplyResDto> updateFBallReply(FBallReplyInsertReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
+    var fBallReply = await _fBallReplyRepository.updateFBallReply(reqDto);
+    var fBallReplyResDto = FBallReplyResDto.fromFBallReply(fBallReply);
+    outputPort.onUpdateFBallReply(fBallReplyResDto);
+    return fBallReplyResDto;
   }
+
 }

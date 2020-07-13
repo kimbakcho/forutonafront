@@ -1,4 +1,5 @@
 
+import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator.dart';
@@ -33,6 +34,16 @@ class FBallReply {
     }
   }
 
+  get replyUploadDateTimeString {
+    if(deleteFlag){
+      return "";
+    }else {
+      return TimeDisplayUtil.getCalcToStrFromNow(replyUploadDateTime);
+    }
+
+
+  }
+
   set replyText(String value) {
     _replyText = value;
   }
@@ -63,7 +74,10 @@ class FBallReply {
     _userProfilePictureUrl = value;
   }
 
-  List<FBallReply> fBallReplys;
+
+  List<FBallReply> fBallSubReplys = [];
+
+
 
   FBallReply();
 

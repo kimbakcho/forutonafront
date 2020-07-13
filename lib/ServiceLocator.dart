@@ -16,14 +16,17 @@ import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter
 import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallPlayerRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
+import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/IssueBallTypeRemoteDateSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallPlayerRepositoryImpl.dart';
+import 'package:forutonafront/FBall/Data/Repository/FBallReplyRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallValuationRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/IssueBallTypeRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart';
+import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/IssueBallTypeRepository.dart';
@@ -33,6 +36,8 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallL
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagNameUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCase.dart';
@@ -409,4 +414,12 @@ init() {
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort>(
       RelationTagRankingFromTagNameOrderByBallPowerUseCase(
           tagRepository: sl()));
+
+  sl.registerSingleton<FBallReplyDataSource>(FBallReplyDataSourceImpl());
+
+  sl.registerSingleton<FBallReplyRepository>(FBallReplyRepositoryImpl(
+      fBallReplyDataSource: sl(), fireBaseAuthBaseAdapter: sl()));
+
+  sl.registerSingleton<FBallReplyUseCaseInputPort>(
+      FBallReplyUseCase(fBallReplyRepository: sl()));
 }

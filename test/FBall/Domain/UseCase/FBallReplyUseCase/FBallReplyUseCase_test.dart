@@ -68,9 +68,10 @@ void main() {
     //arrange
     FBallReplyInsertReqDto reqDto  = FBallReplyInsertReqDto();
     reqDto.ballUuid = "testBallUUid";
-
+    FBallReply fBallReply = FBallReply();
+    fBallReply.ballUuid = "testBallUUid";
     when(mockFBallReplyRepository.updateFBallReply(reqDto))
-        .thenAnswer((realInvocation) async => 1);
+        .thenAnswer((realInvocation) async => fBallReply);
     //act
     await fBallReplyUseCaseInputPort.updateFBallReply(reqDto);
     //assert

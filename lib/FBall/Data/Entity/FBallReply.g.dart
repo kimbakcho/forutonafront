@@ -25,7 +25,7 @@ FBallReply _$FBallReplyFromJson(Map<String, dynamic> json) {
     ..replyText = json['replyText'] as String
     ..userNickName = json['userNickName'] as String
     ..userProfilePictureUrl = json['userProfilePictureUrl'] as String
-    ..fBallReplys = (json['fBallReplys'] as List)
+    ..fBallSubReplys = (json['fBallSubReplys'] as List)
         ?.map((e) =>
             e == null ? null : FBallReply.fromJson(e as Map<String, dynamic>))
         ?.toList();
@@ -46,5 +46,5 @@ Map<String, dynamic> _$FBallReplyToJson(FBallReply instance) =>
       'replyText': instance.replyText,
       'userNickName': instance.userNickName,
       'userProfilePictureUrl': instance.userProfilePictureUrl,
-      'fBallReplys': instance.fBallReplys,
+      'fBallSubReplys': instance.fBallSubReplys,
     };

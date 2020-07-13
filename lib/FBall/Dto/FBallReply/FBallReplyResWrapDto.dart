@@ -8,7 +8,10 @@ part 'FBallReplyResWrapDto.g.dart';
 @JsonSerializable()
 class FBallReplyResWrapDto {
   int count;
+  int offset;
+  int pageSize;
   int replyTotalCount;
+  bool onlySubReply;
   List<FBallReplyResDto> contents = [];
 
   FBallReplyResWrapDto();
@@ -21,7 +24,10 @@ class FBallReplyResWrapDto {
   factory FBallReplyResWrapDto.fromFBallReplyResWrap(FBallReplyResWrap item) {
     FBallReplyResWrapDto fBallReplyResWrapDto = FBallReplyResWrapDto();
     fBallReplyResWrapDto.replyTotalCount = item.replyTotalCount;
+    fBallReplyResWrapDto.offset = item.offset;
+    fBallReplyResWrapDto.pageSize = item.pageSize;
     fBallReplyResWrapDto.count = item.count;
+    fBallReplyResWrapDto.onlySubReply = item.onlySubReply;
     fBallReplyResWrapDto.contents =
         item.contents.map((x) => FBallReplyResDto.fromFBallReply(x)).toList();
 

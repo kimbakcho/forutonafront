@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyMediator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 import 'FBallInputReplyViewModel.dart';
 
 class FBallInputReplyView extends StatelessWidget {
   final FBallReplyInsertReqDto _fBallReplyInsertReqDto;
+  final FBallReplyMediator _fBallReplyMediator;
 
-  FBallInputReplyView(this._fBallReplyInsertReqDto);
+  FBallInputReplyView(this._fBallReplyInsertReqDto, this._fBallReplyMediator);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class FBallInputReplyView extends StatelessWidget {
       create: (_) => FBallInputReplyViewModel(
           context: context,
           fBallReplyInsertReqDto: _fBallReplyInsertReqDto,
-          signInUserInfoUseCaseInputPort: sl()),
+          fBallReplyMediator: _fBallReplyMediator),
       child: Consumer<FBallInputReplyViewModel>(
         builder: (_, model, child) {
           return Scaffold(

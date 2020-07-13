@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetViewModel.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator.dart';
@@ -14,16 +15,19 @@ class FBallReplyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => FBallReplyWidgetViewModel(
-            context: context, ballUuid: ballUuid, authUserCaseInputPort: sl()),
+            context: context,
+            ballUuid: ballUuid,
+            fBallReplyMediator: FBallReplyMediator(
+              fBallReplyUseCaseInputPort: sl()
+            ),
+            authUserCaseInputPort: sl()),
         child: Consumer<FBallReplyWidgetViewModel>(builder: (_, model, child) {
-          return Column(
-            children: <Widget>[
-              topInputBar(model, context),
-              Column(
-                children: model.fBallReplyContentBars,
-              )
-            ],
-          );
+          return Column(children: <Widget>[
+            topInputBar(model, context),
+            Column(
+              children: model.replySimpleWidget,
+            )
+          ]);
         }));
   }
 
@@ -37,7 +41,7 @@ class FBallReplyWidget extends StatelessWidget {
               left: 16,
               child: Container(
                   child: Text(
-                "댓글(${model.totalReplyCount})",
+                "댓글(${model.fBallReplyMediator.totalReplyCount})",
                 style: GoogleFonts.notoSans(
                     fontSize: 14, fontWeight: FontWeight.bold),
               ))),
@@ -48,7 +52,7 @@ class FBallReplyWidget extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 16, right: 16),
                   child: FlatButton(
                       padding: EdgeInsets.all(0),
-//                      onPressed: model.popUpDetailReply,
+                      onPressed: model.popUpDetailReply,
                       child: Text("댓글 페이지로 이동",
                           style: GoogleFonts.notoSans(
                             fontWeight: FontWeight.w700,

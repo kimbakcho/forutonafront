@@ -6,7 +6,10 @@ part 'FBallReplyResWrap.g.dart';
 @JsonSerializable()
 class FBallReplyResWrap {
   int count;
+  int offset;
+  int pageSize;
   int replyTotalCount;
+  bool onlySubReply;
   List<FBallReply> contents = [];
 
   FBallReplyResWrap();

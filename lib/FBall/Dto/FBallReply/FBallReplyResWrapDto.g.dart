@@ -9,7 +9,10 @@ part of 'FBallReplyResWrapDto.dart';
 FBallReplyResWrapDto _$FBallReplyResWrapDtoFromJson(Map<String, dynamic> json) {
   return FBallReplyResWrapDto()
     ..count = json['count'] as int
+    ..offset = json['offset'] as int
+    ..pageSize = json['pageSize'] as int
     ..replyTotalCount = json['replyTotalCount'] as int
+    ..onlySubReply = json['onlySubReply'] as bool
     ..contents = (json['contents'] as List)
         ?.map((e) => e == null
             ? null
@@ -21,6 +24,9 @@ Map<String, dynamic> _$FBallReplyResWrapDtoToJson(
         FBallReplyResWrapDto instance) =>
     <String, dynamic>{
       'count': instance.count,
+      'offset': instance.offset,
+      'pageSize': instance.pageSize,
       'replyTotalCount': instance.replyTotalCount,
+      'onlySubReply': instance.onlySubReply,
       'contents': instance.contents,
     };

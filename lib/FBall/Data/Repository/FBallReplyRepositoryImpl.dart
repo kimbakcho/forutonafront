@@ -31,12 +31,12 @@ class FBallReplyRepositoryImpl implements FBallReplyRepository {
   }
 
   @override
-  Future<FBallReply> insertFBallReply(FBallReplyInsertReqDto reqDto) {
-    return _fBallReplyDataSource.insertFBallReply(reqDto, FDio.noneToken());
+  Future<FBallReply> insertFBallReply(FBallReplyInsertReqDto reqDto) async {
+    return _fBallReplyDataSource.insertFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<int> updateFBallReply(FBallReplyInsertReqDto reqDto) {
-    return _fBallReplyDataSource.updateFBallReply(reqDto, FDio.noneToken());
+  Future<FBallReply> updateFBallReply(FBallReplyInsertReqDto reqDto) async {
+    return _fBallReplyDataSource.updateFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 }
