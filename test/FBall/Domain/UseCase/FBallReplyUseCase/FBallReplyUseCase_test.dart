@@ -7,6 +7,7 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseI
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFBallReplyRepository extends Mock implements FBallReplyRepository {}
@@ -66,8 +67,8 @@ void main() {
 
   test('should updateFBallReply Repository call', () async {
     //arrange
-    FBallReplyInsertReqDto reqDto  = FBallReplyInsertReqDto();
-    reqDto.ballUuid = "testBallUUid";
+    FBallReplyUpdateReqDto reqDto  = FBallReplyUpdateReqDto();
+    reqDto.replyUuid = "testBallUUid";
     FBallReply fBallReply = FBallReply();
     fBallReply.ballUuid = "testBallUUid";
     when(mockFBallReplyRepository.updateFBallReply(reqDto))

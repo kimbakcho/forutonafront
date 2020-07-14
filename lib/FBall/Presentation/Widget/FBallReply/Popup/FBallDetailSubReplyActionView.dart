@@ -3,27 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallSubReplyResDto.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallDetailSubReplyInputViewModel.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallDetailSubReplyInputActionViewModel.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyRootActionCommand.dart';
+
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class FBallDetailSubReplyInputView extends StatelessWidget {
-  final FBallReply mainReply;
+class FBallDetailSubReplyActionView extends StatelessWidget {
+  final FBallReply _rootFBallReply;
+  final FBallReplyRootActionCommand _fBallReplyRootActionCommand;
 
-  FBallDetailSubReplyInputView(this.mainReply);
+  FBallDetailSubReplyActionView(this._rootFBallReply ,this._fBallReplyRootActionCommand);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => FBallDetailSubReplyInputViewModel(
-          mainReply: mainReply,
-          context: context,
-          signInUserInfoUseCaseInputPort: sl()
-        ),
-        child: Consumer<FBallDetailSubReplyInputViewModel>(
+        create: (_) => FBallDetailSubReplyActionViewModel(
+            context: context,
+            fBallReplyRootActionCommand: _fBallReplyRootActionCommand),
+        child: Consumer<FBallDetailSubReplyActionViewModel>(
             builder: (_, model, child) {
           return Scaffold(
             backgroundColor: Colors.transparent,
@@ -47,7 +46,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
                                             fit: BoxFit.fitWidth,
-                                            image: NetworkImage(mainReply
+                                            image: NetworkImage(_rootFBallReply
                                                 .userProfilePictureUrl))),
                                   ),
                                   Expanded(
@@ -60,7 +59,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                         Row(children: <Widget>[
                                           Expanded(
                                               child: Container(
-                                            child: Text(mainReply.userNickName,
+                                            child: Text(_rootFBallReply.userNickName,
                                                 style: GoogleFonts.notoSans(
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 11,
@@ -73,7 +72,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                         Container(
                                             margin: EdgeInsets.fromLTRB(
                                                 16, 0, 32, 3),
-                                            child: Text(mainReply.replyText,
+                                            child: Text(_rootFBallReply.replyText,
                                                 style: GoogleFonts.notoSans(
                                                   fontSize: 10,
                                                   color: Color(0xff454f63),
@@ -84,9 +83,8 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                                 16, 0, 32, 16),
                                             child: Text(
                                                 TimeDisplayUtil
-                                                    .getCalcToStrFromNow(
-                                                        mainReply
-                                                            .replyUploadDateTime),
+                                                    .getCalcToStrFromNow(_rootFBallReply
+                                                        .replyUploadDateTime),
                                                 style: GoogleFonts.notoSans(
                                                   fontSize: 9,
                                                   color: Color(0xffb1b1b1),
@@ -106,12 +104,14 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                                         minLines: 1,
                                         maxLines: 4,
                                         maxLength: 300,
-                                        onSubmitted: model.onReplySubmitted,
+                                        onSubmitted: (String value) {
+                                          model.execute();
+                                        },
                                         keyboardType: TextInputType.text,
                                         controller: model.subReplyController,
                                         autofocus: true,
                                         decoration: InputDecoration(
-                                          counter: Container(),
+                                            counter: Container(),
                                             contentPadding: EdgeInsets.fromLTRB(
                                                 16, 5, 16, 5),
                                             isDense: true,
@@ -133,7 +133,7 @@ class FBallDetailSubReplyInputView extends StatelessWidget {
                               margin: EdgeInsets.only(right: 16),
                               child: FlatButton(
                                 onPressed: () {
-                                  model.sendSubReply(mainReply);
+                                  model.execute();
                                 },
                                 shape: CircleBorder(),
                                 padding: EdgeInsets.fromLTRB(0, 0, 5, 0),

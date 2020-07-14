@@ -6,6 +6,7 @@ import 'package:forutonafront/FBall/Data/Value/FBallReplyResWrap.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 
@@ -20,23 +21,23 @@ class FBallReplyRepositoryImpl implements FBallReplyRepository {
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter;
 
   @override
-  Future<int> deleteFBallReply(String replyUuid) async {
+  Future<FBallReply> deleteFBallReply(String replyUuid) async {
     return await _fBallReplyDataSource.deleteFBallReply(
         replyUuid, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<FBallReplyResWrap> getFBallReply(FBallReplyReqDto reqDto) {
-    return _fBallReplyDataSource.getFBallReply(reqDto, FDio.noneToken());
+  Future<FBallReplyResWrap> getFBallReply(FBallReplyReqDto reqDto) async {
+    return await _fBallReplyDataSource.getFBallReply(reqDto, FDio.noneToken());
   }
 
   @override
   Future<FBallReply> insertFBallReply(FBallReplyInsertReqDto reqDto) async {
-    return _fBallReplyDataSource.insertFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+    return await _fBallReplyDataSource.insertFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<FBallReply> updateFBallReply(FBallReplyInsertReqDto reqDto) async {
-    return _fBallReplyDataSource.updateFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+  Future<FBallReply> updateFBallReply(FBallReplyUpdateReqDto reqDto) async {
+    return await _fBallReplyDataSource.updateFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 }

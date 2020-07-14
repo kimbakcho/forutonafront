@@ -6,6 +6,7 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 
 abstract class FBallReplyColleague {
   FBallReplyMediator _ballReplyMediator;
@@ -45,11 +46,10 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
   }
 
   @override
-  void onDeleteFBallReply(String replyUuid) {
-    var indexWhere =
-        replyList.indexWhere((element) => element.replyUuid == replyUuid);
-    var replyItem = replyList[indexWhere];
-    replyItem.deleteFlag = true;
+  void onDeleteFBallReply(FBallReplyResDto fBallReplyResDto) {
+    FBallReply deleteFBallReplyItem =
+        findFBallReplyUseFBallReplyResDto(fBallReplyResDto);
+    deleteFBallReplyItem.deleteFlag = true;
     emitAllOnUpdateFBallReply();
   }
 
@@ -61,7 +61,8 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
     }
     if (isFirstPage(fBallReplyResWrapDto) &&
         fBallReplyResWrapDto.onlySubReply) {
-      var indexWhere = findSubReplyRootNode(fBallReplyResWrapDto);
+      var indexWhere =
+          findSubReplyRootNode(fBallReplyResWrapDto.contents[0].replyNumber);
       replyList[indexWhere].fBallSubReplys.clear();
     }
 
@@ -70,7 +71,8 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
           .map((e) => FBallReply.fromFBallReplyResDto(e))
           .toList());
     } else {
-      var indexWhere = findSubReplyRootNode(fBallReplyResWrapDto);
+      var indexWhere =
+          findSubReplyRootNode(fBallReplyResWrapDto.contents[0].replyNumber);
       replyList[indexWhere].fBallSubReplys.addAll(fBallReplyResWrapDto.contents
           .map((e) => FBallReply.fromFBallReplyResDto(e))
           .toList());
@@ -79,9 +81,9 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
     emitAllOnUpdateFBallReply();
   }
 
-  int findSubReplyRootNode(FBallReplyResWrapDto fBallReplyResWrapDto) {
-    return replyList.indexWhere((element) =>
-        element.replyNumber == fBallReplyResWrapDto.contents[0].replyNumber);
+  int findSubReplyRootNode(int replyNumber) {
+    return replyList
+        .indexWhere((element) => element.replyNumber == replyNumber);
   }
 
   bool isFirstPage(FBallReplyResWrapDto fBallReplyResWrapDto) =>
@@ -104,18 +106,47 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
 
   @override
   void onInsertFBallReply(FBallReplyResDto fBallReplyResDto) {
-    replyList.insert(0, FBallReply.fromFBallReplyResDto(fBallReplyResDto));
+    if (isRootReply(fBallReplyResDto)) {
+      replyList.insert(0, FBallReply.fromFBallReplyResDto(fBallReplyResDto));
+      totalReplyCount++;
+    } else {
+      var indexWhere = findSubReplyRootNode(fBallReplyResDto.replyNumber);
+      replyList[indexWhere]
+          .fBallSubReplys
+          .add(FBallReply.fromFBallReplyResDto(fBallReplyResDto));
+      replyList[indexWhere].subReplyCount =
+          replyList[indexWhere].fBallSubReplys.length;
+    }
     emitAllOnUpdateFBallReply();
   }
 
+  bool isRootReply(FBallReplyResDto fBallReplyResDto) =>
+      fBallReplyResDto.replySort == 0;
+
   @override
   void onUpdateFBallReply(FBallReplyResDto fBallReplyResDto) {
-    var indexWhere = replyList.indexWhere(
-        (element) => element.replyUuid == fBallReplyResDto.replyUuid);
-    var replyItem = replyList[indexWhere];
-    replyItem.replyUpdateDateTime = fBallReplyResDto.replyUpdateDateTime;
-    replyItem.replyText = fBallReplyResDto.replyText;
+    FBallReply updateFBallReplyItem =
+        findFBallReplyUseFBallReplyResDto(fBallReplyResDto);
+
+    updateFBallReplyItem.replyUpdateDateTime =
+        fBallReplyResDto.replyUpdateDateTime;
+    updateFBallReplyItem.replyText = fBallReplyResDto.replyText;
     emitAllOnUpdateFBallReply();
+  }
+
+  FBallReply findFBallReplyUseFBallReplyResDto(
+      FBallReplyResDto fBallReplyResDto) {
+    FBallReply selectFBallReplyItem;
+    var indexWhere = findSubReplyRootNode(fBallReplyResDto.replyNumber);
+    var rootReply = replyList[indexWhere];
+    if (isRootReply(fBallReplyResDto)) {
+      selectFBallReplyItem = rootReply;
+    } else {
+      var subIndexWhere = rootReply.fBallSubReplys.indexWhere(
+          (element) => element.replyUuid == fBallReplyResDto.replyUuid);
+      selectFBallReplyItem = rootReply.fBallSubReplys[subIndexWhere];
+    }
+    return selectFBallReplyItem;
   }
 
   Future<void> insertFBallReply(
@@ -125,8 +156,13 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
   }
 
   Future<void> updateFBallReply(
-      FBallReplyInsertReqDto fBallReplyInsertReqDto) async {
-    await _fBallReplyUseCaseInputPort.updateFBallReply(fBallReplyInsertReqDto,
+      FBallReplyUpdateReqDto fBallReplyUpdateReqDto) async {
+    await _fBallReplyUseCaseInputPort.updateFBallReply(fBallReplyUpdateReqDto,
+        outputPort: this);
+  }
+
+  Future<void> deleteFBallReply(String replyUuid) async {
+    await _fBallReplyUseCaseInputPort.deleteFBallReply(replyUuid,
         outputPort: this);
   }
 

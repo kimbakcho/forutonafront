@@ -9,5 +9,5 @@ abstract class FBallReplyUseCaseOutputPort {
 
   void onInsertFBallReply(FBallReplyResDto fBallReplyResDto);
 
-  void onDeleteFBallReply(String replyUuid);
+  void onDeleteFBallReply(FBallReplyResDto fBallReplyResDto);
 }

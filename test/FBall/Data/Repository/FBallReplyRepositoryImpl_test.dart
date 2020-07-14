@@ -6,6 +6,7 @@ import 'package:forutonafront/FBall/Data/Value/FBallReplyResWrap.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:get_it/get_it.dart';
@@ -76,10 +77,10 @@ void main() {
 
   test('should updateFBallReply DataSource Call', () async {
     //arrange
-    FBallReplyInsertReqDto reqDto = FBallReplyInsertReqDto();
-    reqDto.ballUuid = "testBallUuid";
+    FBallReplyUpdateReqDto reqDto = FBallReplyUpdateReqDto();
+    reqDto.replyUuid = "testBallUuid";
     FBallReply fBallReply = FBallReply();
-    fBallReply.replyUuid = "testUUid";
+    fBallReply.replyUuid = "testBallUuid";
     when(mockFBallReplyDataSource.updateFBallReply(any,any)).thenAnswer((realInvocation)  async => fBallReply);
     //act
     await fBallReplyRepository.updateFBallReply(reqDto);

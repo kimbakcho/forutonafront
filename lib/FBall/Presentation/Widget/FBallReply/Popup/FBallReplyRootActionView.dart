@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyRootActionCommand.dart';
+
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'FBallInputReplyViewModel.dart';
+import 'FBallReplyRootActionViewModel.dart';
 
-class FBallInputReplyView extends StatelessWidget {
-  final FBallReplyInsertReqDto _fBallReplyInsertReqDto;
-  final FBallReplyMediator _fBallReplyMediator;
+class FBallReplyRootActionView extends StatelessWidget {
+  final FBallReplyRootActionCommand _fBallReplyRootActionCommand;
 
-  FBallInputReplyView(this._fBallReplyInsertReqDto, this._fBallReplyMediator);
+  FBallReplyRootActionView(this._fBallReplyRootActionCommand);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => FBallInputReplyViewModel(
+      create: (_) => FBallReplyRootActionViewModel(
           context: context,
-          fBallReplyInsertReqDto: _fBallReplyInsertReqDto,
-          fBallReplyMediator: _fBallReplyMediator),
-      child: Consumer<FBallInputReplyViewModel>(
+          fBallReplyRootActionCommand: _fBallReplyRootActionCommand
+      ),
+      child: Consumer<FBallReplyRootActionViewModel>(
         builder: (_, model, child) {
           return Scaffold(
               backgroundColor: Color(0x00000000),
@@ -48,7 +48,9 @@ class FBallInputReplyView extends StatelessWidget {
                                         minLines: 1,
                                         maxLength: 300,
                                         keyboardType: TextInputType.text,
-                                        onSubmitted: model.onReplySubmitted,
+                                        onSubmitted: (value){
+                                          model.fBallReplyAction();
+                                        },
                                         maxLines: 4,
                                         decoration: InputDecoration(
                                             counter: Container(),
@@ -79,7 +81,7 @@ class FBallInputReplyView extends StatelessWidget {
                                   shape: CircleBorder(),
                                   padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
                                   onPressed: () async {
-                                    model.reqInsertOrUpdate();
+                                      model.fBallReplyAction();
                                   },
                                   child: Icon(
                                     ForutonaIcon.replysendicon,

@@ -1,34 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetViewModel.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetView/FBallReplyWidgetViewModel.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Mediator/FBallReplyMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
+
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class FBallReplyWidget extends StatelessWidget {
+class FBallReplyWidgetView extends StatelessWidget {
   final String ballUuid;
 
-  FBallReplyWidget(this.ballUuid);
+  FBallReplyWidgetView(this.ballUuid);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => FBallReplyWidgetViewModel(
-            context: context,
-            ballUuid: ballUuid,
-            fBallReplyMediator: FBallReplyMediator(
-              fBallReplyUseCaseInputPort: sl()
-            ),
-            authUserCaseInputPort: sl()),
-        child: Consumer<FBallReplyWidgetViewModel>(builder: (_, model, child) {
-          return Column(children: <Widget>[
-            topInputBar(model, context),
-            Column(
-              children: model.replySimpleWidget,
-            )
-          ]);
-        }));
+    return ChangeNotifierProvider(create: (_) {
+      var fBallReplyMediator =
+          FBallReplyMediator(fBallReplyUseCaseInputPort: sl());
+      return FBallReplyWidgetViewModel(
+          context: context,
+          ballUuid: ballUuid,
+          fBallReplyMediator: fBallReplyMediator,
+          fBallReplyPopupUseCaseInputPort: FBallReplyPopupUseCase(
+              authUserCaseInputPort: sl(), replyMediator: fBallReplyMediator));
+    }, child: Consumer<FBallReplyWidgetViewModel>(builder: (_, model, child) {
+      return Column(children: <Widget>[
+        topInputBar(model, context),
+        Column(
+          children: model.replySimpleWidget,
+        )
+      ]);
+    }));
   }
 
   Container topInputBar(FBallReplyWidgetViewModel model, BuildContext context) {

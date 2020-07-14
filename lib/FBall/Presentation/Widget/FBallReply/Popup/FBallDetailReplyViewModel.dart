@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyContentBar.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Mediator/FBallReplyMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/ReplyContentBar/FBallReplyContentBar.dart';
+
 import 'package:forutonafront/ServiceLocator.dart';
 
 class FBallDetailReplyViewModel extends ChangeNotifier
@@ -11,13 +13,28 @@ class FBallDetailReplyViewModel extends ChangeNotifier
   final String ballUuid;
   final BuildContext context;
   final FBallReplyMediator _fBallReplyMediator;
+  final FBallReplyPopupUseCaseInputPort _fBallReplyPopupUseCaseInputPort;
 
   int _currentPage = 0;
   int _sizeLimit = 20;
 
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   FBallDetailReplyViewModel(
-      {this.ballUuid, this.context, FBallReplyMediator fBallReplyMediator})
-      : _fBallReplyMediator = fBallReplyMediator {
+      {this.ballUuid,
+      this.context,
+      FBallReplyMediator fBallReplyMediator,
+      @required
+          FBallReplyPopupUseCaseInputPort fBallReplyPopupUseCaseInputPort})
+      : _fBallReplyMediator = fBallReplyMediator,
+        _fBallReplyPopupUseCaseInputPort = fBallReplyPopupUseCaseInputPort {
     super.mediatorJoin(_fBallReplyMediator);
     replyScrollerController.addListener(_onListScrollListener);
     Future.delayed(Duration.zero, () {
@@ -26,17 +43,24 @@ class FBallDetailReplyViewModel extends ChangeNotifier
   }
 
   _onListScrollListener() {
-    if (replyScrollerController.offset >=
-            replyScrollerController.position.maxScrollExtent &&
-        !replyScrollerController.position.outOfRange) {
-      if (_fBallReplyMediator.replyList.length <
-          (_currentPage + 1 * _sizeLimit)) {
+    if (isScrollerPageOver()) {
+      if (isLastPage()) {
         return;
       }
       _currentPage++;
+      isLoading = true;
       reqMainReplyList(_currentPage, _sizeLimit);
+      isLoading = false;
     }
   }
+
+  bool isScrollerPageOver() {
+    return replyScrollerController.offset >=
+          replyScrollerController.position.maxScrollExtent &&
+      !replyScrollerController.position.outOfRange;
+  }
+
+  bool isLastPage() => _fBallReplyMediator.replyList.length <= (_currentPage * _sizeLimit);
 
   reqMainReplyList(int page, int size) async {
     FBallReplyReqDto reqDto = FBallReplyReqDto();
@@ -56,8 +80,8 @@ class FBallDetailReplyViewModel extends ChangeNotifier
     } else {
       return _fBallReplyMediator.replyList
           .map((fBallReply) => FBallReplyContentBar(
+                fBallReplyPopupUseCaseInputPort: _fBallReplyPopupUseCaseInputPort,
                 fBallReplyMediator: _fBallReplyMediator,
-                authUserCaseInputPort: sl(),
                 context: context,
                 fBallReply: fBallReply,
               ))
@@ -69,7 +93,9 @@ class FBallDetailReplyViewModel extends ChangeNotifier
     return _fBallReplyMediator.replyList.length == 0;
   }
 
-  void popupInsertReply() async {}
+  void popupInsertReply() async {
+    _fBallReplyPopupUseCaseInputPort.popupInsertDisplay(context, ballUuid);
+  }
 
   @override
   void dispose() {

@@ -6,6 +6,7 @@ import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Data/Value/FBallReplyResWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFDio extends Mock implements FDio {}
@@ -86,8 +87,8 @@ void main() {
 
   test('should updateFaBallReply', () async {
     //arrange
-    FBallReplyInsertReqDto reqDto = FBallReplyInsertReqDto();
-    reqDto.ballUuid = "testBallUuid";
+    FBallReplyUpdateReqDto reqDto = FBallReplyUpdateReqDto();
+    reqDto.replyUuid = "testBallUuid";
 
     when(mockFDio.put("/v1/FBallReply",data: anyNamed('data')))
         .thenAnswer((_) async => Response<dynamic>(

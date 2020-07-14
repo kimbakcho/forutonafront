@@ -8,8 +8,6 @@ class FBallReplyInsertReqDto {
   String replyUuid;
   String ballUuid;
   int replyNumber;
-  int replySort;
-  int replyDepth;
   String replyText;
 
   FBallReplyInsertReqDto();

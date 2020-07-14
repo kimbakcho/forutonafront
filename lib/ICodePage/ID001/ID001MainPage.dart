@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimationWithContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidget.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetView/FBallReplyWidgetView.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
@@ -189,7 +189,7 @@ class _ID001MainPageState extends State<ID001MainPage>
               .length > 0
               ? didver(2)
               : Container(),
-          FBallReplyWidget(
+          FBallReplyWidgetView(
               context
                   .watch<ID001MainPageViewModel>()
                   .issueBall

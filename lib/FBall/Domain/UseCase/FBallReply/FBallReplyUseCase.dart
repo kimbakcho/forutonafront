@@ -8,6 +8,7 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 
 class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   final FBallReplyRepository _fBallReplyRepository;
@@ -17,9 +18,12 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
       : _fBallReplyRepository = fBallReplyRepository;
 
   @override
-  Future<int> deleteFBallReply(String replyUuid,{FBallReplyUseCaseOutputPort outputPort}) async {
-    outputPort.onDeleteFBallReply(replyUuid);
-    return await _fBallReplyRepository.deleteFBallReply(replyUuid);
+  Future<FBallReplyResDto> deleteFBallReply(String replyUuid,{FBallReplyUseCaseOutputPort outputPort}) async {
+    
+    var fBallReply = await _fBallReplyRepository.deleteFBallReply(replyUuid);
+    var fBallReplyResDto = FBallReplyResDto.fromFBallReply(fBallReply);
+    outputPort.onDeleteFBallReply(fBallReplyResDto);
+    return fBallReplyResDto;
   }
 
   @override
@@ -45,7 +49,7 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   }
 
   @override
-  Future<FBallReplyResDto> updateFBallReply(FBallReplyInsertReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
+  Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
     var fBallReply = await _fBallReplyRepository.updateFBallReply(reqDto);
     var fBallReplyResDto = FBallReplyResDto.fromFBallReply(fBallReply);
     outputPort.onUpdateFBallReply(fBallReplyResDto);

@@ -1,25 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FBallReplyInsertReqDto.dart';
+part of 'FBallReplyUpdateReqDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FBallReplyInsertReqDto _$FBallReplyInsertReqDtoFromJson(
+FBallReplyUpdateReqDto _$FBallReplyUpdateReqDtoFromJson(
     Map<String, dynamic> json) {
-  return FBallReplyInsertReqDto()
+  return FBallReplyUpdateReqDto()
     ..replyUuid = json['replyUuid'] as String
-    ..ballUuid = json['ballUuid'] as String
-    ..replyNumber = json['replyNumber'] as int
     ..replyText = json['replyText'] as String;
 }
 
-Map<String, dynamic> _$FBallReplyInsertReqDtoToJson(
-        FBallReplyInsertReqDto instance) =>
+Map<String, dynamic> _$FBallReplyUpdateReqDtoToJson(
+        FBallReplyUpdateReqDto instance) =>
     <String, dynamic>{
       'replyUuid': instance.replyUuid,
-      'ballUuid': instance.ballUuid,
-      'replyNumber': instance.replyNumber,
       'replyText': instance.replyText,
     };
