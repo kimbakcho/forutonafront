@@ -7,12 +7,16 @@ import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator.dart';
 import 'package:forutonafront/ServiceLocator.dart' as di;
 import 'package:forutonafront/Splash/SplashPage.dart';
+import 'package:forutonafront/configureDependencies.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:provider/provider.dart';
 //flutter pub run build_runner watch
 
 void main() {
+  configureDependencies(Environment.prod);
   di.init();
+
   runApp(
     ChangeNotifierProvider(create: (_) => GlobalModel(), child: MyApp()),
   );
@@ -21,6 +25,7 @@ void main() {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   Preference _preference = sl();
+
   @override
   Widget build(BuildContext context) {
     KakaoContext.clientId = _preference.kaKaoNativeApiKey;
@@ -30,14 +35,13 @@ class MyApp extends StatelessWidget {
     ]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.white, // status bar color
-        statusBarIconBrightness: Brightness.dark
-    ));
+        statusBarIconBrightness: Brightness.dark));
     return ChangeNotifierProvider(
         create: (_) => MainModel(
             fireBaseAuthAdapterForUseCase: sl(),
             fireBaseMessageController: sl(),
-            mainBackGround: sl()),
-
+            mainBackGround: sl(),
+            flutterLocalNotificationsPluginAdapter: sl()),
         child: Consumer<MainModel>(builder: (_, model, child) {
           return MaterialApp(
             title: 'Kuv',

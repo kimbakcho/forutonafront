@@ -30,8 +30,6 @@ class BackgroundUserPositionUseCase
         _fUserRepository = fUserRepository,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
 
-
-
   @override
   void startServiceSchedule() {
     BackgroundFetch.scheduleTask(TaskConfig(

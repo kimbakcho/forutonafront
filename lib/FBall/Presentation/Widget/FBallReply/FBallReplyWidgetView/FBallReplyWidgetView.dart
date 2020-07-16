@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetView/FBallReplyWidgetViewModel.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Mediator/FBallReplyMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
@@ -9,18 +10,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class FBallReplyWidgetView extends StatelessWidget {
-  final String ballUuid;
+  final FBall _fBall;
 
-  FBallReplyWidgetView(this.ballUuid);
+  FBallReplyWidgetView(this._fBall);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (_) {
       var fBallReplyMediator =
-          FBallReplyMediator(fBallReplyUseCaseInputPort: sl());
+          FBallReplyMediator(fBallReplyUseCaseInputPort: sl(),fBall: _fBall);
       return FBallReplyWidgetViewModel(
           context: context,
-          ballUuid: ballUuid,
+          ballUuid: _fBall.ballUuid,
           fBallReplyMediator: fBallReplyMediator,
           fBallReplyPopupUseCaseInputPort: FBallReplyPopupUseCase(
               authUserCaseInputPort: sl(), replyMediator: fBallReplyMediator));

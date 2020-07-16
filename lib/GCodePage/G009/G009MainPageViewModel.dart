@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Notification/MessageChanel/Domain/MessageChanelUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseOutputPort.dart';
@@ -13,6 +14,7 @@ import 'package:forutonafront/GCodePage/G016/G016MainPage.dart';
 import 'package:forutonafront/GCodePage/G019/G019MainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:forutonafront/ServiceLocator.dart';
 
 class G009MainPageViewModel extends ChangeNotifier
     implements LogoutUseCaseOutputPort, SignInUserInfoUseCaseOutputPort {
@@ -20,6 +22,7 @@ class G009MainPageViewModel extends ChangeNotifier
   final LogoutUseCaseInputPort _logoutUseCaseInputPort;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final CodeMainPageController _codeMainPageController;
+  final MessageChanelUseCaseInputPort _messageChanelUseCaseInputPort = sl();
 
   FUserInfo _fUserInfo;
 
@@ -81,5 +84,10 @@ class G009MainPageViewModel extends ChangeNotifier
   @override
   void onSignInUserInfoFromMemory(FUserInfo fUserInfo) {
     _fUserInfo = fUserInfo;
+  }
+
+  void onVerSionInfo()async {
+    await _messageChanelUseCaseInputPort.reqNotification();
+        //TODO 임시 Noti TEST
   }
 }

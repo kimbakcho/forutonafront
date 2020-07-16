@@ -37,4 +37,8 @@ class FBall {
       _$FBallFromJson(json);
 
   Map<String, dynamic> toJson() => _$FBallToJson(this);
+
+  addCommentCount(){
+    commentCount++;
+  }
 }

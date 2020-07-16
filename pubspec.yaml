@@ -64,7 +64,7 @@ dependencies:
   #Kakao 로그인 할때 사용
   kakao_flutter_sdk: ^0.4.2
   #내부 Native Notication을 사용하기위한 사용
-  flutter_local_notifications: ^0.9.0+1
+  flutter_local_notifications: ^1.4.4+2
   #큐브의 에니메이션 효과등 복잡한 애니메이션을 Flare를 사용하여 처리기위해서 사용
   flare_flutter: ^1.8.3
   #KeyBarod 나타 날때  UI 변화를 주기 위해서 사용
@@ -113,6 +113,8 @@ dependencies:
   data_connection_checker: ^0.3.4
   #의존성 주입을 위해 사용
   get_it: ^4.0.2
+  #의존성 주입 Helper
+  injectable: ^0.4.0+1
 
 
 dev_dependencies:
@@ -120,6 +122,7 @@ dev_dependencies:
     sdk: flutter
   build_runner:
   json_serializable:
+  injectable_generator:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

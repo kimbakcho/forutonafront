@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseOutputPort.dart';
@@ -27,10 +28,11 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   final List<FBallReply> replyList = [];
   int totalReplyCount = 0;
+  FBall _fBall;
 
   FBallReplyMediator(
-      {@required FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort})
-      : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort;
+      {@required FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,FBall fBall})
+      : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,_fBall=fBall;
 
   bool addColleague(FBallReplyColleague fBallReplyColleague) {
     _fBallReplyColleagueList.add(fBallReplyColleague);
@@ -109,6 +111,7 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
     if (isRootReply(fBallReplyResDto)) {
       replyList.insert(0, FBallReply.fromFBallReplyResDto(fBallReplyResDto));
       totalReplyCount++;
+      _fBall.addCommentCount();
     } else {
       var indexWhere = findSubReplyRootNode(fBallReplyResDto.replyNumber);
       replyList[indexWhere]

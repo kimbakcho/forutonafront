@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/GCodePage/G009/G009MainPageViewModel.dart';
 import 'package:forutonafront/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class G009MainPage extends StatelessWidget {
@@ -36,7 +37,7 @@ class G009MainPage extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               noticeRowBtn(model),
-                              versionInfoRowBtn(),
+                              versionInfoRowBtn(model),
                               customerCenterRowBtn(model)
                             ],
                           )),
@@ -101,11 +102,13 @@ class G009MainPage extends StatelessWidget {
     );
   }
 
-  Container versionInfoRowBtn() {
+  Container versionInfoRowBtn(G009MainPageViewModel model) {
     return Container(
       height: 48,
       child: FlatButton(
-          onPressed: () {},
+          onPressed: () {
+            model.onVerSionInfo();
+          },
           padding: EdgeInsets.all(0),
           child: Container(
               height: 48,
@@ -113,8 +116,7 @@ class G009MainPage extends StatelessWidget {
               child: Padding(
                   padding: EdgeInsets.only(left: 16),
                   child: Text("버전정보",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
                         color: Color(0xff454f63),
