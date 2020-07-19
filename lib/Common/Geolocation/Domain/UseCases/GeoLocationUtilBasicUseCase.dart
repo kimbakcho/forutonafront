@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Placemark.dart';
@@ -12,7 +14,10 @@ class GeoLocationUtilBasicUseCase
   GeolocatorAdapter _geolocatorAdapter;
 
   SharedPreferencesAdapter _sharedPreferencesAdapter;
+
   Preference _preference;
+
+  StreamSubscription _userPositionStream;
 
   GeoLocationUtilBasicUseCase(
       {@required GeolocatorAdapter geolocatorAdapter,
@@ -20,7 +25,10 @@ class GeoLocationUtilBasicUseCase
       @required Preference preference})
       : _geolocatorAdapter = geolocatorAdapter,
         _sharedPreferencesAdapter = sharedPreferencesAdapter,
-        _preference = preference;
+        _preference = preference {
+    _userPositionStream =
+        this.getUserPositionStream().listen(_userPositionStreamFunc);
+  }
 
   Position currentWithLastPosition;
   String currentWithLastAddress;
@@ -53,13 +61,17 @@ class GeoLocationUtilBasicUseCase
       print(Ex);
       resultPosition = await getLastKnowPonePosition();
     }
+    await _saveUserPositionClient(resultPosition);
+    currentWithLastPosition = resultPosition;
+    currentWithLastAddress = await getPositionAddress(currentWithLastPosition);
+    return resultPosition;
+  }
+
+  Future _saveUserPositionClient(Position resultPosition) async {
     await _sharedPreferencesAdapter.setDouble(
         "currentlong", resultPosition.longitude);
     await _sharedPreferencesAdapter.setDouble(
         "currentlat", resultPosition.latitude);
-    currentWithLastPosition = resultPosition;
-    currentWithLastAddress = await getPositionAddress(currentWithLastPosition);
-    return resultPosition;
   }
 
   Future<Position> getLastKnowPonePosition() async {
@@ -109,5 +121,23 @@ class GeoLocationUtilBasicUseCase
     }
 
     return resultAddress;
+  }
+
+  _userPositionStreamFunc(Position position) async{
+    await _saveUserPositionClient(position);
+  }
+
+  @override
+  Stream<Position> getUserPositionStream() {
+    return _geolocatorAdapter.userPosition;
+  }
+
+  dispose() {
+    _userPositionStream.cancel();
+  }
+
+  @override
+  startStreamCurrentPosition() {
+    _geolocatorAdapter.startStreamCurrentPosition();
   }
 }

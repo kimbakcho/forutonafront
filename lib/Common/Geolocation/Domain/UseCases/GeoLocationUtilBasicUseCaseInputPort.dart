@@ -13,4 +13,6 @@ abstract class GeoLocationUtilBasicUseCaseInputPort {
   String replacePlacemarkToAddresStr(Placemark placemark);
   Position getCurrentWithLastPositionInMemory();
   String getCurrentWithLastAddressInMemory();
+  Stream<Position> getUserPositionStream();
+  startStreamCurrentPosition();
 }

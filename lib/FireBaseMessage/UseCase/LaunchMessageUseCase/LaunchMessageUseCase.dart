@@ -5,7 +5,8 @@ import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMes
 class LaunchMessageUseCase implements BaseMessageUseCaseInputPort {
   @override
   Future<dynamic> message(Map<String, dynamic> message) {
-    // TODO: implement message
+    print("LaunchMessageUseCase");
+    print(message.toString());
     throw UnimplementedError();
   }
 

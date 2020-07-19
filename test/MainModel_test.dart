@@ -1,23 +1,34 @@
-
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Background/Presentation/MainBackGround.dart';
+import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/MainModel.dart';
 import 'package:mockito/mockito.dart';
 
-class MockGlobalModel extends Mock implements GlobalModel{}
-class MockFireBaseMessageController extends Mock implements FireBaseMessageController{}
-class MockFireBaseAuthAdapterForUseCase extends Mock implements FireBaseAuthAdapterForUseCase{}
-class MockMainBackGround extends Mock implements MainBackGround{}
+class MockGlobalModel extends Mock implements GlobalModel {}
 
-void main(){
+class MockFireBaseMessageController extends Mock
+    implements FireBaseMessageController {}
 
+class MockFireBaseAuthAdapterForUseCase extends Mock
+    implements FireBaseAuthAdapterForUseCase {}
+
+class MockFlutterLocalNotificationsPluginAdapter extends Mock
+    implements FlutterLocalNotificationsPluginAdapter {}
+
+class MockUserPositionForegroundMonitoringUseCaseInputPort extends Mock
+    implements UserPositionForegroundMonitoringUseCaseInputPort {}
+class MockGeoLocationUtilBasicUseCaseInputPort extends Mock implements GeoLocationUtilBasicUseCaseInputPort{}
+
+void main() {
   MockFireBaseMessageController mockFireBaseMessageController = MockFireBaseMessageController();
   MockFireBaseAuthAdapterForUseCase mockFireBaseAuthAdapterForUseCase = MockFireBaseAuthAdapterForUseCase();
-  MockMainBackGround mockMainBackGround = MockMainBackGround();
+  MockFlutterLocalNotificationsPluginAdapter mockFlutterLocalNotificationsPluginAdapter = MockFlutterLocalNotificationsPluginAdapter();
+  MockUserPositionForegroundMonitoringUseCaseInputPort mockUserPositionForegroundMonitoringUseCaseInputPort = MockUserPositionForegroundMonitoringUseCaseInputPort();
+  MockGeoLocationUtilBasicUseCaseInputPort mockGeoLocationUtilBasicUseCaseInputPort  = MockGeoLocationUtilBasicUseCaseInputPort();
   MainModel mainModel;
 
 
@@ -26,13 +37,17 @@ void main(){
 
     //act
     mainModel = MainModel(
-      fireBaseMessageController: mockFireBaseMessageController,
-      fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
-      mainBackGround: mockMainBackGround,
+        fireBaseMessageController: mockFireBaseMessageController,
+        fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
+        flutterLocalNotificationsPluginAdapter: mockFlutterLocalNotificationsPluginAdapter,
+        userPositionForegroundMonitoringUseCaseInputPort:mockUserPositionForegroundMonitoringUseCaseInputPort,
+        geoLocationUtilBasicUseCaseInputPort: mockGeoLocationUtilBasicUseCaseInputPort
     );
     //assert
-    verify(mockMainBackGround.startBackGroundService());
+    verify(mockFlutterLocalNotificationsPluginAdapter.init());
     verify(mockFireBaseMessageController.controllerStartService());
     verify(mockFireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen());
+    verify(mockUserPositionForegroundMonitoringUseCaseInputPort.startUserPositionMonitoringAndUpdateToServer());
+    verify(mockGeoLocationUtilBasicUseCaseInputPort.startStreamCurrentPosition());
   });
 }

@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 abstract class FlutterLocalNotificationsPluginAdapter {
   init();
 
-  show(int id, String title, String body, NotificationDetails notificationDetails);
+  show(int id, String title, String body, NotificationDetails notificationDetails,{String payload});
 }
 
 class FlutterLocalNotificationsPluginAdapterImpl
@@ -37,8 +37,13 @@ class FlutterLocalNotificationsPluginAdapterImpl
   }
 
   @override
-  show(int id, String title, String body, NotificationDetails notificationDetails) async{
-    await flutterLocalNotificationsPlugin.show(id, title, body, notificationDetails);
+  show(int id, String title, String body, NotificationDetails notificationDetails,{String payload}) async{
+    if(payload != null){
+      await flutterLocalNotificationsPlugin.show(id, title, body, notificationDetails,payload: payload);
+    }else {
+      await flutterLocalNotificationsPlugin.show(id, title, body, notificationDetails);
+    }
+
   }
 
 }

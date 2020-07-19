@@ -1,20 +1,28 @@
-
-
-import 'package:forutonafront/Common/Notification/MessageChanel/Domain/MessageChanelUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'BaseMessageUseCaseInputPort.dart';
 
-class BaseMessageUseCase implements BaseMessageUseCaseInputPort{
-
-//  final MessageChanelUseCaseInputPort _messageChanelUseCaseInputPort = sl();
-
+class BaseMessageUseCase implements BaseMessageUseCaseInputPort {
   @override
-  message(Map<String, dynamic> message) {
-    // TODO: implement message
-    // TODO 여기에 일반 메시지 부분 구현 해야 함
-    print("BaseMessageUseCase");
-//    _messageChanelUseCaseInputPort.reqNotification();
+  Future message(Map<String, dynamic> message) {
+    if (hasNotificationAction(message)) {
+      if (message["data"].containsKey("commandKey")) {
+        _notificationAction(message);
+      }
+    }
   }
 
+  void _notificationAction(Map<String, dynamic> message) {
+    NotificationChannelBaseInputPort notificationChannelBaseInputPort =
+        sl.get<NotificationChannelBaseInputPort>(
+            instanceName: "NotificationChannelBaseInputPortFactory",
+            param1:  message["data"]["commandKey"]);
+    notificationChannelBaseInputPort.reqNotification(message);
+  }
+
+  bool hasNotificationAction(Map<String, dynamic> message) {
+    return message["data"].containsKey("isNotification") &&
+        message["data"]["isNotification"] == "true";
+  }
 }

@@ -113,6 +113,8 @@ dependencies:
   data_connection_checker: ^0.3.4
   #의존성 주입을 위해 사용
   get_it: ^4.0.2
+  #App의 로컬 파일 경로를 얻기 위해 사용
+  path_provider: ^1.6.11
 
 
 dev_dependencies:

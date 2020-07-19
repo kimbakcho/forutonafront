@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/Common/Notification/MessageChanel/Domain/MessageChanelUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class BackGroundMessageUseCase implements BaseMessageUseCaseInputPort {
-  MessageChanelUseCaseInputPort _messageChanelUseCaseInputPort;
+  BaseMessageUseCaseInputPort _baseMessageUseCaseInputPort;
 
-  BackGroundMessageUseCase(
-      {@required MessageChanelUseCaseInputPort messageChanelUseCaseInputPort})
-      : _messageChanelUseCaseInputPort = messageChanelUseCaseInputPort;
+  BackGroundMessageUseCase({
+    @required BaseMessageUseCaseInputPort baseMessageUseCaseInputPort
+  }) : _baseMessageUseCaseInputPort = baseMessageUseCaseInputPort;
 
   @override
   Future<dynamic> message(Map<String, dynamic> message) {
-    // TODO: implement message
-    print("BackGroundMessageUseCase");
-    _messageChanelUseCaseInputPort.reqNotification();
-//    throw UnimplementedError();
+    _baseMessageUseCaseInputPort.message(message);
   }
+
 }

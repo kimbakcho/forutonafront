@@ -7,7 +7,6 @@ import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
 import 'package:forutonafront/Splash/SplashPage.dart';
-import 'package:injectable/injectable.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:provider/provider.dart';
 //flutter pub run build_runner watch
@@ -38,8 +37,9 @@ class MyApp extends StatelessWidget {
         create: (_) => MainModel(
             fireBaseAuthAdapterForUseCase: sl(),
             fireBaseMessageController: sl(),
-            mainBackGround: sl(),
-            flutterLocalNotificationsPluginAdapter: sl()),
+            flutterLocalNotificationsPluginAdapter: sl(),
+            userPositionForegroundMonitoringUseCaseInputPort: sl(),
+            geoLocationUtilBasicUseCaseInputPort: sl()),
         child: Consumer<MainModel>(builder: (_, model, child) {
           return MaterialApp(
             title: 'Kuv',

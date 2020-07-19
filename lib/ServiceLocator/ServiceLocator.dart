@@ -1,5 +1,4 @@
-import 'package:forutonafront/Background/Domain/UseCase/BackgroundUserPositionUseCaseInputPort.dart';
-import 'package:forutonafront/Background/Presentation/MainBackGround.dart';
+import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
@@ -10,6 +9,10 @@ import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorRepor
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCase.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelUseCase.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/Service/FBallRootReplyFCMServiceUseCase.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/ForutonaLoginAdapterImpl.dart';
@@ -49,6 +52,7 @@ import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBa
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenUpdateUseCase/FireBaseMessageTokenUpdateUseCase.dart';
@@ -77,6 +81,8 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCaeInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPasswordChangeUseCase/UserPasswordChangeUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPasswordChangeUseCase/UserPasswordChangeUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
@@ -93,7 +99,6 @@ import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOr
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:get_it/get_it.dart';
 
-import '../Background/BackgroundFetchAdapter/BackgroundFetchAdapter.dart';
 import '../Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
@@ -138,8 +143,13 @@ init() {
 
   sl.registerSingleton<LocationAdapter>(LocationAdapterImpl());
 
+  sl.registerSingleton<FlutterLocalNotificationsPluginAdapter>(
+      FlutterLocalNotificationsPluginAdapterImpl());
+
   sl.registerSingleton<SharedPreferencesAdapter>(
       SharedPreferencesAdapterImpl());
+
+  sl.registerSingleton<FileDownLoaderUseCaseInputPort>(FileDownLoaderUseCase());
 
   sl.registerSingleton<GeoLocationUtilBasicUseCaseInputPort>(
       GeoLocationUtilBasicUseCase(
@@ -178,17 +188,6 @@ init() {
           fireBaseMessageTokenUpdateUseCaseInputPort: sl(),
           signInUserInfoUseCaseInputPort: sl()));
 
-  sl.registerFactory<BackgroundUserPositionUseCaseInputPort>(() =>
-      BackgroundUserPositionUseCase(
-          geoLocationUtilUseCaseInputPort: sl(),
-          fUserRepository: sl(),
-          fireBaseAuthAdapterForUseCase: sl()));
-
-  sl.registerSingleton<BackgroundFetchAdapter>(BackgroundFetchAdapter());
-
-  sl.registerFactory<MainBackGround>(
-      () => MainBackGroundImpl(backgroundFetchAdapter: sl()));
-
   sl.registerSingleton<AuthUserCaseInputPort>(
       FireBaseAuthUseCase(fireBaseAdapter: sl()));
 
@@ -209,10 +208,48 @@ init() {
   sl.registerSingleton<TagRankingFromBallInfluencePowerUseCaseInputPort>(
       TagRankingFromBallInfluencePowerUseCase(tagRepository: sl()));
 
-  sl.registerSingleton<BaseMessageUseCaseInputPort>(LaunchMessageUseCase(),
-      instanceName: "LaunchMessageUseCase");
+  sl.registerSingleton<CommentChannelBaseServiceUseCaseInputPort>(
+      FBallRootReplyFCMServiceUseCase(
+          flutterLocalNotificationsPluginAdapter: sl(),
+          fileDownLoaderUseCaseInputPort: sl(),
+          signInUserInfoUseCaseInputPort: sl()
+      ),
+      instanceName: "FBallRootReplyFCMServiceUseCase");
+
+  sl.registerFactoryParam<CommentChannelBaseServiceUseCaseInputPort, String,
+      String>((serviceKey, param2) {
+    if (serviceKey == "FBallRootReplyFCMService") {
+      return sl.get(instanceName: "FBallRootReplyFCMServiceUseCase");
+    } else {
+      return null;
+    }
+  }, instanceName: "CommentChannelBaseServiceUseCaseInputPortFactory");
+
+  sl.registerSingleton<NotificationChannelBaseInputPort>(
+      CommentChannelUseCase(),
+      instanceName: "CommentChannelUseCase");
+
+  sl.registerFactoryParam<NotificationChannelBaseInputPort, String, String>(
+      (String commentKey, param2) {
+    if (commentKey == "CommentChannelUseCase") {
+      return sl.get(instanceName: "CommentChannelUseCase");
+    } else {
+      return null;
+    }
+  }, instanceName: "NotificationChannelBaseInputPortFactory");
+
   sl.registerSingleton<BaseMessageUseCaseInputPort>(BaseMessageUseCase(),
       instanceName: "BaseMessageUseCase");
+
+  sl.registerSingleton<BaseMessageUseCaseInputPort>(
+      BackGroundMessageUseCase(
+          baseMessageUseCaseInputPort:
+              sl.get(instanceName: "BaseMessageUseCase")),
+      instanceName: "BackGroundMessageUseCase");
+
+  sl.registerSingleton<BaseMessageUseCaseInputPort>(LaunchMessageUseCase(),
+      instanceName: "LaunchMessageUseCase");
+
   sl.registerSingleton<BaseMessageUseCaseInputPort>(ResumeMessageUseCase(),
       instanceName: "ResumeMessageUseCase");
 
@@ -429,6 +466,9 @@ init() {
   sl.registerSingleton<FBallReplyUseCaseInputPort>(
       FBallReplyUseCase(fBallReplyRepository: sl()));
 
-  sl.registerSingleton<FlutterLocalNotificationsPluginAdapter>(
-      FlutterLocalNotificationsPluginAdapterImpl());
+  sl.registerSingleton<UserPositionForegroundMonitoringUseCaseInputPort>(
+      UserPositionForegroundMonitoringUseCase(
+          geoLocationUtilBasicUseCaseInputPort: sl(),
+          fUserRepository: sl(),
+          fireBaseAuthAdapterForUseCase: sl()));
 }

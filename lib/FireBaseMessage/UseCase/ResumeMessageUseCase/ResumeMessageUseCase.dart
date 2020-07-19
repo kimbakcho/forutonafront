@@ -3,7 +3,8 @@ import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMes
 class ResumeMessageUseCase implements BaseMessageUseCaseInputPort {
   @override
   Future<dynamic> message(Map<String, dynamic> message) {
-    // TODO: implement message
+    print("ResumeMessageUseCase");
+    print(message.toString());
     throw UnimplementedError();
   }
 

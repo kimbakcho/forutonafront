@@ -1,37 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Notification/MessageChanel/Domain/MessageChanelUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
-import 'Background/Presentation/MainBackGround.dart';
 import 'Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 
 class MainModel with ChangeNotifier {
-  final MainBackGround _mainBackGround;
   final FireBaseMessageController _fireBaseMessageController;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final FlutterLocalNotificationsPluginAdapter
       _flutterLocalNotificationsPluginAdapter;
+  final UserPositionForegroundMonitoringUseCaseInputPort
+      _userPositionForegroundMonitoringUseCaseInputPort;
+  final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilBasicUseCaseInputPort;
 
   MainModel(
       {@required
-          MainBackGround mainBackGround,
-      @required
           FireBaseMessageController fireBaseMessageController,
       @required
           FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required
           FlutterLocalNotificationsPluginAdapter
-              flutterLocalNotificationsPluginAdapter})
-      : _mainBackGround = mainBackGround,
-        _fireBaseMessageController = fireBaseMessageController,
+              flutterLocalNotificationsPluginAdapter,
+      @required
+          UserPositionForegroundMonitoringUseCaseInputPort
+              userPositionForegroundMonitoringUseCaseInputPort,
+      @required
+      GeoLocationUtilBasicUseCaseInputPort geoLocationUtilBasicUseCaseInputPort})
+      : _fireBaseMessageController = fireBaseMessageController,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _flutterLocalNotificationsPluginAdapter =
-            flutterLocalNotificationsPluginAdapter {
-    _mainBackGround.startBackGroundService();
+            flutterLocalNotificationsPluginAdapter,
+        _userPositionForegroundMonitoringUseCaseInputPort =
+            userPositionForegroundMonitoringUseCaseInputPort,
+        _geoLocationUtilBasicUseCaseInputPort = geoLocationUtilBasicUseCaseInputPort {
     _fireBaseMessageController.controllerStartService();
     _fireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen();
     _flutterLocalNotificationsPluginAdapter.init();
-
+    _userPositionForegroundMonitoringUseCaseInputPort
+        .startUserPositionMonitoringAndUpdateToServer();
+    _geoLocationUtilBasicUseCaseInputPort.startStreamCurrentPosition();
   }
 }

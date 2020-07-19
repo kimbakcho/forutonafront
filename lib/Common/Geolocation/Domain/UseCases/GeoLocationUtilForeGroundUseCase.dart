@@ -117,4 +117,14 @@ class GeoLocationUtilForeGroundUseCase
     _geoRequestMutex.release();
     return true;
   }
+
+  @override
+  Stream<Position> getUserPositionStream() {
+    return _basicUseCaseInputPort.getUserPositionStream();
+  }
+
+  @override
+  startStreamCurrentPosition() {
+    _basicUseCaseInputPort.startStreamCurrentPosition();
+  }
 }
