@@ -8,7 +8,7 @@ import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/HasIdError.dart';
 import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicationValidImpl.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

@@ -8,7 +8,7 @@ import 'package:forutonafront/JCodePage/J012/J012ViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../../ServiceLocator.dart';
+import '../../ServiceLocator/ServiceLocator.dart';
 
 class J012View extends StatelessWidget {
   TextEditingController idEditingController = TextEditingController();

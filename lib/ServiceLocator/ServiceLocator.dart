@@ -1,7 +1,10 @@
 import 'package:forutonafront/Background/Domain/UseCase/BackgroundUserPositionUseCaseInputPort.dart';
 import 'package:forutonafront/Background/Presentation/MainBackGround.dart';
+import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
@@ -46,7 +49,6 @@ import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBa
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
-import 'package:forutonafront/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenUpdateUseCase/FireBaseMessageTokenUpdateUseCase.dart';
@@ -91,41 +93,41 @@ import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOr
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:get_it/get_it.dart';
 
-import 'Background/BackgroundFetchAdapter/BackgroundFetchAdapter.dart';
-import 'Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
-import 'Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
-import 'Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
-import 'Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
-import 'Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
-import 'FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
-import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
-import 'FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
-import 'FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCase.dart';
-import 'FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagUseCaseInputPort.dart';
-import 'FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCase.dart';
-import 'FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
-import 'ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
-import 'ForutonaUser/Domain/Repository/FUserRepository.dart';
-import 'ForutonaUser/Domain/Repository/PersonaSettingNoticeRepository.dart';
-import 'ForutonaUser/Domain/UseCase/Auth/PwAuthFromPhoneUseCase.dart';
-import 'ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
-import 'ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCase.dart';
-import 'ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCase.dart';
-import 'ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
-import 'ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCase.dart';
-import 'ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart';
-import 'ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateForutonaUserUseCase.dart';
-import 'ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateUserUseCaseInputPort.dart';
-import 'ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart';
-import 'ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
-import 'ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCase.dart';
-import 'ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart';
-import 'ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
-import 'Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
-import 'Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCase.dart';
-import 'Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
+import '../Background/BackgroundFetchAdapter/BackgroundFetchAdapter.dart';
+import '../Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
+import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
+import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import '../Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
+import '../Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
+import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
+import '../FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
+import '../FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
+import '../FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
+import '../FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCase.dart';
+import '../FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagUseCaseInputPort.dart';
+import '../FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCase.dart';
+import '../FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
+import '../ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
+import '../ForutonaUser/Domain/Repository/FUserRepository.dart';
+import '../ForutonaUser/Domain/Repository/PersonaSettingNoticeRepository.dart';
+import '../ForutonaUser/Domain/UseCase/Auth/PwAuthFromPhoneUseCase.dart';
+import '../ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
+import '../ForutonaUser/Domain/UseCase/FUser/UserInfoUpdateUseCase/UserInfoUpdateUseCase.dart';
+import '../ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCase.dart';
+import '../ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
+import '../ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCase.dart';
+import '../ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart';
+import '../ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateForutonaUserUseCase.dart';
+import '../ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateUserUseCaseInputPort.dart';
+import '../ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart';
+import '../ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
+import '../ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCase.dart';
+import '../ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart';
+import '../ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import '../Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
+import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
+import '../Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCase.dart';
+import '../Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
 
 final sl = GetIt.instance;
 
@@ -139,11 +141,18 @@ init() {
   sl.registerSingleton<SharedPreferencesAdapter>(
       SharedPreferencesAdapterImpl());
 
-  sl.registerSingleton<GeoLocationUtilUseCaseInputPort>(GeoLocationUtilUseCase(
-      geolocatorAdapter: sl(),
-      locationAdapter: sl(),
-      sharedPreferencesAdapter: sl(),
-      preference: sl()));
+  sl.registerSingleton<GeoLocationUtilBasicUseCaseInputPort>(
+      GeoLocationUtilBasicUseCase(
+          geolocatorAdapter: sl(),
+          preference: sl(),
+          sharedPreferencesAdapter: sl()));
+
+  sl.registerSingleton<GeoLocationUtilForeGroundUseCaseInputPort>(
+      GeoLocationUtilForeGroundUseCase(
+          geolocatorAdapter: sl(),
+          locationAdapter: sl(),
+          sharedPreferencesAdapter: sl(),
+          basicUseCaseInputPort: sl()));
 
   sl.registerSingleton<FireBaseAuthBaseAdapter>(FireBaseAuthBaseAdapterImpl());
 
@@ -177,9 +186,8 @@ init() {
 
   sl.registerSingleton<BackgroundFetchAdapter>(BackgroundFetchAdapter());
 
-  sl.registerFactory<MainBackGround>(() => MainBackGroundImpl(
-      backgroundFetchAdapter: sl(),
-      backgroundUserPositionUseCaseInputPort: sl()));
+  sl.registerFactory<MainBackGround>(
+      () => MainBackGroundImpl(backgroundFetchAdapter: sl()));
 
   sl.registerSingleton<AuthUserCaseInputPort>(
       FireBaseAuthUseCase(fireBaseAdapter: sl()));
@@ -201,8 +209,6 @@ init() {
   sl.registerSingleton<TagRankingFromBallInfluencePowerUseCaseInputPort>(
       TagRankingFromBallInfluencePowerUseCase(tagRepository: sl()));
 
-  sl.registerSingleton<BaseMessageUseCaseInputPort>(BackGroundMessageUseCase(),
-      instanceName: "BackGroundMessageUseCase");
   sl.registerSingleton<BaseMessageUseCaseInputPort>(LaunchMessageUseCase(),
       instanceName: "LaunchMessageUseCase");
   sl.registerSingleton<BaseMessageUseCaseInputPort>(BaseMessageUseCase(),
@@ -422,4 +428,7 @@ init() {
 
   sl.registerSingleton<FBallReplyUseCaseInputPort>(
       FBallReplyUseCase(fBallReplyRepository: sl()));
+
+  sl.registerSingleton<FlutterLocalNotificationsPluginAdapter>(
+      FlutterLocalNotificationsPluginAdapterImpl());
 }

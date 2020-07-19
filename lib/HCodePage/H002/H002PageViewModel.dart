@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 
 import 'package:forutonafront/HCodePage/H002/H002_01/H002_01Page.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class H002PageViewModel extends ChangeNotifier {
   final BuildContext context;
-  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   bool _isLoading = false;
 
@@ -23,7 +24,7 @@ class H002PageViewModel extends ChangeNotifier {
 
   H002PageViewModel({
     @required this.context,
-    @required GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort
+    @required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort
   }) : _geoLocationUtilUseCaseInputPort =geoLocationUtilUseCaseInputPort ;
 
 

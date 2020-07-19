@@ -10,7 +10,7 @@ import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
 import 'package:forutonafront/HCodePage/H005/H00502/H00502PageViewModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

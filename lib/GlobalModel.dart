@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
-import 'ServiceLocator.dart';
+import 'ServiceLocator/ServiceLocator.dart';
 
 class GlobalModel with ChangeNotifier {
 

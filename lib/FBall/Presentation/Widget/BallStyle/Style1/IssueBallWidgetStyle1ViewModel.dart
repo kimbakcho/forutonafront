@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOutputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -9,11 +10,11 @@ import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImag
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
 
 class IssueBallWidgetStyle1ViewModel extends ChangeNotifier
-    implements GeoLocationUtilUseCaseOutputPort {
+    implements GeoLocationUtilUseForeGroundCaseOutputPort {
   final BuildContext context;
   final IssueBall issueBall;
   final IssueBallBasicStyle _issueBallBasicStyle;
-  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   bool _isLoading = false;
 
@@ -36,7 +37,7 @@ class IssueBallWidgetStyle1ViewModel extends ChangeNotifier
       @required
           IssueBallBasicStyle issueBallBasicStyle,
       @required
-          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort})
+      GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort})
       : _issueBallBasicStyle = issueBallBasicStyle,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     _geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(

@@ -3,7 +3,7 @@ import 'package:forutonafront/Common/AndroidIntentAdapter/AndroidIntentAdapter.d
 import 'package:forutonafront/KCodePage/K001/K001Page.dart';
 import 'package:forutonafront/KCodePage/K001/K001PageViewModel.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class KCodeMainPage extends StatelessWidget {

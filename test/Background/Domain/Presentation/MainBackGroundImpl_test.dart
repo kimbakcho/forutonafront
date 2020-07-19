@@ -22,10 +22,7 @@ void main() {
 
     mockBackgroundFetchAdapter = MockBackgroundFetchAdapter();
 
-    mainBackGround = MainBackGroundImpl(
-        backgroundFetchAdapter: mockBackgroundFetchAdapter,
-        backgroundUserPositionUseCaseInputPort:
-            mockBackgroundUserPositionUseCaseInputPort);
+    mainBackGround = MainBackGroundImpl();
   });
 
   test('should config with Loop 메소드 등록', () async {
@@ -43,8 +40,8 @@ void main() {
         .thenReturn("com.wing.forutonafront.UserPositionService");
     //act
     mainBackGround.startBackGroundService();
-    mainBackGround
-        .backGroundServiceLoop("com.wing.forutonafront.UserPositionService");
+//    mainBackGround
+//        .backGroundServiceLoop("com.wing.forutonafront.UserPositionService");
     //assert
     verifyInOrder([
       verify(mockBackgroundFetchAdapter.configWithLoopFuncRegister(any)),

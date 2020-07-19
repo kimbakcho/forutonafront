@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseOutputPort.dart';
@@ -38,7 +39,7 @@ class H001ViewModel
 
   final AuthUserCaseInputPort _authUserCaseInputPort;
 
-  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   Position _currentSearchPosition;
   String _currentSearchAddress;
@@ -81,7 +82,7 @@ class H001ViewModel
       @required
           AuthUserCaseInputPort authUserCaseInputPort,
       @required
-          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort})
+      GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort})
       : _fBallListUpFromInfluencePowerUseCaseInputPort =
             fBallListUpFromInfluencePowerUseCaseInputPort,
         _tagRankingFromPositionUseCaseInputPort =

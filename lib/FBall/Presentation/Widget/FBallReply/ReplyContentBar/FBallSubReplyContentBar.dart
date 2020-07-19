@@ -5,7 +5,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallRe
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/ReplyContentBar/FBallSubReplyContentBarViewModel.dart';
 
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

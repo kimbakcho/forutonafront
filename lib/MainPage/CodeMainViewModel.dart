@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 enum HCodeState { HCDOE, ICODE, BCODE, KCODE, GCODE }
 
@@ -17,13 +18,13 @@ class CodeMainViewModel with ChangeNotifier {
 
   AuthUserCaseInputPort _authUserCaseInputPort;
 
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   CodeMainPageController _codeMainPageController;
 
   CodeMainViewModel(
       {@required AuthUserCaseInputPort authUserCaseInputPort,
-      @required GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort,
+      @required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort,
       @required CodeMainPageController codeMainPageController})
       : _authUserCaseInputPort = authUserCaseInputPort,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,

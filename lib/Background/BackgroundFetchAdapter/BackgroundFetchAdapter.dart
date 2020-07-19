@@ -11,8 +11,12 @@ class BackgroundFetchAdapter {
       stopOnTerminate: false,
       requiredNetworkType:NetworkType.ANY,
     ), (String taskId) async {
+      print("configWithLoopFuncRegister Func");
       serviceLoop(taskId);
     });
+  }
+  registerHeadlessTask(Function(String taskId) backgroundFetchHeadlessTask){
+    BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
   }
   backgroundFetchFinish(String taskId){
     BackgroundFetch.finish(taskId);

@@ -5,7 +5,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Mediator/FBal
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/ReplyContentBar/FBallReplyContentBar.dart';
 
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class FBallDetailReplyViewModel extends ChangeNotifier
     with FBallReplyColleague {

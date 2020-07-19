@@ -4,17 +4,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/MainModel.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:forutonafront/ServiceLocator.dart';
-import 'package:forutonafront/ServiceLocator.dart' as di;
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
 import 'package:forutonafront/Splash/SplashPage.dart';
-import 'package:forutonafront/configureDependencies.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:provider/provider.dart';
 //flutter pub run build_runner watch
 
 void main() {
-  configureDependencies(Environment.prod);
   di.init();
 
   runApp(

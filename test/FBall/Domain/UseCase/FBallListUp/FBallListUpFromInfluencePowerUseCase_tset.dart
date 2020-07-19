@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
 
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
@@ -21,7 +21,7 @@ import '../../../../fixtures/fixture_reader.dart';
 
 class MockFBallRepository extends Mock implements FBallRepository{}
 class MockFBallListUpFromInfluencePowerUseCaseOutputPort extends Mock implements FBallListUpFromInfluencePowerUseCaseOutputPort{}
-class MockGeoLocationUtil extends Mock implements GeoLocationUtilUseCase{}
+class MockGeoLocationUtil extends Mock implements GeoLocationUtilBasicUseCase{}
 
 void main(){
   MockFBallRepository mockFBallRepository;

@@ -1,72 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
-import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Placemark.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
-import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:forutonafront/ServiceLocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mutex/mutex.dart';
-import 'package:permission_handler/permission_handler.dart' as Permit;
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'GeoLocationUtilUseCaseInputPort.dart';
-import 'GeoLocationUtilUseCaseOutputPort.dart';
+import 'GeoLocationUtilBasicUseCaseInputPort.dart';
 
-class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
+class GeoLocationUtilBasicUseCase
+    implements GeoLocationUtilBasicUseCaseInputPort {
   GeolocatorAdapter _geolocatorAdapter;
-  LocationAdapter _locationAdapter;
+
   SharedPreferencesAdapter _sharedPreferencesAdapter;
   Preference _preference;
-  Mutex _geoRequestMutex = new Mutex();
 
-  GeoLocationUtilUseCase(
+  GeoLocationUtilBasicUseCase(
       {@required GeolocatorAdapter geolocatorAdapter,
-        @required  LocationAdapter locationAdapter,
-        @required  SharedPreferencesAdapter sharedPreferencesAdapter,
-        @required Preference preference
-      })
+      @required SharedPreferencesAdapter sharedPreferencesAdapter,
+      @required Preference preference})
       : _geolocatorAdapter = geolocatorAdapter,
-        _locationAdapter = locationAdapter,
         _sharedPreferencesAdapter = sharedPreferencesAdapter,
         _preference = preference;
 
   Position currentWithLastPosition;
   String currentWithLastAddress;
-
-  Future<bool> useGpsReq() async {
-    await _geoRequestMutex.acquire();
-
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-
-    _permissionGranted = await _locationAdapter.hasPermission();
-
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await _locationAdapter.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        _geoRequestMutex.release();
-        return false;
-      }
-    }
-
-    _serviceEnabled = await _locationAdapter.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await _locationAdapter.requestService();
-      if (!_serviceEnabled) {
-        _geoRequestMutex.release();
-        return false;
-      }
-    }
-
-    _geoRequestMutex.release();
-    return true;
-  }
 
   Position getCurrentWithLastPositionInMemory() {
     if (currentWithLastPosition == null) {
@@ -87,20 +44,21 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
   }
 
   Future<Position> getCurrentWithLastPosition() async {
-
-    bool _serviceEnabled;
-    _serviceEnabled = await _locationAdapter.serviceEnabled();
     Position resultPosition;
-    if (!_serviceEnabled) {
-      resultPosition = await getLastKnowPonePosition();
-    } else {
+    try {
       resultPosition = await _geolocatorAdapter.getCurrentPosition();
-      await _sharedPreferencesAdapter.setDouble("currentlong", resultPosition.longitude);
-      await _sharedPreferencesAdapter.setDouble("currentlat", resultPosition.latitude);
+      print("getCurrentWithLastPosition");
+      print(resultPosition);
+    } catch (Ex) {
+      print(Ex);
+      resultPosition = await getLastKnowPonePosition();
     }
+    await _sharedPreferencesAdapter.setDouble(
+        "currentlong", resultPosition.longitude);
+    await _sharedPreferencesAdapter.setDouble(
+        "currentlat", resultPosition.latitude);
     currentWithLastPosition = resultPosition;
-    currentWithLastAddress =
-        await getPositionAddress(currentWithLastPosition);
+    currentWithLastAddress = await getPositionAddress(currentWithLastPosition);
     return resultPosition;
   }
 
@@ -116,19 +74,6 @@ class GeoLocationUtilUseCase implements GeoLocationUtilUseCaseInputPort {
           latitude: _preference.initPosition.latitude);
     }
     return knowPosition;
-  }
-
-
-  Future<void> reqBallDistanceDisplayText(
-      {@required
-          Position ballLatLng,
-      @required
-          GeoLocationUtilUseCaseOutputPort geoLocationUtilUseCaseOp}) async {
-    var position = await getLastKnowPonePosition();
-    var distance = await _geolocatorAdapter.distanceBetween(ballLatLng.latitude,
-        ballLatLng.longitude, position.latitude, position.longitude);
-    geoLocationUtilUseCaseOp.onBallDistanceDisplayText(
-        displayDistanceText: DistanceDisplayUtil.changeDisplayStr(distance));
   }
 
   Future<String> getPositionAddress(Position searchPosition) async {

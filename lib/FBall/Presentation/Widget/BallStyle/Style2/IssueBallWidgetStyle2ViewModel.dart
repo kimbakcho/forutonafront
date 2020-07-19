@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseOutputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
@@ -13,11 +14,11 @@ import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/Common
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
-    implements IssueBallUseCaseOutputPort, GeoLocationUtilUseCaseOutputPort {
+    implements IssueBallUseCaseOutputPort, GeoLocationUtilUseForeGroundCaseOutputPort {
   BuildContext context;
 
   IssueBall issueBall;
@@ -26,7 +27,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
 
   IssueBallUseCaseInputPort _issueBallUseCaseInputPort;
 
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   IssueBallWidgetStyle2ViewModel(
       {@required
@@ -36,7 +37,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
       @required
           IssueBallUseCaseInputPort issueBallUseCaseInputPort,
       @required
-          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort})
+      GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort})
       : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     issueBall = IssueBall.fromFBallResDto(userBallResDto);

@@ -8,7 +8,7 @@ import 'package:forutonafront/KCodePage/KCodeMainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
-import '../ServiceLocator.dart';
+import '../ServiceLocator/ServiceLocator.dart';
 
 class CodeMainpage extends StatefulWidget {
   CodeMainpage({Key key}) : super(key: key);

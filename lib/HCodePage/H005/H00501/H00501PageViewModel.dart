@@ -1,7 +1,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
@@ -18,7 +18,7 @@ class H00501PageViewModel extends ChangeNotifier
   final BuildContext context;
   final FBallListUpFromSearchTitleUseCaseInputPort
       _fBallListUpFromSearchTitleUseCaseInputPort;
-  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseIp;
+  final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseIp;
   final Function(int count) onSearchTitleItemCount;
   List<DropdownMenuItem<H00501DropdownItemType>> dropDownItems =
       new List<DropdownMenuItem<H00501DropdownItemType>>();
@@ -61,7 +61,7 @@ class H00501PageViewModel extends ChangeNotifier
           FBallListUpFromSearchTitleUseCaseInputPort
               fBallListUpFromSearchTitleUseCaseInputPort,
       @required
-          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseIp,
+          GeoLocationUtilBasicUseCaseInputPort geoLocationUtilUseCaseIp,
       @required
           this.onSearchTitleItemCount})
       : _fBallListUpFromSearchTitleUseCaseInputPort =

@@ -8,16 +8,14 @@ abstract class FlutterLocalNotificationsPluginAdapter {
   show(int id, String title, String body, NotificationDetails notificationDetails);
 }
 
-@Injectable(as: FlutterLocalNotificationsPluginAdapter, env: Environment.prod)
 class FlutterLocalNotificationsPluginAdapterImpl
     implements FlutterLocalNotificationsPluginAdapter {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   NotificationAppLaunchDetails notificationAppLaunchDetails;
 
-
   Future<void> init() async {
-    debugPrint("FlutterLocalNotificationsPluginAdapterImpl Init");
+    print("FlutterLocalNotificationsPluginAdapterImpl Init");
     notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
@@ -42,7 +40,5 @@ class FlutterLocalNotificationsPluginAdapterImpl
   show(int id, String title, String body, NotificationDetails notificationDetails) async{
     await flutterLocalNotificationsPlugin.show(id, title, body, notificationDetails);
   }
-
-
 
 }

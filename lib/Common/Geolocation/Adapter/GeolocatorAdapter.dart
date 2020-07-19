@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart' as Geolocator;
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart' as AdapterPosition;
 
 abstract class  GeolocatorAdapter {
-  getCurrentPosition() {}
+  getCurrentPosition();
 
   distanceBetween(double latitude, double longitude, double latitude2, double longitude2);
 
@@ -16,7 +16,7 @@ class GeolocatorAdapterImpl implements GeolocatorAdapter {
 
   @override
   Future<AdapterPosition.Position> getCurrentPosition() async {
-    Geolocator.Position position = await _geolocator.getCurrentPosition();
+    Geolocator.Position position = await _geolocator.getCurrentPosition().timeout(Duration(seconds: 20));
     AdapterPosition.Position adapterPosition = AdapterPosition.Position.fromMap(position.toJson());
     return adapterPosition;
   }

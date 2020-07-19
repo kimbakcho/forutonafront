@@ -4,7 +4,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoU
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class LogoutUseCase implements LogoutUseCaseInputPort {
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;

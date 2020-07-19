@@ -113,8 +113,6 @@ dependencies:
   data_connection_checker: ^0.3.4
   #의존성 주입을 위해 사용
   get_it: ^4.0.2
-  #의존성 주입 Helper
-  injectable: ^0.4.0+1
 
 
 dev_dependencies:

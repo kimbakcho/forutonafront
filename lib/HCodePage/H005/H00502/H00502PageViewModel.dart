@@ -1,6 +1,6 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
@@ -48,7 +48,7 @@ class H00502PageViewModel extends ChangeNotifier
   final RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
       _rankingFromTagNameOrderByBallPowerUseCaseInputPort;
 
-  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   final Function(int count) emitBallListUpFromSearchTagNameBallTotalCount;
 
@@ -71,7 +71,7 @@ class H00502PageViewModel extends ChangeNotifier
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
               rankingFromTagNameOrderByBallPowerUseCaseInputPort,
       @required
-          GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort,
+          GeoLocationUtilBasicUseCaseInputPort geoLocationUtilUseCaseInputPort,
       @required
           this.searchTag,
       @required this.emitBallListUpFromSearchTagNameBallTotalCount

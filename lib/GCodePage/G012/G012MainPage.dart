@@ -5,7 +5,7 @@ import 'package:forutonafront/Common/SignValid/BasicUseCase/CurrentPwValidImpl.d
 import 'package:forutonafront/Common/SignValid/BasicUseCase/PwCheckValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

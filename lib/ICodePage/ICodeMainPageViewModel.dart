@@ -4,7 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
@@ -22,7 +23,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class ICodeMainPageViewModel extends ChangeNotifier
     implements FBallListUpFromMapAreaUseCaseOutputPort {
   final BuildContext context;
-  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCase;
+  final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCase;
   final FBallListUpFromMapAreaUseCaseInputPort
       _fBallListUpFromMapAreaUseCaseInputPort;
   final MapScreenPositionUseCaseInputPort _mapScreenPositionUseCaseInputPort;
@@ -59,7 +60,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
 
   ICodeMainPageViewModel({
     this.context,
-    @required GeoLocationUtilUseCaseInputPort geoLocationUtilUseCase,
+    @required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCase,
     @required
         FBallListUpFromMapAreaUseCaseInputPort
             fBallListUpFromMapAreaUseCaseInputPort,

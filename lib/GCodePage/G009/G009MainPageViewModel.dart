@@ -14,7 +14,7 @@ import 'package:forutonafront/GCodePage/G016/G016MainPage.dart';
 import 'package:forutonafront/GCodePage/G019/G019MainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class G009MainPageViewModel extends ChangeNotifier
     implements LogoutUseCaseOutputPort, SignInUserInfoUseCaseOutputPort {

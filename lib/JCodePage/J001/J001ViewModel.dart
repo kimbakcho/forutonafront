@@ -9,7 +9,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseIn
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/JCodePage/J002/J002View.dart';
 import 'package:forutonafront/JCodePage/J008/J008View.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class J001ViewModel extends ChangeNotifier {
   BuildContext context;

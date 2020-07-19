@@ -1,14 +1,23 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
+import 'package:forutonafront/Common/Notification/MessageChanel/Domain/MessageChanelUseCaseInputPort.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenUpdateUseCase/FireBaseMessageTokenUpdateUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 //FirebaseMessage BackGround 에 등록되는 메소드는 는 반드시 Top Level 메소드 여야 한다.
-Future<dynamic> onFirebaseBackgroundMessage(var message) async {
-  BaseMessageUseCaseInputPort backGroundMessageUseCase =
-      sl.get(instanceName: "BackGroundMessageUseCase");
+//메소드 이름을  onFirebaseBackgroundMessage 으로 시작하면 안된다
+//만약 이름을 위와 같이 하면 There was an exception when getting callback handle from Dart side 에러가 뜬다..
+Future<dynamic> firebaseBackgroundMessage(Map<String, dynamic> message) async {
+  FlutterLocalNotificationsPluginAdapter flutterLocalNotificationsPluginAdapter = FlutterLocalNotificationsPluginAdapterImpl();
+  BaseMessageUseCaseInputPort backGroundMessageUseCase = BackGroundMessageUseCase(
+      messageChanelUseCaseInputPort: MessageChanelUseCase(
+        flutterLocalNotificationsPluginAdapter:  flutterLocalNotificationsPluginAdapter
+      )
+  );
   backGroundMessageUseCase.message(message);
 }
 
@@ -47,7 +56,7 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
       MessageHandler onLaunch,
       MessageHandler onResume}) {
     _firebaseMessaging.configure(
-        onBackgroundMessage: onFirebaseBackgroundMessage,
+        onBackgroundMessage: firebaseBackgroundMessage,
         onResume: onResume,
         onLaunch: onLaunch,
         onMessage: onMessage);

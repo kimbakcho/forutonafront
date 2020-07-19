@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,13 +19,13 @@ class H007MainPageViewModel extends ChangeNotifier {
   CameraPosition currentCameraPosition;
 
   Completer<GoogleMapController> _googleMapController = Completer();
-  GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   H007MainPageViewModel(
       {this.initPosition,
       this.address,
       this.context,
-      GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort})
+        GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort})
       : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     initCameraPosition = CameraPosition(
         target: LatLng(initPosition.latitude, initPosition.longitude),

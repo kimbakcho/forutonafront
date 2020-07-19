@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCase.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseOutputPort.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import '../../FBall/Dto/BallSearchBarHistoryDto.dart';
 
@@ -14,7 +15,7 @@ class H004MainPageViewModel extends ChangeNotifier
     implements BallSearchBarHistoryUseCaseOutputPort {
   final BuildContext context;
   final BallSearchBarHistoryUseCaseInputPort _ballSearchBarHistoryUseCaseInputPort;
-  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   FocusNode searchFocusNode = FocusNode();
   TextEditingController searchTextController = new TextEditingController();
@@ -26,7 +27,7 @@ class H004MainPageViewModel extends ChangeNotifier
   H004MainPageViewModel({
     @required this.context,
     BallSearchBarHistoryUseCaseInputPort ballSearchBarHistoryUseCaseInputPort,
-    GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort
+    GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort
   })
       :_ballSearchBarHistoryUseCaseInputPort = ballSearchBarHistoryUseCaseInputPort,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {

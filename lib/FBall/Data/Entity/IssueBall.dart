@@ -10,7 +10,7 @@ import 'package:forutonafront/FBall/Data/Value/IssueBallDescription.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:forutonafront/ServiceLocator.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:forutonafront/Tag/Data/Entity/FBallTag.dart';
 import 'package:json_annotation/json_annotation.dart';
 

@@ -1,7 +1,7 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,14 +16,14 @@ class BackgroundUserPositionUseCase
 
   String getServiceTaskId = 'com.wing.forutonafront.UserPositionService';
 
-  final GeoLocationUtilUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   final FUserRepository _fUserRepository;
 
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   BackgroundUserPositionUseCase(
-      {@required GeoLocationUtilUseCaseInputPort geoLocationUtilUseCaseInputPort,
+      {@required GeoLocationUtilBasicUseCaseInputPort geoLocationUtilUseCaseInputPort,
       @required FUserRepository fUserRepository,
       @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
       : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
