@@ -6,6 +6,7 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
+import 'package:forutonafront/Common/ImageCropUtil/ImageCropUtilInputPort.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCase.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
@@ -208,12 +209,14 @@ init() {
   sl.registerSingleton<TagRankingFromBallInfluencePowerUseCaseInputPort>(
       TagRankingFromBallInfluencePowerUseCase(tagRepository: sl()));
 
+  sl.registerSingleton<ImageCropUtilInputPort>(ImageCropUtil());
+
   sl.registerSingleton<CommentChannelBaseServiceUseCaseInputPort>(
       FBallRootReplyFCMServiceUseCase(
           flutterLocalNotificationsPluginAdapter: sl(),
           fileDownLoaderUseCaseInputPort: sl(),
-          signInUserInfoUseCaseInputPort: sl()
-      ),
+          signInUserInfoUseCaseInputPort: sl(),
+          imageCropUtilInputPort: sl()),
       instanceName: "FBallRootReplyFCMServiceUseCase");
 
   sl.registerFactoryParam<CommentChannelBaseServiceUseCaseInputPort, String,

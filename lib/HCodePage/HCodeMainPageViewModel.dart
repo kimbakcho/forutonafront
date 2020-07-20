@@ -18,6 +18,7 @@ class HCodeMainPageViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
   onhCodePageChangeListners(){
     if(hCodePageController.page == 0.0){
       currentState = HCodePageState.H001Page;

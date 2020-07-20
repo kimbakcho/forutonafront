@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
+import 'package:forutonafront/Common/ImageCropUtil/ImageCropUtilInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Dto/NotificationChannelDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
@@ -12,6 +13,7 @@ class FBallRootReplyFCMServiceUseCase
       _flutterLocalNotificationsPluginAdapter;
   final FileDownLoaderUseCaseInputPort _fileDownLoaderUseCaseInputPort;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final ImageCropUtilInputPort _imageCropUtilInputPort;
 
   FBallRootReplyFCMServiceUseCase(
       {@required
@@ -20,23 +22,23 @@ class FBallRootReplyFCMServiceUseCase
       @required
           FileDownLoaderUseCaseInputPort fileDownLoaderUseCaseInputPort,
       @required
-          SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
+          SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      @required
+          ImageCropUtilInputPort imageCropUtilInputPort})
       : _flutterLocalNotificationsPluginAdapter =
             flutterLocalNotificationsPluginAdapter,
         _fileDownLoaderUseCaseInputPort = fileDownLoaderUseCaseInputPort,
-        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
+        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
+        _imageCropUtilInputPort = imageCropUtilInputPort;
 
   @override
   reqNotification(Map<String, dynamic> message,
       NotificationChannelDto notificationChannelDto) async {
     var meInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
 
-    var replyLargeIcon =
-        await _fileDownLoaderUseCaseInputPort.downloadAndSaveFile(
-            message["data"]["userProfileImageUrl"], 'replyLargeIcon');
+    String replyLargeIcon = await makeAvatarImageToFile(message["data"]["userProfileImageUrl"],"replyLargeIcon");
 
-    var meLargeIcon = await _fileDownLoaderUseCaseInputPort.downloadAndSaveFile(
-        meInfo.profilePictureUrl, 'meLargeIcon');
+    String meLargeIcon = await makeAvatarImageToFile(meInfo.profilePictureUrl,"meLargeIcon");
 
     var me = Person(
       name: meInfo.nickName,
@@ -63,21 +65,29 @@ class FBallRootReplyFCMServiceUseCase
 
     AndroidNotificationDetails firstNotificationAndroidSpecifics =
         AndroidNotificationDetails(
-            notificationChannelDto.channelId,
-            notificationChannelDto.channelName,
-            notificationChannelDto.channelDescription,
-            visibility: NotificationVisibility.Public,
-            importance: Importance.Low,
-            priority: Priority.Default,
-            groupKey: notificationChannelDto.key,
-            styleInformation: messagingStyle,
-        );
+      notificationChannelDto.channelId,
+      notificationChannelDto.channelName,
+      notificationChannelDto.channelDescription,
+      visibility: NotificationVisibility.Public,
+      importance: Importance.Low,
+      priority: Priority.Default,
+      groupKey: notificationChannelDto.key,
+      styleInformation: messagingStyle,
+    );
 
     NotificationDetails firstNotificationPlatformSpecifics =
         NotificationDetails(firstNotificationAndroidSpecifics, null);
 
+    await _flutterLocalNotificationsPluginAdapter.show(0, "Message Box Style",
+        "Message Box Style", firstNotificationPlatformSpecifics,payload: "FBallRootReplyFCMServiceUseCase");
+  }
 
-    await _flutterLocalNotificationsPluginAdapter.show(
-        0, "Message Box Style", "Message Box Style", firstNotificationPlatformSpecifics);
+  Future<String> makeAvatarImageToFile(String userImageUrl,String imageFileName) async {
+    var largeIconByte =
+        await _fileDownLoaderUseCaseInputPort.downloadToByte(userImageUrl);
+    var largeIconFilePath =
+        await _imageCropUtilInputPort.saveMemoryImageToAvatarFile(
+            largeIconByte, imageFileName);
+    return largeIconFilePath;
   }
 }

@@ -18,20 +18,27 @@ Future<dynamic> firebaseBackgroundMessage(Map<String, dynamic> message) async {
   } catch (ex) {
     print("backgroundService ServiceLocator init");
     di.init();
-    fireBaseAuthAdapterForUseCase = sl();
-    fireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen();
-    if (await fireBaseAuthAdapterForUseCase.isLogin()) {
-      SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort = sl();
-      await signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(
-          await fireBaseAuthAdapterForUseCase.userUid());
-    }
-  }finally{
+    fireBaseAuthAdapterForUseCase =
+        await loginUserInfoDataSaveForMemory(fireBaseAuthAdapterForUseCase);
+  } finally {
     if (await fireBaseAuthAdapterForUseCase.isLogin()) {
       BaseMessageUseCaseInputPort backGroundMessageUseCase =
-      sl.get(instanceName: "BackGroundMessageUseCase");
+          sl.get(instanceName: "BackGroundMessageUseCase");
       backGroundMessageUseCase.message(message);
     }
   }
+}
+
+Future<FireBaseAuthAdapterForUseCase> loginUserInfoDataSaveForMemory(
+    FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase) async {
+  fireBaseAuthAdapterForUseCase = sl();
+  fireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen();
+  if (await fireBaseAuthAdapterForUseCase.isLogin()) {
+    SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort = sl();
+    await signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(
+        await fireBaseAuthAdapterForUseCase.userUid());
+  }
+  return fireBaseAuthAdapterForUseCase;
 }
 
 abstract class FireBaseMessageAdapter {
