@@ -12,8 +12,12 @@ import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCase.
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelUseCase.dart';
-import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/Service/FBallRootReplyFCMServiceUseCase.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/Service/FBallReplyFCMServiceUseCase.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
+import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/ID001/ID001PageMoveAction.dart';
+import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCase.dart';
+import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/ForutonaLoginAdapterImpl.dart';
@@ -197,6 +201,15 @@ init() {
   sl.registerSingleton<FBallRepository>(
       FBallRepositoryImpl(fBallRemoteDataSource: sl()));
 
+  sl.registerSingleton<IssueBallTypeRemoteDateSource>(
+      IssueBallTypeRemoteDateSourceImpl());
+
+  sl.registerSingleton<IssueBallTypeRepository>(IssueBallTypeRepositoryImpl(
+      fireBaseAuthBaseAdapter: sl(), issueBallTypeRemoteDateSource: sl()));
+
+  sl.registerSingleton<IssueBallUseCaseInputPort>(
+      IssueBallUseCase(issueBallTypeRepository: sl()));
+
   sl.registerSingleton<FBallListUpFromInfluencePowerUseCaseInputPort>(
       FBallListUpFromInfluencePowerUseCase(fBallRepository: sl()));
 
@@ -212,17 +225,17 @@ init() {
   sl.registerSingleton<ImageCropUtilInputPort>(ImageCropUtil());
 
   sl.registerSingleton<CommentChannelBaseServiceUseCaseInputPort>(
-      FBallRootReplyFCMServiceUseCase(
+      FBallReplyFCMServiceUseCase(
           flutterLocalNotificationsPluginAdapter: sl(),
           fileDownLoaderUseCaseInputPort: sl(),
           signInUserInfoUseCaseInputPort: sl(),
           imageCropUtilInputPort: sl()),
-      instanceName: "FBallRootReplyFCMServiceUseCase");
+      instanceName: "FBallReplyFCMService");
 
   sl.registerFactoryParam<CommentChannelBaseServiceUseCaseInputPort, String,
       String>((serviceKey, param2) {
-    if (serviceKey == "FBallRootReplyFCMService") {
-      return sl.get(instanceName: "FBallRootReplyFCMServiceUseCase");
+    if (serviceKey == "FBallReplyFCMService") {
+      return sl.get(instanceName: "FBallReplyFCMService");
     } else {
       return null;
     }
@@ -240,6 +253,33 @@ init() {
       return null;
     }
   }, instanceName: "NotificationChannelBaseInputPortFactory");
+
+  sl.registerSingleton<PageMoveActionUseCaseInputPort>(
+      ID001PageMoveAction(issueBallUseCaseInputPort: sl()),
+      instanceName: "ID001PageMoveAction");
+
+  sl.registerFactoryParam<PageMoveActionUseCaseInputPort, String, String>(
+      (String serviceKey, param2) {
+    if (serviceKey == "ID001PageMoveAction") {
+      return sl.get<PageMoveActionUseCaseInputPort>(
+          instanceName: "ID001PageMoveAction");
+    } else {
+      return null;
+    }
+  }, instanceName: "PageMoveActionUseCaseInputPortFactory");
+
+  sl.registerSingleton<NotiSelectActionBaseInputPort>(PageMoveActionUseCase(),
+      instanceName: "PageMoveActionUseCase");
+
+  sl.registerFactoryParam<NotiSelectActionBaseInputPort, String, String>(
+      (String commentKey, param2) {
+    if (commentKey == "PageMoveActionUseCase") {
+      return sl.get<NotiSelectActionBaseInputPort>(
+          instanceName: "PageMoveActionUseCase");
+    } else {
+      return null;
+    }
+  }, instanceName: "NotiSelectActionBaseInputPortFactory");
 
   sl.registerSingleton<BaseMessageUseCaseInputPort>(BaseMessageUseCase(),
       instanceName: "BaseMessageUseCase");
@@ -410,14 +450,7 @@ init() {
   sl.registerSingleton<UserMakeBallListUpUseCaseInputPort>(
       UserMakeBallListUpUseCase(fBallRepository: sl()));
 
-  sl.registerSingleton<IssueBallTypeRemoteDateSource>(
-      IssueBallTypeRemoteDateSourceImpl());
 
-  sl.registerSingleton<IssueBallTypeRepository>(IssueBallTypeRepositoryImpl(
-      fireBaseAuthBaseAdapter: sl(), issueBallTypeRemoteDateSource: sl()));
-
-  sl.registerSingleton<IssueBallUseCaseInputPort>(
-      IssueBallUseCase(issueBallTypeRepository: sl()));
 
   sl.registerSingleton<FBallValuationRemoteDataSource>(
       FBallValuationRemoteDataSourceImpl());

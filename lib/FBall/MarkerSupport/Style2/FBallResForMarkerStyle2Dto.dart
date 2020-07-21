@@ -1,4 +1,5 @@
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/FBallType.dart';
+
+import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FBallResForMarkerStyle2Dto {

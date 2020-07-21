@@ -6,7 +6,7 @@ import 'package:image/image.dart';
 import 'dart:math' as math;
 
 import 'package:path_provider/path_provider.dart';
-
+import 'package:image/image.dart' as Img;
 abstract class ImageCropUtilInputPort {
   Future<String> saveMemoryImageToAvatarFile(List<int> imageByte,String imageFileName);
 }
@@ -15,7 +15,10 @@ class ImageCropUtil implements ImageCropUtilInputPort {
 
   @override
   Future<String> saveMemoryImageToAvatarFile(List<int> imageByte,String imageFileName)async {
-    ui.Image image = await loadImage(imageByte);
+    var decodeImage = Img.decodeImage(imageByte);
+    var min = math.min(decodeImage.width,decodeImage.height);
+    var copyResize = Img.copyResize(decodeImage,height: min,width: min);
+    ui.Image image = await loadImage(Img.encodePng(copyResize));
     return await _saveCanvas(image,imageFileName);
   }
 
@@ -50,10 +53,11 @@ class ImageCropUtil implements ImageCropUtilInputPort {
   Canvas _drawCanvas(ui.Image image, Canvas canvas) {
     var min = math.min(image.width,image.height);
     Path path = Path()
-      ..addOval(Rect.fromLTWH(0, min*0.25,
+      ..addOval(Rect.fromLTWH(0, 0,
           min.toDouble(), min.toDouble()));
     canvas.clipPath(path);
-    canvas.drawImage(image, Offset(0,0), Paint());
+    canvas.drawImageRect(image,Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
+        Rect.fromLTRB(0, 0, min.toDouble(), min.toDouble()), Paint());
     return canvas;
   }
 

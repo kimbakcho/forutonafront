@@ -8,7 +8,6 @@ part 'FUserInfo.g.dart';
 
 @JsonSerializable()
 class FUserInfo {
-
    String uid;
    String nickName;
    String _profilePictureUrl;
@@ -49,7 +48,6 @@ class FUserInfo {
    int alarmFollowNewContent;
    int alarmSponNewContent;
    int deactivation;
-
 
 
    FUserInfo();

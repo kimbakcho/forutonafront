@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Data/Value/FBallType.dart';
+import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
+
 import 'package:forutonafront/FBall/MarkerSupport/Style2/Widget/IssueBallStyle2MarkerWidget.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/Widget/QuestBallStyle2MarkerWidget.dart';
 

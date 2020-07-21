@@ -89,13 +89,20 @@ class GeoLocationUtilBasicUseCase
   }
 
   Future<String> getPositionAddress(Position searchPosition) async {
-    var placeMarkList = await _geolocatorAdapter
-        .placemarkFromPosition(searchPosition, localeIdentifier: "ko");
+    var placeMarkList = [];
+    try{
+        placeMarkList = await _geolocatorAdapter
+          .placemarkFromPosition(searchPosition, localeIdentifier: "ko");
+    }catch (ex) {
+      debugPrint(ex);
+    }
+
     if (placeMarkList.length > 0) {
       return replacePlacemarkToAddresStr(placeMarkList[0]);
     } else {
       return "주소를 알 수 없습니다";
     }
+
   }
 
   String replacePlacemarkToAddresStr(Placemark placemark) {
