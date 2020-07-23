@@ -12,7 +12,8 @@ FCMReplyDto _$FCMReplyDtoFromJson(Map<String, dynamic> json) {
     ..nickName = json['nickName'] as String
     ..replyText = json['replyText'] as String
     ..userProfileImageUrl = json['userProfileImageUrl'] as String
-    ..ballUuid = json['ballUuid'] as String;
+    ..ballUuid = json['ballUuid'] as String
+    ..replyTitleType = json['replyTitleType'] as String;
 }
 
 Map<String, dynamic> _$FCMReplyDtoToJson(FCMReplyDto instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$FCMReplyDtoToJson(FCMReplyDto instance) =>
       'replyText': instance.replyText,
       'userProfileImageUrl': instance.userProfileImageUrl,
       'ballUuid': instance.ballUuid,
+      'replyTitleType': instance.replyTitleType,
     };

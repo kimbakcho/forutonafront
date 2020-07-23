@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:forutonafront/Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
 import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/ImageCropUtil/ImageCropUtilInputPort.dart';
@@ -16,25 +17,23 @@ class FBallReplyFCMServiceUseCase
     implements CommentChannelBaseServiceUseCaseInputPort {
   final FlutterLocalNotificationsPluginAdapter
       _flutterLocalNotificationsPluginAdapter;
-  final FileDownLoaderUseCaseInputPort _fileDownLoaderUseCaseInputPort;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
-  final ImageCropUtilInputPort _imageCropUtilInputPort;
+  final AvatarImageMakerUseCaseInputPort _avatarImageMakerUseCaseInputPort;
 
   FBallReplyFCMServiceUseCase(
       {@required
           FlutterLocalNotificationsPluginAdapter
               flutterLocalNotificationsPluginAdapter,
       @required
-          FileDownLoaderUseCaseInputPort fileDownLoaderUseCaseInputPort,
+        AvatarImageMakerUseCaseInputPort avatarImageMakerUseCaseInputPort,
       @required
           SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required
-          ImageCropUtilInputPort imageCropUtilInputPort})
+      })
       : _flutterLocalNotificationsPluginAdapter =
             flutterLocalNotificationsPluginAdapter,
-        _fileDownLoaderUseCaseInputPort = fileDownLoaderUseCaseInputPort,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
-        _imageCropUtilInputPort = imageCropUtilInputPort;
+        _avatarImageMakerUseCaseInputPort= avatarImageMakerUseCaseInputPort;
+
 
   @override
   reqNotification(Map<String, dynamic> message,
@@ -44,11 +43,11 @@ class FBallReplyFCMServiceUseCase
 
     var meInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
 
-    String replyLargeIcon = await makeAvatarImageToFile(
+    String replyLargeIcon = await _avatarImageMakerUseCaseInputPort.makeAvatarImageToFile(
         fcmReplyDto.userProfileImageUrl, "replyLargeIcon");
 
     String meLargeIcon =
-        await makeAvatarImageToFile(meInfo.profilePictureUrl, "meLargeIcon");
+        await _avatarImageMakerUseCaseInputPort.makeAvatarImageToFile(meInfo.profilePictureUrl, "meLargeIcon");
 
     var me = Person(
       name: meInfo.nickName,
@@ -82,7 +81,7 @@ class FBallReplyFCMServiceUseCase
       visibility: NotificationVisibility.Public,
       importance: Importance.Low,
       priority: Priority.Default,
-      groupKey: notificationChannelDto.key,
+      groupKey: "co.kr.forutonaforutona.comment_Group",
       largeIcon: FilePathAndroidBitmap(replyLargeIcon),
       styleInformation: messagingStyle,
     );
@@ -102,12 +101,5 @@ class FBallReplyFCMServiceUseCase
         payload: json.encode(actionPayloadDto.toJson()));
   }
 
-  Future<String> makeAvatarImageToFile(
-      String userImageUrl, String imageFileName) async {
-    var largeIconByte =
-        await _fileDownLoaderUseCaseInputPort.downloadToByte(userImageUrl);
-    var largeIconFilePath = await _imageCropUtilInputPort
-        .saveMemoryImageToAvatarFile(largeIconByte, imageFileName);
-    return largeIconFilePath;
-  }
+
 }

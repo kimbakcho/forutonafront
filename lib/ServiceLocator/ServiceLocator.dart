@@ -1,3 +1,4 @@
+import 'package:forutonafront/Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
 import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
@@ -13,6 +14,9 @@ import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseI
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelUseCase.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/Service/FBallReplyFCMServiceUseCase.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCae.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCaeInputPort.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/Domain/RadarBasicChannel/Service/IssueFBalIInsertFCMServiceUseCase.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/ID001/ID001PageMoveAction.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCase.dart';
@@ -224,12 +228,15 @@ init() {
 
   sl.registerSingleton<ImageCropUtilInputPort>(ImageCropUtil());
 
+  sl.registerSingleton<AvatarImageMakerUseCaseInputPort>(
+      AvatarImageMakerUseCase(
+          imageCropUtilInputPort: sl(), fileDownLoaderUseCaseInputPort: sl()));
+
   sl.registerSingleton<CommentChannelBaseServiceUseCaseInputPort>(
       FBallReplyFCMServiceUseCase(
           flutterLocalNotificationsPluginAdapter: sl(),
-          fileDownLoaderUseCaseInputPort: sl(),
-          signInUserInfoUseCaseInputPort: sl(),
-          imageCropUtilInputPort: sl()),
+          avatarImageMakerUseCaseInputPort: sl(),
+          signInUserInfoUseCaseInputPort: sl()),
       instanceName: "FBallReplyFCMService");
 
   sl.registerFactoryParam<CommentChannelBaseServiceUseCaseInputPort, String,
@@ -245,11 +252,30 @@ init() {
       CommentChannelUseCase(),
       instanceName: "CommentChannelUseCase");
 
+  sl.registerSingleton<RadarBasicChannelUseCaeInputPort>(IssueFBalIInsertFCMServiceUseCase(
+    flutterLocalNotificationsPluginAdapter: sl()
+  ),instanceName: "IssueFBalIInsertFCMService");
+
+  sl.registerFactoryParam<RadarBasicChannelUseCaeInputPort,String,String>((serviceKey, param2) {
+    if(serviceKey == "IssueFBalIInsertFCMService"){
+      return sl.get<RadarBasicChannelUseCaeInputPort>(instanceName: "IssueFBalIInsertFCMService");
+    }else {
+      return null;
+    }
+  },instanceName: "RadarBasicChannelUseCaeInputPortFactory");
+
+
+  sl.registerSingleton<NotificationChannelBaseInputPort>(
+      RadarBasicChannelUseCae(),
+      instanceName: "RadarBasicChannelUseCase");
+
   sl.registerFactoryParam<NotificationChannelBaseInputPort, String, String>(
       (String commentKey, param2) {
     if (commentKey == "CommentChannelUseCase") {
       return sl.get(instanceName: "CommentChannelUseCase");
-    } else {
+    } else if (commentKey == "RadarBasicChannelUseCase"){
+      return sl.get(instanceName: "RadarBasicChannelUseCase");
+    }else {
       return null;
     }
   }, instanceName: "NotificationChannelBaseInputPortFactory");
@@ -449,8 +475,6 @@ init() {
 
   sl.registerSingleton<UserMakeBallListUpUseCaseInputPort>(
       UserMakeBallListUpUseCase(fBallRepository: sl()));
-
-
 
   sl.registerSingleton<FBallValuationRemoteDataSource>(
       FBallValuationRemoteDataSourceImpl());

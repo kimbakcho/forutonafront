@@ -2,24 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCaeInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Dto/NotificationChannelDto.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
-class CommentChannelUseCase implements NotificationChannelBaseInputPort {
-  String groupChannelId = 'co.kr.forutonaforutona.comment';
-  String groupChannelName = 'Comment_Group';
-  String groupChannelDescription = '내가만든Ball 에댓글이날리거나, 내가작성한댓글에답글이달렸을때알림을받습니다';
+class RadarBasicChannelUseCae implements NotificationChannelBaseInputPort {
+  String groupChannelId = 'co.kr.forutonaforutona.radarbasic';
+  String groupChannelName = 'radarbasic';
+  String groupChannelDescription = '당신주변에서 새로운Ball이발견되었습니다';
   NotificationChannelDto _notificationChannelDto;
 
   @override
   reqNotification(Map<String, dynamic> message) async {
     if (hasServiceNotification(message)) {
-      _commentServiceAction(message);
+      _radarBasicServiceAction(message);
     }
   }
 
-  CommentChannelUseCase() {
+  RadarBasicChannelUseCae() {
     _notificationChannelDto = NotificationChannelDto(
         channelId: groupChannelId,
         channelName: groupChannelName,
@@ -29,12 +30,12 @@ class CommentChannelUseCase implements NotificationChannelBaseInputPort {
   bool hasServiceNotification(Map<String, dynamic> message) =>
       message["data"].containsKey("serviceKey");
 
-  void _commentServiceAction(Map<String, dynamic> message) {
-    CommentChannelBaseServiceUseCaseInputPort
-    commentChannelBaseServiceUseCaseInputPort = sl.get(
-        instanceName: "CommentChannelBaseServiceUseCaseInputPortFactory",
+  void _radarBasicServiceAction(Map<String, dynamic> message) {
+    RadarBasicChannelUseCaeInputPort
+    radarBasicChannelUseCaeInputPort = sl.get<RadarBasicChannelUseCaeInputPort>(
+        instanceName: "RadarBasicChannelUseCaeInputPortFactory",
         param1: message["data"]["serviceKey"]);
 
-    commentChannelBaseServiceUseCaseInputPort.reqNotification(message,_notificationChannelDto);
+    radarBasicChannelUseCaeInputPort.reqNotification(message,_notificationChannelDto);
   }
 }
