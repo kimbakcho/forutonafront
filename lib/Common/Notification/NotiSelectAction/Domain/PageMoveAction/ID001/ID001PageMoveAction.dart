@@ -8,9 +8,8 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001Payl
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
-import 'package:forutonafront/FBall/Domain/Repository/IssueBallTypeRepository.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseInputPort.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';

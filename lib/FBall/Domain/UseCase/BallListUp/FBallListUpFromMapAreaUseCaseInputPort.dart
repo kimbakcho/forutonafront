@@ -4,8 +4,13 @@ import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'FBallListUpFromMapAreaUseCaseInputPort.dart';
-import 'FBallListUpFromMapAreaUseCaseOutputPort.dart';
+abstract class FBallListUpFromMapAreaUseCaseInputPort {
+  Future<List<FBallResDto>> ballListUpFromMapArea({@required BallFromMapAreaReqDto reqDto,@required FBallListUpFromMapAreaUseCaseOutputPort outputPort});
+}
+
+abstract class FBallListUpFromMapAreaUseCaseOutputPort {
+  void onBallListUpFromMapArea(List<FBallResDto> resDtos, LatLng northeastLat , LatLng southwestLat);
+}
 
 class FBallListUpFromMapAreaUseCase
     implements FBallListUpFromMapAreaUseCaseInputPort {
@@ -16,11 +21,11 @@ class FBallListUpFromMapAreaUseCase
 
   Future<List<FBallResDto>> ballListUpFromMapArea(
       {@required BallFromMapAreaReqDto reqDto,
-      @required FBallListUpFromMapAreaUseCaseOutputPort outputPort}) async {
+        @required FBallListUpFromMapAreaUseCaseOutputPort outputPort}) async {
     var fBallListUpWrap =
-        await _fBallRepository.ballListUpFromMapArea(reqDto: reqDto);
+    await _fBallRepository.ballListUpFromMapArea(reqDto: reqDto);
     var result =
-        fBallListUpWrap.balls.map((x) => FBallResDto.fromFBall(x)).toList();
+    fBallListUpWrap.balls.map((x) => FBallResDto.fromFBall(x)).toList();
     outputPort.onBallListUpFromMapArea(
         result,
         LatLng(reqDto.northeastLat, reqDto.northeastLng),

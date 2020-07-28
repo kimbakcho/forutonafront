@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'IssueBallUpdateReqDto.dart';
+part of 'FBallUpdateReqDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-IssueBallUpdateReqDto _$IssueBallUpdateReqDtoFromJson(
-    Map<String, dynamic> json) {
-  return IssueBallUpdateReqDto()
+FBallUpdateReqDto _$FBallUpdateReqDtoFromJson(Map<String, dynamic> json) {
+  return FBallUpdateReqDto()
     ..ballUuid = json['ballUuid'] as String
     ..longitude = (json['longitude'] as num)?.toDouble()
     ..latitude = (json['latitude'] as num)?.toDouble()
@@ -23,8 +22,7 @@ IssueBallUpdateReqDto _$IssueBallUpdateReqDtoFromJson(
         ?.toList();
 }
 
-Map<String, dynamic> _$IssueBallUpdateReqDtoToJson(
-        IssueBallUpdateReqDto instance) =>
+Map<String, dynamic> _$FBallUpdateReqDtoToJson(FBallUpdateReqDto instance) =>
     <String, dynamic>{
       'ballUuid': instance.ballUuid,
       'longitude': instance.longitude,

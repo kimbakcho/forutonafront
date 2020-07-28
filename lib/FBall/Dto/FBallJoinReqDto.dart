@@ -11,7 +11,6 @@ class FBallJoinReqDto {
   String ballUuid;
   String playerUid;
 
-
   FBallJoinReqDto(this.ballType, this.ballUuid, this.playerUid);
 
   factory FBallJoinReqDto.fromJson(Map<String, dynamic> json) => _$FBallJoinReqDtoFromJson(json);

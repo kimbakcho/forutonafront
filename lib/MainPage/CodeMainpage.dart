@@ -48,7 +48,8 @@ class _CodeMainpageState extends State<CodeMainpage> {
             create: (_) => CodeMainViewModel(
                 geoLocationUtilUseCaseInputPort: sl(),
                 authUserCaseInputPort: sl(),
-                codeMainPageController: sl())),
+                codeMainPageController: sl(),
+                userPositionForegroundMonitoringUseCaseInputPort: sl())),
         ChangeNotifierProvider<H001ViewModel>(
             create: (_) => H001ViewModel(
                 context: context,

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 enum HCodeState { HCDOE, ICODE, BCODE, KCODE, GCODE }
 
 class CodeMainViewModel with ChangeNotifier {
-
   Position lastKnownPosition;
 
   String firstAddress = "";
@@ -22,13 +19,25 @@ class CodeMainViewModel with ChangeNotifier {
 
   CodeMainPageController _codeMainPageController;
 
+  final UserPositionForegroundMonitoringUseCaseInputPort
+      _userPositionForegroundMonitoringUseCaseInputPort;
+
   CodeMainViewModel(
-      {@required AuthUserCaseInputPort authUserCaseInputPort,
-      @required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort,
-      @required CodeMainPageController codeMainPageController})
+      {@required
+          AuthUserCaseInputPort authUserCaseInputPort,
+      @required
+          GeoLocationUtilForeGroundUseCaseInputPort
+              geoLocationUtilUseCaseInputPort,
+      @required
+          CodeMainPageController codeMainPageController,
+      @required
+          UserPositionForegroundMonitoringUseCaseInputPort
+              userPositionForegroundMonitoringUseCaseInputPort})
       : _authUserCaseInputPort = authUserCaseInputPort,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
-        _codeMainPageController = codeMainPageController {
+        _codeMainPageController = codeMainPageController,
+        _userPositionForegroundMonitoringUseCaseInputPort =
+            userPositionForegroundMonitoringUseCaseInputPort {
     init();
   }
 
@@ -38,6 +47,10 @@ class CodeMainViewModel with ChangeNotifier {
         await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
     this.firstAddress = await _geoLocationUtilUseCaseInputPort
         .getPositionAddress(lastKnownPosition);
+
+    _userPositionForegroundMonitoringUseCaseInputPort.startUserPositionMonitoringAndUpdateToServer();
+
+    _geoLocationUtilUseCaseInputPort.startStreamCurrentPosition();
   }
 
   jumpToPage(HCodeState pageCode) {
@@ -57,11 +70,11 @@ class CodeMainViewModel with ChangeNotifier {
         settings: RouteSettings(name: "/J001")));
   }
 
-  get pageController{
+  get pageController {
     return _codeMainPageController.pageController;
   }
 
-  get currentState{
+  get currentState {
     return _codeMainPageController.currentState;
   }
 }

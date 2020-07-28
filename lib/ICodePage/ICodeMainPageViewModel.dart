@@ -10,8 +10,6 @@ import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseI
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.dart';

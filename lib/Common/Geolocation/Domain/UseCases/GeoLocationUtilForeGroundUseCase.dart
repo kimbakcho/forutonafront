@@ -113,7 +113,6 @@ class GeoLocationUtilForeGroundUseCase
         return false;
       }
     }
-
     _geoRequestMutex.release();
     return true;
   }

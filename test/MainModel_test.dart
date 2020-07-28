@@ -39,15 +39,12 @@ void main() {
     mainModel = MainModel(
         fireBaseMessageController: mockFireBaseMessageController,
         fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
-        flutterLocalNotificationsPluginAdapter: mockFlutterLocalNotificationsPluginAdapter,
-        userPositionForegroundMonitoringUseCaseInputPort:mockUserPositionForegroundMonitoringUseCaseInputPort,
-        geoLocationUtilBasicUseCaseInputPort: mockGeoLocationUtilBasicUseCaseInputPort
+        flutterLocalNotificationsPluginAdapter: mockFlutterLocalNotificationsPluginAdapter
     );
     //assert
     verify(mockFlutterLocalNotificationsPluginAdapter.init());
     verify(mockFireBaseMessageController.controllerStartService());
     verify(mockFireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen());
-    verify(mockUserPositionForegroundMonitoringUseCaseInputPort.startUserPositionMonitoringAndUpdateToServer());
-    verify(mockGeoLocationUtilBasicUseCaseInputPort.startStreamCurrentPosition());
+
   });
 }

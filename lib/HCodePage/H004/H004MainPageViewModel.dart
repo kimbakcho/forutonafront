@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseOutputPort.dart';
+
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';

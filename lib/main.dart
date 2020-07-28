@@ -37,9 +37,7 @@ class MyApp extends StatelessWidget {
         create: (_) => MainModel(
             fireBaseAuthAdapterForUseCase: sl(),
             fireBaseMessageController: sl(),
-            flutterLocalNotificationsPluginAdapter: sl(),
-            userPositionForegroundMonitoringUseCaseInputPort: sl(),
-            geoLocationUtilBasicUseCaseInputPort: sl()),
+            flutterLocalNotificationsPluginAdapter: sl()),
         child: Consumer<MainModel>(builder: (_, model, child) {
           return MaterialApp(
             title: 'Kuv',

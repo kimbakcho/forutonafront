@@ -1,21 +1,31 @@
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/FBall/Data/Value/BallSearchBarHistory.dart';
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Dto/BallSearchBarHistoryDto.dart';
 
-import 'BallSearchBarHistoryUseCaseInputPort.dart';
-import 'BallSearchBarHistoryUseCaseOutputPort.dart';
 
-class BallSearchBarHistoryUseCase
-    implements BallSearchBarHistoryUseCaseInputPort {
+abstract class FBallSearchBarHistoryUseCaseInputPort {
+  Future<void> saveHistory({@required BallSearchBarHistoryDto reqDto,FBallSearchBarHistoryUseCaseOutputPort outputPort});
+  Future<void> removeHistory({@required BallSearchBarHistoryDto reqDto,FBallSearchBarHistoryUseCaseOutputPort outputPort});
+  Future<List<BallSearchBarHistoryDto>> loadHistory({FBallSearchBarHistoryUseCaseOutputPort outputPort});
+}
+abstract class FBallSearchBarHistoryUseCaseOutputPort {
+  onLoadHistory(List<BallSearchBarHistoryDto> ballSearchBarHistoryDtos);
+  onRemoveHistory();
+  onSaveHistory();
+}
+
+class FBallSearchBarHistoryUseCase
+    implements FBallSearchBarHistoryUseCaseInputPort {
   BallSearchBarHistoryRepository _ballSearchBarHistoryRepository;
 
-  BallSearchBarHistoryUseCase(
+  FBallSearchBarHistoryUseCase(
       {BallSearchBarHistoryRepository ballSearchBarHistoryRepository})
       : _ballSearchBarHistoryRepository = ballSearchBarHistoryRepository;
 
   @override
   Future<List<BallSearchBarHistoryDto>> loadHistory(
-      {BallSearchBarHistoryUseCaseOutputPort outputPort}) async {
+      {FBallSearchBarHistoryUseCaseOutputPort outputPort}) async {
     var historyList = await _ballSearchBarHistoryRepository.loadHistory();
     var result = historyList
         .map((x) => BallSearchBarHistoryDto.fromBallSearchBarHistory(x))
@@ -29,7 +39,7 @@ class BallSearchBarHistoryUseCase
   @override
   Future<void> removeHistory(
       {@required BallSearchBarHistoryDto reqDto,
-      BallSearchBarHistoryUseCaseOutputPort outputPort}) async {
+        FBallSearchBarHistoryUseCaseOutputPort outputPort}) async {
     await _ballSearchBarHistoryRepository.removeHistory(reqDto);
     if (outputPort != null) {
       outputPort.onRemoveHistory();
@@ -39,7 +49,7 @@ class BallSearchBarHistoryUseCase
   @override
   Future<void> saveHistory(
       {@required BallSearchBarHistoryDto reqDto,
-      BallSearchBarHistoryUseCaseOutputPort outputPort}) async {
+        FBallSearchBarHistoryUseCaseOutputPort outputPort}) async {
     await _ballSearchBarHistoryRepository.saveHistory(reqDto);
     if (outputPort != null) {
       outputPort.onSaveHistory();

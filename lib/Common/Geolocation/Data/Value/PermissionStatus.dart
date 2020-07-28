@@ -7,7 +7,6 @@ enum PermissionStatus {
   /// have been denied forever on iOS.
   denied,
 
-  /// The permission to use location services has been denied forever by the
-  /// user. No dialog will be displayed on permission request.
+
   deniedForever
 }

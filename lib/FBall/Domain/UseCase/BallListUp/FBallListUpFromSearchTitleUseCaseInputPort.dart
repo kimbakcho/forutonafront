@@ -3,8 +3,16 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
-import 'FBallListUpFromSearchTitleUseCaseInputPort.dart';
-import 'FBallListUpFromSearchTitleUseCaseOutputPort.dart';
+
+
+abstract class FBallListUpFromSearchTitleUseCaseInputPort{
+  ballListUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto,FBallListUpFromSearchTitleUseCaseOutputPort outputPort});
+}
+
+abstract class FBallListUpFromSearchTitleUseCaseOutputPort {
+  onBallListUpFromSearchTitle(List<FBallResDto> fBallResDtoList);
+  onBallListUpFromSearchTitleBallTotalCount(int count);
+}
 
 class FBallListUpFromSearchTitleUseCase
     implements FBallListUpFromSearchTitleUseCaseInputPort {
@@ -16,11 +24,11 @@ class FBallListUpFromSearchTitleUseCase
   @override
   ballListUpFromSearchTitle(
       {@required FBallListUpFromSearchTitleReqDto reqDto,
-      FBallListUpFromSearchTitleUseCaseOutputPort outputPort}) async {
+        FBallListUpFromSearchTitleUseCaseOutputPort outputPort}) async {
     var fBallListUpWrap =
-        await _fBallRepository.listUpFromSearchTitle(reqDto: reqDto);
+    await _fBallRepository.listUpFromSearchTitle(reqDto: reqDto);
     var list =
-        fBallListUpWrap.balls.map((x) => FBallResDto.fromFBall(x)).toList();
+    fBallListUpWrap.balls.map((x) => FBallResDto.fromFBall(x)).toList();
 
     if (outputPort != null) {
       outputPort.onBallListUpFromSearchTitle(list);

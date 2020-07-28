@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
@@ -41,9 +40,10 @@ class IssueBallBasicStyleImpl implements IssueBallBasicStyle {
 
   Future reqJoinBall({@required IssueBall issueBall}) async {
     if (issueBall.isUserBall(myUid: await _authUserCaseInputPort.myUid())) {
-      _issueBallUseCaseInputPort.joinBall(
-          reqDto: FBallJoinReqDto(issueBall.ballType, issueBall.ballUuid,
-              await _authUserCaseInputPort.myUid()));
+      //TODO FBallPlayer 구현후 다시 구현
+//      _issueBallUseCaseInputPort.joinBall(
+//          reqDto: FBallJoinReqDto(issueBall.ballType, issueBall.ballUuid,
+//              await _authUserCaseInputPort.myUid()));
     }
   }
 

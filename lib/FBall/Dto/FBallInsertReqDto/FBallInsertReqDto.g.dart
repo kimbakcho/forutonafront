@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'IssueBallInsertReqDto.dart';
+part of 'FBallInsertReqDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-IssueBallInsertReqDto _$IssueBallInsertReqDtoFromJson(
-    Map<String, dynamic> json) {
-  return IssueBallInsertReqDto()
+FBallInsertReqDto _$FBallInsertReqDtoFromJson(Map<String, dynamic> json) {
+  return FBallInsertReqDto()
     ..ballUuid = json['ballUuid'] as String
     ..longitude = (json['longitude'] as num)?.toDouble()
     ..latitude = (json['latitude'] as num)?.toDouble()
@@ -23,8 +22,7 @@ IssueBallInsertReqDto _$IssueBallInsertReqDtoFromJson(
         ?.toList();
 }
 
-Map<String, dynamic> _$IssueBallInsertReqDtoToJson(
-        IssueBallInsertReqDto instance) =>
+Map<String, dynamic> _$FBallInsertReqDtoToJson(FBallInsertReqDto instance) =>
     <String, dynamic>{
       'ballUuid': instance.ballUuid,
       'longitude': instance.longitude,

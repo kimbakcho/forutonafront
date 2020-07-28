@@ -32,31 +32,22 @@ import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSou
 import 'package:forutonafront/FBall/Data/DataStore/FBallPlayerRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
-import 'package:forutonafront/FBall/Data/DataStore/IssueBallTypeRemoteDateSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallPlayerRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallReplyRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallValuationRepositoryImpl.dart';
-import 'package:forutonafront/FBall/Data/Repository/IssueBallTypeRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
-import 'package:forutonafront/FBall/Domain/Repository/IssueBallTypeRepository.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallSerachBarHistory/BallSearchBarHistoryUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromSearchTitle/FBallListUpFromSearchTitleUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagNameUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
@@ -115,10 +106,8 @@ import '../Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GooglePropo
 import '../Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
 import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
 import '../FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
-import '../FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCase.dart';
-import '../FBall/Domain/UseCase/FBallListUpFromInfluencePower/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
-import '../FBall/Domain/UseCase/FBallListUpFromMapArea/FBallListUpFromMapAreaUseCase.dart';
-import '../FBall/Domain/UseCase/FBallListUpFromTagName/FBallListUpFromSearchTagUseCaseInputPort.dart';
+import '../FBall/Domain/UseCase/BallListUp/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
+import '../FBall/Domain/UseCase/BallListUp/FBallListUpFromSearchTagUseCaseInputPort.dart';
 import '../FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCase.dart';
 import '../FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import '../ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
@@ -205,14 +194,8 @@ init() {
   sl.registerSingleton<FBallRepository>(
       FBallRepositoryImpl(fBallRemoteDataSource: sl()));
 
-  sl.registerSingleton<IssueBallTypeRemoteDateSource>(
-      IssueBallTypeRemoteDateSourceImpl());
-
-  sl.registerSingleton<IssueBallTypeRepository>(IssueBallTypeRepositoryImpl(
-      fireBaseAuthBaseAdapter: sl(), issueBallTypeRemoteDateSource: sl()));
-
-  sl.registerSingleton<IssueBallUseCaseInputPort>(
-      IssueBallUseCase(issueBallTypeRepository: sl()));
+  sl.registerSingleton<FBallUseCaseInputPort>(
+      FBallUseCase(fBallRepository: sl()));
 
   sl.registerSingleton<FBallListUpFromInfluencePowerUseCaseInputPort>(
       FBallListUpFromInfluencePowerUseCase(fBallRepository: sl()));
@@ -252,18 +235,20 @@ init() {
       CommentChannelUseCase(),
       instanceName: "CommentChannelUseCase");
 
-  sl.registerSingleton<RadarBasicChannelUseCaeInputPort>(IssueFBalIInsertFCMServiceUseCase(
-    flutterLocalNotificationsPluginAdapter: sl()
-  ),instanceName: "IssueFBalIInsertFCMService");
+  sl.registerSingleton<RadarBasicChannelUseCaeInputPort>(
+      IssueFBalIInsertFCMServiceUseCase(
+          flutterLocalNotificationsPluginAdapter: sl()),
+      instanceName: "IssueFBalIInsertFCMService");
 
-  sl.registerFactoryParam<RadarBasicChannelUseCaeInputPort,String,String>((serviceKey, param2) {
-    if(serviceKey == "IssueFBalIInsertFCMService"){
-      return sl.get<RadarBasicChannelUseCaeInputPort>(instanceName: "IssueFBalIInsertFCMService");
-    }else {
+  sl.registerFactoryParam<RadarBasicChannelUseCaeInputPort, String, String>(
+      (serviceKey, param2) {
+    if (serviceKey == "IssueFBalIInsertFCMService") {
+      return sl.get<RadarBasicChannelUseCaeInputPort>(
+          instanceName: "IssueFBalIInsertFCMService");
+    } else {
       return null;
     }
-  },instanceName: "RadarBasicChannelUseCaeInputPortFactory");
-
+  }, instanceName: "RadarBasicChannelUseCaeInputPortFactory");
 
   sl.registerSingleton<NotificationChannelBaseInputPort>(
       RadarBasicChannelUseCae(),
@@ -273,9 +258,9 @@ init() {
       (String commentKey, param2) {
     if (commentKey == "CommentChannelUseCase") {
       return sl.get(instanceName: "CommentChannelUseCase");
-    } else if (commentKey == "RadarBasicChannelUseCase"){
+    } else if (commentKey == "RadarBasicChannelUseCase") {
       return sl.get(instanceName: "RadarBasicChannelUseCase");
-    }else {
+    } else {
       return null;
     }
   }, instanceName: "NotificationChannelBaseInputPortFactory");

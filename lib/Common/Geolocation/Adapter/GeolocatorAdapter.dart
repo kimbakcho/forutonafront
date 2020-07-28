@@ -63,6 +63,7 @@ class GeolocatorAdapterImpl implements GeolocatorAdapter {
 
 
   startStreamCurrentPosition() {
+
     var locationOptions = Geolocator.LocationOptions(
         accuracy: Geolocator.LocationAccuracy.high,
         distanceFilter: _distanceFilter,
@@ -70,6 +71,7 @@ class GeolocatorAdapterImpl implements GeolocatorAdapter {
     _geolocator.getPositionStream(locationOptions).listen((Geolocator.Position event) {
       _fUserCurrentPositionStreamController.add(Position.fromMap(event.toJson()));
     });
+
   }
 
   int _distanceFilter = 5;

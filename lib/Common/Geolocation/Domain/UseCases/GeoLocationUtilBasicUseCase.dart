@@ -146,5 +146,6 @@ class GeoLocationUtilBasicUseCase
   @override
   startStreamCurrentPosition() {
     _geolocatorAdapter.startStreamCurrentPosition();
+
   }
 }

@@ -1,5 +1,6 @@
 import 'package:location/location.dart' as Location;
 import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart' as Adapter;
+import 'package:location_permissions/location_permissions.dart';
 
 abstract class LocationAdapter {
   Future<Adapter.PermissionStatus> hasPermission();
@@ -21,8 +22,9 @@ class LocationAdapterImpl implements LocationAdapter {
 
   @override
   Future<Adapter.PermissionStatus> requestPermission()async {
-    Location.PermissionStatus status = await location.requestPermission();
-    return changeAdapterPermissionStatusStatue(status);
+    //Release 모드에서 Location Lib 의 requestPermissions API에 문제가 있는것으로 확인
+    var permissionStatus = await location.requestPermission();
+    return changeAdapterPermissionStatusStatue(permissionStatus);
   }
 
   Adapter.PermissionStatus changeAdapterPermissionStatusStatue(Location.PermissionStatus status) {

@@ -9,12 +9,12 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/YoutubeUtil/YoutubeIdParser.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/IssueBall/IssueBallUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Dto/IssueBallInsertReqDto.dart';
-import 'package:forutonafront/FBall/Dto/IssueBallUpdateReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
@@ -218,11 +218,11 @@ class IM001MainPageViewModel extends ChangeNotifier
     _issueBall.setDesImages(imageList);
     if (mode == IM001MainPageEnterMode.Insert) {
       await _issueBallUseCaseInputPort.insertBall(
-          reqDto: IssueBallInsertReqDto.fromIssueBall(_issueBall),
+          reqDto: FBallInsertReqDto.fromIssueBall(_issueBall),
           outputPort: this);
     } else if (mode == IM001MainPageEnterMode.Update) {
       await _issueBallUseCaseInputPort.updateBall(
-          reqDto: IssueBallUpdateReqDto.fromIssueBall(_issueBall),
+          reqDto: FBallUpdateReqDto.fromIssueBall(_issueBall),
           outputPort: this);
     }
     isLoading = false;

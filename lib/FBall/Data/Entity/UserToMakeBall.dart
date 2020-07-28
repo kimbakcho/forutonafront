@@ -8,7 +8,6 @@ part 'UserToMakeBall.g.dart';
 class UserToMakeBall extends FBall{
   UserToMakeBall();
 
-
   factory UserToMakeBall.fromJson(Map<String, dynamic> json) =>
       _$UserToMakeBallFromJson(json);
 
