@@ -4,17 +4,13 @@ import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallListUpWrap.dart';
-import 'package:forutonafront/FBall/Data/Entity/UserToMakeBallWrap.dart';
 import 'package:forutonafront/FBall/Data/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
@@ -33,7 +29,7 @@ class FBallRepositoryImpl implements FBallRepository {
 
   @override
   Future<PageWrap<FBallResDto>> listUpFromInfluencePower(
-      FBallListUpFromBallInfluencePowerReqDto listUpReqDto) async {
+      {@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto}) async {
     var result = await _fBallRemoteDataSource.listUpFromInfluencePower(
         listUpReqDto, FDio.noneToken());
     return result;
@@ -48,7 +44,7 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<PageWrap<FBallResDto>>  listUpFromSearchTitle(
+  Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
       {@required FBallListUpFromSearchTitleReqDto reqDto}) async {
     var result = await _fBallRemoteDataSource.listUpFromSearchTitle(
         reqDto: reqDto, noneTokenFDio: FDio.noneToken());
@@ -56,7 +52,7 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<PageWrap<FBallResDto>>  listUpFromTagName(
+  Future<PageWrap<FBallResDto>> listUpFromTagName(
       {@required FBallListUpFromTagNameReqDto reqDto}) async {
     var result = await _fBallRemoteDataSource.listUpFromTagName(
         reqDto: reqDto, noneTokenFDio: FDio.noneToken());
@@ -72,9 +68,9 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<int> ballHit(FBallReqDto reqDto) async {
+  Future<int> ballHit(String ballUuid) async {
     return await _fBallRemoteDataSource.ballHit(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+        ballUuid: ballUuid, noneTokenFDio: FDio.noneToken());
   }
 
   @override
@@ -116,5 +112,4 @@ class FBallRepositoryImpl implements FBallRepository {
             idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
     return fBallImageUpload;
   }
-
 }

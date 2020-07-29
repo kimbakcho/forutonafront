@@ -12,7 +12,6 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/RelationTagRankingFromTagNameReqDto.dart';
@@ -44,8 +43,7 @@ class H00502PageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  final FBallListUpUseCaseInputPort
-      _fBallListUpFromSearchTagNameUseCaseInputPort;
+  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
 
   final RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
       _rankingFromTagNameOrderByBallPowerUseCaseInputPort;
@@ -67,7 +65,7 @@ class H00502PageViewModel extends ChangeNotifier
       {@required
           this.context,
       @required
-      FBallListUpUseCaseInputPort
+          FBallListUpUseCaseInputPort
               fBallListUpFromSearchTagNameUseCaseInputPort,
       @required
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
@@ -76,10 +74,10 @@ class H00502PageViewModel extends ChangeNotifier
           GeoLocationUtilBasicUseCaseInputPort geoLocationUtilUseCaseInputPort,
       @required
           this.searchTag,
-      @required this.emitBallListUpFromSearchTagNameBallTotalCount
-      })
+      @required
+          this.emitBallListUpFromSearchTagNameBallTotalCount})
       : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
-        _fBallListUpFromSearchTagNameUseCaseInputPort =
+        _fBallListUpUseCaseInputPort =
             fBallListUpFromSearchTagNameUseCaseInputPort,
         _rankingFromTagNameOrderByBallPowerUseCaseInputPort =
             rankingFromTagNameOrderByBallPowerUseCaseInputPort {
@@ -89,7 +87,6 @@ class H00502PageViewModel extends ChangeNotifier
   init() async {
     _initOrdersItems();
     mainDropDownBtnController.addListener(onScrollListener);
-
 
     ballListUpFromSearchTag();
 
@@ -149,8 +146,8 @@ class H00502PageViewModel extends ChangeNotifier
         longitude: position.longitude,
         size: _ballPageLimitSize,
         page: _pageCount);
-    await _fBallListUpFromSearchTagNameUseCaseInputPort
-        .search(reqDto,Pageable(0,10,""),this);
+    await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTagName(
+        reqDto, Pageable(0, 10, ""), this);
     isLoading = false;
   }
 

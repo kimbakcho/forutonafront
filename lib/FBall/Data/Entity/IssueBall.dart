@@ -138,9 +138,6 @@ class IssueBall extends FBall{
     }
   }
 
-  ballHit(){
-    ballHits++;
-  }
 
 
   List<FBallDesImages> getDesImages() {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallHit/BallHitUseCaseInPutPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 
@@ -17,15 +17,15 @@ abstract class IssueBallBasicStyle {
 class IssueBallBasicStyleImpl implements IssueBallBasicStyle {
   final BuildContext context;
 
-  final FBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final BallHitUseCaseInPutPort _ballHitUseCaseInPutPort;
 
   final AuthUserCaseInputPort _authUserCaseInputPort;
 
   IssueBallBasicStyleImpl(
       {@required this.context,
-      @required FBallUseCaseInputPort issueBallUseCaseInputPort,
+      @required BallHitUseCaseInPutPort ballHitUseCaseInPutPort,
       @required AuthUserCaseInputPort authUserCaseInputPort})
-      : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
+      : _ballHitUseCaseInPutPort = ballHitUseCaseInPutPort,
         _authUserCaseInputPort = authUserCaseInputPort;
 
   Future<void> goIssueDetailPage(IssueBall issueBall) async {
@@ -49,11 +49,7 @@ class IssueBallBasicStyleImpl implements IssueBallBasicStyle {
 
   Future reqBallHit(IssueBall issueBall) async {
     if (await _authUserCaseInputPort.isLogin()) {
-      var result = await _issueBallUseCaseInputPort.ballHit(
-          reqDto: FBallReqDto(issueBall.ballType, issueBall.ballUuid));
-      if(result==1) {
-        issueBall.ballHit();
-      }
+      issueBall.ballHits  = await _ballHitUseCaseInPutPort.hit(issueBall.ballUuid);
     }
   }
 }

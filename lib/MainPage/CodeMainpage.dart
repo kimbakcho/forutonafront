@@ -55,7 +55,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
                 context: context,
                 authUserCaseInputPort: sl(),
                 geoLocationUtilUseCaseInputPort: sl(),
-                fBallListUpFromInfluencePowerUseCaseInputPort: sl(),
+                fBallListUpUseCaseInputPort: sl(),
                 tagRankingFromPositionUseCaseInputPort: sl()))
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {

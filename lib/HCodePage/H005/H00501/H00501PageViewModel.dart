@@ -20,7 +20,7 @@ class H00501PageViewModel extends ChangeNotifier
     implements FBallListUpUseCaseOutputPort {
   final BuildContext context;
   final FBallListUpUseCaseInputPort
-      _fBallListUpFromSearchTitleUseCaseInputPort;
+      _fBallListUpUseCaseInputPort;
   final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseIp;
   final Function(int count) onSearchTitleItemCount;
   List<DropdownMenuItem<H00501DropdownItemType>> dropDownItems =
@@ -67,7 +67,7 @@ class H00501PageViewModel extends ChangeNotifier
           GeoLocationUtilBasicUseCaseInputPort geoLocationUtilUseCaseIp,
       @required
           this.onSearchTitleItemCount})
-      : _fBallListUpFromSearchTitleUseCaseInputPort =
+      : _fBallListUpUseCaseInputPort =
             fBallListUpFromSearchTitleUseCaseInputPort,
         _geoLocationUtilUseCaseIp = geoLocationUtilUseCaseIp {
     init();
@@ -90,7 +90,7 @@ class H00501PageViewModel extends ChangeNotifier
         size: _ballPageLimitSize,
         longitude: position.longitude,
         latitude: position.latitude);
-    await _fBallListUpFromSearchTitleUseCaseInputPort.search(
+    await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTitle(
         fBallListUpFromSearchTitleReqDto,Pageable(0,10,""), this);
     isLoading = false;
   }

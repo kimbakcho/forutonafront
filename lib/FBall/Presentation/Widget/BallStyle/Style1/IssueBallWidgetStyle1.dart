@@ -31,7 +31,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             issueBall: _issueBall,
             issueBallBasicStyle: IssueBallBasicStyleImpl(
                 authUserCaseInputPort: sl(),
-                issueBallUseCaseInputPort: sl(),
+                ballHitUseCaseInPutPort: sl(),
                 context: context),
             geoLocationUtilUseCaseInputPort: sl()),
         child: Consumer<IssueBallWidgetStyle1ViewModel>(

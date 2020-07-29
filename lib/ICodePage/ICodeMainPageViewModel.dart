@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
@@ -26,8 +24,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
     implements FBallListUpUseCaseOutputPort {
   final BuildContext context;
   final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCase;
-  final FBallListUpUseCaseInputPort
-      _fBallListUpFromMapAreaUseCaseInputPort;
+  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
   final MapScreenPositionUseCaseInputPort _mapScreenPositionUseCaseInputPort;
 
   bool _flagIdleIgnore = true;
@@ -64,13 +61,11 @@ class ICodeMainPageViewModel extends ChangeNotifier
     this.context,
     @required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCase,
     @required
-    FBallListUpUseCaseInputPort
-            fBallListUpFromMapAreaUseCaseInputPort,
+        FBallListUpUseCaseInputPort fBallListUpFromMapAreaUseCaseInputPort,
     @required
         MapScreenPositionUseCaseInputPort mapScreenPositionUseCaseInputPort,
   })  : _geoLocationUtilUseCase = geoLocationUtilUseCase,
-        _fBallListUpFromMapAreaUseCaseInputPort =
-            fBallListUpFromMapAreaUseCaseInputPort,
+        _fBallListUpUseCaseInputPort = fBallListUpFromMapAreaUseCaseInputPort,
         _mapScreenPositionUseCaseInputPort = mapScreenPositionUseCaseInputPort {
     setGoogleInitCameraPosition();
     bottomPageController.addListener(onPageControllerListener);
@@ -211,16 +206,18 @@ class ICodeMainPageViewModel extends ChangeNotifier
     final RenderBox mapRenderBoxRed =
         mapContainerGlobalKey.currentContext.findRenderObject();
 
-    LatLng southwestPoint = await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
-        mapRenderBoxRed,
-        controller,
-        16,
-        MediaQuery.of(context).size.height - 180);
-    LatLng northeastPoint = await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
-        mapRenderBoxRed,
-        controller,
-        MediaQuery.of(context).size.width - 16,
-        108);
+    LatLng southwestPoint =
+        await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
+            mapRenderBoxRed,
+            controller,
+            16,
+            MediaQuery.of(context).size.height - 180);
+    LatLng northeastPoint =
+        await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
+            mapRenderBoxRed,
+            controller,
+            MediaQuery.of(context).size.width - 16,
+            108);
 
     FSorts fSort = FSorts();
     fSort.sorts.add(FSort("ballPower", QueryOrders.DESC));
@@ -243,8 +240,8 @@ class ICodeMainPageViewModel extends ChangeNotifier
         pageCount,
         pageSize,
         sorts.toQueryJson());
-    _fBallListUpFromMapAreaUseCaseInputPort.search(
-        reqDto,Pageable(0,10,""),this);
+    _fBallListUpUseCaseInputPort.searchFBallListUpFromMapArea(
+        reqDto, Pageable(0, 10, ""), this);
   }
 
   onBallSelectFunction(FBallResForMarker resDto) async {

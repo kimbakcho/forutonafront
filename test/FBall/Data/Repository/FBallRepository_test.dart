@@ -45,7 +45,7 @@ void main() {
     //arrange
 
     //act
-    var result = await fBallRepository.listUpFromInfluencePower(searchCondition);
+    var result = await fBallRepository.listUpFromInfluencePower(listUpReqDto: searchCondition);
     //assert
     verify(mockIFBallRemoteDataSource.listUpFromInfluencePower(any,any));
 

@@ -42,9 +42,7 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/BallListUpUserMakerBallUseCaeInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpFromMapAreaUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpFromSearchTitleUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallHit/BallHitUseCaseInPutPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
@@ -52,8 +50,6 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCase.
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
-
-import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
@@ -110,8 +106,6 @@ import '../Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GooglePropo
 import '../Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
 import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
 import '../FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
-import '../FBall/Domain/UseCase/BallListUp/FBallListUpFromInfluencePowerUseCaseInputPort.dart';
-import '../FBall/Domain/UseCase/BallListUp/FBallListUpFromSearchTagUseCaseInputPort.dart';
 import '../FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCase.dart';
 import '../FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import '../ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
@@ -200,9 +194,6 @@ init() {
 
   sl.registerSingleton<FBallUseCaseInputPort>(
       FBallUseCase(fBallRepository: sl()));
-
-  sl.registerSingleton<FBallListUpUseCaseInputPort>(
-      FBallListUpFromInfluencePowerUseCase(fBallRepository: sl()));
 
   sl.registerSingleton<FBallTagRemoteDataSource>(
       FBallTagRemoteDataSourceImpl());
@@ -462,9 +453,6 @@ init() {
   sl.registerSingleton<UserPlayBallListUpUseCaseInputPort>(
       UserPlayBallListUpUseCase(fBallPlayerRepository: sl()));
 
-  sl.registerSingleton<FBallListUpUseCaseInputPort>(
-      BallListUpUserMakerBall(fBallRepository: sl()));
-
   sl.registerSingleton<FBallValuationRemoteDataSource>(
       FBallValuationRemoteDataSourceImpl());
 
@@ -481,9 +469,6 @@ init() {
   sl.registerSingleton<TagFromBallUuidUseCaseInputPort>(
       TagFromBallUuidUseCase(tagRepository: sl()));
 
-  sl.registerSingleton<FBallListUpUseCaseInputPort>(
-      FBallListUpFromMapAreaUseCase(fBallRepository: sl()));
-
   sl.registerSingleton<MapScreenPositionUseCaseInputPort>(
       MapScreenPositionUseCase());
 
@@ -493,14 +478,8 @@ init() {
   sl.registerSingleton<BallSearchBarHistoryRepository>(
       BallSearchBarHistoryRepositoryImpl(localDataSource: sl()));
 
-//  sl.registerSingleton<FBallListUpUseCaseInputPort>(
-//      BallSearchBarHistoryUseCase(ballSearchBarHistoryRepository: sl()));
-
   sl.registerSingleton<FBallListUpUseCaseInputPort>(
-      FBallListUpFromSearchTitleUseCase(fBallRepository: sl()));
-
-  sl.registerSingleton<FBallListUpUseCaseInputPort>(
-      FBallListUpFromSearchTagNameUseCase(fBallRepository: sl()));
+      FBallListUpUseCase(fBallRepository: sl()));
 
   sl.registerSingleton<
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort>(
@@ -520,4 +499,7 @@ init() {
           geoLocationUtilBasicUseCaseInputPort: sl(),
           fUserRepository: sl(),
           fireBaseAuthAdapterForUseCase: sl()));
+
+  sl.registerSingleton<BallHitUseCaseInPutPort>(
+      BallHitUseCase(fBallRepository: sl()));
 }

@@ -13,22 +13,21 @@ import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 
 
 abstract class FBallRepository {
-  Future<PageWrap> listUpFromInfluencePower(FBallListUpFromBallInfluencePowerReqDto listUpReqDto);
-  Future<PageWrap> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto});
-  Future<PageWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto});
-  Future<PageWrap> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto});
-  Future<PageWrap> ballListUpFromMapArea({@required BallFromMapAreaReqDto reqDto});
+  Future<PageWrap<FBallResDto>> listUpFromInfluencePower({@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto});
+  Future<PageWrap<FBallResDto>> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto});
+  Future<PageWrap<FBallResDto>> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto});
+  Future<PageWrap<FBallResDto>> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto});
+  Future<PageWrap<FBallResDto>> ballListUpFromMapArea({@required BallFromMapAreaReqDto reqDto});
   Future<int> deleteBall(String ballUuid);
-  Future<FBall> insertBall(FBallInsertReqDto reqDto);
+  Future<FBallResDto> insertBall(FBallInsertReqDto reqDto);
   Future<FBall> selectBall(String ballUuid);
   Future<int> updateBall(FBallUpdateReqDto reqDto);
-  Future<int> ballHit(FBallReqDto reqDto);
+  Future<int> ballHit(String ballUuid);
   Future<FBallImageUpload> ballImageUpload({@required List<Uint8List> images});
 }

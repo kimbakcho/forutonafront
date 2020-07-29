@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
-
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
@@ -34,15 +32,15 @@ class H001ViewModel
         TagRankingFromBallInfluencePowerUseCaseOutputPort {
   final BuildContext context;
 
-  final FBallListUpUseCaseInputPort
-      _fBallListUpFromInfluencePowerUseCaseInputPort;
+  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
 
   final TagRankingFromBallInfluencePowerUseCaseInputPort
       _tagRankingFromPositionUseCaseInputPort;
 
   final AuthUserCaseInputPort _authUserCaseInputPort;
 
-  final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  final GeoLocationUtilForeGroundUseCaseInputPort
+      _geoLocationUtilUseCaseInputPort;
 
   Position _currentSearchPosition;
   String _currentSearchAddress;
@@ -77,22 +75,20 @@ class H001ViewModel
       {@required
           this.context,
       @required
-          FBallListUpUseCaseInputPort
-              fBallListUpFromInfluencePowerUseCaseInputPort,
+          FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort,
       @required
           TagRankingFromBallInfluencePowerUseCaseInputPort
               tagRankingFromPositionUseCaseInputPort,
       @required
           AuthUserCaseInputPort authUserCaseInputPort,
       @required
-      GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort})
-      : _fBallListUpFromInfluencePowerUseCaseInputPort =
-            fBallListUpFromInfluencePowerUseCaseInputPort,
+          GeoLocationUtilForeGroundUseCaseInputPort
+              geoLocationUtilUseCaseInputPort})
+      : _fBallListUpUseCaseInputPort = fBallListUpUseCaseInputPort,
         _tagRankingFromPositionUseCaseInputPort =
             tagRankingFromPositionUseCaseInputPort,
         _authUserCaseInputPort = authUserCaseInputPort,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
-
     h001CenterListViewController
         .addListener(this.h001CenterListViewControllerListener);
 
@@ -162,8 +158,8 @@ class H001ViewModel
             ballLimit: _ballSearchLimit,
             page: _ballPageCount,
             size: _ballPageLimitSize);
-    await _fBallListUpFromInfluencePowerUseCaseInputPort
-        .search(reqDto,Pageable(10,0,"") ,this);
+    await _fBallListUpUseCaseInputPort.searchFBallListUpFromInfluencePower(
+        reqDto, Pageable(10, 0, ""), this);
 
     hideLoading();
   }
