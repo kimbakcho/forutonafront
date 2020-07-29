@@ -40,7 +40,7 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<UserToMakeBallWrap> getUserToMakerBalls(
+  Future<PageWrap<FBallResDto>> getUserToMakerBalls(
       {@required UserToMakeBallReqDto reqDto}) async {
     var result = await _fBallRemoteDataSource.getUserToMakerBalls(
         reqDto: reqDto, noneTokenFDio: FDio.noneToken());
@@ -48,7 +48,7 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<FBallListUpWrap> listUpFromSearchTitle(
+  Future<PageWrap<FBallResDto>>  listUpFromSearchTitle(
       {@required FBallListUpFromSearchTitleReqDto reqDto}) async {
     var result = await _fBallRemoteDataSource.listUpFromSearchTitle(
         reqDto: reqDto, noneTokenFDio: FDio.noneToken());
@@ -56,7 +56,7 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<FBallListUpWrap> listUpFromTagName(
+  Future<PageWrap<FBallResDto>>  listUpFromTagName(
       {@required FBallListUpFromTagNameReqDto reqDto}) async {
     var result = await _fBallRemoteDataSource.listUpFromTagName(
         reqDto: reqDto, noneTokenFDio: FDio.noneToken());
@@ -64,7 +64,7 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<FBallListUpWrap> ballListUpFromMapArea(
+  Future<PageWrap<FBallResDto>> ballListUpFromMapArea(
       {@required BallFromMapAreaReqDto reqDto}) async {
     var result = await _fBallRemoteDataSource.listUpBallFromMapArea(
         reqDto: reqDto, noneTokenFDio: FDio.noneToken());

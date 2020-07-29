@@ -1,9 +1,13 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
@@ -19,7 +23,7 @@ import 'H00502OrdersEnum.dart';
 
 class H00502PageViewModel extends ChangeNotifier
     implements
-        FBallListUpFromSearchTagNameUseCaseOutputPort,
+        FBallListUpUseCaseOutputPort,
         RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort {
   final BuildContext context;
 
@@ -40,7 +44,7 @@ class H00502PageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  final FBallListUpFromSearchTagNameUseCaseInputPort
+  final FBallListUpUseCaseInputPort
       _fBallListUpFromSearchTagNameUseCaseInputPort;
 
   final RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
@@ -63,7 +67,7 @@ class H00502PageViewModel extends ChangeNotifier
       {@required
           this.context,
       @required
-          FBallListUpFromSearchTagNameUseCaseInputPort
+      FBallListUpUseCaseInputPort
               fBallListUpFromSearchTagNameUseCaseInputPort,
       @required
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
@@ -146,7 +150,7 @@ class H00502PageViewModel extends ChangeNotifier
         size: _ballPageLimitSize,
         page: _pageCount);
     await _fBallListUpFromSearchTagNameUseCaseInputPort
-        .ballListUpFromSearchTagName(reqDto: reqDto,outputPort: this);
+        .search(reqDto,Pageable(0,10,""),this);
     isLoading = false;
   }
 
@@ -212,5 +216,10 @@ class H00502PageViewModel extends ChangeNotifier
       List<TagRankingDto> tagRankingDtos) {
     this.relationTagRankings = tagRankingDtos;
     notifyListeners();
+  }
+
+  @override
+  void searchResult(PageWrap listUpItem) {
+    // TODO: implement searchResult
   }
 }

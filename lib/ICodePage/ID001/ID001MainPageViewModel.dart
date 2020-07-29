@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallValuation.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
+
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
@@ -48,7 +49,7 @@ class ID001MainPageViewModel extends ChangeNotifier
         AuthUserCaseOutputPort {
   final BuildContext context;
   final ScrollController mainScrollController;
-  final IssueBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final FBallUseCaseInputPort _issueBallUseCaseInputPort;
   final UserInfoSimple1UseCaseInputPort _userInfoSimple1UseCaseInputPort;
   final AuthUserCaseInputPort _authUserCaseInputPort;
   final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
@@ -87,7 +88,7 @@ class ID001MainPageViewModel extends ChangeNotifier
     @required this.context,
     @required this.issueBall,
     @required this.mainScrollController,
-    @required IssueBallUseCaseInputPort issueBallUseCaseInputPort,
+    @required FBallUseCaseInputPort issueBallUseCaseInputPort,
     @required UserInfoSimple1UseCaseInputPort userInfoSimple1UseCaseInputPort,
     @required AuthUserCaseInputPort authUserCaseInputPort,
     @required TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort,

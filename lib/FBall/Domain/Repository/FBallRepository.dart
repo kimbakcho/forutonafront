@@ -20,11 +20,11 @@ import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 
 
 abstract class FBallRepository {
-  Future<PageWrap<FBallResDto>> listUpFromInfluencePower(FBallListUpFromBallInfluencePowerReqDto listUpReqDto);
-  Future<UserToMakeBallWrap> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto});
-  Future<FBallListUpWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto});
-  Future<FBallListUpWrap> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto});
-  Future<FBallListUpWrap> ballListUpFromMapArea({@required BallFromMapAreaReqDto reqDto});
+  Future<PageWrap> listUpFromInfluencePower(FBallListUpFromBallInfluencePowerReqDto listUpReqDto);
+  Future<PageWrap> getUserToMakerBalls({@required UserToMakeBallReqDto reqDto});
+  Future<PageWrap> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto});
+  Future<PageWrap> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto});
+  Future<PageWrap> ballListUpFromMapArea({@required BallFromMapAreaReqDto reqDto});
   Future<int> deleteBall(String ballUuid);
   Future<FBall> insertBall(FBallInsertReqDto reqDto);
   Future<FBall> selectBall(String ballUuid);

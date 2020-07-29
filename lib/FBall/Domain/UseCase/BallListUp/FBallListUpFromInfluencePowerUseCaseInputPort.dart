@@ -1,7 +1,5 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
@@ -13,7 +11,6 @@ import 'package:geolocator/geolocator.dart';
 
 import 'FBallListUpUseCaseInputPort.dart';
 
-
 class FBallListUpFromInfluencePowerUseCase
     implements FBallListUpUseCaseInputPort {
   final FBallRepository fBallRepository;
@@ -22,13 +19,13 @@ class FBallListUpFromInfluencePowerUseCase
       : assert(fBallRepository != null);
 
   @override
-  Future<PageWrap<FBallResDto>> search (dynamic reqDto, FSorts sort, Pageable pageable,
-      FBallListUpUseCaseOutputPort outputPort) async {
-    PageWrap<FBallResDto> pageBalls = await fBallRepository.listUpFromInfluencePower(reqDto);
-    outputPort.searchResult(pageBalls);
-    return pageBalls;
+  Future<PageWrap<FBallResDto>> search(dynamic reqDto,
+      Pageable pageable, FBallListUpUseCaseOutputPort outputPort) async {
+    PageWrap<FBallResDto> pageWrap =
+        await fBallRepository.listUpFromInfluencePower(reqDto);
+    if (outputPort != null) {
+      outputPort.searchResult(pageWrap);
+    }
+    return pageWrap;
   }
-
-
-
 }

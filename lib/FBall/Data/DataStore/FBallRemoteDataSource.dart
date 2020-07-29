@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -25,18 +26,18 @@ abstract class FBallRemoteDataSource {
           fBallListUpFromInfluencePowerReqDto,
       FDio noneTokenFDio);
 
-  Future<UserToMakeBallWrap> getUserToMakerBalls(
+  Future<PageWrap<FBallResDto>> getUserToMakerBalls(
       {@required UserToMakeBallReqDto reqDto, @required FDio noneTokenFDio});
 
-  Future<FBallListUpWrap> listUpFromSearchTitle(
+  Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
       {@required FBallListUpFromSearchTitleReqDto reqDto,
       @required FDio noneTokenFDio});
 
-  Future<FBallListUpWrap> listUpFromTagName(
+  Future<PageWrap<FBallResDto>> listUpFromTagName(
       {@required FBallListUpFromTagNameReqDto reqDto,
       @required FDio noneTokenFDio});
 
-  Future<FBallListUpWrap> listUpBallFromMapArea(
+  Future<PageWrap<FBallResDto>>  listUpBallFromMapArea(
       {@required BallFromMapAreaReqDto reqDto, @required FDio noneTokenFDio});
 
   Future<int> deleteBall({@required String ballUuid, @required FDio fDio});
@@ -66,43 +67,47 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
     var response = await noneTokenFDio.get(
         "/v1/FBall/ListUpFromBallInfluencePower",
         queryParameters: fBallListUpFromInfluencePowerReqDto.toJson());
-    return PageWrap<FBallResDto>.fromJson(response.data);
+    return PageWrap<FBallResDto>.fromJson(response.data,FBallResDto.fromJson);
   }
 
   @override
-  Future<UserToMakeBallWrap> getUserToMakerBalls(
+  Future<PageWrap<FBallResDto>>  getUserToMakerBalls(
       {@required UserToMakeBallReqDto reqDto,
       @required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get("/v1/FBall/UserToMakerBalls",
         queryParameters: reqDto.toJson());
-    return UserToMakeBallWrap.fromJson(response.data);
+    return PageWrap<FBallResDto>.fromJson(response.data,
+        response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
   }
 
   @override
-  Future<FBallListUpWrap> listUpFromSearchTitle(
+  Future<PageWrap<FBallResDto>>  listUpFromSearchTitle(
       {@required FBallListUpFromSearchTitleReqDto reqDto,
       @required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromSearchTitle",
         queryParameters: reqDto.toJson());
-    return FBallListUpWrap.fromJson(response.data);
+    return PageWrap<FBallResDto>.fromJson(response.data,
+        response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
   }
 
   @override
-  Future<FBallListUpWrap> listUpFromTagName(
+  Future<PageWrap<FBallResDto>>  listUpFromTagName(
       {@required FBallListUpFromTagNameReqDto reqDto,
       @required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromTagName",
         queryParameters: reqDto.toJson());
-    return FBallListUpWrap.fromJson(response.data);
+    return PageWrap<FBallResDto>.fromJson(response.data,
+        response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
   }
 
   @override
-  Future<FBallListUpWrap> listUpBallFromMapArea(
+  Future<PageWrap<FBallResDto>>  listUpBallFromMapArea(
       {@required BallFromMapAreaReqDto reqDto,
       @required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromMapArea",
         queryParameters: reqDto.toJson());
-    return FBallListUpWrap.fromJson(response.data);
+    return PageWrap<FBallResDto>.fromJson(response.data,
+        response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
   }
 
   @override

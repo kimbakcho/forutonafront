@@ -33,12 +33,12 @@ void main() {
   );
 
   setUp(() {
-    mockIFBallRemoteDataSource = MockIFBallRemoteDataSource();
-    fBallRepository =
-        FBallRepositoryImpl(fBallRemoteDataSource: mockIFBallRemoteDataSource);
-    when(mockIFBallRemoteDataSource.listUpFromInfluencePower(any, any))
-        .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(
-        fixtureString('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
+//    mockIFBallRemoteDataSource = MockIFBallRemoteDataSource();
+//    fBallRepository =
+//        FBallRepositoryImpl(fBallRemoteDataSource: mockIFBallRemoteDataSource);
+//    when(mockIFBallRemoteDataSource.listUpFromInfluencePower(any, any))
+//        .thenAnswer((_) async => FBallListUpWrap.fromJson(json.decode(
+//        fixtureString('FBall/Data/DataSource/BallListUpPositionWrapDto.json'))));
   });
 
   test('영향력순 으로 Ball ListUp DataSource Call ', () async {

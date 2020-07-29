@@ -2,9 +2,13 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -13,9 +17,9 @@ import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart'
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Ordersenum.dart';
 
 class H00501PageViewModel extends ChangeNotifier
-    implements FBallListUpFromSearchTitleUseCaseOutputPort {
+    implements FBallListUpUseCaseOutputPort {
   final BuildContext context;
-  final FBallListUpFromSearchTitleUseCaseInputPort
+  final FBallListUpUseCaseInputPort
       _fBallListUpFromSearchTitleUseCaseInputPort;
   final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseIp;
   final Function(int count) onSearchTitleItemCount;
@@ -57,7 +61,7 @@ class H00501PageViewModel extends ChangeNotifier
       @required
           this.searchTitle,
       @required
-          FBallListUpFromSearchTitleUseCaseInputPort
+      FBallListUpUseCaseInputPort
               fBallListUpFromSearchTitleUseCaseInputPort,
       @required
           GeoLocationUtilBasicUseCaseInputPort geoLocationUtilUseCaseIp,
@@ -86,8 +90,8 @@ class H00501PageViewModel extends ChangeNotifier
         size: _ballPageLimitSize,
         longitude: position.longitude,
         latitude: position.latitude);
-    await _fBallListUpFromSearchTitleUseCaseInputPort.ballListUpFromSearchTitle(
-        reqDto: fBallListUpFromSearchTitleReqDto, outputPort: this);
+    await _fBallListUpFromSearchTitleUseCaseInputPort.search(
+        fBallListUpFromSearchTitleReqDto,Pageable(0,10,""), this);
     isLoading = false;
   }
 
@@ -174,5 +178,10 @@ class H00501PageViewModel extends ChangeNotifier
   @override
   onBallListUpFromSearchTitleBallTotalCount(int fBallTotalCount) {
     onSearchTitleItemCount(fBallTotalCount);
+  }
+
+  @override
+  void searchResult(PageWrap listUpItem) {
+    // TODO: implement searchResult
   }
 }

@@ -33,8 +33,7 @@ class FBallResDto {
 
   FBallResDto();
 
-  factory FBallResDto.fromJson(Map<String, dynamic> json) =>
-      _$FBallResDtoFromJson(json);
+  static FBallResDto fromJson(Map<String, dynamic> json) => _$FBallResDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$FBallResDtoToJson(this);
 

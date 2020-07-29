@@ -1,27 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
+
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 import 'FBallListUpUseCaseInputPort.dart';
 
-class FBallListUpFromMapAreaUseCase implements FBallListUpUseCaseInputPort {
-  FBallRepository _fBallRepository;
+class BallListUpUserMakerBall implements FBallListUpUseCaseInputPort {
 
-  FBallListUpFromMapAreaUseCase({@required FBallRepository fBallRepository})
+  final FBallRepository _fBallRepository;
+
+  BallListUpUserMakerBall({@required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override
-  Future<PageWrap<FBallResDto>> search(reqDto, Pageable pageable,
-      FBallListUpUseCaseOutputPort outputPort) async {
+  Future<PageWrap<FBallResDto>> search(reqDto, Pageable pageable, FBallListUpUseCaseOutputPort outputPort) async {
     PageWrap<FBallResDto> pageWrap =
-        await _fBallRepository.ballListUpFromMapArea(reqDto: reqDto);
-    if (outputPort != null) {
-      outputPort.searchResult(pageWrap);
+        await _fBallRepository.getUserToMakerBalls(reqDto: reqDto);
+    if(outputPort != null){
+      outputPort.searchResult(pageWrap)  ;
     }
     return pageWrap;
   }
+
 }

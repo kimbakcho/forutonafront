@@ -7,9 +7,13 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.dart';
@@ -19,10 +23,10 @@ import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ICodeMainPageViewModel extends ChangeNotifier
-    implements FBallListUpFromMapAreaUseCaseOutputPort {
+    implements FBallListUpUseCaseOutputPort {
   final BuildContext context;
   final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCase;
-  final FBallListUpFromMapAreaUseCaseInputPort
+  final FBallListUpUseCaseInputPort
       _fBallListUpFromMapAreaUseCaseInputPort;
   final MapScreenPositionUseCaseInputPort _mapScreenPositionUseCaseInputPort;
 
@@ -60,7 +64,7 @@ class ICodeMainPageViewModel extends ChangeNotifier
     this.context,
     @required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCase,
     @required
-        FBallListUpFromMapAreaUseCaseInputPort
+    FBallListUpUseCaseInputPort
             fBallListUpFromMapAreaUseCaseInputPort,
     @required
         MapScreenPositionUseCaseInputPort mapScreenPositionUseCaseInputPort,
@@ -239,8 +243,8 @@ class ICodeMainPageViewModel extends ChangeNotifier
         pageCount,
         pageSize,
         sorts.toQueryJson());
-    _fBallListUpFromMapAreaUseCaseInputPort.ballListUpFromMapArea(
-        reqDto: reqDto, outputPort: this);
+    _fBallListUpFromMapAreaUseCaseInputPort.search(
+        reqDto,Pageable(0,10,""),this);
   }
 
   onBallSelectFunction(FBallResForMarker resDto) async {
@@ -306,5 +310,10 @@ class ICodeMainPageViewModel extends ChangeNotifier
     super.dispose();
     FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+  }
+
+  @override
+  void searchResult(PageWrap listUpItem) {
+    // TODO: implement searchResult
   }
 }

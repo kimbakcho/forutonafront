@@ -42,13 +42,17 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/BallListUpUserMakerBallUseCaeInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpFromMapAreaUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpFromSearchTitleUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCase.dart';
+
 import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
@@ -197,7 +201,7 @@ init() {
   sl.registerSingleton<FBallUseCaseInputPort>(
       FBallUseCase(fBallRepository: sl()));
 
-  sl.registerSingleton<FBallListUpFromInfluencePowerUseCaseInputPort>(
+  sl.registerSingleton<FBallListUpUseCaseInputPort>(
       FBallListUpFromInfluencePowerUseCase(fBallRepository: sl()));
 
   sl.registerSingleton<FBallTagRemoteDataSource>(
@@ -458,8 +462,8 @@ init() {
   sl.registerSingleton<UserPlayBallListUpUseCaseInputPort>(
       UserPlayBallListUpUseCase(fBallPlayerRepository: sl()));
 
-  sl.registerSingleton<UserMakeBallListUpUseCaseInputPort>(
-      UserMakeBallListUpUseCase(fBallRepository: sl()));
+  sl.registerSingleton<FBallListUpUseCaseInputPort>(
+      BallListUpUserMakerBall(fBallRepository: sl()));
 
   sl.registerSingleton<FBallValuationRemoteDataSource>(
       FBallValuationRemoteDataSourceImpl());
@@ -477,7 +481,7 @@ init() {
   sl.registerSingleton<TagFromBallUuidUseCaseInputPort>(
       TagFromBallUuidUseCase(tagRepository: sl()));
 
-  sl.registerSingleton<FBallListUpFromMapAreaUseCaseInputPort>(
+  sl.registerSingleton<FBallListUpUseCaseInputPort>(
       FBallListUpFromMapAreaUseCase(fBallRepository: sl()));
 
   sl.registerSingleton<MapScreenPositionUseCaseInputPort>(
@@ -489,13 +493,13 @@ init() {
   sl.registerSingleton<BallSearchBarHistoryRepository>(
       BallSearchBarHistoryRepositoryImpl(localDataSource: sl()));
 
-  sl.registerSingleton<BallSearchBarHistoryUseCaseInputPort>(
-      BallSearchBarHistoryUseCase(ballSearchBarHistoryRepository: sl()));
+//  sl.registerSingleton<FBallListUpUseCaseInputPort>(
+//      BallSearchBarHistoryUseCase(ballSearchBarHistoryRepository: sl()));
 
-  sl.registerSingleton<FBallListUpFromSearchTitleUseCaseInputPort>(
+  sl.registerSingleton<FBallListUpUseCaseInputPort>(
       FBallListUpFromSearchTitleUseCase(fBallRepository: sl()));
 
-  sl.registerSingleton<FBallListUpFromSearchTagNameUseCaseInputPort>(
+  sl.registerSingleton<FBallListUpUseCaseInputPort>(
       FBallListUpFromSearchTagNameUseCase(fBallRepository: sl()));
 
   sl.registerSingleton<

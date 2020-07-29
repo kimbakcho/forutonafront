@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
@@ -10,9 +15,9 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import '../../FBall/Dto/BallSearchBarHistoryDto.dart';
 
 class H004MainPageViewModel extends ChangeNotifier
-    implements BallSearchBarHistoryUseCaseOutputPort {
+    implements FBallListUpUseCaseOutputPort {
   final BuildContext context;
-  final BallSearchBarHistoryUseCaseInputPort _ballSearchBarHistoryUseCaseInputPort;
+  final FBallListUpUseCaseInputPort _ballSearchBarHistoryUseCaseInputPort;
   final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   FocusNode searchFocusNode = FocusNode();
@@ -24,7 +29,7 @@ class H004MainPageViewModel extends ChangeNotifier
 
   H004MainPageViewModel({
     @required this.context,
-    BallSearchBarHistoryUseCaseInputPort ballSearchBarHistoryUseCaseInputPort,
+    FBallListUpUseCaseInputPort ballSearchBarHistoryUseCaseInputPort,
     GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort
   })
       :_ballSearchBarHistoryUseCaseInputPort = ballSearchBarHistoryUseCaseInputPort,
@@ -43,8 +48,8 @@ class H004MainPageViewModel extends ChangeNotifier
   }
 
   removeSearchText(BallSearchBarHistoryDto reqDto) async {
-    await _ballSearchBarHistoryUseCaseInputPort.removeHistory(
-        reqDto: reqDto, outputPort: this);
+    await _ballSearchBarHistoryUseCaseInputPort.search(
+        reqDto, Pageable(10,0,"") ,this);
     _loadSearchHistory();
   }
 
@@ -64,21 +69,21 @@ class H004MainPageViewModel extends ChangeNotifier
   onSearch(value) async {
     BallSearchBarHistoryDto saveReq = BallSearchBarHistoryDto(
         value, DateTime.now());
-    await _ballSearchBarHistoryUseCaseInputPort.saveHistory(
-        reqDto: saveReq, outputPort: this);
+    await _ballSearchBarHistoryUseCaseInputPort.search(
+        saveReq, Pageable(10,0,""), this);
     _loadSearchHistory();
   }
 
   onSave(value) async {
     BallSearchBarHistoryDto saveReq = BallSearchBarHistoryDto(
         value, DateTime.now());
-    await _ballSearchBarHistoryUseCaseInputPort.saveHistory(
-        reqDto: saveReq, outputPort: this);
+    await _ballSearchBarHistoryUseCaseInputPort.search(
+        saveReq,Pageable(10,0,""), this);
     _loadSearchHistory();
   }
 
   _loadSearchHistory() async {
-    await _ballSearchBarHistoryUseCaseInputPort.loadHistory(outputPort: this);
+    await _ballSearchBarHistoryUseCaseInputPort.search(null,Pageable(10,0,""),this);
   }
 
   getSearchHintText() {
@@ -132,5 +137,10 @@ class H004MainPageViewModel extends ChangeNotifier
   @override
   onSaveHistory() {
     notifyListeners();
+  }
+
+  @override
+  void searchResult(PageWrap listUpItem) {
+    // TODO: implement searchResult
   }
 }

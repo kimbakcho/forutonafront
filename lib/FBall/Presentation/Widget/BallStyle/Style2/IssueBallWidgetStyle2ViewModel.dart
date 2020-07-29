@@ -5,8 +5,9 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseOutputPort.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/BallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Impl/IssueBallModifyService.dart';
@@ -18,14 +19,14 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
-    implements IssueBallUseCaseOutputPort, GeoLocationUtilUseForeGroundCaseOutputPort {
+    implements FBallUseCaseOutputPort, GeoLocationUtilUseForeGroundCaseOutputPort {
   BuildContext context;
 
   IssueBall issueBall;
 
   String distanceDisplayText = "";
 
-  IssueBallUseCaseInputPort _issueBallUseCaseInputPort;
+  FBallUseCaseInputPort _issueBallUseCaseInputPort;
 
   GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
@@ -35,7 +36,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
       @required
           FBallResDto userBallResDto,
       @required
-          IssueBallUseCaseInputPort issueBallUseCaseInputPort,
+      FBallUseCaseInputPort issueBallUseCaseInputPort,
       @required
       GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort})
       : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,

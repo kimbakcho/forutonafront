@@ -6,6 +6,6 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'FBallListUpUseCaseOutputPort.dart';
 
 abstract class FBallListUpUseCaseInputPort {
-  Future<PageWrap<FBallResDto>> search(dynamic reqDto, FSorts sort,
+  Future<PageWrap<FBallResDto>> search(dynamic reqDto,
       Pageable pageable, FBallListUpUseCaseOutputPort outputPort);
 }

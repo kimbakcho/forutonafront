@@ -4,7 +4,11 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -26,11 +30,11 @@ enum H001PageState { H001_01, H003_01 }
 class H001ViewModel
     with ChangeNotifier
     implements
-        FBallListUpFromInfluencePowerUseCaseOutputPort,
+        FBallListUpUseCaseOutputPort,
         TagRankingFromBallInfluencePowerUseCaseOutputPort {
   final BuildContext context;
 
-  final FBallListUpFromInfluencePowerUseCaseInputPort
+  final FBallListUpUseCaseInputPort
       _fBallListUpFromInfluencePowerUseCaseInputPort;
 
   final TagRankingFromBallInfluencePowerUseCaseInputPort
@@ -73,7 +77,7 @@ class H001ViewModel
       {@required
           this.context,
       @required
-          FBallListUpFromInfluencePowerUseCaseInputPort
+          FBallListUpUseCaseInputPort
               fBallListUpFromInfluencePowerUseCaseInputPort,
       @required
           TagRankingFromBallInfluencePowerUseCaseInputPort
@@ -159,7 +163,7 @@ class H001ViewModel
             page: _ballPageCount,
             size: _ballPageLimitSize);
     await _fBallListUpFromInfluencePowerUseCaseInputPort
-        .reqBallListUpFromInfluencePower(reqDto, this);
+        .search(reqDto,Pageable(10,0,"") ,this);
 
     hideLoading();
   }
@@ -393,5 +397,10 @@ class H001ViewModel
 
   String changeTagValueDisplay(double value) {
     return NomalValueDisplay.changeIntDisplaystr(value);
+  }
+
+  @override
+  void searchResult(PageWrap listUpItem) {
+    // TODO: implement searchResult
   }
 }

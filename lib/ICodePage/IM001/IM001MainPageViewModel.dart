@@ -9,8 +9,8 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/YoutubeUtil/YoutubeIdParser.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -32,10 +32,10 @@ import 'package:youtube_parser/youtube_parser.dart';
 import 'BallImageItem.dart';
 
 class IM001MainPageViewModel extends ChangeNotifier
-    implements IssueBallUseCaseOutputPort, TagFromBallUuidUseCaseOutputPort {
+    implements FBallUseCaseOutputPort, TagFromBallUuidUseCaseOutputPort {
   final BuildContext context;
   final LatLng setUpPosition;
-  final IssueBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final FBallUseCaseInputPort _issueBallUseCaseInputPort;
   final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
 
   String ballUuid;
@@ -95,7 +95,7 @@ class IM001MainPageViewModel extends ChangeNotifier
       this.ballUuid,
       this.mode,
       @required
-          IssueBallUseCaseInputPort issueBallUseCaseInputPort,
+      FBallUseCaseInputPort issueBallUseCaseInputPort,
       @required
           TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort})
       : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,

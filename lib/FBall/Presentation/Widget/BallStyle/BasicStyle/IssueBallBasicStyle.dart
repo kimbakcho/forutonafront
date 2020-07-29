@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/IssueBall/IssueBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
@@ -17,13 +17,13 @@ abstract class IssueBallBasicStyle {
 class IssueBallBasicStyleImpl implements IssueBallBasicStyle {
   final BuildContext context;
 
-  final IssueBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final FBallUseCaseInputPort _issueBallUseCaseInputPort;
 
   final AuthUserCaseInputPort _authUserCaseInputPort;
 
   IssueBallBasicStyleImpl(
       {@required this.context,
-      @required IssueBallUseCaseInputPort issueBallUseCaseInputPort,
+      @required FBallUseCaseInputPort issueBallUseCaseInputPort,
       @required AuthUserCaseInputPort authUserCaseInputPort})
       : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
         _authUserCaseInputPort = authUserCaseInputPort;
