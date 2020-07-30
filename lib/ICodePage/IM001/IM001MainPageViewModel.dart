@@ -9,8 +9,10 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/YoutubeUtil/YoutubeIdParser.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -23,6 +25,7 @@ import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuid
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -32,11 +35,18 @@ import 'package:youtube_parser/youtube_parser.dart';
 import 'BallImageItem.dart';
 
 class IM001MainPageViewModel extends ChangeNotifier
-    implements FBallUseCaseOutputPort, TagFromBallUuidUseCaseOutputPort {
+    implements
+        InsertBallUseCaseOutputPort,
+        SelectBallUseCaseOutputPort,
+        UpdateBallUseCaseOutputPort,
+        TagFromBallUuidUseCaseOutputPort {
   final BuildContext context;
   final LatLng setUpPosition;
-  final FBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final InsertBallUseCaseInputPort _insertBallUseCaseInputPort;
+  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
+  final UpdateBallUseCaseInputPort _updateBallUseCaseInputPort;
   final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
+  final BallImageListUpLoadUseCaseInputPort _ballImageListUpLoadUseCaseInputPort;
 
   String ballUuid;
 
@@ -95,10 +105,21 @@ class IM001MainPageViewModel extends ChangeNotifier
       this.ballUuid,
       this.mode,
       @required
-      FBallUseCaseInputPort issueBallUseCaseInputPort,
+          InsertBallUseCaseInputPort insertBallUseCaseInputPort,
       @required
-          TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort})
-      : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
+          SelectBallUseCaseInputPort selectBallUseCaseInputPort,
+      @required
+          UpdateBallUseCaseInputPort updateBallUseCaseInputPort,
+      @required
+          TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort,
+        @required
+        BallImageListUpLoadUseCaseInputPort ballImageListUpLoadUseCaseInputPort
+
+      })
+      : _insertBallUseCaseInputPort = insertBallUseCaseInputPort,
+  _updateBallUseCaseInputPort = updateBallUseCaseInputPort,
+        _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
+        _ballImageListUpLoadUseCaseInputPort = ballImageListUpLoadUseCaseInputPort,
         _tagFromBallUuidUseCaseInputPort = tagFromBallUuidUseCaseInputPort {
     _init();
   }
@@ -141,8 +162,7 @@ class IM001MainPageViewModel extends ChangeNotifier
     this.topNameTitle = "이슈볼 수정하기";
     notifyListeners();
     isLoading = true;
-    await _issueBallUseCaseInputPort.selectBall(
-        ballUuid: ballUuid, outputPort: this);
+    await _selectBallUseCaseInputPort.selectBall(ballUuid, outputPort: this);
 
     isLoading = false;
   }
@@ -158,16 +178,16 @@ class IM001MainPageViewModel extends ChangeNotifier
       this.validYoutubeLink =
           "https://youtu.be/${_issueBall.getDisplayYoutubeVideoId()}";
     }
-    var tagDTOs = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-        reqDto: TagFromBallReqDto(ballUuid: _issueBall.ballUuid));
-    var tags = tagDTOs.map((x) => FBallTag.fromFBallTagResDto(x)).toList();
-    _issueBall.tags = tags;
-    if (_issueBall.hasTags()) {
-      this.tagBarVisibility = true;
-    }
-    _issueBall.tags.forEach((element) {
-      addTagChips(element.tagItem);
-    });
+//    var tagDTOs = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
+//        reqDto: TagFromBallReqDto(ballUuid: _issueBall.ballUuid));
+//    var tags = tagDTOs.map((x) => FBallTag.fromFBallTagResDto(x)).toList();
+//    _issueBall.tags = tags;
+//    if (_issueBall.hasTags()) {
+//      this.tagBarVisibility = true;
+//    }
+//    _issueBall.tags.forEach((element) {
+//      addTagChips(element.tagItem);
+//    });
     titleEditController.text = _issueBall.ballName;
     textContentEditController.text = _issueBall.getDisplayDescriptionText();
     ballImageList = _issueBall
@@ -217,12 +237,12 @@ class IM001MainPageViewModel extends ChangeNotifier
     List<FBallDesImages> imageList = await fBallImageUpload();
     _issueBall.setDesImages(imageList);
     if (mode == IM001MainPageEnterMode.Insert) {
-      await _issueBallUseCaseInputPort.insertBall(
-          reqDto: FBallInsertReqDto.fromIssueBall(_issueBall),
+      await _insertBallUseCaseInputPort.insertBall(
+          FBallInsertReqDto.fromIssueBall(_issueBall),
           outputPort: this);
     } else if (mode == IM001MainPageEnterMode.Update) {
-      await _issueBallUseCaseInputPort.updateBall(
-          reqDto: FBallUpdateReqDto.fromIssueBall(_issueBall),
+      await _updateBallUseCaseInputPort.updateBall(
+          FBallUpdateReqDto.fromIssueBall(_issueBall),
           outputPort: this);
     }
     isLoading = false;
@@ -230,7 +250,7 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   Future<List<FBallDesImages>> fBallImageUpload() async {
     List<FBallDesImages> imageList = [];
-    List<BallImageItem> fillUrlBallImageList = await _issueBallUseCaseInputPort
+    List<BallImageItem> fillUrlBallImageList = await _ballImageListUpLoadUseCaseInputPort
         .ballImageListUpLoadAndFillUrls(this.ballImageList);
     for (var index = 0; index < fillUrlBallImageList.length; index++) {
       imageList.add(FBallDesImages.fromBallImageItemDto(
@@ -249,13 +269,13 @@ class IM001MainPageViewModel extends ChangeNotifier
   }
 
   @override
-  void onUpdateBall() {
+  void onUpdateBall(FBallResDto fBallResDto) {
     Navigator.of(context).pop(mode);
   }
 
   bool hasYoutubeLink() => validYoutubeLink != null;
 
-  //이미지 추가를 눌렀을때
+//이미지 추가를 눌렀을때
   onImagePicker() async {
     if (ballImageList.length == 20) {
       Fluttertoast.showToast(
@@ -346,8 +366,7 @@ class IM001MainPageViewModel extends ChangeNotifier
                           child: FlatButton(
                             onPressed: onImagePicker,
                             child: Text("사진 선택",
-                                style: TextStyle(
-                                  fontFamily: "Noto Sans CJK KR",
+                                style: GoogleFonts.notoSans(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 13,
                                   color: Color(0xffc1549a),
@@ -435,8 +454,8 @@ class IM001MainPageViewModel extends ChangeNotifier
   void checkCommaAndInsert(String value) {
     if (value.indexOf(",") > 0) {
       value = value.substring(0, value.length - 1);
-      _issueBall.tags
-          .add(FBallTag(ballUuid: _issueBall.ballUuid, tagItem: value));
+//      _issueBall.tags
+//          .add(FBallTag(ballUuid: _issueBall.ballUuid, tagItem: value));
       addTagChips(value);
       tagEditController.clear();
       moveToBottomScroller();
@@ -508,8 +527,8 @@ class IM001MainPageViewModel extends ChangeNotifier
   }
 
   void onTagFieldSubmitted(String value) {
-    _issueBall.tags
-        .add(FBallTag(ballUuid: _issueBall.ballUuid, tagItem: value));
+//    _issueBall.tags
+//        .add(FBallTag(ballUuid: _issueBall.ballUuid, tagItem: value));
     addTagChips(value);
     tagEditController.clear();
     moveToBottomScroller();
@@ -552,13 +571,13 @@ class IM001MainPageViewModel extends ChangeNotifier
               return false;
             }
           });
-          _issueBall.tags.removeWhere((tagItem) {
-            if (tagItem.tagItem == value) {
-              return true;
-            } else {
-              return false;
-            }
-          });
+//          _issueBall.tags.removeWhere((tagItem) {
+//            if (tagItem.tagItem == value) {
+//              return true;
+//            } else {
+//              return false;
+//            }
+//          });
           notifyListeners();
         }));
   }

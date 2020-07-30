@@ -26,6 +26,9 @@ class PageWrap<T> {
 
   factory PageWrap.fromJson(Map<String, dynamic> json, Function fromJson) {
     final items = json['content'].cast<Map<String, dynamic>>();
+    if(json['pageable']=="INSTANCE") {
+      json['pageable'] = null;
+    }
     return PageWrap<T>(
         pageable: json["pageable"] == null ? null : PageableWarp.fromJson(json["pageable"]),
         totalElements: json["totalElements"] == null ? null : json["totalElements"],

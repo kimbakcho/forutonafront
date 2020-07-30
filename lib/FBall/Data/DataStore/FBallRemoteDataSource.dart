@@ -36,15 +36,15 @@ abstract class FBallRemoteDataSource {
   Future<PageWrap<FBallResDto>> listUpBallFromMapArea(
       {@required BallFromMapAreaReqDto reqDto, @required FDio noneTokenFDio});
 
-  Future<int> deleteBall({@required String ballUuid, @required FDio fDio});
+  Future<String> deleteBall({@required String ballUuid, @required FDio fDio});
 
-  Future<FBall> insertBall(
+  Future<FBallResDto> insertBall(
       {@required FBallInsertReqDto reqDto, @required FDio fDio});
 
-  Future<FBall> selectBall(
+  Future<FBallResDto> selectBall(
       {@required String ballUuid, @required FDio noneTokenFDio});
 
-  Future<int> updateBall(
+  Future<FBallResDto> updateBall(
       {@required FBallUpdateReqDto reqDto, @required FDio fDio});
 
   Future<int> ballHit(
@@ -111,37 +111,37 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
       {@required String ballUuid, @required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio
         .post("/v1/FBall/BallHit", queryParameters: {"ballUuid": ballUuid});
-    return int.parse(response.data);
+    return response.data;
   }
 
   @override
-  Future<int> deleteBall(
+  Future<String> deleteBall(
       {@required String ballUuid, @required FDio fDio}) async {
     var response =
-        await fDio.delete("/v1/FBall", queryParameters: {ballUuid: ballUuid});
-    return int.parse(response.data);
+        await fDio.delete("/v1/FBall", queryParameters: {"ballUuid": ballUuid});
+    return response.data;
   }
 
   @override
-  Future<FBall> insertBall(
+  Future<FBallResDto> insertBall(
       {@required FBallInsertReqDto reqDto, @required FDio fDio}) async {
     var response = await fDio.post("/v1/FBall", data: reqDto.toJson());
-    return FBall.fromJson(response.data);
+    return response.data;
   }
 
   @override
-  Future<FBall> selectBall(
+  Future<FBallResDto> selectBall(
       {@required String ballUuid, @required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio
-        .get("/v1/FBall", queryParameters: {ballUuid: ballUuid});
-    return FBall.fromJson(response.data);
+        .get("/v1/FBall", queryParameters: {"ballUuid": ballUuid});
+    return FBallResDto.fromJson(response.data);
   }
 
   @override
-  Future<int> updateBall(
+  Future<FBallResDto> updateBall(
       {@required FBallUpdateReqDto reqDto, @required FDio fDio}) async {
     var response = await fDio.put("/v1/FBall", data: reqDto.toJson());
-    return int.parse(response.data);
+    return FBallResDto.fromJson(response.data);
   }
 
   @override

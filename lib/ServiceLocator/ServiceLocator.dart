@@ -43,14 +43,15 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart'
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallHit/BallHitUseCaseInPutPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
@@ -192,9 +193,6 @@ init() {
   sl.registerSingleton<FBallRepository>(
       FBallRepositoryImpl(fBallRemoteDataSource: sl()));
 
-  sl.registerSingleton<FBallUseCaseInputPort>(
-      FBallUseCase(fBallRepository: sl()));
-
   sl.registerSingleton<FBallTagRemoteDataSource>(
       FBallTagRemoteDataSourceImpl());
 
@@ -260,8 +258,14 @@ init() {
     }
   }, instanceName: "NotificationChannelBaseInputPortFactory");
 
+  sl.registerSingleton<SelectBallUseCaseInputPort>(
+      SelectBallUseCase(fBallRepository: sl()));
+
+  sl.registerSingleton<InsertBallUseCaseInputPort>(
+      InsertBallUseCase(fBallRepository: sl()));
+
   sl.registerSingleton<PageMoveActionUseCaseInputPort>(
-      ID001PageMoveAction(issueBallUseCaseInputPort: sl()),
+      ID001PageMoveAction(selectBallUseCaseInputPort: sl()),
       instanceName: "ID001PageMoveAction");
 
   sl.registerFactoryParam<PageMoveActionUseCaseInputPort, String, String>(
@@ -502,4 +506,10 @@ init() {
 
   sl.registerSingleton<BallHitUseCaseInPutPort>(
       BallHitUseCase(fBallRepository: sl()));
+
+
+
+
+  sl.registerSingleton<BallImageListUpLoadUseCaseInputPort>(
+      BallImageListUpLoadUseCase(fBallRepository: sl()));
 }

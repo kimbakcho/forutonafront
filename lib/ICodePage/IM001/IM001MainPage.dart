@@ -69,7 +69,7 @@ class _IM001MainPageState extends State<IM001MainPage>
         create: (_) => IM001MainPageViewModel(
             context: context,
             ballUuid: ballUuid,
-            issueBallUseCaseInputPort: sl(),
+            insertBallUseCaseInputPort: sl(),
             tagFromBallUuidUseCaseInputPort: sl(),
             address: address,
             mode: mode,

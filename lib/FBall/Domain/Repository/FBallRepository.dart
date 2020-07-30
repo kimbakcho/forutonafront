@@ -24,10 +24,10 @@ abstract class FBallRepository {
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle({@required FBallListUpFromSearchTitleReqDto reqDto});
   Future<PageWrap<FBallResDto>> listUpFromTagName({@required FBallListUpFromTagNameReqDto reqDto});
   Future<PageWrap<FBallResDto>> ballListUpFromMapArea({@required BallFromMapAreaReqDto reqDto});
-  Future<int> deleteBall(String ballUuid);
+  Future<String> deleteBall(String ballUuid);
   Future<FBallResDto> insertBall(FBallInsertReqDto reqDto);
-  Future<FBall> selectBall(String ballUuid);
-  Future<int> updateBall(FBallUpdateReqDto reqDto);
+  Future<FBallResDto> selectBall(String ballUuid);
+  Future<FBallResDto> updateBall(FBallUpdateReqDto reqDto);
   Future<int> ballHit(String ballUuid);
   Future<FBallImageUpload> ballImageUpload({@required List<Uint8List> images});
 }

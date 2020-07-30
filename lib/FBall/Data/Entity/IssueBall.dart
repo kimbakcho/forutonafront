@@ -28,8 +28,6 @@ class IssueBall extends FBall{
   }
 
   @JsonKey(ignore: true)
-  List<FBallTag> tags = [];
-  @JsonKey(ignore: true)
   IssueBallDescription _issueBallDescription;
 
   factory IssueBall.fromFBallResDto(FBallResDto resDto){
@@ -202,13 +200,6 @@ class IssueBall extends FBall{
     this.contributor--;
   }
 
-  bool hasTags() {
-    if(tags.length == 0){
-      return false;
-    }else {
-      return true;
-    }
-  }
 
   isUserBall({@required String myUid}){
     return uid != myUid;

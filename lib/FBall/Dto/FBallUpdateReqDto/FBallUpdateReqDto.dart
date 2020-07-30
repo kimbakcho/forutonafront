@@ -32,7 +32,7 @@ class FBallUpdateReqDto {
     issueBallUpdateReqDto.ballType = issueBall.ballType;
     issueBallUpdateReqDto.placeAddress = issueBall.placeAddress;
     issueBallUpdateReqDto.description = issueBall.description;
-    issueBallUpdateReqDto.tags = issueBall.tags.map((x) => TagInsertReqDto.fromFBallTag(x)).toList();
+
     return issueBallUpdateReqDto;
   }
 }

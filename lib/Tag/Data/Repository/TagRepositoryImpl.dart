@@ -3,6 +3,7 @@ import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart'
 import 'package:forutonafront/Tag/Data/Entity/FBallTagWrap.dart';
 import 'package:forutonafront/Tag/Data/Value/FBallTagRankingWrap.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
+import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Tag/Dto/RelationTagRankingFromTagNameReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
@@ -31,8 +32,8 @@ class TagRepositoryImpl implements TagRepository {
   }
 
   @override
-  Future<FBallTagWrap> tagFromBallUuid(TagFromBallReqDto reqDto) async {
+  Future<List<FBallTagResDto>> tagFromBallUuid(String ballUuid) async {
     return await _fBallTagRemoteDataSource.tagFromBallUuid(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+        ballUuid: ballUuid, noneTokenFDio: FDio.noneToken());
   }
 }

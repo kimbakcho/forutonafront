@@ -14,15 +14,12 @@ class TagFromBallUuidUseCase implements TagFromBallUuidUseCaseInputPort {
 
   @override
   Future<List<FBallTagResDto>> getTagFromBallUuid(
-      {@required TagFromBallReqDto reqDto,
+      {@required String ballUuid,
       TagFromBallUuidUseCaseOutputPort outputPort}) async {
-    var fBallTagWrap = await _tagRepository.tagFromBallUuid(reqDto);
-    var result =
-        fBallTagWrap.tags.map((x) => FBallTagResDto.fromFBalltag(x)).toList();
+    List<FBallTagResDto> results = await _tagRepository.tagFromBallUuid(ballUuid);
     if (outputPort != null) {
-      outputPort.onTagFromBallUuid(result);
+      outputPort.onTagFromBallUuid(results);
     }
-
-    return result;
+    return results;
   }
 }

@@ -23,7 +23,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
             context: context,
             userBallResDto: fBallResDto,
             geoLocationUtilUseCaseInputPort: sl(),
-            issueBallUseCaseInputPort: sl()),
+            insertBallUseCaseInputPort: sl()),
         child: Consumer<IssueBallWidgetStyle2ViewModel>(
             builder: (_, model, child) {
           return Container(

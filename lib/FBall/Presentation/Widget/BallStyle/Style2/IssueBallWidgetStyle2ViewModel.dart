@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseOutputPort.dart';
-
+import 'package:forutonafront/FBall/Domain/UseCase/DeleteBall/DeleteBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/BallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Impl/IssueBallModifyService.dart';
@@ -19,14 +18,22 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
-    implements FBallUseCaseOutputPort, GeoLocationUtilUseForeGroundCaseOutputPort {
+    implements
+        InsertBallUseCaseOutputPort,
+        SelectBallUseCaseOutputPort,
+        DeleteBallUseCaseOutputPort,
+        GeoLocationUtilUseForeGroundCaseOutputPort {
   BuildContext context;
 
   IssueBall issueBall;
 
   String distanceDisplayText = "";
 
-  FBallUseCaseInputPort _issueBallUseCaseInputPort;
+  InsertBallUseCaseInputPort _insertBallUseCaseInputPort;
+
+  SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
+
+  DeleteBallUseCaseInputPort _deleteBallUseCaseInputPort;
 
   GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
@@ -36,10 +43,17 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
       @required
           FBallResDto userBallResDto,
       @required
-      FBallUseCaseInputPort issueBallUseCaseInputPort,
+          InsertBallUseCaseInputPort insertBallUseCaseInputPort,
+        @required
+        SelectBallUseCaseInputPort selectBallUseCaseInputPort,
+        @required
+        DeleteBallUseCaseInputPort deleteBallUseCaseInputPort,
       @required
-      GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort})
-      : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
+          GeoLocationUtilForeGroundUseCaseInputPort
+              geoLocationUtilUseCaseInputPort})
+      : _insertBallUseCaseInputPort = insertBallUseCaseInputPort,
+        _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
+        _deleteBallUseCaseInputPort = deleteBallUseCaseInputPort,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     issueBall = IssueBall.fromFBallResDto(userBallResDto);
     _geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
@@ -61,8 +75,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
     } else {
       await Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => ID001MainPage(issueBall: issueBall)));
-      _issueBallUseCaseInputPort.selectBall(
-          ballUuid: issueBall.ballUuid, outputPort: this);
+      _selectBallUseCaseInputPort.selectBall(issueBall.ballUuid, outputPort: this);
     }
   }
 
@@ -80,11 +93,9 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
               issueBall.ballUuid,
               IM001MainPageEnterMode.Update);
         }));
-        _issueBallUseCaseInputPort.selectBall(
-            ballUuid: issueBall.ballUuid, outputPort: this);
+        _selectBallUseCaseInputPort.selectBall(issueBall.ballUuid, outputPort: this);
       } else {
-        _issueBallUseCaseInputPort.deleteBall(
-            ballUuid: issueBall.ballUuid, outputPort: this);
+        _deleteBallUseCaseInputPort.deleteBall(issueBall.ballUuid, outputPort: this);
       }
     }
   }
@@ -101,7 +112,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
   }
 
   @override
-  void onDeleteBall() {
+  void onDeleteBall(String ballUuid) {
     issueBall.ballDeleteFlag = true;
     notifyListeners();
   }

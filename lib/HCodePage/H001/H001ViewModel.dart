@@ -158,23 +158,18 @@ class H001ViewModel
             ballLimit: _ballSearchLimit,
             page: _ballPageCount,
             size: _ballPageLimitSize);
-    await _fBallListUpUseCaseInputPort.searchFBallListUpFromInfluencePower(
-        reqDto, Pageable(10, 0, ""), this);
 
-    hideLoading();
-  }
-
-  @override
-  onListUpBallFromBallInfluencePower(List<FBallResDto> fBallResDtos) async {
-    if (isFirstPage()) {
+    PageWrap<FBallResDto> pageWrap = await _fBallListUpUseCaseInputPort
+        .searchFBallListUpFromInfluencePower(reqDto, Pageable(10, 0, ""), this);
+    if (pageWrap.first) {
       ballClear();
     }
-    this.ballWidgetLists.addAll(fBallResDtos
+    this.ballWidgetLists.addAll(pageWrap.content
         .map((x) => BallStyle1Widget.create(
               fBallResDto: x,
             ))
         .toList());
-    notifyListeners();
+    hideLoading();
   }
 
   h001CenterListViewControllerListener() async {

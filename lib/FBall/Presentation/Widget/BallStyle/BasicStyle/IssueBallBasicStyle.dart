@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallHit/BallHitUseCaseInPutPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
+import 'package:forutonafront/ICodePage/ID001/ID001MainPage2.dart';
 
 abstract class IssueBallBasicStyle {
   Future<void> goIssueDetailPage(IssueBall issueBall);
@@ -34,7 +34,7 @@ class IssueBallBasicStyleImpl implements IssueBallBasicStyle {
       reqJoinBall(issueBall: issueBall);
     }
     await Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => ID001MainPage(issueBall: issueBall)));
+        MaterialPageRoute(builder: (_) => ID001MainPage2(ballUuid: issueBall.ballUuid)));
 
   }
 

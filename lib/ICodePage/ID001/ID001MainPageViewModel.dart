@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:forutonafront/FBall/Data/Entity/FBallValuation.dart';
 import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBall/FBallUseCaseInputPort.dart';
-
+import 'package:forutonafront/FBall/Domain/UseCase/DeleteBall/DeleteBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseOutputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationResDto.dart';
@@ -49,7 +50,9 @@ class ID001MainPageViewModel extends ChangeNotifier
         AuthUserCaseOutputPort {
   final BuildContext context;
   final ScrollController mainScrollController;
-  final FBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final InsertBallUseCaseInputPort _issueBallUseCaseInputPort;
+  final DeleteBallUseCaseInputPort _deleteBallUseCaseInputPort;
+  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
   final UserInfoSimple1UseCaseInputPort _userInfoSimple1UseCaseInputPort;
   final AuthUserCaseInputPort _authUserCaseInputPort;
   final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
@@ -88,7 +91,9 @@ class ID001MainPageViewModel extends ChangeNotifier
     @required this.context,
     @required this.issueBall,
     @required this.mainScrollController,
-    @required FBallUseCaseInputPort issueBallUseCaseInputPort,
+    @required InsertBallUseCaseInputPort issueBallUseCaseInputPort,
+    @required DeleteBallUseCaseInputPort deleteBallUseCaseInputPort,
+    @required SelectBallUseCaseInputPort selectBallUseCaseInputPort,
     @required UserInfoSimple1UseCaseInputPort userInfoSimple1UseCaseInputPort,
     @required AuthUserCaseInputPort authUserCaseInputPort,
     @required TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort,
@@ -96,6 +101,8 @@ class ID001MainPageViewModel extends ChangeNotifier
         IssueBallValuationUseCaseInputPort issueBallValuationUseCaseInputPort,
     @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
   })  : _issueBallUseCaseInputPort = issueBallUseCaseInputPort,
+        _deleteBallUseCaseInputPort = deleteBallUseCaseInputPort,
+        _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
         _userInfoSimple1UseCaseInputPort = userInfoSimple1UseCaseInputPort,
         _authUserCaseInputPort = authUserCaseInputPort,
         _tagFromBallUuidUseCaseInputPort = tagFromBallUuidUseCaseInputPort,
@@ -112,7 +119,7 @@ class ID001MainPageViewModel extends ChangeNotifier
 
     issueBallYoutubeSetting();
 
-    loadTagFromBall();
+//    loadTagFromBall();
 
     reqBallMakerInfo();
 
@@ -130,11 +137,11 @@ class ID001MainPageViewModel extends ChangeNotifier
         makerUid: FUserReqDto(issueBall.uid), outputPort: this);
   }
 
-  Future<List<FBallTagResDto>> loadTagFromBall() {
-    return _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-        reqDto: TagFromBallReqDto(ballUuid: issueBall.ballUuid),
-        outputPort: this);
-  }
+//  Future<List<FBallTagResDto>> loadTagFromBall() {
+//    return _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
+//        reqDto: TagFromBallReqDto(ballUuid: issueBall.ballUuid),
+//        outputPort: this);
+//  }
 
   void turnUserScreen() {
     _authUserCaseInputPort.isLogin(authUserCaseOutputPort: this);
@@ -493,7 +500,7 @@ class ID001MainPageViewModel extends ChangeNotifier
     var result =
         await ballModifyService.showModifySelectDialog(context: context);
     if (result == CommonBallModifyWidgetResultType.Delete) {
-      await _issueBallUseCaseInputPort.deleteBall(ballUuid: issueBall.ballUuid);
+      await _deleteBallUseCaseInputPort.deleteBall(issueBall.ballUuid);
       onDeleteBall();
     } else if (result == CommonBallModifyWidgetResultType.Update) {
       await gotoIM001Page();
@@ -513,8 +520,7 @@ class ID001MainPageViewModel extends ChangeNotifier
 
   Future<void> reFreshBall() async {
     isLoading = true;
-    var fBallResDto = await _issueBallUseCaseInputPort.selectBall(
-        ballUuid: issueBall.ballUuid);
+    var fBallResDto = await _selectBallUseCaseInputPort.selectBall(issueBall.ballUuid);
     issueBall.reFreshFromBallResDto(fBallResDto);
     isLoading = false;
   }

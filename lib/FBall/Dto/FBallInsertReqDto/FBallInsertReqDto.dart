@@ -28,7 +28,7 @@ class FBallInsertReqDto {
     issueBallInsertReqDto.ballType = issueBall.ballType;
     issueBallInsertReqDto.placeAddress = issueBall.placeAddress;
     issueBallInsertReqDto.description = issueBall.description;
-    issueBallInsertReqDto.tags = issueBall.tags.map((x) => TagInsertReqDto.fromFBallTag(x)).toList();
+
     return issueBallInsertReqDto;
   }
 }

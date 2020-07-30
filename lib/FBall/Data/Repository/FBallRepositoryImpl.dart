@@ -74,7 +74,7 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<int> deleteBall(String ballUuid) async {
+  Future<String> deleteBall(String ballUuid) async {
     return _fBallRemoteDataSource.deleteBall(
         ballUuid: ballUuid,
         fDio: FDio.token(
@@ -82,7 +82,7 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<FBall> insertBall(FBallInsertReqDto reqDto) async {
+  Future<FBallResDto> insertBall(FBallInsertReqDto reqDto) async {
     return _fBallRemoteDataSource.insertBall(
         reqDto: reqDto,
         fDio: FDio.token(
@@ -90,13 +90,13 @@ class FBallRepositoryImpl implements FBallRepository {
   }
 
   @override
-  Future<FBall> selectBall(String ballUuid) async {
+  Future<FBallResDto> selectBall(String ballUuid) async {
     return await _fBallRemoteDataSource.selectBall(
         ballUuid: ballUuid, noneTokenFDio: FDio.noneToken());
   }
 
   @override
-  Future<int> updateBall(FBallUpdateReqDto reqDto) async {
+  Future<FBallResDto> updateBall(FBallUpdateReqDto reqDto) async {
     return await _fBallRemoteDataSource.updateBall(
         reqDto: reqDto,
         fDio: FDio.token(
