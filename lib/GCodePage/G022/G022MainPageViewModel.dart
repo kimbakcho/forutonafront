@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/UserPolicy.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/UserPolicyResDto.dart';
 
 class G022MainPageViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -9,7 +8,7 @@ class G022MainPageViewModel extends ChangeNotifier {
   final String policyName;
   final UserPolicyUseCaseInputPort _userPolicyUseCaseInputPort;
 
-  UserPolicy userPolicy;
+  UserPolicyResDto userPolicyResDto;
   String htmlUrl;
 
   G022MainPageViewModel(
@@ -22,9 +21,8 @@ class G022MainPageViewModel extends ChangeNotifier {
   }
 
   void init() async {
-    userPolicy = UserPolicy.fromUserPolicyResDto(
-        await _userPolicyUseCaseInputPort.getUserPolicy(policyName));
-    _loadHtml(userPolicy.policyContent);
+    userPolicyResDto = await _userPolicyUseCaseInputPort.getUserPolicy(policyName);
+    _loadHtml(userPolicyResDto.policyContent);
     notifyListeners();
   }
 

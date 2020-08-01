@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCase.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:mockito/mockito.dart';
 

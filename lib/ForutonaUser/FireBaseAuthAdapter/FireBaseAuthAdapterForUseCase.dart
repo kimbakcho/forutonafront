@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
-import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenUpdateUseCase/FireBaseMessageTokenUpdateUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 
 import 'FireBaseAuthBaseAdapter.dart';
@@ -21,19 +21,14 @@ class FireBaseAuthAdapterForUseCaseImpl
 
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
-  final FireBaseMessageTokenUpdateUseCaseInputPort
-      _fireBaseMessageTokenUpdateUseCaseInputPort;
-
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
 
   FireBaseAuthAdapterForUseCaseImpl(
       {@required FireBaseMessageAdapter fireBaseMessageAdapter,
-      @required FireBaseMessageTokenUpdateUseCaseInputPort fireBaseMessageTokenUpdateUseCaseInputPort,
       @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
       @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort
       })
       : _fireBaseMessageAdapter = fireBaseMessageAdapter,
-        _fireBaseMessageTokenUpdateUseCaseInputPort = fireBaseMessageTokenUpdateUseCaseInputPort,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
 
@@ -55,9 +50,9 @@ class FireBaseAuthAdapterForUseCaseImpl
 
   _onAuthStateChange(FirebaseUser user) async {
     if(await isLogin()){
-      _fireBaseMessageTokenUpdateUseCaseInputPort.updateFireBaseMessageToken(
-          user.uid, await _fireBaseMessageAdapter.getCurrentToken());
       await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(user.uid);
+      FUserInfo fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      await fUserInfo.updateFCMToken(await _fireBaseMessageAdapter.getCurrentToken());
     }else {
       _signInUserInfoUseCaseInputPort.clearUserInfo();
     }

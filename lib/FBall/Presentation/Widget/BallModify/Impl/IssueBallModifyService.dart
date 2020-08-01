@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidget.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 
 import '../BallModifyService.dart';
 

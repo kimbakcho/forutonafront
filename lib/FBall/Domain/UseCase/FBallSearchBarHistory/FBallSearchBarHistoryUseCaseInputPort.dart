@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/FBall/Data/Value/BallSearchBarHistory.dart';
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Dto/BallSearchBarHistoryDto.dart';
 

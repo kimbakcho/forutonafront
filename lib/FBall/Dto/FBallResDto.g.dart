@@ -29,7 +29,9 @@ FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
     ..description = json['description'] as String
     ..nickName = json['nickName'] as String
     ..profilePictureUrl = json['profilePictureUrl'] as String
-    ..uid = json['uid'] as String
+    ..uid = json['uid'] == null
+        ? null
+        : FUserInfoSimpleResDto.fromJson(json['uid'] as Map<String, dynamic>)
     ..userLevel = (json['userLevel'] as num)?.toDouble()
     ..contributor = json['contributor'] as int
     ..ballDeleteFlag = json['ballDeleteFlag'] as bool;
@@ -54,7 +56,7 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'description': instance.description,
       'nickName': instance.nickName,
       'profilePictureUrl': instance.profilePictureUrl,
-      'uid': instance.uid,
+      'uid': instance.uid?.toJson(),
       'userLevel': instance.userLevel,
       'contributor': instance.contributor,
       'ballDeleteFlag': instance.ballDeleteFlag,

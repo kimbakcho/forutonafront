@@ -20,13 +20,13 @@ import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImag
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/BallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Impl/IssueBallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfoSimple1.dart';
+import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfoSimple.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoSimple1/UserInfoSimple1UseCaseOutputPort.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimple1ResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
@@ -132,7 +132,7 @@ class ID001MainPageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  Future<FUserInfoSimple1ResDto> reqBallMakerInfo() {
+  Future<FUserInfoSimpleResDto> reqBallMakerInfo() {
     return _userInfoSimple1UseCaseInputPort.getBallMakerInfo(
         makerUid: FUserReqDto(issueBall.uid), outputPort: this);
   }
@@ -159,7 +159,7 @@ class ID001MainPageViewModel extends ChangeNotifier
   }
 
   @override
-  onBallMakerInfo(FUserInfoSimple1ResDto fUserInfoSimple1ResDto) {
+  onBallMakerInfo(FUserInfoSimpleResDto fUserInfoSimple1ResDto) {
     makerUserInfo =
         FUserInfoSimple1.fromFUserInfoSimple1ResDto(fUserInfoSimple1ResDto);
     notifyListeners();

@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PwChangeFromPhoneAuth.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCase.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
 import 'package:mockito/mockito.dart';
 
 class MockPhoneAuthRepository extends Mock implements PhoneAuthRepository {}
@@ -28,7 +28,7 @@ void main() {
     PwChangeFromPhoneAuthReqDto pwChangeFromPhoneAuthReqDto =
         PwChangeFromPhoneAuthReqDto();
     pwChangeFromPhoneAuthReqDto.email = "test@Email.com";
-    PwChangeFromPhoneAuth pwChangeFromPhoneAuth = PwChangeFromPhoneAuth();
+    PwChangeFromPhoneAuthResDto pwChangeFromPhoneAuth = PwChangeFromPhoneAuthResDto();
     pwChangeFromPhoneAuth.email = "test@Email.com";
     when(mockPhoneAuthRepository.reqChangePwAuthPhone(any))
         .thenAnswer((realInvocation) async => pwChangeFromPhoneAuth);

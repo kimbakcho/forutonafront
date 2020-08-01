@@ -7,8 +7,6 @@ class G019MainPageViewModel extends ChangeNotifier{
   final BuildContext _context;
   G019MainPageViewModel(this._context);
 
-
-
   void onBackTap() {
     Navigator.of(_context).pop();
   }

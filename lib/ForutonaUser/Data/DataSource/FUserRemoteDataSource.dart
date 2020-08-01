@@ -1,45 +1,47 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfoSimple1.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoin.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserSnsCheckJoin.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Dto/UserPositionUpdateReqDto.dart';
 import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
 
 abstract class FUserRemoteDataSource {
+  Future<void> updateUserPosition(LatLng latLng, FDio tokenFDio);
 
-  Future<FUserInfoSimple1> getUserInfoSimple1(FUserReqDto reqDto,FDio noneTokenFDio);
-  Future<int> updateUserPosition(LatLng latLng,FDio tokenFDio);
-  Future<int> updateFireBaseMessageToken(String uid,String token,FDio tokenFDio);
-  Future<bool> checkNickNameDuplication(String nickName,FDio noneTokenFDio);
-  Future<FUserInfo> getForutonaGetMe(FDio tokenFDio);
-  Future<String> uploadUserProfileImage(FormData formData,FDio tokenFDio);
-  Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto,FDio tokenFDio);
-  Future<int> pWChange(FUserInfoPwChangeReqDto changePwReqDto,FDio tokenFDio);
-  Future<FUserSnsCheckJoin> getSnsUserJoinCheckInfo(FUserSnSLoginReqDto reqDto,FDio noneTokenFDio);
-  Future<FUserInfoJoin> joinUser(FUserInfoJoinReqDto reqDto, FDio noneTokenFDio);
+  Future<void> updateFireBaseMessageToken(String token,
+      FDio tokenFDio);
+
+  Future<bool> checkNickNameDuplication(String nickName, FDio noneTokenFDio);
+
+  Future<String> uploadUserProfileImage(List<int> imageByte, FDio tokenFDio);
+
+  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,
+      FDio tokenFDio);
+
+  Future<void> pWChange(String pw, FDio tokenFDio);
+
+  Future<FUserSnsCheckJoinResDto> getSnsUserJoinCheckInfo(
+      SnsSupportService snsService, String accessToken, FDio noneTokenFDio);
+
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,
+      FDio noneTokenFDio);
+
+  Future<FUserInfoResDto> findByMe(FDio tokenFDio);
 }
 
-class FUserRemoteDataSourceImpl implements FUserRemoteDataSource{
+class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
 
   @override
-  Future<FUserInfoSimple1> getUserInfoSimple1(FUserReqDto reqDto,FDio noneTokenFDio) async {
-    var response = await noneTokenFDio.get("/v1/ForutonaUser/UserInfoSimple1",queryParameters: reqDto.toJson());
-    return FUserInfoSimple1.fromJson(response.data) ;
-  }
-
-  @override
-  Future<int> updateUserPosition(LatLng latLng,FDio tokenFDio) async {
-    var response = await tokenFDio.put("/v1/ForutonaUser/UserPosition",data:UserPositionUpdateReqDto(
+  Future<int> updateUserPosition(LatLng latLng, FDio tokenFDio) async {
+    var response = await tokenFDio.put(
+        "/v1/FUserInfo/UserPosition", data: UserPositionUpdateReqDto(
       lng: latLng.longitude,
       lat: latLng.latitude,
     ).toJson());
@@ -47,56 +49,77 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource{
   }
 
   @override
-  Future<int> updateFireBaseMessageToken(String uid, String token,FDio tokenFDio) async {
-    var response = await tokenFDio.put("/v1/ForutonaUser/FireBaseMessageToken",
-    queryParameters: {
-      "uid":uid,
-      "token":token
-    });
-    return response.data;
+  Future<void> updateFireBaseMessageToken(String token,
+      FDio tokenFDio) async {
+      await tokenFDio.put("/v1/FUserInfo/FireBaseMessageToken",
+        queryParameters: {
+          "token": token
+        });
   }
 
   @override
-  Future<bool> checkNickNameDuplication(String nickName,FDio noneTokenFDio) async{
-    var response = await noneTokenFDio.get("/v1/ForutonaUser/checkNickNameDuplication",
+  Future<bool> checkNickNameDuplication(String nickName,
+      FDio noneTokenFDio) async {
+    var response = await noneTokenFDio.get(
+        "/v1/FUserInfo/CheckNickNameDuplication",
         queryParameters: {"nickName": nickName});
     return response.data;
   }
 
   @override
-  Future<FUserInfo> getForutonaGetMe(FDio tokenFDio) async{
-    var response = await tokenFDio.get("/v1/ForutonaUser/Me");
-    return FUserInfo.fromJson(response.data);
-  }
-
-  @override
-  Future<String> uploadUserProfileImage(FormData formData,FDio tokenFDio) async {
-    var response = await tokenFDio.put("/v1/ForutonaUser/ProfileImage",data: formData);
+  Future<String> uploadUserProfileImage(List<int> imageByte,
+      FDio tokenFDio) async {
+    FormData formData = FormData.fromMap({
+      "ProfileImage": MultipartFile.fromBytes(
+          imageByte, contentType: MediaType("image", "jpeg"),
+          filename: "ProfileImage.jpg")
+    });
+    var response = await tokenFDio.put(
+        "/v1/FUserInfo/ProfileImage", data: formData);
     return response.data;
   }
 
   @override
-  Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto, FDio tokenFDio) async {
-    var response = await tokenFDio.put("/v1/ForutonaUser/AccountUserInfo",data: reqDto.toJson());
+  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,
+      FDio tokenFDio) async {
+    var response = await tokenFDio.put(
+        "/v1/FUserInfo/AccountUserInfo", data: reqDto.toJson());
+    return FUserInfoResDto.fromJson(response.data);
+  }
+
+  @override
+  Future<int> pWChange(String pw, FDio tokenFDio) async {
+    var response = await tokenFDio.put(
+        "/v1/FUserInfo/PwChange", queryParameters: {
+      "pw": pw
+    });
     return response.data;
   }
 
   @override
-  Future<int> pWChange(FUserInfoPwChangeReqDto changePwReqDto, FDio tokenFDio) async {
-    var response = await tokenFDio.put("/v1/ForutonaUser/PwChange",data: changePwReqDto.toJson());
-    return response.data;
+  Future<FUserSnsCheckJoinResDto> getSnsUserJoinCheckInfo(
+      SnsSupportService snsService, String accessToken,
+      FDio noneTokenFDio) async {
+    var response = await noneTokenFDio.get(
+        "/v1/FUserInfo/SnsUserJoinCheckInfo", queryParameters: {
+      "snsService": snsService,
+      "accessToken": accessToken
+    });
+    return FUserSnsCheckJoinResDto.fromJson(response.data);
   }
 
   @override
-  Future<FUserSnsCheckJoin> getSnsUserJoinCheckInfo(FUserSnSLoginReqDto reqDto, FDio noneTokenFDio) async {
-    var response = await noneTokenFDio.get("/v1/ForutonaUser/SnsUserJoinCheckInfo",queryParameters: reqDto.toJson());
-    return FUserSnsCheckJoin.fromJson(response.data);
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,
+      FDio noneTokenFDio) async {
+    var response = await noneTokenFDio.post(
+        "/v1/FUserInfo/JoinUser", data: reqDto.toJson());
+    return FUserInfoJoinResDto.fromJson(response.data);
   }
 
   @override
-  Future<FUserInfoJoin> joinUser(FUserInfoJoinReqDto reqDto, FDio noneTokenFDio) async {
-    var response = await noneTokenFDio.post("/v1/ForutonaUser/JoinUser",data:reqDto.toJson());
-    return FUserInfoJoin.fromJson(response.data);
+  Future<FUserInfoResDto> findByMe(FDio tokenFDio) async {
+    var response = await tokenFDio.get("/v1/FUserInfo");
+    return FUserInfoResDto.fromJson(response.data);
   }
 
 }

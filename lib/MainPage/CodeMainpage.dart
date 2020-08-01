@@ -12,7 +12,6 @@ import 'package:forutonafront/ICodePage/ICodeMainPage.dart';
 import 'package:forutonafront/KCodePage/KCodeMainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
-
 import '../ServiceLocator/ServiceLocator.dart';
 
 class CodeMainpage extends StatefulWidget {
@@ -25,7 +24,6 @@ class CodeMainpage extends StatefulWidget {
 class _CodeMainpageState extends State<CodeMainpage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _configureSelectNotificationSubject();
   }
@@ -47,7 +45,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
         ChangeNotifierProvider<CodeMainViewModel>(
             create: (_) => CodeMainViewModel(
                 geoLocationUtilUseCaseInputPort: sl(),
-                authUserCaseInputPort: sl(),
+                fireBaseAuthAdapterForUseCase: sl(),
                 codeMainPageController: sl(),
                 userPositionForegroundMonitoringUseCaseInputPort: sl())),
         ChangeNotifierProvider<H001ViewModel>(

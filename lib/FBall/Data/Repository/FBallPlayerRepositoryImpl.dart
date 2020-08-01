@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallPlayerRemoteDataSource.dart';
-import 'package:forutonafront/FBall/Data/Entity/UserToPlayBall.dart';
-import 'package:forutonafront/FBall/Data/Entity/UserToPlayBallWrap.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallSelectReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallPlayerResDto.dart';
+
 
 class FBallPlayerRepositoryImpl implements FBallPlayerRepository {
   final FBallPlayerRemoteDataSource _fBallPlayerRemoteDataSource;
@@ -15,16 +15,11 @@ class FBallPlayerRepositoryImpl implements FBallPlayerRepository {
       : _fBallPlayerRemoteDataSource = fBallPlayerRemoteDataSource;
 
   @override
-  Future<UserToPlayBallWrap> getUserPlayBallList(
-      UserToPlayBallReqDto reqDto) async {
+  Future<PageWrap<FBallPlayerResDto>> getUserPlayBallList(
+      String playerUid, Pageable pageable) async {
     return await _fBallPlayerRemoteDataSource.getUserPlayBallList(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+        playerUid: playerUid,pageable: pageable, noneTokenFDio: FDio.noneToken());
   }
 
-  @override
-  Future<UserToPlayBall> getUserPlayBall(
-      UserToPlayBallSelectReqDto reqDto) async {
-    return await _fBallPlayerRemoteDataSource.getUserPlayBall(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
-  }
+
 }

@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PersonaSettingNotice.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResWrapDto.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFDio extends Mock implements FDio {}
@@ -18,17 +17,16 @@ void main(){
   });
 
   test('should be getPersonaSettingNotice call API REST', () async {
-    PersonaSettingNoticeResWrapDto resWrapDto = new PersonaSettingNoticeResWrapDto();
-    resWrapDto.content = [];
+    PageWrap<PersonaSettingNoticeResDto> resWrapDto = new PageWrap<PersonaSettingNoticeResDto>();
     //arrange
-    when(fDio.get("/v1/ForutonaUser/PersonaSettingNotice",
+    when(fDio.get("/v1/PersonaSettingNotice",
         queryParameters: anyNamed('queryParameters')))
         .thenAnswer((_) async => Response<dynamic>(data: resWrapDto.toJson()));
     //act
     await personaSettingNoticeRemoteDataSource.getPersonaSettingNotice(
         Pageable(0, 10, "WriteTime"), fDio);
     //assert
-    verify(fDio.get("/v1/ForutonaUser/PersonaSettingNotice",
+    verify(fDio.get("/v1/PersonaSettingNotice",
         queryParameters: anyNamed('queryParameters')));
   });
 
@@ -38,12 +36,12 @@ void main(){
     noticeResDto.idx = 10;
     noticeResDto.noticeContent = "";
     //arrange
-    when(fDio.get("/v1/ForutonaUser/PersonaSettingNotice/"+idx.toString()))
+    when(fDio.get("/v1/PersonaSettingNotice/"+idx.toString()))
         .thenAnswer((_) async => Response<dynamic>(data: noticeResDto.toJson()));
     //act
     await personaSettingNoticeRemoteDataSource.getPersonaSettingNoticePage(
         idx, fDio);
     //assert
-    verify(fDio.get("/v1/ForutonaUser/PersonaSettingNotice/"+idx.toString()));
+    verify(fDio.get("/v1/PersonaSettingNotice/"+idx.toString()));
   });
 }

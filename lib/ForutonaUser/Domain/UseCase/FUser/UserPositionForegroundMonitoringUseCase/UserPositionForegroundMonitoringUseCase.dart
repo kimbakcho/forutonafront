@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,7 +14,9 @@ class UserPositionForegroundMonitoringUseCase
     implements UserPositionForegroundMonitoringUseCaseInputPort {
   final GeoLocationUtilBasicUseCaseInputPort
       _geoLocationUtilBasicUseCaseInputPort;
-  final FUserRepository _fUserRepository;
+
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   UserPositionForegroundMonitoringUseCase(
@@ -22,11 +26,15 @@ class UserPositionForegroundMonitoringUseCase
       @required
           FUserRepository fUserRepository,
       @required
-          FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+          FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
+      @required
+        SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort
+      })
       : _geoLocationUtilBasicUseCaseInputPort =
             geoLocationUtilBasicUseCaseInputPort,
-        _fUserRepository = fUserRepository,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
+        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
+
 
   StreamSubscription _userPositionStream;
 
@@ -40,7 +48,8 @@ class UserPositionForegroundMonitoringUseCase
   _userPositionStreamFunc(Position position) async {
     if(await _fireBaseAuthAdapterForUseCase.isLogin()){
       print("_userPositionStreamFunc");
-      await _fUserRepository.updateUserPosition(LatLng(position.latitude,position.longitude));
+      FUserInfo fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      fUserInfo.updateUserPosition(LatLng(position.latitude,position.longitude));
     }
   }
 

@@ -12,9 +12,6 @@ FBallListUpFromBallInfluencePowerReqDto
   return FBallListUpFromBallInfluencePowerReqDto(
     latitude: (json['latitude'] as num)?.toDouble(),
     longitude: (json['longitude'] as num)?.toDouble(),
-    ballLimit: json['ballLimit'] as int,
-    page: json['page'] as int,
-    size: json['size'] as int,
   );
 }
 
@@ -23,7 +20,4 @@ Map<String, dynamic> _$FBallListUpFromBallInfluencePowerReqDtoToJson(
     <String, dynamic>{
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'ballLimit': instance.ballLimit,
-      'page': instance.page,
-      'size': instance.size,
     };

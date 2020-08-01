@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/GCodePage/G019/G019MainPageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class G019MainPage extends StatelessWidget {
@@ -42,8 +43,7 @@ class G019MainPage extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 alignment: Alignment.centerLeft,
                 child: Text("회사소개",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: Color(0xff454f63),
@@ -77,8 +77,7 @@ class G019MainPage extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 alignment: Alignment.centerLeft,
                 child: Text("오픈소스 라이센스",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: Color(0xff454f63),
@@ -102,8 +101,7 @@ class G019MainPage extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 alignment: Alignment.centerLeft,
                 child: Text("위치정보 보호정책",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: Color(0xff454f63),
@@ -127,8 +125,7 @@ class G019MainPage extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 alignment: Alignment.centerLeft,
                 child: Text("개인정보 보호정책",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: Color(0xff454f63),
@@ -151,8 +148,7 @@ class G019MainPage extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 alignment: Alignment.centerLeft,
                 child: Text("포루투나 이용약관",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: Color(0xff454f63),
@@ -175,8 +171,7 @@ class G019MainPage extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
               alignment: Alignment.centerLeft,
               child: Text("Q&A",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                     color: Color(0xff454f63),
@@ -199,8 +194,7 @@ class G019MainPage extends StatelessWidget {
             width: 48),
         Container(
             child: Text("설정",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Color(0xff454f63),

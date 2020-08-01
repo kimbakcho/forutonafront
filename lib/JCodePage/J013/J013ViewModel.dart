@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseOutputPort.dart';
+
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:google_fonts/google_fonts.dart';
 

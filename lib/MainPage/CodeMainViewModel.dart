@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
@@ -13,7 +13,7 @@ class CodeMainViewModel with ChangeNotifier {
 
   String firstAddress = "";
 
-  AuthUserCaseInputPort _authUserCaseInputPort;
+  FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
@@ -24,7 +24,7 @@ class CodeMainViewModel with ChangeNotifier {
 
   CodeMainViewModel(
       {@required
-          AuthUserCaseInputPort authUserCaseInputPort,
+      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required
           GeoLocationUtilForeGroundUseCaseInputPort
               geoLocationUtilUseCaseInputPort,
@@ -33,8 +33,8 @@ class CodeMainViewModel with ChangeNotifier {
       @required
           UserPositionForegroundMonitoringUseCaseInputPort
               userPositionForegroundMonitoringUseCaseInputPort})
-      : _authUserCaseInputPort = authUserCaseInputPort,
-        _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
+      : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _codeMainPageController = codeMainPageController,
         _userPositionForegroundMonitoringUseCaseInputPort =
             userPositionForegroundMonitoringUseCaseInputPort {
@@ -43,8 +43,10 @@ class CodeMainViewModel with ChangeNotifier {
 
   init() async {
     await _geoLocationUtilUseCaseInputPort.useGpsReq();
+
     this.lastKnownPosition =
         await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
+
     this.firstAddress = await _geoLocationUtilUseCaseInputPort
         .getPositionAddress(lastKnownPosition);
 
@@ -59,7 +61,7 @@ class CodeMainViewModel with ChangeNotifier {
   }
 
   checkUser() async {
-    return await _authUserCaseInputPort.isLogin();
+    return await _fireBaseAuthAdapterForUseCase.isLogin();
   }
 
   gotoJ001Page(BuildContext context) async {

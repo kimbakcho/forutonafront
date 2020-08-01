@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindEmailUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseOutputPort.dart';
 import 'package:forutonafront/JCodePage/J013/J013View.dart';
 
 class J012ViewModel extends ChangeNotifier

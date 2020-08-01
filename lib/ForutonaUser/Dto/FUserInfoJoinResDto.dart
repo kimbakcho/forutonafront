@@ -1,6 +1,4 @@
 
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoin.dart';
-import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserInfoJoinResDto.g.dart';
@@ -12,13 +10,6 @@ class FUserInfoJoinResDto {
   bool joinComplete;
 
   FUserInfoJoinResDto();
-
-  factory FUserInfoJoinResDto.fromFUserInfoJoin(FUserInfoJoin fUserInfoJoin){
-    FUserInfoJoinResDto resDto = FUserInfoJoinResDto();
-    resDto.customToken = fUserInfoJoin.customToken;
-    resDto.joinComplete = fUserInfoJoin.joinComplete;
-    return resDto;
-  }
 
 
   factory FUserInfoJoinResDto.fromJson(Map<String, dynamic> json) => _$FUserInfoJoinResDtoFromJson(json);

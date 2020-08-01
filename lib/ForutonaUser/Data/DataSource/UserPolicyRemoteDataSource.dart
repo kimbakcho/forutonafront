@@ -8,7 +8,7 @@ class UserPolicyRemoteDataSourceImpl implements UserPolicyRemoteDataSource{
 
   @override
   Future<UserPolicyResDto> getPersonaSettingNotice(String policy,FDio noneToken) async {
-    var response = await noneToken.get("/v1/ForutonaUser/UserPolicy/"+policy);
+    var response = await noneToken.get("/v1/UserPolicy/"+policy);
     return UserPolicyResDto.fromJson(response.data);
   }
 

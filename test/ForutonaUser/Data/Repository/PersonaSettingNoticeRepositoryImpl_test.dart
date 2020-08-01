@@ -1,11 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
 import 'package:forutonafront/ForutonaUser/Data/Repository/PersonaSettingNoticeRepositoryImpl.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PersonaSettingNotice.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/PersonaSettingNoticeRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResWrapDto.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -31,12 +30,9 @@ void main() {
   test('should getPersonaSettingNotice dataSource call', () async {
     //arrange
     var pageable = Pageable(0, 10, "WriteTime,Desc");
-    PersonaSettingNoticeResWrapDto resWrapDto = new PersonaSettingNoticeResWrapDto();
-    PersonaSettingNoticeResDto personaSettingNotice = new PersonaSettingNoticeResDto();
-    personaSettingNotice.idx = 10;
-    personaSettingNotice.noticeName  = "test";
-    resWrapDto.content = [personaSettingNotice];
-    resWrapDto.last = false;
+    PageWrap<PersonaSettingNoticeResDto> resWrapDto = new  PageWrap<PersonaSettingNoticeResDto>();
+
+
     when(mockPersonaSettingNoticeRemoteDataSource.getPersonaSettingNotice(pageable, any))
         .thenAnswer((_) async => resWrapDto);
     //act

@@ -1,7 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PwChangeFromPhoneAuth.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PwFindPhoneAuth.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PwFindPhoneAuthNumber.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
@@ -29,15 +26,15 @@ abstract class PhoneFindValidUseCase {
 
   String phoneAuthNumberErrorText();
 
-  PwFindPhoneAuthNumber getPwFindPhoneAuthNumber();
+  PwFindPhoneAuthNumberResDto getPwFindPhoneAuthNumber();
 
 }
 
 class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
-  PwFindPhoneAuth _resPhoneAuth;
+  PwFindPhoneAuthResDto _resPhoneAuth;
   bool _isPhoneEmailError = true;
   String _phoneEmailErrorText = "";
-  PwFindPhoneAuthNumber _authNumber;
+  PwFindPhoneAuthNumberResDto _authNumber;
   bool _isPhoneAuthNumberError = true;
   String _phoneAuthNumberErrorText = "";
   bool _isPhonePwChangeError = true;
@@ -83,7 +80,7 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
   }
 
   @override
-  PwFindPhoneAuthNumber getPwFindPhoneAuthNumber() {
+  PwFindPhoneAuthNumberResDto getPwFindPhoneAuthNumber() {
     return _authNumber;
   }
 
@@ -99,7 +96,7 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
 
   @override
   PwFindPhoneAuthResDto getPhoneAuth() {
-    return PwFindPhoneAuthResDto.fromPwFindPhoneAuth(_resPhoneAuth) ;
+    return _resPhoneAuth ;
   }
 
   @override

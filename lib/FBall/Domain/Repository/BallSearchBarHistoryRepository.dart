@@ -1,4 +1,5 @@
-import 'package:forutonafront/FBall/Data/Value/BallSearchBarHistory.dart';
+
+import 'package:forutonafront/FBall/Domain/Value/BallSearchBarHistory.dart';
 import 'package:forutonafront/FBall/Dto/BallSearchBarHistoryDto.dart';
 
 abstract class BallSearchBarHistoryRepository{

@@ -1,5 +1,5 @@
-import 'package:forutonafront/ForutonaUser/Data/Value/UserPolicy.dart';
+import 'package:forutonafront/ForutonaUser/Dto/UserPolicyResDto.dart';
 
 abstract class UserPolicyRepository {
-  Future<UserPolicy> getUserPolicy(String policy);
+  Future<UserPolicyResDto> getUserPolicy(String policy);
 }

@@ -2,16 +2,13 @@ import 'package:dio/src/form_data.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfoSimple1.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoin.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserSnsCheckJoin.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -27,19 +24,14 @@ class FUserRepositoryImpl implements FUserRepository {
         _fUserRemoteDataSource = fUserRemoteDataSource;
 
   @override
-  Future<FUserInfoSimple1> getUserInfoSimple1(FUserReqDto reqDto) {
-    return _fUserRemoteDataSource.getUserInfoSimple1(reqDto, FDio.noneToken());
-  }
-
-  @override
-  Future<int> updateUserPosition(LatLng latLng) async {
+  Future<void> updateUserPosition(LatLng latLng) async {
     return await _fUserRemoteDataSource.updateUserPosition(
         latLng, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<int> updateFireBaseMessageToken(String uid, String fcmToken) async {
-    return await _fUserRemoteDataSource.updateFireBaseMessageToken(uid,
+  Future<void> updateFireBaseMessageToken(String fcmToken) async {
+    return await _fUserRemoteDataSource.updateFireBaseMessageToken(
         fcmToken, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
@@ -49,39 +41,38 @@ class FUserRepositoryImpl implements FUserRepository {
   }
 
   @override
-  Future<FUserInfo> getForutonaGetMe(String uid) async {
-    return await _fUserRemoteDataSource.getForutonaGetMe(
-        FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
-  }
-
-  @override
-  Future<String> uploadUserProfileImage(FormData formData) async {
+  Future<String> uploadUserProfileImage(List<int> imageByte) async {
     return await _fUserRemoteDataSource.uploadUserProfileImage(
-        formData, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        imageByte, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<int> updateAccountUserInfo(FuserAccountUpdateReqdto reqDto) async {
+  Future<FUserInfoResDto> updateAccountUserInfo(
+      FUserAccountUpdateReqDto reqDto) async {
     return await _fUserRemoteDataSource.updateAccountUserInfo(
         reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<int> pWChange(FUserInfoPwChangeReqDto changePwReqDto) async {
+  Future<void> pWChange(String changePwReqDto) async {
     return await _fUserRemoteDataSource.pWChange(changePwReqDto,
         FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<FUserSnsCheckJoin> getSnsUserJoinCheckInfo(
-      FUserSnSLoginReqDto reqDto) async {
+  Future<FUserSnsCheckJoinResDto> getSnsUserJoinCheckInfo(
+      SnsSupportService snsService, String accessToken) async {
     return await _fUserRemoteDataSource.getSnsUserJoinCheckInfo(
-        reqDto, FDio.noneToken());
+        snsService, accessToken, FDio.noneToken());
   }
 
   @override
-  Future<FUserInfoJoin> joinUser(FUserInfoJoinReqDto reqDto) async {
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto) async {
     return await _fUserRemoteDataSource.joinUser(reqDto, FDio.noneToken());
   }
 
+  @override
+  Future<FUserInfoResDto> findByMe() async {
+    return await _fUserRemoteDataSource.findByMe(FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+  }
 }

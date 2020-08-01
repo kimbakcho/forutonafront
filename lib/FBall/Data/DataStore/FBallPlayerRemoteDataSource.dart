@@ -1,27 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/FBall/Data/Entity/UserToPlayBall.dart';
-import 'package:forutonafront/FBall/Data/Entity/UserToPlayBallWrap.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallSelectReqDto.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/FBall/Dto/FBallPlayerResDto.dart';
 
 abstract class FBallPlayerRemoteDataSource {
-  Future<UserToPlayBallWrap> getUserPlayBallList({@required UserToPlayBallReqDto reqDto,@required FDio noneTokenFDio});
-  Future<UserToPlayBall> getUserPlayBall({@required UserToPlayBallSelectReqDto reqDto,@required FDio noneTokenFDio});
+  Future<PageWrap<FBallPlayerResDto>> getUserPlayBallList(
+      {@required String playerUid,
+      @required Pageable pageable,
+      @required FDio noneTokenFDio});
 }
-class FBallPlayerRemoteDataSourceImpl implements FBallPlayerRemoteDataSource{
+
+class FBallPlayerRemoteDataSourceImpl implements FBallPlayerRemoteDataSource {
   @override
-  Future<UserToPlayBallWrap> getUserPlayBallList({@required UserToPlayBallReqDto reqDto,@required FDio noneTokenFDio}) async {
+  Future<PageWrap<FBallPlayerResDto>> getUserPlayBallList(
+      {@required String playerUid,
+        @required Pageable pageable,
+        @required FDio noneTokenFDio}) async {
+    Map<String,dynamic> jsonReq = Map<String,dynamic>();
+    jsonReq["playerUid"] = playerUid;
+    jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBallPlayer/UserToPlayBallList",
-        queryParameters: reqDto.toJson());
-    return UserToPlayBallWrap.fromJson(response.data);
+        queryParameters: jsonReq);
+    return PageWrap<FBallPlayerResDto>.fromJson(response.data, FBallPlayerResDto.fromJson);
   }
-
-  @override
-  Future<UserToPlayBall> getUserPlayBall({@required UserToPlayBallSelectReqDto reqDto,@required FDio noneTokenFDio}) async {
-    var response = await noneTokenFDio.get("/v1/FBallPlayer/UserToPlayBall", queryParameters: reqDto.toJson());
-    return UserToPlayBall.fromJson(response.data);
-  }
-
-
 }

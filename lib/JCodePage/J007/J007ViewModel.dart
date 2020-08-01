@@ -7,6 +7,7 @@ import 'package:forutonafront/Common/Country/CountrySelectPage.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -130,16 +131,14 @@ class J007ViewModel extends ChangeNotifier {
       }
     }
 
-    var fUserInfoJoinResDto = await _singUpUseCaseInputPort.joinUser(sl.get(
-        instanceName: "FireBaseCreateUserUseCaseInputPort",
-        param1: _singUpUseCaseInputPort.getSnsSupportService(),
-        param2: ""));
+    FUserInfoJoinResDto fUserInfoJoinResDto = await _singUpUseCaseInputPort.joinUser();
 
     if (fUserInfoJoinResDto.joinComplete) {
       if (_currentPickProfileImage != null) {
         await _userProfileImageUploadUseCaseInputPort
             .upload(_currentPickProfileImage);
       }
+
       Navigator.of(context).popUntil(ModalRoute.withName('/'));
     } else {
       Fluttertoast.showToast(

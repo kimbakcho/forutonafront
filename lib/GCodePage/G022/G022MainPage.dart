@@ -46,7 +46,7 @@ class G022MainPage extends StatelessWidget {
     return Container(
         height: MediaQuery.of(context).size.height - 100,
         margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: model.userPolicy != null
+        child: model.userPolicyResDto != null
             ? WebviewScaffold(url: model.htmlUrl)
             : Container(),
         decoration: BoxDecoration(

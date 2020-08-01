@@ -26,7 +26,7 @@ FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
     ..phoneNumber = json['phoneNumber'] as String
     ..isoCode = json['isoCode'] as String
     ..latitude = (json['latitude'] as num)?.toDouble()
-    ..intitude = (json['intitude'] as num)?.toDouble()
+    ..longitude = (json['longitude'] as num)?.toDouble()
     ..positionUpdateTime = json['positionUpdateTime'] == null
         ? null
         : DateTime.parse(json['positionUpdateTime'] as String)
@@ -77,7 +77,7 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
       'phoneNumber': instance.phoneNumber,
       'isoCode': instance.isoCode,
       'latitude': instance.latitude,
-      'intitude': instance.intitude,
+      'longitude': instance.longitude,
       'positionUpdateTime': instance.positionUpdateTime?.toIso8601String(),
       'userLevel': instance.userLevel,
       'expPoint': instance.expPoint,

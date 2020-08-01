@@ -1,9 +1,8 @@
-import 'package:forutonafront/FBall/Data/Entity/UserToPlayBall.dart';
-import 'package:forutonafront/FBall/Data/Entity/UserToPlayBallWrap.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallSelectReqDto.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/FBall/Dto/FBallPlayerResDto.dart';
+
 
 abstract class FBallPlayerRepository {
-  Future<UserToPlayBallWrap> getUserPlayBallList(UserToPlayBallReqDto reqDto);
-  Future<UserToPlayBall> getUserPlayBall(UserToPlayBallSelectReqDto reqDto);
+  Future<PageWrap<FBallPlayerResDto>> getUserPlayBallList(String playerUid, Pageable pageable);
 }

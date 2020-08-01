@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallImageUpload.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
@@ -12,7 +12,6 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
 
@@ -20,21 +19,28 @@ abstract class FBallRemoteDataSource {
   Future<PageWrap<FBallResDto>> listUpFromInfluencePower(
       FBallListUpFromBallInfluencePowerReqDto
           fBallListUpFromInfluencePowerReqDto,
+      Pageable pageable,
       FDio noneTokenFDio);
 
-  Future<PageWrap<FBallResDto>> getUserToMakerBalls(
-      {@required UserToMakeBallReqDto reqDto, @required FDio noneTokenFDio});
+  Future<PageWrap<FBallResDto>> searchUserToMakerBalls(
+      {@required String makerUid,
+      @required Pageable pageable,
+      @required FDio noneTokenFDio});
 
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
       {@required FBallListUpFromSearchTitleReqDto reqDto,
+      @required Pageable pageable,
       @required FDio noneTokenFDio});
 
   Future<PageWrap<FBallResDto>> listUpFromTagName(
       {@required FBallListUpFromTagNameReqDto reqDto,
+      @required Pageable pageable,
       @required FDio noneTokenFDio});
 
   Future<PageWrap<FBallResDto>> listUpBallFromMapArea(
-      {@required BallFromMapAreaReqDto reqDto, @required FDio noneTokenFDio});
+      {@required BallFromMapAreaReqDto reqDto,
+      @required Pageable pageable,
+      @required FDio noneTokenFDio});
 
   Future<String> deleteBall({@required String ballUuid, @required FDio fDio});
 
@@ -59,19 +65,26 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   Future<PageWrap<FBallResDto>> listUpFromInfluencePower(
       FBallListUpFromBallInfluencePowerReqDto
           fBallListUpFromInfluencePowerReqDto,
+      Pageable pageable,
       FDio noneTokenFDio) async {
+    Map<String, dynamic> jsonReq = fBallListUpFromInfluencePowerReqDto.toJson();
+    jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get(
         "/v1/FBall/ListUpFromBallInfluencePower",
-        queryParameters: fBallListUpFromInfluencePowerReqDto.toJson());
+        queryParameters: jsonReq);
     return PageWrap<FBallResDto>.fromJson(response.data, FBallResDto.fromJson);
   }
 
   @override
-  Future<PageWrap<FBallResDto>> getUserToMakerBalls(
-      {@required UserToMakeBallReqDto reqDto,
+  Future<PageWrap<FBallResDto>> searchUserToMakerBalls(
+      {@required String makerUid,
+      @required Pageable pageable,
       @required FDio noneTokenFDio}) async {
+    Map<String, dynamic> reqJson = Map<String, dynamic>();
+    reqJson["makerUid"] = makerUid;
+    reqJson.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/UserToMakerBalls",
-        queryParameters: reqDto.toJson());
+        queryParameters: reqJson);
     return PageWrap<FBallResDto>.fromJson(response.data,
         response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
   }
@@ -79,9 +92,12 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   @override
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
       {@required FBallListUpFromSearchTitleReqDto reqDto,
+      @required Pageable pageable,
       @required FDio noneTokenFDio}) async {
+    Map<String, dynamic> jsonReq = reqDto.toJson();
+    jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromSearchTitle",
-        queryParameters: reqDto.toJson());
+        queryParameters: jsonReq);
     return PageWrap<FBallResDto>.fromJson(response.data,
         response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
   }
@@ -89,9 +105,12 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   @override
   Future<PageWrap<FBallResDto>> listUpFromTagName(
       {@required FBallListUpFromTagNameReqDto reqDto,
+      @required Pageable pageable,
       @required FDio noneTokenFDio}) async {
+    Map<String, dynamic> jsonReq = reqDto.toJson();
+    jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromTagName",
-        queryParameters: reqDto.toJson());
+        queryParameters: jsonReq);
     return PageWrap<FBallResDto>.fromJson(response.data,
         response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
   }
@@ -99,9 +118,12 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   @override
   Future<PageWrap<FBallResDto>> listUpBallFromMapArea(
       {@required BallFromMapAreaReqDto reqDto,
+      @required Pageable pageable,
       @required FDio noneTokenFDio}) async {
+    Map<String, dynamic> jsonReq = reqDto.toJson();
+    jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromMapArea",
-        queryParameters: reqDto.toJson());
+        queryParameters: jsonReq);
     return PageWrap<FBallResDto>.fromJson(response.data,
         response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
   }

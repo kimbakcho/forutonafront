@@ -22,7 +22,6 @@ class G010MainPage extends StatelessWidget {
           userProfileImageUploadUseCaseInputPort: sl(),
           signInUserInfoUseCaseInputPort: sl(),
           nickNameValid: NickNameValidImpl(fUserRepository: sl()),
-          userInfoUpdateUseCaeInputPort: sl()
         ),
         child: Consumer<G010MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
@@ -59,16 +58,14 @@ class G010MainPage extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Text("자기소개",
-                    style: TextStyle(
-                      fontFamily: "Noto Sans CJK KR",
+                    style: GoogleFonts.notoSans(
                       fontSize: 12,
                       color: Color(0xff454f63),
                     )),
                 Spacer(),
                 Container(
                   child: Text("(${model.userIntroduceInputTextLength}/100)",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontSize: 10,
                         color: Color(0xffd4d4d4),
                       )),
@@ -116,8 +113,7 @@ class G010MainPage extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       Text("닉네임",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
+                          style: GoogleFonts.notoSans(
                             fontSize: 12,
                             color: Color(0xff454f63),
                           )),

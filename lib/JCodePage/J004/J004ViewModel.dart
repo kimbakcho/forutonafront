@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SmsReceiverUtil/SmsAuthSupportLanguage.dart';
 import 'package:forutonafront/Common/SmsReceiverUtil/SmsReceiverService.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwAuthFromPhoneUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwAuthFromPhoneUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PhoneAuthUseCase/PhoneAuthUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
@@ -16,7 +15,7 @@ import 'package:forutonafront/JCodePage/J006/J006View.dart';
 class J004ViewModel extends ChangeNotifier
     implements PwAuthFromPhoneUseCaseOutputPort {
   final BuildContext context;
-  final PwAuthFromPhoneUseCaseInputPort _pwAuthFromPhoneUseCaseInputPort;
+  final PhoneAuthUseCaseInputPort _phoneAuthUseCaseInputPort;
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
   final TextEditingController authNumberEditingController;
 
@@ -41,10 +40,10 @@ class J004ViewModel extends ChangeNotifier
 
   J004ViewModel({
     @required this.context,
-    @required PwAuthFromPhoneUseCaseInputPort pwAuthFromPhoneUseCaseInputPort,
+    @required PhoneAuthUseCaseInputPort phoneAuthUseCaseInputPort,
     @required SingUpUseCaseInputPort singUpUseCaseInputPort,
     @required this.authNumberEditingController,
-  })  : _pwAuthFromPhoneUseCaseInputPort = pwAuthFromPhoneUseCaseInputPort,
+  })  : _phoneAuthUseCaseInputPort = phoneAuthUseCaseInputPort,
         _singUpUseCaseInputPort = singUpUseCaseInputPort {
     startSecTickerForPhoneAuthTimer();
   }
@@ -79,8 +78,7 @@ class J004ViewModel extends ChangeNotifier
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
     _setIsLoading(true);
-    await _pwAuthFromPhoneUseCaseInputPort.reqPhoneAuth(reqDto,
-        outputPort: this);
+    await _phoneAuthUseCaseInputPort.reqPhoneAuth(reqDto, outputPort: this);
     _setIsLoading(false);
     notifyListeners();
   }
@@ -145,7 +143,7 @@ class J004ViewModel extends ChangeNotifier
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.isoCode = _currentIsoCode;
     reqDto.authNumber = authNumberEditingController.text;
-    await _pwAuthFromPhoneUseCaseInputPort.reqNumberAuthReq(reqDto,outputPort: this);
+    await _phoneAuthUseCaseInputPort.reqNumberAuthReq(reqDto, outputPort: this);
   }
 
   @override

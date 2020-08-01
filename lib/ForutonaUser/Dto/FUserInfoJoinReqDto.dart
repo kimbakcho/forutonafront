@@ -1,5 +1,5 @@
 
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoinReq.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:json_annotation/json_annotation.dart';
 

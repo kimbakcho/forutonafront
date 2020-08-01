@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimationWithContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetView/FBallReplyWidgetView.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';

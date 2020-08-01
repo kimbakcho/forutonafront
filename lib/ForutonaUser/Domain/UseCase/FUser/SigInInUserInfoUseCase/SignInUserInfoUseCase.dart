@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 
 import 'SignInUserInfoUseCaseOutputPort.dart';
 
@@ -12,7 +13,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   FUserRepository _fUserRepository;
 
   @override
-  Stream<FUserInfo> fUserInfoStream;
+  Stream<FUserInfoResDto> fUserInfoStream;
 
   StreamController _fUserInfoStreamController;
   SignInUserInfoUseCase({@required FUserRepository fUserRepository})
@@ -30,7 +31,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
           "Don't Have UserInfo in Memory use to saveSignInInfoInMemoryFromAPiServer");
     }
     if (outputPort != null) {
-      outputPort.onSignInUserInfoFromMemory(_fUserInfo);
+      outputPort.onSignInUserInfoFromMemory(FUserInfoResDto.fromFUserInfo(_fUserInfo));
     }
     return _fUserInfo;
   }
@@ -38,10 +39,11 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   @override
   Future<void> saveSignInInfoInMemoryFromAPiServer(String uid,
       {SignInUserInfoUseCaseOutputPort outputPort}) async {
-    _fUserInfo = await _fUserRepository.getForutonaGetMe(uid);
-    _fUserInfoStreamController.add(_fUserInfo);
+    FUserInfoResDto findByMe = await _fUserRepository.findByMe();
+    _fUserInfo =  FUserInfo.fromFUserInfoResDto(findByMe);
+    _fUserInfoStreamController.add(findByMe);
     if (outputPort != null) {
-      outputPort.onSignInUserInfoFromMemory(_fUserInfo);
+      outputPort.onSignInUserInfoFromMemory(findByMe);
     }
   }
 

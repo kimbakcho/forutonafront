@@ -17,9 +17,8 @@ class J004View extends StatelessWidget {
         create: (_) => J004ViewModel(
             context: context,
             singUpUseCaseInputPort: sl(),
-            pwAuthFromPhoneUseCaseInputPort: sl(),
-            authNumberEditingController:authNumberEditingController
-        ),
+            phoneAuthUseCaseInputPort: sl(),
+            authNumberEditingController: authNumberEditingController),
         child: Consumer<J004ViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(

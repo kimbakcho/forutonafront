@@ -14,12 +14,7 @@ FBallUpdateReqDto _$FBallUpdateReqDtoFromJson(Map<String, dynamic> json) {
     ..ballName = json['ballName'] as String
     ..ballType = _$enumDecodeNullable(_$FBallTypeEnumMap, json['ballType'])
     ..placeAddress = json['placeAddress'] as String
-    ..description = json['description'] as String
-    ..tags = (json['tags'] as List)
-        ?.map((e) => e == null
-            ? null
-            : TagInsertReqDto.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..description = json['description'] as String;
 }
 
 Map<String, dynamic> _$FBallUpdateReqDtoToJson(FBallUpdateReqDto instance) =>
@@ -31,7 +26,6 @@ Map<String, dynamic> _$FBallUpdateReqDtoToJson(FBallUpdateReqDto instance) =>
       'ballType': _$FBallTypeEnumMap[instance.ballType],
       'placeAddress': instance.placeAddress,
       'description': instance.description,
-      'tags': instance.tags,
     };
 
 T _$enumDecode<T>(

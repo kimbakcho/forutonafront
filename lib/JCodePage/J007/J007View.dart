@@ -162,8 +162,7 @@ class J007View extends StatelessWidget {
                       maxLength: 20,
                       decoration: InputDecoration(
                         hintText: "닉네임을 입력해주세요",
-                        hintStyle: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
+                        hintStyle: GoogleFonts.notoSans(
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
                           color: Color(0xffd4d4d4),

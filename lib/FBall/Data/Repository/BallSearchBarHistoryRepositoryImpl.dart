@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSource.dart';
-import 'package:forutonafront/FBall/Data/Value/BallSearchBarHistory.dart';
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
+import 'package:forutonafront/FBall/Domain/Value/BallSearchBarHistory.dart';
 import 'package:forutonafront/FBall/Dto/BallSearchBarHistoryDto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

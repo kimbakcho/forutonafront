@@ -1,5 +1,5 @@
-import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
+import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/Tag/Dto/TagInsertReqDto.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'FBallInsertReqDto.g.dart';

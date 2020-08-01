@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallValuation.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallValuationWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart';
 

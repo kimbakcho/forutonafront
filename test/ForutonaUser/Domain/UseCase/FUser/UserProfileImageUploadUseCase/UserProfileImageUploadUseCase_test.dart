@@ -4,26 +4,31 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../fixtures/fixture_reader.dart';
 
-class MockFUserRepository extends Mock implements FUserRepository {}
 
+class MockSignInUserInfoUseCaseInputPort extends Mock
+    implements SignInUserInfoUseCaseInputPort {}
 class MockFlutterImageCompressAdapter extends Mock
     implements FlutterImageCompressAdapter {}
+class MockFUserInfo extends Mock implements FUserInfo {}
 
 void main() {
   UserProfileImageUploadUseCaseInputPort userProfileImageUploadUseCase;
-  MockFUserRepository mockFUserRepository = new MockFUserRepository();
+  MockSignInUserInfoUseCaseInputPort mockSignInUserInfoUseCaseInputPort = new MockSignInUserInfoUseCaseInputPort();
   MockFlutterImageCompressAdapter mockFlutterImageCompressAdapter;
+  MockFUserInfo mockFUserInfo = new MockFUserInfo();
   setUp(() {
     mockFlutterImageCompressAdapter = MockFlutterImageCompressAdapter();
     userProfileImageUploadUseCase = UserProfileImageUploadUseCase(
-        fUserRepository: mockFUserRepository,
+        signInUserInfoUseCaseInputPort: mockSignInUserInfoUseCaseInputPort,
         flutterImageCompressAdapter: mockFlutterImageCompressAdapter);
   });
 
@@ -35,20 +40,16 @@ void main() {
     List<int> compressImage = [1, 2, 3];
     when(mockFlutterImageCompressAdapter.compressImage(originImage, 70))
         .thenAnswer((_) async => compressImage);
-
+    when(mockSignInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory())
+        .thenAnswer((realInvocation) => mockFUserInfo);
     //act
     await userProfileImageUploadUseCase.upload(imageFile);
 
     //assert
     var captured2 =
-        verify(mockFUserRepository.uploadUserProfileImage(captureAny))
-            .captured[0] as FormData;
+    verify(mockFUserInfo.uploadUserProfileImage(captureAny))
+        .captured[0] as List<int>;
 
-    expect(captured2.files[0].value.filename, "ProfileImage.jpg");
-    List<List<int>> formDataFile =
-        await captured2.files[0].value.finalize().toList();
-
-    List<int> profileImageByte = formDataFile[0];
-    expect(profileImageByte, compressImage);
+    expect(captured2, compressImage);
   });
 }

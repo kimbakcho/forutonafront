@@ -29,7 +29,7 @@ class G012MainPage extends StatelessWidget {
           checkPwController: checkPwController,
           currentPwController: currentPwController,
           newPwController: newPwController,
-          userPasswordChangeUseCaseInputPort: sl(),
+          signInUserInfoUseCaseInputPort: sl(),
           codeMainPageController: sl(),
           logoutUseCaseInputPort: sl());
     }, child: Consumer<G012MainPageViewModel>(builder: (_, model, child) {
@@ -68,8 +68,7 @@ class G012MainPage extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
       child: model.isCheckPasswordError()
           ? Text(model.getCheckPasswordErrorText(),
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              style: GoogleFonts.notoSans(
                 fontSize: 12,
                 color: Color(0xffff4f9a),
               ))
@@ -161,8 +160,7 @@ class G012MainPage extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
       child: model.isCurrentPasswordError()
           ? Text(model.getCurrentPasswordErrorText(),
-              style: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              style: GoogleFonts.notoSans(
                 fontSize: 12,
                 color: Color(0xffff4f9a),
               ))
@@ -184,8 +182,7 @@ class G012MainPage extends StatelessWidget {
               fillColor: Colors.white,
               contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
               hintText: "현재 패스워드",
-              hintStyle: TextStyle(
-                fontFamily: "Noto Sans CJK KR",
+              hintStyle: GoogleFonts.notoSans(
                 fontSize: 14,
                 color: Color(0xffb1b1b1),
               ),
@@ -215,8 +212,7 @@ class G012MainPage extends StatelessWidget {
               top: 0,
               left: 0,
               child: Text("권장사항",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: Color(0xff454f63),
@@ -262,8 +258,7 @@ class G012MainPage extends StatelessWidget {
             width: 48),
         Container(
             child: Text("패스워드 재설정",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Color(0xff454f63),
@@ -278,8 +273,7 @@ class G012MainPage extends StatelessWidget {
                   padding: EdgeInsets.all(0),
                   onPressed: model.onPwChangeComplete,
                   child: Text("완료",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: Color(0xff454f63),
@@ -308,8 +302,7 @@ class G012MainPage extends StatelessWidget {
                 child: FlatButton(
                   padding: EdgeInsets.all(0),
                   child: Text("완료",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: Color(0xffb1b1b1),

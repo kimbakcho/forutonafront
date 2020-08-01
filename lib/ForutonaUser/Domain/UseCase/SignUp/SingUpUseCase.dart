@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/FireBaseCreateUserUseCase/FireBaseCreateUserUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
@@ -32,19 +30,17 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
 
   @override
   Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(
-      FUserSnSLoginReqDto reqDto) async {
-    var fUserSnsCheckJoin =
-        await _fUserRepository.getSnsUserJoinCheckInfo(reqDto);
-    return FUserSnsCheckJoinResDto.fromFUserSnsCheckJoin(fUserSnsCheckJoin);
+      SnsSupportService snsService, String accessToken) async {
+    FUserSnsCheckJoinResDto fUserSnsCheckJoin =
+        await _fUserRepository.getSnsUserJoinCheckInfo(snsService,accessToken);
+    return fUserSnsCheckJoin;
   }
 
   @override
-  Future<FUserInfoJoinResDto> joinUser(FireBaseCreateUserUseCaseInputPort fireBaseCreateUserUseCaseInputPort) async {
-    fUserInfoJoinReq.emailUserUid = await fireBaseCreateUserUseCaseInputPort.createUser(
-        email: fUserInfoJoinReq.email, pw: fUserInfoJoinReq.password);
+  Future<FUserInfoJoinResDto> joinUser() async {
+    await _fireBaseAuthAdapterForUseCase.createUserWithEmailAndPassword(fUserInfoJoinReq.email,fUserInfoJoinReq.password);
     fUserInfoJoinReq.clearPassword();
-    var fUserInfoJoinResDto = FUserInfoJoinResDto.fromFUserInfoJoin(await _fUserRepository
-        .joinUser(FUserInfoJoinReqDto.fromFUserInfoJoinReq(fUserInfoJoinReq)));
+    FUserInfoJoinResDto fUserInfoJoinResDto = await _fUserRepository.joinUser(FUserInfoJoinReqDto.fromFUserInfoJoinReq(fUserInfoJoinReq));
     await _fireBaseAuthAdapterForUseCase.signInWithCustomToken(fUserInfoJoinResDto.customToken);
     return fUserInfoJoinResDto;
   }

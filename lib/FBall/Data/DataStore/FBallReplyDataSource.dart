@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallReplyResWrap.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallReplyResWrap.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';

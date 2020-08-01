@@ -11,7 +11,6 @@ class UserPolicyUseCase implements UserPolicyUseCaseInputPort {
 
   @override
   Future<UserPolicyResDto> getUserPolicy(String policy) async {
-    return UserPolicyResDto.fromUserPolicy(
-        await _userPolicyRepository.getUserPolicy(policy));
+    return await _userPolicyRepository.getUserPolicy(policy);
   }
 }

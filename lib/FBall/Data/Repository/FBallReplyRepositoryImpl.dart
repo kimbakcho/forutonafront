@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallReplyResWrap.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallReplyResWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 
 class FBallReplyRepositoryImpl implements FBallReplyRepository {

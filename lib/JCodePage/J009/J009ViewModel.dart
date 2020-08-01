@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCase.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCase.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
 import 'package:forutonafront/JCodePage/J010/J010View.dart';
 
 class J009ViewModel extends ChangeNotifier {

@@ -1,5 +1,5 @@
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 
 abstract class SignInUserInfoUseCaseOutputPort {
-  void onSignInUserInfoFromMemory(FUserInfo fUserInfo);
+  void onSignInUserInfoFromMemory(FUserInfoResDto fUserInfo);
 }

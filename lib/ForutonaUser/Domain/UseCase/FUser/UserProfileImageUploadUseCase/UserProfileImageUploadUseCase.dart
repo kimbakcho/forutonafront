@@ -1,34 +1,29 @@
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:http_parser/http_parser.dart';
-import 'package:dio/dio.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:forutonafront/Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
-import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 
 class UserProfileImageUploadUseCase
     implements UserProfileImageUploadUseCaseInputPort {
-  FUserRepository _fUserRepository;
-  FlutterImageCompressAdapter _flutterImageCompressAdapter;
+  final FlutterImageCompressAdapter _flutterImageCompressAdapter;
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
   UserProfileImageUploadUseCase(
-      {@required FUserRepository fUserRepository, @required FlutterImageCompressAdapter flutterImageCompressAdapter})
-      : _fUserRepository = fUserRepository,
-        _flutterImageCompressAdapter=flutterImageCompressAdapter;
-
+      {@required FlutterImageCompressAdapter flutterImageCompressAdapter,
+      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
+      : _flutterImageCompressAdapter = flutterImageCompressAdapter,
+        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
 
   @override
   Future<String> upload(File imageFile) async {
     var imageBytes = await imageFile.readAsBytes();
-    var compressImage = await _flutterImageCompressAdapter.compressImage(
-        imageBytes, 70);
-    FormData formData = FormData.fromMap({
-      "ProfileImage": MultipartFile.fromBytes(
-          compressImage, contentType: MediaType("image", "jpeg"),
-          filename: "ProfileImage.jpg")
-    });
-    return await _fUserRepository.uploadUserProfileImage(formData);
+    var compressImage =
+        await _flutterImageCompressAdapter.compressImage(imageBytes, 70);
+    FUserInfo fUserInfo =
+        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+    return await fUserInfo.uploadUserProfileImage(compressImage);
   }
 }

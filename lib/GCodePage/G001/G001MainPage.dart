@@ -12,7 +12,7 @@ class G001MainPage extends StatelessWidget {
         create: (_) => G001MainPageViewModel(
             context: context,
             signInUserInfoUseCaseInputPort: sl(),
-            authUserCaseInputPort: sl()),
+            fireBaseAuthAdapterForUseCase: sl()),
         child: Consumer<G001MainPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(

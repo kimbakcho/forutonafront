@@ -107,7 +107,6 @@ class G009MainPage extends StatelessWidget {
       height: 48,
       child: FlatButton(
           onPressed: () {
-            model.onVerSionInfo();
           },
           padding: EdgeInsets.all(0),
           child: Container(

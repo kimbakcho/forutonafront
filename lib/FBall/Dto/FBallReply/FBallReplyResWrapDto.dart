@@ -1,4 +1,4 @@
-import 'package:forutonafront/FBall/Data/Value/FBallReplyResWrap.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallReplyResWrap.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'FBallReplyResDto.dart';

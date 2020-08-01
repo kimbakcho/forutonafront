@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPasswordChangeUseCase/UserPasswordChangeUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +19,7 @@ class G012MainPageViewModel extends ChangeNotifier {
   final SignValid _pwCheckValid;
   final SignValid _currentPwValid;
 
-  final UserPasswordChangeUseCaseInputPort _userPasswordChangeUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
   final CodeMainPageController _codeMainPageController;
 
@@ -40,31 +40,20 @@ class G012MainPageViewModel extends ChangeNotifier {
   }
 
   G012MainPageViewModel(
-      {@required
-          this.context,
-      @required
-          this.currentPwController,
-      @required
-          this.newPwController,
-      @required
-          this.checkPwController,
-      @required
-          SignValid pwValid,
-      @required
-          SignValid pwCheckValid,
-      @required
-          SignValid currentPwValid,
-      @required
-          UserPasswordChangeUseCaseInputPort userPasswordChangeUseCaseInputPort,
-      @required
-          CodeMainPageController codeMainPageController,
-      @required
-          LogoutUseCaseInputPort logoutUseCaseInputPort})
+      {@required this.context,
+      @required this.currentPwController,
+      @required this.newPwController,
+      @required this.checkPwController,
+      @required SignValid pwValid,
+      @required SignValid pwCheckValid,
+      @required SignValid currentPwValid,
+      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      @required CodeMainPageController codeMainPageController,
+      @required LogoutUseCaseInputPort logoutUseCaseInputPort})
       : _pwValid = pwValid,
         _pwCheckValid = pwCheckValid,
         _currentPwValid = currentPwValid,
-        _userPasswordChangeUseCaseInputPort =
-            userPasswordChangeUseCaseInputPort,
+        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _codeMainPageController = codeMainPageController,
         _logoutUseCaseInputPort = logoutUseCaseInputPort {
     checkPwController.addListener(_onCheckPwControllerListener);
@@ -168,9 +157,11 @@ class G012MainPageViewModel extends ChangeNotifier {
   void onPwChangeComplete() async {
     _isCurrentConfirm = true;
     _setIsLoading(true);
+
     await _currentPwValid.valid(currentPwController.text);
     _pwValid.valid(newPwController.text);
     _pwCheckValid.valid(checkPwController.text);
+
     if (_currentPwValid.hasError() ||
         _pwValid.hasError() ||
         _pwCheckValid.hasError()) {
@@ -178,14 +169,13 @@ class G012MainPageViewModel extends ChangeNotifier {
       return;
     }
     try {
-      if (await _userPasswordChangeUseCaseInputPort
-              .pwChange(FUserInfoPwChangeReqDto(newPwController.text)) ==
-          1) {
-        await showCompleteChangePwDialog();
-        await _logoutUseCaseInputPort.tryLogout();
-        _codeMainPageController.moveToPage(HCodeState.HCDOE);
-        Navigator.of(context).popUntil(ModalRoute.withName("/"));
-      }
+      FUserInfo _fUserInfo =
+          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      await _fUserInfo.pwChange(newPwController.text);
+      await showCompleteChangePwDialog();
+      await _logoutUseCaseInputPort.tryLogout();
+      _codeMainPageController.moveToPage(HCodeState.HCDOE);
+      Navigator.of(context).popUntil(ModalRoute.withName("/"));
     } catch (ex) {
       Fluttertoast.showToast(
           msg: ex.toString(),
@@ -240,7 +230,6 @@ class G012MainPageViewModel extends ChangeNotifier {
                         padding: EdgeInsets.all(0),
                         onPressed: () {
                           Navigator.of(context).pop();
-
                         },
                         child: Text("확인",
                             style: GoogleFonts.notoSans(

@@ -19,11 +19,11 @@ void main(){
     String policy = "testPolicy";
     UserPolicyResDto resDto = UserPolicyResDto();
     //arrange
-    when(fDio.get("/v1/ForutonaUser/UserPolicy/"+policy))
+    when(fDio.get("/v1/UserPolicy/"+policy))
         .thenAnswer((_) async => Response<dynamic>(data: resDto.toJson()));
     //act
     await userPolicyRemoteDataSource.getPersonaSettingNotice(policy, fDio);
     //assert
-    verify(fDio.get("/v1/ForutonaUser/UserPolicy/"+policy));
+    verify(fDio.get("/v1/UserPolicy/"+policy));
   });
 }

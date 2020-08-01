@@ -1,11 +1,10 @@
 import 'dart:typed_data';
-
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
@@ -13,7 +12,6 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:meta/meta.dart';
 
@@ -29,41 +27,47 @@ class FBallRepositoryImpl implements FBallRepository {
 
   @override
   Future<PageWrap<FBallResDto>> listUpFromInfluencePower(
-      {@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto}) async {
+      {@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto,
+      @required Pageable pageable}) async {
     var result = await _fBallRemoteDataSource.listUpFromInfluencePower(
-        listUpReqDto, FDio.noneToken());
+        listUpReqDto, pageable, FDio.noneToken());
     return result;
   }
 
   @override
-  Future<PageWrap<FBallResDto>> getUserToMakerBalls(
-      {@required UserToMakeBallReqDto reqDto}) async {
-    var result = await _fBallRemoteDataSource.getUserToMakerBalls(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+  Future<PageWrap<FBallResDto>> searchUserToMakerBalls(
+      {@required String makerUid, @required Pageable pageable}) async {
+    var result = await _fBallRemoteDataSource.searchUserToMakerBalls(
+        makerUid: makerUid,
+        pageable: pageable,
+        noneTokenFDio: FDio.noneToken());
     return result;
   }
 
   @override
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
-      {@required FBallListUpFromSearchTitleReqDto reqDto}) async {
+      {@required FBallListUpFromSearchTitleReqDto reqDto,
+      @required Pageable pageable}) async {
     var result = await _fBallRemoteDataSource.listUpFromSearchTitle(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+        reqDto: reqDto, pageable: pageable, noneTokenFDio: FDio.noneToken());
     return result;
   }
 
   @override
   Future<PageWrap<FBallResDto>> listUpFromTagName(
-      {@required FBallListUpFromTagNameReqDto reqDto}) async {
+      {@required FBallListUpFromTagNameReqDto reqDto,
+      @required Pageable pageable}) async {
     var result = await _fBallRemoteDataSource.listUpFromTagName(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+        reqDto: reqDto, pageable: pageable, noneTokenFDio: FDio.noneToken());
     return result;
   }
 
   @override
   Future<PageWrap<FBallResDto>> ballListUpFromMapArea(
-      {@required BallFromMapAreaReqDto reqDto}) async {
+      {@required BallFromMapAreaReqDto reqDto,
+      @required Pageable pageable}) async {
     var result = await _fBallRemoteDataSource.listUpBallFromMapArea(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
+        reqDto: reqDto, pageable: pageable, noneTokenFDio: FDio.noneToken());
     return result;
   }
 

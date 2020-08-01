@@ -15,9 +15,6 @@ BallFromMapAreaReqDto _$BallFromMapAreaReqDtoFromJson(
     (json['northeastLng'] as num)?.toDouble(),
     (json['centerPointLat'] as num)?.toDouble(),
     (json['centerPointLng'] as num)?.toDouble(),
-    json['page'] as int,
-    json['size'] as int,
-    json['sorts'] as String,
   );
 }
 
@@ -30,7 +27,4 @@ Map<String, dynamic> _$BallFromMapAreaReqDtoToJson(
       'northeastLng': instance.northeastLng,
       'centerPointLat': instance.centerPointLat,
       'centerPointLng': instance.centerPointLng,
-      'page': instance.page,
-      'size': instance.size,
-      'sorts': instance.sorts,
     };

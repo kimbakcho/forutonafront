@@ -2,17 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:forutonafront/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfoSimple1.dart';
 import 'package:forutonafront/ForutonaUser/Data/Repository/FUserRepositoryImpl.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserInfoJoin.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserSnsCheckJoin.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoPwChangeReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserSnSLoginReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FuserAccountUpdateReqdto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnSJoinReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Preference.dart';
@@ -42,53 +39,24 @@ void main() {
 
   test('updateUserPosition DataSource call', () async {
     //arrange
-    when(mockUserRemoteDataSource.updateUserPosition(LatLng(121.0,37.0),any))
-        .thenAnswer((_) async => 1);
+    when(mockUserRemoteDataSource.updateUserPosition(LatLng(121.0,37.0),any));
+
     //act
-    int result =
-        await fUserRepository.updateUserPosition(LatLng(121.0, 37.0));
+    await fUserRepository.updateUserPosition(LatLng(121.0, 37.0));
     //assert
-    expect(result, 1);
+    verify(mockUserRemoteDataSource.updateAccountUserInfo(any, any));
   });
 
   test('updateFireBaseMessageToken DataSource call', () async {
     //arrange
-    when(mockUserRemoteDataSource.updateFireBaseMessageToken(any,any,any))
-        .thenAnswer((_) async => 1);
+
     //act
-    int result =
-    await fUserRepository.updateFireBaseMessageToken("test","testToken");
+    await fUserRepository.updateFireBaseMessageToken("test",);
     //assert
-    verify(mockUserRemoteDataSource.updateFireBaseMessageToken(any, any, any));
-    expect(result, 1);
+    verify(mockUserRemoteDataSource.updateFireBaseMessageToken(any, any));
+
   });
 
-
-  test('updateUserPosition DataSource call', () async {
-    //arrange
-    when(mockUserRemoteDataSource.updateUserPosition(LatLng(121.0,37.0),any))
-        .thenAnswer((_) async => 1);
-    //act
-    int result =
-    await fUserRepository.updateUserPosition(LatLng(121.0, 37.0));
-    //assert
-    expect(result, 1);
-  });
-
-
-  test('FUserInfoSimple1 DataSource Call', () async {
-    //arrange
-    var resResult = FUserInfoSimple1();
-    resResult.nickName = "test";
-    resResult.profilePictureUrl = "test";
-    when(mockUserRemoteDataSource.getUserInfoSimple1(any,any))
-        .thenAnswer((_)async => resResult);
-    //act
-    FUserInfoSimple1 result = await fUserRepository.getUserInfoSimple1(FUserReqDto("testUid"));
-    //assert
-    verify(mockUserRemoteDataSource.getUserInfoSimple1(any,any));
-    expect(result.nickName, "test");
-  });
 
   test('should be checkNickNameDuplication DataSource Call', () async {
     //arrange
@@ -100,48 +68,23 @@ void main() {
     verify(mockUserRemoteDataSource.checkNickNameDuplication("testNickName", any));
   });
 
-  test('should be getForutonaGetMe DataSource Call', () async {
-    //arrange
-    FUserInfo fUserInfo = new FUserInfo();
-    fUserInfo.uid = "tsetUid";
-    fUserInfo.nickName = 'testNickName';
-
-    when(mockUserRemoteDataSource.getForutonaGetMe(any))
-        .thenAnswer((_)async => fUserInfo);
-    //act
-    await fUserRepository.getForutonaGetMe("tsetUid");
-
-    //assert
-    verify(isGivenFireBaseTokenToDataSource(mockFireBaseAdapter));
-
-    verify(mockUserRemoteDataSource.getForutonaGetMe(any));
-  });
-
   test('should be uploadUserProfileImage DataSource Call', () async {
     //arrange
     when(mockUserRemoteDataSource.uploadUserProfileImage(any,any))
         .thenAnswer((_)async => "https://urlImage.com/image.jpg");
-    FormData formData = FormData.fromMap({
-      "ProfileImage": MultipartFile.fromBytes(
-          [1,2,3,4], contentType: MediaType("image", "jpeg"),
-          filename: "ProfileImage.jpg")
-    });
+    List<int> imageByte = [0,2,3,4,5,6];
     //act
 
-    await fUserRepository.uploadUserProfileImage(formData);
-
+    await fUserRepository.uploadUserProfileImage(imageByte);
     //assert
     verify(isGivenFireBaseTokenToDataSource(mockFireBaseAdapter));
 
-    verify(mockUserRemoteDataSource.uploadUserProfileImage(formData,any));
+    verify(mockUserRemoteDataSource.uploadUserProfileImage(imageByte,any));
   });
 
   test('should be updateAccountUserInfo DataSource Call', () async {
     //arrange
-    FuserAccountUpdateReqdto fuserAccountUpdateReqdto = FuserAccountUpdateReqdto();
-
-    when(mockUserRemoteDataSource.updateAccountUserInfo(fuserAccountUpdateReqdto,any))
-        .thenAnswer((_)async => 1);
+    FUserAccountUpdateReqDto fuserAccountUpdateReqdto = FUserAccountUpdateReqDto();
 
     //act
     await fUserRepository.updateAccountUserInfo(fuserAccountUpdateReqdto);
@@ -154,42 +97,38 @@ void main() {
 
   test('should be pWChange DataSource Call', () async {
     //arrange
-    FUserInfoPwChangeReqDto fUserInfoPwChangeReqDto = FUserInfoPwChangeReqDto("changePw");
-
-    when(mockUserRemoteDataSource.pWChange(fUserInfoPwChangeReqDto,any))
-        .thenAnswer((_)async => 1);
 
     //act
-    await fUserRepository.pWChange(fUserInfoPwChangeReqDto);
+    await fUserRepository.pWChange("TEST");
 
     //assert
     verify(isGivenFireBaseTokenToDataSource(mockFireBaseAdapter));
 
-    verify(mockUserRemoteDataSource.pWChange(fUserInfoPwChangeReqDto,any));
+    verify(mockUserRemoteDataSource.pWChange("TEST",any));
   });
 
   test('should be getSnsUserJoinCheckInfo DataSource Call ', () async {
     //arrange
-    FUserSnSLoginReqDto fUserInfoPwChangeReqDto = FUserSnSLoginReqDto();
+    FUserSnSJoinReqDto fUserInfoPwChangeReqDto = FUserSnSJoinReqDto();
     fUserInfoPwChangeReqDto.accessToken="SNSAuthToken";
     fUserInfoPwChangeReqDto.snsService=SnsSupportService.Kakao;
     fUserInfoPwChangeReqDto.snsUid="snsUid";
     fUserInfoPwChangeReqDto.fUserUid="FirebaseUid";
 
-    FUserSnsCheckJoin fUserSnsCheckJoin =  FUserSnsCheckJoin();
+    FUserSnsCheckJoinResDto fUserSnsCheckJoin =  FUserSnsCheckJoinResDto();
     fUserSnsCheckJoin.snsUid= "snsUid";
     fUserSnsCheckJoin.email="test@gmail.com";
     fUserSnsCheckJoin.firebaseCustomToken = "loginToken";
     fUserSnsCheckJoin.join = true;
 
-    when(mockUserRemoteDataSource.getSnsUserJoinCheckInfo(fUserInfoPwChangeReqDto,any))
+    when(mockUserRemoteDataSource.getSnsUserJoinCheckInfo(SnsSupportService.Kakao,"TEST",any))
         .thenAnswer((_)async => fUserSnsCheckJoin);
 
     //act
-    await fUserRepository.getSnsUserJoinCheckInfo(fUserInfoPwChangeReqDto);
+    await fUserRepository.getSnsUserJoinCheckInfo(SnsSupportService.Kakao,"TEST");
 
     //assert
-    verify(mockUserRemoteDataSource.getSnsUserJoinCheckInfo(fUserInfoPwChangeReqDto,any));
+    verify(mockUserRemoteDataSource.getSnsUserJoinCheckInfo(SnsSupportService.Kakao,"TEST",any));
   });
 
   test('should be joinUser DataSource Call', () async {
@@ -199,7 +138,7 @@ void main() {
     fUserInfoJoinReqDto.snsSupportService =SnsSupportService.Kakao;
     fUserInfoJoinReqDto.positionAgree = true;
 
-    FUserInfoJoin fUserInfoJoin =  FUserInfoJoin();
+    FUserInfoJoinResDto fUserInfoJoin =  FUserInfoJoinResDto();
     fUserInfoJoin.customToken ="loginToken";
     fUserInfoJoin.joinComplete = true;
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PersonaSettingNotice.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart';
-
+import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
 
 class G017MainPageViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -10,7 +9,7 @@ class G017MainPageViewModel extends ChangeNotifier {
   final PersonaSettingNoticeUseCaseInputPort
       _personaSettingNoticeUseCaseInputPort;
 
-  PersonaSettingNotice personaSettingNoticeResDto;
+  PersonaSettingNoticeResDto personaSettingNoticeResDto;
 
   String htmlUrl = "";
 
@@ -26,10 +25,8 @@ class G017MainPageViewModel extends ChangeNotifier {
   }
 
   void init() async {
-    personaSettingNoticeResDto =
-        PersonaSettingNotice.fromPersonaSettingNoticeResDto(
-            await _personaSettingNoticeUseCaseInputPort
-                .getPersonaSettingNoticePage(idx));
+    personaSettingNoticeResDto = await _personaSettingNoticeUseCaseInputPort
+        .getPersonaSettingNoticePage(idx);
 
     _loadHtml(personaSettingNoticeResDto.noticeContent);
     notifyListeners();

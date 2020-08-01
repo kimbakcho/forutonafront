@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/FBallPlayerListUpUseCaeInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/UserPlayBallListUp/UserPlayBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallReqDto.dart';
 import 'package:forutonafront/FBall/Dto/UserBall/UserToPlayBallResDto.dart';

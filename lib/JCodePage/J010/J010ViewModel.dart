@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/PhonePwFindValidUseCase/PhoneFindValidUseCase.dart';
 import 'package:forutonafront/Common/SmsReceiverUtil/SmsAuthSupportLanguage.dart';
 import 'package:forutonafront/Common/SmsReceiverUtil/SmsReceiverService.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';

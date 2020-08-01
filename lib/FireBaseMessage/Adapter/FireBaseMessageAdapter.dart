@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
-import 'package:forutonafront/FireBaseMessage/UseCase/FireBaseTokenUpdateUseCase/FireBaseMessageTokenUpdateUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
@@ -53,19 +53,16 @@ abstract class FireBaseMessageAdapter {
 class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
   FirebaseMessaging _firebaseMessaging;
 
-  final FireBaseMessageTokenUpdateUseCaseInputPort
-      _fireBaseMessageTokenUpdateUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
 
   FireBaseMessageAdapterImpl(
-      {@required
-          FireBaseMessageTokenUpdateUseCaseInputPort
-              fireBaseMessageTokenUpdateUseCaseInputPort,
+      {
+        @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
       @required
           FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter})
-      : _fireBaseMessageTokenUpdateUseCaseInputPort =
-            fireBaseMessageTokenUpdateUseCaseInputPort,
+      : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter {
     _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.onTokenRefresh.listen(_onTokenRefresh);
@@ -84,8 +81,8 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
 
   void _onTokenRefresh(String token) async {
     if (await _fireBaseAuthBaseAdapter.isLogin()) {
-      _fireBaseMessageTokenUpdateUseCaseInputPort.updateFireBaseMessageToken(
-          await _fireBaseAuthBaseAdapter.userUid(), token);
+      FUserInfo fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      fUserInfo.updateFCMToken(token);
     }
   }
 

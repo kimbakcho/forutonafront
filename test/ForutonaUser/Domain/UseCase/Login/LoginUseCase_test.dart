@@ -1,11 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/FUserSnsCheckJoin.dart';
+import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/NotJoinException.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:mockito/mockito.dart';
@@ -32,6 +30,7 @@ void main() {
         fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
         snsLoginModuleAdapter: mocSnsSdkAdapter);
   });
+
   test('should FireBase에 CustomToken으로 로그인 시도', () async {
     //arrange
     when(mocSnsSdkAdapter.getSnsModuleUserInfo()).thenAnswer(
@@ -42,7 +41,7 @@ void main() {
     fUserSnsCheckJoin.join = true;
     fUserSnsCheckJoin.firebaseCustomToken = "customLoginToken";
 
-    when(mockSingUpUseCaseInputPort.snsUidJoinCheck(any)).thenAnswer(
+    when(mockSingUpUseCaseInputPort.snsUidJoinCheck(any,any)).thenAnswer(
             (realInvocation) async => fUserSnsCheckJoin);
 
     //act
@@ -63,7 +62,7 @@ void main() {
     fUserSnsCheckJoin.join = false;
     fUserSnsCheckJoin.firebaseCustomToken = "customLoginToken";
 
-    when(mockSingUpUseCaseInputPort.snsUidJoinCheck(any)).thenAnswer(
+    when(mockSingUpUseCaseInputPort.snsUidJoinCheck(any,any)).thenAnswer(
             (realInvocation) async => fUserSnsCheckJoin);
 
     //assert

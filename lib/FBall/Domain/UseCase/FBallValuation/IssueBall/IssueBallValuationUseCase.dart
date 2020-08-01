@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallValuationWrap.dart';
-import 'package:forutonafront/FBall/Data/Repository/FBallValuationRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart';

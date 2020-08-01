@@ -1,16 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
-
 import 'package:forutonafront/FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallValuation.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallValuationWrap.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 
 class FBallValuationRepositoryImpl implements FBallValuationRepository {
+
   final FBallValuationRemoteDataSource _fBallValuationRemoteDataSource;
 
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;

@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001PayloadDto.dart';
-import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
-import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';

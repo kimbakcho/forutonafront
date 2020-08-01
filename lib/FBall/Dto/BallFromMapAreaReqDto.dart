@@ -13,10 +13,6 @@ class BallFromMapAreaReqDto {
   double northeastLng;
   double centerPointLat;
   double centerPointLng;
-  int page;
-  int size;
-  //MultiSorts 타입의 Json String을 입력
-  String sorts;
 
 
   BallFromMapAreaReqDto(
@@ -25,10 +21,7 @@ class BallFromMapAreaReqDto {
       this.northeastLat,
       this.northeastLng,
       this.centerPointLat,
-      this.centerPointLng,
-      this.page,
-      this.size,
-      this.sorts);
+      this.centerPointLng);
 
   factory BallFromMapAreaReqDto.fromJson(Map<String, dynamic> json) => _$BallFromMapAreaReqDtoFromJson(json);
   Map<String, dynamic> toJson() => _$BallFromMapAreaReqDtoToJson(this);

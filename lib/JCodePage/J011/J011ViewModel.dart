@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PwChangeFromPhoneAuth.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/PwFindPhoneUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 
 class J011ViewModel extends ChangeNotifier
@@ -104,7 +104,7 @@ class J011ViewModel extends ChangeNotifier
   }
 
   @override
-  void onPhonePwChange(PwChangeFromPhoneAuth pwChangeFromPhoneAuthResDto) {
+  void onPhonePwChange(PwChangeFromPhoneAuthResDto pwChangeFromPhoneAuthResDto) {
     if (pwChangeFromPhoneAuthResDto.errorFlag) {
       Fluttertoast.showToast(
           msg: pwChangeFromPhoneAuthResDto.cause,

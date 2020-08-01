@@ -1,5 +1,6 @@
 
-import 'package:forutonafront/FBall/Data/Value/BallSearchBarHistory.dart';
+
+import 'package:forutonafront/FBall/Domain/Value/BallSearchBarHistory.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'BallSearchBarHistoryDto.g.dart';

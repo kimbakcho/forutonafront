@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/PhoneAuthRemoteDataSource.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PhoneAuth.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PhoneAuthNumber.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PwChangeFromPhoneAuth.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PwFindPhoneAuth.dart';
-import 'package:forutonafront/ForutonaUser/Data/Value/PwFindPhoneAuthNumber.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
 
 class PhoneAuthRepositoryImpl implements PhoneAuthRepository {
   PhoneAuthRemoteSource _phoneAuthRemoteSource;
@@ -21,29 +21,29 @@ class PhoneAuthRepositoryImpl implements PhoneAuthRepository {
       : _phoneAuthRemoteSource = phoneAuthRemoteSource;
 
   @override
-  Future<PwChangeFromPhoneAuth> reqChangePwAuthPhone(
+  Future<PwChangeFromPhoneAuthResDto> reqChangePwAuthPhone(
       PwChangeFromPhoneAuthReqDto reqDto) async {
     return await _phoneAuthRemoteSource.reqChangePwAuthPhone(reqDto, FDio.noneToken())  ;
   }
 
   @override
-  Future<PhoneAuthNumber> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto) async {
+  Future<PhoneAuthNumberResDto> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto) async {
     return await _phoneAuthRemoteSource.reqNumberAuthReq(reqDto, FDio.noneToken())  ;
   }
 
   @override
-  Future<PhoneAuth> reqPhoneAuth(PhoneAuthReqDto reqDto) async {
+  Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto) async {
     return await _phoneAuthRemoteSource.reqPhoneAuth(reqDto,FDio.noneToken());
   }
 
   @override
-  Future<PwFindPhoneAuthNumber> reqPwFindNumberAuth(
+  Future<PwFindPhoneAuthNumberResDto> reqPwFindNumberAuth(
       PwFindPhoneAuthNumberReqDto reqDto) async {
     return await _phoneAuthRemoteSource.reqPwFindNumberAuth(reqDto,FDio.noneToken());
   }
 
   @override
-  Future<PwFindPhoneAuth> reqPwFindPhoneAuth(
+  Future<PwFindPhoneAuthResDto> reqPwFindPhoneAuth(
       PwFindPhoneAuthReqDto reqDto) async {
     return await _phoneAuthRemoteSource.reqPwFindPhoneAuth(reqDto,FDio.noneToken());
   }

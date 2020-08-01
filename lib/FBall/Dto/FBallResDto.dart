@@ -1,12 +1,12 @@
-import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBall.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallState.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import '../Data/Value/FBallState.dart';
-import '../Data/Value/FBallType.dart';
 
 part 'FBallResDto.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class FBallResDto {
   double latitude;
   double longitude;
@@ -25,11 +25,10 @@ class FBallResDto {
   String description;
   String nickName;
   String profilePictureUrl;
-  String uid;
+  FUserInfoSimpleResDto uid;
   double userLevel;
   int contributor;
   bool ballDeleteFlag;
-
 
   FBallResDto();
 
@@ -56,7 +55,7 @@ class FBallResDto {
     fBallResDto.description = fBall.description;
     fBallResDto.profilePictureUrl = fBall.profilePictureUrl;
     fBallResDto.nickName = fBall.nickName;
-    fBallResDto.uid = fBall.uid;
+    fBallResDto.uid = FUserInfoSimpleResDto.fromFUserInfoSimple(fBall.uid);
     fBallResDto.userLevel = fBall.userLevel;
     fBallResDto.contributor = fBall.contributor;
     fBallResDto.ballDeleteFlag = fBall.ballDeleteFlag;
