@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidget.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
 import '../BallModifyService.dart';
 
 class IssueBallModifyService implements BallModifyService {
-  final AuthUserCaseInputPort _authUserCaseInputPort;
+
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   IssueBallModifyService(
-      {@required AuthUserCaseInputPort authUserCaseInputPort})
-      : _authUserCaseInputPort = authUserCaseInputPort;
+      {@required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
 
   @override
   Future<CommonBallModifyWidgetResultType> showModifySelectDialog(
@@ -30,7 +32,7 @@ class IssueBallModifyService implements BallModifyService {
 
   @override
   Future<bool> isCanModify({@required String ballMakeUid}) async {
-    if (ballMakeUid == await _authUserCaseInputPort.myUid()) {
+    if (ballMakeUid == await _fireBaseAuthAdapterForUseCase.userUid()) {
       return true;
     } else {
       return false;

@@ -24,7 +24,7 @@ class FBallDetailReplyView extends StatelessWidget {
             fBallReplyMediator: _fBallReplyMediator,
             ballUuid: ballUuid,
             fBallReplyPopupUseCaseInputPort: FBallReplyPopupUseCase(
-                authUserCaseInputPort: sl(),
+                fireBaseAuthAdapterForUseCase: sl(),
                 replyMediator: _fBallReplyMediator),
             context: context),
         child: Consumer<FBallDetailReplyViewModel>(builder: (_, model, child) {

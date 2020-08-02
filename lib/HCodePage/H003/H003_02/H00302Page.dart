@@ -13,8 +13,8 @@ class H00302Page extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => H00302PageViewModel(
           context: context,
-          authUserCaseInputPort: sl(),
-          userMakeBallListUpUseCaseInputPort: sl(),
+          fBallListUpUseCaseInputPort: sl(),
+          fireBaseAuthAdapterForUseCase: sl(),
           scrollController: scrollController
 
         ),

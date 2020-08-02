@@ -1,15 +1,11 @@
-import 'package:enum_to_string/enum_to_string.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-import 'package:forutonafront/Common/PageableDto/FSort.dart';
-import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
-
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
@@ -85,22 +81,13 @@ class H00501PageViewModel extends ChangeNotifier
     var position = await _geoLocationUtilUseCaseIp.getCurrentWithLastPosition();
     var fBallListUpFromSearchTitleReqDto = new FBallListUpFromSearchTitleReqDto(
         searchText: searchTitle,
-        sortsJsonText: _makeSearchOrders().toQueryJson(),
-        page: _pageCount,
-        size: _ballPageLimitSize,
         longitude: position.longitude,
         latitude: position.latitude);
-    await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTitle(
-        fBallListUpFromSearchTitleReqDto,Pageable(0,10,""), this);
+    PageWrap<FBallResDto> pageList = await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTitle(
+        fBallListUpFromSearchTitleReqDto,Pageable(_pageCount,_ballPageLimitSize,"makeTimeDESCAliveDESC"), outputPort: this);
     isLoading = false;
   }
 
-  FSorts _makeSearchOrders() {
-    FSorts fSort = new FSorts();
-    fSort.sorts.add(
-        new FSort(EnumToString.parse(selectOrder.value), selectOrder.orders));
-    return fSort;
-  }
 
   onScrollListener() async {
     if (_isScrollerMoveBottomOver()) {
@@ -165,23 +152,15 @@ class H00501PageViewModel extends ChangeNotifier
   }
 
   @override
-  onBallListUpFromSearchTitle(List<FBallResDto> fBallResDtoList) {
-    if (_isFirstPage(_pageCount)) {
+  void searchResult(PageWrap<FBallResDto> result) {
+    if(result.first) {
       ballWidgetLists.clear();
     }
-    ballWidgetLists.addAll(fBallResDtoList
+    ballWidgetLists.addAll(result.content
         .map((x) => BallStyle1Widget.create(fBallResDto: x))
         .toList());
     notifyListeners();
+    onSearchTitleItemCount(result.totalElements);
   }
 
-  @override
-  onBallListUpFromSearchTitleBallTotalCount(int fBallTotalCount) {
-    onSearchTitleItemCount(fBallTotalCount);
-  }
-
-  @override
-  void searchResult(PageWrap listUpItem) {
-    // TODO: implement searchResult
-  }
 }

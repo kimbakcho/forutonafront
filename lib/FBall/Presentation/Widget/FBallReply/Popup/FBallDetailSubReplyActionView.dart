@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
+
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallDetailSubReplyInputActionViewModel.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyRootActionCommand.dart';
 

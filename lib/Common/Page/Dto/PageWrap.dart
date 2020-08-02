@@ -12,51 +12,56 @@ class PageWrap<T> {
   final bool empty;
 
   PageWrap(
-      { this.content,
-        this.pageable,
-        this.totalElements,
-        this.totalPages,
-        this.last,
-        this.size,
-        this.number,
-        this.sort,
-        this.numberOfElements,
-        this.first,
-        this.empty});
+      {this.content,
+      this.pageable,
+      this.totalElements = 0,
+      this.totalPages = 0,
+      this.last = false,
+      this.size = 0,
+      this.number = 0,
+      this.sort,
+      this.numberOfElements = 0,
+      this.first = false,
+      this.empty = false});
 
   factory PageWrap.fromJson(Map<String, dynamic> json, Function fromJson) {
     final items = json['content'].cast<Map<String, dynamic>>();
-    if(json['pageable']=="INSTANCE") {
+    if (json['pageable'] == "INSTANCE") {
       json['pageable'] = null;
     }
     return PageWrap<T>(
-        pageable: json["pageable"] == null ? null : PageableWarp.fromJson(json["pageable"]),
-        totalElements: json["totalElements"] == null ? null : json["totalElements"],
+        pageable: json["pageable"] == null
+            ? null
+            : PageableWarp.fromJson(json["pageable"]),
+        totalElements:
+            json["totalElements"] == null ? null : json["totalElements"],
         totalPages: json["totalPages"] == null ? null : json["totalPages"],
         last: json["last"] == null ? null : json["last"],
         size: json["size"] == null ? null : json["size"],
         number: json["number"] == null ? null : json["number"],
         sort: json["sort"] == null ? null : SortWrap.fromJson(json["sort"]),
-        numberOfElements: json["numberOfElements"] == null ? null : json["numberOfElements"],
+        numberOfElements:
+            json["numberOfElements"] == null ? null : json["numberOfElements"],
         first: json["first"] == null ? null : json["first"],
         empty: json["empty"] == null ? null : json["empty"],
-        content: new List<T>.from(
-            items.map((itemsJson) => fromJson(itemsJson))));
+        content:
+            new List<T>.from(items.map((itemsJson) => fromJson(itemsJson))));
   }
-  Map<String, dynamic> toJson() => {
-    "content": content == null ? null : List<dynamic>.from(content.map((x) => x)),
-    "pageable": pageable == null ? null : pageable.toJson(),
-    "totalElements": totalElements == null ? null : totalElements,
-    "totalPages": totalPages == null ? null : totalPages,
-    "last": last == null ? null : last,
-    "size": size == null ? null : size,
-    "number": number == null ? null : number,
-    "sort": sort == null ? null : sort.toJson(),
-    "numberOfElements": numberOfElements == null ? null : numberOfElements,
-    "first": first == null ? null : first,
-    "empty": empty == null ? null : empty,
-  };
 
+  Map<String, dynamic> toJson() => {
+        "content":
+            content == null ? null : List<dynamic>.from(content.map((x) => x)),
+        "pageable": pageable == null ? null : pageable.toJson(),
+        "totalElements": totalElements == null ? null : totalElements,
+        "totalPages": totalPages == null ? null : totalPages,
+        "last": last == null ? null : last,
+        "size": size == null ? null : size,
+        "number": number == null ? null : number,
+        "sort": sort == null ? null : sort.toJson(),
+        "numberOfElements": numberOfElements == null ? null : numberOfElements,
+        "first": first == null ? null : first,
+        "empty": empty == null ? null : empty,
+      };
 }
 
 class PageableWarp {
@@ -94,22 +99,22 @@ class PageableWarp {
       );
 
   factory PageableWarp.fromJson(Map<String, dynamic> json) => PageableWarp(
-    sort: json["sort"] == null ? null : SortWrap.fromJson(json["sort"]),
-    offset: json["offset"] == null ? null : json["offset"],
-    pageNumber: json["pageNumber"] == null ? null : json["pageNumber"],
-    pageSize: json["pageSize"] == null ? null : json["pageSize"],
-    paged: json["paged"] == null ? null : json["paged"],
-    unpaged: json["unpaged"] == null ? null : json["unpaged"],
-  );
+        sort: json["sort"] == null ? null : SortWrap.fromJson(json["sort"]),
+        offset: json["offset"] == null ? null : json["offset"],
+        pageNumber: json["pageNumber"] == null ? null : json["pageNumber"],
+        pageSize: json["pageSize"] == null ? null : json["pageSize"],
+        paged: json["paged"] == null ? null : json["paged"],
+        unpaged: json["unpaged"] == null ? null : json["unpaged"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "sort": sort == null ? null : sort.toJson(),
-    "offset": offset == null ? null : offset,
-    "pageNumber": pageNumber == null ? null : pageNumber,
-    "pageSize": pageSize == null ? null : pageSize,
-    "paged": paged == null ? null : paged,
-    "unpaged": unpaged == null ? null : unpaged,
-  };
+        "sort": sort == null ? null : sort.toJson(),
+        "offset": offset == null ? null : offset,
+        "pageNumber": pageNumber == null ? null : pageNumber,
+        "pageSize": pageSize == null ? null : pageSize,
+        "paged": paged == null ? null : paged,
+        "unpaged": unpaged == null ? null : unpaged,
+      };
 }
 
 class SortWrap {
@@ -135,14 +140,14 @@ class SortWrap {
       );
 
   factory SortWrap.fromJson(Map<String, dynamic> json) => SortWrap(
-    sorted: json["sorted"] == null ? null : json["sorted"],
-    unsorted: json["unsorted"] == null ? null : json["unsorted"],
-    empty: json["empty"] == null ? null : json["empty"],
-  );
+        sorted: json["sorted"] == null ? null : json["sorted"],
+        unsorted: json["unsorted"] == null ? null : json["unsorted"],
+        empty: json["empty"] == null ? null : json["empty"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "sorted": sorted == null ? null : sorted,
-    "unsorted": unsorted == null ? null : unsorted,
-    "empty": empty == null ? null : empty,
-  };
+        "sorted": sorted == null ? null : sorted,
+        "unsorted": unsorted == null ? null : unsorted,
+        "empty": empty == null ? null : empty,
+      };
 }

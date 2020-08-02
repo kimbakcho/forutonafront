@@ -7,7 +7,6 @@ import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetView/FBallReplyWidgetView.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -51,17 +50,7 @@ class _ID001MainPageState extends State<ID001MainPage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ID001MainPageViewModel>(
-        create: (_) => ID001MainPageViewModel(
-              context: context,
-              issueBall: widget.issueBall,
-              authUserCaseInputPort: sl(),
-              signInUserInfoUseCaseInputPort: sl(),
-              mainScrollController: mainScrollController,
-              issueBallUseCaseInputPort: sl(),
-              issueBallValuationUseCaseInputPort: sl(),
-              tagFromBallUuidUseCaseInputPort: sl(),
-              userInfoSimple1UseCaseInputPort: sl(),
-            ),
+        create: (_) => ID001MainPageViewModel(),
         child: Builder(
           builder: (context) {
             return Stack(children: <Widget>[
@@ -92,7 +81,6 @@ class _ID001MainPageState extends State<ID001MainPage>
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 child: Column(children: <Widget>[
-                  topHeaderBar(context),
                   Expanded(
                     child: mainBodyListView(context),
                   )
@@ -103,8 +91,7 @@ class _ID001MainPageState extends State<ID001MainPage>
 
   ListView mainBodyListView(BuildContext context) {
     return ListView(
-        controller:
-            context.watch<ID001MainPageViewModel>().mainScrollController,
+        controller: null,
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         children: <Widget>[
@@ -127,7 +114,6 @@ class _ID001MainPageState extends State<ID001MainPage>
           makerProfileBar(context),
           didver(2),
           issueTextContentBar(context),
-          context.watch<ID001MainPageViewModel>().getImageContentBar(context),
           context.watch<ID001MainPageViewModel>().issueBall.isMainPicture()
               ? didver(2)
               : Container(),
@@ -153,8 +139,7 @@ class _ID001MainPageState extends State<ID001MainPage>
 
   FlatButton issueBallTitleWithStatueBar(BuildContext context) {
     return FlatButton(
-        onPressed:
-            context.watch<ID001MainPageViewModel>().toggleMoreDetailToggle,
+        onPressed: () {},
         padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -170,145 +155,98 @@ class _ID001MainPageState extends State<ID001MainPage>
     return Container(
         color: Color(0xffF5F5F5),
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-            Widget>[
-          Container(
-            child: Text("평가하기",
-                style: GoogleFonts.notoSans(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15,
-                  color: Color(0xff454f63),
-                )),
-            margin: EdgeInsets.only(bottom: 8),
-          ),
-          Container(
-              child: RichText(
-                  text: TextSpan(
-                      text:
-                          context.watch<ID001MainPageViewModel>().userNickName,
-                      style: GoogleFonts.notoSans(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: Color(0xff3497FD),
-                      ),
-                      children: [
-                TextSpan(
-                    text: context
-                        .watch<ID001MainPageViewModel>()
-                        .getFBallValuationText(),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Text("평가하기",
                     style: GoogleFonts.notoSans(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
                       color: Color(0xff454f63),
                     )),
-              ]))),
-          Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Row(children: <Widget>[
-                Container(
-                    height: 32.00,
-                    width: 70.00,
-                    child: FlatButton(
-                        onPressed:
-                            context.watch<ID001MainPageViewModel>().plusBtnTap,
-                        padding: EdgeInsets.all(0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              ForutonaIcon.like,
-                              color: context
-                                  .watch<ID001MainPageViewModel>()
-                                  .getValuationIconAndTextColor(
-                                      FBallValuationState.Like),
-                              size: 15,
-                            ),
-                            Container(
-                                margin: EdgeInsets.only(left: 12),
-                                child: Text("+1",
-                                    style: GoogleFonts.notoSans(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: context
-                                          .watch<ID001MainPageViewModel>()
-                                          .getValuationIconAndTextColor(
-                                              FBallValuationState.Like),
-                                    )))
-                          ],
+                margin: EdgeInsets.only(bottom: 8),
+              ),
+              Container(
+                  child: RichText(
+                      text: TextSpan(
+                          text: context
+                              .watch<ID001MainPageViewModel>()
+                              .userNickName,
+                          style: GoogleFonts.notoSans(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: Color(0xff3497FD),
+                          ),
+                          children: [
+                    TextSpan(
+                        text: "",
+                        style: GoogleFonts.notoSans(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Color(0xff454f63),
                         )),
-                    decoration: BoxDecoration(
-                      color: context
-                          .watch<ID001MainPageViewModel>()
-                          .getValuationBoxColor(FBallValuationState.Like),
-                      border: Border.all(
-                        width: 2.00,
-                        color: context
-                            .watch<ID001MainPageViewModel>()
-                            .getValuationBorderColor(FBallValuationState.Like),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0.00, 3.00),
-                          color: Color(0xff455b63).withOpacity(0.10),
-                          blurRadius: 6,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10.00),
-                    )),
-                Container(
-                    height: 32.00,
-                    width: 70.00,
-                    margin: EdgeInsets.only(left: 16),
-                    child: FlatButton(
-                        onPressed:
-                            context.watch<ID001MainPageViewModel>().minusBtnTap,
-                        padding: EdgeInsets.all(0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              ForutonaIcon.dislike,
-                              color: context
-                                  .watch<ID001MainPageViewModel>()
-                                  .getValuationIconAndTextColor(
-                                      FBallValuationState.DisLike),
-                              size: 15,
+                  ]))),
+              Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Row(children: <Widget>[
+                    Container(
+                      height: 32.00,
+                      width: 70.00,
+                      child: FlatButton(
+                          onPressed: () {},
+                          padding: EdgeInsets.all(0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                ForutonaIcon.like,
+                                size: 15,
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(left: 12),
+                                  child: Text("+1",
+                                      style: GoogleFonts.notoSans(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                      )))
+                            ],
+                          )),
+                    ),
+                    Container(
+                        height: 32.00,
+                        width: 70.00,
+                        margin: EdgeInsets.only(left: 16),
+                        child: FlatButton(
+                            onPressed: () {},
+                            padding: EdgeInsets.all(0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                    margin: EdgeInsets.only(left: 12),
+                                    child: Text("-1",
+                                        style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14,
+                                        )))
+                              ],
+                            )),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 2.00,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0.00, 3.00),
+                              color: Color(0xff455b63).withOpacity(0.10),
+                              blurRadius: 6,
                             ),
-                            Container(
-                                margin: EdgeInsets.only(left: 12),
-                                child: Text("-1",
-                                    style: GoogleFonts.notoSans(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: context
-                                          .watch<ID001MainPageViewModel>()
-                                          .getValuationIconAndTextColor(
-                                              FBallValuationState.DisLike),
-                                    )))
                           ],
-                        )),
-                    decoration: BoxDecoration(
-                      color: context
-                          .watch<ID001MainPageViewModel>()
-                          .getValuationBoxColor(FBallValuationState.DisLike),
-                      border: Border.all(
-                        width: 2.00,
-                        color: context
-                            .watch<ID001MainPageViewModel>()
-                            .getValuationBorderColor(
-                                FBallValuationState.DisLike),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0.00, 3.00),
-                          color: Color(0xff455b63).withOpacity(0.10),
-                          blurRadius: 6,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10.00),
-                    ))
-              ]))
-        ]));
+                          borderRadius: BorderRadius.circular(10.00),
+                        ))
+                  ]))
+            ]));
   }
 
   Container tagBar(BuildContext context) {
@@ -339,14 +277,7 @@ class _ID001MainPageState extends State<ID001MainPage>
                       height: 90.00,
                       width: 124.00,
                       child: FlatButton(
-                          onPressed: () {
-                            context
-                                .read<ID001MainPageViewModel>()
-                                .goYoutubeIntent(context
-                                    .read<ID001MainPageViewModel>()
-                                    .issueBall
-                                    .getDisplayYoutubeVideoId());
-                          },
+                          onPressed: () {},
                           padding: EdgeInsets.all(0),
                           child: Container(
                               height: 50.00,
@@ -477,31 +408,13 @@ class _ID001MainPageState extends State<ID001MainPage>
               top: 0,
               left: 48,
               child: Container(
-                child: Text(
-                    context
-                        .watch<ID001MainPageViewModel>()
-                        .getMakerUserNickName(),
+                child: Text("",
                     style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: Color(0xff000000),
                     )),
               )),
-          Positioned(
-            top: 18,
-            left: 48,
-            child: Container(
-                child: context.watch<ID001MainPageViewModel>().makerUserInfo !=
-                        null
-                    ? Text(
-                        "유저영향력 ${context.watch<ID001MainPageViewModel>().makerUserInfo.cumulativeInfluence}BP • "
-                        "팔로워 ${context.watch<ID001MainPageViewModel>().makerUserInfo.followCount}명",
-                        style: GoogleFonts.notoSans(
-                          fontSize: 12,
-                          color: Color(0xff78849e),
-                        ))
-                    : Container()),
-          )
         ]));
   }
 
@@ -823,76 +736,5 @@ class _ID001MainPageState extends State<ID001MainPage>
               ))
         ]),
         height: 244);
-  }
-
-  Container topHeaderBar(BuildContext context) {
-    return Container(
-      height: 56,
-      width: MediaQuery.of(context).size.width,
-      child: Row(children: <Widget>[
-        Container(
-          width: 32,
-          height: 32,
-          padding: EdgeInsets.only(left: 8),
-          child: FlatButton(
-              padding: EdgeInsets.all(0),
-              onPressed: context.watch<ID001MainPageViewModel>().backBtnTap,
-              child: Icon(
-                ForutonaIcon.leftarrow,
-                color: Color(0xff454F63),
-                size: 15,
-              )),
-          alignment: Alignment.center,
-        ),
-        context.watch<ID001MainPageViewModel>().isBallNameScrollOver()
-            ? Expanded(
-                child: Container(
-                    margin: EdgeInsets.fromLTRB(13, 0, 13, 0),
-                    child: Text(
-                      context
-                          .watch<ID001MainPageViewModel>()
-                          .issueBall
-                          .ballName,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.notoSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    )))
-            : Spacer(),
-        Container(
-          width: 32,
-          height: 32,
-          padding: EdgeInsets.only(left: 8),
-          child: FlatButton(
-              padding: EdgeInsets.all(0),
-              onPressed: () {},
-              child: Icon(
-                ForutonaIcon.share,
-                color: Color(0xff454F63),
-                size: 20,
-              )),
-          alignment: Alignment.center,
-        ),
-        Container(
-          width: 32,
-          height: 32,
-          margin: EdgeInsets.only(right: 16),
-          padding: EdgeInsets.only(left: 8),
-          child: FlatButton(
-              padding: EdgeInsets.all(0),
-              onPressed:
-                  context.watch<ID001MainPageViewModel>().showBallSetting,
-              child: Icon(
-                ForutonaIcon.dots,
-                color: Color(0xff454F63),
-                size: 16,
-              )),
-          alignment: Alignment.center,
-        )
-      ]),
-      decoration: BoxDecoration(color: Color(0xffffffff).withOpacity(0.9)),
-    );
   }
 }

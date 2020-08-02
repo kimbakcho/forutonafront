@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
+
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Mediator/FBallReplyMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallDetailReplyView.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallDetailSubReplyActionView.dart';
@@ -7,7 +8,8 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallRe
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyModifyView.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyRootActionCommand.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyRootActionView.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 
 
@@ -27,18 +29,18 @@ abstract class FBallReplyPopupUseCaseInputPort {
 }
 
 class FBallReplyPopupUseCase implements FBallReplyPopupUseCaseInputPort {
-  AuthUserCaseInputPort _authUserCaseInputPort;
+  FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   FBallReplyMediator _replyMediator;
 
   FBallReplyPopupUseCase(
-      {@required AuthUserCaseInputPort authUserCaseInputPort,
+      {@required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required FBallReplyMediator replyMediator})
-      : _authUserCaseInputPort = authUserCaseInputPort,
+      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _replyMediator = replyMediator;
 
   @override
   Future<void> popupInsertDisplay(BuildContext context, String ballUuid) async {
-    if (await _authUserCaseInputPort.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       await showGeneralDialog(
           context: context,
           barrierDismissible: true,
@@ -59,7 +61,7 @@ class FBallReplyPopupUseCase implements FBallReplyPopupUseCaseInputPort {
   @override
   Future<void> popupUpdateDisplay(
       BuildContext context, FBallReply fBallReply) async {
-    if (await _authUserCaseInputPort.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       await showGeneralDialog(
           context: context,
           barrierDismissible: true,

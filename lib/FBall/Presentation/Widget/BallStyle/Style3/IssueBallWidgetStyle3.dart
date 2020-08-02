@@ -23,9 +23,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
         create: (_) => IssueBallWidgetStyle3ViewModel(
               fBallResDto: fBallResDto,
               issueBallBasicStyle: IssueBallBasicStyleImpl(
-                  context: context,
-                  ballHitUseCaseInPutPort: sl(),
-                  authUserCaseInputPort: sl()),
+                  context: context, fireBaseAuthAdapterForUseCase: sl()),
             ),
         child: Consumer<IssueBallWidgetStyle3ViewModel>(
             builder: (_, model, child) {

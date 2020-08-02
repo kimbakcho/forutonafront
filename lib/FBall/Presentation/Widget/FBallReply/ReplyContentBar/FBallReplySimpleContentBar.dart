@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class FBallReplySimpleContentBar extends StatelessWidget {

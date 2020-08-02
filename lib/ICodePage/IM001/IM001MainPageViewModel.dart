@@ -8,10 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/YoutubeUtil/YoutubeIdParser.dart';
-import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
+
 import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
@@ -38,13 +38,12 @@ class IM001MainPageViewModel extends ChangeNotifier
     implements
         InsertBallUseCaseOutputPort,
         SelectBallUseCaseOutputPort,
-        UpdateBallUseCaseOutputPort,
         TagFromBallUuidUseCaseOutputPort {
   final BuildContext context;
   final LatLng setUpPosition;
   final InsertBallUseCaseInputPort _insertBallUseCaseInputPort;
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
-  final UpdateBallUseCaseInputPort _updateBallUseCaseInputPort;
+
   final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
   final BallImageListUpLoadUseCaseInputPort _ballImageListUpLoadUseCaseInputPort;
 
@@ -108,8 +107,7 @@ class IM001MainPageViewModel extends ChangeNotifier
           InsertBallUseCaseInputPort insertBallUseCaseInputPort,
       @required
           SelectBallUseCaseInputPort selectBallUseCaseInputPort,
-      @required
-          UpdateBallUseCaseInputPort updateBallUseCaseInputPort,
+
       @required
           TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort,
         @required
@@ -117,7 +115,6 @@ class IM001MainPageViewModel extends ChangeNotifier
 
       })
       : _insertBallUseCaseInputPort = insertBallUseCaseInputPort,
-  _updateBallUseCaseInputPort = updateBallUseCaseInputPort,
         _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
         _ballImageListUpLoadUseCaseInputPort = ballImageListUpLoadUseCaseInputPort,
         _tagFromBallUuidUseCaseInputPort = tagFromBallUuidUseCaseInputPort {
@@ -241,9 +238,7 @@ class IM001MainPageViewModel extends ChangeNotifier
           FBallInsertReqDto.fromIssueBall(_issueBall),
           outputPort: this);
     } else if (mode == IM001MainPageEnterMode.Update) {
-      await _updateBallUseCaseInputPort.updateBall(
-          FBallUpdateReqDto.fromIssueBall(_issueBall),
-          outputPort: this);
+
     }
     isLoading = false;
   }

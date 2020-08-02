@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/ReplyContentBar/FBallSubReplyContentBarViewModel.dart';
 
@@ -22,7 +22,7 @@ class FBallSubReplyContentBar extends StatelessWidget {
       create: (_) => FBallSubReplyContentBarViewModel(
           fBallReply: fBallReply,
           fBallReplyPopupUseCaseInputPort: _fBallReplyPopupUseCaseInputPort,
-          authUserCaseInputPort: sl(),
+          fireBaseAuthAdapterForUseCase: sl(),
           context: context,
           signInUserInfoUseCaseInputPort: sl()),
       child: Consumer<FBallSubReplyContentBarViewModel>(

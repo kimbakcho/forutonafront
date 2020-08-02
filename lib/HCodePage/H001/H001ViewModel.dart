@@ -7,11 +7,10 @@ import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
@@ -37,10 +36,10 @@ class H001ViewModel
   final TagRankingFromBallInfluencePowerUseCaseInputPort
       _tagRankingFromPositionUseCaseInputPort;
 
-  final AuthUserCaseInputPort _authUserCaseInputPort;
-
   final GeoLocationUtilForeGroundUseCaseInputPort
       _geoLocationUtilUseCaseInputPort;
+
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   Position _currentSearchPosition;
   String _currentSearchAddress;
@@ -80,14 +79,14 @@ class H001ViewModel
           TagRankingFromBallInfluencePowerUseCaseInputPort
               tagRankingFromPositionUseCaseInputPort,
       @required
-          AuthUserCaseInputPort authUserCaseInputPort,
+          FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required
           GeoLocationUtilForeGroundUseCaseInputPort
               geoLocationUtilUseCaseInputPort})
       : _fBallListUpUseCaseInputPort = fBallListUpUseCaseInputPort,
         _tagRankingFromPositionUseCaseInputPort =
             tagRankingFromPositionUseCaseInputPort,
-        _authUserCaseInputPort = authUserCaseInputPort,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     h001CenterListViewController
         .addListener(this.h001CenterListViewControllerListener);
@@ -154,13 +153,11 @@ class H001ViewModel
     FBallListUpFromBallInfluencePowerReqDto reqDto =
         new FBallListUpFromBallInfluencePowerReqDto(
             latitude: _currentSearchPosition.latitude,
-            longitude: _currentSearchPosition.longitude,
-            ballLimit: _ballSearchLimit,
-            page: _ballPageCount,
-            size: _ballPageLimitSize);
+            longitude: _currentSearchPosition.longitude);
 
     PageWrap<FBallResDto> pageWrap = await _fBallListUpUseCaseInputPort
-        .searchFBallListUpFromInfluencePower(reqDto, Pageable(10, 0, ""), this);
+        .searchFBallListUpFromInfluencePower(reqDto, Pageable(10, 0, ""),
+            outputPort: this);
     if (pageWrap.first) {
       ballClear();
     }
@@ -279,7 +276,7 @@ class H001ViewModel
   }
 
   void goBallMakePage() async {
-    if (await _authUserCaseInputPort.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       await gotoH002Page();
       _currentSearchPosition =
           await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();

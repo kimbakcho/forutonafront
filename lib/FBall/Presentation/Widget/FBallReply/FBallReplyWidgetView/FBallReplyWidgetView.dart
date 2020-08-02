@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetView/FBallReplyWidgetViewModel.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Mediator/FBallReplyMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
-
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,13 +17,14 @@ class FBallReplyWidgetView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (_) {
       var fBallReplyMediator =
-          FBallReplyMediator(fBallReplyUseCaseInputPort: sl(),fBall: _fBall);
+          FBallReplyMediator(fBallReplyUseCaseInputPort: sl(), fBall: _fBall);
       return FBallReplyWidgetViewModel(
           context: context,
           ballUuid: _fBall.ballUuid,
           fBallReplyMediator: fBallReplyMediator,
           fBallReplyPopupUseCaseInputPort: FBallReplyPopupUseCase(
-              authUserCaseInputPort: sl(), replyMediator: fBallReplyMediator));
+              fireBaseAuthAdapterForUseCase: sl(),
+              replyMediator: fBallReplyMediator));
     }, child: Consumer<FBallReplyWidgetViewModel>(builder: (_, model, child) {
       return Column(children: <Widget>[
         topInputBar(model, context),

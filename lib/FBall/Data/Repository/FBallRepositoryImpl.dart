@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
@@ -7,6 +8,8 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
@@ -116,4 +119,5 @@ class FBallRepositoryImpl implements FBallRepository {
             idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
     return fBallImageUpload;
   }
+
 }

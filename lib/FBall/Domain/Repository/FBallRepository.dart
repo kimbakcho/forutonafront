@@ -41,4 +41,6 @@ abstract class FBallRepository {
   Future<int> ballHit(String ballUuid);
 
   Future<FBallImageUpload> ballImageUpload({@required List<Uint8List> images});
+
+
 }

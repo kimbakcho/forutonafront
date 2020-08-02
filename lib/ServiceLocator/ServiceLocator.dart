@@ -27,6 +27,7 @@ import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSou
 import 'package:forutonafront/FBall/Data/DataStore/FBallPlayerRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
+import 'package:forutonafront/FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallPlayerRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallReplyRepositoryImpl.dart';
@@ -38,11 +39,10 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart'
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCase.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/FBallValuation/IssueBall/IssueBallValuationUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
@@ -88,13 +88,13 @@ import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:get_it/get_it.dart';
+
 import '../Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import '../Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
 import '../Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
 import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
-import '../FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
 import '../FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import '../ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
 import '../ForutonaUser/Domain/Repository/FUserRepository.dart';
@@ -404,16 +404,6 @@ init() {
   sl.registerSingleton<FBallPlayerRepository>(
       FBallPlayerRepositoryImpl(fBallPlayerRemoteDataSource: sl()));
 
-  sl.registerSingleton<FBallValuationRemoteDataSource>(
-      FBallValuationRemoteDataSourceImpl());
-
-  sl.registerSingleton<FBallValuationRepository>(FBallValuationRepositoryImpl(
-      fireBaseAuthBaseAdapter: sl(), fBallValuationRemoteDataSource: sl()));
-
-  sl.registerSingleton<IssueBallValuationUseCaseInputPort>(
-      IssueBallValuationUseCase(fBallValuationRepository: sl()));
-
-
   sl.registerSingleton<TagFromBallUuidUseCaseInputPort>(
       TagFromBallUuidUseCase(tagRepository: sl()));
 
@@ -448,7 +438,15 @@ init() {
           fUserRepository: sl(),
           fireBaseAuthAdapterForUseCase: sl()));
 
-
   sl.registerSingleton<BallImageListUpLoadUseCaseInputPort>(
       BallImageListUpLoadUseCase(fBallRepository: sl()));
+
+  sl.registerSingleton<FBallValuationRemoteDataSource>(
+      FBallValuationRemoteDataSourceImpl());
+
+  sl.registerSingleton<FBallValuationRepository>(FBallValuationRepositoryImpl(
+      fireBaseAuthBaseAdapter: sl(), fBallValuationRemoteDataSource: sl()));
+
+  sl.registerSingleton<BallLikeUseCaseInputPort>(
+      BallLikeUseCase(fBallValuationRepository: sl()));
 }

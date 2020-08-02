@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/UserMakeBallListUp/UserMakeBallListUpUseCaseOutputPort.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallReqDto.dart';
-import 'package:forutonafront/FBall/Dto/UserBall/UserToMakeBallResDto.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2Widget.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
-class H00302PageViewModel extends ChangeNotifier
-    implements UserMakeBallListUpUseCaseOutputPort, AuthUserCaseOutputPort {
+class H00302PageViewModel extends ChangeNotifier implements FBallListUpUseCaseOutputPort{
   final BuildContext context;
   final ScrollController scrollController;
-  final AuthUserCaseInputPort _authUserCaseInputPort;
-  final UserMakeBallListUpUseCaseInputPort _userMakeBallListUpUseCaseInputPort;
+
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
 
   List<BallStyle2Widget> ballListUpWidgets = [];
+  PageWrap<FBallResDto> listUpItem = PageWrap<FBallResDto>();
   bool _isInitFinish = false;
   bool _isLoading = false;
   bool _subScrollerTopOver = false;
-
 
   get isLoading {
     return _isLoading;
@@ -36,23 +35,18 @@ class H00302PageViewModel extends ChangeNotifier
   int _limitSize = 10;
 
   H00302PageViewModel(
-      {@required
-          this.context,
-      @required
-          AuthUserCaseInputPort authUserCaseInputPort,
-      @required
-          UserMakeBallListUpUseCaseInputPort
-              userMakeBallListUpUseCaseInputPort,
-      @required this.scrollController})
-      : _authUserCaseInputPort = authUserCaseInputPort,
-        _userMakeBallListUpUseCaseInputPort =
-            userMakeBallListUpUseCaseInputPort {
+      {@required this.context,
+      @required this.scrollController,
+      @required FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort,
+      @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
+        _fBallListUpUseCaseInputPort = fBallListUpUseCaseInputPort {
     this.init();
   }
 
   init() async {
     scrollController.addListener(scrollListener);
-    if (await _authUserCaseInputPort.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       await ballListUp();
     }
     _isInitFinish = true;
@@ -60,34 +54,17 @@ class H00302PageViewModel extends ChangeNotifier
 
   Future ballListUp() async {
     isLoading = true;
-    FSorts searchOrder = _makeAliveMakeTimeOrder();
-    var userToMakerBallReqDto = UserToMakeBallReqDto(
-        await _authUserCaseInputPort.myUid(),
-        _pageCount,
-        _limitSize,
-        searchOrder.toQueryJson());
-    if (_isFirstPage()) {
-      ballListUpWidgets.clear();
-    }
-    await _userMakeBallListUpUseCaseInputPort.userMakeBallListUp(
-        reqDto: userToMakerBallReqDto, outputPort: this);
+    _fBallListUpUseCaseInputPort.searchFBallListUpUserPlayBall(
+        await _fireBaseAuthAdapterForUseCase.userUid()
+    , Pageable(_pageCount,_limitSize,"startTimeDESCAliveDESC"),outputPort: this);
     isLoading = false;
   }
 
-  FSorts _makeAliveMakeTimeOrder() {
-    FSorts fSort = FSorts();
-    fSort.sorts.add(FSort("Alive", QueryOrders.DESC));
-    //start가 Join sartTime
-    fSort.sorts.add(FSort("makeTime", QueryOrders.DESC));
-    return fSort;
-  }
-
-  bool _isFirstPage() => _pageCount == 0;
 
   scrollListener() async {
     if (_isScrollerMoveBottomOver()) {
       _pageCount++;
-      if (!_hasBalls()) {
+      if (listUpItem.last) {
         return;
       } else {
         await ballListUp();
@@ -118,10 +95,6 @@ class H00302PageViewModel extends ChangeNotifier
     }
   }
 
-  bool _hasBalls() {
-    return !(_pageCount * _limitSize > ballListUpWidgets.length);
-  }
-
   bool _isScrollerMoveBottomOver() {
     return scrollController.offset >=
             scrollController.position.maxScrollExtent &&
@@ -129,23 +102,22 @@ class H00302PageViewModel extends ChangeNotifier
   }
 
   @override
-  onUserMakeBallListUp(List<UserToMakeBallResDto> userToMakerBallResDtos) {
-    ballListUpWidgets.addAll(userToMakerBallResDtos
+  void searchResult(PageWrap<FBallResDto> result) {
+    listUpItem = result;
+    ballListUpWidgets.addAll(listUpItem.content
         .map((x) => BallStyle2Widget.create(fBallResDto: x))
         .toList());
     notifyListeners();
   }
 
   isEmptyPage() {
-    if (ballListUpWidgets.length == 0 && _isInitFinish) {
+    if (listUpItem.totalElements == 0 && _isInitFinish) {
       return true;
     } else {
       return false;
     }
   }
 
-  @override
-  onLoginCheck(bool isLogin) {
-    notifyListeners();
-  }
+
+
 }

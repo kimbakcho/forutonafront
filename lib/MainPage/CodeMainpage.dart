@@ -51,7 +51,7 @@ class _CodeMainpageState extends State<CodeMainpage> {
         ChangeNotifierProvider<H001ViewModel>(
             create: (_) => H001ViewModel(
                 context: context,
-                authUserCaseInputPort: sl(),
+                fireBaseAuthAdapterForUseCase: sl(),
                 geoLocationUtilUseCaseInputPort: sl(),
                 fBallListUpUseCaseInputPort: sl(),
                 tagRankingFromPositionUseCaseInputPort: sl()))

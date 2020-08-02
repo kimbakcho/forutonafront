@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Mediator/FBallReplyMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/ReplyContentBar/FBallSubReplyContentBar.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 
 
 class FBallReplyContentBarViewModel extends ChangeNotifier {
-  final AuthUserCaseInputPort _authUserCaseInputPort;
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final FBallReplyMediator _fBallReplyMediator;
   final FBallReplyPopupUseCaseInputPort _fBallReplyPopupUseCaseInputPort;
@@ -25,10 +26,10 @@ class FBallReplyContentBarViewModel extends ChangeNotifier {
       @required this.fBallReply,
       @required FBallReplyPopupUseCaseInputPort fBallReplyPopupUseCaseInputPort,
       @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required AuthUserCaseInputPort authUserCaseInputPort,
+      @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required FBallReplyMediator fBallReplyMediator})
       : _fBallReplyMediator = fBallReplyMediator,
-        _authUserCaseInputPort = authUserCaseInputPort,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _fBallReplyPopupUseCaseInputPort = fBallReplyPopupUseCaseInputPort;
 
@@ -63,7 +64,7 @@ class FBallReplyContentBarViewModel extends ChangeNotifier {
   bool isSubReplyEmpty() => fBallReply.fBallSubReplys.length == 0;
 
   void insertSubReply() async {
-    if (await _authUserCaseInputPort.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       await showSubReplyInputDialog();
     }
   }

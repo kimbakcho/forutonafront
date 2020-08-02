@@ -2,45 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
-import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationInsertReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallValuation/FBallValuationReqDto.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
 class FBallValuationRepositoryImpl implements FBallValuationRepository {
-
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthBaseAdapter;
   final FBallValuationRemoteDataSource _fBallValuationRemoteDataSource;
 
-  final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
-
   FBallValuationRepositoryImpl(
-      {@required FBallValuationRemoteDataSource fBallValuationRemoteDataSource,
-        @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter})
+      {@required FireBaseAuthAdapterForUseCase fireBaseAuthBaseAdapter,
+      @required FBallValuationRemoteDataSource fBallValuationRemoteDataSource})
       : _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
         _fBallValuationRemoteDataSource = fBallValuationRemoteDataSource;
 
   @override
-  Future<void> deleteFBallValuation({@required String valueUuid}) async {
-    await _fBallValuationRemoteDataSource.deleteFBallValuation(
-        valueUuid: valueUuid,
-        tokenFDio:
-        FDio.token(
-            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
-    return;
-  }
-
-  @override
-  Future<FBallValuationWrap> getFBallValuation(
-      {@required FBallValuationReqDto reqDto}) async {
-    return await _fBallValuationRemoteDataSource.getFBallValuation(
-        reqDto: reqDto, noneTokenFDio: FDio.noneToken());
-  }
-
-  @override
-  Future<FBallValuation> save(
-      {@required FBallValuationInsertReqDto reqDto}) async {
-    return await _fBallValuationRemoteDataSource.save(
+  Future<FBallLikeResDto> ballLike(FBallLikeReqDto reqDto) async {
+    return _fBallValuationRemoteDataSource.ballLike(
         reqDto: reqDto,
-        tokenFDio:
-        FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+        tokenFDio: FDio.token(
+            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 }

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
@@ -30,8 +30,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             context: context,
             issueBall: _issueBall,
             issueBallBasicStyle: IssueBallBasicStyleImpl(
-                authUserCaseInputPort: sl(),
-                ballHitUseCaseInPutPort: sl(),
+              fireBaseAuthAdapterForUseCase: sl(),
                 context: context),
             geoLocationUtilUseCaseInputPort: sl()),
         child: Consumer<IssueBallWidgetStyle1ViewModel>(

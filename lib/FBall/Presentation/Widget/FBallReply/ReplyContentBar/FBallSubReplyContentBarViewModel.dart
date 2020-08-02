@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Data/Entity/FUserInfo.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Auth/AuthUserCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
-
-
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
 class FBallSubReplyContentBarViewModel extends ChangeNotifier {
   final FBallReply fBallReply;
   final BuildContext context;
-  final AuthUserCaseInputPort _authUserCaseInputPort;
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final FBallReplyPopupUseCaseInputPort _fBallReplyPopupUseCaseInputPort;
 
@@ -20,12 +18,12 @@ class FBallSubReplyContentBarViewModel extends ChangeNotifier {
       @required
           this.context,
       @required
-          AuthUserCaseInputPort authUserCaseInputPort,
+          FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required
           SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
       @required
           FBallReplyPopupUseCaseInputPort fBallReplyPopupUseCaseInputPort})
-      : _authUserCaseInputPort = authUserCaseInputPort,
+      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _fBallReplyPopupUseCaseInputPort = fBallReplyPopupUseCaseInputPort;
 

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBall.dart';
-import 'package:forutonafront/FBall/Data/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBall.dart';
+import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
@@ -111,7 +111,7 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
     if (isRootReply(fBallReplyResDto)) {
       replyList.insert(0, FBallReply.fromFBallReplyResDto(fBallReplyResDto));
       totalReplyCount++;
-      _fBall.addCommentCount();
+//      _fBall.addCommentCount();
     } else {
       var indexWhere = findSubReplyRootNode(fBallReplyResDto.replyNumber);
       replyList[indexWhere]

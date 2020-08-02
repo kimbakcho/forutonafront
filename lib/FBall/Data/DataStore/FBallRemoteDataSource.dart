@@ -7,6 +7,8 @@ import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
@@ -58,6 +60,9 @@ abstract class FBallRemoteDataSource {
 
   Future<FBallImageUpload> ballImageUpload(
       {@required List<Uint8List> images, @required FDio tokenFDio});
+
+  Future<FBallLikeResDto> like(
+      {@required FBallLikeReqDto reqDto, @required FDio tokenFDio});
 }
 
 class FBallRemoteSourceImpl implements FBallRemoteDataSource {
@@ -178,5 +183,14 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
     var response =
         await tokenFDio.post("/v1/FBall/BallImageUpload", data: formData);
     return FBallImageUpload.fromJson(response.data);
+  }
+
+  @override
+  Future<FBallLikeResDto> like(
+      {@required FBallLikeReqDto reqDto, @required FDio tokenFDio}) async {
+    var response = await tokenFDio.post<FBallLikeResDto>(
+      "/v1/FBall/Like",data: reqDto.toJson()
+    );
+    return response.data;
   }
 }

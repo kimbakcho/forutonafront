@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/FBall/Data/Value/FBallType.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'IssueBallWidgetStyle1.dart';
 

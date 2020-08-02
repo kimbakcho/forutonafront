@@ -1,13 +1,9 @@
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-import 'package:forutonafront/Common/PageableDto/FSort.dart';
-import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
@@ -31,6 +27,8 @@ class H00502PageViewModel extends ChangeNotifier
       new List<DropdownMenuItem<H00502DropdownItemType>>();
   List<BallStyle1Widget> ballWidgetLists = [];
   ScrollController mainDropDownBtnController = new ScrollController();
+
+  PageWrap<FBallResDto> listUp = PageWrap<FBallResDto>();
 
   bool _isLoading = false;
 
@@ -112,13 +110,6 @@ class H00502PageViewModel extends ChangeNotifier
 
   int setNextPage() => _pageCount++;
 
-  FSorts _makeSearchOrders() {
-    FSorts fSort = new FSorts();
-    fSort.sorts.add(
-        new FSort(EnumToString.parse(selectOrder.value), selectOrder.orders));
-    return fSort;
-  }
-
   bool _hasBalls() =>
       !(_pageCount * _ballPageLimitSize > ballWidgetLists.length);
 
@@ -141,13 +132,12 @@ class H00502PageViewModel extends ChangeNotifier
         await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
     FBallListUpFromTagNameReqDto reqDto = new FBallListUpFromTagNameReqDto(
         searchTag: searchTag,
-        sortsJsonText: _makeSearchOrders().toQueryJson(),
         latitude: position.latitude,
-        longitude: position.longitude,
-        size: _ballPageLimitSize,
-        page: _pageCount);
+        longitude: position.longitude);
     await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTagName(
-        reqDto, Pageable(0, 10, ""), this);
+        reqDto,
+        Pageable(_pageCount, _ballPageLimitSize, "makeTimeDESCAliveDESC"),
+        outputPort: this);
     isLoading = false;
   }
 
@@ -192,20 +182,18 @@ class H00502PageViewModel extends ChangeNotifier
     }
   }
 
+
   @override
-  onBallListUpFromSearchTagName(List<FBallResDto> fBallResDtoList) {
-    if (isFirstPage(_pageCount)) {
+  void searchResult(PageWrap<FBallResDto> result) {
+    listUp = result;
+    if(listUp.first){
       ballWidgetLists.clear();
     }
-    ballWidgetLists.addAll(fBallResDtoList
+    ballWidgetLists.addAll(listUp.content
         .map((x) => BallStyle1Widget.create(fBallResDto: x))
         .toList());
     notifyListeners();
-  }
-
-  @override
-  onBallListUpFromSearchTagNameBallTotalCount(int fBallCount) {
-    emitBallListUpFromSearchTagNameBallTotalCount(fBallCount);
+    emitBallListUpFromSearchTagNameBallTotalCount(listUp.totalElements);
   }
 
   @override
@@ -215,8 +203,5 @@ class H00502PageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  @override
-  void searchResult(PageWrap listUpItem) {
-    // TODO: implement searchResult
-  }
+
 }

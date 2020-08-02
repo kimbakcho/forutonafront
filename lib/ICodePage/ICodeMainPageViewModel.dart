@@ -11,7 +11,6 @@ import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style1/FBallResForMarkerDto.dart';
@@ -236,12 +235,9 @@ class ICodeMainPageViewModel extends ChangeNotifier
         northeastPoint.latitude,
         northeastPoint.longitude,
         currentMapPosition.target.latitude,
-        currentMapPosition.target.longitude,
-        pageCount,
-        pageSize,
-        sorts.toQueryJson());
+        currentMapPosition.target.longitude);
     _fBallListUpUseCaseInputPort.searchFBallListUpFromMapArea(
-        reqDto, Pageable(0, 10, ""), this);
+        reqDto, Pageable(0, 10, ""), outputPort: this);
   }
 
   onBallSelectFunction(FBallResForMarker resDto) async {

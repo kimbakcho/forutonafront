@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Data/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
 
