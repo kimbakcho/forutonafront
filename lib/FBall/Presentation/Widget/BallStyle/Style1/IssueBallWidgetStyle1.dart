@@ -177,8 +177,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             left: 34,
             top: 0,
             child: Text(model.issueBall.getDisplayNickName(),
-                style: TextStyle(
-                  fontFamily: "Gibson",
+                style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                   color: Color(0xff454f63),

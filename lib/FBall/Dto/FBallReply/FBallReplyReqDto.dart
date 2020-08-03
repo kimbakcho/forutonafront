@@ -7,8 +7,7 @@ class FBallReplyReqDto {
   String ballUuid;
   int replyNumber;
   bool reqOnlySubReply;
-  int size;
-  int page;
+
 
   FBallReplyReqDto();
   factory FBallReplyReqDto.fromJson(Map<String, dynamic> json) =>

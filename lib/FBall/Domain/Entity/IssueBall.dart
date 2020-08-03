@@ -20,8 +20,7 @@ part 'IssueBall.g.dart';
 @JsonSerializable(explicitToJson: true)
 class IssueBall extends FBall{
 
-  @JsonKey(ignore: true)
-  Preference _preference = sl();
+
 
   IssueBall(){
     ballType = FBallType.IssueBall;
@@ -36,21 +35,13 @@ class IssueBall extends FBall{
     issueBall._issueBallDescription = IssueBallDescription.fromJson(json.decode(resDto.description));
     return issueBall;
   }
-
-  get description {
-    return json.encode(_issueBallDescription.toJson());
-  }
-
   factory IssueBall.fromJson(Map<String, dynamic> json) =>
       _$IssueBallFromJson(json);
 
   Map<String, dynamic> toJson() => _$IssueBallToJson(this);
 
-  bool isAliveBall(){
-    return activationTime.isAfter(DateTime.now());
-  }
-  bool isDeadBall(){
-    return activationTime.isBefore(DateTime.now());
+  get description {
+    return json.encode(_issueBallDescription.toJson());
   }
 
   bool isMainPicture(){
@@ -64,79 +55,6 @@ class IssueBall extends FBall{
   int pictureCount(){
     return _issueBallDescription.pictureCount();
   }
-
-  String getDisplayBallName() {
-    if(ballDeleteFlag){
-      return "(삭제됨)${super.ballName}";
-    }else {
-      return ballName;
-    }
-  }
-
-  String getDisplayPlaceAddress() {
-    if(ballDeleteFlag){
-      return "";
-    }else {
-      return super.placeAddress;
-    }
-  }
-
-  String getDisplayProfilePictureUrl() {
-    if(ballDeleteFlag){
-      return _preference.basicProfileImageUrl;
-    }else {
-      return super.profilePictureUrl;
-    }
-  }
-
-  String getDisplayNickName(){
-    if(ballDeleteFlag){
-      return "";
-    }else {
-      return super.nickName;
-    }
-  }
-
-  String getDisplayRemainingTime() {
-    if(ballDeleteFlag){
-      return "-";
-    }else {
-      return TimeDisplayUtil.getCalcToStrFromNow(activationTime);
-    }
-  }
-
-  String getDisplayMakeTime() {
-    if(ballDeleteFlag){
-      return "-";
-    }else {
-      return TimeDisplayUtil.getCalcToStrFromNow(super.makeTime);
-    }
-  }
-
-  String getDisplayCommentCount (){
-    if(ballDeleteFlag){
-      return "-";
-    }else {
-      return commentCount.toString();
-    }
-  }
-
-  String getDisplayDisLikeCount() {
-    if(ballDeleteFlag){
-      return "-";
-    }else {
-      return ballDisLikes.toString();
-    }
-  }
-
-  String getDisplayLikeCount(){
-    if(ballDeleteFlag){
-      return "-";
-    }else {
-      return ballLikes.toString();
-    }
-  }
-
 
 
   List<FBallDesImages> getDesImages() {
@@ -158,6 +76,7 @@ class IssueBall extends FBall{
       return _issueBallDescription.text;
     }
   }
+
 
   setDescriptionText(String value) {
     this._issueBallDescription.text = value;

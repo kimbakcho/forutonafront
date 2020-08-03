@@ -10,8 +10,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallSty
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
-import 'package:forutonafront/Tag/Dto/RelationTagRankingFromTagNameReqDto.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 
 import 'H00502DropdownItemType.dart';
 import 'H00502OrdersEnum.dart';
@@ -22,7 +21,7 @@ class H00502PageViewModel extends ChangeNotifier
         RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort {
   final BuildContext context;
 
-  List<TagRankingDto> relationTagRankings = [];
+  List<TagRankingResDto> relationTagRankings = [];
   List<DropdownMenuItem<H00502DropdownItemType>> dropDownItems =
       new List<DropdownMenuItem<H00502DropdownItemType>>();
   List<BallStyle1Widget> ballWidgetLists = [];
@@ -88,11 +87,10 @@ class H00502PageViewModel extends ChangeNotifier
 
     ballListUpFromSearchTag();
 
-    RelationTagRankingFromTagNameReqDto relationTagRankingFromTagNameReqDto =
-        RelationTagRankingFromTagNameReqDto(searchTagName: searchTag);
+
     _rankingFromTagNameOrderByBallPowerUseCaseInputPort
         .searchRelationTagRankingFromTagNameOrderByBallPower(
-            reqDto: relationTagRankingFromTagNameReqDto, outputPort: this);
+            searchTag:  searchTag, outputPort: this);
 
     _initFinishFlag = true;
   }
@@ -198,7 +196,7 @@ class H00502PageViewModel extends ChangeNotifier
 
   @override
   onRelationTagRankingFromTagNameOrderByBallPower(
-      List<TagRankingDto> tagRankingDtos) {
+      List<TagRankingResDto> tagRankingDtos) {
     this.relationTagRankings = tagRankingDtos;
     notifyListeners();
   }

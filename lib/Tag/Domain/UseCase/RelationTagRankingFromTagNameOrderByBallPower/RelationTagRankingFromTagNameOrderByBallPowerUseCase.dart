@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
-import 'package:forutonafront/Tag/Dto/RelationTagRankingFromTagNameReqDto.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
-
+import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
 
@@ -15,17 +13,15 @@ class RelationTagRankingFromTagNameOrderByBallPowerUseCase
       : _tagRepository = tagRepository;
 
   @override
-  Future<List<TagRankingDto>>
+  Future<List<TagRankingResDto>>
       searchRelationTagRankingFromTagNameOrderByBallPower(
-          {@required RelationTagRankingFromTagNameReqDto reqDto,
+          {@required String searchTag,
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort
               outputPort}) async {
-    var fBallTagRankingWrap = await _tagRepository
-        .getRelationTagRankingFromTagNameOrderByBallPower(reqDto);
-    var result = fBallTagRankingWrap.contents
-        .map((x) => TagRankingDto.fromTagRanking(x))
-        .toList();
-    outputPort.onRelationTagRankingFromTagNameOrderByBallPower(result);
-    return result;
+    List<TagRankingResDto> tagRankingResDots = await _tagRepository
+        .getRelationTagRankingFromTagNameOrderByBallPower(searchTag);
+
+    outputPort.onRelationTagRankingFromTagNameOrderByBallPower(tagRankingResDots);
+    return tagRankingResDots;
   }
 }

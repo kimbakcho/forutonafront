@@ -100,7 +100,6 @@ class FBallReply {
     fBallReply.userNickName = item.userNickName;
     fBallReply.userProfilePictureUrl = item.userProfilePictureUrl;
     fBallReply.deleteFlag = item.deleteFlag;
-    fBallReply.subReplyCount = item.subReplyCount;
 
     return fBallReply;
   }

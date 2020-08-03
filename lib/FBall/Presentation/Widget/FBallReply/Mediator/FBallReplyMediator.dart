@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Entity/FBall.dart';
 import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
@@ -6,7 +8,7 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseO
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 
 abstract class FBallReplyColleague {
@@ -43,8 +45,8 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
     _fBallReplyColleagueList.remove(fBallReplyColleague);
   }
 
-  Future<void> reqFBallReply(FBallReplyReqDto reqDto) async {
-    await _fBallReplyUseCaseInputPort.reqFBallReply(reqDto, outputPort: this);
+  Future<void> reqFBallReply(FBallReplyReqDto reqDto,Pageable pageable) async {
+    await _fBallReplyUseCaseInputPort.reqFBallReply(reqDto,pageable, outputPort: this);
   }
 
   @override
@@ -56,29 +58,29 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
   }
 
   @override
-  onFBallReply(FBallReplyResWrapDto fBallReplyResWrapDto) {
-    if (isFirstPage(fBallReplyResWrapDto) &&
-        isOnlyMainReply(fBallReplyResWrapDto)) {
-      replyList.clear();
-    }
-    if (isFirstPage(fBallReplyResWrapDto) &&
-        fBallReplyResWrapDto.onlySubReply) {
-      var indexWhere =
-          findSubReplyRootNode(fBallReplyResWrapDto.contents[0].replyNumber);
-      replyList[indexWhere].fBallSubReplys.clear();
-    }
-
-    if (isOnlyMainReply(fBallReplyResWrapDto)) {
-      replyList.addAll(fBallReplyResWrapDto.contents
-          .map((e) => FBallReply.fromFBallReplyResDto(e))
-          .toList());
-    } else {
-      var indexWhere =
-          findSubReplyRootNode(fBallReplyResWrapDto.contents[0].replyNumber);
-      replyList[indexWhere].fBallSubReplys.addAll(fBallReplyResWrapDto.contents
-          .map((e) => FBallReply.fromFBallReplyResDto(e))
-          .toList());
-    }
+  onFBallReply(PageWrap<FBallReplyResDto> fBallReplyResWrapDto) {
+//    if (isFirstPage(fBallReplyResWrapDto) &&
+//        isOnlyMainReply(fBallReplyResWrapDto)) {
+//      replyList.clear();
+//    }
+//    if (isFirstPage(fBallReplyResWrapDto) &&
+//        fBallReplyResWrapDto.onlySubReply) {
+//      var indexWhere =
+//          findSubReplyRootNode(fBallReplyResWrapDto.contents[0].replyNumber);
+//      replyList[indexWhere].fBallSubReplys.clear();
+//    }
+//
+//    if (isOnlyMainReply(fBallReplyResWrapDto)) {
+//      replyList.addAll(fBallReplyResWrapDto.contents
+//          .map((e) => FBallReply.fromFBallReplyResDto(e))
+//          .toList());
+//    } else {
+//      var indexWhere =
+//          findSubReplyRootNode(fBallReplyResWrapDto.contents[0].replyNumber);
+//      replyList[indexWhere].fBallSubReplys.addAll(fBallReplyResWrapDto.contents
+//          .map((e) => FBallReply.fromFBallReplyResDto(e))
+//          .toList());
+//    }
 
     emitAllOnUpdateFBallReply();
   }
@@ -88,11 +90,11 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
         .indexWhere((element) => element.replyNumber == replyNumber);
   }
 
-  bool isFirstPage(FBallReplyResWrapDto fBallReplyResWrapDto) =>
-      fBallReplyResWrapDto.offset == 0;
-
-  bool isOnlyMainReply(FBallReplyResWrapDto fBallReplyResWrapDto) =>
-      !fBallReplyResWrapDto.onlySubReply;
+//  bool isFirstPage(FBallReplyResWrapDto fBallReplyResWrapDto) =>
+//      fBallReplyResWrapDto.offset == 0;
+//
+//  bool isOnlyMainReply(FBallReplyResWrapDto fBallReplyResWrapDto) =>
+//      !fBallReplyResWrapDto.onlySubReply;
 
   void emitAllOnUpdateFBallReply() {
     _fBallReplyColleagueList.forEach((element) {

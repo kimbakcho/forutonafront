@@ -1,12 +1,18 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
+import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallState.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfoSimple.dart';
-import 'package:forutonafront/Tag/Data/Entity/FBallTag.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../../Preference.dart';
 
 part 'FBall.g.dart';
 
@@ -34,8 +40,6 @@ class FBall {
   int contributor;
   bool ballDeleteFlag;
 
-  @JsonKey(ignore: true)
-  FBallRepository _fBallRepository;
 
   FBall();
 
@@ -45,10 +49,12 @@ class FBall {
   Map<String, dynamic> toJson() => _$FBallToJson(this);
 
   Future<void> ballHit() async {
+    FBallRepository _fBallRepository = sl();
      ballHits = await _fBallRepository.ballHit(ballUuid);
   }
 
   Future<void> ballUpdate(FBallUpdateReqDto reqDto) async {
+    FBallRepository _fBallRepository = sl();
     var fBallResDto = await _fBallRepository.updateBall(reqDto);
     longitude = fBallResDto.longitude;
     latitude = fBallResDto.latitude;
@@ -59,14 +65,108 @@ class FBall {
   }
 
   Future<void> delete() async{
+    FBallRepository _fBallRepository = sl();
     await _fBallRepository.deleteBall(ballUuid);
     ballDeleteFlag =true;
     description = "{}";
   }
 
-  Future<void> like(int point){
-
+  bool isAliveBall(){
+    return activationTime.isAfter(DateTime.now());
+  }
+  bool isDeadBall(){
+    return activationTime.isBefore(DateTime.now());
   }
 
+  Future<bool> isCanModify() async {
+    FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter = sl();
+    var firebaseUserUid = await fireBaseAuthBaseAdapter.userUid();
+    if(ballUuid == firebaseUserUid){
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+  String getDisplayBallName() {
+    if(ballDeleteFlag){
+      return "(삭제됨)"+ ballName ;
+    }else {
+      return ballName;
+    }
+  }
+
+  String getDisplayPlaceAddress() {
+    if(ballDeleteFlag){
+      return "";
+    }else {
+      return placeAddress;
+    }
+  }
+
+  String getDisplayBallHits(){
+    if(ballDeleteFlag){
+      return "-";
+    }else {
+      return NomalValueDisplay.changeIntDisplaystr(ballHits);
+    }
+  }
+
+  String getDisplayProfilePictureUrl() {
+    if(ballDeleteFlag){
+      Preference _preference = sl();
+      return _preference.basicProfileImageUrl;
+    }else {
+      return profilePictureUrl;
+    }
+  }
+
+  String getDisplayNickName(){
+    if(ballDeleteFlag){
+      return "";
+    }else {
+      return uid.nickName;
+    }
+  }
+
+  String getDisplayRemainingTime() {
+    if(ballDeleteFlag){
+      return "-";
+    }else {
+      return TimeDisplayUtil.getCalcToStrFromNow(activationTime);
+    }
+  }
+
+  String getDisplayMakeTime() {
+    if(ballDeleteFlag){
+      return "-";
+    }else {
+      return TimeDisplayUtil.getCalcToStrFromNow(makeTime);
+    }
+  }
+
+  String getDisplayCommentCount (){
+    if(ballDeleteFlag){
+      return "-";
+    }else {
+      return commentCount.toString();
+    }
+  }
+
+  String getDisplayDisLikeCount() {
+    if(ballDeleteFlag){
+      return "-";
+    }else {
+      return ballDisLikes.toString();
+    }
+  }
+
+  String getDisplayLikeCount(){
+    if(ballDeleteFlag){
+      return "-";
+    }else {
+      return ballLikes.toString();
+    }
+  }
 
 }

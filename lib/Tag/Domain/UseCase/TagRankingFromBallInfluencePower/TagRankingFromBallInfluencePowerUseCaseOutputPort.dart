@@ -1,5 +1,5 @@
-import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 
 abstract class TagRankingFromBallInfluencePowerUseCaseOutputPort {
-  void onTagRankingFromBallInfluencePower(List<TagRankingDto> tagRankingDtos);
+  void onTagRankingFromBallInfluencePower(List<TagRankingResDto> tagRankingDtos);
 }

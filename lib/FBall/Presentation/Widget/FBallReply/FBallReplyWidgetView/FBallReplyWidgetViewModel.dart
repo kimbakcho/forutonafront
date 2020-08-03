@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
@@ -30,9 +31,9 @@ class FBallReplyWidgetViewModel extends ChangeNotifier
     FBallReplyReqDto reqDto = new FBallReplyReqDto();
     reqDto.ballUuid = ballUuid;
     reqDto.reqOnlySubReply = false;
-    reqDto.size = replyFirstPageMaxReply;
-    reqDto.page = 0;
-    fBallReplyMediator.reqFBallReply(reqDto);
+    Pageable pageable = new Pageable(0, 3, "replyNumberDESC");
+
+    fBallReplyMediator.reqFBallReply(reqDto,pageable);
   }
 
   get replySimpleWidget {

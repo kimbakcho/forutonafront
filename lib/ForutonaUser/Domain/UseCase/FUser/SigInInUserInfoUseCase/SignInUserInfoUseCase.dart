@@ -18,7 +18,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   StreamController _fUserInfoStreamController;
   SignInUserInfoUseCase({@required FUserRepository fUserRepository})
       : _fUserRepository = fUserRepository {
-    _fUserInfoStreamController = StreamController<FUserInfo>.broadcast();
+    _fUserInfoStreamController = StreamController<FUserInfoResDto>.broadcast();
     fUserInfoStream = _fUserInfoStreamController.stream;
   }
 

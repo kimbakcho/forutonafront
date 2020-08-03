@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
-import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
-
 import 'TagFromBallUuidUseCaseInputPort.dart';
 import 'TagFromBallUuidUseCaseOutputPort.dart';
 

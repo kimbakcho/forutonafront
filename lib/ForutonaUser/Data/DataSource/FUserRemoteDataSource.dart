@@ -39,13 +39,13 @@ abstract class FUserRemoteDataSource {
 class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
 
   @override
-  Future<int> updateUserPosition(LatLng latLng, FDio tokenFDio) async {
+  Future<void> updateUserPosition(LatLng latLng, FDio tokenFDio) async {
     var response = await tokenFDio.put(
         "/v1/FUserInfo/UserPosition", data: UserPositionUpdateReqDto(
       lng: latLng.longitude,
       lat: latLng.latitude,
     ).toJson());
-    return response.data;
+
   }
 
   @override

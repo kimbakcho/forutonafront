@@ -1,5 +1,6 @@
-import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 
-abstract class RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort{
-  onRelationTagRankingFromTagNameOrderByBallPower(List<TagRankingDto> tagRankingDtos);
+abstract class RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort {
+  onRelationTagRankingFromTagNameOrderByBallPower(
+      List<TagRankingResDto> tagRankingDtos);
 }

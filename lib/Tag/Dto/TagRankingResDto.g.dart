@@ -1,20 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'TagRanking.dart';
+part of 'TagRankingResDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TagRanking _$TagRankingFromJson(Map<String, dynamic> json) {
-  return TagRanking(
-    json['ranking'] as int,
-    json['tagName'] as String,
-    (json['tagPower'] as num)?.toDouble(),
-  )..tagBallPower = json['tagBallPower'] as int;
+TagRankingResDto _$TagRankingResDtoFromJson(Map<String, dynamic> json) {
+  return TagRankingResDto()
+    ..ranking = json['ranking'] as int
+    ..tagName = json['tagName'] as String
+    ..tagPower = (json['tagPower'] as num)?.toDouble()
+    ..tagBallPower = json['tagBallPower'] as int;
 }
 
-Map<String, dynamic> _$TagRankingToJson(TagRanking instance) =>
+Map<String, dynamic> _$TagRankingResDtoToJson(TagRankingResDto instance) =>
     <String, dynamic>{
       'ranking': instance.ranking,
       'tagName': instance.tagName,

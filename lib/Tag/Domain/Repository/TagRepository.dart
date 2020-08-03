@@ -1,13 +1,10 @@
-import 'package:forutonafront/Tag/Data/Entity/FBallTagWrap.dart';
-import 'package:forutonafront/Tag/Data/Value/FBallTagRankingWrap.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
-import 'package:forutonafront/Tag/Dto/RelationTagRankingFromTagNameReqDto.dart';
-import 'package:forutonafront/Tag/Dto/TagFromBallReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 
 
 abstract class  TagRepository {
-  Future<FBallTagRankingWrap> getFTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto);
-  Future<FBallTagRankingWrap> getRelationTagRankingFromTagNameOrderByBallPower(RelationTagRankingFromTagNameReqDto reqDto);
+  Future<List<TagRankingResDto>> getFTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto);
+  Future<List<TagRankingResDto>> getRelationTagRankingFromTagNameOrderByBallPower(String searchTag);
   Future<List<FBallTagResDto>> tagFromBallUuid(String ballUuid);
 }

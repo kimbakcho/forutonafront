@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseOutputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 
 class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
@@ -20,38 +21,34 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   @override
   Future<FBallReplyResDto> deleteFBallReply(String replyUuid,{FBallReplyUseCaseOutputPort outputPort}) async {
     
-    var fBallReply = await _fBallReplyRepository.deleteFBallReply(replyUuid);
-    var fBallReplyResDto = FBallReplyResDto.fromFBallReply(fBallReply);
+    var fBallReplyResDto = await _fBallReplyRepository.deleteFBallReply(replyUuid);
     outputPort.onDeleteFBallReply(fBallReplyResDto);
     return fBallReplyResDto;
   }
 
   @override
-  Future<FBallReplyResWrapDto> reqFBallReply(FBallReplyReqDto reqDto,
+  Future<PageWrap<FBallReplyResDto>> reqFBallReply(FBallReplyReqDto reqDto,Pageable pageable,
       {FBallReplyUseCaseOutputPort outputPort}) async {
-    var fBallReplyWrap = await _fBallReplyRepository.getFBallReply(reqDto);
-    var fBallReplyResWrapDto =
-        FBallReplyResWrapDto.fromFBallReplyResWrap(fBallReplyWrap);
+    PageWrap<FBallReplyResDto> pageWrapReply = await _fBallReplyRepository.getFBallReply(reqDto,pageable);
     if (outputPort != null) {
-      outputPort.onFBallReply(fBallReplyResWrapDto);
-      outputPort.onFBallReplyTotalCount(fBallReplyResWrapDto.replyTotalCount);
+      outputPort.onFBallReply(pageWrapReply);
+      outputPort.onFBallReplyTotalCount(pageWrapReply.totalElements);
     }
-    return fBallReplyResWrapDto;
+    return pageWrapReply;
   }
 
   @override
   Future<FBallReplyResDto> insertFBallReply(
       FBallReplyInsertReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
-    var fBallReply = await _fBallReplyRepository.insertFBallReply(reqDto);
-    var fBallReplyResDto = FBallReplyResDto.fromFBallReply(fBallReply);
+    var fBallReplyResDto = await _fBallReplyRepository.insertFBallReply(reqDto);
     outputPort.onInsertFBallReply(fBallReplyResDto);
     return fBallReplyResDto;
   }
 
   @override
   Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
-    var fBallReply = await _fBallReplyRepository.updateFBallReply(reqDto);
-    var fBallReplyResDto = FBallReplyResDto.fromFBallReply(fBallReply);
+    var fBallReplyResDto = await _fBallReplyRepository.updateFBallReply(reqDto);
+
     outputPort.onUpdateFBallReply(fBallReplyResDto);
     return fBallReplyResDto;
   }

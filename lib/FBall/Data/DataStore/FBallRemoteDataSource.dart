@@ -61,8 +61,7 @@ abstract class FBallRemoteDataSource {
   Future<FBallImageUpload> ballImageUpload(
       {@required List<Uint8List> images, @required FDio tokenFDio});
 
-  Future<FBallLikeResDto> like(
-      {@required FBallLikeReqDto reqDto, @required FDio tokenFDio});
+
 }
 
 class FBallRemoteSourceImpl implements FBallRemoteDataSource {
@@ -185,12 +184,4 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
     return FBallImageUpload.fromJson(response.data);
   }
 
-  @override
-  Future<FBallLikeResDto> like(
-      {@required FBallLikeReqDto reqDto, @required FDio tokenFDio}) async {
-    var response = await tokenFDio.post<FBallLikeResDto>(
-      "/v1/FBall/Like",data: reqDto.toJson()
-    );
-    return response.data;
-  }
 }

@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Mediator/FBallReplyMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/ReplyContentBar/FBallReplyContentBar.dart';
-
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class FBallDetailReplyViewModel extends ChangeNotifier
     with FBallReplyColleague {
@@ -65,13 +64,14 @@ class FBallDetailReplyViewModel extends ChangeNotifier
   reqMainReplyList(int page, int size) async {
     FBallReplyReqDto reqDto = FBallReplyReqDto();
     reqDto.ballUuid = ballUuid;
-    reqDto.size = size;
-    reqDto.page = page;
+
     reqDto.reqOnlySubReply = false;
+
+    Pageable pageable = new Pageable(page, size, "replyNumber,DESC");
     if (page == 0) {
       _fBallReplyMediator.fBallReplyListClear();
     }
-    _fBallReplyMediator.reqFBallReply(reqDto);
+    _fBallReplyMediator.reqFBallReply(reqDto,pageable);
   }
 
   get replyContentBars {

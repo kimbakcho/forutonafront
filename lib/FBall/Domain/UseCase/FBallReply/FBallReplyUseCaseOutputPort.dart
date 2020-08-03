@@ -1,8 +1,8 @@
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResWrapDto.dart';
 
 abstract class FBallReplyUseCaseOutputPort {
-  onFBallReply(FBallReplyResWrapDto fBallResDto);
+  onFBallReply(PageWrap<FBallReplyResDto> pageWrapReplys);
   onFBallReplyTotalCount(int totalCount);
 
   void onUpdateFBallReply(FBallReplyResDto fBallReplyResDto);

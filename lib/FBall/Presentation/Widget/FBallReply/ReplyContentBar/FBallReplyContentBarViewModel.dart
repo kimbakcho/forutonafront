@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
@@ -46,9 +47,9 @@ class FBallReplyContentBarViewModel extends ChangeNotifier {
     reqDto.reqOnlySubReply = true;
     reqDto.replyNumber = fBallReply.replyNumber;
     reqDto.ballUuid = fBallReply.ballUuid;
-    reqDto.size = 1000;
-    reqDto.page = 0;
-    await _fBallReplyMediator.reqFBallReply(reqDto);
+
+    Pageable pageable = Pageable(0,1000,"replySort,ASC");
+    await _fBallReplyMediator.reqFBallReply(reqDto,pageable);
   }
 
   get subReplyContentBar {

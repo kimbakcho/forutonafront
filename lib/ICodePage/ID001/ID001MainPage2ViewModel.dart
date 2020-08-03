@@ -33,4 +33,12 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
   getBallUuid() {
     return _issueBall.ballUuid;
   }
+
+  getBallHits() {
+    return _issueBall.getDisplayBallHits();
+  }
+
+  getMakeTime() {
+    return _issueBall.getDisplayMakeTime();
+  }
 }

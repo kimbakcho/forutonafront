@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
 import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallReplyResWrap.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 
@@ -20,23 +23,23 @@ class FBallReplyRepositoryImpl implements FBallReplyRepository {
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter;
 
   @override
-  Future<FBallReply> deleteFBallReply(String replyUuid) async {
+  Future<FBallReplyResDto> deleteFBallReply(String replyUuid) async {
     return await _fBallReplyDataSource.deleteFBallReply(
         replyUuid, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<FBallReplyResWrap> getFBallReply(FBallReplyReqDto reqDto) async {
-    return await _fBallReplyDataSource.getFBallReply(reqDto, FDio.noneToken());
+  Future<PageWrap<FBallReplyResDto>> getFBallReply(FBallReplyReqDto reqDto,Pageable pageable) async {
+    return await _fBallReplyDataSource.getFBallReply(reqDto,pageable, FDio.noneToken());
   }
 
   @override
-  Future<FBallReply> insertFBallReply(FBallReplyInsertReqDto reqDto) async {
+  Future<FBallReplyResDto> insertFBallReply(FBallReplyInsertReqDto reqDto) async {
     return await _fBallReplyDataSource.insertFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 
   @override
-  Future<FBallReply> updateFBallReply(FBallReplyUpdateReqDto reqDto) async {
+  Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto) async {
     return await _fBallReplyDataSource.updateFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 }

@@ -6,6 +6,8 @@ import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
@@ -21,7 +23,8 @@ abstract class FBallRepository {
       {@required String makerUid, @required Pageable pageable});
 
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
-      {@required FBallListUpFromSearchTitleReqDto reqDto,@required Pageable pageable});
+      {@required FBallListUpFromSearchTitleReqDto reqDto,
+      @required Pageable pageable});
 
   Future<PageWrap<FBallResDto>> listUpFromTagName(
       {@required FBallListUpFromTagNameReqDto reqDto,
@@ -41,6 +44,5 @@ abstract class FBallRepository {
   Future<int> ballHit(String ballUuid);
 
   Future<FBallImageUpload> ballImageUpload({@required List<Uint8List> images});
-
 
 }

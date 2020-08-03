@@ -81,7 +81,11 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
 
   void _onTokenRefresh(String token) async {
     if (await _fireBaseAuthBaseAdapter.isLogin()) {
-      FUserInfo fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      var uid = await _fireBaseAuthBaseAdapter.userUid();
+     await _signInUserInfoUseCaseInputPort
+          .saveSignInInfoInMemoryFromAPiServer(uid);
+      FUserInfo fUserInfo = _signInUserInfoUseCaseInputPort
+          .reqSignInUserInfoFromMemory();
       fUserInfo.updateFCMToken(token);
     }
   }

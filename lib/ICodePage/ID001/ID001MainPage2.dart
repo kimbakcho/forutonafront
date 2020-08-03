@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
-import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:provider/provider.dart';
 
 import 'ID001WidgetPart/ID001AppBar.dart';
@@ -29,9 +26,8 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) =>
-            ID001MainPage2ViewModel(
-                ballUuid: _ballUuid, selectBallUseCaseInputPort: sl()),
+        create: (_) => ID001MainPage2ViewModel(
+            ballUuid: _ballUuid, selectBallUseCaseInputPort: sl()),
         child: Consumer<ID001MainPage2ViewModel>(builder: (_, model, __) {
           return Stack(children: <Widget>[Scaffold(body: mainBody(model))]);
         }));
@@ -40,20 +36,18 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
   Widget mainBody(ID001MainPage2ViewModel model) {
     return model.isLoadBallFinish()
         ? Container(
-        padding: EdgeInsets.only(top: MediaQuery
-            .of(context)
-            .padding
-            .top),
-        child: Column(
-          children: <Widget>[
-            ID001AppBar(model: model),
-            ID001Title(model: model),
-            ID001TagList(model: model)
-          ],
-        ))
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            child: Column(
+              children: <Widget>[
+                ID001AppBar(model: model),
+                ID001Title(
+                  ballTitle: model.getBallTitle(),
+                  hits: model.getBallHits(),
+                  makeTime: model.getMakeTime(),
+                ),
+                ID001TagList(ballUuid: model.getBallUuid()),
+              ],
+            ))
         : Container();
   }
 }
-
-
-

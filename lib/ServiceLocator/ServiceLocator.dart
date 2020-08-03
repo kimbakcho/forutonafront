@@ -27,12 +27,12 @@ import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSou
 import 'package:forutonafront/FBall/Data/DataStore/FBallPlayerRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
-import 'package:forutonafront/FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
+
 import 'package:forutonafront/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallPlayerRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallReplyRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
-import 'package:forutonafront/FBall/Data/Repository/FBallValuationRepositoryImpl.dart';
+
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
@@ -435,18 +435,11 @@ init() {
   sl.registerSingleton<UserPositionForegroundMonitoringUseCaseInputPort>(
       UserPositionForegroundMonitoringUseCase(
           geoLocationUtilBasicUseCaseInputPort: sl(),
+          signInUserInfoUseCaseInputPort: sl(),
           fUserRepository: sl(),
           fireBaseAuthAdapterForUseCase: sl()));
 
   sl.registerSingleton<BallImageListUpLoadUseCaseInputPort>(
       BallImageListUpLoadUseCase(fBallRepository: sl()));
 
-  sl.registerSingleton<FBallValuationRemoteDataSource>(
-      FBallValuationRemoteDataSourceImpl());
-
-  sl.registerSingleton<FBallValuationRepository>(FBallValuationRepositoryImpl(
-      fireBaseAuthBaseAdapter: sl(), fBallValuationRemoteDataSource: sl()));
-
-  sl.registerSingleton<BallLikeUseCaseInputPort>(
-      BallLikeUseCase(fBallValuationRepository: sl()));
 }

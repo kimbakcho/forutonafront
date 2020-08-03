@@ -19,7 +19,7 @@ import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 
 enum H001PageState { H001_01, H003_01 }
@@ -62,7 +62,7 @@ class H001ViewModel
 
   bool isLoading = false;
 
-  List<TagRankingDto> tagRankingDtos = [];
+  List<TagRankingResDto> tagRankingDtos = [];
 
   bool isInitFinish = false;
 
@@ -134,7 +134,7 @@ class H001ViewModel
   }
 
   @override
-  void onTagRankingFromBallInfluencePower(List<TagRankingDto> tagRankingDtos) {
+  void onTagRankingFromBallInfluencePower(List<TagRankingResDto> tagRankingDtos) {
     this.tagRankingDtos = tagRankingDtos;
     rankingSwiperController.move(0);
     rankingAutoPlay = true;
@@ -156,7 +156,7 @@ class H001ViewModel
             longitude: _currentSearchPosition.longitude);
 
     PageWrap<FBallResDto> pageWrap = await _fBallListUpUseCaseInputPort
-        .searchFBallListUpFromInfluencePower(reqDto, Pageable(10, 0, ""),
+        .searchFBallListUpFromInfluencePower(reqDto, Pageable(_ballPageCount, _ballPageLimitSize, "InfluenceDESC"),
             outputPort: this);
     if (pageWrap.first) {
       ballClear();
