@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
@@ -40,5 +41,13 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
 
   getMakeTime() {
     return _issueBall.getDisplayMakeTime();
+  }
+
+  getBallPosition() {
+    return Position(latitude: _issueBall.latitude,longitude: _issueBall.longitude);
+  }
+
+  getBallAddress() {
+    return _issueBall.placeAddress;
   }
 }

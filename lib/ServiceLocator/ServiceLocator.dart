@@ -5,9 +5,11 @@ import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart'
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapBitmapDescriptorUseCaseInputPort.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
-import 'package:forutonafront/Common/ImageCropUtil/ImageCropUtilInputPort.dart';
+import 'package:forutonafront/Common/ImageCropUtil/ImageUtilInputPort.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCase.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
@@ -27,19 +29,15 @@ import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSou
 import 'package:forutonafront/FBall/Data/DataStore/FBallPlayerRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
-
 import 'package:forutonafront/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallPlayerRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallReplyRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
-
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
-import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
@@ -176,11 +174,19 @@ init() {
   sl.registerSingleton<TagRankingFromBallInfluencePowerUseCaseInputPort>(
       TagRankingFromBallInfluencePowerUseCase(tagRepository: sl()));
 
-  sl.registerSingleton<ImageCropUtilInputPort>(ImageCropUtil());
+  sl.registerSingleton<ImageUtilInputPort>(ImageAvatarUtil(),
+      instanceName: "ImageAvatarUtil");
+
+  sl.registerSingleton<ImageUtilInputPort>(ImagePngResizeUtil(),
+      instanceName: "ImagePngResizeUtil");
+
+  sl.registerSingleton<ImageUtilInputPort>(ImageBorderAvatarUtil(),
+      instanceName: "ImageBorderAvatarUtil");
 
   sl.registerSingleton<AvatarImageMakerUseCaseInputPort>(
       AvatarImageMakerUseCase(
-          imageCropUtilInputPort: sl(), fileDownLoaderUseCaseInputPort: sl()));
+          imageUtilInputPort: sl.get(instanceName: "ImageAvatarUtil"),
+          fileDownLoaderUseCaseInputPort: sl()));
 
   sl.registerSingleton<CommentChannelBaseServiceUseCaseInputPort>(
       FBallReplyFCMServiceUseCase(
@@ -442,4 +448,15 @@ init() {
   sl.registerSingleton<BallImageListUpLoadUseCaseInputPort>(
       BallImageListUpLoadUseCase(fBallRepository: sl()));
 
+  sl.registerSingleton<MapBitmapDescriptorUseCaseInputPort>(
+      MapBitmapDescriptorUseCase(
+          imagePngResizeUtil: sl.get(instanceName: "ImagePngResizeUtil"),
+          fileDownLoaderUseCaseInputPort: sl(),
+          imageBorderAvatarUtil: sl.get(instanceName: "ImageBorderAvatarUtil")));
+
+  sl.registerSingleton<MapMakerDescriptorContainer>(
+      MapMakerDescriptorContainerImpl(
+          signInUserInfoUseCaseInputPort: sl(),
+          fireBaseAuthBaseAdapter: sl(),
+          mapBitmapDescriptorUseCaseInputPort: sl()));
 }

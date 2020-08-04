@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
@@ -8,6 +9,7 @@ class MainModel with ChangeNotifier {
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final FlutterLocalNotificationsPluginAdapter
       _flutterLocalNotificationsPluginAdapter;
+  final MapMakerDescriptorContainer _mapMakerDescriptorContainer;
 
   MainModel(
       {
@@ -17,15 +19,19 @@ class MainModel with ChangeNotifier {
           FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required
           FlutterLocalNotificationsPluginAdapter
-              flutterLocalNotificationsPluginAdapter })
+              flutterLocalNotificationsPluginAdapter,
+      @required MapMakerDescriptorContainer mapMakerDescriptorContainer
+      })
       : _fireBaseMessageController = fireBaseMessageController,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _flutterLocalNotificationsPluginAdapter =
-            flutterLocalNotificationsPluginAdapter
+            flutterLocalNotificationsPluginAdapter,
+  _mapMakerDescriptorContainer = mapMakerDescriptorContainer
 {
     _fireBaseMessageController.controllerStartService();
     _fireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen();
     _flutterLocalNotificationsPluginAdapter.init();
+    _mapMakerDescriptorContainer.init();
     //test
 
   }

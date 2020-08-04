@@ -1,29 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
-import 'package:forutonafront/Common/ImageCropUtil/ImageCropUtilInputPort.dart';
+import 'package:forutonafront/Common/ImageCropUtil/ImageUtilInputPort.dart';
 
 abstract class AvatarImageMakerUseCaseInputPort {
-  Future<String> makeAvatarImageToFile(String userImageUrl,
-      String imageFileName);
+  Future<String> makeAvatarImageToFile(
+      String userImageUrl, String imageFileName, Size size);
+
+  Future<List<int>> makeAvatarImageToByte(String userImageUrl, Size size);
 }
 
 class AvatarImageMakerUseCase implements AvatarImageMakerUseCaseInputPort {
   final FileDownLoaderUseCaseInputPort _fileDownLoaderUseCaseInputPort;
-  final ImageCropUtilInputPort _imageCropUtilInputPort;
+  final ImageUtilInputPort _imageUtilInputPort;
 
   AvatarImageMakerUseCase(
       {@required FileDownLoaderUseCaseInputPort fileDownLoaderUseCaseInputPort,
-        @required ImageCropUtilInputPort imageCropUtilInputPort
-      })
+      @required ImageUtilInputPort imageUtilInputPort})
       : _fileDownLoaderUseCaseInputPort = fileDownLoaderUseCaseInputPort,
-        _imageCropUtilInputPort = imageCropUtilInputPort;
+        _imageUtilInputPort = imageUtilInputPort;
 
-  Future<String> makeAvatarImageToFile(String userImageUrl,
-      String imageFileName) async {
+  Future<String> makeAvatarImageToFile(
+      String userImageUrl, String imageFileName, Size size) async {
     var largeIconByte =
-    await _fileDownLoaderUseCaseInputPort.downloadToByte(userImageUrl);
-    var largeIconFilePath = await _imageCropUtilInputPort
-        .saveMemoryImageToAvatarFile(largeIconByte, imageFileName);
+        await _fileDownLoaderUseCaseInputPort.downloadToByte(userImageUrl);
+    var largeIconFilePath = await _imageUtilInputPort
+        .saveResizeMemoryImageToFile(largeIconByte, imageFileName, size);
     return largeIconFilePath;
+  }
+
+  Future<List<int>> makeAvatarImageToByte(
+      String userImageUrl, Size size) async {
+    var largeIconByte =
+        await _fileDownLoaderUseCaseInputPort.downloadToByte(userImageUrl);
+    List<int> bytes =
+        await _imageUtilInputPort.exportReSizeImageToByte(largeIconByte, size);
+    return bytes;
   }
 }

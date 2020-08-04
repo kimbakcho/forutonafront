@@ -29,8 +29,6 @@ class _SwitchStyle1State extends State<SwitchStyle1>
   Animation _circleAnimation;
   AnimationController _animationController;
 
-
-
   @override
   void initState() {
     super.initState();

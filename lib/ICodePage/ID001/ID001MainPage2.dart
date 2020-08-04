@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
+import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +47,12 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                   makeTime: model.getMakeTime(),
                 ),
                 ID001TagList(ballUuid: model.getBallUuid()),
+                ID001Map(
+                  ballPosition: model.getBallPosition(),
+                  ballAddress: model.getBallAddress(),
+                  mapMakerDescriptorContainer: sl(),
+                  geoLocationUtilForeGroundUseCase: sl(),
+                )
               ],
             ))
         : Container();

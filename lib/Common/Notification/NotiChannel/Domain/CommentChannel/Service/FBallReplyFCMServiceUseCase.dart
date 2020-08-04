@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:forutonafront/Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
-import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
-import 'package:forutonafront/Common/ImageCropUtil/ImageCropUtilInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Dto/NotificationChannelDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
@@ -20,20 +18,16 @@ class FBallReplyFCMServiceUseCase
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final AvatarImageMakerUseCaseInputPort _avatarImageMakerUseCaseInputPort;
 
-  FBallReplyFCMServiceUseCase(
-      {@required
-          FlutterLocalNotificationsPluginAdapter
-              flutterLocalNotificationsPluginAdapter,
-      @required
-        AvatarImageMakerUseCaseInputPort avatarImageMakerUseCaseInputPort,
-      @required
-          SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      })
-      : _flutterLocalNotificationsPluginAdapter =
+  FBallReplyFCMServiceUseCase({
+    @required
+        FlutterLocalNotificationsPluginAdapter
+            flutterLocalNotificationsPluginAdapter,
+    @required AvatarImageMakerUseCaseInputPort avatarImageMakerUseCaseInputPort,
+    @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+  })  : _flutterLocalNotificationsPluginAdapter =
             flutterLocalNotificationsPluginAdapter,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
-        _avatarImageMakerUseCaseInputPort= avatarImageMakerUseCaseInputPort;
-
+        _avatarImageMakerUseCaseInputPort = avatarImageMakerUseCaseInputPort;
 
   @override
   reqNotification(Map<String, dynamic> message,
@@ -43,11 +37,13 @@ class FBallReplyFCMServiceUseCase
 
     var meInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
 
-    String replyLargeIcon = await _avatarImageMakerUseCaseInputPort.makeAvatarImageToFile(
-        fcmReplyDto.userProfileImageUrl, "replyLargeIcon");
+    String replyLargeIcon =
+        await _avatarImageMakerUseCaseInputPort.makeAvatarImageToFile(
+            fcmReplyDto.userProfileImageUrl, "replyLargeIcon", Size(100, 100));
 
     String meLargeIcon =
-        await _avatarImageMakerUseCaseInputPort.makeAvatarImageToFile(meInfo.profilePictureUrl, "meLargeIcon");
+        await _avatarImageMakerUseCaseInputPort.makeAvatarImageToFile(
+            meInfo.profilePictureUrl, "meLargeIcon", Size(100, 100));
 
     var me = Person(
       name: meInfo.nickName,
@@ -100,6 +96,4 @@ class FBallReplyFCMServiceUseCase
         "Message Box Style", firstNotificationPlatformSpecifics,
         payload: json.encode(actionPayloadDto.toJson()));
   }
-
-
 }
