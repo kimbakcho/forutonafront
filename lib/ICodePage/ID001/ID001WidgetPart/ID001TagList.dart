@@ -19,6 +19,7 @@ class ID001TagList extends StatelessWidget {
             ballUuid: ballUuid, tagFromBallUuidUseCaseInputPort: sl()),
         child: Consumer<ID001TagListViewModel>(builder: (_, tagModel, __) {
           return Container(
+            margin: EdgeInsets.only(bottom: 16),
             height: 30,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,

@@ -169,4 +169,20 @@ class FBall {
     }
   }
 
+  String getDisplayFollower() {
+    if(ballDeleteFlag){
+      return "-";
+    }else {
+      return "${uid.followCount}";
+    }
+  }
+
+  String getDisplayMakerInfluencePower() {
+    if(ballDeleteFlag){
+      return "-";
+    }else {
+      return "${uid.cumulativeInfluence.toStringAsFixed(0)}";
+    }
+  }
+
 }

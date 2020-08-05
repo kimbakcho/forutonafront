@@ -14,7 +14,8 @@ FUserInfoSimple _$FUserInfoSimpleFromJson(Map<String, dynamic> json) {
     ..isoCode = json['isoCode'] as String
     ..userLevel = (json['userLevel'] as num)?.toDouble()
     ..selfIntroduction = json['selfIntroduction'] as String
-    ..cumulativeInfluence = (json['cumulativeInfluence'] as num)?.toDouble();
+    ..cumulativeInfluence = (json['cumulativeInfluence'] as num)?.toDouble()
+    ..followCount = json['followCount'] as int;
 }
 
 Map<String, dynamic> _$FUserInfoSimpleToJson(FUserInfoSimple instance) =>
@@ -26,4 +27,5 @@ Map<String, dynamic> _$FUserInfoSimpleToJson(FUserInfoSimple instance) =>
       'userLevel': instance.userLevel,
       'selfIntroduction': instance.selfIntroduction,
       'cumulativeInfluence': instance.cumulativeInfluence,
+      'followCount': instance.followCount,
     };

@@ -150,4 +150,8 @@ class IssueBall extends FBall{
     _issueBallDescription = IssueBallDescription.fromJson(json.decode(fBallResDto.description));
   }
 
+
+
+
+
 }

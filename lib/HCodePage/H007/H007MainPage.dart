@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimation.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -84,10 +83,10 @@ class _H007MainPageState extends State<H007MainPage>
                 width: MediaQuery.of(context).size.width,
                 child: bottomSearchBtn(model),
               ),
-              Center(
-                  child: IgnorePointer(
-                child: MapCircleAnimation(200),
-              )),
+//              Center(
+//                  child: IgnorePointer(
+//                child: MapCircleAnimation(200),
+//              )),
               Center(
                   child: IgnorePointer(
                       child: Icon(

@@ -62,12 +62,13 @@ class GeoLocationUtilBasicUseCase
       resultPosition = await getLastKnowPonePosition();
     }
     await _saveUserPositionClient(resultPosition);
-    currentWithLastPosition = resultPosition;
-    currentWithLastAddress = await getPositionAddress(currentWithLastPosition);
+
     return resultPosition;
   }
 
   Future _saveUserPositionClient(Position resultPosition) async {
+    currentWithLastPosition = resultPosition;
+    currentWithLastAddress = await getPositionAddress(currentWithLastPosition);
     await _sharedPreferencesAdapter.setDouble(
         "currentlong", resultPosition.longitude);
     await _sharedPreferencesAdapter.setDouble(
@@ -94,7 +95,7 @@ class GeoLocationUtilBasicUseCase
         placeMarkList = await _geolocatorAdapter
           .placemarkFromPosition(searchPosition, localeIdentifier: "ko");
     }catch (ex) {
-      debugPrint(ex);
+      debugPrint(ex.toString());
     }
 
     if (placeMarkList.length > 0) {

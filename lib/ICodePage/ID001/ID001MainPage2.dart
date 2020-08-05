@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
+import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001MakerInfo.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 import 'ID001WidgetPart/ID001AppBar.dart';
 import 'ID001WidgetPart/ID001TagList.dart';
+import 'ID001WidgetPart/ID001TextContent.dart';
 import 'ID001WidgetPart/ID001Title.dart';
 
 class ID001MainPage2 extends StatefulWidget {
@@ -41,17 +43,34 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
             child: Column(
               children: <Widget>[
                 ID001AppBar(model: model),
-                ID001Title(
-                  ballTitle: model.getBallTitle(),
-                  hits: model.getBallHits(),
-                  makeTime: model.getMakeTime(),
-                ),
-                ID001TagList(ballUuid: model.getBallUuid()),
-                ID001Map(
-                  ballPosition: model.getBallPosition(),
-                  ballAddress: model.getBallAddress(),
-                  mapMakerDescriptorContainer: sl(),
-                  geoLocationUtilForeGroundUseCase: sl(),
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.all(0),
+                    children: <Widget>[
+                      ID001Title(
+                        ballTitle: model.getBallTitle(),
+                        hits: model.getBallHits(),
+                        makeTime: model.getMakeTime(),
+                      ),
+                      ID001TagList(ballUuid: model.getBallUuid()),
+                      ID001Map(
+                        ballPosition: model.getBallPosition(),
+                        ballAddress: model.getBallAddress(),
+                        mapMakerDescriptorContainer: sl(),
+                        geoLocationUtilForeGroundUseCase: sl(),
+                      ),
+                      ID001MakerInfo(
+                        userNickName: model.getMakerNickName(),
+                        userProfileImageUrl: model.getMakerProfileUrl(),
+                        userFollower: model.getMakerFollower(),
+                        userInfluencePower: model.getMakerInfluencePower(),
+                      ),
+                      ID001TextContent(
+                        content: model.getBallTextContent(),
+                        makeTime: model.getBallMakeTime(),
+                      )
+                    ],
+                  ),
                 )
               ],
             ))

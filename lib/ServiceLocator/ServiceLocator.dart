@@ -457,6 +457,7 @@ init() {
   sl.registerSingleton<MapMakerDescriptorContainer>(
       MapMakerDescriptorContainerImpl(
           signInUserInfoUseCaseInputPort: sl(),
+          preference: sl(),
           fireBaseAuthBaseAdapter: sl(),
           mapBitmapDescriptorUseCaseInputPort: sl()));
 }

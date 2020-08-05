@@ -12,6 +12,7 @@ class FUserInfoSimple {
   double userLevel;
   String selfIntroduction;
   double cumulativeInfluence;
+  int followCount;
 
   FUserInfoSimple();
 
@@ -30,6 +31,7 @@ class FUserInfoSimple {
     fUserInfoSimple.userLevel = resDto.userLevel;
     fUserInfoSimple.selfIntroduction = resDto.selfIntroduction;
     fUserInfoSimple.cumulativeInfluence = resDto.cumulativeInfluence;
+    fUserInfoSimple.followCount = resDto.followCount;
     return fUserInfoSimple;
   }
 }

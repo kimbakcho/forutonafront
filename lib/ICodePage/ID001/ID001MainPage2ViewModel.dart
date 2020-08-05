@@ -50,4 +50,28 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
   getBallAddress() {
     return _issueBall.placeAddress;
   }
+
+  getMakerNickName() {
+    return _issueBall.getDisplayNickName();
+  }
+
+  getMakerProfileUrl() {
+    return _issueBall.getDisplayProfilePictureUrl();
+  }
+
+  getMakerFollower() {
+    return _issueBall.getDisplayFollower();
+  }
+
+  getMakerInfluencePower() {
+    return _issueBall.getDisplayMakerInfluencePower();
+  }
+
+  getBallTextContent() {
+    return _issueBall.getDisplayDescriptionText();
+  }
+
+  getBallMakeTime() {
+    return _issueBall.getDisplayMakeTime();
+  }
 }

@@ -115,6 +115,10 @@ dependencies:
   get_it: ^4.0.2
   #App의 로컬 파일 경로를 얻기 위해 사용
   path_provider: ^1.6.11
+  #설치된 App 확인
+  flutter_package_manager: ^0.2.0
+  #Text된 컨텐츠 에서 select 가능 하고 link을 열기 위해 사용
+  selectable_autolink_text: ^1.3.3
 
 
 dev_dependencies:

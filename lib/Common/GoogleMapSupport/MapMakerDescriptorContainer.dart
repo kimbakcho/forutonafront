@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/GoogleMapSupport/MapBitmapDescriptorUseCase
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 abstract class MapMakerDescriptorContainer {
@@ -21,16 +22,19 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
       _mapBitmapDescriptorUseCaseInputPort;
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final Preference _preference;
 
   MapMakerDescriptorContainerImpl(
       {@required
           MapBitmapDescriptorUseCaseInputPort
               mapBitmapDescriptorUseCaseInputPort,
       FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
+        Preference preference,
       SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
       : _mapBitmapDescriptorUseCaseInputPort =
             mapBitmapDescriptorUseCaseInputPort,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
+        _preference = preference,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
     container = Map<String, BitmapDescriptor>();
   }
@@ -53,6 +57,11 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
       BitmapDescriptor userAvatarIcon =
           await _mapBitmapDescriptorUseCaseInputPort
               .urlPathToAvatarBitmapDescriptor(userInfo.profilePictureUrl);
+      container.putIfAbsent("UserAvatarIcon", () => userAvatarIcon);
+    }else {
+      BitmapDescriptor userAvatarIcon =
+      await _mapBitmapDescriptorUseCaseInputPort
+          .urlPathToAvatarBitmapDescriptor(_preference.basicProfileImageUrl);
       container.putIfAbsent("UserAvatarIcon", () => userAvatarIcon);
     }
   }

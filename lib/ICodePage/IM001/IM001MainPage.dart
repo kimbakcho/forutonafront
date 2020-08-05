@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimationWithContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
@@ -635,7 +634,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                 ),
                 color: Color(0xffffffff).withOpacity(0.70),
               )),
-          Center(child: MapCircleAnimationWithContainer.fromIssueBall()),
+
           Positioned(
             top: 0,
             left: 0,

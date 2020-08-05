@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/GoogleMapSupport/MapCircleAnimationWithContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetView/FBallReplyWidgetView.dart';
@@ -727,7 +726,7 @@ class _ID001MainPageState extends State<ID001MainPage>
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
           ),
-          Center(child: MapCircleAnimationWithContainer.fromIssueBall()),
+
           Container(
               width: MediaQuery.of(context).size.width,
               height: 244,
