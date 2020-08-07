@@ -9,6 +9,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/ReplyContentB
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 
@@ -91,5 +92,5 @@ class FBallReplyContentBarViewModel extends ChangeNotifier {
     }
   }
 
-  bool isUserSelfReply(FUserInfo userInfo) => fBallReply.uid == userInfo.uid;
+  bool isUserSelfReply(FUserInfoResDto userInfo) => fBallReply.uid == userInfo.uid;
 }

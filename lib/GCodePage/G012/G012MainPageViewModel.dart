@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
@@ -24,6 +24,8 @@ class G012MainPageViewModel extends ChangeNotifier {
   final CodeMainPageController _codeMainPageController;
 
   final LogoutUseCaseInputPort _logoutUseCaseInputPort;
+
+  final FUserPwChangeUseCaseInputPort _fUserPwChangeUseCaseInputPort;
 
   //에러 체크 시도 구분
   bool _isCurrentConfirm = false;
@@ -49,12 +51,14 @@ class G012MainPageViewModel extends ChangeNotifier {
       @required SignValid currentPwValid,
       @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
       @required CodeMainPageController codeMainPageController,
-      @required LogoutUseCaseInputPort logoutUseCaseInputPort})
+      @required LogoutUseCaseInputPort logoutUseCaseInputPort,
+      @required FUserPwChangeUseCaseInputPort fUserPwChangeUseCaseInputPort})
       : _pwValid = pwValid,
         _pwCheckValid = pwCheckValid,
         _currentPwValid = currentPwValid,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _codeMainPageController = codeMainPageController,
+        _fUserPwChangeUseCaseInputPort = fUserPwChangeUseCaseInputPort,
         _logoutUseCaseInputPort = logoutUseCaseInputPort {
     checkPwController.addListener(_onCheckPwControllerListener);
     newPwController.addListener(_onNewPwControllerListener);
@@ -169,9 +173,7 @@ class G012MainPageViewModel extends ChangeNotifier {
       return;
     }
     try {
-      FUserInfo _fUserInfo =
-          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-      await _fUserInfo.pwChange(newPwController.text);
+      await _fUserPwChangeUseCaseInputPort.pwChange(newPwController.text);
       await showCompleteChangePwDialog();
       await _logoutUseCaseInputPort.tryLogout();
       _codeMainPageController.moveToPage(HCodeState.HCDOE);

@@ -29,19 +29,25 @@ import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSou
 import 'package:forutonafront/FBall/Data/DataStore/FBallPlayerRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallReplyDataSource.dart';
+import 'package:forutonafront/FBall/Data/DataStore/FBallValuationRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallPlayerRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallReplyRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
+import 'package:forutonafront/FBall/Data/Repository/FBallValuationRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallReplyRepository.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Domain/Repository/FBallValuationRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FireBaseMessage/Presentation/FireBaseMessageController.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
@@ -63,8 +69,12 @@ import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/Forutona
 import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
 import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/NaverLoginAdapterImpl.dart';
 import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccountUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/UpdateUserPositionUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
@@ -151,13 +161,19 @@ init() {
   sl.registerSingleton<SignInUserInfoUseCaseInputPort>(
       SignInUserInfoUseCase(fUserRepository: sl()));
 
+  sl.registerSingleton<UpdateFCMTokenUseCaseInputPort>(
+      UpdateFCMTokenUseCase(fUserRepository: sl()));
+
   sl.registerSingleton<FireBaseMessageAdapter>(FireBaseMessageAdapterImpl(
-      fireBaseAuthBaseAdapter: sl(), signInUserInfoUseCaseInputPort: sl()));
+      fireBaseAuthBaseAdapter: sl(),
+      updateFCMTokenUseCaseInputPort: sl(),
+      signInUserInfoUseCaseInputPort: sl()));
 
   sl.registerSingleton<FireBaseAuthAdapterForUseCase>(
       FireBaseAuthAdapterForUseCaseImpl(
           fireBaseMessageAdapter: sl(),
           fireBaseAuthBaseAdapter: sl(),
+          updateFCMTokenUseCaseInputPort: sl(),
           signInUserInfoUseCaseInputPort: sl()));
 
   sl.registerSingleton<FBallRemoteDataSource>(FBallRemoteSourceImpl());
@@ -243,6 +259,12 @@ init() {
 
   sl.registerSingleton<InsertBallUseCaseInputPort>(
       InsertBallUseCase(fBallRepository: sl()));
+
+  sl.registerSingleton<UpdateBallUseCaseInputPort>(
+      UpdateBallUseCase(fBallRepository: sl()));
+
+  sl.registerSingleton<HitBallUseCaseInputPort>(
+      HitBallUseCase(fBallRepository: sl()));
 
   sl.registerSingleton<PageMoveActionUseCaseInputPort>(
       ID001PageMoveAction(selectBallUseCaseInputPort: sl()),
@@ -438,10 +460,14 @@ init() {
   sl.registerSingleton<FBallReplyUseCaseInputPort>(
       FBallReplyUseCase(fBallReplyRepository: sl()));
 
+  sl.registerSingleton<UpdateUserPositionUseCaseInputPort>(
+      UpdateUserPositionUseCase(fUserRepository: sl()));
+
   sl.registerSingleton<UserPositionForegroundMonitoringUseCaseInputPort>(
       UserPositionForegroundMonitoringUseCase(
           geoLocationUtilBasicUseCaseInputPort: sl(),
           signInUserInfoUseCaseInputPort: sl(),
+          updateUserPositionUseCaseInputPort: sl(),
           fUserRepository: sl(),
           fireBaseAuthAdapterForUseCase: sl()));
 
@@ -452,7 +478,8 @@ init() {
       MapBitmapDescriptorUseCase(
           imagePngResizeUtil: sl.get(instanceName: "ImagePngResizeUtil"),
           fileDownLoaderUseCaseInputPort: sl(),
-          imageBorderAvatarUtil: sl.get(instanceName: "ImageBorderAvatarUtil")));
+          imageBorderAvatarUtil:
+              sl.get(instanceName: "ImageBorderAvatarUtil")));
 
   sl.registerSingleton<MapMakerDescriptorContainer>(
       MapMakerDescriptorContainerImpl(
@@ -460,4 +487,19 @@ init() {
           preference: sl(),
           fireBaseAuthBaseAdapter: sl(),
           mapBitmapDescriptorUseCaseInputPort: sl()));
+
+  sl.registerSingleton<UpdateAccountUserInfoUseCaseInputPort>(
+      UpdateAccountUserInfoUseCase(fUserRepository: sl()));
+
+  sl.registerSingleton<FUserPwChangeUseCaseInputPort>(
+      FUserPwChangeUseCase(fUserRepository: sl()));
+
+  sl.registerSingleton<FBallValuationRemoteDataSource>(
+      FBallValuationRemoteDataSourceImpl());
+
+  sl.registerSingleton<FBallValuationRepository>(FBallValuationRepositoryImpl(
+      fBallValuationRemoteDataSource: sl(), fireBaseAuthBaseAdapter: sl()));
+
+  sl.registerSingleton<BallLikeUseCaseInputPort>(
+      BallLikeUseCase(fBallValuationRepository: sl()));
 }

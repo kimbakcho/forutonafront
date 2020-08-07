@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/FBallReplyWidgetView/FBallReplyWidgetView.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPageViewModel.dart';
@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ID001MainPage extends StatefulWidget {
-  IssueBall issueBall;
+  FBallResDto issueBall;
 
   ID001MainPage({this.issueBall});
 
@@ -113,22 +113,22 @@ class _ID001MainPageState extends State<ID001MainPage>
           makerProfileBar(context),
           didver(2),
           issueTextContentBar(context),
-          context.watch<ID001MainPageViewModel>().issueBall.isMainPicture()
-              ? didver(2)
-              : Container(),
-          context.watch<ID001MainPageViewModel>().issueBall.hasYoutubeVideo()
-              ? youtubeBar(context)
-              : Container(),
-          context.watch<ID001MainPageViewModel>().issueBall.hasYoutubeVideo()
-              ? didver(2)
-              : Container(),
+//          context.watch<ID001MainPageViewModel>().issueBall.isMainPicture()
+//              ? didver(2)
+//              : Container(),
+//          context.watch<ID001MainPageViewModel>().issueBall.hasYoutubeVideo()
+//              ? youtubeBar(context)
+//              : Container(),
+//          context.watch<ID001MainPageViewModel>().issueBall.hasYoutubeVideo()
+//              ? didver(2)
+//              : Container(),
           context.watch<ID001MainPageViewModel>().tagChips.length > 0
               ? tagBar(context)
               : Container(),
           context.watch<ID001MainPageViewModel>().tagChips.length > 0
               ? didver(2)
               : Container(),
-          FBallReplyWidgetView(widget.issueBall),
+//          FBallReplyWidgetView(widget.issueBall),
           didver(4),
           context.watch<ID001MainPageViewModel>().showFBallValuation
               ? ballValuationBar(context)
@@ -368,10 +368,7 @@ class _ID001MainPageState extends State<ID001MainPage>
     return Container(
         padding: EdgeInsets.fromLTRB(16, 23, 16, 24),
         child: Text(
-            context
-                .watch<ID001MainPageViewModel>()
-                .issueBall
-                .getDisplayDescriptionText(),
+          "",
             style: TextStyle(
               fontFamily: "Noto Sans CJK KR",
               fontSize: 14,
@@ -392,15 +389,7 @@ class _ID001MainPageState extends State<ID001MainPage>
                 height: 38.00,
                 width: 38.00,
                 decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        context
-                            .watch<ID001MainPageViewModel>()
-                            .issueBall
-                            .profilePictureUrl,
-                      ),
-                    ),
+
                     shape: BoxShape.circle),
               )),
           Positioned(
@@ -455,7 +444,7 @@ class _ID001MainPageState extends State<ID001MainPage>
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text(
-                  "${context.watch<ID001MainPageViewModel>().issueBall.getDisplayLikeCount()}회",
+        "",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
@@ -473,7 +462,7 @@ class _ID001MainPageState extends State<ID001MainPage>
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text(
-                  "${context.watch<ID001MainPageViewModel>().issueBall.getDisplayDisLikeCount()}회",
+                  "",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
@@ -491,7 +480,7 @@ class _ID001MainPageState extends State<ID001MainPage>
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text(
-                  "${context.watch<ID001MainPageViewModel>().issueBall.ballHits}회",
+                  "",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
@@ -511,10 +500,7 @@ class _ID001MainPageState extends State<ID001MainPage>
           Container(
               margin: EdgeInsets.only(left: 4),
               child: Text(
-                  context
-                      .watch<ID001MainPageViewModel>()
-                      .issueBall
-                      .getDisplayMakeTime(),
+                  "",
                   style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
@@ -530,7 +516,7 @@ class _ID001MainPageState extends State<ID001MainPage>
           Container(
               padding: EdgeInsets.only(left: 0, right: 48),
               child: Text(
-                  context.watch<ID001MainPageViewModel>().issueBall.ballName,
+                  "",
                   overflow: TextOverflow.ellipsis,
                   maxLines:
                       context.watch<ID001MainPageViewModel>().showMoreDetailFlag
@@ -599,7 +585,7 @@ class _ID001MainPageState extends State<ID001MainPage>
                 child: Container(
                   width: MediaQuery.of(context).size.width - 100,
                   child: Text(
-                      '${context.watch<ID001MainPageViewModel>().issueBall.contributor}명이 반응 하였습니다.',
+                      "",
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.notoSans(
                         fontSize: 12,
@@ -647,10 +633,7 @@ class _ID001MainPageState extends State<ID001MainPage>
               child: Container(
                 width: MediaQuery.of(context).size.width - 100,
                 child: Text(
-                    context
-                        .watch<ID001MainPageViewModel>()
-                        .issueBall
-                        .getDisplayRemainingTime(),
+                    "",
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.notoSans(
                       fontSize: 12,
@@ -697,10 +680,7 @@ class _ID001MainPageState extends State<ID001MainPage>
               child: Container(
                 width: MediaQuery.of(context).size.width - 100,
                 child: Text(
-                    context
-                        .watch<ID001MainPageViewModel>()
-                        .issueBall
-                        .placeAddress,
+                    "",
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.notoSans(
                       fontSize: 12,

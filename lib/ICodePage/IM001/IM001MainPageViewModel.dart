@@ -1,22 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:forutonafront/Common/YoutubeUtil/YoutubeIdParser.dart';
-import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
-
 import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
@@ -54,7 +48,7 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   String topNameTitle = "이슈볼 만들기";
 
-  IssueBall _issueBall;
+  FBallResDto _issueBall;
 
   //googleMap
   CameraPosition initCameraPosition;
@@ -141,7 +135,7 @@ class IM001MainPageViewModel extends ChangeNotifier
   }
 
   void insertInit() {
-    _issueBall = IssueBall();
+//    _issueBall = IssueBall();
 
     _issueBall.longitude = setUpPosition.longitude;
     _issueBall.latitude = setUpPosition.latitude;
@@ -167,12 +161,12 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   @override
   void onSelectBall(FBallResDto fBallResDto) async {
-    _issueBall = IssueBall.fromFBallResDto(fBallResDto);
-    if (_issueBall.hasYoutubeVideo()) {
-      this.youtubeAttachVisibility = true;
-      this.validYoutubeLink =
-          "https://youtu.be/${_issueBall.getDisplayYoutubeVideoId()}";
-    }
+//    _issueBall = IssueBall.fromFBallResDto(fBallResDto);
+//    if (_issueBall.hasYoutubeVideo()) {
+//      this.youtubeAttachVisibility = true;
+//      this.validYoutubeLink =
+//          "https://youtu.be/${_issueBall.getDisplayYoutubeVideoId()}";
+//    }
 //    var tagDTOs = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
 //        reqDto: TagFromBallReqDto(ballUuid: _issueBall.ballUuid));
 //    var tags = tagDTOs.map((x) => FBallTag.fromFBallTagResDto(x)).toList();
@@ -184,11 +178,11 @@ class IM001MainPageViewModel extends ChangeNotifier
 //      addTagChips(element.tagItem);
 //    });
     titleEditController.text = _issueBall.ballName;
-    textContentEditController.text = _issueBall.getDisplayDescriptionText();
-    ballImageList = _issueBall
-        .getDesImages()
-        .map((x) => BallImageItem.fromFBallDesImagesDto(x))
-        .toList();
+//    textContentEditController.text = _issueBall.getDisplayDescriptionText();
+//    ballImageList = _issueBall
+//        .getDesImages()
+//        .map((x) => BallImageItem.fromFBallDesImagesDto(x))
+//        .toList();
   }
 
   void onTextContentFocusNode() {
@@ -196,7 +190,7 @@ class IM001MainPageViewModel extends ChangeNotifier
   }
 
   void onTextContentEditController() {
-    _issueBall.setDescriptionText(textContentEditController.text);
+//    _issueBall.setDescriptionText(textContentEditController.text);
     notifyListeners();
   }
 
@@ -230,11 +224,11 @@ class IM001MainPageViewModel extends ChangeNotifier
   void onCompleteTap() async {
     isLoading = true;
     List<FBallDesImages> imageList = await fBallImageUpload();
-    _issueBall.setDesImages(imageList);
+//    _issueBall.setDesImages(imageList);
     if (mode == IM001MainPageEnterMode.Insert) {
-      await _insertBallUseCaseInputPort.insertBall(
-          FBallInsertReqDto.fromIssueBall(_issueBall),
-          outputPort: this);
+//      await _insertBallUseCaseInputPort.insertBall(
+//          FBallInsertReqDto.fromIssueBall(_issueBall),
+//          outputPort: this);
     } else if (mode == IM001MainPageEnterMode.Update) {
 
     }
@@ -257,7 +251,7 @@ class IM001MainPageViewModel extends ChangeNotifier
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (_) =>
-                ID001MainPage(issueBall: IssueBall.fromFBallResDto(resDto))),
+                ID001MainPage(issueBall: _issueBall)),
         ModalRoute.withName('/'));
   }
 
@@ -416,15 +410,15 @@ class IM001MainPageViewModel extends ChangeNotifier
           fontSize: 12.0);
     } else {
       this.validYoutubeLink = currentClipBoardData;
-      _issueBall
-          .setYoutubeVideoId(YoutubeIdParser.getIdFromUrl(validYoutubeLink));
+//      _issueBall
+//          .setYoutubeVideoId(YoutubeIdParser.getIdFromUrl(validYoutubeLink));
     }
     notifyListeners();
   }
 
   void deleteYoutubeLink() {
     this.validYoutubeLink = null;
-    _issueBall.setYoutubeVideoId(null);
+//    _issueBall.setYoutubeVideoId(null);
     notifyListeners();
   }
 

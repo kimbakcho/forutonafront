@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
@@ -16,11 +15,9 @@ import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class IssueBallWidgetStyle1 extends StatelessWidget
     implements BallStyle1Widget {
-  IssueBall _issueBall;
+  FBallResDto _fBallResDto;
 
-  IssueBallWidgetStyle1({@required FBallResDto fBallResDto}) {
-    _issueBall = IssueBall.fromFBallResDto(fBallResDto);
-  }
+  IssueBallWidgetStyle1({@required FBallResDto fBallResDto}) :_fBallResDto=fBallResDto;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +25,9 @@ class IssueBallWidgetStyle1 extends StatelessWidget
         key: UniqueKey(),
         create: (_) => IssueBallWidgetStyle1ViewModel(
             context: context,
-            issueBall: _issueBall,
+            fBallResDto: _fBallResDto,
             issueBallBasicStyle: IssueBallBasicStyleImpl(
+              hitBallUseCaseInputPort: sl(),
               fireBaseAuthAdapterForUseCase: sl(),
                 context: context),
             geoLocationUtilUseCaseInputPort: sl()),
@@ -37,9 +35,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             builder: (_, model, child) {
           return Stack(
             children: <Widget>[
-              model.issueBall.ballDeleteFlag
-                  ? Container(key: UniqueKey(), height: 0)
-                  : Container(
+              if (model.fBallResDto.ballDeleteFlag) Container(key: UniqueKey(), height: 0) else Container(
                       key: UniqueKey(),
                       margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                       child: FlatButton(
@@ -50,7 +46,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                         child: Column(children: <Widget>[
                           ballHeader(model, context),
                           divider(),
-                          !model.issueBall.ballDeleteFlag
+                          !model.fBallResDto.ballDeleteFlag
                               ? ballMainPicture(model, context)
                               : Container(),
                           ballProfileBar(model),
@@ -63,7 +59,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Text(model.issueBall.getDisplayLikeCount(),
+                                Text(model.getBallLikes(),
                                     style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
@@ -74,7 +70,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                                     child: Icon(ForutonaIcon.thumbsup,
                                         color: Color(0xff78849E), size: 17)),
                                 SizedBox(width: 19),
-                                Text(model.issueBall.getDisplayDisLikeCount(),
+                                Text(model.getBallDisLike(),
                                     style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
@@ -85,7 +81,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                                     child: Icon(ForutonaIcon.thumbsdown,
                                         color: Color(0xff78849E), size: 17)),
                                 SizedBox(width: 19),
-                                Text(model.issueBall.getDisplayCommentCount(),
+                                Text(model.getCommentCount(),
                                     style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
@@ -96,7 +92,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                                     child: Icon(ForutonaIcon.comment,
                                         color: Color(0xff78849E), size: 17)),
                                 SizedBox(width: 19),
-                                Text(model.issueBall.getDisplayRemainingTime(),
+                                Text(model.remainTime(),
                                     style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
@@ -143,7 +139,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
     return Container(
       width: MediaQuery.of(context).size.width - 64,
       padding: EdgeInsets.only(bottom: 23),
-      child: Text(model.issueBall.getDisplayDescriptionText(),
+      child: Text(model.descriptionText(),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: GoogleFonts.notoSans(
@@ -168,7 +164,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
               decoration: BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(model.issueBall.profilePictureUrl)),
+                      image: NetworkImage(model.getProfilePictureUrl())),
                   shape: BoxShape.circle,
                   border: Border.all(width: 1.00, color: Color(0xffdc3e57))),
             ),
@@ -176,7 +172,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
           Positioned(
             left: 34,
             top: 0,
-            child: Text(model.issueBall.getDisplayNickName(),
+            child: Text(model.getBallName(),
                 style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
@@ -186,7 +182,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
           Positioned(
             left: 34,
             top: 16,
-            child: Text(model.issueBall.getDisplayMakeTime(),
+            child: Text(model.getBallPlaceAddress(),
                 style: GoogleFonts.notoSans(
                   fontSize: 10,
                   color: Color(0xff454f63),
@@ -199,7 +195,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
 
   Widget ballMainPicture(
       IssueBallWidgetStyle1ViewModel model, BuildContext context) {
-    return model.issueBall.isMainPicture()
+    return model.isMainPicture()
         ? Stack(children: <Widget>[
             FlatButton(
                 padding: EdgeInsets.all(0),
@@ -207,9 +203,9 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                   model.gotoBallImageViewer();
                 },
                 child: Hero(
-                    tag: model.issueBall.ballUuid + "picturefromBigpicture",
+                    tag: model.fBallResDto.ballUuid + "picturefromBigpicture",
                     child: CachedNetworkImage(
-                      imageUrl: model.issueBall.mainPictureSrc(),
+                      imageUrl: model.mainPictureSrc(),
                       imageBuilder: (context, imageProvider) => Container(
                           height: 200.00,
                           decoration: BoxDecoration(
@@ -232,26 +228,26 @@ class IssueBallWidgetStyle1 extends StatelessWidget
                       ),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ))),
-            model.issueBall.pictureCount() > 1
+            model.pictureCount() > 1
                 ? Positioned(
                     bottom: 10,
                     right: 10,
                     child: Hero(
-                      tag: model.issueBall.ballUuid + "picturefrombutton",
+                      tag: model.fBallResDto.ballUuid + "picturefrombutton",
                       child: Container(
                           child: FlatButton(
                             onPressed: () {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
                                 return BallImageViewer(
-                                    model.issueBall.getDesImages(),
-                                    model.issueBall.ballUuid +
+                                    model.getDesImages(),
+                                    model.fBallResDto.ballUuid +
                                         "picturefrombutton");
                               }));
                             },
                             padding: EdgeInsets.all(0),
                             child:
-                                Text("+${model.issueBall.pictureCount() - 1}",
+                                Text("+${model.pictureCount() - 1}",
                                     style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12,
@@ -299,7 +295,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
             left: 44,
             width: MediaQuery.of(context).size.width - 100,
             child: Container(
-                child: Text(model.issueBall.getDisplayBallName(),
+                child: Text(model.getBallName(),
                     style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
@@ -312,7 +308,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
           left: 44,
           width: MediaQuery.of(context).size.width - 100,
           child: Container(
-            child: Text(model.issueBall.placeAddress,
+            child: Text(model.getBallPlaceAddress(),
                 style: GoogleFonts.notoSans(
                   fontSize: 12,
                   color: Color(0xff78849E),
@@ -327,7 +323,7 @@ class IssueBallWidgetStyle1 extends StatelessWidget
           child: Container(
             width: 68,
             alignment: Alignment.centerRight,
-            child: Text(model.getDistanceDisplayText(),
+            child: Text(model.distanceDisplayText,
                 style: GoogleFonts.notoSans(
                   fontSize: 10,
                   color: Color(0xffFF4F9A),

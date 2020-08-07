@@ -3,6 +3,7 @@ import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply/Popup/FBallReplyPopupUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
 class FBallSubReplyContentBarViewModel extends ChangeNotifier {
@@ -37,5 +38,5 @@ class FBallSubReplyContentBarViewModel extends ChangeNotifier {
     }
   }
 
-  bool isUserSelfReply(FUserInfo userInfo) => fBallReply.uid == userInfo.uid;
+  bool isUserSelfReply(FUserInfoResDto userInfo) => fBallReply.uid == userInfo.uid;
 }

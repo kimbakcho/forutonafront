@@ -12,7 +12,8 @@ class FBallValuationRemoteDataSourceImpl implements FBallValuationRemoteDataSour
   @override
   Future<FBallLikeResDto> ballLike({FBallLikeReqDto reqDto, FDio tokenFDio}) async{
      var response = await tokenFDio.post("/v1/FBallValuation/BallLike",data: reqDto.toJson());
-    return FBallLikeResDto.fromJson(response.data);
+     var fBallLikeResDto = FBallLikeResDto.fromJson(response.data);
+    return fBallLikeResDto;
   }
 
 }

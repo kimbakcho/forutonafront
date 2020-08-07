@@ -53,11 +53,7 @@ class FUserInfo {
    int alarmSponNewContent;
    int deactivation;
 
-   @JsonKey(ignore: true)
-   FUserRepository _fUserRepository = sl();
-
    FUserInfo();
-
 
    get profilePictureUrl {
       Preference preference = sl();
@@ -75,78 +71,5 @@ class FUserInfo {
    factory FUserInfo.fromJson(Map<String, dynamic> json) => _$FUserInfoFromJson(json);
 
    Map<String, dynamic> toJson() => _$FUserInfoToJson(this);
-
-   Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto) async {
-      FUserInfoResDto fUserInfoResDto = await _fUserRepository.updateAccountUserInfo(reqDto);
-      this.isoCode = fUserInfoResDto.isoCode;
-      this.nickName = fUserInfoResDto.nickName;
-      this.selfIntroduction = fUserInfoResDto.selfIntroduction;
-      this.profilePictureUrl = fUserInfoResDto.profilePictureUrl;
-      return fUserInfoResDto;
-   }
-
-   Future<void> pwChange(String pw) async {
-      return await _fUserRepository.pWChange(pw);
-   }
-
-   Future<String> uploadUserProfileImage(List<int> imageByte) async {
-      String imageUrl = await _fUserRepository.uploadUserProfileImage(imageByte);
-      this.profilePictureUrl = imageUrl;
-      return this.profilePictureUrl;
-   }
-
-   Future<void> updateUserPosition(LatLng latLng)async{
-      return await _fUserRepository.updateUserPosition(latLng);
-   }
-
-  Future<void> updateFCMToken(String token) async {
-     await _fUserRepository.updateFireBaseMessageToken(token);
-  }
-
-  static FUserInfo fromFUserInfoResDto(FUserInfoResDto resDto) {
-     FUserInfo fUserInfo = new FUserInfo();
-     fUserInfo.uid = resDto.uid;
-     fUserInfo.nickName = resDto.nickName;
-     fUserInfo.profilePictureUrl = resDto.profilePictureUrl;
-     fUserInfo.gender = resDto.gender;
-     fUserInfo.ageDate = resDto.ageDate;
-     fUserInfo.email = resDto.email;
-     fUserInfo.forutonaAgree = resDto.forutonaAgree;
-     fUserInfo.privateAgree = resDto.privateAgree;
-     fUserInfo.positionAgree = resDto.positionAgree;
-     fUserInfo.martketingAgree = resDto.martketingAgree;
-     fUserInfo.ageLimitAgree = resDto.ageLimitAgree;
-     fUserInfo.snsService = resDto.snsService;
-     fUserInfo.phoneNumber = resDto.phoneNumber;
-     fUserInfo.isoCode = resDto.isoCode;
-     fUserInfo.latitude = resDto.latitude;
-     fUserInfo.longitude = resDto.longitude;
-     fUserInfo.positionUpdateTime = resDto.positionUpdateTime;
-     fUserInfo.userLevel = resDto.userLevel;
-     fUserInfo.expPoint = resDto.expPoint;
-     fUserInfo.fCMtoken = resDto.fCMtoken;
-     fUserInfo.joinTime = resDto.joinTime;
-     fUserInfo.followCount = resDto.followCount;
-     fUserInfo.backOut = resDto.backOut;
-     fUserInfo.lastBackOutTime = resDto.lastBackOutTime;
-     fUserInfo.selfIntroduction = resDto.selfIntroduction;
-     fUserInfo.cumulativeInfluence = resDto.cumulativeInfluence;
-     fUserInfo.uPoint = resDto.uPoint;
-     fUserInfo.naPoint= resDto.naPoint;
-     fUserInfo.historyOpenAll = resDto.historyOpenAll;
-     fUserInfo.historyOpenFollowSponsor = resDto.historyOpenFollowSponsor;
-     fUserInfo.historyOpenNoOpen = resDto.historyOpenNoOpen;
-     fUserInfo.sponsorHistoryOpenAll = resDto.sponsorHistoryOpenAll;
-     fUserInfo.sponsorHistoryOpenSponAndFollowFromMe = resDto.sponsorHistoryOpenSponAndFollowFromMe;
-     fUserInfo.sponsorHistoryOpenSponNoOpen = resDto.sponsorHistoryOpenSponNoOpen;
-     fUserInfo.alarmChatMessage = resDto.alarmChatMessage;
-     fUserInfo.alarmContentReply = resDto.alarmChatMessage;
-     fUserInfo.alarmReplyAndReply = resDto.alarmReplyAndReply;
-     fUserInfo.alarmFollowNewContent = resDto.alarmFollowNewContent;
-     fUserInfo.alarmSponNewContent = resDto.alarmSponNewContent;
-     fUserInfo.deactivation = resDto.deactivation;
-     return fUserInfo;
-  }
-
 
 }

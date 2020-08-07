@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -57,12 +58,18 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
 
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
 
+  final UpdateFCMTokenUseCaseInputPort _updateFCMTokenUseCaseInputPort;
+
   FireBaseMessageAdapterImpl(
       {
         @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
       @required
-          FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter})
+          FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
+      @required
+      UpdateFCMTokenUseCaseInputPort updateFCMTokenUseCaseInputPort
+      })
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
+        _updateFCMTokenUseCaseInputPort = updateFCMTokenUseCaseInputPort,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter {
     _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.onTokenRefresh.listen(_onTokenRefresh);
@@ -84,9 +91,7 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
       var uid = await _fireBaseAuthBaseAdapter.userUid();
      await _signInUserInfoUseCaseInputPort
           .saveSignInInfoInMemoryFromAPiServer(uid);
-      FUserInfo fUserInfo = _signInUserInfoUseCaseInputPort
-          .reqSignInUserInfoFromMemory();
-      fUserInfo.updateFCMToken(token);
+      _updateFCMTokenUseCaseInputPort.updateFCMToken(token);
     }
   }
 

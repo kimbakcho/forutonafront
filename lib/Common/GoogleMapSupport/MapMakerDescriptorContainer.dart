@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapBitmapDescriptorUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -52,7 +53,7 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
 
   Future mapPutUserAvatarIcon() async {
     if (await _fireBaseAuthBaseAdapter.isLogin()) {
-      FUserInfo userInfo =
+      FUserInfoResDto userInfo =
           _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
       BitmapDescriptor userAvatarIcon =
           await _mapBitmapDescriptorUseCaseInputPort

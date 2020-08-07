@@ -71,7 +71,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
   Container makerInfoBar(
       IssueBallWidgetStyle3ViewModel model, BuildContext context) {
     return Container(
-      width: model.issueBall.isMainPicture()
+      width: model.isMainPicture()
           ? MediaQuery.of(context).size.width - 182
           : MediaQuery.of(context).size.width - 108,
       child: RichText(
@@ -106,7 +106,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(model.issueBall.getDisplayLikeCount(),
+          Text(model.getDisplayLikeCount(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -118,7 +118,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
               child: Icon(ForutonaIcon.thumbsup,
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
-          Text(model.issueBall.getDisplayDisLikeCount(),
+          Text(model.getDisplayDisLikeCount(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -130,7 +130,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
               child: Icon(ForutonaIcon.thumbsdown,
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
-          Text(model.issueBall.getDisplayCommentCount(),
+          Text(model.getDisplayCommentCount(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -142,7 +142,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
               child: Icon(ForutonaIcon.comment,
                   color: Color(0xff78849E), size: 17)),
           SizedBox(width: 19),
-          Text(model.issueBall.getDisplayRemainingTime(),
+          Text(model.getDisplayRemainingTime(),
               style: TextStyle(
                 fontFamily: "Gibson",
                 fontWeight: FontWeight.w600,
@@ -167,14 +167,14 @@ class IssueBallWidgetStyle3 extends StatelessWidget
   }
 
   Container ballMainimageBox(IssueBallWidgetStyle3ViewModel model) {
-    return model.issueBall.isMainPicture()
+    return model.isMainPicture()
         ? Container(
             height: 54.00,
             width: 80.00,
             decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(model.issueBall.mainPictureSrc())),
+                  image: NetworkImage(model.mainPictureSrc())),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(12.00),
               ),
@@ -186,7 +186,7 @@ class IssueBallWidgetStyle3 extends StatelessWidget
   Container ballNameText(
       IssueBallWidgetStyle3ViewModel model, BuildContext context) {
     return Container(
-      width: model.issueBall.isMainPicture()
+      width: model.isMainPicture()
           ? MediaQuery.of(context).size.width - 182
           : MediaQuery.of(context).size.width - 108,
       height: 18,

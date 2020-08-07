@@ -24,7 +24,6 @@ class FBallResDto {
   DateTime makeTime;
   String description;
   String nickName;
-  String profilePictureUrl;
   FUserInfoSimpleResDto uid;
   double userLevel;
   int contributor;
@@ -53,7 +52,6 @@ class FBallResDto {
     fBallResDto.activationTime = fBall.activationTime;
     fBallResDto.makeTime = fBall.makeTime;
     fBallResDto.description = fBall.description;
-    fBallResDto.profilePictureUrl = fBall.profilePictureUrl;
     fBallResDto.nickName = fBall.nickName;
     fBallResDto.uid = FUserInfoSimpleResDto.fromFUserInfoSimple(fBall.uid);
     fBallResDto.userLevel = fBall.userLevel;

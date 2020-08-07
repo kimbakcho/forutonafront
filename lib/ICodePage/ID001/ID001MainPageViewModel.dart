@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 
 import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
@@ -36,7 +35,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
 class ID001MainPageViewModel extends ChangeNotifier {
 
-  IssueBall issueBall;
+//  IssueBall issueBall;
 
   bool showMoreDetailFlag = false;
 

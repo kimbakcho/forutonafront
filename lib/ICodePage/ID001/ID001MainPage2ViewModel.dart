@@ -1,28 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/Value/IssueBallDescription.dart';
+import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
-class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCaseOutputPort{
+import 'ValuationMediator/ValuationMediator.dart';
+
+class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCaseOutputPort,ValuationMediatorComponent{
   final String _ballUuid;
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
-  IssueBall _issueBall;
   bool _loadBallComplete = false;
+  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
+  FBallResDto _fBallResDto;
+
+  final ValuationMediator valuationMediator =
+    ValuationMediatorImpl(ballLikeUseCaseInputPort: sl());
+
   ID001MainPage2ViewModel(
       {String ballUuid, SelectBallUseCaseInputPort selectBallUseCaseInputPort})
       : _ballUuid = ballUuid, _selectBallUseCaseInputPort = selectBallUseCaseInputPort {
     _selectBallUseCaseInputPort.selectBall(_ballUuid,outputPort: this);
+    valuationMediator.registerComponent(this);
   }
 
   String getBallTitle() {
-    return _issueBall.getDisplayBallName();
+    return _issueBallDisPlayUseCase.ballName();
   }
 
   @override
   onSelectBall(FBallResDto fBallResDto) {
-    _issueBall = IssueBall.fromFBallResDto(fBallResDto);
+    _fBallResDto = fBallResDto;
+    _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto);
     _loadBallComplete = true;
     notifyListeners();
   }
@@ -32,46 +46,52 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
   }
 
   getBallUuid() {
-    return _issueBall.ballUuid;
+    return _ballUuid;
   }
 
   getBallHits() {
-    return _issueBall.getDisplayBallHits();
+    return _issueBallDisPlayUseCase.ballHits();
   }
 
   getMakeTime() {
-    return _issueBall.getDisplayMakeTime();
+    return _issueBallDisPlayUseCase.displayMakeTime();
   }
 
   getBallPosition() {
-    return Position(latitude: _issueBall.latitude,longitude: _issueBall.longitude);
+    return Position(latitude: _fBallResDto.latitude,longitude: _fBallResDto.longitude);
   }
 
   getBallAddress() {
-    return _issueBall.placeAddress;
+    return _issueBallDisPlayUseCase.placeAddress();
   }
 
   getMakerNickName() {
-    return _issueBall.getDisplayNickName();
+    return _issueBallDisPlayUseCase.makerNickName();
   }
 
   getMakerProfileUrl() {
-    return _issueBall.getDisplayProfilePictureUrl();
+    return _issueBallDisPlayUseCase.profilePictureUrl();
   }
 
   getMakerFollower() {
-    return _issueBall.getDisplayFollower();
+    return _issueBallDisPlayUseCase.makerFollower();
   }
 
   getMakerInfluencePower() {
-    return _issueBall.getDisplayMakerInfluencePower();
+    return _issueBallDisPlayUseCase.makerInfluencePower();
   }
 
   getBallTextContent() {
-    return _issueBall.getDisplayDescriptionText();
+    return _issueBallDisPlayUseCase.descriptionText();
   }
 
   getBallMakeTime() {
-    return _issueBall.getDisplayMakeTime();
+    return _issueBallDisPlayUseCase.displayMakeTime();
+  }
+
+  @override
+  updateValuation(FBallLikeResDto fBallLikeResDto) {
+    print("ID001MainPage2ViewModel");
+    print(fBallLikeResDto);
   }
 }

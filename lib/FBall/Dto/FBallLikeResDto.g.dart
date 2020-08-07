@@ -8,17 +8,17 @@ part of 'FBallLikeResDto.dart';
 
 FBallLikeResDto _$FBallLikeResDtoFromJson(Map<String, dynamic> json) {
   return FBallLikeResDto()
-    ..like = json['like'] as int
-    ..dislike = json['dislike'] as int
-    ..fBallValuationResDto = json['fBallValuationResDto'] == null
+    ..ballLike = json['ballLike'] as int
+    ..ballDislike = json['ballDislike'] as int
+    ..fballValuationResDto = json['fballValuationResDto'] == null
         ? null
         : FBallValuationResDto.fromJson(
-            json['fBallValuationResDto'] as Map<String, dynamic>);
+            json['fballValuationResDto'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$FBallLikeResDtoToJson(FBallLikeResDto instance) =>
     <String, dynamic>{
-      'like': instance.like,
-      'dislike': instance.dislike,
-      'fBallValuationResDto': instance.fBallValuationResDto,
+      'ballLike': instance.ballLike,
+      'ballDislike': instance.ballDislike,
+      'fballValuationResDto': instance.fballValuationResDto?.toJson(),
     };

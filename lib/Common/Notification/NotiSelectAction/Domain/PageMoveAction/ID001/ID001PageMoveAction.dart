@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001PayloadDto.dart';
-import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -25,10 +24,10 @@ class ID001PageMoveAction implements PageMoveActionUseCaseInputPort {
 
     FBallResDto selectBall = await _selectBallUseCaseInputPort.selectBall(id001payloadDto.ballUuid);
 
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) =>
-            ID001MainPage(issueBall: IssueBall.fromFBallResDto(selectBall))
-    ));
+//    Navigator.of(context).push(MaterialPageRoute(
+//        builder: (_) =>
+//            ID001MainPage(selectBall)
+//    ));
   }
 
 }

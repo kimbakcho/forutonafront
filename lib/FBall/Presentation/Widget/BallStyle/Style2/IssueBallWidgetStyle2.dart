@@ -68,7 +68,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
                 ],
               ),
               decoration: BoxDecoration(
-                  color: model.issueBall.isAliveBall()
+                  color: model.isAliveBall()
                       ? Color(0xffffffff)
                       : Color(0xffF6F6F6),
                   boxShadow: [
@@ -103,7 +103,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
     return Container(
         child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
       Container(
-        child: Text(model.issueBall.getDisplayLikeCount(),
+        child: Text(model.getBallLikeCount(),
             style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w600,
               fontSize: 12,
@@ -120,7 +120,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         margin: EdgeInsets.only(right: 19),
       ),
       Container(
-        child: Text(model.issueBall.getDisplayDisLikeCount(),
+        child: Text(model.getDisplayDisLikeCount(),
             style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w600,
               fontSize: 12,
@@ -137,7 +137,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         margin: EdgeInsets.only(right: 19),
       ),
       Container(
-        child: Text(model.issueBall.getDisplayCommentCount(),
+        child: Text(model.getDisplayCommentCount(),
             style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w600,
               fontSize: 12,
@@ -154,7 +154,7 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         margin: EdgeInsets.only(right: 19),
       ),
       Container(
-        child: Text(model.issueBall.getDisplayRemainingTime(),
+        child: Text(model.getDisplayRemainingTime(),
             style: GoogleFonts.notoSans(
               fontWeight: FontWeight.w600,
               fontSize: 12,
@@ -199,17 +199,17 @@ class IssueBallWidgetStyle2 extends StatelessWidget
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(model.issueBall.getDisplayBallName(),
+            Text(model.getDisplayBallName(),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
-                  color: model.issueBall.isAliveBall()
+                  color: model.isAliveBall()
                       ? Color(0xff454f63)
                       : Color(0xff454F63).withOpacity(0.7),
                 )),
-            Text(model.issueBall.getDisplayPlaceAddress(),
+            Text(model.getDisplayPlaceAddress(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.notoSans(

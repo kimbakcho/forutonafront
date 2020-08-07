@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:http_parser/http_parser.dart';
@@ -33,7 +34,7 @@ abstract class FUserRemoteDataSource {
   Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,
       FDio noneTokenFDio);
 
-  Future<FUserInfoResDto> findByMe(FDio tokenFDio);
+  Future<FUserInfo> findByMe(FDio tokenFDio);
 }
 
 class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
@@ -117,9 +118,9 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
   }
 
   @override
-  Future<FUserInfoResDto> findByMe(FDio tokenFDio) async {
+  Future<FUserInfo> findByMe(FDio tokenFDio) async {
     var response = await tokenFDio.get("/v1/FUserInfo");
-    return FUserInfoResDto.fromJson(response.data);
+    return FUserInfo.fromJson(response.data);
   }
 
 }

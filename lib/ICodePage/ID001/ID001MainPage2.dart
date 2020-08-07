@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
+import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001ActionBottomBar.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001MakerInfo.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -10,6 +11,7 @@ import 'ID001WidgetPart/ID001AppBar.dart';
 import 'ID001WidgetPart/ID001TagList.dart';
 import 'ID001WidgetPart/ID001TextContent.dart';
 import 'ID001WidgetPart/ID001Title.dart';
+import 'ValuationMediator/ValuationMediator.dart';
 
 class ID001MainPage2 extends StatefulWidget {
   final String _ballUuid;
@@ -23,6 +25,8 @@ class ID001MainPage2 extends StatefulWidget {
 
 class _ID001MainPage2State extends State<ID001MainPage2> {
   final String _ballUuid;
+
+
 
   _ID001MainPage2State({String ballUuid}) : _ballUuid = ballUuid;
 
@@ -40,37 +44,46 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
     return model.isLoadBallFinish()
         ? Container(
             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            child: Column(
+            child: Stack(
               children: <Widget>[
-                ID001AppBar(model: model),
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.all(0),
-                    children: <Widget>[
-                      ID001Title(
-                        ballTitle: model.getBallTitle(),
-                        hits: model.getBallHits(),
-                        makeTime: model.getMakeTime(),
+                Column(
+                  children: <Widget>[
+                    ID001AppBar(model: model),
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.all(0),
+                        children: <Widget>[
+                          ID001Title(
+                            ballTitle: model.getBallTitle(),
+                            hits: model.getBallHits(),
+                            makeTime: model.getMakeTime(),
+                          ),
+                          ID001TagList(ballUuid: model.getBallUuid()),
+                          ID001Map(
+                            ballPosition: model.getBallPosition(),
+                            ballAddress: model.getBallAddress(),
+                            mapMakerDescriptorContainer: sl(),
+                            geoLocationUtilForeGroundUseCase: sl(),
+                          ),
+                          ID001MakerInfo(
+                            userNickName: model.getMakerNickName(),
+                            userProfileImageUrl: model.getMakerProfileUrl(),
+                            userFollower: model.getMakerFollower(),
+                            userInfluencePower: model.getMakerInfluencePower(),
+                          ),
+                          ID001TextContent(
+                            content: model.getBallTextContent(),
+                            makeTime: model.getBallMakeTime(),
+                          )
+                        ],
                       ),
-                      ID001TagList(ballUuid: model.getBallUuid()),
-                      ID001Map(
-                        ballPosition: model.getBallPosition(),
-                        ballAddress: model.getBallAddress(),
-                        mapMakerDescriptorContainer: sl(),
-                        geoLocationUtilForeGroundUseCase: sl(),
-                      ),
-                      ID001MakerInfo(
-                        userNickName: model.getMakerNickName(),
-                        userProfileImageUrl: model.getMakerProfileUrl(),
-                        userFollower: model.getMakerFollower(),
-                        userInfluencePower: model.getMakerInfluencePower(),
-                      ),
-                      ID001TextContent(
-                        content: model.getBallTextContent(),
-                        makeTime: model.getBallMakeTime(),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
+                ),
+                Positioned(
+                  bottom: 0,
+                  height: 52,
+                  child: ID001ActionBottomBar(ballUuid: model.getBallUuid()),
                 )
               ],
             ))

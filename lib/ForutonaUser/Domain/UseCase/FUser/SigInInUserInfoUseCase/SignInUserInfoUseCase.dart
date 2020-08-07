@@ -24,7 +24,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
 
 
   @override
-  FUserInfo reqSignInUserInfoFromMemory(
+  FUserInfoResDto reqSignInUserInfoFromMemory(
       {SignInUserInfoUseCaseOutputPort outputPort}) {
     if (_fUserInfo == null) {
       throw Exception(
@@ -33,17 +33,17 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
     if (outputPort != null) {
       outputPort.onSignInUserInfoFromMemory(FUserInfoResDto.fromFUserInfo(_fUserInfo));
     }
-    return _fUserInfo;
+    return FUserInfoResDto.fromFUserInfo(_fUserInfo);
   }
 
   @override
   Future<void> saveSignInInfoInMemoryFromAPiServer(String uid,
       {SignInUserInfoUseCaseOutputPort outputPort}) async {
-    FUserInfoResDto findByMe = await _fUserRepository.findByMe();
-    _fUserInfo =  FUserInfo.fromFUserInfoResDto(findByMe);
-    _fUserInfoStreamController.add(findByMe);
+    _fUserInfo = await _fUserRepository.findByMe();
+    FUserInfoResDto fUserInfoResDto = FUserInfoResDto.fromFUserInfo(_fUserInfo);
+    _fUserInfoStreamController.add(fUserInfoResDto);
     if (outputPort != null) {
-      outputPort.onSignInUserInfoFromMemory(findByMe);
+      outputPort.onSignInUserInfoFromMemory(fUserInfoResDto);
     }
   }
 

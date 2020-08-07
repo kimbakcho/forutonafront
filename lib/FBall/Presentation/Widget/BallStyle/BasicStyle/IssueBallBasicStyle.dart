@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2.dart';
 
 abstract class IssueBallBasicStyle {
-  Future<void> goIssueDetailPage(IssueBall issueBall);
+  Future<void> goIssueDetailPage(FBallResDto issueBall);
 
-  Future reqJoinBall({@required IssueBall issueBall});
+  Future reqJoinBall({@required FBallResDto issueBall});
 
-  Future reqBallHit(IssueBall issueBall);
+  Future<int> reqBallHit(String balluuid);
 }
 
 class IssueBallBasicStyleImpl implements IssueBallBasicStyle {
@@ -16,32 +17,35 @@ class IssueBallBasicStyleImpl implements IssueBallBasicStyle {
 
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
+  final HitBallUseCaseInputPort _hitBallUseCaseInputPort;
+
   IssueBallBasicStyleImpl(
       {@required this.context,
+        HitBallUseCaseInputPort hitBallUseCaseInputPort,
       FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
-      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
+      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
+        _hitBallUseCaseInputPort = hitBallUseCaseInputPort;
 
-  Future<void> goIssueDetailPage(IssueBall issueBall) async {
-    reqBallHit(issueBall);
+  Future<void> goIssueDetailPage(FBallResDto fballResDto) async {
+    reqBallHit(fballResDto.ballUuid);
     if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      reqJoinBall(issueBall: issueBall);
+      reqJoinBall(issueBall: fballResDto);
     }
     await Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => ID001MainPage2(ballUuid: issueBall.ballUuid)));
+        builder: (_) => ID001MainPage2(ballUuid: fballResDto.ballUuid)));
   }
 
-  Future reqJoinBall({@required IssueBall issueBall}) async {
-    if (issueBall.isUserBall(myUid: await _fireBaseAuthAdapterForUseCase.userUid())) {
+  Future reqJoinBall({@required FBallResDto issueBall}) async {
+//    if (issueBall.isUserBall(myUid: await _fireBaseAuthAdapterForUseCase.userUid())) {
       //TODO FBallPlayer 구현후 다시 구현
 //      _issueBallUseCaseInputPort.joinBall(
 //          reqDto: FBallJoinReqDto(issueBall.ballType, issueBall.ballUuid,
 //              await _authUserCaseInputPort.myUid()));
     }
+
+  @override
+  Future<int> reqBallHit(String ballUuid) async {
+     return await this._hitBallUseCaseInputPort.hit(ballUuid);
   }
 
-  Future reqBallHit(IssueBall issueBall) async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      await issueBall.ballHit();
-    }
-  }
 }

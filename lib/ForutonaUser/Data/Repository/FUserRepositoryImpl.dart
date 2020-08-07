@@ -2,6 +2,7 @@ import 'package:dio/src/form_data.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
@@ -72,7 +73,7 @@ class FUserRepositoryImpl implements FUserRepository {
   }
 
   @override
-  Future<FUserInfoResDto> findByMe() async {
+  Future<FUserInfo> findByMe() async {
     return await _fUserRemoteDataSource.findByMe(FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
 }

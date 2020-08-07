@@ -6,6 +6,7 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/UpdateUserPositionUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,6 +20,8 @@ class UserPositionForegroundMonitoringUseCase
 
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
+  final UpdateUserPositionUseCaseInputPort _updateUserPositionUseCaseInputPort;
+
   UserPositionForegroundMonitoringUseCase(
       {@required
           GeoLocationUtilBasicUseCaseInputPort
@@ -28,11 +31,14 @@ class UserPositionForegroundMonitoringUseCase
       @required
           FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required
-        SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort
+        SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+        @required
+        UpdateUserPositionUseCaseInputPort updateUserPositionUseCaseInputPort
       })
       : _geoLocationUtilBasicUseCaseInputPort =
             geoLocationUtilBasicUseCaseInputPort,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
+        _updateUserPositionUseCaseInputPort = updateUserPositionUseCaseInputPort,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
 
 
@@ -48,8 +54,7 @@ class UserPositionForegroundMonitoringUseCase
   _userPositionStreamFunc(Position position) async {
     if(await _fireBaseAuthAdapterForUseCase.isLogin()){
       print("_userPositionStreamFunc");
-      FUserInfo fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-      fUserInfo.updateUserPosition(LatLng(position.latitude,position.longitude));
+      _updateUserPositionUseCaseInputPort.updateUserPosition(LatLng(position.latitude,position.longitude));
     }
   }
 

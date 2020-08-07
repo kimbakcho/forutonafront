@@ -28,7 +28,6 @@ FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['makeTime'] as String)
     ..description = json['description'] as String
     ..nickName = json['nickName'] as String
-    ..profilePictureUrl = json['profilePictureUrl'] as String
     ..uid = json['uid'] == null
         ? null
         : FUserInfoSimpleResDto.fromJson(json['uid'] as Map<String, dynamic>)
@@ -55,7 +54,6 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'makeTime': instance.makeTime?.toIso8601String(),
       'description': instance.description,
       'nickName': instance.nickName,
-      'profilePictureUrl': instance.profilePictureUrl,
       'uid': instance.uid?.toJson(),
       'userLevel': instance.userLevel,
       'contributor': instance.contributor,

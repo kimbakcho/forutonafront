@@ -6,13 +6,13 @@ import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class BallLikeUseCaseInputPort {
-  Future<FBallLikeResDto> ballLike(int point, String ballUuid);
+  Future<FBallLikeResDto> ballLike(int point, String ballUuid,{BallLikeUseCaseOutputPort outputPort});
 
-  Future<FBallLikeResDto> ballDisLike(int point, String ballUuid);
+  Future<FBallLikeResDto> ballDisLike(int point, String ballUuid,{BallLikeUseCaseOutputPort outputPort});
 
-  Future<FBallLikeResDto> ballLikeCancel(int point, String ballUuid);
+  Future<FBallLikeResDto> ballLikeCancel(int point, String ballUuid,{BallLikeUseCaseOutputPort outputPort});
 
-  Future<FBallLikeResDto> ballDisLikeCancel(int point, String ballUuid);
+  Future<FBallLikeResDto> ballDisLikeCancel(int point, String ballUuid,{BallLikeUseCaseOutputPort outputPort});
 }
 
 abstract class BallLikeUseCaseOutputPort {
@@ -34,7 +34,11 @@ class BallLikeUseCase implements BallLikeUseCaseInputPort {
     likeReqDto.disLikePoint = point;
     likeReqDto.ballUuid = ballUuid;
     likeReqDto.likeActionType = LikeActionType.LIKE;
-    return await _fBallValuationRepository.ballLike(likeReqDto);
+    FBallLikeResDto fBallLikeResDto = await _fBallValuationRepository.ballLike(likeReqDto);
+    if(outputPort != null){
+      outputPort.onResult(fBallLikeResDto);
+    }
+    return fBallLikeResDto;
   }
 
   @override
@@ -46,7 +50,11 @@ class BallLikeUseCase implements BallLikeUseCaseInputPort {
     likeReqDto.disLikePoint = point;
     likeReqDto.ballUuid = ballUuid;
     likeReqDto.likeActionType = LikeActionType.CANCEL;
-    return await _fBallValuationRepository.ballLike(likeReqDto);
+    FBallLikeResDto fBallLikeResDto = await _fBallValuationRepository.ballLike(likeReqDto);
+    if(outputPort != null){
+      outputPort.onResult(fBallLikeResDto);
+    }
+    return fBallLikeResDto;
   }
 
   @override
@@ -57,17 +65,25 @@ class BallLikeUseCase implements BallLikeUseCaseInputPort {
     likeReqDto.disLikePoint = 0;
     likeReqDto.ballUuid = ballUuid;
     likeReqDto.likeActionType = LikeActionType.LIKE;
-    return await _fBallValuationRepository.ballLike(likeReqDto);
+    FBallLikeResDto fBallLikeResDto = await _fBallValuationRepository.ballLike(likeReqDto);
+    if(outputPort != null){
+      outputPort.onResult(fBallLikeResDto);
+    }
+    return fBallLikeResDto;
   }
 
   @override
-  ballLikeCancel(int point, String ballUuid) async {
+  ballLikeCancel(int point, String ballUuid,{BallLikeUseCaseOutputPort outputPort}) async {
     FBallLikeReqDto likeReqDto = FBallLikeReqDto();
     likeReqDto.valueUuid = Uuid().v4();
     likeReqDto.likePoint = point;
     likeReqDto.disLikePoint = 0;
     likeReqDto.ballUuid = ballUuid;
     likeReqDto.likeActionType = LikeActionType.CANCEL;
-    return await _fBallValuationRepository.ballLike(likeReqDto);
+    FBallLikeResDto fBallLikeResDto = await _fBallValuationRepository.ballLike(likeReqDto);
+    if(outputPort != null){
+      outputPort.onResult(fBallLikeResDto);
+    }
+    return fBallLikeResDto;
   }
 }

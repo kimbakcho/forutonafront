@@ -3,9 +3,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
-import 'package:forutonafront/FBall/Domain/Entity/IssueBall.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Domain/Value/IssueBallDescription.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/BallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Impl/IssueBallModifyService.dart';
@@ -22,13 +23,15 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
         GeoLocationUtilUseForeGroundCaseOutputPort {
   BuildContext context;
 
-  IssueBall issueBall;
+  FBallResDto issueBall;
 
   String distanceDisplayText = "";
 
   SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
 
   GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+
+  IssueBallDisPlayUseCase _BallDisPlayUseCase;
 
   IssueBallWidgetStyle2ViewModel(
       {@required
@@ -43,11 +46,11 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
       :
         _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
-    issueBall = IssueBall.fromFBallResDto(userBallResDto);
     _geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
         ballLatLng: Position(
             latitude: issueBall.latitude, longitude: issueBall.longitude),
         geoLocationUtilUseCaseOp: this);
+    _BallDisPlayUseCase = IssueBallDisPlayUseCase(userBallResDto);
   }
 
   void goIssueDetailPage() async {
@@ -70,29 +73,29 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
   void showBallSetting() async {
     BallModifyService ballModifyService =
         IssueBallModifyService(fireBaseAuthAdapterForUseCase: sl());
-    if (await issueBall.isCanModify()) {
-      CommonBallModifyWidgetResultType result =
-          await ballModifyService.showModifySelectDialog(context: context);
-      if (result == CommonBallModifyWidgetResultType.Update) {
-        await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return IM001MainPage(
-              LatLng(issueBall.latitude, issueBall.longitude),
-              issueBall.placeAddress,
-              issueBall.ballUuid,
-              IM001MainPageEnterMode.Update);
-        }));
-        _selectBallUseCaseInputPort.selectBall(issueBall.ballUuid, outputPort: this);
-      } else {
-        await issueBall.delete();
-        notifyListeners();
-      }
-    }
+//    if (await issueBall.isCanModify()) {
+//      CommonBallModifyWidgetResultType result =
+//          await ballModifyService.showModifySelectDialog(context: context);
+//      if (result == CommonBallModifyWidgetResultType.Update) {
+//        await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+//          return IM001MainPage(
+//              LatLng(issueBall.latitude, issueBall.longitude),
+//              issueBall.placeAddress,
+//              issueBall.ballUuid,
+//              IM001MainPageEnterMode.Update);
+//        }));
+//        _selectBallUseCaseInputPort.selectBall(issueBall.ballUuid, outputPort: this);
+//      } else {
+//        await issueBall.delete();
+//        notifyListeners();
+//      }
+//    }
   }
 
 
   @override
   void onSelectBall(FBallResDto fBallResDto) {
-    issueBall = IssueBall.fromFBallResDto(fBallResDto);
+//    issueBall = IssueBall.fromFBallResDto(fBallResDto);
     notifyListeners();
   }
 
@@ -108,6 +111,34 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
   onBallDistanceDisplayText({String displayDistanceText}) {
     this.distanceDisplayText = displayDistanceText;
     notifyListeners();
+  }
+
+  isAliveBall() {
+    return _BallDisPlayUseCase.isAlive();
+  }
+
+  String getBallLikeCount() {
+    return _BallDisPlayUseCase.ballLikes();
+  }
+
+  String getDisplayDisLikeCount() {
+    return _BallDisPlayUseCase.ballDisLikes();
+  }
+
+  String getDisplayCommentCount() {
+    return _BallDisPlayUseCase.commentCount();
+  }
+
+  String getDisplayRemainingTime() {
+    return _BallDisPlayUseCase.remainTime();
+  }
+
+  String getDisplayBallName() {
+    return _BallDisPlayUseCase.ballName();
+  }
+
+  String getDisplayPlaceAddress() {
+    return _BallDisPlayUseCase.placeAddress();
   }
 
 }

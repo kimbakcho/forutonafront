@@ -4,11 +4,11 @@ import 'FBallValuationResDto.dart';
 
 part 'FBallLikeResDto.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class FBallLikeResDto {
-  int like;
-  int dislike;
-  FBallValuationResDto fBallValuationResDto;
+  int ballLike;
+  int ballDislike;
+  FBallValuationResDto fballValuationResDto;
   FBallLikeResDto();
   factory FBallLikeResDto.fromJson(Map<String, dynamic> json) => _$FBallLikeResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FBallLikeResDtoToJson(this);

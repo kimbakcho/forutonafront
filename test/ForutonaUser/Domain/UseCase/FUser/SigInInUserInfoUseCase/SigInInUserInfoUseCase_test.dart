@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
@@ -23,7 +24,7 @@ void main () {
 
   test('UserInfo 정보를 Repository를 사용하여 저장함', () async {
     //arrange
-    FUserInfoResDto fUserInfo = new FUserInfoResDto();
+    FUserInfo fUserInfo = new FUserInfo();
     fUserInfo.uid = "testUid";
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);
@@ -35,7 +36,7 @@ void main () {
 
   test('메모리에서 저장하고 유저 정보 요청', () async {
     //arrange
-    FUserInfoResDto fUserInfo = new FUserInfoResDto();
+    FUserInfo fUserInfo = new FUserInfo();
     fUserInfo.uid = "testUid";
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);
@@ -62,7 +63,7 @@ void main () {
 
   test('유저 정보 서버로 부터 가져온뒤에 onSignInUserInfoFromMemory 실행 ', () async {
     //arrange
-    FUserInfoResDto fUserInfo = new FUserInfoResDto();
+    FUserInfo fUserInfo = new FUserInfo();
     fUserInfo.uid = "testUid";
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);

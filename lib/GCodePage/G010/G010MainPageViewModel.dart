@@ -9,6 +9,7 @@ import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseOutputPort.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccountUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
@@ -26,6 +27,8 @@ class G010MainPageViewModel extends ChangeNotifier
   final SignInUserInfoUseCase _signInUserInfoUseCase;
   final UserProfileImageUploadUseCaseInputPort
       _userProfileImageUploadUseCaseInputPort;
+  final UpdateAccountUserInfoUseCaseInputPort
+      _updateAccountUserInfoUseCaseInputPort;
 
   FUserInfoResDto _fUserInfoResDto;
   CodeCountry _countryCode = new CodeCountry();
@@ -63,11 +66,16 @@ class G010MainPageViewModel extends ChangeNotifier
           SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
       @required
           UserProfileImageUploadUseCaseInputPort
-              userProfileImageUploadUseCaseInputPort})
+              userProfileImageUploadUseCaseInputPort,
+      @required
+          UpdateAccountUserInfoUseCaseInputPort
+              updateAccountUserInfoUseCaseInputPort})
       : _nickNameValid = nickNameValid,
         _signInUserInfoUseCase = signInUserInfoUseCaseInputPort,
         _userProfileImageUploadUseCaseInputPort =
-            userProfileImageUploadUseCaseInputPort {
+            userProfileImageUploadUseCaseInputPort,
+        _updateAccountUserInfoUseCaseInputPort =
+            updateAccountUserInfoUseCaseInputPort {
     nickNameController.addListener(_onNickNameControllerListener);
     userIntroduceController.addListener(_onUserIntroduceControllerListener);
     _signInUserInfoUseCase.reqSignInUserInfoFromMemory(outputPort: this);
@@ -91,9 +99,7 @@ class G010MainPageViewModel extends ChangeNotifier
 
     reqDto.isoCode = _currentIsoCode;
 
-    FUserInfo fUserInfo = _signInUserInfoUseCase.reqSignInUserInfoFromMemory();
-
-    _fUserInfoResDto = await fUserInfo.updateAccountUserInfo(reqDto);
+    _fUserInfoResDto = await _updateAccountUserInfoUseCaseInputPort.updateAccountUserInfo(reqDto);
 
     Fluttertoast.showToast(
         msg: "수정 되었습니다.",
@@ -133,7 +139,8 @@ class G010MainPageViewModel extends ChangeNotifier
     }
   }
 
-  bool isChangeNickName() => nickNameController.text != _fUserInfoResDto.nickName;
+  bool isChangeNickName() =>
+      nickNameController.text != _fUserInfoResDto.nickName;
 
   _onNickNameControllerListener() {
     nickNameInputTextLength = nickNameController.text.length;
