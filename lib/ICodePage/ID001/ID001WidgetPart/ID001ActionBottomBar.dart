@@ -100,9 +100,8 @@ class ID001ActionBottomBar extends StatelessWidget {
 
 class ID001ActionBottomBarViewModel extends ChangeNotifier
     implements ValuationMediatorComponent {
-  final String ballUuid;
+  String ballUuid;
   final ValuationMediator _valuationMediator;
-  BallLikeState ballLikeState = BallLikeState.None;
 
   ID001ActionBottomBarViewModel(
       {this.ballUuid, @required ValuationMediator valuationMediator})
@@ -111,37 +110,20 @@ class ID001ActionBottomBarViewModel extends ChangeNotifier
   }
 
   likeAction() async {
-    if (ballLikeState == BallLikeState.Up) {
-      await _valuationMediator.likeCancel(1, ballUuid);
-    } else if (ballLikeState == BallLikeState.Down) {
-      await _valuationMediator.disLikeCancel(1, ballUuid);
-      await _valuationMediator.like(1, ballUuid);
-    } else {
-      await _valuationMediator.like(1, ballUuid);
-    }
+    _valuationMediator.likeAction(this);
+  }
+
+  BallLikeState get ballLikeState {
+    return _valuationMediator.ballLikeState;
   }
 
   disLikeAction() async {
-    if (ballLikeState == BallLikeState.Up) {
-      await _valuationMediator.likeCancel(1, ballUuid);
-      await _valuationMediator.disLike(1, ballUuid);
-    } else if (ballLikeState == BallLikeState.Down) {
-      await _valuationMediator.disLikeCancel(1, ballUuid);
-    } else {
-      await _valuationMediator.disLike(1, ballUuid);
-    }
+    _valuationMediator.disLikeAction(this);
   }
 
-  @override
-  updateValuation(FBallLikeResDto fBallLikeResDto) {
 
-    if (fBallLikeResDto.fballValuationResDto.ballLike > 0) {
-      ballLikeState = BallLikeState.Up;
-    } else if (fBallLikeResDto.fballValuationResDto.ballDislike > 0) {
-      ballLikeState = BallLikeState.Down;
-    } else {
-      ballLikeState = BallLikeState.None;
-    }
+  @override
+  reqNotification() {
     notifyListeners();
   }
 }

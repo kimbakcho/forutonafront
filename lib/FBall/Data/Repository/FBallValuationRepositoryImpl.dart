@@ -23,4 +23,10 @@ class FBallValuationRepositoryImpl implements FBallValuationRepository {
         tokenFDio: FDio.token(
             idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
+
+  @override
+  Future<FBallLikeResDto> getBallLikeState(String ballUuid, String uid) async {
+    return _fBallValuationRemoteDataSource.getBallLikeState(
+        ballUuid: ballUuid, uid: uid, noneTokenFDio: FDio.noneToken());
+  }
 }

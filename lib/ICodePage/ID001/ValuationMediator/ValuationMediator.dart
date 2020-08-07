@@ -3,65 +3,158 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
 
 abstract class ValuationMediatorComponent {
-  updateValuation(FBallLikeResDto fBallLikeResDto);
+  reqNotification();
+
+  String ballUuid;
 }
 
 abstract class ValuationMediator {
   registerComponent(ValuationMediatorComponent valuationMediatorComponent);
-  Future<FBallLikeResDto> like(int point,String ballUuid);
-  Future<FBallLikeResDto> disLike(int point,String ballUuid);
-  Future<FBallLikeResDto> likeCancel(int point,String ballUuid);
-  Future<FBallLikeResDto> disLikeCancel(int point,String ballUuid);
+
+  likeAction(ValuationMediatorComponent component);
+
+  disLikeAction(ValuationMediatorComponent component);
+
+  getBallLikeState(String ballUuid,{String uid});
+
+  BallLikeState ballLikeState;
+
+  int ballPower = 0;
+  int ballLikeCount = 0;
+  int ballDisLikeCount = 0;
+  int likeServiceUseUserCount = 0;
 }
 
-class ValuationMediatorImpl implements ValuationMediator{
+class ValuationMediatorImpl implements ValuationMediator {
   final BallLikeUseCaseInputPort _ballLikeUseCaseInputPort;
+  @override
+  BallLikeState ballLikeState = BallLikeState.None;
+  @override
+  int ballDisLikeCount;
+  @override
+  int ballLikeCount;
+  @override
+  int ballPower;
+  @override
+  int likeServiceUseUserCount;
 
   List<ValuationMediatorComponent> components = [];
 
-  ValuationMediatorImpl({@required BallLikeUseCaseInputPort ballLikeUseCaseInputPort})
-  :_ballLikeUseCaseInputPort = ballLikeUseCaseInputPort;
+  ValuationMediatorImpl(
+      {@required BallLikeUseCaseInputPort ballLikeUseCaseInputPort})
+      : _ballLikeUseCaseInputPort = ballLikeUseCaseInputPort;
 
   @override
   registerComponent(ValuationMediatorComponent valuationMediatorComponent) {
     components.add(valuationMediatorComponent);
   }
 
-  allUpdateValuation(FBallLikeResDto fBallLikeResDto){
+  allNotification() {
     components.forEach((element) {
-      element.updateValuation(fBallLikeResDto);
+      element.reqNotification();
     });
   }
 
-  @override
-  Future<FBallLikeResDto> like(int point,String ballUuid) async {
-    var fBallLikeResDto = await _ballLikeUseCaseInputPort.ballLike(point, ballUuid);
-    allUpdateValuation(fBallLikeResDto);
+  likeAction(ValuationMediatorComponent component) async {
+    if (ballLikeState == BallLikeState.Up) {
+      ballLikeState = BallLikeState.None;
+      allNotification();
+      await likeCancel(1, component.ballUuid);
+    } else if (ballLikeState == BallLikeState.Down) {
+      ballLikeState = BallLikeState.Up;
+      allNotification();
+      await disLikeCancel(
+        1,
+        component.ballUuid,
+      );
+      await like(
+        1,
+        component.ballUuid,
+      );
+    } else {
+      ballLikeState = BallLikeState.Up;
+      allNotification();
+      await like(1, component.ballUuid);
+    }
+  }
+
+  disLikeAction(ValuationMediatorComponent component) async {
+    if (ballLikeState == BallLikeState.Up) {
+      ballLikeState = BallLikeState.Down;
+      allNotification();
+      await likeCancel(1, component.ballUuid);
+      await disLike(1, component.ballUuid);
+    } else if (ballLikeState == BallLikeState.Down) {
+      ballLikeState = BallLikeState.None;
+      allNotification();
+      await disLikeCancel(1, component.ballUuid);
+    } else {
+      ballLikeState = BallLikeState.Down;
+      allNotification();
+      await disLike(1, component.ballUuid);
+    }
+  }
+
+  Future<FBallLikeResDto> like(
+    int point,
+    String ballUuid,
+  ) async {
+    var fBallLikeResDto =
+        await _ballLikeUseCaseInputPort.ballLike(point, ballUuid);
+    updateValuation(fBallLikeResDto);
     return fBallLikeResDto;
   }
 
-  @override
-  Future<FBallLikeResDto> likeCancel(int point,String ballUuid) async {
-    var fBallLikeResDto = await _ballLikeUseCaseInputPort.ballLikeCancel(point, ballUuid);
-    allUpdateValuation(fBallLikeResDto);
+  Future<FBallLikeResDto> likeCancel(int point, String ballUuid) async {
+    var fBallLikeResDto =
+        await _ballLikeUseCaseInputPort.ballLikeCancel(point, ballUuid);
+    updateValuation(fBallLikeResDto);
     return fBallLikeResDto;
   }
 
-  @override
-  Future<FBallLikeResDto> disLike(int point, String ballUuid) async {
-    var fBallLikeResDto = await _ballLikeUseCaseInputPort.ballDisLike(point, ballUuid);
-    allUpdateValuation(fBallLikeResDto);
+  Future<FBallLikeResDto> disLike(
+    int point,
+    String ballUuid,
+  ) async {
+    var fBallLikeResDto =
+        await _ballLikeUseCaseInputPort.ballDisLike(point, ballUuid);
+    updateValuation(fBallLikeResDto);
     return fBallLikeResDto;
   }
 
-  @override
   Future<FBallLikeResDto> disLikeCancel(int point, String ballUuid) async {
-    var fBallLikeResDto = await _ballLikeUseCaseInputPort.ballDisLikeCancel(point, ballUuid);
-    allUpdateValuation(fBallLikeResDto);
+    var fBallLikeResDto =
+        await _ballLikeUseCaseInputPort.ballDisLikeCancel(point, ballUuid);
+    updateValuation(fBallLikeResDto);
     return fBallLikeResDto;
   }
 
+
+
+
+  updateValuation(FBallLikeResDto fBallLikeResDto) {
+    ballPower = fBallLikeResDto.ballPower;
+    ballLikeCount = fBallLikeResDto.ballLike;
+    ballDisLikeCount = fBallLikeResDto.ballDislike;
+    likeServiceUseUserCount = fBallLikeResDto.likeServiceUseUserCount;
+    allNotification();
+  }
+
+  @override
+  getBallLikeState(String ballUuid, {String uid}) async {
+      FBallLikeResDto fBallLikeResDto = await _ballLikeUseCaseInputPort.getBallLikeState(ballUuid, uid);
+      if(fBallLikeResDto.fballValuationResDto.ballLike>0) {
+        ballLikeState = BallLikeState.Up;
+      }else if(fBallLikeResDto.fballValuationResDto.ballDislike>0){
+        ballLikeState = BallLikeState.Down;
+      }else {
+        ballLikeState = BallLikeState.None;
+      }
+      updateValuation(fBallLikeResDto);
+  }
 
 }

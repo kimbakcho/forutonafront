@@ -54,5 +54,17 @@ class IssueBallDisPlayUseCase extends BallDisPlayUseCase {
 
   }
 
+  getYoutubeId() {
+    if(_fBallResDto.ballDeleteFlag){
+      return "";
+    }else {
+      if(_issueBallDescription.youtubeVideoId != null){
+        return _issueBallDescription.youtubeVideoId;
+      }else {
+        return "";
+      }
+    }
+  }
+
 
 }

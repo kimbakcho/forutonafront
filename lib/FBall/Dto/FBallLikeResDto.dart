@@ -8,6 +8,8 @@ part 'FBallLikeResDto.g.dart';
 class FBallLikeResDto {
   int ballLike;
   int ballDislike;
+  int likeServiceUseUserCount;
+  int ballPower;
   FBallValuationResDto fballValuationResDto;
   FBallLikeResDto();
   factory FBallLikeResDto.fromJson(Map<String, dynamic> json) => _$FBallLikeResDtoFromJson(json);

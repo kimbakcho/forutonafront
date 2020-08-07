@@ -8,13 +8,17 @@ import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseI
 import 'package:forutonafront/FBall/Domain/Value/IssueBallDescription.dart';
 import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'ValuationMediator/ValuationMediator.dart';
 
-class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCaseOutputPort,ValuationMediatorComponent{
+class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCaseOutputPort{
   final String _ballUuid;
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   bool _loadBallComplete = false;
   IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
   FBallResDto _fBallResDto;
@@ -23,10 +27,15 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
     ValuationMediatorImpl(ballLikeUseCaseInputPort: sl());
 
   ID001MainPage2ViewModel(
-      {String ballUuid, SelectBallUseCaseInputPort selectBallUseCaseInputPort})
-      : _ballUuid = ballUuid, _selectBallUseCaseInputPort = selectBallUseCaseInputPort {
+      {String ballUuid, SelectBallUseCaseInputPort selectBallUseCaseInputPort,
+      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase
+
+      })
+      : _ballUuid = ballUuid, _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
+        _fireBaseAuthAdapterForUseCase= fireBaseAuthAdapterForUseCase
+  {
     _selectBallUseCaseInputPort.selectBall(_ballUuid,outputPort: this);
-    valuationMediator.registerComponent(this);
+    getBallLikeState();
   }
 
   String getBallTitle() {
@@ -89,9 +98,23 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
     return _issueBallDisPlayUseCase.displayMakeTime();
   }
 
-  @override
-  updateValuation(FBallLikeResDto fBallLikeResDto) {
-    print("ID001MainPage2ViewModel");
-    print(fBallLikeResDto);
+  getBallDesImages() {
+    return _issueBallDisPlayUseCase.getDesImages();
+  }
+
+  getBallYoutubeId() {
+    return _issueBallDisPlayUseCase.getYoutubeId();
+  }
+
+  DateTime getBallActivationTime() {
+    return _fBallResDto.activationTime;
+  }
+
+  void getBallLikeState() async{
+    if(await _fireBaseAuthAdapterForUseCase.isLogin()) {
+      valuationMediator.getBallLikeState(_ballUuid,uid: await _fireBaseAuthAdapterForUseCase.userUid());
+    }else {
+      valuationMediator.getBallLikeState(_ballUuid);
+    }
   }
 }
