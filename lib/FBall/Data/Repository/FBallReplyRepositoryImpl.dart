@@ -42,4 +42,9 @@ class FBallReplyRepositoryImpl implements FBallReplyRepository {
   Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto) async {
     return await _fBallReplyDataSource.updateFBallReply(reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }
+
+  @override
+  Future<int> getBallReviewCount(String ballUuid) async {
+    return await _fBallReplyDataSource.getBallReviewCount(ballUuid,FDio.noneToken());
+  }
 }

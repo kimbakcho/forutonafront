@@ -31,15 +31,15 @@ class MapIntentButton extends StatelessWidget {
       child: FlatButton(
         onPressed: () async {
           List<MapIntent> mapIntents = List<MapIntent>();
-          mapIntents.add(MapIntentGoogleImpl(
-              dstPosition: _dstPosition,
-              geoLocationUtilForeGroundUseCaseInputPort: sl()));
           mapIntents.add(MapIntentKakaoImpl(
               dstPosition: _dstPosition,
               geoLocationUtilForeGroundUseCaseInputPort: sl()));
           mapIntents.add(MapIntentNaverImpl(
               dstPosition: _dstPosition,
               dstAddress: _dstAddress,
+              geoLocationUtilForeGroundUseCaseInputPort: sl()));
+          mapIntents.add(MapIntentGoogleImpl(
+              dstPosition: _dstPosition,
               geoLocationUtilForeGroundUseCaseInputPort: sl()));
 
 

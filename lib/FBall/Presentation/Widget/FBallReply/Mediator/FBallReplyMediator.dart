@@ -110,19 +110,19 @@ class FBallReplyMediator implements FBallReplyUseCaseOutputPort {
 
   @override
   void onInsertFBallReply(FBallReplyResDto fBallReplyResDto) {
-    if (isRootReply(fBallReplyResDto)) {
-      replyList.insert(0, FBallReply.fromFBallReplyResDto(fBallReplyResDto));
-      totalReplyCount++;
-//      _fBall.addCommentCount();
-    } else {
-      var indexWhere = findSubReplyRootNode(fBallReplyResDto.replyNumber);
-      replyList[indexWhere]
-          .fBallSubReplys
-          .add(FBallReply.fromFBallReplyResDto(fBallReplyResDto));
-      replyList[indexWhere].subReplyCount =
-          replyList[indexWhere].fBallSubReplys.length;
-    }
-    emitAllOnUpdateFBallReply();
+//    if (isRootReply(fBallReplyResDto)) {
+//      replyList.insert(0, FBallReply.fromFBallReplyResDto(fBallReplyResDto));
+//      totalReplyCount++;
+////      _fBall.addCommentCount();
+//    } else {
+//      var indexWhere = findSubReplyRootNode(fBallReplyResDto.replyNumber);
+//      replyList[indexWhere]
+//          .fBallSubReplys
+//          .add(FBallReply.fromFBallReplyResDto(fBallReplyResDto));
+//      replyList[indexWhere].subReplyCount =
+//          replyList[indexWhere].fBallSubReplys.length;
+//    }
+//    emitAllOnUpdateFBallReply();
   }
 
   bool isRootReply(FBallReplyResDto fBallReplyResDto) =>

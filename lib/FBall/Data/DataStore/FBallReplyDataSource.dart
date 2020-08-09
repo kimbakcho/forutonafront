@@ -18,6 +18,10 @@ abstract class FBallReplyDataSource {
 
   Future<FBallReplyResDto> updateFBallReply(
       FBallReplyUpdateReqDto reqDto, FDio tokenFDio);
+
+  Future<int> getBallReviewCount(String ballUuid, FDio fDio);
+
+
 }
 
 class FBallReplyDataSourceImpl implements FBallReplyDataSource {
@@ -53,5 +57,13 @@ class FBallReplyDataSourceImpl implements FBallReplyDataSource {
       FBallReplyUpdateReqDto reqDto, FDio tokenFDio) async {
     var response = await tokenFDio.put("/v1/FBallReply", data: reqDto.toJson());
     return FBallReplyResDto.fromJson(response.data);
+  }
+
+  @override
+  Future<int> getBallReviewCount(String ballUuid, FDio noneTokenFDio) async {
+    var response = await noneTokenFDio.get<int>("/v1/FBallReply/Count", queryParameters: {
+      "ballUuid":ballUuid
+    });
+    return response.data;
   }
 }

@@ -8,72 +8,76 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
-class ID001YoutubeWidget extends StatelessWidget {
+class ID001YoutubeWidget extends StatefulWidget {
   final String youtubeVideoId;
-
   ID001YoutubeWidget({this.youtubeVideoId});
 
   @override
+  _ID001YoutubeWidgetState createState() => _ID001YoutubeWidgetState();
+}
+
+class _ID001YoutubeWidgetState extends State<ID001YoutubeWidget> with AutomaticKeepAliveClientMixin{
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ID001YoutubeWidgetViewModel(youtubeVideoId),
+      create: (_) => ID001YoutubeWidgetViewModel(widget.youtubeVideoId),
       child: Consumer<ID001YoutubeWidgetViewModel>(builder: (_, model, __) {
         return model.canDisplayYoutube()
             ? Container(
-                height: 162,
+          height: 162,
+          child: Row(children: <Widget>[
+            Container(
+                padding: EdgeInsets.fromLTRB(16, 30, 16, 20),
                 child: Row(children: <Widget>[
                   Container(
-                      padding: EdgeInsets.fromLTRB(16, 30, 16, 20),
-                      child: Row(children: <Widget>[
-                        Container(
-                          width: 124.0,
-                          height: 102.0,
-                          child: youtubeImageBox(model),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 16),
-                          width:
-                              MediaQuery.of(context).size.width - 124 - 32 - 16,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Text(
-                                    model.currentYoutubeTitle,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.notoSans(
-                                      fontSize: 14,
-                                      color: const Color(0xff454f63),
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
+                    width: 124.0,
+                    height: 102.0,
+                    child: youtubeImageBox(model),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 16),
+                    width:
+                    MediaQuery.of(context).size.width - 124 - 32 - 16,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              model.currentYoutubeTitle,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.notoSans(
+                                fontSize: 14,
+                                color: const Color(0xff454f63),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 11),
+                              child: Text(
+                                model.currentYoutubeAuthor,
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 12,
+                                  color: const Color(0xff78849e),
                                 ),
-                                Container(
-                                    margin: EdgeInsets.only(top: 11),
-                                    child: Text(
-                                      model.currentYoutubeAuthor,
-                                      style: GoogleFonts.notoSans(
-                                        fontSize: 12,
-                                        color: const Color(0xff78849e),
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    )),
-                                Container(
-                                    child: Text(
-                                  model.etc,
-                                  style: GoogleFonts.notoSans(
-                                    fontSize: 12,
-                                    color: const Color(0xff78849e),
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ))
-                              ]),
-                        )
-                      ]))
-                ]),
-              )
+                                textAlign: TextAlign.left,
+                              )),
+                          Container(
+                              child: Text(
+                                model.etc,
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 12,
+                                  color: const Color(0xff78849e),
+                                ),
+                                textAlign: TextAlign.left,
+                              ))
+                        ]),
+                  )
+                ]))
+          ]),
+        )
             : Container();
       }),
     );
@@ -114,6 +118,10 @@ class ID001YoutubeWidget extends StatelessWidget {
           color: Color(0xff454F63).withOpacity(0.5), shape: BoxShape.circle),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class ID001YoutubeWidgetViewModel extends ChangeNotifier {

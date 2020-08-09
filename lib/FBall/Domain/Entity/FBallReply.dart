@@ -86,23 +86,7 @@ class FBallReply {
 
   Map<String, dynamic> toJson() => _$FBallReplyToJson(this);
 
-  factory FBallReply.fromFBallReplyResDto(FBallReplyResDto item){
-    FBallReply fBallReply = FBallReply();
-    fBallReply.replyUuid = item.replyUuid;
-    fBallReply.ballUuid = item.ballUuid;
-    fBallReply.uid = item.uid;
-    fBallReply.replyNumber = item.replyNumber;
-    fBallReply.replySort = item.replySort;
-    fBallReply.replyDepth = item.replyDepth;
-    fBallReply.replyText = item.replyText;
-    fBallReply.replyUploadDateTime = item.replyUploadDateTime;
-    fBallReply.replyUpdateDateTime = item.replyUpdateDateTime;
-    fBallReply.userNickName = item.userNickName;
-    fBallReply.userProfilePictureUrl = item.userProfilePictureUrl;
-    fBallReply.deleteFlag = item.deleteFlag;
 
-    return fBallReply;
-  }
 
 
 }

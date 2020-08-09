@@ -11,7 +11,6 @@ FBallReplyInsertReqDto _$FBallReplyInsertReqDtoFromJson(
   return FBallReplyInsertReqDto()
     ..replyUuid = json['replyUuid'] as String
     ..ballUuid = json['ballUuid'] as String
-    ..replyNumber = json['replyNumber'] as int
     ..replyText = json['replyText'] as String;
 }
 
@@ -20,6 +19,5 @@ Map<String, dynamic> _$FBallReplyInsertReqDtoToJson(
     <String, dynamic>{
       'replyUuid': instance.replyUuid,
       'ballUuid': instance.ballUuid,
-      'replyNumber': instance.replyNumber,
       'replyText': instance.replyText,
     };

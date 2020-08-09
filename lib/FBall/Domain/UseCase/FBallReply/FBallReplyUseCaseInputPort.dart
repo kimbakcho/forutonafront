@@ -11,4 +11,5 @@ abstract class FBallReplyUseCaseInputPort {
   Future<PageWrap<FBallReplyResDto>> reqFBallReply(FBallReplyReqDto reqDto,Pageable pageable,{FBallReplyUseCaseOutputPort outputPort});
   Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort});
   Future<FBallReplyResDto> deleteFBallReply(String replyUuid,{FBallReplyUseCaseOutputPort outputPort});
+  Future<int> getBallReviewCount(String ballUuid);
 }

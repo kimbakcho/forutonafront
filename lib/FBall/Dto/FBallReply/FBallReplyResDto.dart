@@ -1,13 +1,16 @@
 import 'package:forutonafront/FBall/Domain/Entity/FBallReply.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallValuationResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FBallReplyResDto.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class FBallReplyResDto {
   String replyUuid;
-  String ballUuid;
-  String uid;
+  FBallResDto ballUuid;
+  FUserInfoSimpleResDto uid;
   int replyNumber;
   int replySort;
   int replyDepth;
@@ -17,6 +20,7 @@ class FBallReplyResDto {
   String userNickName;
   String userProfilePictureUrl;
   bool deleteFlag;
+  FBallValuationResDto fBallValuationResDto;
 
   FBallReplyResDto();
   static FBallReplyResDto fromJson(Map<String, dynamic> json) =>

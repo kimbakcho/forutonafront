@@ -7,7 +7,6 @@ part 'FBallReplyInsertReqDto.g.dart';
 class FBallReplyInsertReqDto {
   String replyUuid;
   String ballUuid;
-  int replyNumber;
   String replyText;
 
   FBallReplyInsertReqDto();

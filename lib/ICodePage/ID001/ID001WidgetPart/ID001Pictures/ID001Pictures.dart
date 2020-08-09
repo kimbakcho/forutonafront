@@ -15,67 +15,65 @@ class ID001Pictures extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return desImages.length > 0 ? Container(
         child: Column(
-          children: <Widget>[
-            Container(
-              height: 240,
-              child: selectPictureWidget(desImages),
-            ),
-            desImages.length > 4
-                ? Row(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.all(16),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return BallImageViewer(
-                                desImages,
-                                null,
-                                initIndex: 0,
-                              );
-                            }));
-                      },
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                        child: Text(
-                          '사진 더 불러오기',
-                          style: GoogleFonts.notoSans(
-                            fontSize: 16,
-                            color: const Color(0xff000000),
-                            letterSpacing: -0.8,
-                            fontWeight: FontWeight.w700,
-                            height: 1.375,
+      children: <Widget>[
+        Container(
+          height: 240,
+          child: selectPictureWidget(desImages),
+        ),
+        desImages.length > 4
+            ? Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.all(16),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return BallImageViewer(
+                              desImages,
+                              null,
+                              initIndex: 0,
+                            );
+                          }));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                          child: Text(
+                            '사진 더 불러오기',
+                            style: GoogleFonts.notoSans(
+                              fontSize: 16,
+                              color: const Color(0xff000000),
+                              letterSpacing: -0.8,
+                              fontWeight: FontWeight.w700,
+                              height: 1.375,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: const Color(0xffffffff),
+                        border: Border.all(
+                            width: 1.0, color: const Color(0xff000000)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x29000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
                     ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      color: const Color(0xffffffff),
-                      border:
-                      Border.all(width: 1.0, color: const Color(0xff000000)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x29000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            )
-
-
-                : Container()
-          ],
-        ));
+                  )
+                ],
+              )
+            : Container()
+      ],
+    )):Container();
   }
 
   Widget selectPictureWidget(List<FBallDesImages> desImages) {

@@ -21,7 +21,6 @@ class FBallReplyRootActionInsert implements FBallReplyRootActionCommand {
   Future<void> execute(String replyContent) async {
     FBallReplyInsertReqDto fBallReplyInsertReqDto = FBallReplyInsertReqDto();
     fBallReplyInsertReqDto.replyUuid = Uuid().v4();
-    fBallReplyInsertReqDto.replyNumber = -1;
     fBallReplyInsertReqDto.replyText = replyContent;
     fBallReplyInsertReqDto.ballUuid = _ballUuid;
     await _fBallReplyMediator.insertFBallReply(fBallReplyInsertReqDto);
@@ -64,7 +63,6 @@ class FBallReplySubActionInsert implements FBallReplyRootActionCommand {
   Future<void> execute(String replyContent) async {
     FBallReplyInsertReqDto fBallReplyInsertReqDto = FBallReplyInsertReqDto();
     fBallReplyInsertReqDto.replyUuid = Uuid().v4();
-    fBallReplyInsertReqDto.replyNumber = _fBallReply.replyNumber;
     fBallReplyInsertReqDto.replyText = replyContent;
     fBallReplyInsertReqDto.ballUuid = _fBallReply.ballUuid;
     await _fBallReplyMediator.insertFBallReply(fBallReplyInsertReqDto);

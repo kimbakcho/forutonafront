@@ -9,8 +9,12 @@ part of 'FBallReplyResDto.dart';
 FBallReplyResDto _$FBallReplyResDtoFromJson(Map<String, dynamic> json) {
   return FBallReplyResDto()
     ..replyUuid = json['replyUuid'] as String
-    ..ballUuid = json['ballUuid'] as String
-    ..uid = json['uid'] as String
+    ..ballUuid = json['ballUuid'] == null
+        ? null
+        : FBallResDto.fromJson(json['ballUuid'] as Map<String, dynamic>)
+    ..uid = json['uid'] == null
+        ? null
+        : FUserInfoSimpleResDto.fromJson(json['uid'] as Map<String, dynamic>)
     ..replyNumber = json['replyNumber'] as int
     ..replySort = json['replySort'] as int
     ..replyDepth = json['replyDepth'] as int
@@ -23,14 +27,18 @@ FBallReplyResDto _$FBallReplyResDtoFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['replyUpdateDateTime'] as String)
     ..userNickName = json['userNickName'] as String
     ..userProfilePictureUrl = json['userProfilePictureUrl'] as String
-    ..deleteFlag = json['deleteFlag'] as bool;
+    ..deleteFlag = json['deleteFlag'] as bool
+    ..fBallValuationResDto = json['fBallValuationResDto'] == null
+        ? null
+        : FBallValuationResDto.fromJson(
+            json['fBallValuationResDto'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$FBallReplyResDtoToJson(FBallReplyResDto instance) =>
     <String, dynamic>{
       'replyUuid': instance.replyUuid,
-      'ballUuid': instance.ballUuid,
-      'uid': instance.uid,
+      'ballUuid': instance.ballUuid?.toJson(),
+      'uid': instance.uid?.toJson(),
       'replyNumber': instance.replyNumber,
       'replySort': instance.replySort,
       'replyDepth': instance.replyDepth,
@@ -40,4 +48,5 @@ Map<String, dynamic> _$FBallReplyResDtoToJson(FBallReplyResDto instance) =>
       'userNickName': instance.userNickName,
       'userProfilePictureUrl': instance.userProfilePictureUrl,
       'deleteFlag': instance.deleteFlag,
+      'fBallValuationResDto': instance.fBallValuationResDto?.toJson(),
     };

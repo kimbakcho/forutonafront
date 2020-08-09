@@ -53,4 +53,8 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
     return fBallReplyResDto;
   }
 
+  Future<int> getBallReviewCount(String ballUuid) async{
+    return await _fBallReplyRepository.getBallReviewCount(ballUuid);
+  }
+
 }

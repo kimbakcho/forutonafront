@@ -6,6 +6,7 @@ import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001LikeState.dar
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001MakerInfo.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001Pictures.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Presentation/Widget/FBallReply2/BasicReviews.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -87,6 +88,9 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                             ID001LikeState(
                               ballUuid: model.getBallUuid(),
                               ballActivationTime: model.getBallActivationTime(),
+                            ),
+                            BasicReviews(
+                              ballUuid: model.getBallUuid(),
                             )
                           ]),
                     )
