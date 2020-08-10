@@ -1,40 +1,36 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
-
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Domain/Value/IssueBallDescription.dart';
-import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'ValuationMediator/ValuationMediator.dart';
 
-class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCaseOutputPort{
+class ID001MainPage2ViewModel extends ChangeNotifier
+    implements SelectBallUseCaseOutputPort {
   final String _ballUuid;
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   bool _loadBallComplete = false;
   IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
   FBallResDto _fBallResDto;
+  final ReviewInertMediator reviewInertMediator;
 
   final ValuationMediator valuationMediator =
-    ValuationMediatorImpl(ballLikeUseCaseInputPort: sl());
+      ValuationMediatorImpl(ballLikeUseCaseInputPort: sl());
 
   ID001MainPage2ViewModel(
-      {String ballUuid, SelectBallUseCaseInputPort selectBallUseCaseInputPort,
-      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase
-
-      })
-      : _ballUuid = ballUuid, _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
-        _fireBaseAuthAdapterForUseCase= fireBaseAuthAdapterForUseCase
-  {
-    _selectBallUseCaseInputPort.selectBall(_ballUuid,outputPort: this);
+      {String ballUuid,
+      SelectBallUseCaseInputPort selectBallUseCaseInputPort,
+      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+      : _ballUuid = ballUuid,
+        _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
+        reviewInertMediator = ReviewInertMediatorImpl(fBallReplyUseCaseInputPort: sl()) {
+    _selectBallUseCaseInputPort.selectBall(_ballUuid, outputPort: this);
     getBallLikeState();
   }
 
@@ -50,7 +46,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
     notifyListeners();
   }
 
-  bool isLoadBallFinish(){
+  bool isLoadBallFinish() {
     return _loadBallComplete;
   }
 
@@ -67,7 +63,8 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
   }
 
   getBallPosition() {
-    return Position(latitude: _fBallResDto.latitude,longitude: _fBallResDto.longitude);
+    return Position(
+        latitude: _fBallResDto.latitude, longitude: _fBallResDto.longitude);
   }
 
   getBallAddress() {
@@ -110,10 +107,11 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements SelectBallUseCas
     return _fBallResDto.activationTime;
   }
 
-  void getBallLikeState() async{
-    if(await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      valuationMediator.getBallLikeState(_ballUuid,uid: await _fireBaseAuthAdapterForUseCase.userUid());
-    }else {
+  void getBallLikeState() async {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+      valuationMediator.getBallLikeState(_ballUuid,
+          uid: await _fireBaseAuthAdapterForUseCase.userUid());
+    } else {
       valuationMediator.getBallLikeState(_ballUuid);
     }
   }

@@ -20,7 +20,9 @@ class FBallReplyResDto {
   String userNickName;
   String userProfilePictureUrl;
   bool deleteFlag;
-  FBallValuationResDto fBallValuationResDto;
+  FBallValuationResDto fballValuationResDto;
+  int childCount;
+  List<FBallReplyResDto> childFBallReplyResDto = [];
 
   FBallReplyResDto();
   static FBallReplyResDto fromJson(Map<String, dynamic> json) =>

@@ -6,24 +6,26 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseI
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'BasicReViewsInsert.dart';
+import 'ReviewInertMediator.dart';
 
 class BasicReviews extends StatelessWidget {
   final String ballUuid;
+  final ReviewInertMediator reviewInertMediator;
 
-  BasicReviews({this.ballUuid});
+  BasicReviews({Key key, this.ballUuid, this.reviewInertMediator}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => ID001ReviewsViewModel(
             ballUuid: ballUuid,
+            reviewInertMediator: reviewInertMediator,
             fireBaseAuthAdapterForUseCase: sl(),
             fBallReplyUseCaseInputPort: sl()),
         child: Consumer<ID001ReviewsViewModel>(builder: (_, model, __) {
@@ -77,20 +79,25 @@ class BasicReviews extends StatelessWidget {
   }
 }
 
-class ID001ReviewsViewModel extends ChangeNotifier {
+class ID001ReviewsViewModel extends ChangeNotifier
+    implements ReviewInertMediatorComponent {
   final String ballUuid;
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final isLoaded = false;
   int reviewsCount = 0;
   PageWrap<FBallReplyResDto> _pageWrapFBallReplyResDto;
+  ReviewInertMediator _reviewInertMediator;
 
   ID001ReviewsViewModel(
       {this.ballUuid,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
-      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
+      ReviewInertMediator reviewInertMediator})
       : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
+        _reviewInertMediator = reviewInertMediator {
+    _reviewInertMediator.registerComponent(this);
     loadReviewCount();
     loadReply();
   }
@@ -119,7 +126,10 @@ class ID001ReviewsViewModel extends ChangeNotifier {
           isDismissible: true,
           isScrollControlled: true,
           builder: (context) {
-            return BasicReViewsInsert(ballUuid: ballUuid,rootReplyUuid: null);
+            return BasicReViewsInsert(
+                ballUuid: ballUuid,
+                rootReplyUuid: null,
+                reviewInertMediator: _reviewInertMediator);
           });
       loadReply();
     } else {
@@ -127,5 +137,11 @@ class ID001ReviewsViewModel extends ChangeNotifier {
         return J001View();
       }));
     }
+  }
+
+  @override
+  onInserted(FBallReplyResDto fBallReplyResDto) {
+    reviewsCount++;
+    notifyListeners();
   }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsContentBars.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReviews.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001ActionBottomBar.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001LikeState.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001MakerInfo.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001Pictures.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/FBall/Presentation/Widget/FBallReply2/BasicReviews.dart';
+
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -90,7 +92,16 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                               ballActivationTime: model.getBallActivationTime(),
                             ),
                             BasicReviews(
+                              reviewInertMediator: model.reviewInertMediator,
                               ballUuid: model.getBallUuid(),
+                            ),
+                            BasicReViewsContentBars(
+                              reviewInertMediator: model.reviewInertMediator,
+                              showEditBtn: false,
+                              showChildReply: false,
+                              ballUuid: model.getBallUuid(),
+                              listable: false,
+                              pageLimit: 3,
                             )
                           ]),
                     )

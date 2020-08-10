@@ -41,7 +41,9 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   Future<FBallReplyResDto> insertFBallReply(
       FBallReplyInsertReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
     var fBallReplyResDto = await _fBallReplyRepository.insertFBallReply(reqDto);
-    outputPort.onInsertFBallReply(fBallReplyResDto);
+    if(outputPort != null){
+      outputPort.onInsertFBallReply(fBallReplyResDto);
+    }
     return fBallReplyResDto;
   }
 

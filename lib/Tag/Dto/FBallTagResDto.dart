@@ -9,6 +9,7 @@ class FBallTagResDto {
   String tagItem;
   FBallResDto ballUuid;
 
+
   FBallTagResDto();
 
   factory FBallTagResDto.fromJson(Map<String, dynamic> json) => _$FBallTagResDtoFromJson(json);

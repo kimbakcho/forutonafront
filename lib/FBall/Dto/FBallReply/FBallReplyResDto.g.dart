@@ -28,10 +28,16 @@ FBallReplyResDto _$FBallReplyResDtoFromJson(Map<String, dynamic> json) {
     ..userNickName = json['userNickName'] as String
     ..userProfilePictureUrl = json['userProfilePictureUrl'] as String
     ..deleteFlag = json['deleteFlag'] as bool
-    ..fBallValuationResDto = json['fBallValuationResDto'] == null
+    ..fballValuationResDto = json['fballValuationResDto'] == null
         ? null
         : FBallValuationResDto.fromJson(
-            json['fBallValuationResDto'] as Map<String, dynamic>);
+            json['fballValuationResDto'] as Map<String, dynamic>)
+    ..childCount = json['childCount'] as int
+    ..childFBallReplyResDto = (json['childFBallReplyResDto'] as List)
+        ?.map((e) => e == null
+            ? null
+            : FBallReplyResDto.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$FBallReplyResDtoToJson(FBallReplyResDto instance) =>
@@ -48,5 +54,8 @@ Map<String, dynamic> _$FBallReplyResDtoToJson(FBallReplyResDto instance) =>
       'userNickName': instance.userNickName,
       'userProfilePictureUrl': instance.userProfilePictureUrl,
       'deleteFlag': instance.deleteFlag,
-      'fBallValuationResDto': instance.fBallValuationResDto?.toJson(),
+      'fballValuationResDto': instance.fballValuationResDto?.toJson(),
+      'childCount': instance.childCount,
+      'childFBallReplyResDto':
+          instance.childFBallReplyResDto?.map((e) => e?.toJson())?.toList(),
     };
