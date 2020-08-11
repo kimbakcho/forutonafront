@@ -8,7 +8,7 @@ import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001LikeState.dar
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001MakerInfo.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001Pictures.dart';
-
+import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001ReviewsPageBtn.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -102,6 +102,9 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                               ballUuid: model.getBallUuid(),
                               listable: false,
                               pageLimit: 3,
+                            ),
+                            ID001ReviewsPageBtn(
+                              ballUuid: _ballUuid,
                             )
                           ]),
                     )

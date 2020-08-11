@@ -128,7 +128,7 @@ class ID001ReviewsViewModel extends ChangeNotifier
           builder: (context) {
             return BasicReViewsInsert(
                 ballUuid: ballUuid,
-                rootReplyUuid: null,
+                autoFocus: true,
                 reviewInertMediator: _reviewInertMediator);
           });
       loadReply();

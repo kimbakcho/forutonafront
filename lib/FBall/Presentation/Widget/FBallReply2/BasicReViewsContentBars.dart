@@ -47,7 +47,7 @@ class BasicReViewsContentBars extends StatelessWidget {
                 itemCount: model.replys.length,
                 itemBuilder: (_, index) {
                   return BasicReViewsContentBar(
-                    key: Key(model.replys[index].replyUuid+"_barId"),
+                      key: Key(model.replys[index].replyUuid + "_barId"),
                       fBallReplyResDto: model.replys[index],
                       showChildReply: showChildReply,
                       showEditBtn: showEditBtn);
@@ -65,9 +65,10 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
   int page = 0;
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   final ReviewInertMediator _reviewInertMediator;
+
   bool isLoaded = false;
   bool loadedLatPage = false;
-  List<FBallReplyResDto> replys;
+  List<FBallReplyResDto> replys = [];
   ScrollController scrollController;
 
   BasicReViewsContentBarsViewModel({
@@ -75,7 +76,8 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
     FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
     ReviewInertMediator reviewInertMediator,
     this.pageLimit,
-  }) : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,_reviewInertMediator=reviewInertMediator {
+  })  : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
+        _reviewInertMediator = reviewInertMediator {
     _reviewInertMediator.registerComponent(this);
     scrollController = ScrollController();
     loadReply();
@@ -90,13 +92,11 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
       PageWrap<FBallReplyResDto> replysTemp = await _fBallReplyUseCaseInputPort
           .reqFBallReply(reqDto, Pageable(page, pageLimit, "replyNumber,DESC"));
       if (replysTemp.first) {
-        replys = replysTemp.content;
+        replys.clear();
       } else if (replysTemp.last) {
         loadedLatPage = true;
-        replys.addAll(replysTemp.content);
-      } else {
-        replys.addAll(replysTemp.content);
       }
+      replys.addAll(replysTemp.content);
       isLoaded = true;
       notifyListeners();
     }
@@ -122,11 +122,12 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
 
   @override
   onInserted(FBallReplyResDto fBallReplyResDto) {
-    if(isRootReply(fBallReplyResDto)){
+    if (isRootReply(fBallReplyResDto)) {
       replys.insert(0, fBallReplyResDto);
     }
     notifyListeners();
   }
 
-  bool isRootReply(FBallReplyResDto fBallReplyResDto) => fBallReplyResDto.replySort == 0;
+  bool isRootReply(FBallReplyResDto fBallReplyResDto) =>
+      fBallReplyResDto.replySort == 0;
 }

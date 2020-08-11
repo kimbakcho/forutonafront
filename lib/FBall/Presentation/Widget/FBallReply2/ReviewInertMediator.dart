@@ -5,6 +5,7 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 abstract class ReviewInertMediatorComponent {
   onInserted(FBallReplyResDto fBallReplyResDto);
+
 }
 
 abstract class ReviewInertMediator {
