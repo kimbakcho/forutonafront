@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsContentBars.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsInsert.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInsertDialogMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInsertRow.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
@@ -20,36 +20,37 @@ class FullReviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => FullReviewPageViewModel(
-            signInUserInfoUseCaseInputPort: sl(), ballUuid: ballUuid),
+            signInUserInfoUseCaseInputPort: sl(),
+            fBallReplyUseCaseInputPort: sl(),
+            ballUuid: ballUuid),
         child: Consumer<FullReviewPageViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: Container(
-            margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            child: Column(children: <Widget>[
-              topAppBar(context, model),
-              Expanded(
-                child: BasicReViewsContentBars(
-                  ballUuid: ballUuid,
-                  reviewInertMediator: model.reviewInertMediator,
-                  pageLimit: 10,
-                  listable: true,
-                  showChildReply: true,
-                  showEditBtn: true,
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  model.showRootReplyInputDialog(context);
-                },
-                child: IgnorePointer(
-                  child: ReviewInsertRow(
-                    autoFocus: false,
-                    userProfileImageUrl: model.userProfileImage,
-                  ),
-                ),
-              ),
-            ]),
-          ));
+                  margin:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  child: Column(children: <Widget>[
+                    topAppBar(context, model),
+                    Expanded(
+                      child: BasicReViewsContentBars(
+                        ballUuid: ballUuid,
+                        canSubReplyInsert: true,
+                        reviewInertMediator: model.reviewInertMediator,
+                        pageLimit: 10,
+                        listable: true,
+                        showChildReply: true,
+                        showEditBtn: true,
+                      ),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          model.showRootReplyInputDialog(context);
+                        },
+                        child: IgnorePointer(
+                            child: ReviewInsertRow(
+                          autoFocus: false,
+                          userProfileImageUrl: model.userProfileImage,
+                        )))
+                  ])));
         }));
   }
 
@@ -61,7 +62,7 @@ class FullReviewPage extends StatelessWidget {
         },
       ),
       Container(
-          child: Text("댓글(${model.replyCount})",
+          child: Text("댓글(${model.reviewsCount})",
               style: GoogleFonts.notoSans(
                 fontSize: 16,
                 color: const Color(0xff000000),
@@ -72,10 +73,12 @@ class FullReviewPage extends StatelessWidget {
   }
 }
 
-class FullReviewPageViewModel extends ChangeNotifier {
+class FullReviewPageViewModel extends ChangeNotifier implements ReviewInertMediatorComponent{
   final String ballUuid;
   final ReviewInertMediator reviewInertMediator;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
+  int reviewsCount = 0;
   int page = 0;
   int pageLimit = 10;
   List<FBallReplyResDto> replys = [];
@@ -84,11 +87,20 @@ class FullReviewPageViewModel extends ChangeNotifier {
 
   FullReviewPageViewModel(
       {this.ballUuid,
+        FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
       SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
-      : reviewInertMediator = ReviewInertMediatorImpl(),
-        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
+      : reviewInertMediator =
+            ReviewInertMediatorImpl(fBallReplyUseCaseInputPort: sl()),
+        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
+        _fBallReplyUseCaseInputPort =fBallReplyUseCaseInputPort {
     this._fUserInfoResDto =
-        signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+    reviewInertMediator.registerComponent(this);
+    getReviewCount();
+  }
+  getReviewCount() async {
+    reviewsCount = await this._fBallReplyUseCaseInputPort.getBallReviewCount(ballUuid);
+        notifyListeners();
   }
 
   get userProfileImage {
@@ -106,7 +118,12 @@ class FullReviewPageViewModel extends ChangeNotifier {
               autoFocus: true,
               reviewInertMediator: reviewInertMediator);
         });
+    getReviewCount();
   }
 
-  get replyCount => 0;
+  @override
+  onInserted(FBallReplyResDto fBallReplyResDto) {
+    getReviewCount();
+  }
+
 }

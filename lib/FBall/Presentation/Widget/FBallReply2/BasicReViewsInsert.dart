@@ -44,6 +44,10 @@ class BasicReViewsInsert extends StatelessWidget {
                   ? BasicReViewsContentBar(
                       showChildReply: false,
                       showEditBtn: false,
+                      hasBottomPadding: false,
+                      hasBoardLine: false,
+                      canSubReplyInsert: false,
+                      reviewInertMediator: _reviewInertMediator,
                       fBallReplyResDto: model.parentFBallReplyResDto,
                     )
                   : Container(),
@@ -104,6 +108,9 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
   void insertReply(String ballUuid) async {
     FBallReplyInsertReqDto reqDto = FBallReplyInsertReqDto();
     reqDto.ballUuid = ballUuid;
+    if(parentFBallReplyResDto != null){
+      reqDto.replyUuid = parentFBallReplyResDto.replyUuid;
+    }
     reqDto.replyText = replyTextEditController.text;
     await this._reviewInertMediator.insertReview(reqDto);
     keyBoardSubscription.cancel();

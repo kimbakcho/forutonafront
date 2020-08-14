@@ -17,6 +17,7 @@ class BasicReViewsContentBars extends StatelessWidget {
   final bool showChildReply;
   final bool showEditBtn;
   final ReviewInertMediator _reviewInertMediator;
+  final bool canSubReplyInsert;
 
   const BasicReViewsContentBars(
       {Key key,
@@ -25,7 +26,7 @@ class BasicReViewsContentBars extends StatelessWidget {
       this.listable,
       this.showChildReply,
       ReviewInertMediator reviewInertMediator,
-      this.showEditBtn})
+      this.showEditBtn, this.canSubReplyInsert})
       : _reviewInertMediator = reviewInertMediator,
         super(key: key);
 
@@ -49,6 +50,10 @@ class BasicReViewsContentBars extends StatelessWidget {
                   return BasicReViewsContentBar(
                       key: Key(model.replys[index].replyUuid + "_barId"),
                       fBallReplyResDto: model.replys[index],
+                      canSubReplyInsert: canSubReplyInsert,
+                      hasBottomPadding: true,
+                      hasBoardLine: true,
+                      reviewInertMediator: _reviewInertMediator,
                       showChildReply: showChildReply,
                       showEditBtn: showEditBtn);
                 })

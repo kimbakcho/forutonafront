@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsInsert.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInsertDialogMediator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class BasicReViewsContentBar extends StatelessWidget {
   final FBallReplyResDto _fBallReplyResDto;
   final bool showChildReply;
+  final bool canSubReplyInsert;
   final bool showEditBtn;
+  final bool hasBoardLine;
+  final bool hasBottomPadding;
   final ReviewInertMediator _reviewInertMediator;
 
   BasicReViewsContentBar(
       {Key key,
       FBallReplyResDto fBallReplyResDto,
-        ReviewInertMediator reviewInertMediator,
+      ReviewInertMediator reviewInertMediator,
       this.showChildReply,
-      this.showEditBtn})
-      : _fBallReplyResDto = fBallReplyResDto,_reviewInertMediator=reviewInertMediator,
+      this.showEditBtn,
+      this.canSubReplyInsert, this.hasBoardLine, this.hasBottomPadding})
+      : _fBallReplyResDto = fBallReplyResDto,
+        _reviewInertMediator = reviewInertMediator,
         super(key: key);
 
   @override
@@ -29,19 +38,24 @@ class BasicReViewsContentBar extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => BasicReViewsContentBarViewModel(
             showChildReply: showChildReply,
+            fBallReplyUseCaseInputPort: sl(),
+            reviewInertMediator: _reviewInertMediator,
             fBallReplyResDto: _fBallReplyResDto),
         child:
             Consumer<BasicReViewsContentBarViewModel>(builder: (_, model, __) {
           return InkWell(
             onTap: () {
-              model.subReplyInsertOpen(context);
+              if (canSubReplyInsert) {
+                model.subReplyInsertOpen(context);
+              }
             },
             child: Container(
-              padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+              padding: EdgeInsets.fromLTRB(0, 16, 0, hasBottomPadding ? 16: 0),
               key: Key(_fBallReplyResDto.replyUuid),
               child: Column(
                 children: <Widget>[
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
@@ -112,6 +126,9 @@ class BasicReViewsContentBar extends StatelessWidget {
                             )
                           ],
                         ),
+                        model.isChildReplyShow
+                            ? childReplyToggleBtn(model)
+                            : Container()
                       ])),
                       showEditBtn
                           ? Container(
@@ -125,50 +142,63 @@ class BasicReViewsContentBar extends StatelessWidget {
                           : Container()
                     ],
                   ),
-                  model.isChildReplyShow
-                      ? childReplyToggleBtn(model)
-                      : Container(),
-                  model.isChildReplyShow
-                      ? Expanded(
-                          child: ListView.builder(
-                            itemCount:
-                                _fBallReplyResDto.childFBallReplyResDto.length,
-                            itemBuilder: (_, index) {
-                              return BasicReViewsContentBar(
-                                  fBallReplyResDto: _fBallReplyResDto
-                                      .childFBallReplyResDto[index],
-                                  showChildReply: showChildReply);
-                            },
-                          ),
+                  model.isChildReplyOpen
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount:
+                              _fBallReplyResDto.childFBallReplyResDto.length,
+                          itemBuilder: (_, index) {
+                            return BasicReViewsContentBar(
+                              canSubReplyInsert: false,
+                               showEditBtn: true,
+                                hasBoardLine: false,
+                                hasBottomPadding: false,
+                                fBallReplyResDto: _fBallReplyResDto
+                                    .childFBallReplyResDto[index],
+                                showChildReply: false);
+                          },
                         )
                       : Container()
                 ],
               ),
               decoration: BoxDecoration(
                   border: Border(
-                      bottom: BorderSide(color: Color(0xffF4F4F6), width: 1))),
+                      bottom: BorderSide(color: Color(0xffF4F4F6), width: hasBoardLine? 1 : 0))),
             ),
           );
         }));
   }
 
-  Row childReplyToggleBtn(BasicReViewsContentBarViewModel model) {
+  Widget childReplyToggleBtn(BasicReViewsContentBarViewModel model) {
     return Row(
       children: <Widget>[
         model.isChildReplyOpen
-            ? RawMaterialButton(
-                onPressed: () {
+            ? InkWell(
+                onTap: () {
                   model.toggleChildOpenState();
                 },
-                constraints: BoxConstraints(),
-                child: Text(model.getOpenedText()),
+                child: Text(
+                  model.getOpenedText(),
+                  style: GoogleFonts.notoSans(
+                    fontSize: 12,
+                    color: const Color(0xff007eff),
+                    fontWeight: FontWeight.w700,
+                    height: 1.1666666666666667,
+                  ),
+                ),
               )
-            : RawMaterialButton(
-                onPressed: () {
+            : InkWell(
+                onTap: () {
                   model.toggleChildOpenState();
                 },
-                constraints: BoxConstraints(),
-                child: Text(model.getClosedText()),
+                child: Text(model.getClosedText(),
+                    style: GoogleFonts.notoSans(
+                      fontSize: 12,
+                      color: const Color(0xff007eff),
+                      fontWeight: FontWeight.w700,
+                      height: 1.1666666666666667,
+                    )),
               )
       ],
     );
@@ -176,17 +206,19 @@ class BasicReViewsContentBar extends StatelessWidget {
 }
 
 class BasicReViewsContentBarViewModel extends ChangeNotifier {
-
   final FBallReplyResDto fBallReplyResDto;
   final ReviewInertMediator _reviewInertMediator;
+  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   bool isChildReplyOpen = false;
   bool showChildReply;
 
   BasicReViewsContentBarViewModel(
       {this.fBallReplyResDto,
       this.showChildReply,
-        ReviewInertMediator reviewInertMediator
-      }):_reviewInertMediator=reviewInertMediator;
+      FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
+      ReviewInertMediator reviewInertMediator})
+      : _reviewInertMediator = reviewInertMediator,
+        _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort;
 
   get isChildReplyShow {
     if (fBallReplyResDto.childCount > 0 && showChildReply) {
@@ -232,12 +264,29 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   }
 
   String getClosedText() {
-    return "▲ 답글 보기(${fBallReplyResDto.childCount})";
+    return "▼ 답글 보기(${fBallReplyResDto.childCount})";
   }
 
-  void toggleChildOpenState() {
+  void toggleChildOpenState() async {
+    if (!isChildReplyOpen) {
+      fBallReplyResDto.childFBallReplyResDto = await getSubReply();
+
+    } else {
+      fBallReplyResDto.childFBallReplyResDto = [];
+    }
     isChildReplyOpen = !isChildReplyOpen;
     notifyListeners();
+  }
+
+  Future<List<FBallReplyResDto>> getSubReply() async {
+    FBallReplyReqDto reqDto = FBallReplyReqDto();
+    reqDto.ballUuid = fBallReplyResDto.ballUuid.ballUuid;
+    reqDto.replyNumber = fBallReplyResDto.replyNumber;
+    reqDto.reqOnlySubReply = true;
+    PageWrap<FBallReplyResDto> pageDtos = await _fBallReplyUseCaseInputPort
+        .reqFBallReply(reqDto, Pageable(0, 99999, "ReplySort,ASC"));
+    return pageDtos.content;
+
   }
 
   String getDisplayWriteTime() {
@@ -251,13 +300,18 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
         isDismissible: true,
         isScrollControlled: true,
         builder: (context) {
-      return BasicReViewsInsert(
-          ballUuid: fBallReplyResDto.ballUuid.ballUuid,
-          reviewInertMediator: _reviewInertMediator,
-          parentFBallReplyResDto: fBallReplyResDto,
-          autoFocus: true,);
-    });
+          return BasicReViewsInsert(
+            ballUuid: fBallReplyResDto.ballUuid.ballUuid,
+            reviewInertMediator: _reviewInertMediator,
+            parentFBallReplyResDto: fBallReplyResDto,
+            autoFocus: true,
+          );
+        });
+    fBallReplyResDto.childFBallReplyResDto = await getSubReply();
+    fBallReplyResDto.childCount =  fBallReplyResDto.childFBallReplyResDto.length;
+    notifyListeners();
   }
 
   bool isRootReply() => fBallReplyResDto.replySort == 0;
+
 }

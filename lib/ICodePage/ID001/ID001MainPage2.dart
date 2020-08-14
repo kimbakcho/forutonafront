@@ -97,6 +97,7 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                             ),
                             BasicReViewsContentBars(
                               reviewInertMediator: model.reviewInertMediator,
+                              canSubReplyInsert: false,
                               showEditBtn: false,
                               showChildReply: false,
                               ballUuid: model.getBallUuid(),
