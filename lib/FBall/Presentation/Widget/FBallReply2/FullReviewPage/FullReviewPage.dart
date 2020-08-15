@@ -3,6 +3,7 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseI
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsContentBars.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsInsert.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInsertRow.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
@@ -13,8 +14,15 @@ import 'package:provider/provider.dart';
 
 class FullReviewPage extends StatelessWidget {
   final String ballUuid;
+  final ReviewInertMediator reviewInertMediator;
+  final ReviewCountMediator reviewCountMediator;
 
-  const FullReviewPage({Key key, this.ballUuid}) : super(key: key);
+  const FullReviewPage(
+      {Key key,
+      this.ballUuid,
+      this.reviewInertMediator,
+      this.reviewCountMediator})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +30,8 @@ class FullReviewPage extends StatelessWidget {
         create: (_) => FullReviewPageViewModel(
             signInUserInfoUseCaseInputPort: sl(),
             fBallReplyUseCaseInputPort: sl(),
+            reviewCountMediator: reviewCountMediator,
+            reviewInertMediator: reviewInertMediator,
             ballUuid: ballUuid),
         child: Consumer<FullReviewPageViewModel>(builder: (_, model, __) {
           return Scaffold(
@@ -33,8 +43,9 @@ class FullReviewPage extends StatelessWidget {
                     Expanded(
                       child: BasicReViewsContentBars(
                         ballUuid: ballUuid,
+                        reviewCountMediator: reviewCountMediator,
+                        reviewInertMediator: reviewInertMediator,
                         canSubReplyInsert: true,
-                        reviewInertMediator: model.reviewInertMediator,
                         pageLimit: 10,
                         listable: true,
                         showChildReply: true,
@@ -62,7 +73,7 @@ class FullReviewPage extends StatelessWidget {
         },
       ),
       Container(
-          child: Text("댓글(${model.reviewsCount})",
+          child: Text("댓글(${model.reviewCount})",
               style: GoogleFonts.notoSans(
                 fontSize: 16,
                 color: const Color(0xff000000),
@@ -73,12 +84,13 @@ class FullReviewPage extends StatelessWidget {
   }
 }
 
-class FullReviewPageViewModel extends ChangeNotifier implements ReviewInertMediatorComponent{
+class FullReviewPageViewModel extends ChangeNotifier
+    implements ReviewCountMediatorComponent {
   final String ballUuid;
   final ReviewInertMediator reviewInertMediator;
+  final ReviewCountMediator reviewCountMediator;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
-  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
-  int reviewsCount = 0;
+
   int page = 0;
   int pageLimit = 10;
   List<FBallReplyResDto> replys = [];
@@ -87,26 +99,18 @@ class FullReviewPageViewModel extends ChangeNotifier implements ReviewInertMedia
 
   FullReviewPageViewModel(
       {this.ballUuid,
-        FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
+      this.reviewInertMediator,
+      this.reviewCountMediator,
+      FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
       SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
-      : reviewInertMediator =
-            ReviewInertMediatorImpl(fBallReplyUseCaseInputPort: sl()),
-        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
-        _fBallReplyUseCaseInputPort =fBallReplyUseCaseInputPort {
+      : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
     this._fUserInfoResDto =
         _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-    reviewInertMediator.registerComponent(this);
-    getReviewCount();
-  }
-  getReviewCount() async {
-    reviewsCount = await this._fBallReplyUseCaseInputPort.getBallReviewCount(ballUuid);
-        notifyListeners();
+    reviewCountMediator.registerComponent(this);
   }
 
   get userProfileImage {
     return this._fUserInfoResDto.profilePictureUrl;
-
-
   }
 
   showRootReplyInputDialog(BuildContext context) async {
@@ -118,14 +122,23 @@ class FullReviewPageViewModel extends ChangeNotifier implements ReviewInertMedia
           return BasicReViewsInsert(
               ballUuid: ballUuid,
               autoFocus: true,
+              reviewCountMediator: reviewCountMediator,
               reviewInertMediator: reviewInertMediator);
         });
-    getReviewCount();
+  }
+
+  get reviewCount {
+    return reviewCountMediator.reviewCount;
   }
 
   @override
-  onInserted(FBallReplyResDto fBallReplyResDto) {
-    getReviewCount();
+  void dispose() {
+    reviewCountMediator.unregisterComponent(this);
+    super.dispose();
   }
 
+  @override
+  onReviewCount(int reviewCount) {
+    notifyListeners();
+  }
 }

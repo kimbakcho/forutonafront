@@ -5,6 +5,7 @@ import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseI
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsContentBar.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -17,46 +18,51 @@ class BasicReViewsContentBars extends StatelessWidget {
   final bool showChildReply;
   final bool showEditBtn;
   final ReviewInertMediator _reviewInertMediator;
+  final ReviewCountMediator _reviewCountMediator;
   final bool canSubReplyInsert;
 
-  const BasicReViewsContentBars(
-      {Key key,
-      this.ballUuid,
-      this.pageLimit,
-      this.listable,
-      this.showChildReply,
-      ReviewInertMediator reviewInertMediator,
-      this.showEditBtn, this.canSubReplyInsert})
+  const BasicReViewsContentBars({Key key,
+    this.ballUuid,
+    this.pageLimit,
+    this.listable,
+    this.showChildReply,
+    ReviewInertMediator reviewInertMediator,
+    ReviewCountMediator reviewCountMediator,
+    this.showEditBtn,
+    this.canSubReplyInsert})
       : _reviewInertMediator = reviewInertMediator,
+        _reviewCountMediator = reviewCountMediator,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => BasicReViewsContentBarsViewModel(
-          ballUuid: ballUuid,
-          reviewInertMediator: _reviewInertMediator,
-          fBallReplyUseCaseInputPort: sl(),
-          pageLimit: pageLimit),
+      create: (_) =>
+          BasicReViewsContentBarsViewModel(
+              ballUuid: ballUuid,
+              reviewInertMediator: _reviewInertMediator,
+              fBallReplyUseCaseInputPort: sl(),
+              pageLimit: pageLimit),
       child:
-          Consumer<BasicReViewsContentBarsViewModel>(builder: (_, model, __) {
+      Consumer<BasicReViewsContentBarsViewModel>(builder: (_, model, __) {
         return model.isLoaded
             ? ListView.builder(
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                controller: model.scrollController,
-                itemCount: model.replys.length,
-                itemBuilder: (_, index) {
-                  return BasicReViewsContentBar(
-                      key: Key(model.replys[index].replyUuid + "_barId"),
-                      fBallReplyResDto: model.replys[index],
-                      canSubReplyInsert: canSubReplyInsert,
-                      hasBottomPadding: true,
-                      hasBoardLine: true,
-                      reviewInertMediator: _reviewInertMediator,
-                      showChildReply: showChildReply,
-                      showEditBtn: showEditBtn);
-                })
+            physics: BouncingScrollPhysics(),
+            shrinkWrap: true,
+            controller: model.scrollController,
+            itemCount: model.replys.length,
+            itemBuilder: (_, index) {
+              return BasicReViewsContentBar(
+                  key: Key(model.replys[index].replyUuid + "_barId"),
+                  fBallReplyResDto: model.replys[index],
+                  canSubReplyInsert: canSubReplyInsert,
+                  hasBottomPadding: true,
+                  hasBoardLine: true,
+                  reviewCountMediator: _reviewCountMediator,
+                  reviewInertMediator: _reviewInertMediator,
+                  showChildReply: showChildReply,
+                  showEditBtn: showEditBtn);
+            })
             : Container();
       }),
     );
@@ -70,6 +76,7 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
   int page = 0;
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   final ReviewInertMediator _reviewInertMediator;
+  final ReviewCountMediator _reviewCountMediator;
 
   bool isLoaded = false;
   bool loadedLatPage = false;
@@ -80,9 +87,12 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
     this.ballUuid,
     FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
     ReviewInertMediator reviewInertMediator,
+    ReviewCountMediator reviewCountMediator,
     this.pageLimit,
-  })  : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
-        _reviewInertMediator = reviewInertMediator {
+  })
+      : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
+        _reviewInertMediator = reviewInertMediator,
+        _reviewCountMediator= reviewCountMediator {
     _reviewInertMediator.registerComponent(this);
     scrollController = ScrollController();
     loadReply();
@@ -115,7 +125,7 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
 
   bool _isScrollerBottomOver() {
     return scrollController.offset >=
-            scrollController.position.maxScrollExtent &&
+        scrollController.position.maxScrollExtent &&
         !scrollController.position.outOfRange;
   }
 
@@ -131,6 +141,12 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
       replys.insert(0, fBallReplyResDto);
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _reviewInertMediator.unregisterComponent(this);
+    super.dispose();
   }
 
   bool isRootReply(FBallReplyResDto fBallReplyResDto) =>

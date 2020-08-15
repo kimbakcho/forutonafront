@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -17,8 +14,14 @@ import 'ReviewInertMediator.dart';
 class BasicReviews extends StatelessWidget {
   final String ballUuid;
   final ReviewInertMediator reviewInertMediator;
+  final ReviewCountMediator reviewCountMediator;
 
-  BasicReviews({Key key, this.ballUuid, this.reviewInertMediator}) : super(key: key);
+  BasicReviews(
+      {Key key,
+      this.ballUuid,
+      this.reviewInertMediator,
+      this.reviewCountMediator})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class BasicReviews extends StatelessWidget {
         create: (_) => ID001ReviewsViewModel(
             ballUuid: ballUuid,
             reviewInertMediator: reviewInertMediator,
+            reviewCountMediator: reviewCountMediator,
             fireBaseAuthAdapterForUseCase: sl(),
             fBallReplyUseCaseInputPort: sl()),
         child: Consumer<ID001ReviewsViewModel>(builder: (_, model, __) {
@@ -37,7 +41,7 @@ class BasicReviews extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: Text(
-                        '${model.reviewsCount}',
+                        '${model.reviewCount}',
                         style: GoogleFonts.notoSans(
                           fontSize: 20,
                           color: const Color(0xffcccccc),
@@ -80,45 +84,25 @@ class BasicReviews extends StatelessWidget {
 }
 
 class ID001ReviewsViewModel extends ChangeNotifier
-    implements ReviewInertMediatorComponent {
+    implements ReviewCountMediatorComponent {
   final String ballUuid;
-  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final isLoaded = false;
-  int reviewsCount = 0;
-  PageWrap<FBallReplyResDto> _pageWrapFBallReplyResDto;
-  ReviewInertMediator _reviewInertMediator;
+  final ReviewInertMediator _reviewInertMediator;
+  final ReviewCountMediator _reviewCountMediator;
 
   ID001ReviewsViewModel(
       {this.ballUuid,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
       FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      ReviewInertMediator reviewInertMediator})
-      : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
+      ReviewInertMediator reviewInertMediator,
+      ReviewCountMediator reviewCountMediator})
+      :
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
-        _reviewInertMediator = reviewInertMediator {
-    _reviewInertMediator.registerComponent(this);
-    loadReviewCount();
-    loadReply();
+        _reviewInertMediator = reviewInertMediator,
+        _reviewCountMediator = reviewCountMediator {
+    reviewCountMediator.registerComponent(this);
   }
-
-  void loadReviewCount() async {
-    reviewsCount =
-        await this._fBallReplyUseCaseInputPort.getBallReviewCount(ballUuid);
-    notifyListeners();
-  }
-
-  void loadReply() async {
-    FBallReplyReqDto replyReqDto = new FBallReplyReqDto();
-    replyReqDto.ballUuid = ballUuid;
-    replyReqDto.replyNumber = 0;
-    replyReqDto.reqOnlySubReply = false;
-    _pageWrapFBallReplyResDto = await this
-        ._fBallReplyUseCaseInputPort
-        .reqFBallReply(replyReqDto, Pageable(0, 3, "replyNumberDESC"));
-    notifyListeners();
-  }
-
   showRootReplyInputDialog(BuildContext context) async {
     if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       await showModalBottomSheet(
@@ -129,9 +113,9 @@ class ID001ReviewsViewModel extends ChangeNotifier
             return BasicReViewsInsert(
                 ballUuid: ballUuid,
                 autoFocus: true,
+                reviewCountMediator: _reviewCountMediator,
                 reviewInertMediator: _reviewInertMediator);
           });
-      loadReply();
     } else {
       Navigator.of(context).push(MaterialPageRoute(builder: (_) {
         return J001View();
@@ -139,9 +123,19 @@ class ID001ReviewsViewModel extends ChangeNotifier
     }
   }
 
+
   @override
-  onInserted(FBallReplyResDto fBallReplyResDto) {
-    reviewsCount++;
+  void dispose() {
+    this._reviewCountMediator.unregisterComponent(this);
+    super.dispose();
+  }
+
+  get reviewCount {
+    return _reviewCountMediator.reviewCount;
+  }
+
+  @override
+  onReviewCount(int reviewCount) {
     notifyListeners();
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsContentBar.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInsertRow.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 class BasicReViewsInsert extends StatelessWidget {
   final String ballUuid;
   final ReviewInertMediator _reviewInertMediator;
+  final ReviewCountMediator _reviewCountMediator;
   final FBallReplyResDto parentFBallReplyResDto;
   final bool autoFocus;
 
@@ -22,8 +24,11 @@ class BasicReViewsInsert extends StatelessWidget {
       {Key key,
       this.ballUuid,
       this.autoFocus,
-      ReviewInertMediator reviewInertMediator, this.parentFBallReplyResDto})
+      ReviewCountMediator reviewCountMediator,
+      ReviewInertMediator reviewInertMediator,
+      this.parentFBallReplyResDto})
       : _reviewInertMediator = reviewInertMediator,
+        _reviewCountMediator = reviewCountMediator,
         super(key: key);
 
   @override
@@ -33,6 +38,7 @@ class BasicReViewsInsert extends StatelessWidget {
             ballUuid: ballUuid,
             context: context,
             parentFBallReplyResDto: parentFBallReplyResDto,
+            reviewCountMediator: _reviewCountMediator,
             reviewInertMediator: _reviewInertMediator,
             signInUserInfoUseCaseInputPort: sl()),
         child: Consumer<ID001ReplyInsertViewModel>(builder: (_, model, __) {
@@ -47,6 +53,7 @@ class BasicReViewsInsert extends StatelessWidget {
                       hasBottomPadding: false,
                       hasBoardLine: false,
                       canSubReplyInsert: false,
+                      reviewCountMediator: _reviewCountMediator,
                       reviewInertMediator: _reviewInertMediator,
                       fBallReplyResDto: model.parentFBallReplyResDto,
                     )
@@ -69,6 +76,7 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final BuildContext context;
   final ReviewInertMediator _reviewInertMediator;
+  final ReviewCountMediator _reviewCountMediator;
   final FBallReplyResDto parentFBallReplyResDto;
   String userProfileImage;
   TextEditingController replyTextEditController;
@@ -77,11 +85,13 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
   ID001ReplyInsertViewModel(
       {this.ballUuid,
       this.context,
-        this.parentFBallReplyResDto,
+      this.parentFBallReplyResDto,
       ReviewInertMediator reviewInertMediator,
+      ReviewCountMediator reviewCountMediator,
       SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
-        _reviewInertMediator = reviewInertMediator {
+        _reviewInertMediator = reviewInertMediator,
+        _reviewCountMediator = reviewCountMediator {
     replyTextEditController = TextEditingController();
     FUserInfoResDto fUserInfoResDto =
         this._signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
@@ -108,11 +118,12 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
   void insertReply(String ballUuid) async {
     FBallReplyInsertReqDto reqDto = FBallReplyInsertReqDto();
     reqDto.ballUuid = ballUuid;
-    if(parentFBallReplyResDto != null){
+    if (parentFBallReplyResDto != null) {
       reqDto.replyUuid = parentFBallReplyResDto.replyUuid;
     }
     reqDto.replyText = replyTextEditController.text;
     await this._reviewInertMediator.insertReview(reqDto);
+    await this._reviewCountMediator.reqReviewCount(ballUuid);
     keyBoardSubscription.cancel();
     keyBoardSubscription = null;
     Navigator.of(context).pop();

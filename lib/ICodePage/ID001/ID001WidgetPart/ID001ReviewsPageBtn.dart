@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/FullReviewPage/FullReviewPage.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ID001ReviewsPageBtn extends StatelessWidget {
   final String ballUuid;
+  final ReviewInertMediator reviewInertMediator;
+  final ReviewCountMediator reviewCountMediator;
 
-  const ID001ReviewsPageBtn({Key key, this.ballUuid}) : super(key: key);
+  const ID001ReviewsPageBtn(
+      {Key key,
+      this.ballUuid,
+      this.reviewInertMediator,
+      this.reviewCountMediator})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +24,11 @@ class ID001ReviewsPageBtn extends StatelessWidget {
       child: FlatButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => FullReviewPage(ballUuid: ballUuid)));
+              builder: (_) => FullReviewPage(
+                    ballUuid: ballUuid,
+                    reviewInertMediator: reviewInertMediator,
+                    reviewCountMediator: reviewCountMediator,
+                  )));
         },
         child: Text(
           '댓글 페이지로 이동하기',

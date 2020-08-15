@@ -10,6 +10,7 @@ abstract class ReviewInertMediatorComponent {
 
 abstract class ReviewInertMediator {
   registerComponent(ReviewInertMediatorComponent reviewInertMediatorComponent);
+  unregisterComponent(ReviewInertMediatorComponent reviewInertMediatorComponent);
   Future<FBallReplyResDto> insertReview(FBallReplyInsertReqDto reqDto);
 }
 
@@ -40,6 +41,11 @@ class ReviewInertMediatorImpl implements ReviewInertMediator {
         await _fBallReplyUseCaseInputPort.insertFBallReply(reqDto);
     onAllInserted(resDto);
     return resDto;
+  }
+
+  @override
+  unregisterComponent(ReviewInertMediatorComponent reviewInertMediatorComponent) {
+    components.remove(reviewInertMediatorComponent);
   }
 
 

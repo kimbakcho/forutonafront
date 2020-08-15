@@ -93,10 +93,12 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                             ),
                             BasicReviews(
                               reviewInertMediator: model.reviewInertMediator,
+                              reviewCountMediator: model.reviewCountMediator,
                               ballUuid: model.getBallUuid(),
                             ),
                             BasicReViewsContentBars(
                               reviewInertMediator: model.reviewInertMediator,
+                              reviewCountMediator: model.reviewCountMediator,
                               canSubReplyInsert: false,
                               showEditBtn: false,
                               showChildReply: false,
@@ -105,6 +107,8 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                               pageLimit: 3,
                             ),
                             ID001ReviewsPageBtn(
+                              reviewCountMediator: model.reviewCountMediator,
+                              reviewInertMediator: model.reviewInertMediator,
                               ballUuid: _ballUuid,
                             )
                           ]),
@@ -114,7 +118,11 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                 Positioned(
                   bottom: 0,
                   height: 52,
-                  child: ID001ActionBottomBar(ballUuid: model.getBallUuid()),
+                  child: ID001ActionBottomBar(
+                    ballUuid: model.getBallUuid(),
+                    reviewInertMediator: model.reviewInertMediator,
+                    reviewCountMediator: model.reviewCountMediator
+                  ),
                 )
               ],
             ))

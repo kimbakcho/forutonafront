@@ -7,6 +7,7 @@ import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsInsert.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -21,16 +22,21 @@ class BasicReViewsContentBar extends StatelessWidget {
   final bool hasBoardLine;
   final bool hasBottomPadding;
   final ReviewInertMediator _reviewInertMediator;
+  final ReviewCountMediator _reviewCountMediator;
 
   BasicReViewsContentBar(
       {Key key,
       FBallReplyResDto fBallReplyResDto,
       ReviewInertMediator reviewInertMediator,
+      ReviewCountMediator reviewCountMediator,
       this.showChildReply,
       this.showEditBtn,
-      this.canSubReplyInsert, this.hasBoardLine, this.hasBottomPadding})
+      this.canSubReplyInsert,
+      this.hasBoardLine,
+      this.hasBottomPadding})
       : _fBallReplyResDto = fBallReplyResDto,
         _reviewInertMediator = reviewInertMediator,
+        _reviewCountMediator = reviewCountMediator,
         super(key: key);
 
   @override
@@ -39,6 +45,7 @@ class BasicReViewsContentBar extends StatelessWidget {
         create: (_) => BasicReViewsContentBarViewModel(
             showChildReply: showChildReply,
             fBallReplyUseCaseInputPort: sl(),
+            reviewCountMediator: _reviewCountMediator,
             reviewInertMediator: _reviewInertMediator,
             fBallReplyResDto: _fBallReplyResDto),
         child:
@@ -50,7 +57,7 @@ class BasicReViewsContentBar extends StatelessWidget {
               }
             },
             child: Container(
-              padding: EdgeInsets.fromLTRB(0, 16, 0, hasBottomPadding ? 16: 0),
+              padding: EdgeInsets.fromLTRB(0, 16, 0, hasBottomPadding ? 16 : 0),
               key: Key(_fBallReplyResDto.replyUuid),
               child: Column(
                 children: <Widget>[
@@ -150,10 +157,11 @@ class BasicReViewsContentBar extends StatelessWidget {
                               _fBallReplyResDto.childFBallReplyResDto.length,
                           itemBuilder: (_, index) {
                             return BasicReViewsContentBar(
-                              canSubReplyInsert: false,
-                               showEditBtn: true,
+                                canSubReplyInsert: false,
+                                showEditBtn: true,
                                 hasBoardLine: false,
                                 hasBottomPadding: false,
+                                reviewCountMediator: _reviewCountMediator,
                                 fBallReplyResDto: _fBallReplyResDto
                                     .childFBallReplyResDto[index],
                                 showChildReply: false);
@@ -164,7 +172,9 @@ class BasicReViewsContentBar extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                   border: Border(
-                      bottom: BorderSide(color: Color(0xffF4F4F6), width: hasBoardLine? 1 : 0))),
+                      bottom: BorderSide(
+                          color: Color(0xffF4F4F6),
+                          width: hasBoardLine ? 1 : 0))),
             ),
           );
         }));
@@ -208,6 +218,7 @@ class BasicReViewsContentBar extends StatelessWidget {
 class BasicReViewsContentBarViewModel extends ChangeNotifier {
   final FBallReplyResDto fBallReplyResDto;
   final ReviewInertMediator _reviewInertMediator;
+  final ReviewCountMediator _reviewCountMediator;
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   bool isChildReplyOpen = false;
   bool showChildReply;
@@ -216,8 +227,10 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
       {this.fBallReplyResDto,
       this.showChildReply,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
-      ReviewInertMediator reviewInertMediator})
+      ReviewInertMediator reviewInertMediator,
+      ReviewCountMediator reviewCountMediator})
       : _reviewInertMediator = reviewInertMediator,
+        _reviewCountMediator = reviewCountMediator,
         _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort;
 
   get isChildReplyShow {
@@ -270,7 +283,6 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   void toggleChildOpenState() async {
     if (!isChildReplyOpen) {
       fBallReplyResDto.childFBallReplyResDto = await getSubReply();
-
     } else {
       fBallReplyResDto.childFBallReplyResDto = [];
     }
@@ -286,7 +298,6 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
     PageWrap<FBallReplyResDto> pageDtos = await _fBallReplyUseCaseInputPort
         .reqFBallReply(reqDto, Pageable(0, 99999, "ReplySort,ASC"));
     return pageDtos.content;
-
   }
 
   String getDisplayWriteTime() {
@@ -303,15 +314,15 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
           return BasicReViewsInsert(
             ballUuid: fBallReplyResDto.ballUuid.ballUuid,
             reviewInertMediator: _reviewInertMediator,
+            reviewCountMediator: _reviewCountMediator,
             parentFBallReplyResDto: fBallReplyResDto,
             autoFocus: true,
           );
         });
     fBallReplyResDto.childFBallReplyResDto = await getSubReply();
-    fBallReplyResDto.childCount =  fBallReplyResDto.childFBallReplyResDto.length;
+    fBallReplyResDto.childCount = fBallReplyResDto.childFBallReplyResDto.length;
     notifyListeners();
   }
 
   bool isRootReply() => fBallReplyResDto.replySort == 0;
-
 }

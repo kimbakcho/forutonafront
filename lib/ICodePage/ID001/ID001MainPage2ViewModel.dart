@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -18,6 +19,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
   FBallResDto _fBallResDto;
   final ReviewInertMediator reviewInertMediator;
+  final ReviewCountMediator reviewCountMediator;
 
   final ValuationMediator valuationMediator =
       ValuationMediatorImpl(ballLikeUseCaseInputPort: sl());
@@ -29,7 +31,10 @@ class ID001MainPage2ViewModel extends ChangeNotifier
       : _ballUuid = ballUuid,
         _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
-        reviewInertMediator = ReviewInertMediatorImpl(fBallReplyUseCaseInputPort: sl()) {
+        reviewInertMediator =
+            ReviewInertMediatorImpl(fBallReplyUseCaseInputPort: sl()),
+        reviewCountMediator =
+            ReviewCountMediatorImpl(fBallReplyUseCaseInputPort: sl()) {
     _selectBallUseCaseInputPort.selectBall(_ballUuid, outputPort: this);
     getBallLikeState();
   }
