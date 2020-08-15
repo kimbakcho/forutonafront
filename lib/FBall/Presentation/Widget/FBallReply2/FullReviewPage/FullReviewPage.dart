@@ -105,6 +105,8 @@ class FullReviewPageViewModel extends ChangeNotifier implements ReviewInertMedia
 
   get userProfileImage {
     return this._fUserInfoResDto.profilePictureUrl;
+
+
   }
 
   showRootReplyInputDialog(BuildContext context) async {
