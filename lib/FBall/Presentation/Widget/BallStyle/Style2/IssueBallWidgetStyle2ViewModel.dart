@@ -11,7 +11,7 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/BallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Impl/IssueBallModifyService.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
-import 'package:forutonafront/ICodePage/ID001/ID001MainPage.dart';
+import 'package:forutonafront/ICodePage/ID001/ID001MainPage2.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -65,7 +65,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
           fontSize: 12.0);
     } else {
       await Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => ID001MainPage(issueBall: issueBall)));
+          builder: (_) => ID001MainPage2( ballUuid: issueBall.ballUuid)));
       _selectBallUseCaseInputPort.selectBall(issueBall.ballUuid, outputPort: this);
     }
   }

@@ -54,9 +54,14 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    ID001AppBar(model: model),
+                    ID001AppBar(
+                      model: model,
+                      ballName: model.getBallTitle(),
+                      listViewScrollerController: model.detailPageController,
+                    ),
                     Expanded(
                       child: ListView(
+                          controller: model.detailPageController,
                           padding: EdgeInsets.fromLTRB(0, 0, 0, 52),
                           children: <Widget>[
                             ID001Title(
@@ -69,6 +74,8 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                               ballPosition: model.getBallPosition(),
                               ballAddress: model.getBallAddress(),
                               mapMakerDescriptorContainer: sl(),
+                              ballUuid: model.getBallUuid(),
+                              mapBallMarkerFactory: sl(),
                               geoLocationUtilForeGroundUseCase: sl(),
                             ),
                             ID001MakerInfo(
@@ -121,10 +128,9 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                   bottom: 0,
                   height: 52,
                   child: ID001ActionBottomBar(
-                    ballUuid: model.getBallUuid(),
-                    reviewInertMediator: model.reviewInertMediator,
-                    reviewCountMediator: model.reviewCountMediator
-                  ),
+                      ballUuid: model.getBallUuid(),
+                      reviewInertMediator: model.reviewInertMediator,
+                      reviewCountMediator: model.reviewCountMediator),
                 )
               ],
             ))

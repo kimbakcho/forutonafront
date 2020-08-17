@@ -22,6 +22,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier {
   final ValuationMediator valuationMediator;
   bool isDisPose = false;
 
+  final ScrollController detailPageController;
 
   ID001MainPage2ViewModel(
       {String ballUuid,
@@ -35,7 +36,8 @@ class ID001MainPage2ViewModel extends ChangeNotifier {
         reviewCountMediator =
             ReviewCountMediatorImpl(fBallReplyUseCaseInputPort: sl()),
         valuationMediator =
-            ValuationMediatorImpl(ballLikeUseCaseInputPort: sl()) {
+            ValuationMediatorImpl(ballLikeUseCaseInputPort: sl()),
+        detailPageController = ScrollController(){
     _selectBall();
     getBallLikeState();
   }

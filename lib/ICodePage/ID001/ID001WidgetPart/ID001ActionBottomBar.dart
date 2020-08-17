@@ -1,5 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
+import 'package:flutter/painting.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/FullReviewPage/FullReviewPage.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
@@ -15,13 +16,16 @@ class ID001ActionBottomBar extends StatelessWidget {
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
 
-  ID001ActionBottomBar({@required this.ballUuid,this.reviewCountMediator,this.reviewInertMediator});
+  ID001ActionBottomBar(
+      {@required this.ballUuid,
+      this.reviewCountMediator,
+      this.reviewInertMediator});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => ID001ActionBottomBarViewModel(
-          reviewCountMediator: reviewCountMediator,
+            reviewCountMediator: reviewCountMediator,
             valuationMediator:
                 Provider.of<ID001MainPage2ViewModel>(context).valuationMediator,
             ballUuid: ballUuid),
@@ -44,41 +48,44 @@ class ID001ActionBottomBar extends StatelessWidget {
                     constraints: BoxConstraints(),
                     child: Icon(ForutonaIcon.share),
                     onPressed: () {}),
-                Stack(
-                  children: <Widget>[
-                    RawMaterialButton(
-                        padding: EdgeInsets.only(right: 10),
-                        constraints: BoxConstraints(),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => FullReviewPage(
+                              ballUuid: ballUuid,
+                              reviewInertMediator: reviewInertMediator,
+                              reviewCountMediator: reviewCountMediator,
+                            )));
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
                         child: Icon(ForutonaIcon.comment),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => FullReviewPage(
-                                ballUuid: ballUuid,
-                                reviewInertMediator: reviewInertMediator,
-                                reviewCountMediator: reviewCountMediator,
-                              )));
-                        }),
-                    Positioned(
-                        right: 0,
-                        top: 13,
-                        child: Container(
-                          width: 31,
-                          height: 13,
-                          child: Text(
-                            "${model.reviewCount}",
-                            style: GoogleFonts.notoSans(
-                              fontSize: 9,
-                              color: const Color(0xffffffff),
-                              fontWeight: FontWeight.w700,
+                        width: 42,
+                        alignment: AlignmentDirectional.centerStart,
+                      ),
+                      Positioned(
+                          right: 0,
+                          top: 14,
+                          child: Container(
+                            width: 31,
+                            height: 13,
+                            child: Text(
+                              "${model.reviewCount}",
+                              style: GoogleFonts.notoSans(
+                                fontSize: 9,
+                                color: const Color(0xffffffff),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: const Color(0xffff4e6a),
-                          ),
-                        ))
-                  ],
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: const Color(0xffff4e6a),
+                            ),
+                          ))
+                    ],
+                  ),
                 ),
                 Spacer(),
                 RawMaterialButton(
@@ -112,16 +119,17 @@ class ID001ActionBottomBar extends StatelessWidget {
 }
 
 class ID001ActionBottomBarViewModel extends ChangeNotifier
-    implements ValuationMediatorComponent,ReviewCountMediatorComponent {
+    implements ValuationMediatorComponent, ReviewCountMediatorComponent {
   String ballUuid;
   final ValuationMediator _valuationMediator;
   final ReviewCountMediator _reviewCountMediator;
 
   ID001ActionBottomBarViewModel(
-      {this.ballUuid, @required ValuationMediator valuationMediator,
-        ReviewCountMediator reviewCountMediator
-      })
-      : _valuationMediator = valuationMediator,_reviewCountMediator=reviewCountMediator {
+      {this.ballUuid,
+      @required ValuationMediator valuationMediator,
+      ReviewCountMediator reviewCountMediator})
+      : _valuationMediator = valuationMediator,
+        _reviewCountMediator = reviewCountMediator {
     _valuationMediator.registerComponent(this);
     _reviewCountMediator.registerComponent(this);
     _reviewCountMediator.reqReviewCount(ballUuid);
@@ -138,7 +146,6 @@ class ID001ActionBottomBarViewModel extends ChangeNotifier
   disLikeAction() async {
     _valuationMediator.disLikeAction(this);
   }
-
 
   @override
   void dispose() {

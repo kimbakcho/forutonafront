@@ -5,6 +5,7 @@ import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart'
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapBallMarkerFactory.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapBitmapDescriptorUseCaseInputPort.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
@@ -444,8 +445,6 @@ init() {
   sl.registerSingleton<BallSearchBarHistoryRepository>(
       BallSearchBarHistoryRepositoryImpl(localDataSource: sl()));
 
-
-
   sl.registerSingleton<
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort>(
       RelationTagRankingFromTagNameOrderByBallPowerUseCase(
@@ -503,4 +502,7 @@ init() {
       BallLikeUseCase(fBallValuationRepository: sl()));
 
   sl.registerSingleton<DetailPageItemFactory>(DetailPageItemFactory());
+
+  sl.registerSingleton<MapBallMarkerFactory>(
+      MapBallMarkerFactory(mapMakerDescriptorContainer: sl()));
 }

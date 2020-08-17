@@ -10,7 +10,7 @@ class ID001Title extends StatelessWidget {
   const ID001Title({Key key,
     this.ballTitle,
     this.hits,
-    this.makeTime
+    this.makeTime,
   }) : super(key: key);
 
   @override

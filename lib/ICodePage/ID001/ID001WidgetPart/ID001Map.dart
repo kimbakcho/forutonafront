@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/AndroidIntentAdapter/AndroidIntentAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapBallMarkerFactory.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import 'package:forutonafront/Common/MapIntentButton/MapintentButton.dart';
+import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/ICodePage/IBM001/IMB001FullScreenMap.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,21 +15,27 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ID001Map extends StatefulWidget {
   final Position _ballPosition;
+  final String _ballUuid;
   final String _ballAddress;
   final GeoLocationUtilForeGroundUseCaseInputPort
       _geoLocationUtilForeGroundUseCase;
   final MapMakerDescriptorContainer _mapMakerDescriptorContainer;
+  final MapBallMarkerFactory _mapBallMarkerFactory;
 
   ID001Map(
       {Position ballPosition,
       String ballAddress,
+      String ballUuid,
       GeoLocationUtilForeGroundUseCaseInputPort
           geoLocationUtilForeGroundUseCase,
-      MapMakerDescriptorContainer mapMakerDescriptorContainer})
+      MapMakerDescriptorContainer mapMakerDescriptorContainer,
+      MapBallMarkerFactory mapBallMarkerFactory})
       : _ballPosition = ballPosition,
         _ballAddress = ballAddress,
+        _ballUuid = ballUuid,
         _geoLocationUtilForeGroundUseCase = geoLocationUtilForeGroundUseCase,
-        _mapMakerDescriptorContainer = mapMakerDescriptorContainer;
+        _mapMakerDescriptorContainer = mapMakerDescriptorContainer,
+        _mapBallMarkerFactory = mapBallMarkerFactory;
 
   @override
   _ID001MapState createState() => _ID001MapState();
@@ -67,13 +75,8 @@ class _ID001MapState extends State<ID001Map>
   }
 
   setMarkers() async {
-    markers.add(Marker(
-        markerId: MarkerId("IssueBall"),
-        icon: widget._mapMakerDescriptorContainer
-            .getBitmapDescriptor("IssueBallIcon"),
-        position: LatLng(
-            widget._ballPosition.latitude, widget._ballPosition.longitude),
-        anchor: Offset(0.5, 0.5)));
+    markers.add(widget._mapBallMarkerFactory.getBallMaker(
+        FBallType.IssueBall, widget._ballUuid, widget._ballPosition));
     markers.add(Marker(
       markerId: MarkerId("UserProfileImage"),
       icon: widget._mapMakerDescriptorContainer
@@ -100,16 +103,28 @@ class _ID001MapState extends State<ID001Map>
         child: Stack(children: <Widget>[
       Column(
         children: <Widget>[
-          Container(
-            height: 185,
-            child: GoogleMap(
-              key: mapKey,
-              initialCameraPosition: initCameraPosition,
-              markers: markers,
-              zoomControlsEnabled: false,
-              myLocationEnabled: false,
-              myLocationButtonEnabled: false,
-              zoomGesturesEnabled: false,
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                return IMB001FullScreenMap(
+                  initAddress: widget._ballAddress,
+                    initPosition: widget._ballPosition,
+                    ballUuid: widget._ballUuid);
+              }));
+            },
+            child: Container(
+              height: 185,
+              child: IgnorePointer(
+                child: GoogleMap(
+                  key: mapKey,
+                  initialCameraPosition: initCameraPosition,
+                  markers: markers,
+                  zoomControlsEnabled: false,
+                  myLocationEnabled: false,
+                  myLocationButtonEnabled: false,
+                  zoomGesturesEnabled: false,
+                ),
+              ),
             ),
           ),
           bottomBar()
