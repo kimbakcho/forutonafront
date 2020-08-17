@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
 
 abstract class ValuationMediatorComponent {
@@ -23,10 +22,10 @@ abstract class ValuationMediator {
 
   BallLikeState ballLikeState;
 
-  int ballPower = 0;
-  int ballLikeCount = 0;
-  int ballDisLikeCount = 0;
-  int likeServiceUseUserCount = 0;
+  int ballPower;
+  int ballLikeCount;
+  int ballDisLikeCount ;
+  int likeServiceUseUserCount;
 }
 
 class ValuationMediatorImpl implements ValuationMediator {
@@ -34,13 +33,13 @@ class ValuationMediatorImpl implements ValuationMediator {
   @override
   BallLikeState ballLikeState = BallLikeState.None;
   @override
-  int ballDisLikeCount;
+  int ballDisLikeCount = 0;
   @override
-  int ballLikeCount;
+  int ballLikeCount = 0;
   @override
-  int ballPower;
+  int ballPower = 0;
   @override
-  int likeServiceUseUserCount;
+  int likeServiceUseUserCount = 0;
 
   List<ValuationMediatorComponent> components = [];
 

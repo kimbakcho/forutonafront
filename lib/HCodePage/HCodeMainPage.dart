@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/HCodePage/H001/BallListMediator.dart';
 import 'package:forutonafront/HCodePage/H001/H001Page.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/H004/H004MainPage.dart';
@@ -35,39 +36,18 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Stack(children: <Widget>[
                       // 태그 랭킹 펼칠시 숨기기
-                      Consumer<H001ViewModel>(builder: (_, h001model, child) {
-                        return !h001model.isFoldTagRanking()
-                            ? Positioned(
-                                bottom: 0,
-                                width: MediaQuery.of(context).size.width,
-                                height: 52,
-                                child: BottomNavigation(),
-                              )
-                            : Container();
-                      }),
                       Column(children: <Widget>[
                         topNavibar(model),
                         Expanded(
                             child: PageView(
                                 controller: model.hCodePageController,
                                 children: <Widget>[
-                              H001Page(),
+                              H001Page(
+                                influencePowerBallListMediator: BallListMediatorImpl(),
+                              ),
                               H003MainPage()
                             ])),
                       ]),
-                      // 태그 랭킹 접을때 보이기
-                      Consumer<H001ViewModel>(builder: (_, h001model, child) {
-                        return h001model.isFoldTagRanking()
-                            ? Positioned(
-                                bottom: 0,
-                                left: 0,
-                                width: MediaQuery.of(context).size.width,
-                                child: Container(
-                                  child : BottomNavigation()
-                                )
-                              )
-                            : Container();
-                      }),
                     ])))
           ]);
         }));

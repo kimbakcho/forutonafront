@@ -236,8 +236,8 @@ class ICodeMainPageViewModel extends ChangeNotifier
         northeastPoint.longitude,
         currentMapPosition.target.latitude,
         currentMapPosition.target.longitude);
-    _fBallListUpUseCaseInputPort.searchFBallListUpFromMapArea(
-        reqDto, Pageable(0, 10, ""), outputPort: this);
+//    _fBallListUpUseCaseInputPort.searchFBallListUpFromMapArea(
+//        reqDto, Pageable(0, 10, ""), outputPort: this);
   }
 
   onBallSelectFunction(FBallResForMarker resDto) async {

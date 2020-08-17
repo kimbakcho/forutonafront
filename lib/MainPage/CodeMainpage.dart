@@ -6,6 +6,7 @@ import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/Flutt
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
+import 'package:forutonafront/HCodePage/H001/BallListMediator.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
 import 'package:forutonafront/ICodePage/ICodeMainPage.dart';
@@ -48,13 +49,6 @@ class _CodeMainpageState extends State<CodeMainpage> {
                 fireBaseAuthAdapterForUseCase: sl(),
                 codeMainPageController: sl(),
                 userPositionForegroundMonitoringUseCaseInputPort: sl())),
-        ChangeNotifierProvider<H001ViewModel>(
-            create: (_) => H001ViewModel(
-                context: context,
-                fireBaseAuthAdapterForUseCase: sl(),
-                geoLocationUtilUseCaseInputPort: sl(),
-                fBallListUpUseCaseInputPort: sl(),
-                tagRankingFromPositionUseCaseInputPort: sl()))
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {
         return Scaffold(

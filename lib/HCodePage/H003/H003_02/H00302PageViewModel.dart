@@ -54,9 +54,9 @@ class H00302PageViewModel extends ChangeNotifier implements FBallListUpUseCaseOu
 
   Future ballListUp() async {
     isLoading = true;
-    _fBallListUpUseCaseInputPort.searchFBallListUpUserPlayBall(
-        await _fireBaseAuthAdapterForUseCase.userUid()
-    , Pageable(_pageCount,_limitSize,"startTimeDESCAliveDESC"),outputPort: this);
+//    _fBallListUpUseCaseInputPort.searchFBallListUpUserPlayBall(
+//        await _fireBaseAuthAdapterForUseCase.userUid()
+//    , Pageable(_pageCount,_limitSize,"startTimeDESCAliveDESC"),outputPort: this);
     isLoading = false;
   }
 

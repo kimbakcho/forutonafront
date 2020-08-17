@@ -13,8 +13,9 @@ import '../ID001MainPage2ViewModel.dart';
 class ID001LikeState extends StatelessWidget {
   final String ballUuid;
   final DateTime ballActivationTime;
+  final ValuationMediator valuationMediator;
 
-  ID001LikeState({this.ballUuid, this.ballActivationTime}) {
+  ID001LikeState({this.ballUuid, this.ballActivationTime,this.valuationMediator}) {
     print(ballUuid);
     print(ballActivationTime);
   }
@@ -23,8 +24,7 @@ class ID001LikeState extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => ID001LikeStateViewModel(
-            valuationMediator:
-                Provider.of<ID001MainPage2ViewModel>(context).valuationMediator,
+            valuationMediator: valuationMediator,
             ballUuid: ballUuid,
             ballActivationTime: ballActivationTime),
         child: Consumer<ID001LikeStateViewModel>(builder: (_, model, __) {

@@ -36,6 +36,7 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
+        key: Key(_ballUuid),
         create: (_) => ID001MainPage2ViewModel(
             ballUuid: _ballUuid,
             selectBallUseCaseInputPort: sl(),
@@ -89,6 +90,7 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                             ),
                             ID001LikeState(
                               ballUuid: model.getBallUuid(),
+                              valuationMediator: model.valuationMediator,
                               ballActivationTime: model.getBallActivationTime(),
                             ),
                             BasicReviews(

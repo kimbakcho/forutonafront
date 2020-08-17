@@ -10,74 +10,76 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
 class ID001YoutubeWidget extends StatefulWidget {
   final String youtubeVideoId;
+
   ID001YoutubeWidget({this.youtubeVideoId});
 
   @override
   _ID001YoutubeWidgetState createState() => _ID001YoutubeWidgetState();
 }
 
-class _ID001YoutubeWidgetState extends State<ID001YoutubeWidget> with AutomaticKeepAliveClientMixin{
-  @override
+class _ID001YoutubeWidgetState extends State<ID001YoutubeWidget>
+    with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
+    super.build(context);
     return ChangeNotifierProvider(
       create: (_) => ID001YoutubeWidgetViewModel(widget.youtubeVideoId),
       child: Consumer<ID001YoutubeWidgetViewModel>(builder: (_, model, __) {
         return model.canDisplayYoutube()
             ? Container(
-          height: 162,
-          child: Row(children: <Widget>[
-            Container(
-                padding: EdgeInsets.fromLTRB(16, 30, 16, 20),
+                height: 162,
                 child: Row(children: <Widget>[
                   Container(
-                    width: 124.0,
-                    height: 102.0,
-                    child: youtubeImageBox(model),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 16),
-                    width:
-                    MediaQuery.of(context).size.width - 124 - 32 - 16,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              model.currentYoutubeTitle,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.notoSans(
-                                fontSize: 14,
-                                color: const Color(0xff454f63),
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(top: 11),
-                              child: Text(
-                                model.currentYoutubeAuthor,
-                                style: GoogleFonts.notoSans(
-                                  fontSize: 12,
-                                  color: const Color(0xff78849e),
+                      padding: EdgeInsets.fromLTRB(16, 30, 16, 20),
+                      child: Row(children: <Widget>[
+                        Container(
+                          width: 124.0,
+                          height: 102.0,
+                          child: youtubeImageBox(model),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 16),
+                          width:
+                              MediaQuery.of(context).size.width - 124 - 32 - 16,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(
+                                    model.currentYoutubeTitle,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.notoSans(
+                                      fontSize: 14,
+                                      color: const Color(0xff454f63),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
                                 ),
-                                textAlign: TextAlign.left,
-                              )),
-                          Container(
-                              child: Text(
-                                model.etc,
-                                style: GoogleFonts.notoSans(
-                                  fontSize: 12,
-                                  color: const Color(0xff78849e),
-                                ),
-                                textAlign: TextAlign.left,
-                              ))
-                        ]),
-                  )
-                ]))
-          ]),
-        )
+                                Container(
+                                    margin: EdgeInsets.only(top: 11),
+                                    child: Text(
+                                      model.currentYoutubeAuthor,
+                                      style: GoogleFonts.notoSans(
+                                        fontSize: 12,
+                                        color: const Color(0xff78849e),
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    )),
+                                Container(
+                                    child: Text(
+                                  model.etc,
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 12,
+                                    color: const Color(0xff78849e),
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ))
+                              ]),
+                        )
+                      ]))
+                ]),
+              )
             : Container();
       }),
     );
@@ -136,7 +138,9 @@ class ID001YoutubeWidgetViewModel extends ChangeNotifier {
   Youtube.YoutubeExplode _youtubeExplode = Youtube.YoutubeExplode();
 
   ID001YoutubeWidgetViewModel(this.youtubeVideoId) {
-    youtubeLoad(youtubeVideoId);
+    if (this.canDisplayYoutube()) {
+      youtubeLoad(youtubeVideoId);
+    }
   }
 
   youtubeLoad(String videoId) async {

@@ -63,12 +63,12 @@ class H00301PageViewModel extends ChangeNotifier
 
   Future<void> ballListUp() async {
     isLoading = true;
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      await _fBallListUpUseCaseInputPort.searchFBallListUpUserMakerBall(
-          await _fireBaseAuthAdapterForUseCase.userUid(),
-          Pageable(_pageCount, _limitSize, "makeTimeDESCAliveDESC"),
-          outputPort: this);
-    }
+//    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+//      await _fBallListUpUseCaseInputPort.searchFBallListUpUserMakerBall(
+//          await _fireBaseAuthAdapterForUseCase.userUid(),
+//          Pageable(_pageCount, _limitSize, "makeTimeDESCAliveDESC"),
+//          outputPort: this);
+//    }
     isLoading = false;
   }
 

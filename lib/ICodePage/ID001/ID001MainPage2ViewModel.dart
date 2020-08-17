@@ -10,8 +10,7 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'ValuationMediator/ValuationMediator.dart';
 
-class ID001MainPage2ViewModel extends ChangeNotifier
-    implements SelectBallUseCaseOutputPort {
+class ID001MainPage2ViewModel extends ChangeNotifier {
   final String _ballUuid;
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
@@ -20,9 +19,9 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   FBallResDto _fBallResDto;
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
+  final ValuationMediator valuationMediator;
+  bool isDisPose = false;
 
-  final ValuationMediator valuationMediator =
-      ValuationMediatorImpl(ballLikeUseCaseInputPort: sl());
 
   ID001MainPage2ViewModel(
       {String ballUuid,
@@ -34,8 +33,10 @@ class ID001MainPage2ViewModel extends ChangeNotifier
         reviewInertMediator =
             ReviewInertMediatorImpl(fBallReplyUseCaseInputPort: sl()),
         reviewCountMediator =
-            ReviewCountMediatorImpl(fBallReplyUseCaseInputPort: sl()) {
-    _selectBallUseCaseInputPort.selectBall(_ballUuid, outputPort: this);
+            ReviewCountMediatorImpl(fBallReplyUseCaseInputPort: sl()),
+        valuationMediator =
+            ValuationMediatorImpl(ballLikeUseCaseInputPort: sl()) {
+    _selectBall();
     getBallLikeState();
   }
 
@@ -43,12 +44,14 @@ class ID001MainPage2ViewModel extends ChangeNotifier
     return _issueBallDisPlayUseCase.ballName();
   }
 
-  @override
-  onSelectBall(FBallResDto fBallResDto) {
-    _fBallResDto = fBallResDto;
-    _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto);
+  _selectBall( ) async {
+    _fBallResDto = await _selectBallUseCaseInputPort.selectBall(_ballUuid);
+    _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(_fBallResDto);
     _loadBallComplete = true;
-    notifyListeners();
+    print(_fBallResDto.ballName);
+    if(!isDisPose){
+      notifyListeners();
+    }
   }
 
   bool isLoadBallFinish() {
@@ -119,5 +122,11 @@ class ID001MainPage2ViewModel extends ChangeNotifier
     } else {
       valuationMediator.getBallLikeState(_ballUuid);
     }
+  }
+
+  @override
+  void dispose() {
+    this.isDisPose = true;
+    super.dispose();
   }
 }

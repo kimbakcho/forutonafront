@@ -132,10 +132,10 @@ class H00502PageViewModel extends ChangeNotifier
         searchTag: searchTag,
         latitude: position.latitude,
         longitude: position.longitude);
-    await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTagName(
-        reqDto,
-        Pageable(_pageCount, _ballPageLimitSize, "makeTimeDESCAliveDESC"),
-        outputPort: this);
+//    await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTagName(
+//        reqDto,
+//        Pageable(_pageCount, _ballPageLimitSize, "makeTimeDESCAliveDESC"),
+//        outputPort: this);
     isLoading = false;
   }
 

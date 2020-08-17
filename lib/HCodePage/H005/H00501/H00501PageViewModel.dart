@@ -83,8 +83,8 @@ class H00501PageViewModel extends ChangeNotifier
         searchText: searchTitle,
         longitude: position.longitude,
         latitude: position.latitude);
-    PageWrap<FBallResDto> pageList = await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTitle(
-        fBallListUpFromSearchTitleReqDto,Pageable(_pageCount,_ballPageLimitSize,"makeTimeDESCAliveDESC"), outputPort: this);
+//    PageWrap<FBallResDto> pageList = await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTitle(
+//        fBallListUpFromSearchTitleReqDto,Pageable(_pageCount,_ballPageLimitSize,"makeTimeDESCAliveDESC"), outputPort: this);
     isLoading = false;
   }
 
