@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
-import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
-
-import '../ID001MainPage2ViewModel.dart';
 
 class ID001LikeState extends StatelessWidget {
   final String ballUuid;
   final DateTime ballActivationTime;
   final ValuationMediator valuationMediator;
 
-  ID001LikeState({this.ballUuid, this.ballActivationTime,this.valuationMediator}) {
+  ID001LikeState(
+      {this.ballUuid, this.ballActivationTime, this.valuationMediator}) {
     print(ballUuid);
     print(ballActivationTime);
   }
@@ -25,6 +26,8 @@ class ID001LikeState extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => ID001LikeStateViewModel(
             valuationMediator: valuationMediator,
+            fireBaseAuthAdapterForUseCase: sl(),
+            context: context,
             ballUuid: ballUuid,
             ballActivationTime: ballActivationTime),
         child: Consumer<ID001LikeStateViewModel>(builder: (_, model, __) {
@@ -66,15 +69,15 @@ class ID001LikeState extends StatelessWidget {
           Spacer(),
           Container(
             margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child:
-                Text("${model.ballDisLikeCount} (${(model.ballDisLikePercent*100).toStringAsFixed(0)}%)",
-                    style: GoogleFonts.notoSans(
-                      fontSize: 14,
-                      color: const Color(0xff000000),
-                      letterSpacing: -0.9800000000000001,
-                      fontWeight: FontWeight.w700,
-                      height: 1.4285714285714286,
-                    )),
+            child: Text(
+                "${model.ballDisLikeCount} (${(model.ballDisLikePercent * 100).toStringAsFixed(0)}%)",
+                style: GoogleFonts.notoSans(
+                  fontSize: 14,
+                  color: const Color(0xff000000),
+                  letterSpacing: -0.9800000000000001,
+                  fontWeight: FontWeight.w700,
+                  height: 1.4285714285714286,
+                )),
           )
         ],
       ),
@@ -106,7 +109,8 @@ class ID001LikeState extends StatelessWidget {
           Spacer(),
           Container(
             margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: Text("${model.ballLikeCount} (${(model.ballLikePercent*100).toStringAsFixed(0)}%)",
+            child: Text(
+                "${model.ballLikeCount} (${(model.ballLikePercent * 100).toStringAsFixed(0)}%)",
                 style: GoogleFonts.notoSans(
                   fontSize: 14,
                   color: const Color(0xff000000),
@@ -209,12 +213,17 @@ class ID001LikeStateViewModel extends ChangeNotifier
   String ballUuid;
   DateTime ballActivationTime;
   final ValuationMediator _valuationMediator;
+  final BuildContext context;
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   ID001LikeStateViewModel(
       {this.ballUuid,
       this.ballActivationTime,
+      this.context,
+      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       @required ValuationMediator valuationMediator})
-      : _valuationMediator = valuationMediator {
+      : _valuationMediator = valuationMediator,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
     _valuationMediator.registerComponent(this);
   }
 
@@ -227,7 +236,11 @@ class ID001LikeStateViewModel extends ChangeNotifier
   get ballPower => _valuationMediator.ballPower;
 
   likeAction() async {
-    _valuationMediator.likeAction(this);
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+      _valuationMediator.likeAction(this);
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
+    }
   }
 
   BallLikeState get ballLikeState {
@@ -235,23 +248,35 @@ class ID001LikeStateViewModel extends ChangeNotifier
   }
 
   disLikeAction() async {
-    _valuationMediator.disLikeAction(this);
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+      _valuationMediator.disLikeAction(this);
+    }else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
+    }
+
   }
 
   double get ballLikePercent {
-    if((_valuationMediator.ballLikeCount + _valuationMediator.ballDisLikeCount) == 0){
+    if ((_valuationMediator.ballLikeCount +
+            _valuationMediator.ballDisLikeCount) ==
+        0) {
       return 0;
     }
-    return _valuationMediator.ballLikeCount / (_valuationMediator.ballLikeCount + _valuationMediator.ballDisLikeCount);
+    return _valuationMediator.ballLikeCount /
+        (_valuationMediator.ballLikeCount +
+            _valuationMediator.ballDisLikeCount);
   }
 
   double get ballDisLikePercent {
-    if((_valuationMediator.ballLikeCount + _valuationMediator.ballDisLikeCount) == 0){
+    if ((_valuationMediator.ballLikeCount +
+            _valuationMediator.ballDisLikeCount) ==
+        0) {
       return 0;
     }
-    return _valuationMediator.ballDisLikeCount / (_valuationMediator.ballLikeCount + _valuationMediator.ballDisLikeCount);
+    return _valuationMediator.ballDisLikeCount /
+        (_valuationMediator.ballLikeCount +
+            _valuationMediator.ballDisLikeCount);
   }
-
 
   String get ballRemindTime {
     return TimeDisplayUtil.getCalcToStrFromNow(ballActivationTime);
@@ -261,5 +286,4 @@ class ID001LikeStateViewModel extends ChangeNotifier
   reqNotification() {
     notifyListeners();
   }
-
 }

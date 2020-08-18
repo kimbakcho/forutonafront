@@ -8,6 +8,9 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertM
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInsertRow.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
+import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +34,7 @@ class FullReviewPage extends StatelessWidget {
             signInUserInfoUseCaseInputPort: sl(),
             fBallReplyUseCaseInputPort: sl(),
             reviewCountMediator: reviewCountMediator,
+            fireBaseAuthAdapterForUseCase: sl(),
             reviewInertMediator: reviewInertMediator,
             ballUuid: ballUuid),
         child: Consumer<FullReviewPageViewModel>(builder: (_, model, __) {
@@ -57,7 +61,7 @@ class FullReviewPage extends StatelessWidget {
                           model.showRootReplyInputDialog(context);
                         },
                         child: IgnorePointer(
-                            child: ReviewInsertRow(
+                            child: ReviewTextActionRow(
                           autoFocus: false,
                           userProfileImageUrl: model.userProfileImage,
                         )))
@@ -90,6 +94,8 @@ class FullReviewPageViewModel extends ChangeNotifier
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final Preference _preference = sl();
 
   int page = 0;
   int pageLimit = 10;
@@ -102,29 +108,46 @@ class FullReviewPageViewModel extends ChangeNotifier
       this.reviewInertMediator,
       this.reviewCountMediator,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
+      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
-      : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
-    this._fUserInfoResDto =
-        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
+    initPage();
     reviewCountMediator.registerComponent(this);
   }
 
+  initPage() async {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+      this._fUserInfoResDto =
+          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+    }
+  }
+
   get userProfileImage {
-    return this._fUserInfoResDto.profilePictureUrl;
+    if(_fUserInfoResDto==null){
+      return  _preference.basicProfileImageUrl;
+    }else {
+      return this._fUserInfoResDto.profilePictureUrl;
+    }
   }
 
   showRootReplyInputDialog(BuildContext context) async {
-    await showModalBottomSheet(
-        context: context,
-        isDismissible: true,
-        isScrollControlled: true,
-        builder: (context) {
-          return BasicReViewsInsert(
-              ballUuid: ballUuid,
-              autoFocus: true,
-              reviewCountMediator: reviewCountMediator,
-              reviewInertMediator: reviewInertMediator);
-        });
+    if(await _fireBaseAuthAdapterForUseCase.isLogin()) {
+      await showModalBottomSheet(
+          context: context,
+          isDismissible: true,
+          isScrollControlled: true,
+          builder: (context) {
+            return BasicReViewsInsert(
+                ballUuid: ballUuid,
+                autoFocus: true,
+                reviewCountMediator: reviewCountMediator,
+                reviewInertMediator: reviewInertMediator);
+          });
+    }else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>J001View()));
+    }
+
   }
 
   get reviewCount {

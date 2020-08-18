@@ -4,10 +4,13 @@ import 'package:flutter/painting.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/FullReviewPage/FullReviewPage.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +28,8 @@ class ID001ActionBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => ID001ActionBottomBarViewModel(
+          context: context,
+            fireBaseAuthAdapterForUseCase: sl(),
             reviewCountMediator: reviewCountMediator,
             valuationMediator:
                 Provider.of<ID001MainPage2ViewModel>(context).valuationMediator,
@@ -123,20 +128,31 @@ class ID001ActionBottomBarViewModel extends ChangeNotifier
   String ballUuid;
   final ValuationMediator _valuationMediator;
   final ReviewCountMediator _reviewCountMediator;
+  final BuildContext context;
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   ID001ActionBottomBarViewModel(
       {this.ballUuid,
+        this.context,
       @required ValuationMediator valuationMediator,
-      ReviewCountMediator reviewCountMediator})
+      ReviewCountMediator reviewCountMediator,
+        FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase
+      })
       : _valuationMediator = valuationMediator,
-        _reviewCountMediator = reviewCountMediator {
+        _reviewCountMediator = reviewCountMediator,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase
+  {
     _valuationMediator.registerComponent(this);
     _reviewCountMediator.registerComponent(this);
     _reviewCountMediator.reqReviewCount(ballUuid);
   }
 
   likeAction() async {
-    _valuationMediator.likeAction(this);
+    if(await _fireBaseAuthAdapterForUseCase.isLogin()){
+      _valuationMediator.likeAction(this);
+    }else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>J001View()));
+    }
   }
 
   BallLikeState get ballLikeState {
@@ -144,7 +160,11 @@ class ID001ActionBottomBarViewModel extends ChangeNotifier
   }
 
   disLikeAction() async {
-    _valuationMediator.disLikeAction(this);
+    if(await _fireBaseAuthAdapterForUseCase.isLogin()){
+      _valuationMediator.disLikeAction(this);
+    }else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>J001View()));
+    }
   }
 
   @override

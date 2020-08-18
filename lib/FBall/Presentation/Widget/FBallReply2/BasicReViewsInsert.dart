@@ -58,11 +58,11 @@ class BasicReViewsInsert extends StatelessWidget {
                       fBallReplyResDto: model.parentFBallReplyResDto,
                     )
                   : Container(),
-              ReviewInsertRow(
+              ReviewTextActionRow(
                 autoFocus: this.autoFocus,
                 ballUuid: model.ballUuid,
                 userProfileImageUrl: model.userProfileImage,
-                insertReply: model.insertReply,
+                actionReply: model.insertReply,
                 replyTextEditController: model.replyTextEditController,
               )
             ],

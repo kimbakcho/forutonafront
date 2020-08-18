@@ -2,21 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 
-class ReviewInsertRow extends StatelessWidget {
+class ReviewTextActionRow extends StatelessWidget {
   final String userProfileImageUrl;
   final FocusNode replyTextFocusNode;
   final bool autoFocus;
   final TextEditingController replyTextEditController;
-  final Function(String) insertReply;
+  final Function(String) actionReply;
   final String ballUuid;
 
-  const ReviewInsertRow(
+  const ReviewTextActionRow(
       {Key key,
       this.userProfileImageUrl,
       this.replyTextFocusNode,
       this.autoFocus,
       this.replyTextEditController,
-      this.insertReply, this.ballUuid})
+      this.actionReply, this.ballUuid})
       : super(key: key);
 
   @override
@@ -56,7 +56,7 @@ class ReviewInsertRow extends StatelessWidget {
           child: FlatButton(
             padding: EdgeInsets.all(0).add(EdgeInsets.only(right: 4)),
             onPressed: () {
-              insertReply(ballUuid);
+              actionReply(ballUuid);
             },
             child: Icon(
               ForutonaIcon.replysendicon,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/HCodePage/H001/BallListMediator.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
+import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +45,8 @@ class H001Page extends StatelessWidget {
                               },
                               itemCount: model.ballList.length,
                             ),
-                          )
+                          ),
+                          BottomNavigation()
                         ],
                       ),
                       model.isLoading ? CommonLoadingComponent() : Container()

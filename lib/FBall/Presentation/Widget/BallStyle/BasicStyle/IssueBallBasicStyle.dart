@@ -37,7 +37,7 @@ class IssueBallBasicStyleImpl implements IssueBallBasicStyle {
 
   Future reqJoinBall({@required FBallResDto issueBall}) async {
 //    if (issueBall.isUserBall(myUid: await _fireBaseAuthAdapterForUseCase.userUid())) {
-      //TODO FBallPlayer 구현후 다시 구현
+
 //      _issueBallUseCaseInputPort.joinBall(
 //          reqDto: FBallJoinReqDto(issueBall.ballType, issueBall.ballUuid,
 //              await _authUserCaseInputPort.myUid()));

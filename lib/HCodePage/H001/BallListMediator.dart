@@ -14,9 +14,9 @@ abstract class BallListMediator {
 
   void unregisterComponent(BallListMediatorComponent component);
 
-  searchNext({FBallListUpUseCaseOutputPort outputPort});
+  searchNext();
 
-  searchFirst({FBallListUpUseCaseOutputPort outputPort});
+  searchFirst();
 
   List<FBallResDto> ballList;
 
@@ -66,13 +66,13 @@ class BallListMediatorImpl implements BallListMediator {
     ballListMediatorComponentList.remove(component);
   }
 
-  search(Pageable pageable, {FBallListUpUseCaseOutputPort outputPort}) async {
+  search(Pageable pageable ) async {
     if(_fBallListUpUseCaseInputPort == null){
       throw Exception("don't have searchCaseInputPort for need set FBallListUpUseCaseInputPort");
     }
     this._wrapBallList = await this
         ._fBallListUpUseCaseInputPort
-        .search(pageable, outputPort: outputPort);
+        .search(pageable);
     if (_wrapBallList.first) {
       loadLast = false;
       ballList.clear();
@@ -93,9 +93,9 @@ class BallListMediatorImpl implements BallListMediator {
   }
 
   @override
-  searchNext({FBallListUpUseCaseOutputPort outputPort}) async{
+  searchNext() async{
     _pageCount++;
-    await search(Pageable(_pageCount,_pageLimit,_sort),outputPort: outputPort);
+    await search(Pageable(_pageCount,_pageLimit,_sort));
   }
 
   @override
@@ -104,9 +104,9 @@ class BallListMediatorImpl implements BallListMediator {
   }
 
   @override
-  searchFirst({FBallListUpUseCaseOutputPort outputPort}) async {
+  searchFirst() async {
     _pageCount = 0;
-    await search(Pageable(_pageCount,_pageLimit,_sort),outputPort: outputPort);
+    await search(Pageable(_pageCount,_pageLimit,_sort));
   }
 
   set pageLimit(int value) {

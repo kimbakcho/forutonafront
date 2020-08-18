@@ -42,7 +42,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "co.kr.forutonafront"
         minSdkVersion 22
         targetSdkVersion rootProject.ext.targetSdkVersion

@@ -19,8 +19,7 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
   @override
   Map<String, BitmapDescriptor> container;
 
-  final MapBitmapDescriptorUseCaseInputPort
-      _mapBitmapDescriptorUseCaseInputPort;
+  final MapBitmapDescriptorUseCaseInputPort _mapBitmapDescriptorUseCaseInputPort;
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final Preference _preference;
@@ -45,7 +44,6 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
         await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
             "assets/MarkesImages/issueballicon.png", Size(140, 140));
     container.putIfAbsent("IssueBallIcon", () => bitmapDescriptor);
-
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) async {
       await mapPutUserAvatarIcon();
     });
@@ -59,11 +57,13 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
           await _mapBitmapDescriptorUseCaseInputPort
               .urlPathToAvatarBitmapDescriptor(userInfo.profilePictureUrl);
       container.putIfAbsent("UserAvatarIcon", () => userAvatarIcon);
+      container.update("UserAvatarIcon", (value) => userAvatarIcon) ;
     }else {
       BitmapDescriptor userAvatarIcon =
       await _mapBitmapDescriptorUseCaseInputPort
           .urlPathToAvatarBitmapDescriptor(_preference.basicProfileImageUrl);
       container.putIfAbsent("UserAvatarIcon", () => userAvatarIcon);
+      container.update("UserAvatarIcon", (value) => userAvatarIcon) ;
     }
   }
 

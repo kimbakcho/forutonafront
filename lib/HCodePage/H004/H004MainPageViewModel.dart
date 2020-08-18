@@ -130,8 +130,4 @@ class H004MainPageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  @override
-  void searchResult(PageWrap listUpItem) {
-    // TODO: implement searchResult
-  }
 }

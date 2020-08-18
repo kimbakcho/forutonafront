@@ -30,7 +30,6 @@ enum H001PageState { H001_01, H003_01 }
 class H001ViewModel
     with ChangeNotifier
     implements
-        FBallListUpUseCaseOutputPort,
         TagRankingFromBallInfluencePowerUseCaseOutputPort {
   final BuildContext context;
 
@@ -167,9 +166,9 @@ class H001ViewModel
         FBallListUpFromInfluencePower(
             fBallRepository: sl(), listUpReqDto: reqDto);
     if (firstPage) {
-      await _influencePowerBallListMediator.searchFirst(outputPort: this);
+      await _influencePowerBallListMediator.searchFirst();
     } else {
-      await _influencePowerBallListMediator.searchNext(outputPort: this);
+      await _influencePowerBallListMediator.searchNext();
     }
 
     hideLoading();
@@ -379,10 +378,6 @@ class H001ViewModel
     return NomalValueDisplay.changeIntDisplaystr(value);
   }
 
-  @override
-  void searchResult(PageWrap listUpItem) {
-    // TODO: implement searchResult
-  }
 
   void moveDetailPage(int index) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {

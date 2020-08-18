@@ -19,8 +19,7 @@ import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class ICodeMainPageViewModel extends ChangeNotifier
-    implements FBallListUpUseCaseOutputPort {
+class ICodeMainPageViewModel extends ChangeNotifier {
   final BuildContext context;
   final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCase;
   final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
@@ -305,8 +304,5 @@ class ICodeMainPageViewModel extends ChangeNotifier
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
   }
 
-  @override
-  void searchResult(PageWrap listUpItem) {
-    // TODO: implement searchResult
-  }
+
 }

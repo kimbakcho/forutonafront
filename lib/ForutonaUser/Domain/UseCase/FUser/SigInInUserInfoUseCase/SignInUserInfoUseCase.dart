@@ -50,6 +50,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   @override
   void clearUserInfo() {
     _fUserInfo = null;
+    _fUserInfoStreamController.add(null);
   }
 
   void dispose() {

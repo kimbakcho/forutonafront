@@ -7,9 +7,12 @@ import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsInsert.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReplyOptionAction/ReplyOptionActionBottomSheet.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +48,8 @@ class BasicReViewsContentBar extends StatelessWidget {
         create: (_) => BasicReViewsContentBarViewModel(
             showChildReply: showChildReply,
             fBallReplyUseCaseInputPort: sl(),
+            fireBaseAuthAdapterForUseCase: sl(),
+            context: context,
             reviewCountMediator: _reviewCountMediator,
             reviewInertMediator: _reviewInertMediator,
             fBallReplyResDto: _fBallReplyResDto),
@@ -139,13 +144,17 @@ class BasicReViewsContentBar extends StatelessWidget {
                       ])),
                       showEditBtn
                           ? Container(
-                              child: RawMaterialButton(
-                                onPressed: () {},
-                                constraints: BoxConstraints(),
-                                child: Icon(ForutonaIcon.pointdash,
-                                    color: Colors.black),
-                              ),
-                            )
+                              child: InkWell(
+                                  onTap: () {
+                                    model.showOptionButtonDialog();
+                                  },
+                                  child: Container(
+                                    alignment: Alignment(0.0, -1.0),
+                                    height: 32,
+                                    width: 32,
+                                    child: Icon(ForutonaIcon.pointdash,
+                                        size: 13, color: Colors.black),
+                                  )))
                           : Container()
                     ],
                   ),
@@ -220,18 +229,23 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final BuildContext context;
   bool isChildReplyOpen = false;
   bool showChildReply;
 
   BasicReViewsContentBarViewModel(
       {this.fBallReplyResDto,
       this.showChildReply,
+        this.context,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
+      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       ReviewInertMediator reviewInertMediator,
       ReviewCountMediator reviewCountMediator})
       : _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
-        _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort;
+        _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
 
   get isChildReplyShow {
     if (fBallReplyResDto.childCount > 0 && showChildReply) {
@@ -306,23 +320,37 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   }
 
   void subReplyInsertOpen(BuildContext context) async {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+      await showModalBottomSheet(
+          context: context,
+          isDismissible: true,
+          isScrollControlled: true,
+          builder: (context) {
+            return BasicReViewsInsert(
+                ballUuid: fBallReplyResDto.ballUuid.ballUuid,
+                reviewInertMediator: _reviewInertMediator,
+                reviewCountMediator: _reviewCountMediator,
+                parentFBallReplyResDto: fBallReplyResDto,
+                autoFocus: true);
+          });
+      fBallReplyResDto.childFBallReplyResDto = await getSubReply();
+      fBallReplyResDto.childCount =
+          fBallReplyResDto.childFBallReplyResDto.length;
+      notifyListeners();
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
+    }
+  }
+
+  bool isRootReply() => fBallReplyResDto.replySort == 0;
+
+  void showOptionButtonDialog() async {
     await showModalBottomSheet(
         context: context,
         isDismissible: true,
         isScrollControlled: true,
         builder: (context) {
-          return BasicReViewsInsert(
-            ballUuid: fBallReplyResDto.ballUuid.ballUuid,
-            reviewInertMediator: _reviewInertMediator,
-            reviewCountMediator: _reviewCountMediator,
-            parentFBallReplyResDto: fBallReplyResDto,
-            autoFocus: true,
-          );
-        });
-    fBallReplyResDto.childFBallReplyResDto = await getSubReply();
-    fBallReplyResDto.childCount = fBallReplyResDto.childFBallReplyResDto.length;
-    notifyListeners();
+      return ReplyOptionActionBottomSheet(fBallReplyResDto: fBallReplyResDto,);
+    });
   }
-
-  bool isRootReply() => fBallReplyResDto.replySort == 0;
 }
