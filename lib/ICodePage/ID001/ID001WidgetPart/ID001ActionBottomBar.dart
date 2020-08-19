@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/FullReviewPage/FullReviewPage.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -18,10 +19,11 @@ class ID001ActionBottomBar extends StatelessWidget {
   final String ballUuid;
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
-
+  final ReviewDeleteMediator reviewDeleteMediator;
   ID001ActionBottomBar(
       {@required this.ballUuid,
       this.reviewCountMediator,
+        this.reviewDeleteMediator,
       this.reviewInertMediator});
 
   @override
@@ -58,6 +60,7 @@ class ID001ActionBottomBar extends StatelessWidget {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => FullReviewPage(
                               ballUuid: ballUuid,
+                              reviewDeleteMediator: reviewDeleteMediator,
                               reviewInertMediator: reviewInertMediator,
                               reviewCountMediator: reviewCountMediator,
                             )));

@@ -7,8 +7,10 @@ import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsInsert.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/FBallReplyDisplayUtil.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReplyOptionAction/ReplyOptionActionBottomSheet.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -26,12 +28,14 @@ class BasicReViewsContentBar extends StatelessWidget {
   final bool hasBottomPadding;
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
+  final ReviewDeleteMediator _reviewDeleteMediator;
 
   BasicReViewsContentBar(
       {Key key,
       FBallReplyResDto fBallReplyResDto,
       ReviewInertMediator reviewInertMediator,
       ReviewCountMediator reviewCountMediator,
+      ReviewDeleteMediator reviewDeleteMediator,
       this.showChildReply,
       this.showEditBtn,
       this.canSubReplyInsert,
@@ -40,6 +44,7 @@ class BasicReViewsContentBar extends StatelessWidget {
       : _fBallReplyResDto = fBallReplyResDto,
         _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
+        _reviewDeleteMediator = reviewDeleteMediator,
         super(key: key);
 
   @override
@@ -51,6 +56,7 @@ class BasicReViewsContentBar extends StatelessWidget {
             fireBaseAuthAdapterForUseCase: sl(),
             context: context,
             reviewCountMediator: _reviewCountMediator,
+            reviewDeleteMediator: _reviewDeleteMediator,
             reviewInertMediator: _reviewInertMediator,
             fBallReplyResDto: _fBallReplyResDto),
         child:
@@ -171,6 +177,7 @@ class BasicReViewsContentBar extends StatelessWidget {
                                 hasBoardLine: false,
                                 hasBottomPadding: false,
                                 reviewCountMediator: _reviewCountMediator,
+                                reviewDeleteMediator: _reviewDeleteMediator,
                                 fBallReplyResDto: _fBallReplyResDto
                                     .childFBallReplyResDto[index],
                                 showChildReply: false);
@@ -224,28 +231,34 @@ class BasicReViewsContentBar extends StatelessWidget {
   }
 }
 
-class BasicReViewsContentBarViewModel extends ChangeNotifier {
+class BasicReViewsContentBarViewModel extends ChangeNotifier{
   final FBallReplyResDto fBallReplyResDto;
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
+  final ReviewDeleteMediator _reviewDeleteMediator;
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final BuildContext context;
   bool isChildReplyOpen = false;
   bool showChildReply;
+  FBallReplyDisplayUtil _fBallReplyDisplayUtil;
 
   BasicReViewsContentBarViewModel(
       {this.fBallReplyResDto,
       this.showChildReply,
-        this.context,
+      this.context,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
       FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       ReviewInertMediator reviewInertMediator,
+      ReviewDeleteMediator reviewDeleteMediator,
       ReviewCountMediator reviewCountMediator})
       : _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
+        _reviewDeleteMediator = reviewDeleteMediator,
         _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
+    _fBallReplyDisplayUtil = new FBallReplyDisplayUtil(this.fBallReplyResDto);
+  }
 
   get isChildReplyShow {
     if (fBallReplyResDto.childCount > 0 && showChildReply) {
@@ -256,6 +269,9 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   }
 
   String getEvaluationInformation() {
+    if (fBallReplyResDto.deleteFlag) {
+      return "";
+    }
     if (hasValuationHistory()) {
       if (isIssueBall() && hasEvaluation()) {
         return "이슈볼을 평가";
@@ -267,7 +283,12 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
     }
   }
 
-  bool hasValuationHistory() => fBallReplyResDto.fballValuationResDto != null;
+  bool hasValuationHistory() {
+    if (fBallReplyResDto.deleteFlag) {
+      return false;
+    }
+    return fBallReplyResDto.fballValuationResDto != null;
+  }
 
   bool isIssueBall() =>
       fBallReplyResDto.ballUuid.ballType == FBallType.IssueBall;
@@ -275,15 +296,15 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   bool hasEvaluation() => fBallReplyResDto.fballValuationResDto.point > 0;
 
   String get userNickName {
-    return fBallReplyResDto.userNickName;
+    return _fBallReplyDisplayUtil.userNickName;
   }
 
   String get userProfilePictureUrl {
-    return fBallReplyResDto.userProfilePictureUrl;
+    return _fBallReplyDisplayUtil.userProfilePictureUrl;
   }
 
   String get replyText {
-    return fBallReplyResDto.replyText;
+    return _fBallReplyDisplayUtil.replyText;
   }
 
   String getOpenedText() {
@@ -315,6 +336,9 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   }
 
   String getDisplayWriteTime() {
+    if (fBallReplyResDto.deleteFlag) {
+      return "";
+    }
     return TimeDisplayUtil.getCalcToStrFromNow(
         fBallReplyResDto.replyUploadDateTime);
   }
@@ -345,12 +369,21 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   bool isRootReply() => fBallReplyResDto.replySort == 0;
 
   void showOptionButtonDialog() async {
-    await showModalBottomSheet(
-        context: context,
-        isDismissible: true,
-        isScrollControlled: true,
-        builder: (context) {
-      return ReplyOptionActionBottomSheet(fBallReplyResDto: fBallReplyResDto,);
-    });
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+      String userUid = await _fireBaseAuthAdapterForUseCase.userUid();
+      if (userUid == fBallReplyResDto.uid.uid) {
+        await showModalBottomSheet(
+            context: context,
+            isDismissible: true,
+            isScrollControlled: true,
+            builder: (context) {
+              return ReplyOptionActionBottomSheet(
+                fBallReplyResDto: fBallReplyResDto,
+                reviewDeleteMediator: _reviewDeleteMediator,
+              );
+            });
+      }
+    }
   }
+
 }

@@ -6,6 +6,7 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsContentBar.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ class BasicReViewsContentBars extends StatelessWidget {
   final bool showEditBtn;
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
+  final ReviewDeleteMediator _reviewDeleteMediator;
   final bool canSubReplyInsert;
 
   const BasicReViewsContentBars({Key key,
@@ -28,10 +30,12 @@ class BasicReViewsContentBars extends StatelessWidget {
     this.showChildReply,
     ReviewInertMediator reviewInertMediator,
     ReviewCountMediator reviewCountMediator,
+    ReviewDeleteMediator reviewDeleteMediator,
     this.showEditBtn,
     this.canSubReplyInsert})
       : _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
+        _reviewDeleteMediator = reviewDeleteMediator,
         super(key: key);
 
   @override
@@ -60,6 +64,7 @@ class BasicReViewsContentBars extends StatelessWidget {
                   hasBoardLine: true,
                   reviewCountMediator: _reviewCountMediator,
                   reviewInertMediator: _reviewInertMediator,
+                  reviewDeleteMediator: _reviewDeleteMediator,
                   showChildReply: showChildReply,
                   showEditBtn: showEditBtn);
             })

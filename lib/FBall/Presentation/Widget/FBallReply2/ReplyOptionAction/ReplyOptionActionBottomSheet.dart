@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReplyOptionAction/ReplyDeleteActionBtn.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReplyOptionAction/ReplyEditActionBtn.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 
 class ReplyOptionActionBottomSheet extends StatelessWidget {
   final FBallReplyResDto _fBallReplyResDto;
+  final ReviewDeleteMediator _reviewDeleteMediator;
 
   const ReplyOptionActionBottomSheet(
-      {Key key, FBallReplyResDto fBallReplyResDto})
+      {Key key,
+      FBallReplyResDto fBallReplyResDto,
+      ReviewDeleteMediator reviewDeleteMediator})
       : _fBallReplyResDto = fBallReplyResDto,
+        _reviewDeleteMediator = reviewDeleteMediator,
         super(key: key);
 
   @override
@@ -18,26 +23,7 @@ class ReplyOptionActionBottomSheet extends StatelessWidget {
       shrinkWrap: true,
       children: <Widget>[
         ReplyEditActionBtn(fBallReplyResDto: _fBallReplyResDto),
-        Row(
-          children: <Widget>[
-            InkWell(
-                onTap: () {},
-                child: Container(
-                  alignment: AlignmentDirectional.center,
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: Text("삭제",
-                      style: GoogleFonts.notoSans(
-                        fontSize: 16,
-                        color: const Color(0xff000000),
-                        fontWeight: FontWeight.w700,
-                        height: 1.25,
-                      )),
-                  decoration:
-                      BoxDecoration(border: Border(bottom: BorderSide())),
-                ))
-          ],
-        ),
+        ReplyDeleteActionBtn(fBallReplyResDto: _fBallReplyResDto,reviewDeleteMediator: _reviewDeleteMediator),
       ],
     ));
   }

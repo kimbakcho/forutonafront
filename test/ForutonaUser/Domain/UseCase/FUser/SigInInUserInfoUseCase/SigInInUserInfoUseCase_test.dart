@@ -50,17 +50,6 @@ void main () {
     expect(arg.nickName, "testNickName");
   });
 
-  test('저장된 정보가 없을때 에러 출력', () async {
-    //arrange
-
-    //act
-
-    //assert
-    expect(()=>signInUserInfoUseCase.reqSignInUserInfoFromMemory(outputPort: mockSignInUserInfoUseCaseOutputPort),
-        throwsA(TypeMatcher<Exception>())
-    );
-  });
-
   test('유저 정보 서버로 부터 가져온뒤에 onSignInUserInfoFromMemory 실행 ', () async {
     //arrange
     FUserInfo fUserInfo = new FUserInfo();

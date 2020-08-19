@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
+import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -15,7 +17,6 @@ class BasicReviews extends StatelessWidget {
   final String ballUuid;
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
-
   BasicReviews(
       {Key key,
       this.ballUuid,
@@ -102,6 +103,7 @@ class ID001ReviewsViewModel extends ChangeNotifier
         _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator {
     reviewCountMediator.registerComponent(this);
+
   }
   showRootReplyInputDialog(BuildContext context) async {
     if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
@@ -138,4 +140,5 @@ class ID001ReviewsViewModel extends ChangeNotifier
   onReviewCount(int reviewCount) {
     notifyListeners();
   }
+
 }

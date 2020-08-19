@@ -20,9 +20,10 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
 
   @override
   Future<FBallReplyResDto> deleteFBallReply(String replyUuid,{FBallReplyUseCaseOutputPort outputPort}) async {
-    
     var fBallReplyResDto = await _fBallReplyRepository.deleteFBallReply(replyUuid);
-    outputPort.onDeleteFBallReply(fBallReplyResDto);
+    if(outputPort != null){
+      outputPort.onDeleteFBallReply(fBallReplyResDto);
+    }
     return fBallReplyResDto;
   }
 
@@ -50,8 +51,9 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   @override
   Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
     var fBallReplyResDto = await _fBallReplyRepository.updateFBallReply(reqDto);
-
-    outputPort.onUpdateFBallReply(fBallReplyResDto);
+    if(outputPort != null){
+      outputPort.onUpdateFBallReply(fBallReplyResDto);
+    }
     return fBallReplyResDto;
   }
 

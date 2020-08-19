@@ -4,6 +4,7 @@ import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsContentBars.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsInsert.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInsertRow.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
@@ -19,11 +20,13 @@ class FullReviewPage extends StatelessWidget {
   final String ballUuid;
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
+  final ReviewDeleteMediator reviewDeleteMediator;
 
   const FullReviewPage(
       {Key key,
       this.ballUuid,
       this.reviewInertMediator,
+      this.reviewDeleteMediator,
       this.reviewCountMediator})
       : super(key: key);
 
@@ -34,6 +37,7 @@ class FullReviewPage extends StatelessWidget {
             signInUserInfoUseCaseInputPort: sl(),
             fBallReplyUseCaseInputPort: sl(),
             reviewCountMediator: reviewCountMediator,
+            reviewDeleteMediator: reviewDeleteMediator,
             fireBaseAuthAdapterForUseCase: sl(),
             reviewInertMediator: reviewInertMediator,
             ballUuid: ballUuid),
@@ -49,6 +53,7 @@ class FullReviewPage extends StatelessWidget {
                         ballUuid: ballUuid,
                         reviewCountMediator: reviewCountMediator,
                         reviewInertMediator: reviewInertMediator,
+                        reviewDeleteMediator: reviewDeleteMediator,
                         canSubReplyInsert: true,
                         pageLimit: 10,
                         listable: true,
@@ -89,10 +94,11 @@ class FullReviewPage extends StatelessWidget {
 }
 
 class FullReviewPageViewModel extends ChangeNotifier
-    implements ReviewCountMediatorComponent {
+    implements ReviewCountMediatorComponent,ReviewDeleteMediatorComponent {
   final String ballUuid;
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
+  final ReviewDeleteMediator reviewDeleteMediator;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final Preference _preference = sl();
@@ -107,6 +113,7 @@ class FullReviewPageViewModel extends ChangeNotifier
       {this.ballUuid,
       this.reviewInertMediator,
       this.reviewCountMediator,
+      this.reviewDeleteMediator,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
       FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
@@ -114,25 +121,27 @@ class FullReviewPageViewModel extends ChangeNotifier
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
     initPage();
     reviewCountMediator.registerComponent(this);
+    reviewDeleteMediator.registerComponent(this);
   }
 
   initPage() async {
     if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       this._fUserInfoResDto =
           _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      notifyListeners();
     }
   }
 
   get userProfileImage {
-    if(_fUserInfoResDto==null){
-      return  _preference.basicProfileImageUrl;
-    }else {
+    if (_fUserInfoResDto == null) {
+      return _preference.basicProfileImageUrl;
+    } else {
       return this._fUserInfoResDto.profilePictureUrl;
     }
   }
 
   showRootReplyInputDialog(BuildContext context) async {
-    if(await _fireBaseAuthAdapterForUseCase.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       await showModalBottomSheet(
           context: context,
           isDismissible: true,
@@ -144,10 +153,9 @@ class FullReviewPageViewModel extends ChangeNotifier
                 reviewCountMediator: reviewCountMediator,
                 reviewInertMediator: reviewInertMediator);
           });
-    }else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>J001View()));
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
     }
-
   }
 
   get reviewCount {
@@ -157,6 +165,7 @@ class FullReviewPageViewModel extends ChangeNotifier
   @override
   void dispose() {
     reviewCountMediator.unregisterComponent(this);
+    reviewDeleteMediator.unregisterComponent(this);
     super.dispose();
   }
 
@@ -164,4 +173,10 @@ class FullReviewPageViewModel extends ChangeNotifier
   onReviewCount(int reviewCount) {
     notifyListeners();
   }
+
+  @override
+  onDeleted(FBallReplyResDto fBallReplyResDto) {
+    notifyListeners();
+  }
+
 }
