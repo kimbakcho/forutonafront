@@ -12,6 +12,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReplyOptionA
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
@@ -29,6 +30,7 @@ class BasicReViewsContentBar extends StatelessWidget {
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
   final ReviewDeleteMediator _reviewDeleteMediator;
+  final ReviewUpdateMediator _reviewUpdateMediator;
 
   BasicReViewsContentBar(
       {Key key,
@@ -36,6 +38,7 @@ class BasicReViewsContentBar extends StatelessWidget {
       ReviewInertMediator reviewInertMediator,
       ReviewCountMediator reviewCountMediator,
       ReviewDeleteMediator reviewDeleteMediator,
+        ReviewUpdateMediator reviewUpdateMediator,
       this.showChildReply,
       this.showEditBtn,
       this.canSubReplyInsert,
@@ -45,6 +48,7 @@ class BasicReViewsContentBar extends StatelessWidget {
         _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
         _reviewDeleteMediator = reviewDeleteMediator,
+        _reviewUpdateMediator = reviewUpdateMediator,
         super(key: key);
 
   @override
@@ -58,6 +62,7 @@ class BasicReViewsContentBar extends StatelessWidget {
             reviewCountMediator: _reviewCountMediator,
             reviewDeleteMediator: _reviewDeleteMediator,
             reviewInertMediator: _reviewInertMediator,
+            reviewUpdateMediator: _reviewUpdateMediator,
             fBallReplyResDto: _fBallReplyResDto),
         child:
             Consumer<BasicReViewsContentBarViewModel>(builder: (_, model, __) {
@@ -236,6 +241,7 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier{
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
   final ReviewDeleteMediator _reviewDeleteMediator;
+  final ReviewUpdateMediator _reviewUpdateMediator;
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final BuildContext context;
@@ -251,10 +257,12 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier{
       FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       ReviewInertMediator reviewInertMediator,
       ReviewDeleteMediator reviewDeleteMediator,
+        ReviewUpdateMediator reviewUpdateMediator,
       ReviewCountMediator reviewCountMediator})
       : _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
         _reviewDeleteMediator = reviewDeleteMediator,
+        _reviewUpdateMediator = reviewUpdateMediator,
         _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
     _fBallReplyDisplayUtil = new FBallReplyDisplayUtil(this.fBallReplyResDto);
@@ -379,6 +387,7 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier{
             builder: (context) {
               return ReplyOptionActionBottomSheet(
                 fBallReplyResDto: fBallReplyResDto,
+                reviewUpdateMediator: _reviewUpdateMediator,
                 reviewDeleteMediator: _reviewDeleteMediator,
               );
             });

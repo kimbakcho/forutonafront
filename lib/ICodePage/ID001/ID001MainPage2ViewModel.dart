@@ -7,12 +7,14 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'ValuationMediator/ValuationMediator.dart';
 
-class ID001MainPage2ViewModel extends ChangeNotifier implements ReviewInertMediatorComponent,ReviewDeleteMediatorComponent {
+class ID001MainPage2ViewModel extends ChangeNotifier
+    implements ReviewInertMediatorComponent, ReviewDeleteMediatorComponent,ReviewUpdateMediatorComponent {
   final String _ballUuid;
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
@@ -21,6 +23,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements ReviewInertMedia
   FBallResDto _fBallResDto;
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
+  final ReviewUpdateMediator reviewUpdateMediator;
   final ReviewDeleteMediator reviewDeleteMediator;
   final ValuationMediator valuationMediator;
   bool isDisPose = false;
@@ -42,24 +45,27 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements ReviewInertMedia
         valuationMediator =
             ValuationMediatorImpl(ballLikeUseCaseInputPort: sl()),
         reviewDeleteMediator =
-          ReviewDeleteMediatorImpl(fBallReplyUseCaseInputPort: sl()),
-        detailPageController = ScrollController(){
+            ReviewDeleteMediatorImpl(fBallReplyUseCaseInputPort: sl()),
+        reviewUpdateMediator =
+            ReviewUpdateMediatorImpl(fBallReplyUseCaseInputPort: sl()),
+        detailPageController = ScrollController() {
     _selectBall();
     getBallLikeState();
     reviewInertMediator.registerComponent(this);
     reviewDeleteMediator.registerComponent(this);
+    reviewUpdateMediator.registerComponent(this);
   }
 
   String getBallTitle() {
     return _issueBallDisPlayUseCase.ballName();
   }
 
-  _selectBall( ) async {
+  _selectBall() async {
     _fBallResDto = await _selectBallUseCaseInputPort.selectBall(_ballUuid);
     _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(_fBallResDto);
     _loadBallComplete = true;
     print(_fBallResDto.ballName);
-    if(!isDisPose){
+    if (!isDisPose) {
       notifyListeners();
     }
   }
@@ -139,6 +145,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements ReviewInertMedia
     this.isDisPose = true;
     reviewInertMediator.unregisterComponent(this);
     reviewDeleteMediator.unregisterComponent(this);
+    reviewUpdateMediator.unregisterComponent(this);
     super.dispose();
   }
 
@@ -150,6 +157,12 @@ class ID001MainPage2ViewModel extends ChangeNotifier implements ReviewInertMedia
 
   @override
   onInserted(FBallReplyResDto fBallReplyResDto) {
+    basicReViewsContentBarsKey = UniqueKey();
+    notifyListeners();
+  }
+
+  @override
+  onUpdated(FBallReplyResDto fBallReplyResDto) {
     basicReViewsContentBarsKey = UniqueKey();
     notifyListeners();
   }

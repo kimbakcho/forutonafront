@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsInsert.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReplyOptionAction/BasicReViewUpdate.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReplyEditActionBtn extends StatelessWidget {
-
   final FBallReplyResDto _fBallReplyResDto;
+  final ReviewUpdateMediator _reviewUpdateMediator;
 
   const ReplyEditActionBtn({
     FBallReplyResDto fBallReplyResDto,
+    ReviewUpdateMediator reviewUpdateMediator,
     Key key,
-  })
-      : _fBallReplyResDto=fBallReplyResDto,
+  })  : _fBallReplyResDto = fBallReplyResDto,
+        _reviewUpdateMediator = reviewUpdateMediator,
         super(key: key);
 
   @override
@@ -20,15 +21,15 @@ class ReplyEditActionBtn extends StatelessWidget {
     return Row(children: <Widget>[
       InkWell(
           onTap: () {
-            showModalBottomSheet(context: context,
-              builder: (_) => BasicReViewUpdate(fBallReplyResDto:_fBallReplyResDto),);
+            showModalBottomSheet(
+              context: context,
+              builder: (_) =>
+                  BasicReViewUpdate(fBallReplyResDto: _fBallReplyResDto,reviewUpdateMediator: _reviewUpdateMediator,),
+            );
           },
           child: Container(
             alignment: AlignmentDirectional.center,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             height: 50,
             child: Text(
               "수정",

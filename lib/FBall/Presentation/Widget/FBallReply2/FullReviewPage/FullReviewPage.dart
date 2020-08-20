@@ -7,6 +7,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountM
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInsertRow.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
@@ -21,12 +22,14 @@ class FullReviewPage extends StatelessWidget {
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
   final ReviewDeleteMediator reviewDeleteMediator;
+  final ReviewUpdateMediator reviewUpdateMediator;
 
   const FullReviewPage(
       {Key key,
       this.ballUuid,
       this.reviewInertMediator,
       this.reviewDeleteMediator,
+      this.reviewUpdateMediator,
       this.reviewCountMediator})
       : super(key: key);
 
@@ -53,6 +56,7 @@ class FullReviewPage extends StatelessWidget {
                         ballUuid: ballUuid,
                         reviewCountMediator: reviewCountMediator,
                         reviewInertMediator: reviewInertMediator,
+                        reviewUpdateMediator: reviewUpdateMediator,
                         reviewDeleteMediator: reviewDeleteMediator,
                         canSubReplyInsert: true,
                         pageLimit: 10,
@@ -94,7 +98,7 @@ class FullReviewPage extends StatelessWidget {
 }
 
 class FullReviewPageViewModel extends ChangeNotifier
-    implements ReviewCountMediatorComponent,ReviewDeleteMediatorComponent {
+    implements ReviewCountMediatorComponent, ReviewDeleteMediatorComponent,ReviewUpdateMediatorComponent {
   final String ballUuid;
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
@@ -179,4 +183,8 @@ class FullReviewPageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
+  @override
+  onUpdated(FBallReplyResDto fBallReplyResDto) {
+    notifyListeners();
+  }
 }

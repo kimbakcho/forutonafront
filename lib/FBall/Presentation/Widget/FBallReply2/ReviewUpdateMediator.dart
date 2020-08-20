@@ -1,3 +1,4 @@
+import 'package:forutonafront/FBall/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
 
@@ -12,27 +13,37 @@ abstract class ReviewUpdateMediator {
   unregisterComponent(
       ReviewUpdateMediatorComponent reviewUpdateMediatorComponent);
 
-  updateReView(FBallReplyUpdateReqDto fBallReplyUpdateReqDto);
+  Future<FBallReplyResDto> updateReView(FBallReplyUpdateReqDto fBallReplyUpdateReqDto);
 }
 
 class ReviewUpdateMediatorImpl extends ReviewUpdateMediator {
+
+  List<ReviewUpdateMediatorComponent> components = [];
+  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
+  ReviewUpdateMediatorImpl(
+      {FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort})
+      : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort;
   @override
   registerComponent(ReviewUpdateMediatorComponent reviewUpdateMediatorComponent) {
-    //TODO ReviewUpdateMediatorImpl 구현이 필요함.
-    // TODO: implement registerComponent
-    throw UnimplementedError();
+    components.add(reviewUpdateMediatorComponent);
   }
 
   @override
   unregisterComponent(ReviewUpdateMediatorComponent reviewUpdateMediatorComponent) {
-    // TODO: implement unregisterComponent
-    throw UnimplementedError();
+    components.remove(reviewUpdateMediatorComponent);
   }
 
   @override
-  updateReView(FBallReplyUpdateReqDto fBallReplyUpdateReqDto) {
-    // TODO: implement updateReView
-    throw UnimplementedError();
+  Future<FBallReplyResDto> updateReView(FBallReplyUpdateReqDto fBallReplyUpdateReqDto) async {
+    FBallReplyResDto fBallReplyResDto = await _fBallReplyUseCaseInputPort.updateFBallReply(fBallReplyUpdateReqDto);
+    onAllUpdateSignal(fBallReplyResDto);
+    return fBallReplyResDto;
+  }
+
+  onAllUpdateSignal(FBallReplyResDto fBallReplyResDto) {
+    components.forEach((element) {
+      element.onUpdated(fBallReplyResDto);
+    });
   }
 
 }

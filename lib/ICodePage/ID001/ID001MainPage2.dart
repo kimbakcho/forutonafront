@@ -118,6 +118,7 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                             ),
                             ID001ReviewsPageBtn(
                               reviewCountMediator: model.reviewCountMediator,
+                              reviewUpdateMediator: model.reviewUpdateMediator,
                               reviewDeleteMediator: model.reviewDeleteMediator,
                               reviewInertMediator: model.reviewInertMediator,
                               ballUuid: _ballUuid,
@@ -132,6 +133,7 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                   child: ID001ActionBottomBar(
                       ballUuid: model.getBallUuid(),
                       reviewInertMediator: model.reviewInertMediator,
+                      reviewUpdateMediator: model.reviewUpdateMediator,
                       reviewDeleteMediator: model.reviewDeleteMediator,
                       reviewCountMediator: model.reviewCountMediator),
                 )

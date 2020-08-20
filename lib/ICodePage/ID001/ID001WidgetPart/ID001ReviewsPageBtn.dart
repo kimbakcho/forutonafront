@@ -3,6 +3,7 @@ import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/FullReviewPa
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
+import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ID001ReviewsPageBtn extends StatelessWidget {
@@ -10,12 +11,14 @@ class ID001ReviewsPageBtn extends StatelessWidget {
   final ReviewInertMediator reviewInertMediator;
   final ReviewCountMediator reviewCountMediator;
   final ReviewDeleteMediator reviewDeleteMediator;
+  final ReviewUpdateMediator reviewUpdateMediator;
 
   const ID001ReviewsPageBtn(
       {Key key,
       this.ballUuid,
       this.reviewInertMediator,
       this.reviewDeleteMediator,
+      this.reviewUpdateMediator,
       this.reviewCountMediator})
       : super(key: key);
 
@@ -31,7 +34,8 @@ class ID001ReviewsPageBtn extends StatelessWidget {
                     ballUuid: ballUuid,
                     reviewInertMediator: reviewInertMediator,
                     reviewCountMediator: reviewCountMediator,
-                reviewDeleteMediator: reviewDeleteMediator,
+                    reviewUpdateMediator: reviewUpdateMediator,
+                    reviewDeleteMediator: reviewDeleteMediator,
                   )));
         },
         child: Text(
