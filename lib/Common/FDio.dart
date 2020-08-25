@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dio/native_imp.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';

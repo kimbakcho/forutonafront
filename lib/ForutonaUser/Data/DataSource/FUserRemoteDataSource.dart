@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
@@ -11,6 +9,7 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Dto/UserPositionUpdateReqDto.dart';
+// ignore: implementation_imports
 import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
 
 abstract class FUserRemoteDataSource {
@@ -41,7 +40,7 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
 
   @override
   Future<void> updateUserPosition(LatLng latLng, FDio tokenFDio) async {
-    var response = await tokenFDio.put(
+    await tokenFDio.put(
         "/v1/FUserInfo/UserPosition", data: UserPositionUpdateReqDto(
       lng: latLng.longitude,
       lat: latLng.latitude,

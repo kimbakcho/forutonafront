@@ -31,7 +31,7 @@ class G022MainPageViewModel extends ChangeNotifier {
   }
 
   void _loadHtml(String html) {
-    htmlUrl = new Uri.dataFromString('<html><body>${html}</body></html>',
+    htmlUrl = new Uri.dataFromString('<html><body>$html</body></html>',
         mimeType: 'text/html', parameters: {'charset': 'utf-8'}).toString();
   }
 }

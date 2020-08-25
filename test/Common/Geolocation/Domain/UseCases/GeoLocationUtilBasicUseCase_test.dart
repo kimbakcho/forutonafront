@@ -1,7 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
-import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Placemark.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
@@ -11,7 +11,6 @@ import 'package:forutonafront/Preference.dart';
 import 'package:mockito/mockito.dart';
 
 class MockGeolocatorAdapter extends Mock implements GeolocatorAdapter {}
-
 
 class MockSharedPreferencesAdapter extends Mock
     implements SharedPreferencesAdapter {}
@@ -27,19 +26,24 @@ void main() {
   MockPreference mockPreference;
 
   GeoLocationUtilBasicUseCase geoLocationUtilUseCase;
-
+  StreamController _fUserCurrentPositionStreamController;
   setUp(() {
     mockGeolocatorAdapter = MockGeolocatorAdapter();
     mockSharedPreferencesAdapter = MockSharedPreferencesAdapter();
     mockPreference = MockPreference();
-
-
+    _fUserCurrentPositionStreamController =
+        StreamController<Position>.broadcast();
+    when(mockGeolocatorAdapter.userPosition)
+        .thenAnswer((_)=>_fUserCurrentPositionStreamController.stream);
     geoLocationUtilUseCase = GeoLocationUtilBasicUseCase(
         geolocatorAdapter: mockGeolocatorAdapter,
         sharedPreferencesAdapter: mockSharedPreferencesAdapter,
         preference: mockPreference);
   });
 
+  tearDown(() {
+    _fUserCurrentPositionStreamController.close();
+  });
 
   test('최근 위치 값 메모리에서 불러오기(메모리에 값 없을때)', () async {
     //arrange
@@ -91,7 +95,8 @@ void main() {
 
   test('가장 최근 위치값(gps 서비스 사용이 안될때,저장 장치에는 저장되어 있을때) ', () async {
     //arrange
-    when(mockGeolocatorAdapter.getCurrentPosition()).thenThrow(Exception("Time Out"));
+    when(mockGeolocatorAdapter.getCurrentPosition())
+        .thenThrow(Exception("Time Out"));
     when(mockSharedPreferencesAdapter.getDouble("currentlong"))
         .thenAnswer((_) async => 127.4);
     when(mockSharedPreferencesAdapter.getDouble("currentlat"))
@@ -104,8 +109,8 @@ void main() {
               )
             ]);
     //act
-    var currentWithLastPosition =
-        await geoLocationUtilUseCase.getCurrentWithLastPosition();
+
+    await geoLocationUtilUseCase.getCurrentWithLastPosition();
     //assert
     expect(geoLocationUtilUseCase.currentWithLastAddress, "한국");
     expect(geoLocationUtilUseCase.currentWithLastPosition.longitude, 127.4);
@@ -114,7 +119,8 @@ void main() {
 
   test('가장 최근 위치값(gps 서비스 사용이 안될때,저장 장치에도 저장 된것이 없을때) ', () async {
     //arrange
-    when(mockGeolocatorAdapter.getCurrentPosition()).thenThrow(Exception("Time Out"));
+    when(mockGeolocatorAdapter.getCurrentPosition())
+        .thenThrow(Exception("Time Out"));
     when(mockSharedPreferencesAdapter.getDouble("currentlong"))
         .thenAnswer((_) async => null);
     when(mockSharedPreferencesAdapter.getDouble("currentlat"))
@@ -142,7 +148,8 @@ void main() {
 
   test('가장 최근 위치값(gps 서비스 사용이 가능할때) ', () async {
     //arrange
-    when(mockGeolocatorAdapter.getCurrentPosition()).thenThrow(Exception("Time Out"));
+    when(mockGeolocatorAdapter.getCurrentPosition())
+        .thenThrow(Exception("Time Out"));
 
     when(mockGeolocatorAdapter.getCurrentPosition())
         .thenAnswer((_) => Position(latitude: 125.6, longitude: 31.5));
@@ -185,45 +192,40 @@ void main() {
     expect(position.longitude, 127.4);
   });
 
-
-
   test('Position의 주소값 획득', () async {
     //arrange
     when(mockGeolocatorAdapter.placemarkFromPosition(any,
-        localeIdentifier: anyNamed('localeIdentifier')))
+            localeIdentifier: anyNamed('localeIdentifier')))
         .thenAnswer((realInvocation) async => [
-      Placemark(
-        administrativeArea: "한국",
-      )
-    ]);
+              Placemark(
+                administrativeArea: "한국",
+              )
+            ]);
     //act
-    var address = await geoLocationUtilUseCase.getPositionAddress(Position(longitude: 127.4,latitude: 31.0));
+    var address = await geoLocationUtilUseCase
+        .getPositionAddress(Position(longitude: 127.4, latitude: 31.0));
     //assert
-    verify(mockGeolocatorAdapter.placemarkFromPosition(any,localeIdentifier: anyNamed('localeIdentifier')));
+    verify(mockGeolocatorAdapter.placemarkFromPosition(any,
+        localeIdentifier: anyNamed('localeIdentifier')));
     expect(address, "한국");
   });
 
   test('주소 변환 테스트', () async {
     //act
-    var administrativeArea = geoLocationUtilUseCase.replacePlacemarkToAddresStr(Placemark(
-      administrativeArea: "한국"
-    ));
+    var administrativeArea = geoLocationUtilUseCase
+        .replacePlacemarkToAddresStr(Placemark(administrativeArea: "한국"));
 
-    var subLocality = geoLocationUtilUseCase.replacePlacemarkToAddresStr(Placemark(
-        administrativeArea: "한국",
-        subLocality: "경기도"
-    ));
-    var thoroughfare = geoLocationUtilUseCase.replacePlacemarkToAddresStr(Placemark(
-        administrativeArea: "한국",
-        subLocality: "경기도",
-        thoroughfare:"오산시"
-    ));
-    var subThoroughfare = geoLocationUtilUseCase.replacePlacemarkToAddresStr(Placemark(
-        administrativeArea: "한국",
-        subLocality: "경기도",
-        thoroughfare:"오산시",
-        subThoroughfare:"58-2"
-    ));
+    var subLocality = geoLocationUtilUseCase.replacePlacemarkToAddresStr(
+        Placemark(administrativeArea: "한국", subLocality: "경기도"));
+    var thoroughfare = geoLocationUtilUseCase.replacePlacemarkToAddresStr(
+        Placemark(
+            administrativeArea: "한국", subLocality: "경기도", thoroughfare: "오산시"));
+    var subThoroughfare = geoLocationUtilUseCase.replacePlacemarkToAddresStr(
+        Placemark(
+            administrativeArea: "한국",
+            subLocality: "경기도",
+            thoroughfare: "오산시",
+            subThoroughfare: "58-2"));
     //then
     expect(administrativeArea, "한국");
 
@@ -232,7 +234,5 @@ void main() {
     expect(thoroughfare, "한국 경기도 오산시");
 
     expect(subThoroughfare, "한국 경기도 오산시 58-2");
-
   });
-
 }

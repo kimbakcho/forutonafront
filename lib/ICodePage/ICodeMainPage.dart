@@ -19,7 +19,7 @@ class ICodeMainPage extends StatefulWidget {
 
 class _ICodeMainPageState extends State<ICodeMainPage>
     with WidgetsBindingObserver {
-  AppLifecycleState _lastLifecycleState;
+
   UniqueKey googleMapKey = UniqueKey();
 
   @override
@@ -38,7 +38,7 @@ class _ICodeMainPageState extends State<ICodeMainPage>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     googleMapKey = UniqueKey();
     setState(() {
-      _lastLifecycleState = state;
+
     });
   }
 
@@ -47,7 +47,6 @@ class _ICodeMainPageState extends State<ICodeMainPage>
     return ChangeNotifierProvider(
         create: (_) => ICodeMainPageViewModel(
             context: context,
-            fBallListUpFromMapAreaUseCaseInputPort: sl(),
             geoLocationUtilUseCase: sl(),
             mapScreenPositionUseCaseInputPort: sl()),
         child: Consumer<ICodeMainPageViewModel>(builder: (_, model, child) {

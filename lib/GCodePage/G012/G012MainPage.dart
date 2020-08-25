@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'G012MainPageViewModel.dart';
 
+// ignore: must_be_immutable
 class G012MainPage extends StatelessWidget {
   TextEditingController currentPwController = new TextEditingController();
   TextEditingController newPwController = new TextEditingController();
@@ -23,13 +24,13 @@ class G012MainPage extends StatelessWidget {
       return G012MainPageViewModel(
           context: context,
           pwValid: pwCheckValid,
+          fUserPwChangeUseCaseInputPort: sl(),
           pwCheckValid: PwCheckValidImpl(pwCheckValid),
           currentPwValid:
               CurrentPwValidImpl(fireBaseAuthAdapterForUseCase: sl()),
           checkPwController: checkPwController,
           currentPwController: currentPwController,
           newPwController: newPwController,
-          signInUserInfoUseCaseInputPort: sl(),
           codeMainPageController: sl(),
           logoutUseCaseInputPort: sl());
     }, child: Consumer<G012MainPageViewModel>(builder: (_, model, child) {
@@ -300,6 +301,7 @@ class G012MainPage extends StatelessWidget {
                 width: 75.00,
                 margin: EdgeInsets.only(right: 16),
                 child: FlatButton(
+                  onPressed: null,
                   padding: EdgeInsets.all(0),
                   child: Text("완료",
                       style: GoogleFonts.notoSans(

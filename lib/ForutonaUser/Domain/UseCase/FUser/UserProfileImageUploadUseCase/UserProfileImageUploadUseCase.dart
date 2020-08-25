@@ -2,25 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
-import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 
 class UserProfileImageUploadUseCase
     implements UserProfileImageUploadUseCaseInputPort {
   final FlutterImageCompressAdapter _flutterImageCompressAdapter;
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+
   final FUserRepository _fUserRepository;
 
   UserProfileImageUploadUseCase(
       {@required FlutterImageCompressAdapter flutterImageCompressAdapter,
-      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required FUserRepository fUserRepository
-      })
+      @required FUserRepository fUserRepository})
       : _flutterImageCompressAdapter = flutterImageCompressAdapter,
-        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
-        _fUserRepository= fUserRepository;
+        _fUserRepository = fUserRepository;
 
   @override
   Future<String> upload(File imageFile) async {

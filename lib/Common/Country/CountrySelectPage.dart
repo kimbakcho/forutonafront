@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPageViewModel.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class CountrySelectPage extends StatelessWidget {
   String countryCode;
 

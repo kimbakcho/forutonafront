@@ -8,6 +8,7 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class G010MainPage extends StatelessWidget {
   TextEditingController nickNameController = new TextEditingController();
   TextEditingController userIntroduceController = new TextEditingController();
@@ -17,6 +18,7 @@ class G010MainPage extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => G010MainPageViewModel(
           context: context,
+          updateAccountUserInfoUseCaseInputPort: sl(),
           userIntroduceController: userIntroduceController,
           nickNameController: nickNameController,
           userProfileImageUploadUseCaseInputPort: sl(),
@@ -189,6 +191,7 @@ class G010MainPage extends StatelessWidget {
                 height: 69.00,
                 width: 69.00,
                 child: FlatButton(
+                  child: Container(),
                   shape: CircleBorder(),
                   padding: EdgeInsets.all(0),
                   onPressed: model.onChangeProfileImageTab,
@@ -324,6 +327,7 @@ class G010MainPage extends StatelessWidget {
                 height: 32.00,
                 width: 75.00,
                 child: FlatButton(
+                  onPressed: null,
                   child: Text("완료",
                       style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,

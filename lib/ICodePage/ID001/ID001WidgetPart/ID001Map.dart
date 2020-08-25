@@ -204,7 +204,6 @@ class _ID001MapState extends State<ID001Map>
       child: MapIntentButton(
         dstPosition: widget._ballPosition,
         dstAddress: widget._ballAddress,
-        geoLocationUtilForeGroundUseCaseInputPort: sl(),
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../ServiceLocator/ServiceLocator.dart';
 
+// ignore: must_be_immutable
 class J012View extends StatelessWidget {
   TextEditingController idEditingController = TextEditingController();
 

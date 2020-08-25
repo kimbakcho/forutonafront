@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Components/BallStyle/Style2/BallStyle2Widget.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -15,14 +14,11 @@ class H00301PageViewModel extends ChangeNotifier
 
   final ScrollController scrollController;
 
-  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
-
   List<BallStyle2Widget> ballListUpWidgets = [];
 
   PageWrap<FBallResDto> listUpItem = PageWrap<FBallResDto>();
 
-  int _pageCount = 0;
-  int _limitSize = 10;
+
   bool _isInitFinish = false;
   bool _isLoading = false;
   bool _subScrollerTopOver = false;
@@ -39,10 +35,8 @@ class H00301PageViewModel extends ChangeNotifier
   H00301PageViewModel(
       {@required this.context,
       @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      @required FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort,
       @required this.scrollController})
-      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
-        _fBallListUpUseCaseInputPort = fBallListUpUseCaseInputPort {
+      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
     this.init();
   }
 
@@ -86,7 +80,7 @@ class H00301PageViewModel extends ChangeNotifier
 
   scrollListener() async {
     if (_isScrollerMoveBottomOver()) {
-      _pageCount++;
+
       if (listUpItem.last) {
         return;
       } else {
@@ -98,12 +92,12 @@ class H00301PageViewModel extends ChangeNotifier
       }
     }
     if (_isScrollerTopOver()) {
-      setFirstPage();
+
       await ballListUp();
     }
   }
 
-  int setFirstPage() => _pageCount = 0;
+
 
   bool _isScrollerTopOver() {
     if (scrollController.offset <=

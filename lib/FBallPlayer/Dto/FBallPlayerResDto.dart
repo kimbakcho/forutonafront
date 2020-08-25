@@ -1,6 +1,6 @@
 
 import 'package:forutonafront/FBall/Domain/Value/FBallPlayState.dart';
-import 'package:forutonafront/FBall/Domain/Value/FBallState.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:json_annotation/json_annotation.dart';

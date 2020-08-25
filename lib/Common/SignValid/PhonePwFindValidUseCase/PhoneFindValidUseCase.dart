@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
+
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
@@ -37,8 +36,7 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
   PwFindPhoneAuthNumberResDto _authNumber;
   bool _isPhoneAuthNumberError = true;
   String _phoneAuthNumberErrorText = "";
-  bool _isPhonePwChangeError = true;
-  String _phonePwChangeErrorText = "";
+
 
   PhoneAuthRepository _phoneAuthRepository;
 

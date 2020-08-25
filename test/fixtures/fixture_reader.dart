@@ -1,6 +1,5 @@
 
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:path/path.dart';
 
 String fixtureString(String name) {

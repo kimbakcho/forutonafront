@@ -246,6 +246,7 @@ class J007View extends StatelessWidget {
             height: 69.00,
             width: 69.00,
             child: FlatButton(
+              child: Container(),
               shape: CircleBorder(),
               padding: EdgeInsets.all(0),
               onPressed: model.onChangeProfileImageTab,

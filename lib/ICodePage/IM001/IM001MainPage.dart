@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'BallImageItem.dart';
 
+// ignore: must_be_immutable
 class IM001MainPage extends StatefulWidget {
   LatLng setUpPosition;
   String address;
@@ -28,7 +29,7 @@ class IM001MainPage extends StatefulWidget {
 
 class _IM001MainPageState extends State<IM001MainPage>
     with WidgetsBindingObserver {
-  AppLifecycleState _lastLifecycleState;
+
   LatLng setUpPosition;
   String address;
   String ballUuid;
@@ -58,7 +59,7 @@ class _IM001MainPageState extends State<IM001MainPage>
       await childModel.copyClipBoard();
     }
     setState(() {
-      _lastLifecycleState = state;
+
     });
   }
 
@@ -68,8 +69,8 @@ class _IM001MainPageState extends State<IM001MainPage>
         create: (_) => IM001MainPageViewModel(
             context: context,
             ballUuid: ballUuid,
-            insertBallUseCaseInputPort: sl(),
-            tagFromBallUuidUseCaseInputPort: sl(),
+            selectBallUseCaseInputPort: sl(),
+            ballImageListUpLoadUseCaseInputPort: sl(),
             address: address,
             mode: mode,
             setUpPosition: setUpPosition),
@@ -639,7 +640,10 @@ class _IM001MainPageState extends State<IM001MainPage>
             top: 0,
             left: 0,
             child: Container(
-              child: FlatButton(),
+              child: FlatButton(
+                onPressed: null,
+                 child: Container(),
+              ),
               width: MediaQuery.of(context).size.width,
               height: 233,
             ),
@@ -699,6 +703,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                 height: 32.00,
                 width: 75.00,
                 child: FlatButton(
+                  onPressed: null,
                   child: Text("완료",
                       style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w700,

@@ -1,18 +1,10 @@
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
-import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
-import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+
 import 'package:forutonafront/FBall/Domain/Value/FBallState.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfoSimple.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../Preference.dart';
 
 part 'FBall.g.dart';
 

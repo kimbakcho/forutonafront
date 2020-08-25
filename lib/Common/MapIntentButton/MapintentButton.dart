@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/MapIntentButton/MapIntent.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class MapIntentButton extends StatelessWidget {
   final Position _dstPosition;
   final String _dstAddress;
-  final GeoLocationUtilForeGroundUseCaseInputPort
-      _geoLocationUtilForeGroundUseCaseInputPort;
 
-  MapIntentButton(
-      {@required
-          Position dstPosition,
-      @required
-          String dstAddress,
-      @required
-          GeoLocationUtilForeGroundUseCaseInputPort
-              geoLocationUtilForeGroundUseCaseInputPort})
-      : _dstPosition = dstPosition,
-        _dstAddress = dstAddress,
-        _geoLocationUtilForeGroundUseCaseInputPort =
-            geoLocationUtilForeGroundUseCaseInputPort;
+  MapIntentButton({
+    @required Position dstPosition,
+    @required String dstAddress,
+  })  : _dstPosition = dstPosition,
+        _dstAddress = dstAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +32,12 @@ class MapIntentButton extends StatelessWidget {
               dstPosition: _dstPosition,
               geoLocationUtilForeGroundUseCaseInputPort: sl()));
 
-
-          for(int i=0;i<mapIntents.length;i++){
+          for (int i = 0; i < mapIntents.length; i++) {
             if (await mapIntents[i].canLunch()) {
               await mapIntents[i].lunch();
               break;
             }
           }
-
         },
         padding: EdgeInsets.all(0),
         child: Icon(

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
-
 import 'package:forutonafront/HCodePage/H002/H002_01/H002_01Page.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+
 
 class H002PageViewModel extends ChangeNotifier {
   final BuildContext context;

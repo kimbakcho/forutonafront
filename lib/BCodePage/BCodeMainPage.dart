@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:forutonafront/BCodePage/BCodeMainPageViewModel.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
@@ -7,6 +6,7 @@ import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class BCodeMainPage extends StatelessWidget {
 
   Preference _preference = sl();

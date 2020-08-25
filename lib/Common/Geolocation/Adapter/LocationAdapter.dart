@@ -1,6 +1,5 @@
 import 'package:location/location.dart' as Location;
 import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart' as Adapter;
-import 'package:location_permissions/location_permissions.dart';
 
 abstract class LocationAdapter {
   Future<Adapter.PermissionStatus> hasPermission();

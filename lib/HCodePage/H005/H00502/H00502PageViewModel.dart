@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/Components/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-
-import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
-
 import 'H00502DropdownItemType.dart';
 import 'H00502OrdersEnum.dart';
 
@@ -41,16 +35,16 @@ class H00502PageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
+//  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
 
   final RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
       _rankingFromTagNameOrderByBallPowerUseCaseInputPort;
 
-  final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+//  final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseInputPort;
 
   final Function(int count) emitBallListUpFromSearchTagNameBallTotalCount;
 
-  H005MainPageViewModel _h005MainModel;
+//  H005MainPageViewModel _h005MainModel;
   List<H00502DropdownItemType> _ordersItems =
       new List<H00502DropdownItemType>();
   H00502DropdownItemType _selectOrder;
@@ -63,20 +57,13 @@ class H00502PageViewModel extends ChangeNotifier
       {@required
           this.context,
       @required
-          FBallListUpUseCaseInputPort
-              fBallListUpFromSearchTagNameUseCaseInputPort,
-      @required
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort
               rankingFromTagNameOrderByBallPowerUseCaseInputPort,
-      @required
-          GeoLocationUtilBasicUseCaseInputPort geoLocationUtilUseCaseInputPort,
       @required
           this.searchTag,
       @required
           this.emitBallListUpFromSearchTagNameBallTotalCount})
-      : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
-        _fBallListUpUseCaseInputPort =
-            fBallListUpFromSearchTagNameUseCaseInputPort,
+      :
         _rankingFromTagNameOrderByBallPowerUseCaseInputPort =
             rankingFromTagNameOrderByBallPowerUseCaseInputPort {
     init();
@@ -127,12 +114,12 @@ class H00502PageViewModel extends ChangeNotifier
 
   Future ballListUpFromSearchTag() async {
     isLoading = true;
-    var position =
-        await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
-    FBallListUpFromTagNameReqDto reqDto = new FBallListUpFromTagNameReqDto(
-        searchTag: searchTag,
-        latitude: position.latitude,
-        longitude: position.longitude);
+//    var position =
+//        await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
+//    FBallListUpFromTagNameReqDto reqDto = new FBallListUpFromTagNameReqDto(
+//        searchTag: searchTag,
+//        latitude: position.latitude,
+//        longitude: position.longitude);
 //    await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTagName(
 //        reqDto,
 //        Pageable(_pageCount, _ballPageLimitSize, "makeTimeDESCAliveDESC"),

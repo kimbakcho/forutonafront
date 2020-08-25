@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
-import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/FBallSearchBarHistory/FBallSearchBarHistoryUseCaseInputPort.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPage.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
@@ -58,8 +57,6 @@ class H004MainPageViewModel extends ChangeNotifier
   }
 
   onSearch(value) async {
-    BallSearchBarHistoryDto saveReq = BallSearchBarHistoryDto(
-        value, DateTime.now());
     await _ballSearchBarHistoryUseCaseInputPort.loadHistory(
         outputPort: this);
     _loadSearchHistory();

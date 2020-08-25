@@ -1,4 +1,3 @@
-import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart';

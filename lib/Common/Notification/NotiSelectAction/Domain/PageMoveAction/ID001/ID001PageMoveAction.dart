@@ -6,8 +6,6 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPay
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001PayloadDto.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-
 
 class ID001PageMoveAction implements PageMoveActionUseCaseInputPort {
 
@@ -22,7 +20,7 @@ class ID001PageMoveAction implements PageMoveActionUseCaseInputPort {
     ID001PayloadDto id001payloadDto = ID001PayloadDto.fromJson(
         json.decode(actionPayloadDto.payload));
 
-    FBallResDto selectBall = await _selectBallUseCaseInputPort.selectBall(id001payloadDto.ballUuid);
+    await _selectBallUseCaseInputPort.selectBall(id001payloadDto.ballUuid);
 
 //    Navigator.of(context).push(MaterialPageRoute(
 //        builder: (_) =>

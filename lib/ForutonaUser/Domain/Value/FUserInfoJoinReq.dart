@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -31,7 +30,7 @@ class FUserInfoJoinReq {
   Preference _preference;
 
 
-  FUserInfoJoinReq({@required Preference preference}) :_preference = preference;
+  FUserInfoJoinReq({Preference preference}) :_preference = preference;
 
   clearPassword(){
     this.password = "";

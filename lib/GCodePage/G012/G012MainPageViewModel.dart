@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
@@ -19,7 +18,6 @@ class G012MainPageViewModel extends ChangeNotifier {
   final SignValid _pwCheckValid;
   final SignValid _currentPwValid;
 
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
   final CodeMainPageController _codeMainPageController;
 
@@ -49,14 +47,12 @@ class G012MainPageViewModel extends ChangeNotifier {
       @required SignValid pwValid,
       @required SignValid pwCheckValid,
       @required SignValid currentPwValid,
-      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
       @required CodeMainPageController codeMainPageController,
       @required LogoutUseCaseInputPort logoutUseCaseInputPort,
       @required FUserPwChangeUseCaseInputPort fUserPwChangeUseCaseInputPort})
       : _pwValid = pwValid,
         _pwCheckValid = pwCheckValid,
         _currentPwValid = currentPwValid,
-        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _codeMainPageController = codeMainPageController,
         _fUserPwChangeUseCaseInputPort = fUserPwChangeUseCaseInputPort,
         _logoutUseCaseInputPort = logoutUseCaseInputPort {

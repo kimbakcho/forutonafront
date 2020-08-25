@@ -2,11 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/Placemark.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 import 'package:forutonafront/Preference.dart';
@@ -145,8 +143,7 @@ void main() {
     when(mockGeoLocationUtilBasicUseCaseInputPort.getPositionAddress(any))
         .thenAnswer((realInvocation) async => "한국");
     //act
-    var currentWithLastPosition =
-        await geoLocationUtilUseCase.getCurrentWithLastPosition();
+    await geoLocationUtilUseCase.getCurrentWithLastPosition();
     //assert
     expect(geoLocationUtilUseCase.currentWithLastAddress, "한국");
     expect(geoLocationUtilUseCase.currentWithLastPosition.longitude, 127.4);

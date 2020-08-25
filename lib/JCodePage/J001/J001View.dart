@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/JCodePage/J001/J001ViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class J001View extends StatelessWidget {
 
   TextEditingController idTextFieldController = TextEditingController();
@@ -109,6 +109,7 @@ class J001View extends StatelessWidget {
             height: 36.00,
             width: 36.00,
             child: FlatButton(
+              child: Container(),
               onPressed: model.onFaceBookLogin,
               padding: EdgeInsets.all(0),
             ),
@@ -127,6 +128,7 @@ class J001View extends StatelessWidget {
             height: 36.00,
             width: 36.00,
             child: FlatButton(
+              child: Container(),
               onPressed: model.onKakaoLogin,
               padding: EdgeInsets.all(0),
             ),
@@ -145,6 +147,7 @@ class J001View extends StatelessWidget {
             height: 36.00,
             width: 36.00,
             child: FlatButton(
+              child: Container(),
               onPressed: model.onNaverLogin,
               padding: EdgeInsets.all(0),
             ),

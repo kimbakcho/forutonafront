@@ -5,8 +5,10 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoU
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseOutputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/Preference.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
-import 'package:matcher/matcher.dart';
+
 class MockSignInUserInfoUseCaseOutputPort extends Mock implements SignInUserInfoUseCaseOutputPort{}
 
 class MockFUserRepository extends Mock implements FUserRepository{}
@@ -15,8 +17,13 @@ void main () {
   SignInUserInfoUseCaseInputPort signInUserInfoUseCase;
   MockSignInUserInfoUseCaseOutputPort mockSignInUserInfoUseCaseOutputPort;
   MockFUserRepository mockFUserRepository;
+  final sl = GetIt.instance;
 
+  setUpAll((){
+    sl.registerSingleton<Preference>(Preference());
+  });
   setUp((){
+
     mockFUserRepository = MockFUserRepository();
     mockSignInUserInfoUseCaseOutputPort = MockSignInUserInfoUseCaseOutputPort();
     signInUserInfoUseCase = SignInUserInfoUseCase(fUserRepository: mockFUserRepository);

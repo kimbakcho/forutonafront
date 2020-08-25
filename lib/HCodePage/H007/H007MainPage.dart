@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class H007MainPage extends StatefulWidget {
   Position initPosition;
   String address;
@@ -19,7 +20,7 @@ class H007MainPage extends StatefulWidget {
 
 class _H007MainPageState extends State<H007MainPage>
     with WidgetsBindingObserver {
-  AppLifecycleState _lastLifecycleState;
+
   Position initPosition;
   String address;
   UniqueKey googleMapKey = UniqueKey();
@@ -40,7 +41,7 @@ class _H007MainPageState extends State<H007MainPage>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     googleMapKey = UniqueKey();
     setState(() {
-      _lastLifecycleState = state;
+
     });
   }
 

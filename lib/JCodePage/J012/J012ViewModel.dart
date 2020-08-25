@@ -19,7 +19,6 @@ class J012ViewModel extends ChangeNotifier
       : _duplicationEmailValid = duplicationEmailValid,
         _pwFindEmailUseCaseInputPort = pwFindEmailUseCaseInputPort;
 
-  bool _idEditCompleteFlag = false;
   bool _isLoading = false;
 
   getIsLoading() {
@@ -44,7 +43,6 @@ class J012ViewModel extends ChangeNotifier
   }
 
   onNextComplete() async {
-    _idEditCompleteFlag = true;
     _setIsLoading(true);
     await _duplicationEmailValid.valid(idEditingController.text);
     if (!_duplicationEmailValid.hasError()) {
@@ -55,18 +53,16 @@ class J012ViewModel extends ChangeNotifier
   }
 
   void onIdEditChangeText(String value) {
-    _idEditCompleteFlag = false;
     notifyListeners();
   }
 
   Future<void> onIdEditComplete() async {
-    _idEditCompleteFlag = true;
     await _duplicationEmailValid.valid(idEditingController.text);
     notifyListeners();
   }
 
   bool hasEmailError() {
-    if(!_duplicationEmailValid.hasValidTry){
+    if (!_duplicationEmailValid.hasValidTry) {
       return true;
     }
     return _duplicationEmailValid.hasError();

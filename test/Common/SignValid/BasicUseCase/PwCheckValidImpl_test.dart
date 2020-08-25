@@ -19,9 +19,9 @@ void main(){
 
   test('pwCheckSignValid 같을때', () async {
     //arrange
-    when(mockPwValid.currentPw).thenReturn("test1234");
+    when(mockPwValid.currentPw).thenReturn("test12345");
     //act
-    await pwCheckSignValid.valid("test1234");
+    await pwCheckSignValid.valid("test12345");
     //assert
     expect(pwCheckSignValid.hasError(), false);
   });

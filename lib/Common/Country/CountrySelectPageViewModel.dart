@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'CountryItem.dart';
 
-/**
- * 해당 View의 역활의 목적은 ISO 코드를 Navigtor로 Return 해주는것.
- */
+// 해당 View의 역활의 목적은 ISO 코드를 Navigtor로 Return 해주는것.
 class CountrySelectPageViewModel extends ChangeNotifier{
   final BuildContext _context;
   String initCountryCode;

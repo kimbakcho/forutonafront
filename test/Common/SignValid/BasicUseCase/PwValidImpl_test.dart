@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
 
-import 'package:forutonafront/Common/SignValid/SignValid.dart';
-
 void main(){
 
   PwValid pwValid = PwValidImpl();

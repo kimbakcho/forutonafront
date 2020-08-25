@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import 'package:forutonafront/Tag/Data/Repository/TagRepositoryImpl.dart';
@@ -25,7 +24,8 @@ void main(){
   test('Tag 영향력 DataSource Req', () async {
     //arrange
     TagRankingFromBallInfluencePowerReqDto reqDto = TagRankingFromBallInfluencePowerReqDto(
-      position: Position(latitude: 127.0,longitude: 30.0),
+      latitude: 37.0,
+      longitude: 127.0,
       limit: 10
     );
     //act

@@ -186,7 +186,7 @@ init() {
   sl.registerSingleton<FBallRemoteDataSource>(FBallRemoteSourceImpl());
 
   sl.registerSingleton<FBallRepository>(
-      FBallRepositoryImpl(fBallRemoteDataSource: sl()));
+      FBallRepositoryImpl(fBallRemoteDataSource: sl(),fireBaseAuthBaseAdapter: sl()));
 
   sl.registerSingleton<FBallTagRemoteDataSource>(
       FBallTagRemoteDataSourceImpl());
@@ -396,7 +396,7 @@ init() {
       FlutterImageCompressAdapterImpl());
 
   sl.registerSingleton<UserProfileImageUploadUseCaseInputPort>(
-      UserProfileImageUploadUseCase(flutterImageCompressAdapter: sl()));
+      UserProfileImageUploadUseCase(flutterImageCompressAdapter: sl(),fUserRepository: sl()));
 
   sl.registerSingleton<CodeMainPageController>(CodeMainPageControllerImpl());
 
@@ -470,7 +470,6 @@ init() {
   sl.registerSingleton<UserPositionForegroundMonitoringUseCaseInputPort>(
       UserPositionForegroundMonitoringUseCase(
           geoLocationUtilBasicUseCaseInputPort: sl(),
-          signInUserInfoUseCaseInputPort: sl(),
           updateUserPositionUseCaseInputPort: sl(),
           fUserRepository: sl(),
           fireBaseAuthAdapterForUseCase: sl()));

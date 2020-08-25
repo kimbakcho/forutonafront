@@ -5,26 +5,27 @@ import 'SnsLoginModuleAdapter.dart';
 
 class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
   @override
+  // ignore: missing_return
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {
-    NaverLoginResult naverLoginResult;
+    NaverLoginResult neverLoginResult;
     try {
-      naverLoginResult = await FlutterNaverLogin.logIn();
+      neverLoginResult = await FlutterNaverLogin.logIn();
     } catch (ex) {
       throw ex;
     }
-    switch (naverLoginResult.status) {
+    switch (neverLoginResult.status) {
       case NaverLoginStatus.loggedIn:
         var currentAccessToken = await FlutterNaverLogin.currentAccessToken;
         return SnsLoginModuleResDto(
-            naverLoginResult.account.id, currentAccessToken.accessToken,
-            userNickName: naverLoginResult.account.nickname,
-            email: naverLoginResult.account.email,
-            userProfileImageUrl: naverLoginResult.account.profileImage);
+            neverLoginResult.account.id, currentAccessToken.accessToken,
+            userNickName: neverLoginResult.account.nickname,
+            email: neverLoginResult.account.email,
+            userProfileImageUrl: neverLoginResult.account.profileImage);
       case NaverLoginStatus.cancelledByUser:
         throw ("cancelledByUser");
         break;
       case NaverLoginStatus.error:
-        throw (naverLoginResult.errorMessage);
+        throw (neverLoginResult.errorMessage);
         break;
     }
   }

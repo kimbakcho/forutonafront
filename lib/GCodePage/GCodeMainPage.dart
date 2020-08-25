@@ -6,6 +6,7 @@ import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:provider/provider.dart';
 import 'GCodeMainPageViewModel.dart';
 
+// ignore: must_be_immutable
 class GCodeMainPage extends StatelessWidget {
 
   PageController gCodePageController =  PageController();

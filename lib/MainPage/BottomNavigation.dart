@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 

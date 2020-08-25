@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -12,10 +13,8 @@ import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseI
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,11 +33,11 @@ class IM001MainPageViewModel extends ChangeNotifier
         TagFromBallUuidUseCaseOutputPort {
   final BuildContext context;
   final LatLng setUpPosition;
-  final InsertBallUseCaseInputPort _insertBallUseCaseInputPort;
+
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
 
-  final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
-  final BallImageListUpLoadUseCaseInputPort _ballImageListUpLoadUseCaseInputPort;
+  final BallImageListUpLoadUseCaseInputPort
+      _ballImageListUpLoadUseCaseInputPort;
 
   String ballUuid;
 
@@ -97,20 +96,13 @@ class IM001MainPageViewModel extends ChangeNotifier
       this.ballUuid,
       this.mode,
       @required
-          InsertBallUseCaseInputPort insertBallUseCaseInputPort,
-      @required
           SelectBallUseCaseInputPort selectBallUseCaseInputPort,
-
       @required
-          TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort,
-        @required
-        BallImageListUpLoadUseCaseInputPort ballImageListUpLoadUseCaseInputPort
-
-      })
-      : _insertBallUseCaseInputPort = insertBallUseCaseInputPort,
-        _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
-        _ballImageListUpLoadUseCaseInputPort = ballImageListUpLoadUseCaseInputPort,
-        _tagFromBallUuidUseCaseInputPort = tagFromBallUuidUseCaseInputPort {
+          BallImageListUpLoadUseCaseInputPort
+              ballImageListUpLoadUseCaseInputPort})
+      : _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
+        _ballImageListUpLoadUseCaseInputPort =
+            ballImageListUpLoadUseCaseInputPort {
     _init();
   }
 
@@ -224,22 +216,21 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   void onCompleteTap() async {
     isLoading = true;
-    List<FBallDesImages> imageList = await fBallImageUpload();
+    await fBallImageUpload();
 //    _issueBall.setDesImages(imageList);
     if (mode == IM001MainPageEnterMode.Insert) {
 //      await _insertBallUseCaseInputPort.insertBall(
 //          FBallInsertReqDto.fromIssueBall(_issueBall),
 //          outputPort: this);
-    } else if (mode == IM001MainPageEnterMode.Update) {
-
-    }
+    } else if (mode == IM001MainPageEnterMode.Update) {}
     isLoading = false;
   }
 
   Future<List<FBallDesImages>> fBallImageUpload() async {
     List<FBallDesImages> imageList = [];
-    List<BallImageItem> fillUrlBallImageList = await _ballImageListUpLoadUseCaseInputPort
-        .ballImageListUpLoadAndFillUrls(this.ballImageList);
+    List<BallImageItem> fillUrlBallImageList =
+        await _ballImageListUpLoadUseCaseInputPort
+            .ballImageListUpLoadAndFillUrls(this.ballImageList);
     for (var index = 0; index < fillUrlBallImageList.length; index++) {
       imageList.add(FBallDesImages.fromBallImageItemDto(
           index, fillUrlBallImageList[index]));
@@ -251,14 +242,8 @@ class IM001MainPageViewModel extends ChangeNotifier
   void onInsertBall(FBallResDto resDto) {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (_) =>
-                ID001MainPage2(ballUuid: _issueBall.ballUuid)),
+            builder: (_) => ID001MainPage2(ballUuid: _issueBall.ballUuid)),
         ModalRoute.withName('/'));
-  }
-
-  @override
-  void onUpdateBall(FBallResDto fBallResDto) {
-    Navigator.of(context).pop(mode);
   }
 
   bool hasYoutubeLink() => validYoutubeLink != null;
@@ -597,16 +582,6 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   void onMapCreated(GoogleMapController controller) async {
     _googleMapController.complete(controller);
-    GoogleMapController controllerTemp = await _googleMapController.future;
-  }
-
-  @override
-  void onBallHit() {
-    throw ("here don't have action");
-  }
-
-  @override
-  void onDeleteBall() {
-    throw ("here don't have action");
+    await _googleMapController.future;
   }
 }

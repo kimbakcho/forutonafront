@@ -1,7 +1,5 @@
 
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserSnSJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 

@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/UpdateUserPositionUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
@@ -15,8 +13,6 @@ class UserPositionForegroundMonitoringUseCase
     implements UserPositionForegroundMonitoringUseCaseInputPort {
   final GeoLocationUtilBasicUseCaseInputPort
       _geoLocationUtilBasicUseCaseInputPort;
-
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
@@ -30,16 +26,13 @@ class UserPositionForegroundMonitoringUseCase
           FUserRepository fUserRepository,
       @required
           FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      @required
-        SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
         @required
         UpdateUserPositionUseCaseInputPort updateUserPositionUseCaseInputPort
       })
       : _geoLocationUtilBasicUseCaseInputPort =
             geoLocationUtilBasicUseCaseInputPort,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
-        _updateUserPositionUseCaseInputPort = updateUserPositionUseCaseInputPort,
-        _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
+        _updateUserPositionUseCaseInputPort = updateUserPositionUseCaseInputPort;
 
 
   StreamSubscription _userPositionStream;

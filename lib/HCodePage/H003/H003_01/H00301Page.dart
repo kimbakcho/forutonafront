@@ -5,6 +5,7 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class H00301Page extends StatelessWidget {
   ScrollController scrollController = ScrollController();
 
@@ -14,7 +15,6 @@ class H00301Page extends StatelessWidget {
         create: (_) => H00301PageViewModel(
             context: context,
             fireBaseAuthAdapterForUseCase: sl(),
-            fBallListUpUseCaseInputPort: sl(),
             scrollController: scrollController),
         child: Builder(
           builder: (context) => Container(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -9,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable, camel_case_types
 class H002_01Page extends StatefulWidget {
   Position initPosition;
   String address;
@@ -19,8 +19,9 @@ class H002_01Page extends StatefulWidget {
   _H002_01PageState createState() => _H002_01PageState(initPosition,address);
 }
 
+// ignore: camel_case_types
 class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
-  AppLifecycleState _lastLifecycleState;
+
   Position initPosition;
   String address;
   UniqueKey googleMapKey = UniqueKey();
@@ -42,7 +43,7 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async  {
     googleMapKey = UniqueKey();
     setState(()  {
-      _lastLifecycleState = state;
+
     });
   }
 
@@ -92,6 +93,7 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
         }));
   }
 
+  // ignore: non_constant_identifier_names
   Container UpDownPinBottm() {
     return Container(
       height: 3,
@@ -101,6 +103,7 @@ class _H002_01PageState extends State<H002_01Page> with WidgetsBindingObserver {
     );
   }
 
+  // ignore: non_constant_identifier_names
   AnimatedContainer UpDownPin(H002_01PageViewModel model) {
     return AnimatedContainer(
         width: 39,

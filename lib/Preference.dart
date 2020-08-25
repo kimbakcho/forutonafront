@@ -1,7 +1,6 @@
 import 'dart:core';
 
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Preference {
    String kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 

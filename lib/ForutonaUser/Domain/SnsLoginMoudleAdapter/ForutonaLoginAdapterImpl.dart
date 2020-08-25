@@ -1,4 +1,3 @@
-import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 
 import 'SnsLoginModuleAdapter.dart';

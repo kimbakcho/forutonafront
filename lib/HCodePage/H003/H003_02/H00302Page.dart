@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'H00302PageViewModel.dart';
 
+// ignore: must_be_immutable
 class H00302Page extends StatelessWidget {
   ScrollController scrollController = ScrollController();
   @override

@@ -3,15 +3,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
-import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/ValueDisplayUtil/NomalValueDisplay.dart';
 import 'package:forutonafront/Components/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/DetailPageViewer/DetailPageViewer.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpFromInfluencePower.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/HCodePage/H001/BallListMediator.dart';
 import 'package:forutonafront/HCodePage/H002/H002Page.dart';
@@ -30,8 +27,7 @@ enum H001PageState { H001_01, H003_01 }
 
 class H001ViewModel
     with ChangeNotifier
-    implements
-        TagRankingFromBallInfluencePowerUseCaseOutputPort {
+    implements TagRankingFromBallInfluencePowerUseCaseOutputPort {
   final BuildContext context;
 
   final TagRankingFromBallInfluencePowerUseCaseInputPort
@@ -135,7 +131,9 @@ class H001ViewModel
     await _tagRankingFromPositionUseCaseInputPort
         .reqTagRankingFromBallInfluencePower(
             TagRankingFromBallInfluencePowerReqDto(
-                position: _currentSearchPosition, limit: 10),
+                longitude: _currentSearchPosition.longitude,
+                latitude: _currentSearchPosition.latitude,
+                limit: 10),
             this);
   }
 
@@ -378,7 +376,6 @@ class H001ViewModel
   String changeTagValueDisplay(double value) {
     return NomalValueDisplay.changeIntDisplaystr(value);
   }
-
 
   void moveDetailPage(int index) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {

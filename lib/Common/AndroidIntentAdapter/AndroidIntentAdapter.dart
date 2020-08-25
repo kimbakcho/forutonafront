@@ -1,9 +1,7 @@
 import 'package:android_intent/android_intent.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 abstract class AndroidIntentAdapter {
+   // ignore: non_constant_identifier_names
    static int FLAG_ACTIVITY_NEW_TASK = 0x10000000;
    createIntent({String data,String action,String package,List<int> flags});
    launch();

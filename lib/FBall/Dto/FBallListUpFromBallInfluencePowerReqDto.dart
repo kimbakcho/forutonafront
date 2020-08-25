@@ -1,5 +1,4 @@
 
-import 'package:forutonafront/Preference.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'FBallListUpFromBallInfluencePowerReqDto.g.dart';
 

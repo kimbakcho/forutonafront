@@ -1,12 +1,12 @@
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:kakao_flutter_sdk/all.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
 class FaceBookLoginAdapterImpl implements SnsLoginModuleAdapter{
 
   @override
+  // ignore: missing_return
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {
     final facebookLogin = FacebookLogin();
     final result = await facebookLogin.logIn(['email']);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:forutonafront/GlobalModel.dart';
 import 'package:forutonafront/MainModel.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -15,10 +14,11 @@ void main() {
   di.init();
 
   runApp(
-    ChangeNotifierProvider(create: (_) => GlobalModel(), child: MyApp()),
+      MyApp(),
   );
 }
 
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   Preference _preference = sl();

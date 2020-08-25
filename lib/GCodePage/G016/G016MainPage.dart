@@ -5,6 +5,7 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class G016MainPage extends StatelessWidget {
   ScrollController mainScrollController = new ScrollController();
 

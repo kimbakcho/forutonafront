@@ -1,24 +1,20 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/Components/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-
 import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Ordersenum.dart';
 
 class H00501PageViewModel extends ChangeNotifier
     implements FBallListUpUseCaseOutputPort {
   final BuildContext context;
-  final FBallListUpUseCaseInputPort
-      _fBallListUpUseCaseInputPort;
-  final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseIp;
+//  final FBallListUpUseCaseInputPort
+//      _fBallListUpUseCaseInputPort;
+//  final GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilUseCaseIp;
   final Function(int count) onSearchTitleItemCount;
   List<DropdownMenuItem<H00501DropdownItemType>> dropDownItems =
       new List<DropdownMenuItem<H00501DropdownItemType>>();
@@ -58,15 +54,7 @@ class H00501PageViewModel extends ChangeNotifier
       @required
           this.searchTitle,
       @required
-      FBallListUpUseCaseInputPort
-              fBallListUpFromSearchTitleUseCaseInputPort,
-      @required
-          GeoLocationUtilBasicUseCaseInputPort geoLocationUtilUseCaseIp,
-      @required
-          this.onSearchTitleItemCount})
-      : _fBallListUpUseCaseInputPort =
-            fBallListUpFromSearchTitleUseCaseInputPort,
-        _geoLocationUtilUseCaseIp = geoLocationUtilUseCaseIp {
+          this.onSearchTitleItemCount}) {
     init();
   }
 
@@ -79,11 +67,11 @@ class H00501PageViewModel extends ChangeNotifier
 
   Future ballListUpFromSearchText() async {
     isLoading = true;
-    var position = await _geoLocationUtilUseCaseIp.getCurrentWithLastPosition();
-    var fBallListUpFromSearchTitleReqDto = new FBallListUpFromSearchTitleReqDto(
-        searchText: searchTitle,
-        longitude: position.longitude,
-        latitude: position.latitude);
+//    var position = await _geoLocationUtilUseCaseIp.getCurrentWithLastPosition();
+//    var fBallListUpFromSearchTitleReqDto = new FBallListUpFromSearchTitleReqDto(
+//        searchText: searchTitle,
+//        longitude: position.longitude,
+//        latitude: position.latitude);
 //    PageWrap<FBallResDto> pageList = await _fBallListUpUseCaseInputPort.searchFBallListUpFromSearchTitle(
 //        fBallListUpFromSearchTitleReqDto,Pageable(_pageCount,_ballPageLimitSize,"makeTimeDESCAliveDESC"), outputPort: this);
     isLoading = false;
@@ -119,7 +107,6 @@ class H00501PageViewModel extends ChangeNotifier
 
   int setFirstPage() => _pageCount = 0;
 
-  bool _isFirstPage(int pageCount) => pageCount == 0;
 
   _initOrdersItems() {
     ordersItems.add(H00501DropdownItemType(

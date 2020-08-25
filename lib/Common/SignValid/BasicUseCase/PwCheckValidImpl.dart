@@ -32,6 +32,11 @@ class PwCheckValidImpl implements SignValid{
       _errorText = "";
       return;
     }
+    if(checkPw.length <= 8){
+      _isTextError = true;
+      _errorText = "패스워드가 8자리 이상 필요합니다.";
+      return;
+    }
     if (checkPw != _originPwValid.currentPw) {
       _isTextError = true;
       _errorText = "패스워드가 일치 하지 않습니다";

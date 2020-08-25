@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'G022MainPageViewModel.dart';
 
+// ignore: must_be_immutable
 class G022MainPage extends StatelessWidget {
   String policyTitle;
 

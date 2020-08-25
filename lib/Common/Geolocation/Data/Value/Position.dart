@@ -27,7 +27,6 @@ class Position {
     this.speedAccuracy,
   });
 
-  @override
   List<Object> get props => [
     longitude,
     latitude,

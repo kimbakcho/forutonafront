@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';

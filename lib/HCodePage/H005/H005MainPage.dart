@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
-import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
-
-
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Page.dart';
 import 'package:forutonafront/HCodePage/H005/H00502/H00502PageViewModel.dart';
 import 'package:forutonafront/HCodePage/H005/H005MainPageViewModel.dart';
@@ -11,7 +6,6 @@ import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import 'H00501/H00501PageViewModel.dart';
 import 'H00502/H00502Page.dart';
 
@@ -56,16 +50,15 @@ class _H005MainPageState extends State<H005MainPage>
             lazy: false,
               create: (_) => H00501PageViewModel(
                   context: context,
-                  fBallListUpFromSearchTitleUseCaseInputPort: sl(),
-                  geoLocationUtilUseCaseIp: sl(),
+
                   onSearchTitleItemCount: h005mainPageViewModel.onBallListUpFromSearchTitleBallTotalCount,
                   searchTitle: widget.searchText)),
           ChangeNotifierProvider(
               lazy: false,
               create: (_) => H00502PageViewModel(
                   context: context,
-                  fBallListUpFromSearchTagNameUseCaseInputPort: sl(),
-                  geoLocationUtilUseCaseInputPort: sl(),
+
+
                   rankingFromTagNameOrderByBallPowerUseCaseInputPort: sl(),
                   emitBallListUpFromSearchTagNameBallTotalCount: h005mainPageViewModel.onBallListUpFromSearchTagNameBallTotalCount,
                   searchTag: widget.searchText))

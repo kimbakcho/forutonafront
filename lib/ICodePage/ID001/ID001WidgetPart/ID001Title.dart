@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../ID001MainPage2ViewModel.dart';
 
 class ID001Title extends StatelessWidget {
   final String ballTitle;

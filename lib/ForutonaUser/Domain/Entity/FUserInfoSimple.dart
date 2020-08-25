@@ -1,4 +1,3 @@
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserInfoSimple.g.dart';

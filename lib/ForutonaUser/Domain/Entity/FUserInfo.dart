@@ -1,11 +1,8 @@
 
-import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserInfo.g.dart';

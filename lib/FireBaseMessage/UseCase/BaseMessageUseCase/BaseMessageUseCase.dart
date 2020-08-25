@@ -5,6 +5,7 @@ import 'BaseMessageUseCaseInputPort.dart';
 
 class BaseMessageUseCase implements BaseMessageUseCaseInputPort {
   @override
+  // ignore: missing_return
   Future message(Map<String, dynamic> message) {
     if (hasNotificationAction(message)) {
       if (message["data"].containsKey("commandKey")) {

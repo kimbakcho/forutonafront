@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'J004ViewModel.dart';
 
+// ignore: must_be_immutable
 class J004View extends StatelessWidget {
   TextEditingController authNumberEditingController = TextEditingController();
 

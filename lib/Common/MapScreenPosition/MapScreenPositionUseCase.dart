@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:flutter/src/rendering/box.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+// ignore: implementation_imports
 import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
 
 class MapScreenPositionUseCase implements MapScreenPositionUseCaseInputPort {
@@ -11,7 +13,7 @@ class MapScreenPositionUseCase implements MapScreenPositionUseCaseInputPort {
   Future<LatLng> mapScreenOffsetToLatLng(RenderBox mapRenderBoxRed,
       GoogleMapController controller, double offsetX, double offsetY) async {
     //지도를 그리는 Box Size
-    Size size = mapRenderBoxRed.size;
+
     LatLngBounds visibleRegion = await controller.getVisibleRegion();
     //현재 맵 스크린 좌표 받아옴
     ScreenCoordinate southwestPoint = await controller.getScreenCoordinate(
@@ -41,7 +43,6 @@ class MapScreenPositionUseCase implements MapScreenPositionUseCaseInputPort {
     ScreenCoordinate screenCoordinate = await controller
         .getScreenCoordinate(LatLng(latLng.latitude, latLng.longitude));
     //지도를 그리는 Box Size
-    Size size = mapRenderBoxRed.size;
     LatLngBounds visibleRegion = await controller.getVisibleRegion();
     //현재 맵 스크린 좌표 받아옴
     ScreenCoordinate southwestPoint = await controller.getScreenCoordinate(

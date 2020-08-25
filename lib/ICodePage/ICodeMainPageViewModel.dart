@@ -10,10 +10,6 @@ import 'package:forutonafront/Common/MarkerSupport/Style1/MakerSupportStyle1.dar
 import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,7 +17,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class ICodeMainPageViewModel extends ChangeNotifier {
   final BuildContext context;
   final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCase;
-  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
   final MapScreenPositionUseCaseInputPort _mapScreenPositionUseCaseInputPort;
 
   bool _flagIdleIgnore = true;
@@ -58,11 +53,8 @@ class ICodeMainPageViewModel extends ChangeNotifier {
     this.context,
     @required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCase,
     @required
-        FBallListUpUseCaseInputPort fBallListUpFromMapAreaUseCaseInputPort,
-    @required
         MapScreenPositionUseCaseInputPort mapScreenPositionUseCaseInputPort,
   })  : _geoLocationUtilUseCase = geoLocationUtilUseCase,
-        _fBallListUpUseCaseInputPort = fBallListUpFromMapAreaUseCaseInputPort,
         _mapScreenPositionUseCaseInputPort = mapScreenPositionUseCaseInputPort {
     setGoogleInitCameraPosition();
     bottomPageController.addListener(onPageControllerListener);
@@ -227,13 +219,13 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   Future<void> onSearch(LatLng southwestPoint, LatLng northeastPoint,
       FSorts sorts, int pageSize, int pageCount) async {
-    BallFromMapAreaReqDto reqDto = BallFromMapAreaReqDto(
-        southwestPoint.latitude,
-        southwestPoint.longitude,
-        northeastPoint.latitude,
-        northeastPoint.longitude,
-        currentMapPosition.target.latitude,
-        currentMapPosition.target.longitude);
+//    BallFromMapAreaReqDto reqDto = BallFromMapAreaReqDto(
+//        southwestPoint.latitude,
+//        southwestPoint.longitude,
+//        northeastPoint.latitude,
+//        northeastPoint.longitude,
+//        currentMapPosition.target.latitude,
+//        currentMapPosition.target.longitude);
 //    _fBallListUpUseCaseInputPort.searchFBallListUpFromMapArea(
 //        reqDto, Pageable(0, 10, ""), outputPort: this);
   }
@@ -259,34 +251,34 @@ class ICodeMainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  @override
-  void onBallListUpFromMapArea(List<FBallResDto> resDtos, LatLng northeastLat,
-      LatLng southwestLat) async {
-    if (isFirstPage()) {
-      this.listUpBalls.clear();
-    }
-    this.listUpBalls.addAll(resDtos
-        .map((x) => new FBallResForMarker(
-            isSelectBall: false,
-            ballResDto: x,
-            onTopEvent: onBallSelectFunction))
-        .toList());
-
-    if (isFirstPage()) {
-      if (hasListUpBall()) {
-        selectFirstBall();
-      }
-    }
-    notifyListeners();
-    await drawBallMarker(this.listUpBalls);
-    this.markers.add(
-        Marker(markerId: MarkerId("northeastLat"), position: northeastLat));
-    print(northeastLat);
-    this.markers.add(
-        Marker(markerId: MarkerId("southwestLat"), position: southwestLat));
-    print(southwestLat);
-    notifyListeners();
-  }
+//  @override
+//  void onBallListUpFromMapArea(List<FBallResDto> resDtos, LatLng northeastLat,
+//      LatLng southwestLat) async {
+//    if (isFirstPage()) {
+//      this.listUpBalls.clear();
+//    }
+//    this.listUpBalls.addAll(resDtos
+//        .map((x) => new FBallResForMarker(
+//            isSelectBall: false,
+//            ballResDto: x,
+//            onTopEvent: onBallSelectFunction))
+//        .toList());
+//
+//    if (isFirstPage()) {
+//      if (hasListUpBall()) {
+//        selectFirstBall();
+//      }
+//    }
+//    notifyListeners();
+//    await drawBallMarker(this.listUpBalls);
+//    this.markers.add(
+//        Marker(markerId: MarkerId("northeastLat"), position: northeastLat));
+//    print(northeastLat);
+//    this.markers.add(
+//        Marker(markerId: MarkerId("southwestLat"), position: southwestLat));
+//    print(southwestLat);
+//    notifyListeners();
+//  }
 
   void selectFirstBall() {
     this.listUpBalls[0].isSelectBall = true;
@@ -302,6 +294,4 @@ class ICodeMainPageViewModel extends ChangeNotifier {
     FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
   }
-
-
 }

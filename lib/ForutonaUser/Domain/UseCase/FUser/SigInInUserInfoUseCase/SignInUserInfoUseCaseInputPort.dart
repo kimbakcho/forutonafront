@@ -1,4 +1,3 @@
-import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 
 import 'SignInUserInfoUseCaseOutputPort.dart';

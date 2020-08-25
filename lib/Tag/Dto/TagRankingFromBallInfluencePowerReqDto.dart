@@ -1,11 +1,6 @@
-
-
-import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'TagRankingFromBallInfluencePowerReqDto.g.dart';
-
 
 @JsonSerializable()
 class TagRankingFromBallInfluencePowerReqDto {
@@ -13,11 +8,14 @@ class TagRankingFromBallInfluencePowerReqDto {
   double longitude;
   int limit;
 
-  TagRankingFromBallInfluencePowerReqDto({@required Position position,this.limit}):assert(position != null),assert(limit != null){
-    this.latitude = position.latitude;
-    this.longitude = position.longitude;
-  }
+  TagRankingFromBallInfluencePowerReqDto(
+      {this.latitude, this.longitude, this.limit})
+      : assert(limit != null);
 
-  factory TagRankingFromBallInfluencePowerReqDto.fromJson(Map<String, dynamic> json) => _$TagRankingFromBallInfluencePowerReqDtoFromJson(json);
-  Map<String, dynamic> toJson() => _$TagRankingFromBallInfluencePowerReqDtoToJson(this);
+  factory TagRankingFromBallInfluencePowerReqDto.fromJson(
+          Map<String, dynamic> json) =>
+      _$TagRankingFromBallInfluencePowerReqDtoFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$TagRankingFromBallInfluencePowerReqDtoToJson(this);
 }

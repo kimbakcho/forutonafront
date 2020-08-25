@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
-import 'package:forutonafront/Common/PageableDto/FSort.dart';
-import 'package:forutonafront/Common/PageableDto/FSorts.dart';
-import 'package:forutonafront/Common/PageableDto/Pageable.dart';
-import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
 import 'package:forutonafront/Components/BallStyle/Style2/BallStyle2Widget.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -15,7 +11,6 @@ class H00302PageViewModel extends ChangeNotifier implements FBallListUpUseCaseOu
   final ScrollController scrollController;
 
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
-  final FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
 
   List<BallStyle2Widget> ballListUpWidgets = [];
   PageWrap<FBallResDto> listUpItem = PageWrap<FBallResDto>();
@@ -32,16 +27,13 @@ class H00302PageViewModel extends ChangeNotifier implements FBallListUpUseCaseOu
     notifyListeners();
   }
 
-  int _pageCount = 0;
-  int _limitSize = 10;
 
   H00302PageViewModel(
       {@required this.context,
       @required this.scrollController,
       @required FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort,
       @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
-      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
-        _fBallListUpUseCaseInputPort = fBallListUpUseCaseInputPort {
+      : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase{
     this.init();
   }
 
@@ -64,7 +56,7 @@ class H00302PageViewModel extends ChangeNotifier implements FBallListUpUseCaseOu
 
   scrollListener() async {
     if (_isScrollerMoveBottomOver()) {
-      _pageCount++;
+
       if (listUpItem.last) {
         return;
       } else {
@@ -76,12 +68,11 @@ class H00302PageViewModel extends ChangeNotifier implements FBallListUpUseCaseOu
       }
     }
     if (_isScrollerTopOver()) {
-      setFirstPage();
+
       await ballListUp();
     }
   }
 
-  int setFirstPage() => _pageCount = 0;
 
   bool _isScrollerTopOver() {
     if (scrollController.offset <=

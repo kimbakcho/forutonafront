@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/HCodePage/H005/H005PageState.dart';
 
 class H005MainPageViewModel extends ChangeNotifier {
