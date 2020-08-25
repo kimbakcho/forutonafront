@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReViewsContentBars.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/BasicReviews.dart';
+import 'package:forutonafront/Components/FBallReply2/BasicReViewsContentBars.dart';
+import 'package:forutonafront/Components/FBallReply2/BasicReviews.dart';
+
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001ActionBottomBar.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001LikeState.dart';

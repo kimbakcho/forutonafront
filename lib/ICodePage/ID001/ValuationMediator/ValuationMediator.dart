@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallLikeResDto.dart';
+import 'package:forutonafront/FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
+import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
+
+
 import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
 
 abstract class ValuationMediatorComponent {

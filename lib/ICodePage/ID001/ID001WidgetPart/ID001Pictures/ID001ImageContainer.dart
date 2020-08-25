@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallImageViewer/BallImageViwer.dart';
+
 
 class ID001ImageContainer extends StatelessWidget {
   final List<FBallDesImages> fBallDesImages;

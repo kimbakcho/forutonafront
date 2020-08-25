@@ -6,12 +6,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/Common/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/MarkerSupport/Style2/FBallResForMarkerStyle2Dto.dart';
+
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2.dart';
 import 'package:forutonafront/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';

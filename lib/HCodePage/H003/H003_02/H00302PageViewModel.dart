@@ -4,9 +4,10 @@ import 'package:forutonafront/Common/PageableDto/FSort.dart';
 import 'package:forutonafront/Common/PageableDto/FSorts.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
+import 'package:forutonafront/Components/BallStyle/Style2/BallStyle2Widget.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style2/BallStyle2Widget.dart';
+
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
 class H00302PageViewModel extends ChangeNotifier implements FBallListUpUseCaseOutputPort{

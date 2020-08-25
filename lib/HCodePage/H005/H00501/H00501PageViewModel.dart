@@ -5,10 +5,11 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/PageableDto/QueryOrders.dart';
+import 'package:forutonafront/Components/BallStyle/Style1/BallStyle1Widget.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/BallStyle/Style1/BallStyle1Widget.dart';
+
 import 'package:forutonafront/HCodePage/H005/H00501/H00501DropdownItemType.dart';
 import 'package:forutonafront/HCodePage/H005/H00501/H00501Ordersenum.dart';
 

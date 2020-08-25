@@ -1,9 +1,11 @@
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
-import 'package:forutonafront/FBall/Domain/Repository/FBallPlayerRepository.dart';
+
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallPlayerResDto.dart';
+
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/FBallPlayer/Domain/Repository/FBallPlayerRepository.dart';
+import 'package:forutonafront/FBallPlayer/Dto/FBallPlayerResDto.dart';
 
 class FBallListUpUserPlayBall implements FBallListUpUseCaseInputPort {
   String playerUid;

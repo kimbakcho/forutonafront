@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/FullReviewPage/FullReviewPage.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewUpdateMediator.dart';
+import 'package:forutonafront/Components/FBallReply2/FullReviewPage/FullReviewPage.dart';
+import 'package:forutonafront/Components/FBallReply2/ReviewCountMediator.dart';
+import 'package:forutonafront/Components/FBallReply2/ReviewDeleteMediator.dart';
+import 'package:forutonafront/Components/FBallReply2/ReviewInertMediator.dart';
+import 'package:forutonafront/Components/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';

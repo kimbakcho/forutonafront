@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/FullReviewPage/FullReviewPage.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewCountMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewDeleteMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewInertMediator.dart';
-import 'package:forutonafront/FBall/Presentation/Widget/FBallReply2/ReviewUpdateMediator.dart';
+import 'package:forutonafront/Components/FBallReply2/FullReviewPage/FullReviewPage.dart';
+import 'package:forutonafront/Components/FBallReply2/ReviewCountMediator.dart';
+import 'package:forutonafront/Components/FBallReply2/ReviewDeleteMediator.dart';
+import 'package:forutonafront/Components/FBallReply2/ReviewInertMediator.dart';
+import 'package:forutonafront/Components/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ID001ReviewsPageBtn extends StatelessWidget {

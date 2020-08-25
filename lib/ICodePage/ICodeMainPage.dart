@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/IssueBallStyle1MarkerWidget.dart';
-import 'package:forutonafront/FBall/MarkerSupport/Style1/Widget/QuestBallStyle1MarkerWidget.dart';
+import 'package:forutonafront/Common/MarkerSupport/Style1/Widget/IssueBallStyle1MarkerWidget.dart';
+import 'package:forutonafront/Common/MarkerSupport/Style1/Widget/QuestBallStyle1MarkerWidget.dart';
+
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
