@@ -19,7 +19,7 @@ class FBallTestUtil {
     fBallResDto.activationTime = DateTime.now().add(Duration(days: 7));
     fBallResDto.ballDeleteFlag = false;
     fBallResDto.description =
-        fixtureString("FBall/Data/DataSource/package.json");
+        fixtureString("FBall/Data/DataSource/FBall.json");
     fBallResDto.placeAddress = "서울 특별시 신도림";
     fBallResDto.makeTime = DateTime.now();
     fBallResDto.ballHits = 10;

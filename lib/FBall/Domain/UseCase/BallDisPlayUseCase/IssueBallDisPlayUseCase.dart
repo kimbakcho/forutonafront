@@ -13,18 +13,19 @@ class IssueBallDisPlayUseCase extends BallDisPlayUseCase {
     _fBallResDto = fBallResDto;
     _issueBallDescription = IssueBallDescription.fromJson(json.decode(fBallResDto.description));
   }
+
   bool isMainPicture(){
     if(_fBallResDto.ballDeleteFlag){
       return false;
-    }else {
+    } else {
       return _issueBallDescription.desimages.length > 0;
     }
-
   }
-  String mainPictureSrc(){
+
+  String mainPictureSrc() {
     if(_fBallResDto.ballDeleteFlag){
       return null;
-    }else {
+    } else {
       return _issueBallDescription.desimages[0].src;
     }
   }
@@ -51,7 +52,6 @@ class IssueBallDisPlayUseCase extends BallDisPlayUseCase {
     }else {
       return _issueBallDescription.text;
     }
-
   }
 
   getYoutubeId() {
@@ -65,6 +65,4 @@ class IssueBallDisPlayUseCase extends BallDisPlayUseCase {
       }
     }
   }
-
-
 }

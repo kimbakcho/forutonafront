@@ -16,6 +16,8 @@ abstract class ValuationMediatorComponent {
 abstract class ValuationMediator {
   registerComponent(ValuationMediatorComponent valuationMediatorComponent);
 
+  unregisterComponent(ValuationMediatorComponent valuationMediatorComponent);
+
   likeAction(ValuationMediatorComponent component);
 
   disLikeAction(ValuationMediatorComponent component);
@@ -160,6 +162,11 @@ class ValuationMediatorImpl implements ValuationMediator {
   @override
   int componentCount() {
     return components.length;
+  }
+
+  @override
+  unregisterComponent(ValuationMediatorComponent valuationMediatorComponent) {
+    components.remove(valuationMediatorComponent);
   }
 
 }
