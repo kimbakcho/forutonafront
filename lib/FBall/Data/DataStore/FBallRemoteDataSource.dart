@@ -60,7 +60,6 @@ abstract class FBallRemoteDataSource {
   Future<FBallImageUpload> ballImageUpload(
       {@required List<Uint8List> images, @required FDio tokenFDio});
 
-
 }
 
 class FBallRemoteSourceImpl implements FBallRemoteDataSource {

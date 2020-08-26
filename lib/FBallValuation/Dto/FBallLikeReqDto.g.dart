@@ -1,12 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../FBallValuation/Dto/FBallLikeReqDto.dart';
+part of 'FBallLikeReqDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
-
-
 
 FBallLikeReqDto _$FBallLikeReqDtoFromJson(Map<String, dynamic> json) {
   return FBallLikeReqDto()

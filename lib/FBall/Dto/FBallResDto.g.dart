@@ -27,11 +27,9 @@ FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['makeTime'] as String)
     ..description = json['description'] as String
-    ..nickName = json['nickName'] as String
     ..uid = json['uid'] == null
         ? null
         : FUserInfoSimpleResDto.fromJson(json['uid'] as Map<String, dynamic>)
-    ..userLevel = (json['userLevel'] as num)?.toDouble()
     ..contributor = json['contributor'] as int
     ..ballDeleteFlag = json['ballDeleteFlag'] as bool;
 }
@@ -53,9 +51,7 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'activationTime': instance.activationTime?.toIso8601String(),
       'makeTime': instance.makeTime?.toIso8601String(),
       'description': instance.description,
-      'nickName': instance.nickName,
       'uid': instance.uid?.toJson(),
-      'userLevel': instance.userLevel,
       'contributor': instance.contributor,
       'ballDeleteFlag': instance.ballDeleteFlag,
     };

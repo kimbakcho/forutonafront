@@ -38,10 +38,14 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         key: Key(_ballUuid),
-        create: (_) => ID001MainPage2ViewModel(
+        create: (_) {
+          var id001mainPage2ViewModel = ID001MainPage2ViewModel(
             ballUuid: _ballUuid,
             selectBallUseCaseInputPort: sl(),
-            fireBaseAuthAdapterForUseCase: sl()),
+            fireBaseAuthAdapterForUseCase: sl());
+          id001mainPage2ViewModel.init();
+          return id001mainPage2ViewModel;
+        },
         child: Consumer<ID001MainPage2ViewModel>(builder: (_, model, __) {
           return Stack(children: <Widget>[Scaffold(body: mainBody(model))]);
         }));

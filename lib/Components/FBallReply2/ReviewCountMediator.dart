@@ -12,7 +12,7 @@ abstract class ReviewCountMediator {
 
   unregisterComponent(
       ReviewCountMediatorComponent reviewCountMediatorComponent);
-
+  int componentCount();
   Future<int> reqReviewCount(String ballUuid);
 
   int reviewCount;
@@ -50,6 +50,11 @@ class ReviewCountMediatorImpl implements ReviewCountMediator{
   @override
   unregisterComponent(ReviewCountMediatorComponent reviewCountMediatorComponent) {
     components.remove(reviewCountMediatorComponent);
+  }
+
+  @override
+  int componentCount() {
+    return components.length;
   }
 
 

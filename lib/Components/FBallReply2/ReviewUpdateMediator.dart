@@ -12,7 +12,7 @@ abstract class ReviewUpdateMediator {
 
   unregisterComponent(
       ReviewUpdateMediatorComponent reviewUpdateMediatorComponent);
-
+  int componentCount();
   Future<FBallReplyResDto> updateReView(FBallReplyUpdateReqDto fBallReplyUpdateReqDto);
 }
 
@@ -44,6 +44,11 @@ class ReviewUpdateMediatorImpl extends ReviewUpdateMediator {
     components.forEach((element) {
       element.onUpdated(fBallReplyResDto);
     });
+  }
+
+  @override
+  int componentCount() {
+    return components.length;
   }
 
 }

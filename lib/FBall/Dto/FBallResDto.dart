@@ -23,9 +23,7 @@ class FBallResDto {
   DateTime activationTime;
   DateTime makeTime;
   String description;
-  String nickName;
   FUserInfoSimpleResDto uid;
-  double userLevel;
   int contributor;
   bool ballDeleteFlag;
 
@@ -52,9 +50,7 @@ class FBallResDto {
     fBallResDto.activationTime = fBall.activationTime;
     fBallResDto.makeTime = fBall.makeTime;
     fBallResDto.description = fBall.description;
-    fBallResDto.nickName = fBall.nickName;
     fBallResDto.uid = FUserInfoSimpleResDto.fromFUserInfoSimple(fBall.uid);
-    fBallResDto.userLevel = fBall.userLevel;
     fBallResDto.contributor = fBall.contributor;
     fBallResDto.ballDeleteFlag = fBall.ballDeleteFlag;
     return fBallResDto;

@@ -51,11 +51,13 @@ class ID001MainPage2ViewModel extends ChangeNotifier
         reviewUpdateMediator =
             ReviewUpdateMediatorImpl(fBallReplyUseCaseInputPort: sl()),
         detailPageController = ScrollController() {
-    _selectBall();
-    getBallLikeState();
     reviewInertMediator.registerComponent(this);
     reviewDeleteMediator.registerComponent(this);
     reviewUpdateMediator.registerComponent(this);
+  }
+  init() async {
+    await _selectBall();
+    await _getBallLikeState();
   }
 
   String getBallTitle() {
@@ -66,7 +68,6 @@ class ID001MainPage2ViewModel extends ChangeNotifier
     _fBallResDto = await _selectBallUseCaseInputPort.selectBall(_ballUuid);
     _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(_fBallResDto);
     _loadBallComplete = true;
-    print(_fBallResDto.ballName);
     if (!isDisPose) {
       notifyListeners();
     }
@@ -133,12 +134,12 @@ class ID001MainPage2ViewModel extends ChangeNotifier
     return _fBallResDto.activationTime;
   }
 
-  void getBallLikeState() async {
+  Future<void> _getBallLikeState() async {
     if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      valuationMediator.getBallLikeState(_ballUuid,
+      await valuationMediator.getBallLikeState(_ballUuid,
           uid: await _fireBaseAuthAdapterForUseCase.userUid());
     } else {
-      valuationMediator.getBallLikeState(_ballUuid);
+      await valuationMediator.getBallLikeState(_ballUuid);
     }
   }
 

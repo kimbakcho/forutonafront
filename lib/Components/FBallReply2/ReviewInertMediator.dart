@@ -11,6 +11,7 @@ abstract class ReviewInertMediatorComponent {
 abstract class ReviewInertMediator {
   registerComponent(ReviewInertMediatorComponent reviewInertMediatorComponent);
   unregisterComponent(ReviewInertMediatorComponent reviewInertMediatorComponent);
+  int componentCount();
   Future<FBallReplyResDto> insertReview(FBallReplyInsertReqDto reqDto);
 }
 
@@ -47,6 +48,13 @@ class ReviewInertMediatorImpl implements ReviewInertMediator {
   unregisterComponent(ReviewInertMediatorComponent reviewInertMediatorComponent) {
     components.remove(reviewInertMediatorComponent);
   }
+
+  @override
+  int componentCount() {
+    return components.length;
+  }
+
+
 
 
 }

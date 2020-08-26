@@ -22,6 +22,8 @@ abstract class ValuationMediator {
 
   getBallLikeState(String ballUuid,{String uid});
 
+  int componentCount();
+
   BallLikeState ballLikeState;
 
   int ballPower;
@@ -134,9 +136,6 @@ class ValuationMediatorImpl implements ValuationMediator {
     return fBallLikeResDto;
   }
 
-
-
-
   updateValuation(FBallLikeResDto fBallLikeResDto) {
     ballPower = fBallLikeResDto.ballPower;
     ballLikeCount = fBallLikeResDto.ballLike;
@@ -156,6 +155,11 @@ class ValuationMediatorImpl implements ValuationMediator {
         ballLikeState = BallLikeState.None;
       }
       updateValuation(fBallLikeResDto);
+  }
+
+  @override
+  int componentCount() {
+    return components.length;
   }
 
 }

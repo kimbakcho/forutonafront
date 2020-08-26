@@ -13,7 +13,7 @@ abstract class ReviewDeleteMediator {
 
   unregisterComponent(
       ReviewDeleteMediatorComponent reviewDeleteMediatorComponent);
-
+  int componentCount();
   deleteReview(FBallReplyResDto fBallReplyResDto);
 }
 
@@ -49,5 +49,10 @@ class ReviewDeleteMediatorImpl implements ReviewDeleteMediator {
   unregisterComponent(
       ReviewDeleteMediatorComponent reviewDeleteMediatorComponent) {
     components.remove(reviewDeleteMediatorComponent);
+  }
+
+  @override
+  int componentCount() {
+    return components.length;
   }
 }
