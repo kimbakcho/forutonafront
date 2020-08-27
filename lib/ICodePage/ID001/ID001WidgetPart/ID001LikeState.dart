@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001LikeAction.dart';
 import 'package:forutonafront/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
-import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
-import 'package:forutonafront/JCodePage/J001/J001View.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +23,6 @@ class ID001LikeState extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => ID001LikeStateViewModel(
             valuationMediator: valuationMediator,
-            fireBaseAuthAdapterForUseCase: sl(),
-            context: context,
             ballUuid: ballUuid,
             ballActivationTime: ballActivationTime),
         child: Consumer<ID001LikeStateViewModel>(builder: (_, model, __) {
@@ -184,25 +179,9 @@ class ID001LikeState extends StatelessWidget {
             textAlign: TextAlign.left,
           )),
       Spacer(),
-      RawMaterialButton(
-        onPressed: () {
-          model.likeAction();
-        },
-        constraints: BoxConstraints(minHeight: 35, minWidth: 35),
-        child: Icon(ForutonaIcon.thumbsup,
-            color: model.ballLikeState == BallLikeState.Up
-                ? Colors.lightBlueAccent
-                : Colors.grey),
-      ),
-      RawMaterialButton(
-        onPressed: () {
-          model.disLikeAction();
-        },
-        constraints: BoxConstraints(minHeight: 35, minWidth: 35),
-        child: Icon(ForutonaIcon.thumbsdown,
-            color: model.ballLikeState == BallLikeState.Down
-                ? Colors.lightBlueAccent
-                : Colors.grey),
+      ID001LikeAction(
+        ballUuid: ballUuid,
+        valuationMediator: valuationMediator,
       )
     ]);
   }
@@ -211,19 +190,15 @@ class ID001LikeState extends StatelessWidget {
 class ID001LikeStateViewModel extends ChangeNotifier
     implements ValuationMediatorComponent {
   String ballUuid;
-  DateTime ballActivationTime;
+  DateTime _ballActivationTime;
   final ValuationMediator _valuationMediator;
-  final BuildContext context;
-  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   ID001LikeStateViewModel(
-      {this.ballUuid,
-      this.ballActivationTime,
-      this.context,
-      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
+      {String ballUuid,
+      DateTime ballActivationTime,
       @required ValuationMediator valuationMediator})
       : _valuationMediator = valuationMediator,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
+        _ballActivationTime = ballActivationTime {
     _valuationMediator.registerComponent(this);
   }
 
@@ -234,27 +209,6 @@ class ID001LikeStateViewModel extends ChangeNotifier
   get likeServiceUseUserCount => _valuationMediator.likeServiceUseUserCount;
 
   get ballPower => _valuationMediator.ballPower;
-
-  likeAction() async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      _valuationMediator.likeAction(this);
-    } else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
-    }
-  }
-
-  BallLikeState get ballLikeState {
-    return _valuationMediator.ballLikeState;
-  }
-
-  disLikeAction() async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      _valuationMediator.disLikeAction(this);
-    }else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
-    }
-
-  }
 
   double get ballLikePercent {
     if ((_valuationMediator.ballLikeCount +
@@ -279,11 +233,17 @@ class ID001LikeStateViewModel extends ChangeNotifier
   }
 
   String get ballRemindTime {
-    return TimeDisplayUtil.getCalcToStrFromNow(ballActivationTime);
+    return TimeDisplayUtil.getCalcToStrFromNow(_ballActivationTime);
   }
 
   @override
   reqNotification() {
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _valuationMediator.unregisterComponent(this);
+    super.dispose();
   }
 }

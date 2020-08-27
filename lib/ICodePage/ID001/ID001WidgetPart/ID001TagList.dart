@@ -15,8 +15,12 @@ class ID001TagList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => ID001TagListViewModel(
-            ballUuid: ballUuid, tagFromBallUuidUseCaseInputPort: sl()),
+        create: (_) {
+          var id001tagListViewModel = ID001TagListViewModel(
+            ballUuid: ballUuid, tagFromBallUuidUseCaseInputPort: sl());
+          id001tagListViewModel.init();
+          return id001tagListViewModel;
+        },
         child: Consumer<ID001TagListViewModel>(builder: (_, tagModel, __) {
           return Container(
             margin: EdgeInsets.only(bottom: 16),
@@ -56,10 +60,7 @@ class ID001TagListViewModel extends ChangeNotifier
   ID001TagListViewModel(
       {@required this.ballUuid,
       TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort})
-      : _tagFromBallUuidUseCaseInputPort = tagFromBallUuidUseCaseInputPort {
-    _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-        ballUuid: ballUuid, outputPort: this);
-  }
+      : _tagFromBallUuidUseCaseInputPort = tagFromBallUuidUseCaseInputPort;
 
   int getBallTagsSize() {
     return ballTags.length;
@@ -70,4 +71,10 @@ class ID001TagListViewModel extends ChangeNotifier
     this.ballTags = ballTags;
     notifyListeners();
   }
+
+  init() async {
+    await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
+        ballUuid: ballUuid, outputPort: this);
+  }
+
 }
