@@ -10,5 +10,6 @@ class TagTestUtil {
       fBallTagResDto.tagItem = tagName;
       var rng = new Random();
       fBallTagResDto.idx  = rng.nextInt(100);
+      return fBallTagResDto;
     }
  }

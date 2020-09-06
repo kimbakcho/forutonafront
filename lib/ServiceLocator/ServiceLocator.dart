@@ -26,19 +26,14 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMo
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
+import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/TopNavBtnMediator.dart';
 import 'package:forutonafront/DetailPageViewer/DetailPageItemFactory.dart';
 import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSource.dart';
-
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
-
 import 'package:forutonafront/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
-
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
-
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
-
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
-
 import 'package:forutonafront/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
@@ -510,4 +505,6 @@ init() {
 
   sl.registerSingleton<MapBallMarkerFactory>(
       MapBallMarkerFactory(mapMakerDescriptorContainer: sl()));
+
+  sl.registerSingleton<TopNavBtnMediator>(TopNavBtnMediatorImpl());
 }

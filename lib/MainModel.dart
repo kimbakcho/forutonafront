@@ -32,7 +32,6 @@ class MainModel with ChangeNotifier {
     _fireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen();
     _flutterLocalNotificationsPluginAdapter.init();
     _mapMakerDescriptorContainer.init();
-    //test
 
   }
 }

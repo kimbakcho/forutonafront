@@ -5,6 +5,8 @@ import 'package:forutonafront/BCodePage/BCodeMainPage.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
+
+import 'package:forutonafront/Components/TopNav/TopNavBar.dart';
 import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
 import 'package:forutonafront/ICodePage/ICodeMainPage.dart';
@@ -13,14 +15,14 @@ import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 import '../ServiceLocator/ServiceLocator.dart';
 
-class CodeMainpage extends StatefulWidget {
-  CodeMainpage({Key key}) : super(key: key);
+class CodeMainPage extends StatefulWidget {
+  CodeMainPage({Key key}) : super(key: key);
 
   @override
-  _CodeMainpageState createState() => _CodeMainpageState();
+  _CodeMainPageState createState() => _CodeMainPageState();
 }
 
-class _CodeMainpageState extends State<CodeMainpage> {
+class _CodeMainPageState extends State<CodeMainPage> {
   @override
   void initState() {
     super.initState();
@@ -52,17 +54,30 @@ class _CodeMainpageState extends State<CodeMainpage> {
         return Scaffold(
           backgroundColor: Color(0xffF2F0F1),
           body: Stack(children: <Widget>[
-            Container(
-                child: PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: model.pageController,
-                    children: <Widget>[
-                  HCodeMainPage(),
-                  ICodeMainPage(),
-                  BCodeMainPage(),
-                  KCodeMainPage(),
-                  GCodeMainPage()
-                ]))
+            Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(
+                      0, MediaQuery.of(context).padding.top, 0, 0),
+                   child: TopNavBar(
+
+                   )
+                ),
+                Expanded(
+                  child:PageView(
+                      physics: NeverScrollableScrollPhysics(),
+                      controller: model.pageController,
+                      children: <Widget>[
+                        HCodeMainPage(),
+                        ICodeMainPage(),
+                        BCodeMainPage(),
+                        KCodeMainPage(),
+                        GCodeMainPage()
+                      ]) ,
+                )
+
+              ],
+            )
           ]),
         );
       }),

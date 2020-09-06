@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
           MaterialPageRoute(
               settings: RouteSettings(name: "/"),
               builder: (context) {
-                return CodeMainpage();
+                return CodeMainPage();
               }));
     });
   }

@@ -80,7 +80,6 @@ void main (){
   });
 
   test('생성시 Mediator에 Component 등록', () async {
-    //TODO 테스트 구현
     //arrange
     String testBallUuid = "TESTBallUUid";
     setBallLikeTest(testBallUuid, 1, 0, true);
