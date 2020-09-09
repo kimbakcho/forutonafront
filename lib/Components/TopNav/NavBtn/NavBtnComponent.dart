@@ -1,23 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
-import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/TopNavBtnComponent.dart';
-import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/TopNavBtnMediator.dart';
+
+import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
+
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
-class NavComponent extends StatefulWidget {
+import '../TopNavBtnMediator.dart';
+import 'TopNavBtnComponent.dart';
+
+class NavBtnComponent extends StatefulWidget {
   final NavBtnSetDto navBtnSetDto;
 
-  NavComponent(
+  NavBtnComponent(
       {Key key,
       this.navBtnSetDto})
       : super(key: key);
 
   @override
-  _NavComponentState createState() => _NavComponentState(navBtnSetDto);
+  _NavBtnComponentState createState() => _NavBtnComponentState(navBtnSetDto);
 }
 
-class _NavComponentState extends State<NavComponent>
+class _NavBtnComponentState extends State<NavBtnComponent>
     with SingleTickerProviderStateMixin
     implements TopNavBtnComponent {
   final NavBtnSetDto navBtnSetDto;
@@ -25,13 +29,13 @@ class _NavComponentState extends State<NavComponent>
 
   final TopNavBtnMediator navBtnMediator = sl();
 
-  _NavComponentState(this.navBtnSetDto);
+  _NavBtnComponentState(this.navBtnSetDto);
 
   @override
   void initState() {
     initAnimation();
     super.initState();
-    navBtnMediator.registerComponent(this);
+    navBtnMediator.topNavBtnRegisterComponent(this);
   }
 
   initAnimation() {
@@ -45,7 +49,7 @@ class _NavComponentState extends State<NavComponent>
 
   @override
   void dispose() {
-    navBtnMediator.unRegisterComponent(this);
+    navBtnMediator.topNavBtnUnRegisterComponent(this);
     _controller.dispose();
     super.dispose();
   }
@@ -55,6 +59,8 @@ class _NavComponentState extends State<NavComponent>
     return NavBtnAniComponent(
       child: NavBtnContent(
         btnColor: navBtnSetDto.btnColor,
+        btnIcon: navBtnSetDto.btnIcon,
+        navRouterType: navBtnSetDto.routerType,
       ),
       animation: getAnimation(),
       btnSize: navBtnSetDto.btnSize,
@@ -70,14 +76,20 @@ class _NavComponentState extends State<NavComponent>
   aniReverse() {
     _controller.reverse();
   }
+
+  @override
+  getTopNavRouterType() {
+    return navBtnSetDto.routerType;
+  }
 }
 
 class NavBtnContent extends StatelessWidget {
   final Color btnColor;
   final Icon btnIcon;
+  final TopNavRouterType navRouterType;
   final TopNavBtnMediator navBtnMediator = sl();
 
-  NavBtnContent({Key key, this.btnColor, this.btnIcon}) : super(key: key);
+  NavBtnContent({Key key, this.btnColor, this.btnIcon,this.navRouterType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +103,12 @@ class NavBtnContent extends StatelessWidget {
           padding: EdgeInsets.all(0),
           onPressed: () {
             if(navBtnMediator.aniState == NavBtnMediatorState.Close){
-              navBtnMediator.openNavList();
+              navBtnMediator.openNavList(navRouterType: navRouterType);
             }else {
-              navBtnMediator.closeNavList();
+              navBtnMediator.closeNavList(navRouterType: navRouterType);
             }
           },
-          child: Icon(Icons.sort),
+          child: btnIcon,
         ));
   }
 }
