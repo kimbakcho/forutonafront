@@ -5,15 +5,15 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import '../../TopNavRouterType.dart';
 import '../TopNavExpendComponent.dart';
 
-class TopH003NavExpandComponent extends StatefulWidget {
+class TopX002NavExpandComponent extends StatefulWidget {
   @override
-  _TopH003NavExpandComponentState createState() => _TopH003NavExpandComponentState();
+  _TopX002NavExpandComponentState createState() =>
+      _TopX002NavExpandComponentState();
 }
 
-class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
-    with SingleTickerProviderStateMixin implements TopNavExpendComponent{
+class _TopX002NavExpandComponentState extends State<TopX002NavExpandComponent>
+    with SingleTickerProviderStateMixin implements TopNavExpendComponent {
   AnimationController _controller;
-  TopNavBtnMediator topNavBtnMediator;
 
   @override
   void initState() {
@@ -27,7 +27,6 @@ class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
     _controller = AnimationController(vsync: this,duration: topNavBtnMediator.animationDuration);
     _controller.forward();
   }
-
   @override
   void dispose() {
     topNavBtnMediator.topNavExpendUnRegisterComponent(this);
@@ -35,20 +34,18 @@ class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
     super.dispose();
   }
 
-  Animation<double> getAnimation() {
-    return Tween<double>(begin: 0, end: 280).animate(_controller);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return TopH003NavExpandAniComponent(
+    return TopX002NavExpandAniComponent(
       animation: getAnimation(),
       btnHeightSize: 30,
-      child: TopH003NavExpendAniContent(
-
+      child: TopX002NavExpendAniContent(
       ),
     );
   }
+
+  @override
+  TopNavBtnMediator topNavBtnMediator;
 
   @override
   closeExpandNav() {
@@ -57,28 +54,32 @@ class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
 
   @override
   getTopNavRouterType() {
-    return TopNavRouterType.H003;
+    return TopNavRouterType.X002;
   }
 
   @override
   openExpandNav() {
     _controller.forward();
   }
-}
 
-class TopH003NavExpendAniContent extends StatelessWidget {
+  @override
+  getAnimation() {
+    return Tween<double>(begin: 0, end: 280).animate(_controller);
+  }
+}
+class TopX002NavExpendAniContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text("H003"),);
+    return Container(child: Text("X002"),);
   }
 }
 
-class TopH003NavExpandAniComponent extends StatelessWidget {
+class TopX002NavExpandAniComponent extends StatelessWidget {
   final Animation<double> animation;
   final double btnHeightSize;
   final Widget child;
 
-  const TopH003NavExpandAniComponent({Key key, this.animation, this.btnHeightSize, this.child}) : super(key: key);
+  const TopX002NavExpandAniComponent({Key key, this.animation, this.btnHeightSize, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,4 +96,3 @@ class TopH003NavExpandAniComponent extends StatelessWidget {
     );
   }
 }
-

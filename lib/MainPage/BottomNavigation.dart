@@ -20,11 +20,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.HCDOE);
+                    model.jumpToPage(CodeState.H001CODE);
                   },
                   child: Icon(
                     ForutonaIcon.list,
-                    color: model.currentState == HCodeState.HCDOE
+                    color: model.currentState == CodeState.H001CODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -32,11 +32,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.ICODE);
+                    model.jumpToPage(CodeState.H003CODE);
                   },
                   child: Icon(
                     ForutonaIcon.map,
-                    color: model.currentState == HCodeState.ICODE
+                    color: model.currentState == CodeState.H003CODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -44,11 +44,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.BCODE);
+                    model.jumpToPage(CodeState.X001CODE);
                   },
                   child: Icon(
                     ForutonaIcon.officialchannel,
-                    color: model.currentState == HCodeState.BCODE
+                    color: model.currentState == CodeState.X001CODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -56,12 +56,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
               flex: 1,
               child: FlatButton(
                   onPressed: () {
-                    model.jumpToPage(HCodeState.KCODE);
+                    model.jumpToPage(CodeState.X002CODE);
                   },
                   child: Icon(
                     ForutonaIcon.snsservicemenu,
                     size: 19,
-                    color: model.currentState == HCodeState.KCODE
+                    color: model.currentState == CodeState.X002CODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),
@@ -72,20 +72,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     //BPage 의 WebviewScaffold 가 Navigator를 Push 해도 띄어져 있는 버그가 있어
                     //해결이 안되 GCODE 페이지로 PageController 로 옮긴 다음에 처리
                     if (await model.checkUser()) {
-                      model.jumpToPage(HCodeState.GCODE);
+                      model.jumpToPage(CodeState.X002CODE);
                     }else {
-                      if(model.currentState == HCodeState.BCODE){
-                       model.jumpToPage(HCodeState.GCODE);
+                      if(model.currentState == CodeState.X001CODE){
+                       model.jumpToPage(CodeState.X002CODE);
                       }
                       await model.gotoJ001Page(context);
                       if (!await model.checkUser()) {
-                        model.jumpToPage(HCodeState.HCDOE);
+                        model.jumpToPage(CodeState.H001CODE);
                       }
                     }
                   },
                   child: Icon(
                     ForutonaIcon.user,
-                    color: model.currentState == HCodeState.GCODE
+                    color: model.currentState == CodeState.X002CODE
                         ? Color(0xff454F63)
                         : Color(0xffE4E7E8),
                   ))),

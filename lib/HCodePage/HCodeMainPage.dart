@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/HCodePage/H001/BallListMediator.dart';
 import 'package:forutonafront/HCodePage/H001/H001Page.dart';
-import 'package:forutonafront/HCodePage/H004/H004MainPage.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPageViewModel.dart';
-import 'package:forutonafront/HCodePage/HCodePageState.dart';
 import 'package:provider/provider.dart';
-import 'H003/H003MainPage.dart';
 
 class HCodeMainPage extends StatefulWidget {
   @override
@@ -15,11 +10,8 @@ class HCodeMainPage extends StatefulWidget {
 }
 
 class _HCodeMainPageState extends State<HCodeMainPage> {
-
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
     return ChangeNotifierProvider(
         create: (_) => HCodeMainPageViewModel(),
         child: Consumer<HCodeMainPageViewModel>(builder: (_, model, child) {
@@ -32,193 +24,15 @@ class _HCodeMainPageState extends State<HCodeMainPage> {
                     child: Stack(children: <Widget>[
                       // 태그 랭킹 펼칠시 숨기기
                       Column(children: <Widget>[
-                        topNavibar(model),
                         Expanded(
-                            child: PageView(
-                                controller: model.hCodePageController,
-                                children: <Widget>[
-                              H001Page(
-                                influencePowerBallListMediator: BallListMediatorImpl(),
-                              ),
-                              H003MainPage()
-                            ])),
+                          child: H001Page(
+                            influencePowerBallListMediator:
+                                BallListMediatorImpl(),
+                          ),
+                        ),
                       ]),
                     ])))
           ]);
         }));
-  }
-
-  Container topNavibar(HCodeMainPageViewModel model) {
-    return Container(
-        padding: EdgeInsets.fromLTRB(16, 7, 16, 0),
-        height: 64,
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              h001Button(model),
-              SizedBox(
-                width: 16,
-              ),
-              h003Button(model),
-              Spacer(),
-              searchButton()
-            ]),
-      decoration: BoxDecoration(
-        color: Color(0xffffffff),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0.00,3.00),
-            color: Color(0xff000000).withOpacity(0.03),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container searchButton() {
-    return Container(
-        alignment: Alignment.topCenter,
-        height: 36,
-        width: 36,
-        decoration: BoxDecoration(
-          color: Color(0xfff6f6f6),
-          borderRadius: BorderRadius.circular(8.00),
-        ),
-        child: FlatButton(
-            padding: EdgeInsets.all(0),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  settings: RouteSettings(name: "/H004"),
-                  builder: (context) {
-                    return H004MainPage();
-                  }));
-            },
-            child: Icon(ForutonaIcon.search,color: Color(0xffB1B1B1),)));
-  }
-
-  Column h001Button(HCodeMainPageViewModel model) {
-    return Column(children: <Widget>[
-      model.currentState == HCodePageState.H001Page
-          ? Container(
-              height: 36.00,
-              width: 36.00,
-              child: FlatButton(
-                onPressed: () {
-                  model.jumpTopPage(HCodePageState.H001Page);
-                },
-                padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
-                child: Icon(
-                  ForutonaIcon.joystick,
-                  color: Color(0xff454F63),
-                  size: 17,
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xff88d4f1),
-                border: Border.all(
-                  width: 2.00,
-                  color: Color(0xff454f63),
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ))
-          : Container(
-              height: 36.00,
-              width: 36.00,
-              decoration: BoxDecoration(
-                color: Color(0xfff6f6f6),
-                borderRadius: BorderRadius.circular(8.00),
-              ),
-              child: FlatButton(
-                onPressed: () {
-                  setState(() {
-                    model.jumpTopPage(HCodePageState.H001Page);
-                  });
-                },
-                padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
-                child: Icon(
-                  ForutonaIcon.joystick,
-                  color: Color(0xffB1B1B1),
-                  size: 17,
-                ),
-              ),
-            ),
-      model.currentState == HCodePageState.H001Page
-          ? Container(
-              margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-              height: 4.00,
-              width: 4.00,
-              decoration: BoxDecoration(
-                color: Color(0xff454f63),
-                border: Border.all(
-                  width: 1.00,
-                  color: Color(0xff454f63),
-                ),
-                shape: BoxShape.circle,
-              ))
-          : Container()
-    ]);
-  }
-
-  Column h003Button(HCodeMainPageViewModel model) {
-    return Column(children: <Widget>[
-      model.currentState == HCodePageState.H003Page
-          ? Container(
-              height: 36,
-              width: 36,
-              child: FlatButton(
-                onPressed: () {
-                  model.jumpTopPage(HCodePageState.H003Page);
-                },
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Icon(
-                  ForutonaIcon.h003top,
-                  color: Color(0xff454F63),
-                  size: 17,
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xffff9edb),
-                border: Border.all(
-                  width: 2.00,
-                  color: Color(0xff454f63),
-                ),
-                borderRadius: BorderRadius.circular(8.00),
-              ))
-          : Container(
-              height: 36.00,
-              width: 36.00,
-              decoration: BoxDecoration(
-                color: Color(0xfff6f6f6),
-                borderRadius: BorderRadius.circular(8.00),
-              ),
-              child: FlatButton(
-                onPressed: () {
-                  model.jumpTopPage(HCodePageState.H003Page);
-                },
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Icon(
-                  ForutonaIcon.h003top,
-                  color: Color(0xffB1B1B1),
-                  size: 17,
-                ),
-              ),
-            ),
-      model.currentState == HCodePageState.H003Page
-          ? Container(
-              margin: EdgeInsets.fromLTRB(0, 6, 0, 0),
-              height: 4.00,
-              width: 4.00,
-              decoration: BoxDecoration(
-                color: Color(0xff454f63),
-                border: Border.all(
-                  width: 1.00,
-                  color: Color(0xff454f63),
-                ),
-                shape: BoxShape.circle,
-              ))
-          : Container()
-    ]);
   }
 }

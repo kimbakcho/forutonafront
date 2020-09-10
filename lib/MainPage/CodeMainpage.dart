@@ -1,18 +1,14 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:forutonafront/BCodePage/BCodeMainPage.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
-
+import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBar.dart';
-import 'package:forutonafront/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
-import 'package:forutonafront/ICodePage/ICodeMainPage.dart';
-import 'package:forutonafront/KCodePage/KCodeMainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
+
 import '../ServiceLocator/ServiceLocator.dart';
 
 class CodeMainPage extends StatefulWidget {
@@ -26,6 +22,7 @@ class _CodeMainPageState extends State<CodeMainPage> {
   @override
   void initState() {
     super.initState();
+
     _configureSelectNotificationSubject();
   }
 
@@ -57,25 +54,32 @@ class _CodeMainPageState extends State<CodeMainPage> {
             Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.fromLTRB(
-                      0, MediaQuery.of(context).padding.top, 0, 0),
-                   child: TopNavBar(
-
-                   )
-                ),
+                    padding: EdgeInsets.fromLTRB(
+                        0, MediaQuery.of(context).padding.top, 0, 0),
+                    child: TopNavBar()),
                 Expanded(
-                  child:PageView(
-                      physics: NeverScrollableScrollPhysics(),
-                      controller: model.pageController,
-                      children: <Widget>[
-                        HCodeMainPage(),
-                        ICodeMainPage(),
-                        BCodeMainPage(),
-                        KCodeMainPage(),
-                        GCodeMainPage()
-                      ]) ,
+                  child: SwipeGestureRecognizer(
+                    onSwipeRight: () {
+                      model.swipeRight();
+                    },
+                    onSwipeLeft: () {
+                      model.swipeLeft();
+                    },
+                    child: PageView(
+                        physics: NeverScrollableScrollPhysics(),
+                        controller: model.pageController,
+                        children: <Widget>[
+                          HCodeMainPage(),
+                          Container(child: Text("H003")),
+                          Container(child: Text("X001")),
+                          Container(child: Text("X002")),
+                          // ICodeMainPage(),
+                          // BCodeMainPage(),
+                          // KCodeMainPage(),
+                          // GCodeMainPage()
+                        ]),
+                  ),
                 )
-
               ],
             )
           ]),

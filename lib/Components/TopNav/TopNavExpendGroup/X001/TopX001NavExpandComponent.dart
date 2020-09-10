@@ -5,15 +5,15 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import '../../TopNavRouterType.dart';
 import '../TopNavExpendComponent.dart';
 
-class TopH003NavExpandComponent extends StatefulWidget {
+class TopX001NavExpandComponent extends StatefulWidget {
   @override
-  _TopH003NavExpandComponentState createState() => _TopH003NavExpandComponentState();
+  _TopX001NavExpandComponentState createState() =>
+      _TopX001NavExpandComponentState();
 }
 
-class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
-    with SingleTickerProviderStateMixin implements TopNavExpendComponent{
+class _TopX001NavExpandComponentState extends State<TopX001NavExpandComponent>
+    with SingleTickerProviderStateMixin implements TopNavExpendComponent {
   AnimationController _controller;
-  TopNavBtnMediator topNavBtnMediator;
 
   @override
   void initState() {
@@ -35,20 +35,18 @@ class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
     super.dispose();
   }
 
-  Animation<double> getAnimation() {
-    return Tween<double>(begin: 0, end: 280).animate(_controller);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return TopH003NavExpandAniComponent(
+    return TopX001NavExpandAniComponent(
       animation: getAnimation(),
       btnHeightSize: 30,
-      child: TopH003NavExpendAniContent(
-
+      child: TopX001NavExpendAniContent(
       ),
     );
   }
+
+  @override
+  TopNavBtnMediator topNavBtnMediator;
 
   @override
   closeExpandNav() {
@@ -57,28 +55,32 @@ class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
 
   @override
   getTopNavRouterType() {
-    return TopNavRouterType.H003;
+    return TopNavRouterType.X001;
   }
 
   @override
   openExpandNav() {
     _controller.forward();
   }
-}
 
-class TopH003NavExpendAniContent extends StatelessWidget {
+  @override
+  getAnimation() {
+    return Tween<double>(begin: 0, end: 280).animate(_controller);
+  }
+}
+class TopX001NavExpendAniContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text("H003"),);
+    return Container(child: Text("X001"),);
   }
 }
 
-class TopH003NavExpandAniComponent extends StatelessWidget {
+class TopX001NavExpandAniComponent extends StatelessWidget {
   final Animation<double> animation;
   final double btnHeightSize;
   final Widget child;
 
-  const TopH003NavExpandAniComponent({Key key, this.animation, this.btnHeightSize, this.child}) : super(key: key);
+  const TopX001NavExpandAniComponent({Key key, this.animation, this.btnHeightSize, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,4 +97,3 @@ class TopH003NavExpandAniComponent extends StatelessWidget {
     );
   }
 }
-

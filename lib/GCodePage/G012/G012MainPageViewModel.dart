@@ -172,7 +172,7 @@ class G012MainPageViewModel extends ChangeNotifier {
       await _fUserPwChangeUseCaseInputPort.pwChange(newPwController.text);
       await showCompleteChangePwDialog();
       await _logoutUseCaseInputPort.tryLogout();
-      _codeMainPageController.moveToPage(HCodeState.HCDOE);
+      _codeMainPageController.moveToPage(CodeState.H001CODE);
       Navigator.of(context).popUntil(ModalRoute.withName("/"));
     } catch (ex) {
       Fluttertoast.showToast(

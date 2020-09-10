@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 
 import 'NavBtn/TopNavBtnComponent.dart';
 import 'TopNavBtnGroup/INavBtnGroup.dart';
@@ -26,12 +29,22 @@ abstract class TopNavBtnMediator {
   TopNavRouterType currentTopNavRouter;
 
   TopNavExpendGroupViewModel topNavExpendGroupViewModel;
+
+  Duration animationDuration;
+
+  CodeMainViewModelInputPort codeMainViewModelInputPort;
+
+  void onNavBtnAniStatusListener(AnimationStatus status, TopNavRouterType routerType);
+
+  void changeMainPage(CodeState topOnMoveMainPage);
 }
 
 class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   List<TopNavBtnComponent> topNavBtnComponents = [];
 
   List<TopNavExpendComponent> topNavExpendComponents = [];
+
+  Duration animationDuration = Duration(milliseconds: 300);
 
   TopNavExpendGroupViewModel topNavExpendGroupViewModel;
 
@@ -60,10 +73,10 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
     this.topNavBtnComponents.remove(component);
   }
 
-  openNavList({@required TopNavRouterType navRouterType}) {
+  openNavList({@required TopNavRouterType navRouterType}) async {
     topNavBtnForwardAnimation();
-
     closeExpendComponent();
+    await Future.delayed(Duration(milliseconds: animationDuration.inMilliseconds + 100));
   }
 
   void closeExpendComponent() {
@@ -125,6 +138,22 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   topNavExpendUnRegisterComponent(TopNavExpendComponent component) {
     topNavExpendComponents.remove(component);
   }
+
+  @override
+  void onNavBtnAniStatusListener(AnimationStatus status,TopNavRouterType routerType) {
+
+  }
+
+  @override
+  void changeMainPage(CodeState topOnMoveMainPage) {
+    if(codeMainViewModelInputPort != null){
+      codeMainViewModelInputPort.jumpToPage(topOnMoveMainPage);
+    }
+  }
+
+  @override
+  CodeMainViewModelInputPort codeMainViewModelInputPort;
+
 }
 
 enum NavBtnMediatorState { Open, Close }

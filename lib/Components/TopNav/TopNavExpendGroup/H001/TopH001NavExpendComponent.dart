@@ -38,8 +38,8 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
   }
 
   initAnimation() {
-    _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _controller = AnimationController(
+        vsync: this, duration: topNavBtnMediator.animationDuration);
     _controller.forward();
     _controller.addStatusListener(setListener);
   }
@@ -59,8 +59,9 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
   }
 
   Animation<double> getAnimation() {
+    double smallSizeBtn = 80;
     return Tween<double>(
-            begin: 80, end: widget.topH001NavExpendDto.btnWidthSize)
+            begin: smallSizeBtn, end: widget.topH001NavExpendDto.btnWidthSize)
         .animate(_controller);
   }
 
@@ -87,17 +88,15 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
           Container(
             width: 36,
             height: 36,
-            decoration: BoxDecoration(
-                color: Color(0xffF6F6F6),
-              shape: BoxShape.circle
-            ),
-
+            decoration:
+                BoxDecoration(color: Color(0xffF6F6F6), shape: BoxShape.circle),
             child: IconButton(
-              onPressed: (){
-
-              },
+              onPressed: () {},
               padding: EdgeInsets.all(0),
-              icon: Icon(Icons.map,size: 17,),
+              icon: Icon(
+                Icons.map,
+                size: 17,
+              ),
             ),
           )
         ],
@@ -135,7 +134,8 @@ class TopH001NavExpendAniContent extends StatelessWidget {
         Expanded(
           child: Container(
               child: FlatButton(
-                shape: RoundedRectangleBorder(borderRadius:BorderRadius.all(Radius.circular(20.0)) ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 padding: EdgeInsets.all(0),
                 onPressed: () {},
                 child: Text(

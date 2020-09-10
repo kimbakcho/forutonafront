@@ -75,7 +75,7 @@ class G009MainPageViewModel extends ChangeNotifier
 
   @override
   void onLogout() {
-    _codeMainPageController.moveToPage(HCodeState.HCDOE);
+    _codeMainPageController.moveToPage(CodeState.H001CODE);
     Navigator.of(context).popUntil((route) => route.settings.name == "/");
   }
 

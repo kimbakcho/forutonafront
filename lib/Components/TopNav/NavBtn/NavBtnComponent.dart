@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
-
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
-
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import '../TopNavBtnMediator.dart';
@@ -12,10 +11,7 @@ import 'TopNavBtnComponent.dart';
 class NavBtnComponent extends StatefulWidget {
   final NavBtnSetDto navBtnSetDto;
 
-  NavBtnComponent(
-      {Key key,
-      this.navBtnSetDto})
-      : super(key: key);
+  NavBtnComponent({Key key, this.navBtnSetDto}) : super(key: key);
 
   @override
   _NavBtnComponentState createState() => _NavBtnComponentState(navBtnSetDto);
@@ -39,11 +35,16 @@ class _NavBtnComponentState extends State<NavBtnComponent>
   }
 
   initAnimation() {
-    _controller = AnimationController(vsync: this, duration: navBtnSetDto.duration);
+    _controller = AnimationController(
+        vsync: this, duration: navBtnMediator.animationDuration);
+    _controller.addStatusListener((status) {
+      navBtnMediator.onNavBtnAniStatusListener(status, navBtnSetDto.routerType);
+    });
   }
 
   Animation<double> getAnimation() {
-    return Tween<double>(begin: navBtnSetDto.startOffset, end: navBtnSetDto.endOffset)
+    return Tween<double>(
+            begin: navBtnSetDto.startOffset, end: navBtnSetDto.endOffset)
         .animate(_controller);
   }
 
@@ -61,6 +62,7 @@ class _NavBtnComponentState extends State<NavBtnComponent>
         btnColor: navBtnSetDto.btnColor,
         btnIcon: navBtnSetDto.btnIcon,
         navRouterType: navBtnSetDto.routerType,
+        topOnMoveMainPage: navBtnSetDto.topOnMoveMainPage,
       ),
       animation: getAnimation(),
       btnSize: navBtnSetDto.btnSize,
@@ -83,18 +85,27 @@ class _NavBtnComponentState extends State<NavBtnComponent>
   }
 }
 
-class NavBtnContent extends StatelessWidget {
+class NavBtnContent extends StatelessWidget implements NavBtnContentInputPort {
   final Color btnColor;
   final Icon btnIcon;
   final TopNavRouterType navRouterType;
+  final CodeState topOnMoveMainPage;
+
   final TopNavBtnMediator navBtnMediator = sl();
 
-  NavBtnContent({Key key, this.btnColor, this.btnIcon,this.navRouterType}) : super(key: key);
+  NavBtnContent(
+      {Key key,
+      this.btnColor,
+      this.btnIcon,
+      this.navRouterType,
+      this.topOnMoveMainPage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
+          border: Border.all(color: Color(0xff454F63), width: 2),
           color: btnColor,
           shape: BoxShape.circle,
         ),
@@ -102,15 +113,24 @@ class NavBtnContent extends StatelessWidget {
           shape: CircleBorder(),
           padding: EdgeInsets.all(0),
           onPressed: () {
-            if(navBtnMediator.aniState == NavBtnMediatorState.Close){
-              navBtnMediator.openNavList(navRouterType: navRouterType);
-            }else {
-              navBtnMediator.closeNavList(navRouterType: navRouterType);
-            }
+            onNavTopBtnTop();
           },
           child: btnIcon,
         ));
   }
+
+  void onNavTopBtnTop() {
+    if (navBtnMediator.aniState == NavBtnMediatorState.Close) {
+      navBtnMediator.openNavList(navRouterType: navRouterType);
+    } else {
+      navBtnMediator.closeNavList(navRouterType: navRouterType);
+      navBtnMediator.changeMainPage(topOnMoveMainPage);
+    }
+  }
+}
+
+abstract class NavBtnContentInputPort {
+  onNavTopBtnTop();
 }
 
 class NavBtnAniComponent extends StatelessWidget {
@@ -118,8 +138,7 @@ class NavBtnAniComponent extends StatelessWidget {
   final Animation<double> animation;
   final double btnSize;
 
-  const NavBtnAniComponent(
-      {Key key, this.animation, this.child, this.btnSize})
+  const NavBtnAniComponent({Key key, this.animation, this.child, this.btnSize})
       : super(key: key);
 
   @override

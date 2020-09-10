@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtn.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:provider/provider.dart';
-
 import 'INavBtnGroup.dart';
 import '../TopNavBtnMediator.dart';
 
@@ -18,10 +17,10 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
     navBtnList.add(NavBtn(
       originIndex: 1,
       navBtnSetDto: NavBtnSetDto(
-          routerType: TopNavRouterType.ZZ001,
-          duration: duration,
+          routerType: TopNavRouterType.X002,
           btnColor: Color(0xffF6F6F6),
-          btnIcon: Icon(Icons.star),
+          btnIcon: Icon(Icons.account_balance),
+          topOnMoveMainPage: CodeState.X002CODE,
           btnSize: 36,
           startOffset: 0,
           endOffset: 120),
@@ -30,10 +29,10 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
     navBtnList.add(NavBtn(
       originIndex: 2,
       navBtnSetDto: NavBtnSetDto(
-          routerType: TopNavRouterType.Z001,
-          duration: duration,
+          routerType: TopNavRouterType.X001,
           btnColor: Color(0xffF6F6F6),
           btnIcon: Icon(Icons.star),
+          topOnMoveMainPage: CodeState.X001CODE,
           btnSize: 36,
           startOffset: 0,
           endOffset: 80),
@@ -43,9 +42,9 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
       originIndex: 3,
       navBtnSetDto: NavBtnSetDto(
           routerType: TopNavRouterType.H003,
-          duration: duration,
           btnColor: Color(0xffCCCCFF),
           btnIcon: Icon(Icons.playlist_add),
+          topOnMoveMainPage: CodeState.H003CODE,
           btnSize: 36,
           startOffset: 0,
           endOffset: 40),
@@ -55,9 +54,9 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
       originIndex: 4,
       navBtnSetDto: NavBtnSetDto(
           routerType: TopNavRouterType.H001,
-          duration: duration,
           btnColor: Color(0xff88D4F1),
           btnIcon: Icon(Icons.sort),
+          topOnMoveMainPage: CodeState.H001CODE,
           btnSize: 36,
           startOffset: 0,
           endOffset: 0),

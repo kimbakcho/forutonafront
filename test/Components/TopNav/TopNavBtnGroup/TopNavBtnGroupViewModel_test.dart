@@ -1,12 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Components/TopNav/NavBtn/INavBtn.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtn.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/INavBtnGroup.dart';
-import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/TopNavBtnGroup.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/TopNavBtnGroupViewModel.dart';
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
-import 'package:mockito/mockito.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
 
 void main(){
@@ -26,17 +23,17 @@ void main(){
     NavBtn mockINavBtn1 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.H001),originIndex: 1);
     navBtnGroup.registerBtn(mockINavBtn1);
 
-    NavBtn mockINavBtn4 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.ZZ001),originIndex: 4);
+    NavBtn mockINavBtn4 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.X002),originIndex: 4);
     navBtnGroup.registerBtn(mockINavBtn4);
 
-    NavBtn mockINavBtn3 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.Z001),originIndex: 3);
+    NavBtn mockINavBtn3 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.X001),originIndex: 3);
     navBtnGroup.registerBtn(mockINavBtn3);
 
     //act
-    navBtnGroup.arrangeBtnIndexStack(top: TopNavRouterType.Z001);
+    navBtnGroup.arrangeBtnIndexStack(top: TopNavRouterType.X001);
     //assert
     NavBtn lastItem = navBtnGroup.navBtnList.last;
-    expect(lastItem.routerType, equals(TopNavRouterType.Z001));
+    expect(lastItem.routerType, equals(TopNavRouterType.X001));
 
     //act
     navBtnGroup.arrangeBtnIndexStack(top: TopNavRouterType.H001);
