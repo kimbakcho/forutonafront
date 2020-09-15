@@ -1,35 +1,14 @@
-{
-  "searchTime": "2020-06-21T22:16:38.5053077",
-  "contents": [
-    {
-      "ranking": 1,
-      "tagName": "tset",
-      "tagPower": 0.0,
-      "tagBallPower": null
-    },
-    {
-      "ranking": 2,
-      "tagName": "test",
-      "tagPower": 0.0,
-      "tagBallPower": null
-    },
-    {
-      "ranking": 3,
-      "tagName": "xptmxm",
-      "tagPower": -4.143148594660103E-5,
-      "tagBallPower": null
-    },
-    {
-      "ranking": 4,
-      "tagName": "tes",
-      "tagPower": -8.286297189320206E-5,
-      "tagBallPower": null
-    },
-    {
-      "ranking": 5,
-      "tagName": "맛집",
-      "tagPower": -8.728143004908945E-5,
-      "tagBallPower": null
-    }
-  ]
-}
+[
+  {
+    "tagName": "TESTTag1",
+    "tagPower": 0.03
+  },
+  {
+    "tagName": "TESTTag2",
+    "tagPower": 0.02
+  },
+  {
+    "tagName": "TESTTag3",
+    "tagPower": 0.01
+  }
+]

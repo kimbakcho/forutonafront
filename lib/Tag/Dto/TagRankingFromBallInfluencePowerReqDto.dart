@@ -1,16 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'TagRankingFromBallInfluencePowerReqDto.g.dart';
 
 @JsonSerializable()
 class TagRankingFromBallInfluencePowerReqDto {
-  double latitude;
-  double longitude;
-  int limit;
+  double userLatitude;
+  double userLongitude;
+  double mapCenterLatitude;
+  double mapCenterLongitude;
 
   TagRankingFromBallInfluencePowerReqDto(
-      {this.latitude, this.longitude, this.limit})
-      : assert(limit != null);
+      {@required this.userLatitude,
+      @required this.userLongitude,
+      @required this.mapCenterLatitude,
+      @required this.mapCenterLongitude});
 
   factory TagRankingFromBallInfluencePowerReqDto.fromJson(
           Map<String, dynamic> json) =>

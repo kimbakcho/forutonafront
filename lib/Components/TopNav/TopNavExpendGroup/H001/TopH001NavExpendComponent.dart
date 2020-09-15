@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H001/TopH001NavExpendAniContent.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../TopNavRouterType.dart';
 import '../TopNavExpendComponent.dart';
 import 'TopH001NavExpendDto.dart';
@@ -24,10 +23,11 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
     implements TopNavExpendComponent {
   AnimationController _controller;
   TopNavBtnMediator topNavBtnMediator;
-
+  TopH001NavExpendAniContent _topH001NavExpendAniContent;
   _TopH001NavExpendComponentState() {
     topNavBtnMediator = sl();
     topNavBtnMediator.topNavExpendRegisterComponent(this);
+    _topH001NavExpendAniContent = TopH001NavExpendAniContent();
   }
 
   @override
@@ -46,15 +46,9 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
 
   void setListener(status) {
     if (status == AnimationStatus.dismissed) {
-      setState(() {
-        widget.topH001NavExpendDto.addressText =
-            widget.topH001NavExpendDto.shortAddressText;
-      });
+      _topH001NavExpendAniContent.collapsed();
     } else if (status == AnimationStatus.forward) {
-      setState(() {
-        widget.topH001NavExpendDto.addressText =
-            widget.topH001NavExpendDto.longAddressText;
-      });
+      _topH001NavExpendAniContent.expended();
     }
   }
 
@@ -74,13 +68,13 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
 
   @override
   Widget build(BuildContext context) {
+
     return TopH001NavExpendAniComponent(
       animation: getAnimation(),
       child: Row(
         children: <Widget>[
           Expanded(
-            child: TopH001NavExpendAniContent(
-                topH001NavExpendDto: widget.topH001NavExpendDto),
+            child: _topH001NavExpendAniContent,
           ),
           SizedBox(
             width: 8,
@@ -121,41 +115,8 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
   }
 }
 
-class TopH001NavExpendAniContent extends StatelessWidget {
-  final TopH001NavExpendDto topH001NavExpendDto;
 
-  const TopH001NavExpendAniContent({Key key, this.topH001NavExpendDto})
-      : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: Container(
-              child: FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                padding: EdgeInsets.all(0),
-                onPressed: () {},
-                child: Text(
-                  topH001NavExpendDto.addressText,
-                  style: GoogleFonts.notoSans(
-                    fontSize: 14,
-                    color: const Color(0xff454f63),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                color: Color(0xffF6F6F6),
-              )),
-        )
-      ],
-    );
-  }
-}
 
 class TopH001NavExpendAniComponent extends StatelessWidget {
   final Animation<double> animation;

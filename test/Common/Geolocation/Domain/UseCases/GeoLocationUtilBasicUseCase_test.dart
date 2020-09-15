@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Placemark.dart';
@@ -34,7 +35,7 @@ void main() {
     _fUserCurrentPositionStreamController =
         StreamController<Position>.broadcast();
     when(mockGeolocatorAdapter.userPosition)
-        .thenAnswer((_)=>_fUserCurrentPositionStreamController.stream);
+        .thenAnswer((_) => _fUserCurrentPositionStreamController.stream);
     geoLocationUtilUseCase = GeoLocationUtilBasicUseCase(
         geolocatorAdapter: mockGeolocatorAdapter,
         sharedPreferencesAdapter: mockSharedPreferencesAdapter,
@@ -234,5 +235,16 @@ void main() {
     expect(thoroughfare, "한국 경기도 오산시");
 
     expect(subThoroughfare, "한국 경기도 오산시 58-2");
+  });
+
+  test("좌표에 대한 주소를 못찾을때 Error Throw", () async {
+    //given
+    when(mockGeolocatorAdapter.placemarkFromPosition(any,localeIdentifier: anyNamed("localeIdentifier")))
+        .thenAnswer((realInvocation) => []);
+    //when
+    expect(
+        () async => await geoLocationUtilUseCase
+            .getPositionAddress(Position(longitude: 123, latitude: 31)),
+        throwsA(isInstanceOf<FlutterError>()));
   });
 }

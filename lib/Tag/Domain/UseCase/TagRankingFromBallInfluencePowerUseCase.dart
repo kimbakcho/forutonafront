@@ -3,8 +3,13 @@ import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 
-import 'TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
-import 'TagRankingFromBallInfluencePowerUseCaseOutputPort.dart';
+abstract class TagRankingFromBallInfluencePowerUseCaseInputPort {
+  Future<List<TagRankingResDto>> reqTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto,TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort);
+}
+
+abstract class TagRankingFromBallInfluencePowerUseCaseOutputPort {
+  void onTagRankingFromBallInfluencePower(List<TagRankingResDto> tagRankingDtos);
+}
 
 class TagRankingFromBallInfluencePowerUseCase
     implements TagRankingFromBallInfluencePowerUseCaseInputPort {

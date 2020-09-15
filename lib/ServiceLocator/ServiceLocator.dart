@@ -1,6 +1,7 @@
 import 'package:forutonafront/Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
 import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
+import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
@@ -121,13 +122,15 @@ import '../ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dar
 import '../ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import '../Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
-import '../Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCase.dart';
-import '../Tag/Domain/UseCase/TagRankingFromBallInfluencePower/TagRankingFromBallInfluencePowerUseCaseInputPort.dart';
+import '../Tag/Domain/UseCase/TagRankingFromBallInfluencePowerUseCase.dart';
+
 
 final sl = GetIt.instance;
 
 init() {
   sl.registerSingleton<Preference>(Preference());
+
+  sl.registerSingleton<FluttertoastAdapter>(FluttertoastAdapter());
 
   sl.registerSingleton<GeolocatorAdapter>(GeolocatorAdapterImpl());
 

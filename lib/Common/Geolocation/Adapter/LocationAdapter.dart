@@ -39,12 +39,12 @@ class LocationAdapterImpl implements LocationAdapter {
   }
 
   @override
-  serviceEnabled() async {
+  Future<bool> serviceEnabled() async {
     return await location.serviceEnabled();
   }
 
   @override
-  requestService() async{
+  Future<bool> requestService() async{
     return await location.requestService();
   }
 

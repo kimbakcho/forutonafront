@@ -55,8 +55,6 @@ class GeoLocationUtilBasicUseCase
     Position resultPosition;
     try {
       resultPosition = await _geolocatorAdapter.getCurrentPosition();
-      print("getCurrentWithLastPosition");
-      print(resultPosition);
     } catch (Ex) {
       print(Ex);
       resultPosition = await getLastKnowPonePosition();
@@ -101,7 +99,7 @@ class GeoLocationUtilBasicUseCase
     if (placeMarkList.length > 0) {
       return replacePlacemarkToAddresStr(placeMarkList[0]);
     } else {
-      return "주소를 알 수 없습니다";
+      throw FlutterError("주소를 알 수 없습니다") ;
     }
 
   }
