@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -84,6 +86,8 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
   TopH001NavExpendAniContentViewModelExpendState currentState =
       TopH001NavExpendAniContentViewModelExpendState.expended;
 
+  H001Manager _h001manager = sl();
+
   String searchAddress = "로딩중 입니다.";
 
   TopH001NavExpendAniContentViewModel(
@@ -101,15 +105,25 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
       return;
     }
     try {
+      await geoLocationUtilForeGroundUseCaseInputPort.useGpsReq();
       fluttertoastAdapter.showToast(msg: "위치를 확인 중입니다.");
-      this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
-          .getPositionAddress(await geoLocationUtilForeGroundUseCaseInputPort
-              .getCurrentWithLastPosition());
+      await loadPosition(await geoLocationUtilForeGroundUseCaseInputPort
+          .getCurrentWithLastPosition());
     } on FlutterError catch (e) {
       this.searchAddress = e.message;
       fluttertoastAdapter.showToast(msg: e.message);
     }
     notifyListeners();
+  }
+
+  loadPosition(Position loadPosition) async {
+    try{
+      this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
+          .getPositionAddress(loadPosition);
+      _h001manager.search(loadPosition);
+    } on FlutterError catch (e) {
+      throw e;
+    }
   }
 
   get disPlayAddress {

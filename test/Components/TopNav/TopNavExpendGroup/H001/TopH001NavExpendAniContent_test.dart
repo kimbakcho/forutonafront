@@ -5,6 +5,7 @@ import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H001/TopH001NavExpendAniContent.dart';
+import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
 import 'package:mockito/mockito.dart';
@@ -15,7 +16,7 @@ class MockGeoLocationUtilForeGroundUseCaseInputPort extends Mock
 class MockLocationAdapter extends Mock implements LocationAdapter {}
 
 class MockFluttertoastAdapter extends Mock implements FluttertoastAdapter {}
-
+class MockH001Listener extends Mock implements H001Listener{}
 void main() {
   TopH001NavExpendAniContentViewModel topH001NavExpendAniContentViewModel;
   MockGeoLocationUtilForeGroundUseCaseInputPort
@@ -39,6 +40,8 @@ void main() {
         new MockGeoLocationUtilForeGroundUseCaseInputPort();
     sl.registerSingleton<GeoLocationUtilForeGroundUseCaseInputPort>(
         mockGeoLocationUtilForeGroundUseCaseInputPort);
+
+    when(mockGeoLocationUtilForeGroundUseCaseInputPort.useGpsReq()).thenAnswer((realInvocation) async => true);
 
     topH001NavExpendAniContentViewModel = TopH001NavExpendAniContentViewModel(
         geoLocationUtilForeGroundUseCaseInputPort: sl(),
@@ -66,7 +69,6 @@ void main() {
 
   test('초기화 시에 주소 못 찼을때.', () async {
     //arrange
-
     when(mockGeoLocationUtilForeGroundUseCaseInputPort
             .getCurrentWithLastPosition())
         .thenAnswer((realInvocation) async =>
@@ -93,4 +95,18 @@ void main() {
         equals("위치정보를 사용수가 없습니다."));
     verify(mockFluttertoastAdapter.showToast(msg: "위치정보를 사용수가 없습니다."));
   });
+
+  test('Position Load 시에 H001에 찾기 명령 내리기',() async {
+    //arrange
+    H001Manager h001manager = sl();
+    MockH001Listener mockH001Listener = MockH001Listener();
+    h001manager.subscribe(mockH001Listener);
+    Position position = Position(latitude: 37.1,longitude: 127.1);
+    //act
+    await topH001NavExpendAniContentViewModel.loadPosition(position);
+    //assert
+    verify(mockH001Listener.search(position));
+
+  });
+
 }

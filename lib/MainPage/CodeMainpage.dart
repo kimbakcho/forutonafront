@@ -5,7 +5,7 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPay
 import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBar.dart';
-import 'package:forutonafront/HCodePage/HCodeMainPage.dart';
+import 'package:forutonafront/HCodePage/H001/H001Page.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +69,7 @@ class _CodeMainPageState extends State<CodeMainPage> {
                         physics: NeverScrollableScrollPhysics(),
                         controller: model.pageController,
                         children: <Widget>[
-                          HCodeMainPage(),
+                          H001Page(),
                           Container(child: Text("H003")),
                           Container(child: Text("X001")),
                           Container(child: Text("X002")),

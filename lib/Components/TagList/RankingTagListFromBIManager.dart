@@ -1,22 +1,27 @@
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+
 abstract class RankingTagListFromBIListener {
-  void search();
+  Future<void> search(Position searchPosition);
 }
 
 class RankingTagListFromBIManager {
   List<RankingTagListFromBIListener> _rankingTagListFromBIListeners = [];
 
-  subscribe(RankingTagListFromBIListener listener){
+  void subscribe(RankingTagListFromBIListener listener){
     this._rankingTagListFromBIListeners.add(listener);
   }
 
-  unSubscribe(RankingTagListFromBIListener listener){
+  void unSubscribe(RankingTagListFromBIListener listener){
     this._rankingTagListFromBIListeners.remove(listener);
   }
 
-  search(){
-    _rankingTagListFromBIListeners.forEach((element) {
-      element.search();
-    });
+  int getSubscribeSize(){
+    return this._rankingTagListFromBIListeners.length;
   }
 
+  search(Position searchPosition){
+    _rankingTagListFromBIListeners.forEach((element) {
+      element.search(searchPosition);
+    });
+  }
 }
