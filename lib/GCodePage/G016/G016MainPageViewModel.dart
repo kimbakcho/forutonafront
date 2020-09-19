@@ -13,7 +13,7 @@ class G016MainPageViewModel extends ChangeNotifier {
       _personaSettingNoticeUseCaseInputPort;
 
   List<PersonaSettingNoticeResDto> notice = [];
-  Pageable _pageable = Pageable(0, 10, "noticeWriteDateTime,DESC");
+  Pageable _pageable = Pageable(page:0,size: 10,sort: "noticeWriteDateTime,DESC");
   final ScrollController mainScrollController;
 
   G016MainPageViewModel(

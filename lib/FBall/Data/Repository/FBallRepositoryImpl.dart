@@ -8,7 +8,7 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -27,10 +27,10 @@ class FBallRepositoryImpl implements FBallRepository {
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter;
 
   @override
-  Future<PageWrap<FBallResDto>> listUpFromInfluencePower(
-      {@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto,
+  Future<PageWrap<FBallResDto>> findByBallOrderByBI(
+      {@required FBallListUpFromBIReqDto listUpReqDto,
       @required Pageable pageable}) async {
-    var result = await _fBallRemoteDataSource.listUpFromInfluencePower(
+    var result = await _fBallRemoteDataSource.findByBallOrderByBI(
         listUpReqDto, pageable, FDio.noneToken());
     return result;
   }

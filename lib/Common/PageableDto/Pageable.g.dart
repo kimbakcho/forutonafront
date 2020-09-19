@@ -8,9 +8,9 @@ part of 'Pageable.dart';
 
 Pageable _$PageableFromJson(Map<String, dynamic> json) {
   return Pageable(
-    json['page'] as int,
-    json['size'] as int,
-    json['sort'] as String,
+    page: json['page'] as int,
+    size: json['size'] as int,
+    sort: json['sort'] as String,
   );
 }
 

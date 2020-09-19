@@ -66,7 +66,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier
 
   _selectBall() async {
     _fBallResDto = await _selectBallUseCaseInputPort.selectBall(_ballUuid);
-    _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(_fBallResDto);
+    _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto: _fBallResDto);
     _loadBallComplete = true;
     if (!isDisPose) {
       notifyListeners();

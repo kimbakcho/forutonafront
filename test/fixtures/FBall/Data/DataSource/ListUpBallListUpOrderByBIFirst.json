@@ -99,12 +99,12 @@
     "unpaged" : false,
     "paged" : true
   },
-  "totalPages" : 1,
+  "totalPages" : 43,
   "totalElements" : 3,
-  "last" : true,
+  "last" : false,
   "numberOfElements" : 3,
   "first" : true,
-  "size" : 20,
+  "size" : 40,
   "number" : 0,
   "sort" : {
     "sorted" : false,

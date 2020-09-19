@@ -6,7 +6,7 @@ import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
 import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -34,10 +34,10 @@ void main() {
             ballUuid: ballUuid, noneTokenFDio: anyNamed("noneTokenFDio")))
         .thenAnswer((realInvocation) async => basicFBallResDto);
 
-    when(mockFBallRemoteDataSource.listUpFromInfluencePower(any, any, any))
+    when(mockFBallRemoteDataSource.findByBallOrderByBI(any, any, any))
         .thenAnswer((realInvocation) async => PageWrap.fromJson(
             json.decode(fixtureString(
-                "FBall/Data/DataSource/ListUpFromBallInfluencePower.json")),
+                "FBall/Data/DataSource/ListUpBallListUpOrderByBI.json")),
             FBallResDto.fromJson));
 
     sl.registerSingleton<FBallRemoteDataSource>(mockFBallRemoteDataSource);
@@ -60,14 +60,12 @@ void main() {
     FBallRepository fBallRepository = FBallRepositoryImpl(
         fireBaseAuthBaseAdapter: sl(), fBallRemoteDataSource: sl());
     //act
-    FBallListUpFromBallInfluencePowerReqDto reqDto =
-        FBallListUpFromBallInfluencePowerReqDto(
-            latitude: 127.0, longitude: 37.0);
-    PageWrap<FBallResDto> pageWrap = await fBallRepository.listUpFromInfluencePower(
-        listUpReqDto: reqDto, pageable: Pageable(0, 20, null));
+    FBallListUpFromBIReqDto reqDto = FBallListUpFromBIReqDto();
+    PageWrap<FBallResDto> pageWrap = await fBallRepository.findByBallOrderByBI(
+        listUpReqDto: reqDto,
+        pageable: Pageable(page: 0, size: 20, sort: null));
     //assert
     expect(pageWrap.numberOfElements, 3);
     expect(pageWrap.content.length, 3);
-
   });
 }

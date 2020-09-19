@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/DetailPageViewer/DetailPageItemFactory.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/HCodePage/H001/BallListMediator.dart';
+
 import 'package:provider/provider.dart';
 
 class DetailPageViewer extends StatelessWidget {

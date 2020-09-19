@@ -6,7 +6,7 @@ import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Data/DataStore/FBallRemoteDataSource.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:mockito/mockito.dart';
 
@@ -36,18 +36,19 @@ void main() {
     expect(fBallResDto, isNotNull);
   });
 
-  test('ListUpFromBallInfluencePower PageWrap Change', () async {
+  test('ListUpBallListUpOrderByBI', () async {
     //arrange
     FBallRemoteDataSource fBallRemoteDataSource = FBallRemoteSourceImpl();
 
-    when(mockFDio.get("/v1/FBall/ListUpFromBallInfluencePower",queryParameters: anyNamed("queryParameters")))
+    when(mockFDio.get("/v1/FBall/ListUpBallListUpOrderByBI",queryParameters: anyNamed("queryParameters")))
         .thenAnswer((realInvocation) async => Response(
-        data: json.decode(fixtureString("/FBall/Data/DataSource/ListUpFromBallInfluencePower.json"))
+        data: json.decode(fixtureString("/FBall/Data/DataSource/ListUpBallListUpOrderByBI.json"))
     ));
     //act
-    FBallListUpFromBallInfluencePowerReqDto reqDto = FBallListUpFromBallInfluencePowerReqDto();
-    PageWrap<FBallResDto> pageWrap = await fBallRemoteDataSource.listUpFromInfluencePower(reqDto,Pageable(0, 20, null),mockFDio);
+    FBallListUpFromBIReqDto reqDto = FBallListUpFromBIReqDto();
+    PageWrap<FBallResDto> pageWrap = await fBallRemoteDataSource.findByBallOrderByBI(reqDto,Pageable(page: 0,size: 20,sort: null),mockFDio);
     //assert
-    expect(pageWrap, isNotNull);
+    expect(pageWrap.numberOfElements, 3);
+    expect(pageWrap.content.length, 3);
   });
 }

@@ -2,15 +2,15 @@ import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
-class FBallListUpFromInfluencePower implements FBallListUpUseCaseInputPort {
+class ListUpBallListUpOrderByBI implements FBallListUpUseCaseInputPort {
   final FBallRepository _fBallRepository;
 
-  FBallListUpFromBallInfluencePowerReqDto listUpReqDto;
+  FBallListUpFromBIReqDto listUpReqDto;
 
-  FBallListUpFromInfluencePower(
+  ListUpBallListUpOrderByBI(
   {this.listUpReqDto, FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
@@ -18,7 +18,7 @@ class FBallListUpFromInfluencePower implements FBallListUpUseCaseInputPort {
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
       {FBallListUpUseCaseOutputPort outputPort}) async {
     PageWrap<FBallResDto> pageWrap =
-        await _fBallRepository.listUpFromInfluencePower(
+        await _fBallRepository.findByBallOrderByBI(
             listUpReqDto: listUpReqDto, pageable: pageable);
     executeOutPort(outputPort, pageWrap);
     return pageWrap;

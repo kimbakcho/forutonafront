@@ -110,8 +110,9 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
     reqDto.ballUuid = ballUuid;
     reqDto.reqOnlySubReply = false;
     if (!loadedLatPage) {
-      PageWrap<FBallReplyResDto> replysTemp = await _fBallReplyUseCaseInputPort
-          .reqFBallReply(reqDto, Pageable(page, pageLimit, "replyNumber,DESC"));
+      PageWrap<FBallReplyResDto> replysTemp =
+          await _fBallReplyUseCaseInputPort.reqFBallReply(reqDto,
+              Pageable(page: page, size: pageLimit, sort: "replyNumber,DESC"));
       if (replysTemp.first) {
         replys.clear();
       } else if (replysTemp.last) {

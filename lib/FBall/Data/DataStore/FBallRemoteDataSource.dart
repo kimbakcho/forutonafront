@@ -8,7 +8,7 @@ import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 
-import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -17,9 +17,9 @@ import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
 
 abstract class FBallRemoteDataSource {
-  Future<PageWrap<FBallResDto>> listUpFromInfluencePower(
-      FBallListUpFromBallInfluencePowerReqDto
-          fBallListUpFromInfluencePowerReqDto,
+  Future<PageWrap<FBallResDto>> findByBallOrderByBI(
+      FBallListUpFromBIReqDto
+          fBallListUpFromBIReqDto,
       Pageable pageable,
       FDio noneTokenFDio);
 
@@ -64,15 +64,15 @@ abstract class FBallRemoteDataSource {
 
 class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   @override
-  Future<PageWrap<FBallResDto>> listUpFromInfluencePower(
-      FBallListUpFromBallInfluencePowerReqDto
-          fBallListUpFromInfluencePowerReqDto,
+  Future<PageWrap<FBallResDto>> findByBallOrderByBI(
+      FBallListUpFromBIReqDto
+          fBallListUpFromBIReqDto,
       Pageable pageable,
       FDio noneTokenFDio) async {
-    Map<String, dynamic> jsonReq = fBallListUpFromInfluencePowerReqDto.toJson();
+    Map<String, dynamic> jsonReq = fBallListUpFromBIReqDto.toJson();
     jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get(
-        "/v1/FBall/ListUpFromBallInfluencePower",
+        "/v1/FBall/ListUpBallListUpOrderByBI",
         queryParameters: jsonReq);
     return PageWrap<FBallResDto>.fromJson(response.data, FBallResDto.fromJson);
   }

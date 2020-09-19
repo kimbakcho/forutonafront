@@ -19,7 +19,7 @@ void main() {
 
   test('should getPersonaSettingNotice 레포지 토리 호출', () async {
     //arrange
-    Pageable pageable = Pageable(0, 10, "WriteDate,DESC");
+    Pageable pageable = Pageable(page:0, size:10,sort: "WriteDate,DESC");
     //act
     await personaSettingNoticeUseCaseInputPort.getPersonaSettingNotice(pageable);
     //assert

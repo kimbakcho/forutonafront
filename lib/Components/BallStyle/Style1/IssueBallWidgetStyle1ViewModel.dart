@@ -47,7 +47,7 @@ class IssueBallWidgetStyle1ViewModel extends ChangeNotifier
         ballLatLng: Position(
             latitude: fBallResDto.latitude, longitude: fBallResDto.longitude),
         geoLocationUtilUseCaseOp: this);
-    _ballDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto);
+    _ballDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto: fBallResDto);
   }
 
   void goIssueDetailPage()async {

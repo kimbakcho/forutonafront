@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
+import 'package:forutonafront/Components/BallListUp/FullBallListUp.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListFromBI.dart';
-import 'package:forutonafront/HCodePage/H001/BallListMediator.dart';
+import 'package:forutonafront/Components/TagList/RankingTagListFromBIManager.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class H001Page extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => H001ViewModel(),
+        create: (_) => H001ViewModel(
+            ballListMediator: BallListMediatorImpl(),
+            rankingTagListFromBIManager: RankingTagListFromBIManager()),
         child: Consumer<H001ViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: Container(
@@ -19,7 +21,12 @@ class H001Page extends StatelessWidget {
                   child: Stack(children: <Widget>[
                     Column(
                       children: <Widget>[
-                        RankingTagListFromBI(rankingTagListFromBIManager: model.rankingTagListFromBIManager),
+                        RankingTagListFromBI(
+                            rankingTagListFromBIManager:
+                                model.rankingTagListFromBIManager),
+                        Expanded(
+                            child: FullBallListUp(
+                                ballListMediator: model.ballListMediator)),
                         BottomNavigation()
                       ],
                     ),

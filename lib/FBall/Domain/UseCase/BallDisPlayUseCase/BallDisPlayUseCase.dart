@@ -1,72 +1,82 @@
 
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
+import 'package:forutonafront/FBall/Domain/Value/BallDescription.dart';
+import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 class BallDisPlayUseCase {
-  FBallResDto _fBallResDto;
-  BallDisPlayUseCase(this._fBallResDto);
+  FBallResDto fBallResDto;
+  BallDescription ballDescription;
+  BallDisPlayUseCase({this.fBallResDto,this.ballDescription});
 
   String remainTime(){
-    return TimeDisplayUtil.getCalcToStrFromNow(_fBallResDto.activationTime);
+    return TimeDisplayUtil.getCalcToStrFromNow(fBallResDto.activationTime);
   }
 
-
   String ballLikes() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.ballLikes.toString();
+      return fBallResDto.ballLikes.toString();
+    }
+  }
+
+  String ballPower(){
+    if(fBallResDto.ballDeleteFlag){
+      return "-";
+    }else {
+      return fBallResDto.ballPower.toString();
     }
   }
 
 
   String ballDisLikes() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.ballDisLikes.toString();
+      return fBallResDto.ballDisLikes.toString();
     }
   }
 
 
   String commentCount() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.commentCount.toString();
+      return fBallResDto.commentCount.toString();
     }
   }
 
 
   String profilePictureUrl() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.uid.profilePictureUrl;
+      return fBallResDto.uid.profilePictureUrl;
     }
   }
 
 
   String ballName() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.ballName;
+      return fBallResDto.ballName;
     }
   }
 
 
   String placeAddress() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.placeAddress;
+      return fBallResDto.placeAddress;
     }
   }
 
 
   bool isAlive() {
-    if(_fBallResDto.activationTime.isAfter(DateTime.now())){
+    if(fBallResDto.activationTime.isAfter(DateTime.now())){
       return true;
     }else {
       return false;
@@ -75,46 +85,99 @@ class BallDisPlayUseCase {
 
 
   String ballHits() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.ballHits.toString();
+      return fBallResDto.ballHits.toString();
     }
   }
 
 
   String  displayMakeTime() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return TimeDisplayUtil.getCalcToStrFromNow(_fBallResDto.makeTime);
+      return TimeDisplayUtil.getCalcToStrFromNow(fBallResDto.makeTime);
     }
   }
 
 
   String  makerNickName() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.uid.nickName;
+      return fBallResDto.uid.nickName;
     }
   }
 
 
   String makerFollower() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.uid.followCount.toString();
+      return fBallResDto.uid.followCount.toString();
     }
   }
 
 
   String makerInfluencePower() {
-    if(_fBallResDto.ballDeleteFlag){
+    if(fBallResDto.ballDeleteFlag){
       return "-";
     }else {
-      return _fBallResDto.uid.cumulativeInfluence.toString();
+      return fBallResDto.uid.cumulativeInfluence.toString();
+    }
+  }
+
+
+  bool isMainPicture(){
+    if(fBallResDto.ballDeleteFlag || ballDescription.desimages == null){
+      return false;
+    } else {
+      return ballDescription.desimages.length > 0;
+    }
+  }
+
+  String mainPictureSrc() {
+    if(fBallResDto.ballDeleteFlag){
+      return null;
+    } else {
+      return ballDescription.desimages[0].src;
+    }
+  }
+
+  int pictureCount() {
+    if(fBallResDto.ballDeleteFlag){
+      return 0;
+    }else {
+      return ballDescription.desimages.length;
+    }
+  }
+
+  List<FBallDesImages> getDesImages() {
+    if(fBallResDto.ballDeleteFlag){
+      return [];
+    }else {
+      return ballDescription.desimages;
+    }
+  }
+
+  String descriptionText() {
+    if(fBallResDto.ballDeleteFlag){
+      return "";
+    }else {
+      return ballDescription.text;
+    }
+  }
+
+  getYoutubeId() {
+    if(fBallResDto.ballDeleteFlag){
+      return "";
+    }else {
+      if(ballDescription.youtubeVideoId != null){
+        return ballDescription.youtubeVideoId;
+      }else {
+        return "";
+      }
     }
   }
 }

@@ -1,18 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 abstract class BallListMediatorComponent {
-  void setMediator(BallListMediator ballListMediator);
 
   void onBallListUpUpdate();
 }
 
 abstract class BallListMediator {
+  FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
+
   void registerComponent(BallListMediatorComponent component);
 
   void unregisterComponent(BallListMediatorComponent component);
+
+  int componentSize();
 
   searchNext();
 
@@ -20,28 +24,19 @@ abstract class BallListMediator {
 
   List<FBallResDto> ballList;
 
-  set fBallListUpUseCaseInputPort(FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort);
-
-  set sort(String sort);
-
-  set pageLimit(int value);
-
   bool get isLastPage;
 }
 
 class BallListMediatorImpl implements BallListMediator {
-  FBallListUpUseCaseInputPort _fBallListUpUseCaseInputPort;
+  FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
 
   List<BallListMediatorComponent> ballListMediatorComponentList = [];
 
   int _pageCount = 0;
 
-  int _pageLimit = 20;
-
-  String _sort = "";
+  int _pageLimit = 40;
 
   PageWrap<FBallResDto> _wrapBallList;
-
 
   List<FBallResDto> ballList = [];
 
@@ -52,9 +47,6 @@ class BallListMediatorImpl implements BallListMediator {
     _wrapBallList = PageWrap<FBallResDto>();
   }
 
-  set fBallListUpUseCaseInputPort(FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort){
-    _fBallListUpUseCaseInputPort = fBallListUpUseCaseInputPort;
-  }
 
   @override
   void registerComponent(BallListMediatorComponent component) {
@@ -67,21 +59,19 @@ class BallListMediatorImpl implements BallListMediator {
   }
 
   search(Pageable pageable ) async {
-    if(_fBallListUpUseCaseInputPort == null){
+    if(fBallListUpUseCaseInputPort == null){
       throw Exception("don't have searchCaseInputPort for need set FBallListUpUseCaseInputPort");
     }
+    if(isLastPage){
+      return ;
+    }
     this._wrapBallList = await this
-        ._fBallListUpUseCaseInputPort
+        .fBallListUpUseCaseInputPort
         .search(pageable);
     if (_wrapBallList.first) {
-      loadLast = false;
       ballList.clear();
-      ballList.addAll(_wrapBallList.content);
-    } else if (_wrapBallList.last) {
-      ballList.addAll(_wrapBallList.content);
-    } else {
-      ballList.addAll(_wrapBallList.content);
     }
+    ballList.addAll(_wrapBallList.content);
     _pageCount = pageable.page;
     onPageListUpdate();
   }
@@ -95,18 +85,15 @@ class BallListMediatorImpl implements BallListMediator {
   @override
   searchNext() async{
     _pageCount++;
-    await search(Pageable(_pageCount,_pageLimit,_sort));
+    await search(Pageable(page:_pageCount,size:_pageLimit));
   }
 
-  @override
-  set sort(String sort) {
-    this._sort = sort;
-  }
 
   @override
   searchFirst() async {
     _pageCount = 0;
-    await search(Pageable(_pageCount,_pageLimit,_sort));
+    _wrapBallList = PageWrap<FBallResDto>();
+    await search(Pageable(page:_pageCount,size:_pageLimit));
   }
 
   set pageLimit(int value) {
@@ -116,6 +103,11 @@ class BallListMediatorImpl implements BallListMediator {
   @override
   bool get isLastPage {
     return _wrapBallList.last;
+  }
+
+  @override
+  int componentSize() {
+    return ballListMediatorComponentList.length;
   }
 
 

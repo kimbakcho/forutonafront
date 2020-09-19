@@ -7,15 +7,15 @@ import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 
-import 'package:forutonafront/FBall/Dto/FBallListUpFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 
 abstract class FBallRepository {
-  Future<PageWrap<FBallResDto>> listUpFromInfluencePower(
-      {@required FBallListUpFromBallInfluencePowerReqDto listUpReqDto,
+  Future<PageWrap<FBallResDto>> findByBallOrderByBI(
+      {@required FBallListUpFromBIReqDto listUpReqDto,
       @required Pageable pageable});
 
   Future<PageWrap<FBallResDto>> searchUserToMakerBalls(

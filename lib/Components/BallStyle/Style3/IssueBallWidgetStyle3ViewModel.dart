@@ -19,7 +19,7 @@ class IssueBallWidgetStyle3ViewModel extends ChangeNotifier {
       {@required FBallResDto fBallResDto,
       @required IssueBallBasicStyle issueBallBasicStyle})
       : _issueBallBasicStyle = issueBallBasicStyle {
-    _ballDisPlayUseCaseInputPort = IssueBallDisPlayUseCase(issueBall);
+    _ballDisPlayUseCaseInputPort = IssueBallDisPlayUseCase(fBallResDto: issueBall);
   }
 
   void goIssueDetailPage() async{

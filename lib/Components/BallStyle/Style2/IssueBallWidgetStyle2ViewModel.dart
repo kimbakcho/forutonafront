@@ -40,7 +40,7 @@ class IssueBallWidgetStyle2ViewModel extends ChangeNotifier
       :
         _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
         _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
-        _ballDisPlayUseCase = IssueBallDisPlayUseCase(userBallResDto) {
+        _ballDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto: userBallResDto) {
     _geoLocationUtilUseCaseInputPort.reqBallDistanceDisplayText(
         ballLatLng: Position(
             latitude: issueBall.latitude, longitude: issueBall.longitude),

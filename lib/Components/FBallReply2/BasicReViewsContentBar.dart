@@ -340,7 +340,7 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier{
     reqDto.replyNumber = fBallReplyResDto.replyNumber;
     reqDto.reqOnlySubReply = true;
     PageWrap<FBallReplyResDto> pageDtos = await _fBallReplyUseCaseInputPort
-        .reqFBallReply(reqDto, Pageable(0, 99999, "ReplySort,ASC"));
+        .reqFBallReply(reqDto, Pageable(page: 0,size: 99999,sort: "ReplySort,ASC"));
     return pageDtos.content;
   }
 
