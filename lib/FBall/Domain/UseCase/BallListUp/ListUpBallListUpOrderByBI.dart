@@ -1,3 +1,4 @@
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
@@ -11,15 +12,17 @@ class ListUpBallListUpOrderByBI implements FBallListUpUseCaseInputPort {
   FBallListUpFromBIReqDto listUpReqDto;
 
   ListUpBallListUpOrderByBI(
-  {this.listUpReqDto, FBallRepository fBallRepository})
+      {this.listUpReqDto, FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
       {FBallListUpUseCaseOutputPort outputPort}) async {
-    PageWrap<FBallResDto> pageWrap =
-        await _fBallRepository.findByBallOrderByBI(
-            listUpReqDto: listUpReqDto, pageable: pageable);
+    searchPosition = Position(
+        latitude: listUpReqDto.mapCenterLatitude,
+        longitude: listUpReqDto.mapCenterLongitude);
+    PageWrap<FBallResDto> pageWrap = await _fBallRepository.findByBallOrderByBI(
+        listUpReqDto: listUpReqDto, pageable: pageable);
     executeOutPort(outputPort, pageWrap);
     return pageWrap;
   }
@@ -30,4 +33,7 @@ class ListUpBallListUpOrderByBI implements FBallListUpUseCaseInputPort {
       outputPort.searchResult(pageWrap);
     }
   }
+
+  @override
+  Position searchPosition;
 }

@@ -1,3 +1,4 @@
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 
@@ -18,6 +19,7 @@ class FBallListUpUserPlayBall implements FBallListUpUseCaseInputPort {
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
       {FBallListUpUseCaseOutputPort outputPort}) async {
+    searchPosition = null;
     PageWrap<FBallPlayerResDto> pageWrap =
         await _fBallPlayerRepository.getUserPlayBallList(playerUid, pageable);
     var contentList = pageWrap.content.map((e) => e.ballUuid).toList();
@@ -36,4 +38,7 @@ class FBallListUpUserPlayBall implements FBallListUpUseCaseInputPort {
 
     return pageFBallResDto;
   }
+
+  @override
+  Position searchPosition;
 }

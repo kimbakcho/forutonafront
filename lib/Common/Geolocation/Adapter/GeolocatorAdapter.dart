@@ -8,7 +8,7 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart' as Ad
 abstract class GeolocatorAdapter {
   getCurrentPosition();
 
-  distanceBetween(double latitude, double longitude, double latitude2,
+  Future<double> distanceBetween(double latitude, double longitude, double latitude2,
       double longitude2);
 
   placemarkFromPosition(Position searchPosition, {String localeIdentifier});
@@ -39,9 +39,9 @@ class GeolocatorAdapterImpl implements GeolocatorAdapter {
   }
 
   @override
-  distanceBetween(double startLatitude, double startLongitude,
-      double endLatitude, double endLongitude) {
-    return _geolocator.distanceBetween(
+   Future<double> distanceBetween(double startLatitude, double startLongitude,
+      double endLatitude, double endLongitude) async {
+    return await _geolocator.distanceBetween(
         startLatitude, startLongitude, endLatitude, endLongitude);
   }
 

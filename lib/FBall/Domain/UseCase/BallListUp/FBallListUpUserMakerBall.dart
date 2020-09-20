@@ -1,3 +1,4 @@
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
@@ -15,6 +16,7 @@ class FBallListUpUserMakerBall implements FBallListUpUseCaseInputPort {
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
       {FBallListUpUseCaseOutputPort outputPort}) async {
+    searchPosition = null;
     PageWrap<FBallResDto> pageWrap = await _fBallRepository
         .searchUserToMakerBalls(makerUid: makerUid, pageable: pageable);
     executeOutPort(outputPort, pageWrap);
@@ -26,5 +28,8 @@ class FBallListUpUserMakerBall implements FBallListUpUseCaseInputPort {
       outputPort.searchResult(pageWrap);
     }
   }
+
+  @override
+  Position searchPosition;
   
 }

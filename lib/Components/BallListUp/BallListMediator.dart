@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
@@ -25,6 +25,8 @@ abstract class BallListMediator {
   List<FBallResDto> ballList;
 
   bool get isLastPage;
+
+  Position searchPosition();
 }
 
 class BallListMediatorImpl implements BallListMediator {
@@ -108,6 +110,15 @@ class BallListMediatorImpl implements BallListMediator {
   @override
   int componentSize() {
     return ballListMediatorComponentList.length;
+  }
+
+
+  Position searchPosition(){
+    if(fBallListUpUseCaseInputPort != null){
+      return fBallListUpUseCaseInputPort.searchPosition;
+    }else {
+      return null;
+    }
   }
 
 
