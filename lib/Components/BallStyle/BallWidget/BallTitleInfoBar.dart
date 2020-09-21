@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionPopup.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,10 +8,12 @@ class BallTitleInfoBar extends StatelessWidget {
   const BallTitleInfoBar({
     Key key,
     @required this.ballDisPlayUseCase,
-    @required this.gotoDetailPage
+    @required this.gotoDetailPage,
+    this.showOptionPopUp,
   }) : super(key: key);
   final BallDisPlayUseCase ballDisPlayUseCase;
   final Function gotoDetailPage;
+  final BallOptionPopup showOptionPopUp;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +83,9 @@ class BallTitleInfoBar extends StatelessWidget {
             child: Material(
               color: Colors.white,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  showOptionPopUp.showPopup(context);
+                },
                 child: Icon(
                   ForutonaIcon.dots,
                   color: Color(0xffB8B8B8),

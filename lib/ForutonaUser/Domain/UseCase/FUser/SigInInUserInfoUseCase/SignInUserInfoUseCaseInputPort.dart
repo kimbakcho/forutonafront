@@ -8,4 +8,5 @@ abstract class SignInUserInfoUseCaseInputPort {
   FUserInfoResDto reqSignInUserInfoFromMemory({SignInUserInfoUseCaseOutputPort outputPort});
   Future<void> saveSignInInfoInMemoryFromAPiServer(String uid,{SignInUserInfoUseCaseOutputPort outputPort});
   void clearUserInfo();
+  bool isLogin;
 }

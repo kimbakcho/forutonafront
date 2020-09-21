@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
+import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionPopup.dart';
+import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionWidgetFactory.dart';
 import 'package:forutonafront/Components/BallStyle/BallWidget/IssueBallTopBar.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
@@ -13,8 +15,9 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
   final int index;
   final BallDisPlayUseCase issueBallDisPlayUseCase;
   final BallListMediator ballListMediator;
+  final BallOptionWidgetFactory ballOptionWidgetFactory;
 
-  IssueBallNotHaveImageWidget({Key key, this.index, this.ballListMediator})
+  IssueBallNotHaveImageWidget({Key key, this.index, this.ballListMediator, this.ballOptionWidgetFactory})
       : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
             fBallResDto: ballListMediator.ballList[index]),
         super(key: key);
@@ -37,8 +40,12 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
                     thickness: 1,
                   ),
                   BallTitleInfoBar(
-                      ballDisPlayUseCase: issueBallDisPlayUseCase,
-                      gotoDetailPage: model.moveToDetailPage),
+                    ballDisPlayUseCase: issueBallDisPlayUseCase,
+                    gotoDetailPage: model.moveToDetailPage,
+                    showOptionPopUp: BasicBallOptionPopup(
+                        ballOptionWidgetFactory.getBallOptionWidget(
+                            issueBallDisPlayUseCase.fBallResDto)),
+                  ),
                   BallTextWidget(
                     gotoDetailPage: model.moveToDetailPage,
                     ballDisPlayUseCase: issueBallDisPlayUseCase,

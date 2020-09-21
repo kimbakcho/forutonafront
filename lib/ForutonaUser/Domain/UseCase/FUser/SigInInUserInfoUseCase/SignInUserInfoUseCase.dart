@@ -11,6 +11,7 @@ import 'SignInUserInfoUseCaseOutputPort.dart';
 class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   FUserInfo _fUserInfo;
   FUserRepository _fUserRepository;
+  bool isLogin = false;
 
   @override
   Stream<FUserInfoResDto> fUserInfoStream;
@@ -40,6 +41,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   Future<void> saveSignInInfoInMemoryFromAPiServer(String uid,
       {SignInUserInfoUseCaseOutputPort outputPort}) async {
     _fUserInfo = await _fUserRepository.findByMe();
+    isLogin= true;
     FUserInfoResDto fUserInfoResDto = FUserInfoResDto.fromFUserInfo(_fUserInfo);
     _fUserInfoStreamController.add(fUserInfoResDto);
     if (outputPort != null) {
@@ -50,6 +52,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   @override
   void clearUserInfo() {
     _fUserInfo = null;
+    isLogin= false;
     _fUserInfoStreamController.add(null);
   }
 

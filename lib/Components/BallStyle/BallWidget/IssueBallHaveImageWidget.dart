@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
+import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionPopup.dart';
+import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionWidgetFactory.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -15,8 +17,13 @@ class IssueBallHaveImageWidget extends StatelessWidget {
   final int index;
   final BallDisPlayUseCase issueBallDisPlayUseCase;
   final BallListMediator ballListMediator;
+  final BallOptionWidgetFactory ballOptionWidgetFactory;
 
-  IssueBallHaveImageWidget({Key key, this.index, this.ballListMediator})
+  IssueBallHaveImageWidget(
+      {Key key,
+      this.index,
+      this.ballListMediator,
+      this.ballOptionWidgetFactory})
       : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
             fBallResDto: ballListMediator.ballList[index],
             geoLocatorAdapter: sl()),
@@ -35,13 +42,16 @@ class IssueBallHaveImageWidget extends StatelessWidget {
           return Container(
             child: Column(
               children: <Widget>[
-                IssueBallTopBar(
-                    ballDisPlayUseCase: issueBallDisPlayUseCase),
+                IssueBallTopBar(ballDisPlayUseCase: issueBallDisPlayUseCase),
                 BallBigImagePanelWidget(
                     ballDisPlayUseCase: issueBallDisPlayUseCase),
                 BallTitleInfoBar(
-                    ballDisPlayUseCase: issueBallDisPlayUseCase,
-                    gotoDetailPage: model.moveToDetailPage),
+                  ballDisPlayUseCase: issueBallDisPlayUseCase,
+                  gotoDetailPage: model.moveToDetailPage,
+                  showOptionPopUp: BasicBallOptionPopup(
+                      ballOptionWidgetFactory.getBallOptionWidget(
+                          issueBallDisPlayUseCase.fBallResDto)),
+                ),
                 Divider(
                   color: Color(0xffF4F4F6).withOpacity(0.9),
                   height: 1,

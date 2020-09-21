@@ -12,9 +12,9 @@ class IssueBallWidgetFactory {
     IssueBallDisPlayUseCase issueBallDisPlayUseCase =
         IssueBallDisPlayUseCase(fBallResDto: ballListMediator.ballList[index],geoLocatorAdapter: sl());
     if (issueBallDisPlayUseCase.isMainPicture()) {
-      return IssueBallHaveImageWidget(index: index,ballListMediator: ballListMediator);
+      return IssueBallHaveImageWidget(index: index,ballListMediator: ballListMediator,ballOptionWidgetFactory: sl(),);
     } else {
-      return IssueBallNotHaveImageWidget(index: index,ballListMediator: ballListMediator);
+      return IssueBallNotHaveImageWidget(index: index,ballListMediator: ballListMediator,ballOptionWidgetFactory: sl(),);
     }
   }
 }
