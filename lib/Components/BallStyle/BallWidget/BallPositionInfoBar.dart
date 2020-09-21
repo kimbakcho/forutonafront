@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 class BallPositionInfoBar extends StatelessWidget {
   const BallPositionInfoBar({
     Key key,
-    @required this.issueBallDisPlayUseCase,
+    @required this.ballDisPlayUseCase,
     @required this.ballSearchPosition,
     @required this.gotoDetailPage,
   }) : super(key: key);
   final Position ballSearchPosition;
-  final BallDisPlayUseCase issueBallDisPlayUseCase;
+  final BallDisPlayUseCase ballDisPlayUseCase;
   final Function gotoDetailPage;
 
   @override
@@ -21,7 +21,7 @@ class BallPositionInfoBar extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_)=> BallPositionInfoBarViewModel(
         ballSearchPosition: ballSearchPosition,
-          issueBallDisPlayUseCase: issueBallDisPlayUseCase),
+          issueBallDisPlayUseCase: ballDisPlayUseCase),
       child: Consumer<BallPositionInfoBarViewModel>(
         builder: (_,model,__){
           return Container(
@@ -40,7 +40,7 @@ class BallPositionInfoBar extends StatelessWidget {
                     Expanded(
                       child: Container(
                         child: Text(
-                          issueBallDisPlayUseCase.placeAddress(),
+                          ballDisPlayUseCase.placeAddress(),
                           style: GoogleFonts.notoSans(
                             fontSize: 13,
                             color: const Color(0xff5b5b5b),

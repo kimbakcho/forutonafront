@@ -169,7 +169,7 @@ class BallDisPlayUseCase {
   }
 
   String descriptionText() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto.ballDeleteFlag || ballDescription.text == null) {
       return "";
     } else {
       return ballDescription.text;

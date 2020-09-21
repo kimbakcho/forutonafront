@@ -21,12 +21,18 @@ class H001Page extends StatelessWidget {
                   child: Stack(children: <Widget>[
                     Column(
                       children: <Widget>[
-                        RankingTagListFromBI(
-                            rankingTagListFromBIManager:
-                                model.rankingTagListFromBIManager),
                         Expanded(
-                            child: FullBallListUp(
-                                ballListMediator: model.ballListMediator)),
+                          child: ListView(
+                            children: <Widget>[
+                              RankingTagListFromBI(
+                                  rankingTagListFromBIManager:
+                                      model.rankingTagListFromBIManager),
+                              FullBallListUp(
+                                  ballListMediator: model.ballListMediator)
+                            ],
+                            padding: EdgeInsets.all(0),
+                          ),
+                        ),
                         BottomNavigation()
                       ],
                     ),

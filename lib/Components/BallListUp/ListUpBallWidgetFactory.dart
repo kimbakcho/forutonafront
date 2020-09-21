@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Components/BallStyle/BallWidget/IssueBallWidgetFactory.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 
 import 'BallListMediator.dart';
 

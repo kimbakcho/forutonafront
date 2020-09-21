@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
-import 'package:forutonafront/DetailPageViewer/DetailPageViewer.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +9,7 @@ import 'BallBigImagePanelWidget.dart';
 import 'BallPositionInfoBar.dart';
 import 'BallTitleInfoBar.dart';
 import 'IssueBallTopBar.dart';
+import 'ListUpBallWidgetItem.dart';
 
 class IssueBallHaveImageWidget extends StatelessWidget {
   final int index;
@@ -20,31 +18,29 @@ class IssueBallHaveImageWidget extends StatelessWidget {
 
   IssueBallHaveImageWidget({Key key, this.index, this.ballListMediator})
       : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-      fBallResDto: ballListMediator.ballList[index],
-      geoLocatorAdapter: sl()),
+            fBallResDto: ballListMediator.ballList[index],
+            geoLocatorAdapter: sl()),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) =>
-          IssueBallHaveImageWidgetViewModel(
-              context: context,
-              ballListMediator: ballListMediator,
-              issueBallDisPlayUseCase: issueBallDisPlayUseCase,
-              index: index
-          ),
+      create: (_) => IssueBallHaveImageWidgetViewModel(
+          context: context,
+          ballListMediator: ballListMediator,
+          issueBallDisPlayUseCase: issueBallDisPlayUseCase,
+          index: index),
       child: Consumer<IssueBallHaveImageWidgetViewModel>(
         builder: (_, model, __) {
           return Container(
             child: Column(
               children: <Widget>[
                 IssueBallTopBar(
-                    issueBallDisPlayUseCase: issueBallDisPlayUseCase),
+                    ballDisPlayUseCase: issueBallDisPlayUseCase),
                 BallBigImagePanelWidget(
                     ballDisPlayUseCase: issueBallDisPlayUseCase),
                 BallTitleInfoBar(
-                    issueBallDisPlayUseCase: issueBallDisPlayUseCase,
+                    ballDisPlayUseCase: issueBallDisPlayUseCase,
                     gotoDetailPage: model.moveToDetailPage),
                 Divider(
                   color: Color(0xffF4F4F6).withOpacity(0.9),
@@ -52,9 +48,9 @@ class IssueBallHaveImageWidget extends StatelessWidget {
                   thickness: 1,
                 ),
                 BallPositionInfoBar(
-                  gotoDetailPage: model.moveToDetailPage,
+                    gotoDetailPage: model.moveToDetailPage,
                     ballSearchPosition: ballListMediator.searchPosition(),
-                    issueBallDisPlayUseCase: issueBallDisPlayUseCase)
+                    ballDisPlayUseCase: issueBallDisPlayUseCase)
               ],
             ),
             decoration: BoxDecoration(
@@ -68,24 +64,13 @@ class IssueBallHaveImageWidget extends StatelessWidget {
   }
 }
 
-class IssueBallHaveImageWidgetViewModel extends ChangeNotifier {
-
-  final BuildContext context;
-  final BallListMediator ballListMediator;
-  final int index;
+class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   final BallDisPlayUseCase issueBallDisPlayUseCase;
 
   IssueBallHaveImageWidgetViewModel(
-      {this.context, this.ballListMediator, this.index, this.issueBallDisPlayUseCase});
-
-  moveToDetailPage() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return DetailPageViewer(
-        ballListMediator: ballListMediator,
-        detailPageItemFactory: sl(),
-        initIndex: index,
-      );
-    }));
-  }
-
+      {this.issueBallDisPlayUseCase,
+      BuildContext context,
+      BallListMediator ballListMediator,
+      int index})
+      : super(context, ballListMediator, index);
 }

@@ -6,10 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 class IssueBallTopBar extends StatelessWidget {
   const IssueBallTopBar({
     Key key,
-    @required this.issueBallDisPlayUseCase,
+    @required this.ballDisPlayUseCase,
   }) : super(key: key);
 
-  final IssueBallDisPlayUseCase issueBallDisPlayUseCase;
+  final IssueBallDisPlayUseCase ballDisPlayUseCase;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class IssueBallTopBar extends StatelessWidget {
             width: 7,
           ),
           Text(
-            '${issueBallDisPlayUseCase.ballPower()}BP',
+            '${ballDisPlayUseCase.ballPower()}BP',
             style: GoogleFonts.notoSans(
               fontSize: 12,
               color: const Color(0xfff841d9),

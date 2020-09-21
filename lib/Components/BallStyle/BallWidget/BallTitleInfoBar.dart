@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
-import 'package:forutonafront/DetailPageViewer/DetailPageViewer.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class BallTitleInfoBar extends StatelessWidget {
   const BallTitleInfoBar({
     Key key,
-    @required this.issueBallDisPlayUseCase,
+    @required this.ballDisPlayUseCase,
     @required this.gotoDetailPage
   }) : super(key: key);
-  final BallDisPlayUseCase issueBallDisPlayUseCase;
+  final BallDisPlayUseCase ballDisPlayUseCase;
   final Function gotoDetailPage;
 
   @override
@@ -29,11 +25,12 @@ class BallTitleInfoBar extends StatelessWidget {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                     image: NetworkImage(
-                        issueBallDisPlayUseCase.profilePictureUrl()))),
+                        ballDisPlayUseCase.profilePictureUrl()))),
           ),
           SizedBox(width: 8),
           Expanded(
               child: Material(
+                  color: Colors.white,
                   child: InkWell(
                       onTap: () {
                         gotoDetailPage();
@@ -43,7 +40,7 @@ class BallTitleInfoBar extends StatelessWidget {
                           children: <Widget>[
                             Container(
                                 child: Text(
-                                    issueBallDisPlayUseCase.ballName(),
+                                    ballDisPlayUseCase.ballName(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.notoSans(
@@ -56,7 +53,7 @@ class BallTitleInfoBar extends StatelessWidget {
                               children: <Widget>[
                                 Container(
                                   child: Text(
-                                      ' ${issueBallDisPlayUseCase.makerNickName(maxLength: 10)} ',
+                                      ' ${ballDisPlayUseCase.makerNickName(maxLength: 10)} ',
                                       maxLines: 1,
                                       style: GoogleFonts.notoSans(
                                         fontSize: 10,
@@ -67,7 +64,7 @@ class BallTitleInfoBar extends StatelessWidget {
                                 Container(
                                   child: Text(
                                       '• 조회수 '
-                                          '${issueBallDisPlayUseCase.ballHits()}회  •  ${issueBallDisPlayUseCase.remainTime()}',
+                                          '${ballDisPlayUseCase.ballHits()}회  •  ${ballDisPlayUseCase.remainTime()}',
                                       maxLines: 1,
                                       style: GoogleFonts.notoSans(
                                         fontSize: 10,
@@ -81,6 +78,7 @@ class BallTitleInfoBar extends StatelessWidget {
             width: 30,
             height: 30,
             child: Material(
+              color: Colors.white,
               child: InkWell(
                 onTap: () {},
                 child: Icon(

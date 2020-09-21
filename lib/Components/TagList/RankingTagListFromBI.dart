@@ -10,24 +10,29 @@ import 'package:provider/provider.dart';
 
 import 'RankingTagListFromBIManager.dart';
 
-class RankingTagListFromBI extends StatelessWidget {
+class RankingTagListFromBI extends StatefulWidget {
   final RankingTagListFromBIManager rankingTagListFromBIManager;
 
-  RankingTagListFromBI({this.rankingTagListFromBIManager});
+  const RankingTagListFromBI({Key key, this.rankingTagListFromBIManager}) : super(key: key);
 
+  @override
+  _RankingTagListFromBIState createState() => _RankingTagListFromBIState();
+}
+
+class _RankingTagListFromBIState extends State<RankingTagListFromBI> with AutomaticKeepAliveClientMixin<RankingTagListFromBI>{
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => RankingTagListFromBIViewModel(
             geoLocationUtilBasicUseCaseInputPort: sl(),
             tagRankingFromBallInfluencePowerUseCaseInputPort: sl(),
-            rankingTagListFromBIManager: rankingTagListFromBIManager),
+            rankingTagListFromBIManager: widget.rankingTagListFromBIManager),
         child: Consumer<RankingTagListFromBIViewModel>(builder: (_, model, __) {
           return Container(
               margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
               height: 30,
               child: ListView.builder(
-                padding: EdgeInsets.only(right: 16),
+                  padding: EdgeInsets.only(right: 16),
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   itemCount: model.tagRankingResDtos.length,
@@ -38,7 +43,11 @@ class RankingTagListFromBI extends StatelessWidget {
                   }));
         }));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
+
 
 class RankingTagListFromBIViewModel extends ChangeNotifier
     implements

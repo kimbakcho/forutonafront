@@ -6,6 +6,7 @@ abstract class RankingTagListFromBIListener {
 
 class RankingTagListFromBIManager {
   List<RankingTagListFromBIListener> _rankingTagListFromBIListeners = [];
+  Position currentSearchPosition;
 
   void subscribe(RankingTagListFromBIListener listener){
     this._rankingTagListFromBIListeners.add(listener);
@@ -20,6 +21,7 @@ class RankingTagListFromBIManager {
   }
 
   search(Position searchPosition){
+    currentSearchPosition = searchPosition;
     _rankingTagListFromBIListeners.forEach((element) {
       element.search(searchPosition);
     });

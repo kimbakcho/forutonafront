@@ -16,9 +16,11 @@ class FullBallListUp extends StatelessWidget {
             FullBallListUpViewModel(ballListMediator: ballListMediator),
         child: Consumer<FullBallListUpViewModel>(builder: (_, model, __) {
           return ListView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
               itemCount: ballListMediator.ballList.length,
               padding: EdgeInsets.all(0),
-              shrinkWrap: true,
+
               itemBuilder: (_, index) {
                 return Container(
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
