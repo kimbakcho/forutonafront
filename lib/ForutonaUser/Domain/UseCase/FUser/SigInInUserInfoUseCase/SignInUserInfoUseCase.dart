@@ -5,9 +5,10 @@ import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:injectable/injectable.dart';
 
 import 'SignInUserInfoUseCaseOutputPort.dart';
-
+@Injectable(as: SignInUserInfoUseCaseInputPort)
 class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   FUserInfo _fUserInfo;
   FUserRepository _fUserRepository;

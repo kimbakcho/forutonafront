@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 //flutter pub run build_runner watch
 
 void main() {
+  configureDependencies();
   di.init();
-
   runApp(
       MyApp(),
   );

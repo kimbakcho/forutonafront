@@ -11,6 +11,7 @@ import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/Dto/UserPositionUpdateReqDto.dart';
 // ignore: implementation_imports
 import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class FUserRemoteDataSource {
   Future<void> updateUserPosition(LatLng latLng, FDio tokenFDio);
@@ -35,7 +36,7 @@ abstract class FUserRemoteDataSource {
 
   Future<FUserInfo> findByMe(FDio tokenFDio);
 }
-
+@Injectable(as: FUserRemoteDataSource)
 class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
 
   @override

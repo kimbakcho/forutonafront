@@ -5,6 +5,7 @@ import 'package:flutter_package_manager/flutter_package_manager.dart';
 import 'package:forutonafront/Common/AndroidIntentAdapter/AndroidIntentAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class MapIntent {
   Future<bool> canLunch();

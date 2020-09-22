@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 
 import 'package:path_provider/path_provider.dart';
@@ -51,7 +52,8 @@ abstract class ImageUtilInputPort {
   }
 
 }
-
+@Named("ImageAvatarUtil")
+@Injectable(as: ImageUtilInputPort)
 class ImageAvatarUtil extends ImageUtilInputPort {
 
   @override
@@ -66,7 +68,8 @@ class ImageAvatarUtil extends ImageUtilInputPort {
   }
 
 }
-
+@Named("ImageBorderAvatarUtil")
+@Injectable(as: ImageUtilInputPort)
 class ImageBorderAvatarUtil extends ImageUtilInputPort {
 
   @override
@@ -87,7 +90,8 @@ class ImageBorderAvatarUtil extends ImageUtilInputPort {
   }
 
 }
-
+@Named("ImagePngResizeUtil")
+@Injectable(as: ImageUtilInputPort)
 class ImagePngResizeUtil extends ImageUtilInputPort {
 
   @override

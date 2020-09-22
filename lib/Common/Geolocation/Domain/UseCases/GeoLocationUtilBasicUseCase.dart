@@ -6,9 +6,11 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Placemark.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:injectable/injectable.dart';
 
 import 'GeoLocationUtilBasicUseCaseInputPort.dart';
 
+@Injectable(as: GeoLocationUtilBasicUseCaseInputPort)
 class GeoLocationUtilBasicUseCase
     implements GeoLocationUtilBasicUseCaseInputPort {
   GeolocatorAdapter _geolocatorAdapter;

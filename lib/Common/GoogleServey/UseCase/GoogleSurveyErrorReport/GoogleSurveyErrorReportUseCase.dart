@@ -1,5 +1,9 @@
+import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyUseCase.dart';
+import 'package:injectable/injectable.dart';
 
+@named
+@Injectable(as: BaseGoogleSurveyInputPort)
 class GoogleSurveyErrorReportUseCase extends BaseGoogleSurveyUseCase {
   GoogleSurveyErrorReportUseCase() {
     this.prize = "한우셋트2";

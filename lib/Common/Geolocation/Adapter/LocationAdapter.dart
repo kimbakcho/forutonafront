@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:location/location.dart' as Location;
 import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart' as Adapter;
 
@@ -11,6 +12,8 @@ abstract class LocationAdapter {
   Future<bool> requestService();
 
 }
+
+@Injectable(as: LocationAdapter)
 class LocationAdapterImpl implements LocationAdapter {
   Location.Location location = new Location.Location();
 

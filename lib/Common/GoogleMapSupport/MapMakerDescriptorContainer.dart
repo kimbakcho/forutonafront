@@ -5,6 +5,7 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class MapMakerDescriptorContainer {
   Map<String, BitmapDescriptor> container;
@@ -14,11 +15,13 @@ abstract class MapMakerDescriptorContainer {
   init();
 }
 
+@Injectable(as: MapMakerDescriptorContainer)
 class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
   @override
   Map<String, BitmapDescriptor> container;
 
-  final MapBitmapDescriptorUseCaseInputPort _mapBitmapDescriptorUseCaseInputPort;
+  final MapBitmapDescriptorUseCaseInputPort
+      _mapBitmapDescriptorUseCaseInputPort;
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final Preference _preference;
@@ -27,9 +30,12 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
       {@required
           MapBitmapDescriptorUseCaseInputPort
               mapBitmapDescriptorUseCaseInputPort,
-      FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
-        Preference preference,
-      SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
+      @required
+          FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
+      @required
+          Preference preference,
+      @required
+          SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
       : _mapBitmapDescriptorUseCaseInputPort =
             mapBitmapDescriptorUseCaseInputPort,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
@@ -56,13 +62,14 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
           await _mapBitmapDescriptorUseCaseInputPort
               .urlPathToAvatarBitmapDescriptor(userInfo.profilePictureUrl);
       container.putIfAbsent("UserAvatarIcon", () => userAvatarIcon);
-      container.update("UserAvatarIcon", (value) => userAvatarIcon) ;
-    }else {
+      container.update("UserAvatarIcon", (value) => userAvatarIcon);
+    } else {
       BitmapDescriptor userAvatarIcon =
-      await _mapBitmapDescriptorUseCaseInputPort
-          .urlPathToAvatarBitmapDescriptor(_preference.basicProfileImageUrl);
+          await _mapBitmapDescriptorUseCaseInputPort
+              .urlPathToAvatarBitmapDescriptor(
+                  _preference.basicProfileImageUrl);
       container.putIfAbsent("UserAvatarIcon", () => userAvatarIcon);
-      container.update("UserAvatarIcon", (value) => userAvatarIcon) ;
+      container.update("UserAvatarIcon", (value) => userAvatarIcon);
     }
   }
 

@@ -8,6 +8,7 @@ import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapt
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
+import 'package:injectable/injectable.dart';
 
 //FirebaseMessage BackGround 에 등록되는 메소드는 는 반드시 Top Level 메소드 여야 한다.
 //메소드 이름을  onFirebaseBackgroundMessage 으로 시작하면 안된다
@@ -50,7 +51,7 @@ abstract class FireBaseMessageAdapter {
 
   Future<String> getCurrentToken();
 }
-
+@Injectable(as: FireBaseMessageAdapter)
 class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
   FirebaseMessaging _firebaseMessaging;
 

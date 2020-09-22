@@ -2,7 +2,9 @@ import 'package:forutonafront/Common/Notification/NotiChannel/Domain/RadarBasicC
 import 'package:forutonafront/Common/Notification/NotiChannel/Dto/NotificationChannelDto.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: NotificationChannelBaseInputPort)
 class RadarBasicChannelUseCae implements NotificationChannelBaseInputPort {
   String groupChannelId = 'co.kr.forutonaforutona.radarbasic';
   String groupChannelName = 'radarbasic';

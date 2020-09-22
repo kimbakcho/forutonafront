@@ -102,6 +102,7 @@ import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 
 import '../Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
@@ -125,9 +126,17 @@ import '../ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import '../Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
 import '../Tag/Domain/UseCase/TagRankingFromBallInfluencePowerUseCase.dart';
+import 'ServiceLocator.config.dart';
 
 
 final sl = GetIt.instance;
+
+@InjectableInit(
+  initializerName: r'$initGetIt', // default
+  preferRelativeImports: true, // default
+  asExtension: false, // default
+)
+void configureDependencies() => $initGetIt(sl);
 
 init() {
   sl.registerSingleton<Preference>(Preference());

@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 
 abstract class FileDownLoaderUseCaseInputPort {
   Future<String> downloadAndSaveFile(String url, String fileName);
   Future<List<int>> downloadToByte(String url);
 }
-
+@Injectable(as: FileDownLoaderUseCaseInputPort)
 class FileDownLoaderUseCase implements  FileDownLoaderUseCaseInputPort {
 
   @override

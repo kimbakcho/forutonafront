@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SharedPreferencesAdapter {
@@ -6,7 +7,7 @@ abstract class SharedPreferencesAdapter {
   getDouble(String key);
 
 }
-
+@Injectable(as: SharedPreferencesAdapter)
 class SharedPreferencesAdapterImpl implements SharedPreferencesAdapter {
 
   setDouble(String key, double value) async {

@@ -7,7 +7,9 @@ import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseI
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // ignore: implementation_imports
 import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: MapScreenPositionUseCaseInputPort)
 class MapScreenPositionUseCase implements MapScreenPositionUseCaseInputPort {
   @override
   Future<LatLng> mapScreenOffsetToLatLng(RenderBox mapRenderBoxRed,

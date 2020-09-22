@@ -1,6 +1,9 @@
 import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyOutput.dart';
+import 'package:injectable/injectable.dart';
 
+@named
+@Injectable(as: BaseGoogleSurveyInputPort)
 class BaseGoogleSurveyUseCase implements BaseGoogleSurveyInputPort{
 
   @override

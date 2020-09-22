@@ -7,11 +7,13 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import 'GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'GeoLocationUtilForeGroundUseCaseInputPort.dart';
 
+@Injectable(as: GeoLocationUtilForeGroundUseCaseInputPort)
 class GeoLocationUtilForeGroundUseCase
     implements GeoLocationUtilForeGroundUseCaseInputPort {
   final GeolocatorAdapter _geolocatorAdapter;

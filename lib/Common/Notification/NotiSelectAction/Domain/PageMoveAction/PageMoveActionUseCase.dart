@@ -3,7 +3,9 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMo
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: NotiSelectActionBaseInputPort)
 class PageMoveActionUseCase implements NotiSelectActionBaseInputPort {
 
   PageMoveActionUseCase();

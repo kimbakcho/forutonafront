@@ -4,6 +4,7 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Placemark.dart' as A
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:geolocator/geolocator.dart' as Geolocator;
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart' as AdapterPosition;
+import 'package:injectable/injectable.dart';
 
 abstract class GeolocatorAdapter {
   getCurrentPosition();
@@ -17,7 +18,7 @@ abstract class GeolocatorAdapter {
 
   startStreamCurrentPosition();
 }
-
+@Injectable(as: GeolocatorAdapter)
 class GeolocatorAdapterImpl implements GeolocatorAdapter {
   Geolocator.Geolocator _geolocator = Geolocator.Geolocator();
 

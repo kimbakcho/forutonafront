@@ -5,8 +5,9 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMo
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001PayloadDto.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+import 'package:injectable/injectable.dart';
 
-
+@Injectable(as: PageMoveActionUseCaseInputPort)
 class ID001PageMoveAction implements PageMoveActionUseCaseInputPort {
 
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;

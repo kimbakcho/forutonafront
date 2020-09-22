@@ -1,9 +1,12 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/Dto/NotificationChannelDto.dart';
 import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: NotificationChannelBaseInputPort)
 class CommentChannelUseCase implements NotificationChannelBaseInputPort {
   String groupChannelId = 'co.kr.forutonaforutona.comment';
   String groupChannelName = 'Comment_Group';

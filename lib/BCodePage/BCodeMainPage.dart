@@ -6,10 +6,9 @@ import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
 class BCodeMainPage extends StatelessWidget {
 
-  Preference _preference = sl();
+  final Preference _preference = sl();
 
   @override
   Widget build(BuildContext context) {

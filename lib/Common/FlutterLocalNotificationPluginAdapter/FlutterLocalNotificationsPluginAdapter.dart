@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class FlutterLocalNotificationsPluginAdapter {
   init();
@@ -14,6 +15,7 @@ final StreamController<String> selectNotificationSubjectStreamController = Strea
 
 final Stream<String> selectNotificationSubject = selectNotificationSubjectStreamController.stream;
 
+@Injectable(as: FlutterLocalNotificationsPluginAdapter)
 class FlutterLocalNotificationsPluginAdapterImpl
     implements FlutterLocalNotificationsPluginAdapter {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -21,7 +23,6 @@ class FlutterLocalNotificationsPluginAdapterImpl
   NotificationAppLaunchDetails notificationAppLaunchDetails;
 
   Future<void> init() async {
-    print("FlutterLocalNotificationsPluginAdapterImpl Init");
     notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');

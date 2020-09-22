@@ -1,4 +1,5 @@
 import 'package:android_intent/android_intent.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class AndroidIntentAdapter {
    // ignore: non_constant_identifier_names
@@ -7,6 +8,7 @@ abstract class AndroidIntentAdapter {
    launch();
 
 }
+@Injectable(as: AndroidIntentAdapter)
 class AndroidIntentAdapterImpl implements AndroidIntentAdapter{
 
   AndroidIntent _androidIntent;

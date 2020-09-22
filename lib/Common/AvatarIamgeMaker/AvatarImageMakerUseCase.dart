@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/ImageCropUtil/ImageUtilInputPort.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class AvatarImageMakerUseCaseInputPort {
   Future<String> makeAvatarImageToFile(
@@ -8,7 +9,7 @@ abstract class AvatarImageMakerUseCaseInputPort {
 
   Future<List<int>> makeAvatarImageToByte(String userImageUrl, Size size);
 }
-
+@Injectable(as: AvatarImageMakerUseCaseInputPort)
 class AvatarImageMakerUseCase implements AvatarImageMakerUseCaseInputPort {
   final FileDownLoaderUseCaseInputPort _fileDownLoaderUseCaseInputPort;
   final ImageUtilInputPort _imageUtilInputPort;

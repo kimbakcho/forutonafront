@@ -10,7 +10,10 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPay
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001PayloadDto.dart';
 import 'package:forutonafront/FireBaseMessage/PlayloadDto/FCMReplyDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:injectable/injectable.dart';
 
+@named
+@Injectable(as: CommentChannelBaseServiceUseCaseInputPort)
 class FBallReplyFCMServiceUseCase
     implements CommentChannelBaseServiceUseCaseInputPort {
   final FlutterLocalNotificationsPluginAdapter

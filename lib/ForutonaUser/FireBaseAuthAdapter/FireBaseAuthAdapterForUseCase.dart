@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
+import 'package:injectable/injectable.dart';
 
 import 'FireBaseAuthBaseAdapter.dart';
 
@@ -13,7 +14,7 @@ abstract class FireBaseAuthAdapterForUseCase
   void startOnAuthStateChangedListen();
 
 }
-
+@Injectable(as: FireBaseAuthAdapterForUseCase)
 class FireBaseAuthAdapterForUseCaseImpl
     implements FireBaseAuthAdapterForUseCase {
 

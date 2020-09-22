@@ -14,6 +14,7 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 abstract class FBallRemoteDataSource {
@@ -61,7 +62,7 @@ abstract class FBallRemoteDataSource {
       {@required List<Uint8List> images, @required FDio tokenFDio});
 
 }
-
+@Injectable(as: FBallRemoteDataSource)
 class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   @override
   Future<PageWrap<FBallResDto>> findByBallOrderByBI(

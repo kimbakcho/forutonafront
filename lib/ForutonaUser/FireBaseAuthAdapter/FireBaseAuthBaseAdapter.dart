@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
+
 
 abstract class FireBaseAuthBaseAdapter {
   Future<String> getFireBaseIdToken();
@@ -14,7 +16,7 @@ abstract class FireBaseAuthBaseAdapter {
   Future<void> logout();
   Future<String> createUserWithEmailAndPassword(String email,String pw);
 }
-
+@Injectable(as: FireBaseAuthBaseAdapter)
 class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
   final noneToken = "noneToken";
 

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:forutonafront/Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
 import 'package:forutonafront/Common/ImageCropUtil/ImageUtilInputPort.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class MapBitmapDescriptorUseCaseInputPort {
   Future<BitmapDescriptor> assertFileToBitmapDescriptor(
@@ -13,7 +14,7 @@ abstract class MapBitmapDescriptorUseCaseInputPort {
 
   Future<BitmapDescriptor> urlPathToAvatarBitmapDescriptor(String url);
 }
-
+@Injectable(as: MapBitmapDescriptorUseCaseInputPort)
 class MapBitmapDescriptorUseCase
     implements MapBitmapDescriptorUseCaseInputPort {
   final ImageUtilInputPort _imagePngResizeUtil;

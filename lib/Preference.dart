@@ -1,7 +1,9 @@
 import 'dart:core';
 
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable()
 class Preference {
    String kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";
    Position initPosition = Position(latitude: 37.508797,longitude: 126.890605);

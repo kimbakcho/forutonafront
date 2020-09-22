@@ -8,7 +8,10 @@ import 'package:forutonafront/Common/Notification/NotiChannel/Dto/NotificationCh
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001PayloadDto.dart';
 import 'package:forutonafront/FireBaseMessage/PlayloadDto/FCMFBallMakeDto.dart';
+import 'package:injectable/injectable.dart';
 
+
+@Injectable(as: RadarBasicChannelUseCaeInputPort)
 class IssueFBalIInsertFCMServiceUseCase
     implements RadarBasicChannelUseCaeInputPort {
 
