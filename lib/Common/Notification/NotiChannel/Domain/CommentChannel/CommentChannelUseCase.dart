@@ -5,7 +5,7 @@ import 'package:forutonafront/Common/Notification/NotiChannel/Dto/NotificationCh
 import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
-
+@named
 @Injectable(as: NotificationChannelBaseInputPort)
 class CommentChannelUseCase implements NotificationChannelBaseInputPort {
   String groupChannelId = 'co.kr.forutonaforutona.comment';

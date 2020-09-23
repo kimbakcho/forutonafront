@@ -9,6 +9,7 @@ import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart'
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
+import 'package:injectable/injectable.dart';
 
 
 abstract class PhoneAuthRemoteSource {
@@ -24,7 +25,7 @@ abstract class PhoneAuthRemoteSource {
   Future<PwChangeFromPhoneAuthResDto> reqChangePwAuthPhone(PwChangeFromPhoneAuthReqDto reqDto,FDio noneToken);
 
 }
-
+@Injectable(as: PhoneAuthRemoteSource)
 class PhoneAuthRemoteSourceImpl implements PhoneAuthRemoteSource{
 
   Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto,FDio noneToken) async {

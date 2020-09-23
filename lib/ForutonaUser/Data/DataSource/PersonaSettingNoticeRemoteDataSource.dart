@@ -2,13 +2,14 @@ import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
+import 'package:injectable/injectable.dart';
 
 
 abstract class PersonaSettingNoticeRemoteDataSource {
   Future<PageWrap<PersonaSettingNoticeResDto>> getPersonaSettingNotice(Pageable pageable,FDio noneTokenFDio);
   Future<PersonaSettingNoticeResDto> getPersonaSettingNoticePage(int idx,FDio noneTokenFDio);
 }
-
+@Injectable(as: PersonaSettingNoticeRemoteDataSource)
 class PersonaSettingNoticeRemoteDataSourceImpl implements PersonaSettingNoticeRemoteDataSource {
   @override
   Future<PageWrap<PersonaSettingNoticeResDto>> getPersonaSettingNotice(Pageable pageable,FDio noneTokenFDio) async {

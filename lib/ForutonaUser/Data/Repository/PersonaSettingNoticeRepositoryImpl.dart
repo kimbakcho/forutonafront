@@ -5,7 +5,9 @@ import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/PersonaSettingNoticeRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: PersonaSettingNoticeRepository)
 class PersonaSettingNoticeRepositoryImpl
     implements PersonaSettingNoticeRepository {
   PersonaSettingNoticeRemoteDataSource _personaSettingNoticeRemoteDataSource;

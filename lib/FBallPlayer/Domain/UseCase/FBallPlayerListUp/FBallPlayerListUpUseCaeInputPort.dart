@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBallPlayer/Domain/Repository/FBallPlayerRepository.dart';
 import 'package:forutonafront/FBallPlayer/Dto/FBallPlayerResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class FBallPlayerListUpInputPort {
   Future<PageWrap<FBallPlayerResDto>> userPlayBallListUp(
@@ -13,7 +14,7 @@ abstract class FBallPlayerListUpInputPort {
 abstract class FBallPlayerListUpOutputPort {
   void searchResult(PageWrap<FBallPlayerResDto> listUpItem);
 }
-
+@Injectable(as: FBallPlayerListUpInputPort)
 class FBallPlayerListUpUseCae implements FBallPlayerListUpInputPort {
   FBallPlayerRepository _fBallPlayerRepository;
 

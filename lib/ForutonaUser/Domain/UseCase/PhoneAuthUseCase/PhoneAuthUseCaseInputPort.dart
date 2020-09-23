@@ -4,6 +4,7 @@ import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PhoneAuthResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class PhoneAuthUseCaseInputPort {
   Future<void> reqPhoneAuth(PhoneAuthReqDto reqDto,{PwAuthFromPhoneUseCaseOutputPort outputPort});
@@ -15,7 +16,7 @@ abstract class PwAuthFromPhoneUseCaseOutputPort {
 
   void onNumberAuthReq(PhoneAuthNumberResDto phoneAuthNumberResDto);
 }
-
+@Injectable(as: PhoneAuthUseCaseInputPort)
 class PhoneAuthUseCase implements PhoneAuthUseCaseInputPort {
   PhoneAuthRepository _phoneAuthRepository;
 

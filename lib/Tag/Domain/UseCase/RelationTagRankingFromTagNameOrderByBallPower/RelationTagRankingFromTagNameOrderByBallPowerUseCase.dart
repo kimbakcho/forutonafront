@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
+import 'package:injectable/injectable.dart';
 import 'RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
 
+@Injectable(as: RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort)
 class RelationTagRankingFromTagNameOrderByBallPowerUseCase
     implements RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort {
   TagRepository _tagRepository;
 
   RelationTagRankingFromTagNameOrderByBallPowerUseCase(
-      {TagRepository tagRepository})
+      {@required TagRepository tagRepository})
       : _tagRepository = tagRepository;
 
   @override

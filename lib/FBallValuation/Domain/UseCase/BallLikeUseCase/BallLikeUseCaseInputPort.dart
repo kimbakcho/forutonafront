@@ -3,6 +3,7 @@ import 'package:forutonafront/FBallValuation/Domain/Repositroy/FBallValuationRep
 import 'package:forutonafront/FBallValuation/Domain/Value/LikeActionType.dart';
 import 'package:forutonafront/FBallValuation/Dto/FBallLikeReqDto.dart';
 import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
+import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class BallLikeUseCaseInputPort {
@@ -20,7 +21,7 @@ abstract class BallLikeUseCaseInputPort {
 abstract class BallLikeUseCaseOutputPort {
   onResult(FBallLikeResDto resDto);
 }
-
+@Injectable(as: BallLikeUseCaseInputPort)
 class BallLikeUseCase implements BallLikeUseCaseInputPort {
   final FBallValuationRepository _fBallValuationRepository;
 

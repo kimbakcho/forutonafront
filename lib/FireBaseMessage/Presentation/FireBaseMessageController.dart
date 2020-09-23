@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
+import 'package:injectable/injectable.dart';
 
-
+@Injectable()
 class FireBaseMessageController {
   FireBaseMessageAdapter _fireBaseMessageAdapter;
   BaseMessageUseCaseInputPort _launchMessageUseCase;

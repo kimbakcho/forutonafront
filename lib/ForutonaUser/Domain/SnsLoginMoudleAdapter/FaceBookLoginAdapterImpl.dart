@@ -1,8 +1,11 @@
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:injectable/injectable.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
+@named
+@Injectable(as: SnsLoginModuleAdapter)
 class FaceBookLoginAdapterImpl implements SnsLoginModuleAdapter{
 
   @override

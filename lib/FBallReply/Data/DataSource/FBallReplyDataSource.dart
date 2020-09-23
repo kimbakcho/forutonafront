@@ -5,6 +5,7 @@ import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyInsertReqDto.d
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
+import 'package:injectable/injectable.dart';
 
 
 abstract class FBallReplyDataSource {
@@ -23,7 +24,7 @@ abstract class FBallReplyDataSource {
 
 
 }
-
+@Injectable(as: FBallReplyDataSource)
 class FBallReplyDataSourceImpl implements FBallReplyDataSource {
   @override
   Future<FBallReplyResDto> deleteFBallReply(String replyUuid, FDio tokenFDio) async {

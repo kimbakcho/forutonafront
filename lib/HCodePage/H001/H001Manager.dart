@@ -1,9 +1,10 @@
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class H001Listener {
     Future<void> search(Position loadPosition);
 }
-
+@Injectable()
 class H001Manager {
   List<H001Listener> _h001Listener = [];
 

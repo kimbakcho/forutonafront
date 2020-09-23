@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FBall/Domain/Value/BallSearchBarHistory.dart';
 
 import 'package:forutonafront/FBall/Dto/BallSearchBarHistoryDto.dart';
+import 'package:injectable/injectable.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +13,7 @@ abstract class  BallSearchHistoryLocalDataSource {
   void removeHistory({@required BallSearchBarHistoryDto saveReq,@required SharedPreferences sharedPreferences});
   List<BallSearchBarHistory> loadHistory({@required SharedPreferences sharedPreferences});
 }
+@Injectable(as: BallSearchHistoryLocalDataSource)
 class BallSearchHistoryLocalDataSourceImpl implements BallSearchHistoryLocalDataSource{
   static String shareBallSearchBarHistory = "BallSearchbarHistroy";
   static int historyListLimit = 5;

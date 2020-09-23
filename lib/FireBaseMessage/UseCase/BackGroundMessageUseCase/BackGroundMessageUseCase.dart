@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
+import 'package:injectable/injectable.dart';
 
-
+@named
+@Injectable(as: BaseMessageUseCaseInputPort)
 class BackGroundMessageUseCase implements BaseMessageUseCaseInputPort {
   BaseMessageUseCaseInputPort _baseMessageUseCaseInputPort;
 

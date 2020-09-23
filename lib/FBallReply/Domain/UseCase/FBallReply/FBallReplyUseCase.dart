@@ -8,11 +8,12 @@ import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyInsertReqDto.d
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyUpdateReqDto.dart';
+import 'package:injectable/injectable.dart';
 
 import 'FBallReplyUseCaseInputPort.dart';
 import 'FBallReplyUseCaseOutputPort.dart';
 
-
+@Injectable(as: FBallReplyUseCaseInputPort)
 class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   final FBallReplyRepository _fBallReplyRepository;
 

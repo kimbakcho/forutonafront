@@ -1,8 +1,11 @@
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:injectable/injectable.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
+@named
+@Injectable(as: SnsLoginModuleAdapter)
 class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
   @override
   // ignore: missing_return

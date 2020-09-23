@@ -5,6 +5,7 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:injectable/injectable.dart';
 
 class FBallListUpFromMapArea implements FBallListUpUseCaseInputPort {
   final FBallRepository _fBallRepository;

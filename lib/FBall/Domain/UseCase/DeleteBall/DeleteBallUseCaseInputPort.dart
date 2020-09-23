@@ -1,5 +1,6 @@
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class DeleteBallUseCaseInputPort {
   Future<String> deleteBall(String ballUuid,
@@ -8,6 +9,7 @@ abstract class DeleteBallUseCaseInputPort {
 abstract class DeleteBallUseCaseOutputPort {
   onDeleteBall(FBallResDto fBallResDto);
 }
+@Injectable(as: DeleteBallUseCaseInputPort)
 class DeleteBallUseCase implements DeleteBallUseCaseInputPort {
   final FBallRepository _fBallRepository;
 

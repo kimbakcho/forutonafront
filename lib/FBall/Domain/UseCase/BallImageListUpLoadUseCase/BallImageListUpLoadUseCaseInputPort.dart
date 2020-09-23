@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/ICodePage/IM001/BallImageItem.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class BallImageListUpLoadUseCaseInputPort {
   Future<List<BallImageItem>> ballImageListUpLoadAndFillUrls(List<BallImageItem> refSrcList);
 }
+@Injectable(as: BallImageListUpLoadUseCaseInputPort)
 class BallImageListUpLoadUseCase implements BallImageListUpLoadUseCaseInputPort {
 
   final FBallRepository _fBallRepository;

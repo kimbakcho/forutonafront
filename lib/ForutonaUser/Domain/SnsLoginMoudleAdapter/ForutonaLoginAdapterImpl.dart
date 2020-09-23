@@ -1,7 +1,10 @@
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:injectable/injectable.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
+@named
+@Injectable(as: SnsLoginModuleAdapter)
 class ForutonaLoginAdapterImpl implements SnsLoginModuleAdapter {
   @override
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {

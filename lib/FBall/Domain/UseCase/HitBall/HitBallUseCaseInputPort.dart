@@ -1,8 +1,10 @@
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class HitBallUseCaseInputPort {
    Future<int> hit(String ballUuid);
 }
+@Injectable(as: HitBallUseCaseInputPort)
 class HitBallUseCase implements HitBallUseCaseInputPort{
 
   final FBallRepository _fBallRepository;

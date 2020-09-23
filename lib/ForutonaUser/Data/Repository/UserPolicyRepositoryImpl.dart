@@ -3,7 +3,9 @@ import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/UserPolicyRemoteDataSource.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/UserPolicyRepository.dart';
 import 'package:forutonafront/ForutonaUser/Dto/UserPolicyResDto.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: UserPolicyRepository)
 class UserPolicyRepositoryImpl implements UserPolicyRepository {
   UserPolicyRemoteDataSource _userPolicyRemoteDataSource;
 

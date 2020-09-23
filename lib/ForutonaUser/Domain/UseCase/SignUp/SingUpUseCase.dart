@@ -7,9 +7,10 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Preference.dart';
+import 'package:injectable/injectable.dart';
 
 import 'SingUpUseCaseInputPort.dart';
-
+@Injectable(as: SingUpUseCaseInputPort)
 class SingUpUseCase implements SingUpUseCaseInputPort {
   FUserRepository _fUserRepository;
   Preference _preference;

@@ -5,7 +5,8 @@ import 'package:forutonafront/FBallValuation/Domain/Repositroy/FBallValuationRep
 import 'package:forutonafront/FBallValuation/Dto/FBallLikeReqDto.dart';
 import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-
+import 'package:injectable/injectable.dart';
+@Injectable(as: FBallValuationRepository)
 class FBallValuationRepositoryImpl implements FBallValuationRepository {
   final FireBaseAuthAdapterForUseCase _fireBaseAuthBaseAdapter;
   final FBallValuationRemoteDataSource _fBallValuationRemoteDataSource;

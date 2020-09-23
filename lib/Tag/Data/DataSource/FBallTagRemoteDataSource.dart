@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class FBallTagRemoteDataSource {
   Future<List<TagRankingResDto>> getFTagRankingFromBallInfluencePower(
@@ -15,7 +16,7 @@ abstract class FBallTagRemoteDataSource {
   Future<List<FBallTagResDto>> tagFromBallUuid(
       {@required String ballUuid, @required FDio noneTokenFDio});
 }
-
+@Injectable(as: FBallTagRemoteDataSource)
 class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
   FBallTagRemoteDataSourceImpl();
 

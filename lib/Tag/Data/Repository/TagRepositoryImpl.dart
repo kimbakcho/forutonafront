@@ -4,8 +4,9 @@ import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-
+@Injectable(as: TagRepository)
 class TagRepositoryImpl implements TagRepository {
   final FBallTagRemoteDataSource _fBallTagRemoteDataSource;
 

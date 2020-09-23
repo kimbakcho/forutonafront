@@ -14,8 +14,10 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
+@Injectable(as: FBallRepository)
 class FBallRepositoryImpl implements FBallRepository {
   final FBallRemoteDataSource _fBallRemoteDataSource;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthBaseAdapter;

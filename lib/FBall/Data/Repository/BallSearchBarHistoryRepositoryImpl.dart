@@ -3,8 +3,10 @@ import 'package:forutonafront/FBall/Data/DataStore/BallSearchHistoryLocalDataSou
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Domain/Value/BallSearchBarHistory.dart';
 import 'package:forutonafront/FBall/Dto/BallSearchBarHistoryDto.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@Injectable(as: BallSearchBarHistoryRepository)
 class BallSearchBarHistoryRepositoryImpl
     implements BallSearchBarHistoryRepository {
 

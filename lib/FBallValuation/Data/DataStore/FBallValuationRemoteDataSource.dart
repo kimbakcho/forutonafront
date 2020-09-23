@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/FBallValuation/Dto/FBallLikeReqDto.dart';
 import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
+import 'package:injectable/injectable.dart';
 
 
 abstract class FBallValuationRemoteDataSource {
@@ -10,7 +11,7 @@ abstract class FBallValuationRemoteDataSource {
 
   Future<FBallLikeResDto> getBallLikeState({String ballUuid,String uid, FDio noneTokenFDio});
 }
-
+@Injectable(as: FBallValuationRemoteDataSource)
 class FBallValuationRemoteDataSourceImpl implements FBallValuationRemoteDataSource{
   @override
   Future<FBallLikeResDto> ballLike({FBallLikeReqDto reqDto, FDio tokenFDio}) async{

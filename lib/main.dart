@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   configureDependencies();
-  di.init();
+  // di.init();
   runApp(
       MyApp(),
   );

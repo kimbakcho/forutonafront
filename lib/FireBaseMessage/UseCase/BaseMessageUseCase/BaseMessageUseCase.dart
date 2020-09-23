@@ -1,8 +1,11 @@
 import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:injectable/injectable.dart';
 
 import 'BaseMessageUseCaseInputPort.dart';
 
+@named
+@Injectable(as: BaseMessageUseCaseInputPort)
 class BaseMessageUseCase implements BaseMessageUseCaseInputPort {
   @override
   // ignore: missing_return

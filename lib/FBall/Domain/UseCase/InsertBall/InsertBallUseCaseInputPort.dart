@@ -1,6 +1,7 @@
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class InsertBallUseCaseInputPort {
   Future<FBallResDto> insertBall(FBallInsertReqDto reqDto,{InsertBallUseCaseOutputPort outputPort});
@@ -8,7 +9,7 @@ abstract class InsertBallUseCaseInputPort {
 abstract class InsertBallUseCaseOutputPort {
   onInsertBall(FBallResDto fBallResDto);
 }
-
+@Injectable(as: InsertBallUseCaseInputPort)
 class InsertBallUseCase implements InsertBallUseCaseInputPort{
 
   final FBallRepository _fBallRepository;

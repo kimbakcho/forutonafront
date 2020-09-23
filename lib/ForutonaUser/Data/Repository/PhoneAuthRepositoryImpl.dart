@@ -12,7 +12,9 @@ import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart'
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: PhoneAuthRepository)
 class PhoneAuthRepositoryImpl implements PhoneAuthRepository {
   PhoneAuthRemoteSource _phoneAuthRemoteSource;
 

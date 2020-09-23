@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: UserProfileImageUploadUseCaseInputPort)
 class UserProfileImageUploadUseCase
     implements UserProfileImageUploadUseCaseInputPort {
   final FlutterImageCompressAdapter _flutterImageCompressAdapter;

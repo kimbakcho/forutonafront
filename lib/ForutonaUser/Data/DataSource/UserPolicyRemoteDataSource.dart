@@ -1,9 +1,11 @@
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/ForutonaUser/Dto/UserPolicyResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class UserPolicyRemoteDataSource {
   Future<UserPolicyResDto> getPersonaSettingNotice(String policy,FDio noneToken);
 }
+@Injectable(as: UserPolicyRemoteDataSource)
 class UserPolicyRemoteDataSourceImpl implements UserPolicyRemoteDataSource{
 
   @override

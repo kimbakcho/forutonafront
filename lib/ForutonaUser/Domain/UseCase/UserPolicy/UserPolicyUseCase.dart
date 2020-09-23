@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/UserPolicyRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/UserPolicyResDto.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: UserPolicyUseCaseInputPort)
 class UserPolicyUseCase implements UserPolicyUseCaseInputPort {
   final UserPolicyRepository _userPolicyRepository;
 

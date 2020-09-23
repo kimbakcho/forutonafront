@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBallPlayer/Dto/FBallPlayerResDto.dart';
+import 'package:injectable/injectable.dart';
 
 
 abstract class FBallPlayerRemoteDataSource {
@@ -11,7 +12,7 @@ abstract class FBallPlayerRemoteDataSource {
       @required Pageable pageable,
       @required FDio noneTokenFDio});
 }
-
+@Injectable(as: FBallPlayerRemoteDataSource)
 class FBallPlayerRemoteDataSourceImpl implements FBallPlayerRemoteDataSource {
   @override
   Future<PageWrap<FBallPlayerResDto>> getUserPlayBallList(

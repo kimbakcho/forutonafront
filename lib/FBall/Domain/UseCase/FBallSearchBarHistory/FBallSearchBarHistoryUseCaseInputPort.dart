@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import 'package:forutonafront/FBall/Dto/BallSearchBarHistoryDto.dart';
+import 'package:injectable/injectable.dart';
 
 
 abstract class FBallSearchBarHistoryUseCaseInputPort {
@@ -13,7 +14,7 @@ abstract class FBallSearchBarHistoryUseCaseOutputPort {
   onRemoveHistory();
   onSaveHistory();
 }
-
+@Injectable(as: FBallSearchBarHistoryUseCaseInputPort)
 class FBallSearchBarHistoryUseCase
     implements FBallSearchBarHistoryUseCaseInputPort {
   BallSearchBarHistoryRepository _ballSearchBarHistoryRepository;

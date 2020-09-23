@@ -3,9 +3,11 @@ import 'package:forutonafront/ForutonaUser/Domain/Repository/PhoneAuthRepository
 
 import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
+import 'package:injectable/injectable.dart';
 import 'PwFindPhoneUseCaseInputPort.dart';
 import 'PwFindPhoneUseCaseOutputPort.dart';
 
+@Injectable(as: PwFindPhoneUseCaseInputPort)
 class PwFindPhoneUseCase implements PwFindPhoneUseCaseInputPort {
   @override
   String email;

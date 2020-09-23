@@ -8,7 +8,9 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateUserPositi
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: UserPositionForegroundMonitoringUseCaseInputPort)
 class UserPositionForegroundMonitoringUseCase
     implements UserPositionForegroundMonitoringUseCaseInputPort {
   final GeoLocationUtilBasicUseCaseInputPort
