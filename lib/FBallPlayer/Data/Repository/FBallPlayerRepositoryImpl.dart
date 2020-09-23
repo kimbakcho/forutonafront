@@ -8,7 +8,7 @@ import 'package:forutonafront/FBallPlayer/Dto/FBallPlayerResDto.dart';
 import 'package:injectable/injectable.dart';
 
 
-@Injectable(as: FBallPlayerRepository)
+@LazySingleton(as: FBallPlayerRepository)
 class FBallPlayerRepositoryImpl implements FBallPlayerRepository {
   final FBallPlayerRemoteDataSource _fBallPlayerRemoteDataSource;
 

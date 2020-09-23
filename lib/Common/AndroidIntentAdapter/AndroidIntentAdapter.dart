@@ -8,7 +8,7 @@ abstract class AndroidIntentAdapter {
    launch();
 
 }
-@Injectable(as: AndroidIntentAdapter)
+@LazySingleton(as: AndroidIntentAdapter)
 class AndroidIntentAdapterImpl implements AndroidIntentAdapter{
 
   AndroidIntent _androidIntent;

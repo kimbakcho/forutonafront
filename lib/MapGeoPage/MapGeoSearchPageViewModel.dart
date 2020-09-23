@@ -21,14 +21,12 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
   bool searchClearButtonShow = true;
   String sessionToken;
 
-  Preference _preference = sl();
-
   GooglePlace _googlePlace;
   List<AutocompletePrediction> predictions = [];
 
   MapGeoSearchPageViewModel(
       this._initAddress, this._initPosition, this._context) {
-    _googlePlace = GooglePlace(_preference.kGoogleApiKey);
+    _googlePlace = GooglePlace(Preference.kGoogleApiKey);
     sessionToken = Uuid().v4();
     searchFocusNode.addListener(onSearchFocusNode);
     init();

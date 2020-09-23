@@ -8,8 +8,7 @@ import 'package:forutonafront/FBall/Data/Repository/FBallRepositoryImpl.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../TestUtil/FBall/FBallTestUtil.dart';
@@ -18,15 +17,17 @@ import '../../../fixtures/fixture_reader.dart';
 
 class MockFBallRemoteDataSource extends Mock implements FBallRemoteDataSource {}
 
+class MockFireBaseAuthAdapterForUseCase extends Mock
+    implements FireBaseAuthAdapterForUseCase {}
+
 void main() {
   String ballUuid = "TESTBallUuid";
   String testUid = "TESTUid";
+  MockFireBaseAuthAdapterForUseCase mockFireBaseAuthAdapterForUseCase;
+  MockFBallRemoteDataSource mockFBallRemoteDataSource;
   setUp(() {
-    di.init();
-    sl.allowReassignment = true;
-
-    MockFBallRemoteDataSource mockFBallRemoteDataSource =
-        MockFBallRemoteDataSource();
+    mockFireBaseAuthAdapterForUseCase = MockFireBaseAuthAdapterForUseCase();
+    mockFBallRemoteDataSource = MockFBallRemoteDataSource();
     var basicFBallResDto = FBallTestUtil.getBasicFBallResDto(
         ballUuid, FUserInfoSimpleTestUtil.getBasicUserResDto(testUid));
 
@@ -39,14 +40,14 @@ void main() {
             json.decode(fixtureString(
                 "FBall/Data/DataSource/ListUpBallListUpOrderByBI.json")),
             FBallResDto.fromJson));
-
-    sl.registerSingleton<FBallRemoteDataSource>(mockFBallRemoteDataSource);
   });
 
   test('select Ball Repository convert data', () async {
     //arrange
     FBallRepository fBallRepository = FBallRepositoryImpl(
-        fireBaseAuthBaseAdapter: sl(), fBallRemoteDataSource: sl());
+        fireBaseAuthBaseAdapter: mockFireBaseAuthAdapterForUseCase,
+        fBallRemoteDataSource: mockFBallRemoteDataSource);
+
     //act
     FBallResDto fBallResDto = await fBallRepository.selectBall(ballUuid);
 
@@ -58,7 +59,8 @@ void main() {
   test('listUpFromInfluencePower convert data', () async {
     //arrange
     FBallRepository fBallRepository = FBallRepositoryImpl(
-        fireBaseAuthBaseAdapter: sl(), fBallRemoteDataSource: sl());
+        fireBaseAuthBaseAdapter: mockFireBaseAuthAdapterForUseCase,
+        fBallRemoteDataSource: mockFBallRemoteDataSource);
     //act
     FBallListUpFromBIReqDto reqDto = FBallListUpFromBIReqDto();
     PageWrap<FBallResDto> pageWrap = await fBallRepository.findByBallOrderByBI(

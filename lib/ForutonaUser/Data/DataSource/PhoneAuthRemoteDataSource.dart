@@ -25,7 +25,7 @@ abstract class PhoneAuthRemoteSource {
   Future<PwChangeFromPhoneAuthResDto> reqChangePwAuthPhone(PwChangeFromPhoneAuthReqDto reqDto,FDio noneToken);
 
 }
-@Injectable(as: PhoneAuthRemoteSource)
+@LazySingleton(as: PhoneAuthRemoteSource)
 class PhoneAuthRemoteSourceImpl implements PhoneAuthRemoteSource{
 
   Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto,FDio noneToken) async {

@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 
 @named
-@Injectable(as: BaseMessageUseCaseInputPort)
+@LazySingleton(as: BaseMessageUseCaseInputPort)
 class ResumeMessageUseCase implements BaseMessageUseCaseInputPort {
   @override
   Future<dynamic> message(Map<String, dynamic> message) {

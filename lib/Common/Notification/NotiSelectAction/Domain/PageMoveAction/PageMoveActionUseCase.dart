@@ -5,7 +5,7 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectAct
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: NotiSelectActionBaseInputPort)
+@LazySingleton(as: NotiSelectActionBaseInputPort)
 class PageMoveActionUseCase implements NotiSelectActionBaseInputPort {
 
   PageMoveActionUseCase();

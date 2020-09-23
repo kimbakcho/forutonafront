@@ -23,6 +23,7 @@ class TopH001NavExpendAniContent extends StatelessWidget
     _topH001NavExpendAniContentViewModel = TopH001NavExpendAniContentViewModel(
         fluttertoastAdapter: sl(),
         locationAdapter: sl(),
+        h001manager: sl(),
         geoLocationUtilForeGroundUseCaseInputPort: sl());
   }
 
@@ -40,7 +41,9 @@ class TopH001NavExpendAniContent extends StatelessWidget
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
-                      padding: model.isExpend ? EdgeInsets.fromLTRB(16,0,16,0) : EdgeInsets.all(0),
+                      padding: model.isExpend
+                          ? EdgeInsets.fromLTRB(16, 0, 16, 0)
+                          : EdgeInsets.all(0),
                       onPressed: () {},
                       child: Text(
                         model.disPlayAddress,
@@ -86,14 +89,15 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
   TopH001NavExpendAniContentViewModelExpendState currentState =
       TopH001NavExpendAniContentViewModelExpendState.expended;
 
-  H001Manager _h001manager = sl();
+  final H001ManagerInputPort h001manager;
 
   String searchAddress = "로딩중 입니다.";
 
   TopH001NavExpendAniContentViewModel(
-      {this.geoLocationUtilForeGroundUseCaseInputPort,
-      this.locationAdapter,
-      this.fluttertoastAdapter}) {
+      {@required this.geoLocationUtilForeGroundUseCaseInputPort,
+      @required this.locationAdapter,
+      @required this.fluttertoastAdapter,
+      @required this.h001manager}) {
     init();
   }
 
@@ -117,10 +121,10 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
   }
 
   loadPosition(Position loadPosition) async {
-    try{
+    try {
       this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
           .getPositionAddress(loadPosition);
-      _h001manager.search(loadPosition);
+      h001manager.search(loadPosition);
     } on FlutterError catch (e) {
       throw e;
     }
@@ -142,9 +146,10 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
       return address.trim();
     }
   }
-  
+
   bool get isExpend {
-    return currentState == TopH001NavExpendAniContentViewModelExpendState.expended;
+    return currentState ==
+        TopH001NavExpendAniContentViewModelExpendState.expended;
   }
 
   @override

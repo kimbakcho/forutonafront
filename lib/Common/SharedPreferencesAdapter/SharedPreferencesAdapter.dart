@@ -7,7 +7,7 @@ abstract class SharedPreferencesAdapter {
   getDouble(String key);
 
 }
-@Injectable(as: SharedPreferencesAdapter)
+@LazySingleton(as: SharedPreferencesAdapter)
 class SharedPreferencesAdapterImpl implements SharedPreferencesAdapter {
 
   setDouble(String key, double value) async {

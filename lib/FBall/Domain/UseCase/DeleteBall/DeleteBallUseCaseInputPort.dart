@@ -9,7 +9,7 @@ abstract class DeleteBallUseCaseInputPort {
 abstract class DeleteBallUseCaseOutputPort {
   onDeleteBall(FBallResDto fBallResDto);
 }
-@Injectable(as: DeleteBallUseCaseInputPort)
+@LazySingleton(as: DeleteBallUseCaseInputPort)
 class DeleteBallUseCase implements DeleteBallUseCaseInputPort {
   final FBallRepository _fBallRepository;
 

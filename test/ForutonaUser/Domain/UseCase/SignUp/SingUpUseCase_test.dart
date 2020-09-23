@@ -19,8 +19,7 @@ void main() {
     mockFUserRepository = new MockFUserRepository();
 
     singUpUseCase = SingUpUseCase(
-        fUserRepository: mockFUserRepository,
-        preference: Preference());
+        fUserRepository: mockFUserRepository);
   });
 
   test('should be 가입 여부 체크 ', () async {

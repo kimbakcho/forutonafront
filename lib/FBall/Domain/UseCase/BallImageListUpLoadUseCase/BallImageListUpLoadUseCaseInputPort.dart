@@ -9,7 +9,7 @@ import 'package:injectable/injectable.dart';
 abstract class BallImageListUpLoadUseCaseInputPort {
   Future<List<BallImageItem>> ballImageListUpLoadAndFillUrls(List<BallImageItem> refSrcList);
 }
-@Injectable(as: BallImageListUpLoadUseCaseInputPort)
+@LazySingleton(as: BallImageListUpLoadUseCaseInputPort)
 class BallImageListUpLoadUseCase implements BallImageListUpLoadUseCaseInputPort {
 
   final FBallRepository _fBallRepository;

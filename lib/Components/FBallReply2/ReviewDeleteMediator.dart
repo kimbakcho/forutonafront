@@ -2,6 +2,7 @@
 
 import 'package:forutonafront/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class ReviewDeleteMediatorComponent {
   onDeleted(FBallReplyResDto fBallReplyResDto);
@@ -16,7 +17,7 @@ abstract class ReviewDeleteMediator {
   int componentCount();
   deleteReview(FBallReplyResDto fBallReplyResDto);
 }
-
+@Injectable(as: ReviewDeleteMediator)
 class ReviewDeleteMediatorImpl implements ReviewDeleteMediator {
   List<ReviewDeleteMediatorComponent> components = [];
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;

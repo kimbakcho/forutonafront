@@ -8,7 +8,7 @@ abstract class FileDownLoaderUseCaseInputPort {
   Future<String> downloadAndSaveFile(String url, String fileName);
   Future<List<int>> downloadToByte(String url);
 }
-@Injectable(as: FileDownLoaderUseCaseInputPort)
+@LazySingleton(as: FileDownLoaderUseCaseInputPort)
 class FileDownLoaderUseCase implements  FileDownLoaderUseCaseInputPort {
 
   @override

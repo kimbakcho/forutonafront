@@ -7,7 +7,7 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001Payl
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: PageMoveActionUseCaseInputPort)
+@LazySingleton(as: PageMoveActionUseCaseInputPort)
 class ID001PageMoveAction implements PageMoveActionUseCaseInputPort {
 
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;

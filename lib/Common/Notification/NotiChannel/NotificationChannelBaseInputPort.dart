@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'Domain/CommentChannel/CommentChannelUseCase.dart';
 import 'Domain/RadarBasicChannel/RadarBasicChannelUseCae.dart';
 
-@injectable
+@Injectable()
 abstract class NotificationChannelBaseInputPort {
   reqNotification(Map<String, dynamic> message);
   @factoryMethod

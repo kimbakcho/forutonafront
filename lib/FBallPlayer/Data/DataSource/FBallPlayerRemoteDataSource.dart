@@ -12,7 +12,7 @@ abstract class FBallPlayerRemoteDataSource {
       @required Pageable pageable,
       @required FDio noneTokenFDio});
 }
-@Injectable(as: FBallPlayerRemoteDataSource)
+@LazySingleton(as: FBallPlayerRemoteDataSource)
 class FBallPlayerRemoteDataSourceImpl implements FBallPlayerRemoteDataSource {
   @override
   Future<PageWrap<FBallPlayerResDto>> getUserPlayBallList(

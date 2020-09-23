@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 class BCodeMainPage extends StatelessWidget {
 
-  final Preference _preference = sl();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class BCodeMainPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: WebviewScaffold(
-                      url: _preference.officialSite,
+                      url: Preference.officialSite,
                     ),
                   ),
                   BottomNavigation(),

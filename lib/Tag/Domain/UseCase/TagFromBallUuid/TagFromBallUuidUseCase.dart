@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'TagFromBallUuidUseCaseInputPort.dart';
 import 'TagFromBallUuidUseCaseOutputPort.dart';
 
-@Injectable(as: TagFromBallUuidUseCaseInputPort)
+@LazySingleton(as: TagFromBallUuidUseCaseInputPort)
 class TagFromBallUuidUseCase implements TagFromBallUuidUseCaseInputPort {
   final TagRepository _tagRepository;
 

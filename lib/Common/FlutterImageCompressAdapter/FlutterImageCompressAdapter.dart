@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 abstract class FlutterImageCompressAdapter {
   Future<List<int>> compressImage(Uint8List imageBytes,int quality);
 }
-@Injectable(as: FlutterImageCompressAdapter)
+@LazySingleton(as: FlutterImageCompressAdapter)
 class FlutterImageCompressAdapterImpl implements FlutterImageCompressAdapter{
   @override
   Future<List<int>> compressImage(Uint8List imageBytes,int quality) async {

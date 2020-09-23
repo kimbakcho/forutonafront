@@ -39,8 +39,6 @@ class G010MainPageViewModel extends ChangeNotifier
   bool isCanNotUseNickNameDisPlay = false;
   ImageProvider currentProfileImage;
 
-  Preference _preference = sl();
-
   bool _isLoading = false;
 
   getIsLoading() {
@@ -121,7 +119,7 @@ class G010MainPageViewModel extends ChangeNotifier
       reqDto.userProfileImageUrl = await _userProfileImageUploadUseCaseInputPort
           .upload(_currentPickProfileImage);
     } else if (_isChangeProfileImage && _currentPickProfileImage == null) {
-      reqDto.userProfileImageUrl = _preference.basicProfileImageUrl;
+      reqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
     } else {
       reqDto.userProfileImageUrl = _fUserInfoResDto.profilePictureUrl;
     }
@@ -170,7 +168,7 @@ class G010MainPageViewModel extends ChangeNotifier
                             onPressed: () {
                               _currentPickProfileImage = null;
                               currentProfileImage = NetworkImage(
-                                  _preference.basicProfileImageUrl);
+                                  Preference.basicProfileImageUrl);
                               _isChangeProfileImage = true;
                               notifyListeners();
                               Navigator.of(_context).pop();

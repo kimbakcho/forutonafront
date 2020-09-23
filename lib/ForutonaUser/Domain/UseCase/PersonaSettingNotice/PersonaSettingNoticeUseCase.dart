@@ -7,7 +7,7 @@ import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
 import 'package:injectable/injectable.dart';
 
 
-@Injectable(as: PersonaSettingNoticeUseCaseInputPort)
+@LazySingleton(as: PersonaSettingNoticeUseCaseInputPort)
 class PersonaSettingNoticeUseCase
     implements PersonaSettingNoticeUseCaseInputPort {
 

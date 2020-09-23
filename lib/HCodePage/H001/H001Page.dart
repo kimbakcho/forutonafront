@@ -5,6 +5,7 @@ import 'package:forutonafront/Components/TagList/RankingTagListFromBI.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListFromBIManager.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class H001Page extends StatelessWidget {
@@ -12,8 +13,11 @@ class H001Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => H001ViewModel(
-            ballListMediator: BallListMediatorImpl(),
-            rankingTagListFromBIManager: RankingTagListFromBIManager()),
+            ballListMediator: sl(),
+            rankingTagListFromBIManager: sl(),
+            geoLocationUtilBasicUseCaseInputPort: sl(),
+            fBallRepository: sl(),
+            h001manager: sl()),
         child: Consumer<H001ViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: Container(

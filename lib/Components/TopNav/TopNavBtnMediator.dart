@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:injectable/injectable.dart';
 
 import 'NavBtn/TopNavBtnComponent.dart';
 import 'TopNavBtnGroup/INavBtnGroup.dart';
@@ -38,7 +39,7 @@ abstract class TopNavBtnMediator {
 
   void changeMainPage(CodeState topOnMoveMainPage);
 }
-
+@LazySingleton(as: TopNavBtnMediator)
 class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   List<TopNavBtnComponent> topNavBtnComponents = [];
 

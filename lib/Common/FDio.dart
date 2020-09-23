@@ -7,7 +7,6 @@ import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class FDio extends DioForNative {
-  Preference _preference = sl();
 
   FDio(String token) {
     this.options = FBaseOption(token);
@@ -16,7 +15,7 @@ class FDio extends DioForNative {
   // ignore: non_constant_identifier_names
   BaseOptions FBaseOption(String token) {
     BaseOptions options = BaseOptions();
-    options.baseUrl = _preference.baseBackEndUrl;
+    options.baseUrl = Preference.baseBackEndUrl;
     options.headers = {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer " + token

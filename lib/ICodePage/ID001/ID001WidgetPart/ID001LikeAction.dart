@@ -8,18 +8,17 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class ID001LikeAction extends StatelessWidget {
-  final ValuationMediator _valuationMediator;
+  final ValuationMediator valuationMediator;
   final String ballUuid;
 
-  ID001LikeAction({ValuationMediator valuationMediator, this.ballUuid})
-      : _valuationMediator = valuationMediator;
+  ID001LikeAction({this.valuationMediator, this.ballUuid});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ID001LikeActionViewModel(
           fireBaseAuthAdapterForUseCase: sl(),
-          valuationMediator: _valuationMediator,
+          valuationMediator: valuationMediator,
           ballUuid: ballUuid,
           context: context),
       child: Consumer<ID001LikeActionViewModel>(builder: (_, model, __) {
@@ -56,35 +55,34 @@ class ID001LikeAction extends StatelessWidget {
 
 class ID001LikeActionViewModel extends ChangeNotifier
     implements ValuationMediatorComponent {
-  final ValuationMediator _valuationMediator;
+  final ValuationMediator valuationMediator;
   final BuildContext context;
-  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
 
   ID001LikeActionViewModel(
-      {ValuationMediator valuationMediator,
-      this.context,
-      this.ballUuid,
-      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
-      : _valuationMediator = valuationMediator,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
-    _valuationMediator.registerComponent(this);
+      {@required this.valuationMediator,
+      @required this.context,
+      @required this.ballUuid,
+      @required this.fireBaseAuthAdapterForUseCase})
+      {
+    valuationMediator.registerComponent(this);
   }
 
   likeAction() async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      _valuationMediator.likeAction(this);
+    if (await fireBaseAuthAdapterForUseCase.isLogin()) {
+      valuationMediator.likeAction(this);
     } else {
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
     }
   }
 
   BallLikeState get ballLikeState {
-    return _valuationMediator.ballLikeState;
+    return valuationMediator.ballLikeState;
   }
 
   disLikeAction() async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      _valuationMediator.disLikeAction(this);
+    if (await fireBaseAuthAdapterForUseCase.isLogin()) {
+      valuationMediator.disLikeAction(this);
     } else {
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
     }
@@ -100,7 +98,7 @@ class ID001LikeActionViewModel extends ChangeNotifier
 
   @override
   void dispose() {
-    _valuationMediator.unregisterComponent(this);
+    valuationMediator.unregisterComponent(this);
     super.dispose();
   }
 }

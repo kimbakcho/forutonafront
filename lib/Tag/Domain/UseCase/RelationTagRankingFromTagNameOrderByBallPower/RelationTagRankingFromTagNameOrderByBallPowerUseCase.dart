@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import 'RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
 
-@Injectable(as: RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort)
+@LazySingleton(as: RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort)
 class RelationTagRankingFromTagNameOrderByBallPowerUseCase
     implements RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort {
   TagRepository _tagRepository;

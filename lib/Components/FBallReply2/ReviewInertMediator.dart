@@ -2,6 +2,7 @@
 import 'package:forutonafront/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyInsertReqDto.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class ReviewInertMediatorComponent {
   onInserted(FBallReplyResDto fBallReplyResDto);
@@ -14,7 +15,7 @@ abstract class ReviewInertMediator {
   int componentCount();
   Future<FBallReplyResDto> insertReview(FBallReplyInsertReqDto reqDto);
 }
-
+@Injectable(as: ReviewInertMediator)
 class ReviewInertMediatorImpl implements ReviewInertMediator {
 
   List<ReviewInertMediatorComponent> components = [];

@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'PwFindEmailUseCaseInputPort.dart';
 import 'PwFindEmailUseCaseOutputPort.dart';
 
-@Injectable(as: PwFindEmailUseCaseInputPort)
+@LazySingleton(as: PwFindEmailUseCaseInputPort)
 class PwFindEmailUseCase implements PwFindEmailUseCaseInputPort {
 
   FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;

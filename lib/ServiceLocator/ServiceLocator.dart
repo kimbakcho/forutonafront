@@ -138,7 +138,7 @@ final sl = GetIt.instance;
 )
 void configureDependencies() => $initGetIt(sl);
 
-init() {
+init2() {
   sl.registerSingleton<Preference>(Preference());
 
   sl.registerSingleton<FluttertoastAdapter>(FluttertoastAdapter());
@@ -158,7 +158,6 @@ init() {
   sl.registerSingleton<GeoLocationUtilBasicUseCaseInputPort>(
       GeoLocationUtilBasicUseCase(
           geolocatorAdapter: sl(),
-          preference: sl(),
           sharedPreferencesAdapter: sl()));
 
   sl.registerSingleton<GeoLocationUtilForeGroundUseCaseInputPort>(
@@ -347,7 +346,6 @@ init() {
 
   sl.registerSingleton<SingUpUseCaseInputPort>(SingUpUseCase(
       fUserRepository: sl(),
-      preference: sl(),
       fireBaseAuthAdapterForUseCase: sl()));
 
   sl.registerSingleton<SnsLoginModuleAdapter>(FaceBookLoginAdapterImpl(),
@@ -497,7 +495,6 @@ init() {
   sl.registerSingleton<MapMakerDescriptorContainer>(
       MapMakerDescriptorContainerImpl(
           signInUserInfoUseCaseInputPort: sl(),
-          preference: sl(),
           fireBaseAuthBaseAdapter: sl(),
           mapBitmapDescriptorUseCaseInputPort: sl()));
 

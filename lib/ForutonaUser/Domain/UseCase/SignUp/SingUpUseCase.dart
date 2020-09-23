@@ -10,23 +10,22 @@ import 'package:forutonafront/Preference.dart';
 import 'package:injectable/injectable.dart';
 
 import 'SingUpUseCaseInputPort.dart';
-@Injectable(as: SingUpUseCaseInputPort)
+@LazySingleton(as: SingUpUseCaseInputPort)
 class SingUpUseCase implements SingUpUseCaseInputPort {
   FUserRepository _fUserRepository;
-  Preference _preference;
+
   FUserInfoJoinReq fUserInfoJoinReq;
   FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   SingUpUseCase(
       {@required
           FUserRepository fUserRepository,
-      @required
-          Preference preference,
+
         FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
       : _fUserRepository = fUserRepository,
-        _preference = preference,
+
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase{
-    fUserInfoJoinReq = FUserInfoJoinReq(preference: _preference);
+    fUserInfoJoinReq = FUserInfoJoinReq();
   }
 
   @override

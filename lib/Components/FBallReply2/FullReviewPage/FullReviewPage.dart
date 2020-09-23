@@ -106,7 +106,6 @@ class FullReviewPageViewModel extends ChangeNotifier
   final ReviewDeleteMediator reviewDeleteMediator;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
-  final Preference _preference = sl();
 
   int page = 0;
   int pageLimit = 10;
@@ -139,7 +138,7 @@ class FullReviewPageViewModel extends ChangeNotifier
 
   get userProfileImage {
     if (_fUserInfoResDto == null) {
-      return _preference.basicProfileImageUrl;
+      return Preference.basicProfileImageUrl;
     } else {
       return this._fUserInfoResDto.profilePictureUrl;
     }

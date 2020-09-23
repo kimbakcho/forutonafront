@@ -9,7 +9,7 @@ abstract class AvatarImageMakerUseCaseInputPort {
 
   Future<List<int>> makeAvatarImageToByte(String userImageUrl, Size size);
 }
-@Injectable(as: AvatarImageMakerUseCaseInputPort)
+@LazySingleton(as: AvatarImageMakerUseCaseInputPort)
 class AvatarImageMakerUseCase implements AvatarImageMakerUseCaseInputPort {
   final FileDownLoaderUseCaseInputPort _fileDownLoaderUseCaseInputPort;
   final ImageUtilInputPort _imageUtilInputPort;

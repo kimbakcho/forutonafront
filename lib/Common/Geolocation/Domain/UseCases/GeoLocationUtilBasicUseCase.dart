@@ -10,24 +10,21 @@ import 'package:injectable/injectable.dart';
 
 import 'GeoLocationUtilBasicUseCaseInputPort.dart';
 
-@Injectable(as: GeoLocationUtilBasicUseCaseInputPort)
+@LazySingleton(as: GeoLocationUtilBasicUseCaseInputPort)
 class GeoLocationUtilBasicUseCase
     implements GeoLocationUtilBasicUseCaseInputPort {
   GeolocatorAdapter _geolocatorAdapter;
 
   SharedPreferencesAdapter _sharedPreferencesAdapter;
 
-  Preference _preference;
 
   StreamSubscription _userPositionStream;
 
   GeoLocationUtilBasicUseCase(
       {@required GeolocatorAdapter geolocatorAdapter,
-      @required SharedPreferencesAdapter sharedPreferencesAdapter,
-      @required Preference preference})
+      @required SharedPreferencesAdapter sharedPreferencesAdapter})
       : _geolocatorAdapter = geolocatorAdapter,
-        _sharedPreferencesAdapter = sharedPreferencesAdapter,
-        _preference = preference {
+        _sharedPreferencesAdapter = sharedPreferencesAdapter {
     _userPositionStream =
         this.getUserPositionStream().listen(_userPositionStreamFunc);
   }
@@ -38,8 +35,8 @@ class GeoLocationUtilBasicUseCase
   Position getCurrentWithLastPositionInMemory() {
     if (currentWithLastPosition == null) {
       return Position(
-          latitude: _preference.initPosition.latitude,
-          longitude: _preference.initPosition.longitude);
+          latitude: Preference.initPosition.latitude,
+          longitude: Preference.initPosition.longitude);
     } else {
       return currentWithLastPosition;
     }
@@ -47,7 +44,7 @@ class GeoLocationUtilBasicUseCase
 
   String getCurrentWithLastAddressInMemory() {
     if (currentWithLastAddress == null) {
-      return _preference.initAddress;
+      return Preference.initAddress;
     } else {
       return currentWithLastAddress;
     }
@@ -83,8 +80,8 @@ class GeoLocationUtilBasicUseCase
       knowPosition = Position(longitude: currentlong, latitude: currentlat);
     } else {
       knowPosition = Position(
-          longitude: _preference.initPosition.longitude,
-          latitude: _preference.initPosition.latitude);
+          longitude: Preference.initPosition.longitude,
+          latitude: Preference.initPosition.latitude);
     }
     return knowPosition;
   }

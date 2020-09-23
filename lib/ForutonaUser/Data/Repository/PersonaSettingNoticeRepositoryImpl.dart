@@ -7,7 +7,7 @@ import 'package:forutonafront/ForutonaUser/Domain/Repository/PersonaSettingNotic
 import 'package:forutonafront/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: PersonaSettingNoticeRepository)
+@LazySingleton(as: PersonaSettingNoticeRepository)
 class PersonaSettingNoticeRepositoryImpl
     implements PersonaSettingNoticeRepository {
   PersonaSettingNoticeRemoteDataSource _personaSettingNoticeRemoteDataSource;

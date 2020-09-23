@@ -19,7 +19,7 @@ class MockTagRepository extends Mock implements TagRepository {}
 
 void main() {
   RankingTagListFromBIViewModel rankingTagListFromBIViewModel;
-  RankingTagListFromBIManager rankingTagListFromBIManager;
+  RankingTagListFromBIManagerInputPort rankingTagListFromBIManager;
   MockGeoLocationUtilBasicUseCaseInputPort
       mockGeoLocationUtilBasicUseCaseInputPort;
   MockTagRepository mockTagRepository;

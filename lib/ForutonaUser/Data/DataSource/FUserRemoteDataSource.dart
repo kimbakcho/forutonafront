@@ -36,7 +36,7 @@ abstract class FUserRemoteDataSource {
 
   Future<FUserInfo> findByMe(FDio tokenFDio);
 }
-@Injectable(as: FUserRemoteDataSource)
+@LazySingleton(as: FUserRemoteDataSource)
 class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
 
   @override

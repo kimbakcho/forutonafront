@@ -11,7 +11,7 @@ import 'package:forutonafront/FireBaseMessage/PlayloadDto/FCMFBallMakeDto.dart';
 import 'package:injectable/injectable.dart';
 
 
-@Injectable(as: RadarBasicChannelUseCaeInputPort)
+@LazySingleton(as: RadarBasicChannelUseCaeInputPort)
 class IssueFBalIInsertFCMServiceUseCase
     implements RadarBasicChannelUseCaeInputPort {
 

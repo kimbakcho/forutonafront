@@ -16,7 +16,7 @@ abstract class FireBaseAuthBaseAdapter {
   Future<void> logout();
   Future<String> createUserWithEmailAndPassword(String email,String pw);
 }
-@Injectable(as: FireBaseAuthBaseAdapter)
+@LazySingleton(as: FireBaseAuthBaseAdapter)
 class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
   final noneToken = "noneToken";
 

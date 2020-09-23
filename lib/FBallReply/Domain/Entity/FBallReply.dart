@@ -9,7 +9,6 @@ part 'FBallReply.g.dart';
 @JsonSerializable()
 class FBallReply {
 
-  Preference _preference = sl();
 
   String replyUuid;
   String ballUuid;
@@ -63,7 +62,7 @@ class FBallReply {
 
   String get userProfilePictureUrl {
     if(deleteFlag){
-      return _preference.basicProfileImageUrl;
+      return Preference.basicProfileImageUrl;
     }else {
       return _userProfilePictureUrl;
     }

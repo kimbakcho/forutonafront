@@ -3,7 +3,7 @@ import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseG
 import 'package:injectable/injectable.dart';
 
 @named
-@Injectable(as: BaseGoogleSurveyInputPort)
+@LazySingleton(as: BaseGoogleSurveyInputPort)
 class GoogleSurveyErrorReportUseCase extends BaseGoogleSurveyUseCase {
   GoogleSurveyErrorReportUseCase() {
     this.prize = "한우셋트2";

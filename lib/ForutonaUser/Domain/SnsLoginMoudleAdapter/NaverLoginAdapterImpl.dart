@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'SnsLoginModuleAdapter.dart';
 
 @named
-@Injectable(as: SnsLoginModuleAdapter)
+@LazySingleton(as: SnsLoginModuleAdapter)
 class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
   @override
   // ignore: missing_return

@@ -21,7 +21,7 @@ abstract class BallLikeUseCaseInputPort {
 abstract class BallLikeUseCaseOutputPort {
   onResult(FBallLikeResDto resDto);
 }
-@Injectable(as: BallLikeUseCaseInputPort)
+@LazySingleton(as: BallLikeUseCaseInputPort)
 class BallLikeUseCase implements BallLikeUseCaseInputPort {
   final FBallValuationRepository _fBallValuationRepository;
 

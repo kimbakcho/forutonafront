@@ -4,7 +4,6 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class FBallReplyDisplayUtil {
   final FBallReplyResDto fBallReplyResDto;
-  final Preference preference = sl();
 
   FBallReplyDisplayUtil(this.fBallReplyResDto);
 
@@ -18,7 +17,7 @@ class FBallReplyDisplayUtil {
 
   String get userProfilePictureUrl {
     if(fBallReplyResDto.deleteFlag){
-      return preference.basicProfileImageUrl;
+      return Preference.basicProfileImageUrl;
     }else {
       return fBallReplyResDto.userProfilePictureUrl;
     }

@@ -11,7 +11,7 @@ abstract class UpdateBallUseCaseInputPort {
 abstract class UpdateBallUseCaseOutputPort {
   onUpdateBall(FBallResDto fBallResDto);
 }
-@Injectable(as: UpdateBallUseCaseInputPort)
+@LazySingleton(as: UpdateBallUseCaseInputPort)
 class UpdateBallUseCase implements UpdateBallUseCaseInputPort {
   final FBallRepository _fBallRepository;
 

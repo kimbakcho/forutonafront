@@ -9,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: MapScreenPositionUseCaseInputPort)
+@LazySingleton(as: MapScreenPositionUseCaseInputPort)
 class MapScreenPositionUseCase implements MapScreenPositionUseCaseInputPort {
   @override
   Future<LatLng> mapScreenOffsetToLatLng(RenderBox mapRenderBoxRed,

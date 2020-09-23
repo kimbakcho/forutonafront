@@ -14,7 +14,7 @@ import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: PhoneAuthRepository)
+@LazySingleton(as: PhoneAuthRepository)
 class PhoneAuthRepositoryImpl implements PhoneAuthRepository {
   PhoneAuthRemoteSource _phoneAuthRemoteSource;
 

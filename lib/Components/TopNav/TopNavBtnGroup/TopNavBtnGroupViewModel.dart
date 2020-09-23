@@ -10,9 +10,8 @@ import '../TopNavBtnMediator.dart';
 
 class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
   final Duration duration = Duration(milliseconds: 300);
-
-  TopNavBtnGroupViewModel(){
-    TopNavBtnMediator topNavBtnMediator = sl();
+  final TopNavBtnMediator topNavBtnMediator;
+  TopNavBtnGroupViewModel({@required this.topNavBtnMediator}){
     topNavBtnMediator.iNavBtnGroup = this;
     navBtnList.add(NavBtn(
       originIndex: 1,

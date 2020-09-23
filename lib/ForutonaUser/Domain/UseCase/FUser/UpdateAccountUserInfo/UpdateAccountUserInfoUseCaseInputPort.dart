@@ -8,7 +8,7 @@ abstract class UpdateAccountUserInfoUseCaseInputPort {
   Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto);
 }
 
-@Injectable(as: UpdateAccountUserInfoUseCaseInputPort)
+@LazySingleton(as: UpdateAccountUserInfoUseCaseInputPort)
 class UpdateAccountUserInfoUseCase implements UpdateAccountUserInfoUseCaseInputPort{
 
   final FUserRepository _fUserRepository;

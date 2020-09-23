@@ -4,8 +4,16 @@ import 'package:injectable/injectable.dart';
 abstract class H001Listener {
     Future<void> search(Position loadPosition);
 }
-@Injectable()
-class H001Manager {
+
+abstract class H001ManagerInputPort {
+  void subscribe(H001Listener h001listener);
+  void unSubscribe(H001Listener h001listener);
+  int getSubscribeSize();
+  search(Position loadPosition);
+}
+@LazySingleton(as: H001ManagerInputPort)
+class H001Manager implements H001ManagerInputPort{
+
   List<H001Listener> _h001Listener = [];
 
   void subscribe(H001Listener h001listener){

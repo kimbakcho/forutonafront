@@ -12,7 +12,7 @@ import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyUpdateReqDto.d
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: FBallReplyRepository)
+@LazySingleton(as: FBallReplyRepository)
 class FBallReplyRepositoryImpl implements FBallReplyRepository {
   final FBallReplyDataSource _fBallReplyDataSource;
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;

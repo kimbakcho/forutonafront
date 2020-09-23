@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 abstract class UpdateFCMTokenUseCaseInputPort {
   Future<void> updateFCMToken(String token);
 }
-@Injectable(as: UpdateFCMTokenUseCaseInputPort)
+@LazySingleton(as: UpdateFCMTokenUseCaseInputPort)
 class UpdateFCMTokenUseCase implements UpdateFCMTokenUseCaseInputPort{
 
   final FUserRepository _fUserRepository;

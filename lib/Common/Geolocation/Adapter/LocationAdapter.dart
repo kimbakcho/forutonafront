@@ -13,7 +13,7 @@ abstract class LocationAdapter {
 
 }
 
-@Injectable(as: LocationAdapter)
+@LazySingleton(as: LocationAdapter)
 class LocationAdapterImpl implements LocationAdapter {
   Location.Location location = new Location.Location();
 

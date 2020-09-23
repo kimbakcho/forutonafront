@@ -4,28 +4,25 @@ import 'package:forutonafront/FBallValuation/Domain/Repositroy/FBallValuationRep
 import 'package:forutonafront/FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
 import 'package:forutonafront/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:mockito/mockito.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
-
 import '../../../TestUtil/FBall/FBallTestUtil.dart';
 import '../../../TestUtil/FBallLike/FBallLikeTestUtil.dart';
 import '../../../TestUtil/FUserInfoSimple/FUserInfoSimpleTestUtil.dart';
 import '../../../TestUtil/FballValuation/FBallValuationTestUtil.dart';
 class MockValuationMediatorComponent extends Mock implements ValuationMediatorComponent{}
 class MockFBallValuationRepository extends Mock implements FBallValuationRepository {}
-
+class MockBallLikeUseCaseInputPort extends Mock implements BallLikeUseCaseInputPort {}
 void main () {
   ValuationMediator valuationMediator;
+  MockBallLikeUseCaseInputPort mockBallLikeUseCaseInputPort;
   setUp((){
-    sl.allowReassignment = true;
-    di.init();
+    mockBallLikeUseCaseInputPort = MockBallLikeUseCaseInputPort();
   });
 
   test('Mediator Component 등록 테스트', () async {
     //arrange
     valuationMediator = ValuationMediatorImpl(
-        ballLikeUseCaseInputPort: sl()
+        ballLikeUseCaseInputPort: mockBallLikeUseCaseInputPort
     );
     MockValuationMediatorComponent mockValuationMediatorComponent =  MockValuationMediatorComponent();
     //act
@@ -38,7 +35,7 @@ void main () {
   test('Mediator Component 제거 테스트', () async {
     //arrange
     valuationMediator = ValuationMediatorImpl(
-        ballLikeUseCaseInputPort: sl()
+        ballLikeUseCaseInputPort: mockBallLikeUseCaseInputPort
     );
     MockValuationMediatorComponent mockValuationMediatorComponent =  MockValuationMediatorComponent();
     //act
@@ -57,20 +54,16 @@ void main () {
 
     FBallResDto basicFBallResDto = FBallTestUtil.getBasicFBallResDto(
         testBallUuid, FUserInfoSimpleTestUtil.getBasicUserResDto("TESTUid1"));
-    MockFBallValuationRepository mockFBallValuationRepository = MockFBallValuationRepository();
 
-    sl.registerSingleton<FBallValuationRepository>(mockFBallValuationRepository);
-
-    when(mockFBallValuationRepository.getBallLikeState(testBallUuid, null))
+    when(mockBallLikeUseCaseInputPort.getBallLikeState(testBallUuid, null))
         .thenAnswer((realInvocation) async =>
         FBallLikeTestUtil.getBasicFBallLikeResDto(
             FBallValuationTestUtil.getLogOutUserFBallValuationResDto(
                 basicFBallResDto)));
 
-    sl.registerSingleton<BallLikeUseCaseInputPort>(BallLikeUseCase(fBallValuationRepository: sl()));
 
     valuationMediator = ValuationMediatorImpl(
-        ballLikeUseCaseInputPort: sl()
+        ballLikeUseCaseInputPort: mockBallLikeUseCaseInputPort
     );
     //act
     valuationMediator.registerComponent(mockValuationMediatorComponent);
@@ -90,11 +83,8 @@ void main () {
 
     FBallResDto basicFBallResDto = FBallTestUtil.getBasicFBallResDto(
         testBallUuid, FUserInfoSimpleTestUtil.getBasicUserResDto("TESTUid1"));
-    MockFBallValuationRepository mockFBallValuationRepository = MockFBallValuationRepository();
 
-    sl.registerSingleton<FBallValuationRepository>(mockFBallValuationRepository);
-
-    when(mockFBallValuationRepository.getBallLikeState(testBallUuid, loginUid))
+    when(mockBallLikeUseCaseInputPort.getBallLikeState(testBallUuid, loginUid))
         .thenAnswer((realInvocation) async =>
         FBallLikeTestUtil.getBasicFBallLikeResDto(
             FBallValuationTestUtil.getBasicFBallValuationResDto(
@@ -105,10 +95,9 @@ void main () {
             ballPower: 11,
             likeServiceUseUserCount: 4));
 
-    sl.registerSingleton<BallLikeUseCaseInputPort>(BallLikeUseCase(fBallValuationRepository: sl()));
 
     valuationMediator = ValuationMediatorImpl(
-        ballLikeUseCaseInputPort: sl()
+        ballLikeUseCaseInputPort: mockBallLikeUseCaseInputPort
     );
     //act
     valuationMediator.registerComponent(mockValuationMediatorComponent);
@@ -127,11 +116,9 @@ void main () {
 
     FBallResDto basicFBallResDto = FBallTestUtil.getBasicFBallResDto(
         testBallUuid, FUserInfoSimpleTestUtil.getBasicUserResDto("TESTUid1"));
-    MockFBallValuationRepository mockFBallValuationRepository = MockFBallValuationRepository();
 
-    sl.registerSingleton<FBallValuationRepository>(mockFBallValuationRepository);
 
-    when(mockFBallValuationRepository.getBallLikeState(testBallUuid, loginUid))
+    when(mockBallLikeUseCaseInputPort.getBallLikeState(testBallUuid, loginUid))
         .thenAnswer((realInvocation) async =>
         FBallLikeTestUtil.getBasicFBallLikeResDto(
             FBallValuationTestUtil.getBasicFBallValuationResDto(
@@ -142,10 +129,9 @@ void main () {
             ballPower: 11,
             likeServiceUseUserCount: 4));
 
-    sl.registerSingleton<BallLikeUseCaseInputPort>(BallLikeUseCase(fBallValuationRepository: sl()));
 
     valuationMediator = ValuationMediatorImpl(
-        ballLikeUseCaseInputPort: sl()
+        ballLikeUseCaseInputPort: mockBallLikeUseCaseInputPort
     );
 
     //act

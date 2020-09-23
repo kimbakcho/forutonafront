@@ -6,8 +6,7 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H001/TopH001NavExpendAniContent.dart';
 import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
+
 import 'package:mockito/mockito.dart';
 
 class MockGeoLocationUtilForeGroundUseCaseInputPort extends Mock
@@ -23,30 +22,30 @@ void main() {
       mockGeoLocationUtilForeGroundUseCaseInputPort;
   MockLocationAdapter mockLocationAdapter;
   MockFluttertoastAdapter mockFluttertoastAdapter;
+  H001ManagerInputPort h001managerInputPort;
   setUp(() {
-    di.init();
-    sl.allowReassignment = true;
 
+    h001managerInputPort= H001Manager();
     mockLocationAdapter = MockLocationAdapter();
-    sl.registerSingleton<LocationAdapter>(mockLocationAdapter);
+
 
     when(mockLocationAdapter.serviceEnabled())
         .thenAnswer((realInvocation) async => true);
 
     mockFluttertoastAdapter = MockFluttertoastAdapter();
-    sl.registerSingleton<FluttertoastAdapter>(mockFluttertoastAdapter);
+
 
     mockGeoLocationUtilForeGroundUseCaseInputPort =
         new MockGeoLocationUtilForeGroundUseCaseInputPort();
-    sl.registerSingleton<GeoLocationUtilForeGroundUseCaseInputPort>(
-        mockGeoLocationUtilForeGroundUseCaseInputPort);
+
 
     when(mockGeoLocationUtilForeGroundUseCaseInputPort.useGpsReq()).thenAnswer((realInvocation) async => true);
 
     topH001NavExpendAniContentViewModel = TopH001NavExpendAniContentViewModel(
-        geoLocationUtilForeGroundUseCaseInputPort: sl(),
-        locationAdapter: sl(),
-        fluttertoastAdapter: sl());
+        geoLocationUtilForeGroundUseCaseInputPort: mockGeoLocationUtilForeGroundUseCaseInputPort,
+        locationAdapter: mockLocationAdapter,
+        h001manager: h001managerInputPort,
+        fluttertoastAdapter: mockFluttertoastAdapter);
   });
 
   test('초기화 시에 주소 초기화 하기', () async {
@@ -98,9 +97,9 @@ void main() {
 
   test('Position Load 시에 H001에 찾기 명령 내리기',() async {
     //arrange
-    H001Manager h001manager = sl();
+
     MockH001Listener mockH001Listener = MockH001Listener();
-    h001manager.subscribe(mockH001Listener);
+    h001managerInputPort.subscribe(mockH001Listener);
     Position position = Position(latitude: 37.1,longitude: 127.1);
     //act
     await topH001NavExpendAniContentViewModel.loadPosition(position);

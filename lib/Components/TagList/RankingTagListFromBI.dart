@@ -11,15 +11,17 @@ import 'package:provider/provider.dart';
 import 'RankingTagListFromBIManager.dart';
 
 class RankingTagListFromBI extends StatefulWidget {
-  final RankingTagListFromBIManager rankingTagListFromBIManager;
+  final RankingTagListFromBIManagerInputPort rankingTagListFromBIManager;
 
-  const RankingTagListFromBI({Key key, this.rankingTagListFromBIManager}) : super(key: key);
+  const RankingTagListFromBI({Key key, this.rankingTagListFromBIManager})
+      : super(key: key);
 
   @override
   _RankingTagListFromBIState createState() => _RankingTagListFromBIState();
 }
 
-class _RankingTagListFromBIState extends State<RankingTagListFromBI> with AutomaticKeepAliveClientMixin<RankingTagListFromBI>{
+class _RankingTagListFromBIState extends State<RankingTagListFromBI>
+    with AutomaticKeepAliveClientMixin<RankingTagListFromBI> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -48,26 +50,21 @@ class _RankingTagListFromBIState extends State<RankingTagListFromBI> with Automa
   bool get wantKeepAlive => true;
 }
 
-
 class RankingTagListFromBIViewModel extends ChangeNotifier
     implements
         RankingTagListFromBIListener,
         TagRankingFromBallInfluencePowerUseCaseOutputPort {
-  RankingTagListFromBIManager rankingTagListFromBIManager;
-  GeoLocationUtilBasicUseCaseInputPort _geoLocationUtilBasicUseCaseInputPort;
+  final RankingTagListFromBIManagerInputPort rankingTagListFromBIManager;
+  final GeoLocationUtilBasicUseCaseInputPort
+      geoLocationUtilBasicUseCaseInputPort;
   List<TagRankingResDto> tagRankingResDtos = [];
-  TagRankingFromBallInfluencePowerUseCaseInputPort
-      _tagRankingFromBallInfluencePowerUseCaseInputPort;
+  final TagRankingFromBallInfluencePowerUseCaseInputPort
+      tagRankingFromBallInfluencePowerUseCaseInputPort;
 
   RankingTagListFromBIViewModel(
-      {this.rankingTagListFromBIManager,
-      GeoLocationUtilBasicUseCaseInputPort geoLocationUtilBasicUseCaseInputPort,
-      TagRankingFromBallInfluencePowerUseCaseInputPort
-          tagRankingFromBallInfluencePowerUseCaseInputPort})
-      : _geoLocationUtilBasicUseCaseInputPort =
-            geoLocationUtilBasicUseCaseInputPort,
-        _tagRankingFromBallInfluencePowerUseCaseInputPort =
-            tagRankingFromBallInfluencePowerUseCaseInputPort {
+      {@required this.rankingTagListFromBIManager,
+      @required this.geoLocationUtilBasicUseCaseInputPort,
+      @required this.tagRankingFromBallInfluencePowerUseCaseInputPort}) {
     if (rankingTagListFromBIManager != null) {
       rankingTagListFromBIManager.subscribe(this);
     }
@@ -83,15 +80,15 @@ class RankingTagListFromBIViewModel extends ChangeNotifier
 
   @override
   search(Position searchPosition) async {
-    var userPosition = await _geoLocationUtilBasicUseCaseInputPort
-        .getCurrentWithLastPosition();
+    var userPosition =
+        await geoLocationUtilBasicUseCaseInputPort.getCurrentWithLastPosition();
     TagRankingFromBallInfluencePowerReqDto reqDto =
         TagRankingFromBallInfluencePowerReqDto(
             userLatitude: userPosition.latitude,
             userLongitude: userPosition.longitude,
             mapCenterLatitude: searchPosition.latitude,
             mapCenterLongitude: searchPosition.longitude);
-    await _tagRankingFromBallInfluencePowerUseCaseInputPort
+    await tagRankingFromBallInfluencePowerUseCaseInputPort
         .reqTagRankingFromBallInfluencePower(reqDto, this);
   }
 

@@ -1,30 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
 
 import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/LaunchMessageUseCase/LaunchMessageUseCase.dart';
+import 'package:forutonafront/FireBaseMessage/UseCase/ResumeMessageUseCase/ResumeMessageUseCase.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable()
+@LazySingleton()
 class FireBaseMessageController {
-  FireBaseMessageAdapter _fireBaseMessageAdapter;
-  BaseMessageUseCaseInputPort _launchMessageUseCase;
-  BaseMessageUseCaseInputPort _baseMessageUseCase;
-  BaseMessageUseCaseInputPort _resumeMessageUseCase;
+  final FireBaseMessageAdapter fireBaseMessageAdapter;
+  final BaseMessageUseCaseInputPort launchMessageUseCase;
+  final BaseMessageUseCaseInputPort baseMessageUseCase;
+  final BaseMessageUseCaseInputPort resumeMessageUseCase;
 
   FireBaseMessageController(
-      {@required FireBaseMessageAdapter fireBaseMessageAdapter,
-      @required BaseMessageUseCaseInputPort launchMessageUseCase,
-      @required BaseMessageUseCaseInputPort baseMessageUseCase,
-      @required BaseMessageUseCaseInputPort resumeMessageUseCase})
-      : _fireBaseMessageAdapter = fireBaseMessageAdapter,
-        _launchMessageUseCase = launchMessageUseCase,
-        _baseMessageUseCase = baseMessageUseCase,
-        _resumeMessageUseCase = resumeMessageUseCase;
+      {@required this.fireBaseMessageAdapter,
+      @required @Named.from(LaunchMessageUseCase) this.launchMessageUseCase,
+      @required @Named.from(BaseMessageUseCase) this.baseMessageUseCase,
+      @required @Named.from(ResumeMessageUseCase) this.resumeMessageUseCase});
+
 
   controllerStartService(){
-    _fireBaseMessageAdapter.configure(
-        onLaunch: _launchMessageUseCase.message,
-        onMessage: _baseMessageUseCase.message,
-        onResume: _resumeMessageUseCase.message);
+    fireBaseMessageAdapter.configure(
+        onLaunch: launchMessageUseCase.message,
+        onMessage: baseMessageUseCase.message,
+        onResume: resumeMessageUseCase.message);
   }
+
 }

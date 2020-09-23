@@ -8,7 +8,7 @@ abstract class  SelectBallUseCaseInputPort {
 abstract class SelectBallUseCaseOutputPort {
   onSelectBall(FBallResDto fBallResDto);
 }
-@Injectable(as: SelectBallUseCaseInputPort)
+@LazySingleton(as: SelectBallUseCaseInputPort)
 class SelectBallUseCase implements SelectBallUseCaseInputPort{
 
   final FBallRepository _fBallRepository;

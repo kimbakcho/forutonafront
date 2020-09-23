@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewDeleteMediator.dart';
@@ -6,20 +7,22 @@ import 'package:forutonafront/Components/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
-
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
-
+import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'ValuationMediator/ValuationMediator.dart';
 
 class ID001MainPage2ViewModel extends ChangeNotifier
-    implements ReviewInertMediatorComponent, ReviewDeleteMediatorComponent,ReviewUpdateMediatorComponent {
-  final String _ballUuid;
-  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
-  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+    implements
+        ReviewInertMediatorComponent,
+        ReviewDeleteMediatorComponent,
+        ReviewUpdateMediatorComponent {
+  final String ballUuid;
+  final SelectBallUseCaseInputPort selectBallUseCaseInputPort;
+  final FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
   bool _loadBallComplete = false;
   IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
   FBallResDto _fBallResDto;
@@ -28,36 +31,32 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   final ReviewUpdateMediator reviewUpdateMediator;
   final ReviewDeleteMediator reviewDeleteMediator;
   final ValuationMediator valuationMediator;
+  final GeolocatorAdapter geolocatorAdapter;
   bool isDisPose = false;
   Key basicReViewsContentBarsKey = UniqueKey();
 
   final ScrollController detailPageController;
 
   ID001MainPage2ViewModel(
-      {String ballUuid,
-      SelectBallUseCaseInputPort selectBallUseCaseInputPort,
-      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
-      : _ballUuid = ballUuid,
-        _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
-        reviewInertMediator =
-            ReviewInertMediatorImpl(fBallReplyUseCaseInputPort: sl()),
-        reviewCountMediator =
-            ReviewCountMediatorImpl(fBallReplyUseCaseInputPort: sl()),
-        valuationMediator =
-            ValuationMediatorImpl(ballLikeUseCaseInputPort: sl()),
-        reviewDeleteMediator =
-            ReviewDeleteMediatorImpl(fBallReplyUseCaseInputPort: sl()),
-        reviewUpdateMediator =
-            ReviewUpdateMediatorImpl(fBallReplyUseCaseInputPort: sl()),
-        detailPageController = ScrollController() {
+      {this.ballUuid,
+      this.selectBallUseCaseInputPort,
+      this.fireBaseAuthAdapterForUseCase,
+      this.reviewInertMediator,
+      this.reviewCountMediator,
+      this.valuationMediator,
+      this.reviewDeleteMediator,
+      this.reviewUpdateMediator,
+      this.detailPageController,
+      this.geolocatorAdapter
+      }) {
     reviewInertMediator.registerComponent(this);
     reviewDeleteMediator.registerComponent(this);
     reviewUpdateMediator.registerComponent(this);
   }
+
   init() async {
     await _selectBall();
-    await _getBallLikeState();
+    valuationMediator.updateValuation(await _getBallLikeState());
   }
 
   String getBallTitle() {
@@ -65,8 +64,9 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   }
 
   _selectBall() async {
-    _fBallResDto = await _selectBallUseCaseInputPort.selectBall(_ballUuid);
-    _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto: _fBallResDto,geoLocatorAdapter: sl());
+    _fBallResDto = await selectBallUseCaseInputPort.selectBall(ballUuid);
+    _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+        fBallResDto: _fBallResDto, geoLocatorAdapter: geolocatorAdapter);
     _loadBallComplete = true;
     if (!isDisPose) {
       notifyListeners();
@@ -78,7 +78,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   }
 
   getBallUuid() {
-    return _ballUuid;
+    return ballUuid;
   }
 
   getBallHits() {
@@ -134,12 +134,12 @@ class ID001MainPage2ViewModel extends ChangeNotifier
     return _fBallResDto.activationTime;
   }
 
-  Future<void> _getBallLikeState() async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
-      await valuationMediator.getBallLikeState(_ballUuid,
-          uid: await _fireBaseAuthAdapterForUseCase.userUid());
+  Future<FBallLikeResDto> _getBallLikeState() async {
+    if (await fireBaseAuthAdapterForUseCase.isLogin()) {
+      return await valuationMediator.getBallLikeState(ballUuid,
+          uid: await fireBaseAuthAdapterForUseCase.userUid());
     } else {
-      await valuationMediator.getBallLikeState(_ballUuid);
+      return await valuationMediator.getBallLikeState(ballUuid);
     }
   }
 

@@ -18,7 +18,7 @@ abstract class GeolocatorAdapter {
 
   startStreamCurrentPosition();
 }
-@Injectable(as: GeolocatorAdapter)
+@LazySingleton(as: GeolocatorAdapter)
 class GeolocatorAdapterImpl implements GeolocatorAdapter {
   Geolocator.Geolocator _geolocator = Geolocator.Geolocator();
 

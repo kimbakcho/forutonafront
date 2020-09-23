@@ -53,7 +53,7 @@ abstract class ImageUtilInputPort {
 
 }
 @Named("ImageAvatarUtil")
-@Injectable(as: ImageUtilInputPort)
+@LazySingleton(as: ImageUtilInputPort)
 class ImageAvatarUtil extends ImageUtilInputPort {
 
   @override
@@ -69,7 +69,7 @@ class ImageAvatarUtil extends ImageUtilInputPort {
 
 }
 @Named("ImageBorderAvatarUtil")
-@Injectable(as: ImageUtilInputPort)
+@LazySingleton(as: ImageUtilInputPort)
 class ImageBorderAvatarUtil extends ImageUtilInputPort {
 
   @override
@@ -90,8 +90,8 @@ class ImageBorderAvatarUtil extends ImageUtilInputPort {
   }
 
 }
-@Named("ImagePngResizeUtil")
-@Injectable(as: ImageUtilInputPort)
+@named
+@LazySingleton(as: ImageUtilInputPort)
 class ImagePngResizeUtil extends ImageUtilInputPort {
 
   @override

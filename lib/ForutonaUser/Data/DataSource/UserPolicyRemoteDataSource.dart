@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 abstract class UserPolicyRemoteDataSource {
   Future<UserPolicyResDto> getPersonaSettingNotice(String policy,FDio noneToken);
 }
-@Injectable(as: UserPolicyRemoteDataSource)
+@LazySingleton(as: UserPolicyRemoteDataSource)
 class UserPolicyRemoteDataSourceImpl implements UserPolicyRemoteDataSource{
 
   @override

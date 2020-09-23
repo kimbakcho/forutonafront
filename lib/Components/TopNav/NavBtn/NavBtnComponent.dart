@@ -14,7 +14,7 @@ class NavBtnComponent extends StatefulWidget {
   NavBtnComponent({Key key, this.navBtnSetDto}) : super(key: key);
 
   @override
-  _NavBtnComponentState createState() => _NavBtnComponentState(navBtnSetDto);
+  _NavBtnComponentState createState() => _NavBtnComponentState(navBtnSetDto: navBtnSetDto,navBtnMediator: sl());
 }
 
 class _NavBtnComponentState extends State<NavBtnComponent>
@@ -23,9 +23,9 @@ class _NavBtnComponentState extends State<NavBtnComponent>
   final NavBtnSetDto navBtnSetDto;
   AnimationController _controller;
 
-  final TopNavBtnMediator navBtnMediator = sl();
+  final TopNavBtnMediator navBtnMediator;
 
-  _NavBtnComponentState(this.navBtnSetDto);
+  _NavBtnComponentState({this.navBtnSetDto, this.navBtnMediator});
 
   @override
   void initState() {
@@ -59,6 +59,7 @@ class _NavBtnComponentState extends State<NavBtnComponent>
   Widget build(BuildContext context) {
     return NavBtnAniComponent(
       child: NavBtnContent(
+        navBtnMediator: navBtnMediator,
         btnColor: navBtnSetDto.btnColor,
         btnIcon: navBtnSetDto.btnIcon,
         navRouterType: navBtnSetDto.routerType,
@@ -91,14 +92,15 @@ class NavBtnContent extends StatelessWidget implements NavBtnContentInputPort {
   final TopNavRouterType navRouterType;
   final CodeState topOnMoveMainPage;
 
-  final TopNavBtnMediator navBtnMediator = sl();
+  final TopNavBtnMediator navBtnMediator;
 
   NavBtnContent(
       {Key key,
       this.btnColor,
       this.btnIcon,
       this.navRouterType,
-      this.topOnMoveMainPage})
+      this.topOnMoveMainPage,
+      @required this.navBtnMediator})
       : super(key: key);
 
   @override

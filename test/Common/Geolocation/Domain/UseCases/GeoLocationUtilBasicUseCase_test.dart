@@ -24,14 +24,13 @@ class MockGeoLocationUtilUseCaseOutputPort extends Mock
 void main() {
   MockGeolocatorAdapter mockGeolocatorAdapter;
   MockSharedPreferencesAdapter mockSharedPreferencesAdapter;
-  MockPreference mockPreference;
 
   GeoLocationUtilBasicUseCase geoLocationUtilUseCase;
   StreamController _fUserCurrentPositionStreamController;
   setUp(() {
     mockGeolocatorAdapter = MockGeolocatorAdapter();
     mockSharedPreferencesAdapter = MockSharedPreferencesAdapter();
-    mockPreference = MockPreference();
+
     _fUserCurrentPositionStreamController =
         StreamController<Position>.broadcast();
     when(mockGeolocatorAdapter.userPosition)
@@ -39,7 +38,7 @@ void main() {
     geoLocationUtilUseCase = GeoLocationUtilBasicUseCase(
         geolocatorAdapter: mockGeolocatorAdapter,
         sharedPreferencesAdapter: mockSharedPreferencesAdapter,
-        preference: mockPreference);
+       );
   });
 
   tearDown(() {
@@ -48,22 +47,20 @@ void main() {
 
   test('최근 위치 값 메모리에서 불러오기(메모리에 값 없을때)', () async {
     //arrange
-    when(mockPreference.initPosition)
-        .thenReturn(Position(longitude: 127.4, latitude: 31.1));
+
     //act
     var currentWithLastPositionInMemory =
         geoLocationUtilUseCase.getCurrentWithLastPositionInMemory();
     //assert
-    expect(currentWithLastPositionInMemory.longitude, 127.4);
-    expect(currentWithLastPositionInMemory.latitude, 31.1);
+    expect(currentWithLastPositionInMemory.longitude, Preference.initPosition.longitude);
+    expect(currentWithLastPositionInMemory.latitude, Preference.initPosition.latitude);
   });
 
   test('최근 위치 값 메모리에서 불러오기(메모리에 값 있을때)', () async {
     //arrange
     geoLocationUtilUseCase.currentWithLastPosition =
         Position(longitude: 126.2, latitude: 31);
-    when(mockPreference.initPosition)
-        .thenReturn(Position(longitude: 127.4, latitude: 31.1));
+
     //act
     var currentWithLastPositionInMemory =
         geoLocationUtilUseCase.getCurrentWithLastPositionInMemory();
@@ -75,18 +72,17 @@ void main() {
   test('최근 주소 값 메모리에서 불러오기(메모리에 값 없을때)', () async {
     //arrange
 
-    when(mockPreference.initAddress).thenReturn("테스트지역");
     //act
     var currentWithLastAddressInMemory =
         geoLocationUtilUseCase.getCurrentWithLastAddressInMemory();
     //assert
-    expect(currentWithLastAddressInMemory, "테스트지역");
+    expect(currentWithLastAddressInMemory, Preference.initAddress);
   });
 
   test('최근 주소 값 메모리에서 불러오기(메모리에 값 있을때)', () async {
     //arrange
     geoLocationUtilUseCase.currentWithLastAddress = "서울";
-    when(mockPreference.initAddress).thenReturn("테스트지역");
+
     //act
     var currentWithLastAddressInMemory =
         geoLocationUtilUseCase.getCurrentWithLastAddressInMemory();
@@ -126,8 +122,7 @@ void main() {
         .thenAnswer((_) async => null);
     when(mockSharedPreferencesAdapter.getDouble("currentlat"))
         .thenAnswer((_) async => null);
-    when(mockPreference.initPosition)
-        .thenReturn(Position(longitude: 125.4, latitude: 30.1));
+
 
     when(mockGeolocatorAdapter.placemarkFromPosition(any,
             localeIdentifier: anyNamed('localeIdentifier')))
@@ -141,10 +136,10 @@ void main() {
         await geoLocationUtilUseCase.getCurrentWithLastPosition();
     //assert
     expect(geoLocationUtilUseCase.currentWithLastAddress, "한국");
-    expect(geoLocationUtilUseCase.currentWithLastPosition.longitude, 125.4);
-    expect(geoLocationUtilUseCase.currentWithLastPosition.latitude, 30.1);
-    expect(currentWithLastPosition.longitude, 125.4);
-    expect(currentWithLastPosition.latitude, 30.1);
+    expect(geoLocationUtilUseCase.currentWithLastPosition.longitude, Preference.initPosition.longitude);
+    expect(geoLocationUtilUseCase.currentWithLastPosition.latitude, Preference.initPosition.latitude);
+    expect(currentWithLastPosition.longitude,Preference.initPosition.longitude);
+    expect(currentWithLastPosition.latitude, Preference.initPosition.latitude);
   });
 
   test('가장 최근 위치값(gps 서비스 사용이 가능할때) ', () async {
@@ -155,8 +150,6 @@ void main() {
     when(mockGeolocatorAdapter.getCurrentPosition())
         .thenAnswer((_) => Position(latitude: 125.6, longitude: 31.5));
 
-    when(mockPreference.initPosition)
-        .thenReturn(Position(longitude: 125.4, latitude: 30.1));
 
     when(mockGeolocatorAdapter.placemarkFromPosition(any,
             localeIdentifier: anyNamed('localeIdentifier')))

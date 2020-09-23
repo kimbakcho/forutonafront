@@ -1,10 +1,18 @@
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class RankingTagListFromBIListener {
   Future<void> search(Position searchPosition);
 }
+abstract class RankingTagListFromBIManagerInputPort{
+  void subscribe(RankingTagListFromBIListener listener);
+  void unSubscribe(RankingTagListFromBIListener listener);
+  int getSubscribeSize();
+  search(Position searchPosition);
+}
 
-class RankingTagListFromBIManager {
+@Injectable(as: RankingTagListFromBIManagerInputPort)
+class RankingTagListFromBIManager implements RankingTagListFromBIManagerInputPort{
   List<RankingTagListFromBIListener> _rankingTagListFromBIListeners = [];
   Position currentSearchPosition;
 

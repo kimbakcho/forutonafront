@@ -5,11 +5,14 @@ import 'package:forutonafront/Components/BallStyle/BallOptionPopup/UserBallPopup
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:injectable/injectable.dart';
 
 import 'BallOptionPopup.dart';
 
+@LazySingleton()
 class BallOptionWidgetFactory {
   final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
+
   BallOptionWidgetFactory(
       {@required this.signInUserInfoUseCaseInputPort});
 

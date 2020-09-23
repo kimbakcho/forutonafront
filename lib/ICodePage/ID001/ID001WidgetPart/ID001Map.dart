@@ -46,7 +46,7 @@ class _ID001MapState extends State<ID001Map>
     implements GeoLocationUtilUseForeGroundCaseOutputPort {
   String userProfileImageUrl;
   Position userPosition;
-  Preference _preference = sl();
+
   CameraPosition initCameraPosition;
   Key mapKey = UniqueKey();
   Set<Marker> markers = Set<Marker>();
@@ -55,7 +55,7 @@ class _ID001MapState extends State<ID001Map>
   @override
   void initState() {
     super.initState();
-    userProfileImageUrl = _preference.basicProfileImageUrl;
+    userProfileImageUrl = Preference.basicProfileImageUrl;
 
     initCameraPosition = CameraPosition(
         target: LatLng(

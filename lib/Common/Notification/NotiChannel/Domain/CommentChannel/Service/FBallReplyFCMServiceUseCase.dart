@@ -13,7 +13,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoU
 import 'package:injectable/injectable.dart';
 
 @named
-@Injectable(as: CommentChannelBaseServiceUseCaseInputPort)
+@LazySingleton(as: CommentChannelBaseServiceUseCaseInputPort)
 class FBallReplyFCMServiceUseCase
     implements CommentChannelBaseServiceUseCaseInputPort {
   final FlutterLocalNotificationsPluginAdapter

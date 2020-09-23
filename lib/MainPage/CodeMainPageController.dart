@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class CodeMainPageController{
   PageController pageController;
   CodeState currentState;
   moveToPage(CodeState pageCode);
 }
+@LazySingleton(as: CodeMainPageController)
 class CodeMainPageControllerImpl implements CodeMainPageController{
 
   @override

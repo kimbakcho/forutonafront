@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/FBallValuation/Domain/Repositroy/FBallValuationRepository.dart';
 import 'package:forutonafront/FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
 import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001LikeAction.dart';
 import 'package:forutonafront/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../TestUtil/FBall/FBallTestUtil.dart';
@@ -17,27 +13,26 @@ import '../../../TestUtil/FBallLike/FBallLikeTestUtil.dart';
 import '../../../TestUtil/FUserInfoSimple/FUserInfoSimpleTestUtil.dart';
 import '../../../TestUtil/FballValuation/FBallValuationTestUtil.dart';
 import '../ID001MainPage2ViewModel_test.dart';
+import '../ValuationMediator/ValuationMediator_test.dart';
 
 class MockBuildContext extends Mock implements BuildContext {}
-
+class MockFireBaseAuthAdapterForUseCase extends Mock implements FireBaseAuthAdapterForUseCase{}
 void main (){
   ID001LikeActionViewModel id001likeActionViewModel;
   MockBuildContext context = MockBuildContext();
   ValuationMediator valuationMediator;
-
+  BallLikeUseCaseInputPort ballLikeUseCaseInputPort;
+  MockFireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
   setBallLikeTest(
       String testBallUUid, int ballLike, int ballDisLike, bool isLogin) {
     String testBallUuid = testBallUUid;
-    MockFireBaseAuthBaseAdapter mockFireBaseAuthBaseAdapter =
-    MockFireBaseAuthBaseAdapter();
-    sl.registerSingleton<FireBaseAuthBaseAdapter>(mockFireBaseAuthBaseAdapter);
-    when(mockFireBaseAuthBaseAdapter.isLogin())
+    fireBaseAuthAdapterForUseCase = MockFireBaseAuthAdapterForUseCase();
+    when(fireBaseAuthAdapterForUseCase.isLogin())
         .thenAnswer((realInvocation) async => isLogin);
 
     MockFBallValuationRepository mockFBallValuationRepository =
     MockFBallValuationRepository();
-    sl.registerSingleton<FBallValuationRepository>(
-        mockFBallValuationRepository);
+
 
     FBallLikeResDto basicFBallLikeResDto =
     FBallLikeTestUtil.getBasicFBallLikeResDto(
@@ -53,30 +48,24 @@ void main (){
     when(mockFBallValuationRepository.ballLike(any))
         .thenAnswer((realInvocation) async => basicFBallLikeResDto);
 
-    sl.registerSingleton<BallLikeUseCaseInputPort>(
-        BallLikeUseCase(fBallValuationRepository: sl()));
+    ballLikeUseCaseInputPort = BallLikeUseCase(
+      fBallValuationRepository: mockFBallValuationRepository
+    );
 
-    sl.registerSingleton<FireBaseAuthAdapterForUseCase>(
-        FireBaseAuthAdapterForUseCaseImpl(
-            updateFCMTokenUseCaseInputPort: sl(),
-            fireBaseMessageAdapter: sl(),
-            signInUserInfoUseCaseInputPort: sl(),
-            fireBaseAuthBaseAdapter: sl()));
   }
 
   initViewModel(String testBallUuid) {
-    valuationMediator = ValuationMediatorImpl(ballLikeUseCaseInputPort: sl());
+    valuationMediator = ValuationMediatorImpl(ballLikeUseCaseInputPort: ballLikeUseCaseInputPort);
     id001likeActionViewModel = ID001LikeActionViewModel(
       context: context,
       ballUuid: testBallUuid,
       valuationMediator: valuationMediator,
-      fireBaseAuthAdapterForUseCase: sl(),
+      fireBaseAuthAdapterForUseCase: fireBaseAuthAdapterForUseCase,
     );
   }
 
   setUp((){
-    di.init();
-    sl.allowReassignment = true;
+
   });
 
   test('생성시 Mediator에 Component 등록', () async {

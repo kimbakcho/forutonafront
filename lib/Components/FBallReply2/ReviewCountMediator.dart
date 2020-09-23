@@ -1,6 +1,8 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class ReviewCountMediatorComponent {
   onReviewCount(int reviewCount);
@@ -17,16 +19,15 @@ abstract class ReviewCountMediator {
 
   int reviewCount;
 }
-
+@Injectable(as: ReviewCountMediator)
 class ReviewCountMediatorImpl implements ReviewCountMediator{
   int reviewCount = 0;
 
   List<ReviewCountMediatorComponent> components = [];
 
-  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
+  final FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort;
 
-  ReviewCountMediatorImpl({FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort})
-      : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort;
+  ReviewCountMediatorImpl({@required this.fBallReplyUseCaseInputPort});
 
   @override
   registerComponent(ReviewCountMediatorComponent reviewCountMediatorComponent) {
@@ -35,7 +36,7 @@ class ReviewCountMediatorImpl implements ReviewCountMediator{
 
   @override
   Future<int> reqReviewCount(String ballUuid) async {
-    int reviewCount = await _fBallReplyUseCaseInputPort.getBallReviewCount(ballUuid);
+    int reviewCount = await fBallReplyUseCaseInputPort.getBallReviewCount(ballUuid);
     this.reviewCount = reviewCount;
     onAllReviewCount(reviewCount);
     return reviewCount;

@@ -19,7 +19,7 @@ Future<dynamic> firebaseBackgroundMessage(Map<String, dynamic> message) async {
     fireBaseAuthAdapterForUseCase = sl();
   } catch (ex) {
     print("backgroundService ServiceLocator init");
-    di.init();
+    configureDependencies();
     fireBaseAuthAdapterForUseCase =
         await loginUserInfoDataSaveForMemory(fireBaseAuthAdapterForUseCase);
   } finally {
@@ -51,7 +51,7 @@ abstract class FireBaseMessageAdapter {
 
   Future<String> getCurrentToken();
 }
-@Injectable(as: FireBaseMessageAdapter)
+@LazySingleton(as: FireBaseMessageAdapter)
 class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
   FirebaseMessaging _firebaseMessaging;
 

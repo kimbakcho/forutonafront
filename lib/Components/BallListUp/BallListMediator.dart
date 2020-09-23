@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class BallListMediatorComponent {
 
@@ -28,7 +29,7 @@ abstract class BallListMediator {
 
   Position searchPosition();
 }
-
+@Injectable(as: BallListMediator)
 class BallListMediatorImpl implements BallListMediator {
   FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
 

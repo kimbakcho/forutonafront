@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 abstract class UpdateUserPositionUseCaseInputPort {
   Future<void> updateUserPosition(LatLng latLng);
 }
-@Injectable(as: UpdateUserPositionUseCaseInputPort)
+@LazySingleton(as: UpdateUserPositionUseCaseInputPort)
 class UpdateUserPositionUseCase implements UpdateUserPositionUseCaseInputPort{
 
   final FUserRepository _fUserRepository;

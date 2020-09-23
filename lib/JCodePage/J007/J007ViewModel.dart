@@ -33,7 +33,6 @@ class J007ViewModel extends ChangeNotifier {
   bool _haveNickNameConfirm = false;
   bool _isLoading = false;
 
-  Preference _preference = sl();
 
   getIsLoading() {
     return _isLoading;
@@ -127,7 +126,7 @@ class J007ViewModel extends ChangeNotifier {
     if (_isChangeProfileImage) {
       if (_currentPickProfileImage == null) {
         _singUpUseCaseInputPort
-            .setUserProfileImageUrl(_preference.basicProfileImageUrl);
+            .setUserProfileImageUrl(Preference.basicProfileImageUrl);
       }
     }
 

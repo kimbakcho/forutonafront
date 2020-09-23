@@ -6,7 +6,7 @@ import 'package:forutonafront/FBall/Dto/BallSearchBarHistoryDto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-@Injectable(as: BallSearchBarHistoryRepository)
+@LazySingleton(as: BallSearchBarHistoryRepository)
 class BallSearchBarHistoryRepositoryImpl
     implements BallSearchBarHistoryRepository {
 

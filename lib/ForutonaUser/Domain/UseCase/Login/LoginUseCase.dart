@@ -10,7 +10,7 @@ import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapt
 import 'package:injectable/injectable.dart';
 
 
-@Injectable(as: LoginUseCaseInputPort)
+@LazySingleton(as: LoginUseCaseInputPort)
 class LoginUseCase implements LoginUseCaseInputPort {
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
   final SnsLoginModuleAdapter _snsLoginModuleAdapter;

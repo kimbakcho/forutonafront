@@ -6,7 +6,7 @@ import 'package:forutonafront/Common/GoogleMapSupport/MapMakerDescriptorContaine
 import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
-@Injectable()
+@LazySingleton()
 class MapBallMarkerFactory {
 
   final MapMakerDescriptorContainer _mapMakerDescriptorContainer;

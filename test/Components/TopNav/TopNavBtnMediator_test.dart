@@ -6,8 +6,6 @@ import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendComponent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendGroup.dart';
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:mockito/mockito.dart';
 
 class MockTopNavBtnComponent extends Mock implements TopNavBtnComponent{}
@@ -19,10 +17,10 @@ void main (){
   TopNavBtnMediator navBtnMediator;
 
   setUp((){
-    di.init();
-    sl.allowReassignment = true;
+
+
     navBtnMediator = TopNavBtnMediatorImpl();
-    sl.registerSingleton<TopNavBtnMediator>(navBtnMediator);
+
 
   });
 
@@ -65,7 +63,7 @@ void main (){
     //arrange
     MockINavBtnGroup mockINavBtnGroup = MockINavBtnGroup();
     navBtnMediator.iNavBtnGroup = mockINavBtnGroup;
-    navBtnMediator.topNavExpendGroupViewModel = TopNavExpendGroupViewModel(null);
+    navBtnMediator.topNavExpendGroupViewModel = TopNavExpendGroupViewModel(context: null,topNavBtnMediator: navBtnMediator);
 
     navBtnMediator.currentTopNavRouter = TopNavRouterType.H003;
     MockTopNavExpendComponent mockTopNavExpendComponent = MockTopNavExpendComponent();

@@ -15,7 +15,7 @@ abstract class MapMakerDescriptorContainer {
   init();
 }
 
-@Injectable(as: MapMakerDescriptorContainer)
+@LazySingleton(as: MapMakerDescriptorContainer)
 class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
   @override
   Map<String, BitmapDescriptor> container;
@@ -24,7 +24,6 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
       _mapBitmapDescriptorUseCaseInputPort;
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
-  final Preference _preference;
 
   MapMakerDescriptorContainerImpl(
       {@required
@@ -33,13 +32,10 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
       @required
           FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
       @required
-          Preference preference,
-      @required
           SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
       : _mapBitmapDescriptorUseCaseInputPort =
             mapBitmapDescriptorUseCaseInputPort,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
-        _preference = preference,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort {
     container = Map<String, BitmapDescriptor>();
   }
@@ -67,7 +63,7 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
       BitmapDescriptor userAvatarIcon =
           await _mapBitmapDescriptorUseCaseInputPort
               .urlPathToAvatarBitmapDescriptor(
-                  _preference.basicProfileImageUrl);
+                Preference.basicProfileImageUrl);
       container.putIfAbsent("UserAvatarIcon", () => userAvatarIcon);
       container.update("UserAvatarIcon", (value) => userAvatarIcon);
     }

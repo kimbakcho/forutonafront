@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'PwFindPhoneUseCaseInputPort.dart';
 import 'PwFindPhoneUseCaseOutputPort.dart';
 
-@Injectable(as: PwFindPhoneUseCaseInputPort)
+@LazySingleton(as: PwFindPhoneUseCaseInputPort)
 class PwFindPhoneUseCase implements PwFindPhoneUseCaseInputPort {
   @override
   String email;

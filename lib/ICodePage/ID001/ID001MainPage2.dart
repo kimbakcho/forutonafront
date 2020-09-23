@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/FBallReply2/BasicReViewsContentBars.dart';
 import 'package:forutonafront/Components/FBallReply2/BasicReviews.dart';
-
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001ActionBottomBar.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001WidgetPart/ID001LikeState.dart';
@@ -40,9 +39,17 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
         key: Key(_ballUuid),
         create: (_) {
           var id001mainPage2ViewModel = ID001MainPage2ViewModel(
-            ballUuid: _ballUuid,
-            selectBallUseCaseInputPort: sl(),
-            fireBaseAuthAdapterForUseCase: sl());
+              ballUuid: _ballUuid,
+              selectBallUseCaseInputPort: sl(),
+              fireBaseAuthAdapterForUseCase: sl(),
+              detailPageController: sl(),
+              reviewCountMediator: sl(),
+              reviewDeleteMediator: sl(),
+              reviewInertMediator: sl(),
+              reviewUpdateMediator: sl(),
+              valuationMediator: sl(),
+              geolocatorAdapter: sl()
+          );
           id001mainPage2ViewModel.init();
           return id001mainPage2ViewModel;
         },

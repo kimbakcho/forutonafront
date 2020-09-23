@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class TagRankingFromBallInfluencePowerUseCaseInputPort {
   Future<List<TagRankingResDto>> reqTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto,TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort);
@@ -10,7 +11,7 @@ abstract class TagRankingFromBallInfluencePowerUseCaseInputPort {
 abstract class TagRankingFromBallInfluencePowerUseCaseOutputPort {
   void onTagRankingFromBallInfluencePower(List<TagRankingResDto> tagRankingDtos);
 }
-
+@LazySingleton(as: TagRankingFromBallInfluencePowerUseCaseInputPort)
 class TagRankingFromBallInfluencePowerUseCase
     implements TagRankingFromBallInfluencePowerUseCaseInputPort {
   TagRepository tagRepository;

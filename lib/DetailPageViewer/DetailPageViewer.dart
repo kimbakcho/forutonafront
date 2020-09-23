@@ -6,22 +6,21 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:provider/provider.dart';
 
 class DetailPageViewer extends StatelessWidget {
-  final BallListMediator _ballListMediator;
-  final DetailPageItemFactory _detailPageItemFactory;
+  final BallListMediator ballListMediator;
+  final DetailPageItemFactory detailPageItemFactory;
   final int initIndex;
 
-  DetailPageViewer(
-      {BallListMediator ballListMediator,
-      DetailPageItemFactory detailPageItemFactory,
-      this.initIndex = 0})
-      : _ballListMediator = ballListMediator,
-        _detailPageItemFactory = detailPageItemFactory;
+  DetailPageViewer({@required this.ballListMediator,
+    @required this.detailPageItemFactory,
+    this.initIndex = 0});
+
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => DetailPageViewerViewModel(
-          ballListMediator: _ballListMediator, initIndex: initIndex),
+      create: (_) =>
+          DetailPageViewerViewModel(
+              ballListMediator: ballListMediator, initIndex: initIndex),
       child: Consumer<DetailPageViewerViewModel>(
         builder: (_, model, __) {
           return Container(
@@ -32,7 +31,7 @@ class DetailPageViewer extends StatelessWidget {
                 onPageChanged: model.onPageChanged,
                 controller: model.pageController,
                 itemBuilder: (_, index) {
-                  return _detailPageItemFactory.getDetailPageWidget(
+                  return detailPageItemFactory.getDetailPageWidget(
                       model.ballList[index].ballUuid,
                       model.ballList[index].ballType);
                 },

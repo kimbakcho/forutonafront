@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:forutonafront/MainModel.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
 import 'package:forutonafront/Splash/SplashPage.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:provider/provider.dart';
@@ -21,11 +20,11 @@ void main() {
 // ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  Preference _preference = sl();
+
 
   @override
   Widget build(BuildContext context) {
-    KakaoContext.clientId = _preference.kaKaoNativeApiKey;
+    KakaoContext.clientId = Preference.kaKaoNativeApiKey;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

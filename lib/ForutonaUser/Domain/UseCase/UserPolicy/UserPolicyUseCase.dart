@@ -4,7 +4,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyU
 import 'package:forutonafront/ForutonaUser/Dto/UserPolicyResDto.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: UserPolicyUseCaseInputPort)
+@LazySingleton(as: UserPolicyUseCaseInputPort)
 class UserPolicyUseCase implements UserPolicyUseCaseInputPort {
   final UserPolicyRepository _userPolicyRepository;
 

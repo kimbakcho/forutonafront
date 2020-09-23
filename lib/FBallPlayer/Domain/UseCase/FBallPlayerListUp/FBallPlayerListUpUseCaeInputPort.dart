@@ -14,7 +14,7 @@ abstract class FBallPlayerListUpInputPort {
 abstract class FBallPlayerListUpOutputPort {
   void searchResult(PageWrap<FBallPlayerResDto> listUpItem);
 }
-@Injectable(as: FBallPlayerListUpInputPort)
+@LazySingleton(as: FBallPlayerListUpInputPort)
 class FBallPlayerListUpUseCae implements FBallPlayerListUpInputPort {
   FBallPlayerRepository _fBallPlayerRepository;
 

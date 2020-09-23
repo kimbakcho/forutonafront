@@ -7,7 +7,7 @@ import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapt
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: LogoutUseCaseInputPort)
+@LazySingleton(as: LogoutUseCaseInputPort)
 class LogoutUseCase implements LogoutUseCaseInputPort {
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;

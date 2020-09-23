@@ -8,7 +8,7 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:injectable/injectable.dart';
 
 import 'SignInUserInfoUseCaseOutputPort.dart';
-@Injectable(as: SignInUserInfoUseCaseInputPort)
+@LazySingleton(as: SignInUserInfoUseCaseInputPort)
 class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   FUserInfo _fUserInfo;
   FUserRepository _fUserRepository;

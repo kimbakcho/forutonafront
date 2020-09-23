@@ -14,7 +14,7 @@ abstract class FBallSearchBarHistoryUseCaseOutputPort {
   onRemoveHistory();
   onSaveHistory();
 }
-@Injectable(as: FBallSearchBarHistoryUseCaseInputPort)
+@LazySingleton(as: FBallSearchBarHistoryUseCaseInputPort)
 class FBallSearchBarHistoryUseCase
     implements FBallSearchBarHistoryUseCaseInputPort {
   BallSearchBarHistoryRepository _ballSearchBarHistoryRepository;

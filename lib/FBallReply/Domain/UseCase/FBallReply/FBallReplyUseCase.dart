@@ -13,7 +13,7 @@ import 'package:injectable/injectable.dart';
 import 'FBallReplyUseCaseInputPort.dart';
 import 'FBallReplyUseCaseOutputPort.dart';
 
-@Injectable(as: FBallReplyUseCaseInputPort)
+@LazySingleton(as: FBallReplyUseCaseInputPort)
 class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   final FBallReplyRepository _fBallReplyRepository;
 

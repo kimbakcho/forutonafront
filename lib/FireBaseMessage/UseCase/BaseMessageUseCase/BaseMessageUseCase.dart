@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'BaseMessageUseCaseInputPort.dart';
 
 @named
-@Injectable(as: BaseMessageUseCaseInputPort)
+@LazySingleton(as: BaseMessageUseCaseInputPort)
 class BaseMessageUseCase implements BaseMessageUseCaseInputPort {
   @override
   // ignore: missing_return

@@ -5,7 +5,7 @@ import 'package:kakao_flutter_sdk/all.dart';
 import 'SnsLoginModuleAdapter.dart';
 
 @named
-@Injectable(as: SnsLoginModuleAdapter)
+@LazySingleton(as: SnsLoginModuleAdapter)
 class KakaoLoginAdapterImpl implements SnsLoginModuleAdapter {
   @override
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {

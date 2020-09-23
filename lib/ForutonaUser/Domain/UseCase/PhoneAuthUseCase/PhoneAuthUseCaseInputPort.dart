@@ -16,7 +16,7 @@ abstract class PwAuthFromPhoneUseCaseOutputPort {
 
   void onNumberAuthReq(PhoneAuthNumberResDto phoneAuthNumberResDto);
 }
-@Injectable(as: PhoneAuthUseCaseInputPort)
+@LazySingleton(as: PhoneAuthUseCaseInputPort)
 class PhoneAuthUseCase implements PhoneAuthUseCaseInputPort {
   PhoneAuthRepository _phoneAuthRepository;
 

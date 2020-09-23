@@ -12,7 +12,7 @@ import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
-@Injectable(as: FUserRepository)
+@LazySingleton(as: FUserRepository)
 class FUserRepositoryImpl implements FUserRepository {
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
 

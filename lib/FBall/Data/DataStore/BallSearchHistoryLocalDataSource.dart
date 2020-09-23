@@ -13,7 +13,7 @@ abstract class  BallSearchHistoryLocalDataSource {
   void removeHistory({@required BallSearchBarHistoryDto saveReq,@required SharedPreferences sharedPreferences});
   List<BallSearchBarHistory> loadHistory({@required SharedPreferences sharedPreferences});
 }
-@Injectable(as: BallSearchHistoryLocalDataSource)
+@LazySingleton(as: BallSearchHistoryLocalDataSource)
 class BallSearchHistoryLocalDataSourceImpl implements BallSearchHistoryLocalDataSource{
   static String shareBallSearchBarHistory = "BallSearchbarHistroy";
   static int historyListLimit = 5;

@@ -11,7 +11,7 @@ abstract class FBallValuationRemoteDataSource {
 
   Future<FBallLikeResDto> getBallLikeState({String ballUuid,String uid, FDio noneTokenFDio});
 }
-@Injectable(as: FBallValuationRemoteDataSource)
+@LazySingleton(as: FBallValuationRemoteDataSource)
 class FBallValuationRemoteDataSourceImpl implements FBallValuationRemoteDataSource{
   @override
   Future<FBallLikeResDto> ballLike({FBallLikeReqDto reqDto, FDio tokenFDio}) async{

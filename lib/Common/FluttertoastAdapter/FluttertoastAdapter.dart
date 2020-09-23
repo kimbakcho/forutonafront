@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:injectable/injectable.dart';
 
+@LazySingleton()
 class FluttertoastAdapter {
   Future<bool> showToast(
       {@required String msg,

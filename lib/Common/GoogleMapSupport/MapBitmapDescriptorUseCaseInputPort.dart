@@ -14,33 +14,31 @@ abstract class MapBitmapDescriptorUseCaseInputPort {
 
   Future<BitmapDescriptor> urlPathToAvatarBitmapDescriptor(String url);
 }
-@Injectable(as: MapBitmapDescriptorUseCaseInputPort)
+@LazySingleton(as: MapBitmapDescriptorUseCaseInputPort)
 class MapBitmapDescriptorUseCase
     implements MapBitmapDescriptorUseCaseInputPort {
-  final ImageUtilInputPort _imagePngResizeUtil;
-  final ImageUtilInputPort _imageBorderAvatarUtil;
-  final FileDownLoaderUseCaseInputPort _fileDownLoaderUseCaseInputPort;
+  final ImageUtilInputPort imagePngResizeUtil;
+  final ImageUtilInputPort imageBorderAvatarUtil;
+  final FileDownLoaderUseCaseInputPort fileDownLoaderUseCaseInputPort;
 
   MapBitmapDescriptorUseCase(
-      {@required ImageUtilInputPort imagePngResizeUtil,
-      @required ImageUtilInputPort imageBorderAvatarUtil,
-      @required FileDownLoaderUseCaseInputPort fileDownLoaderUseCaseInputPort})
-      : _imagePngResizeUtil = imagePngResizeUtil,
-        _imageBorderAvatarUtil = imageBorderAvatarUtil,
-        _fileDownLoaderUseCaseInputPort = fileDownLoaderUseCaseInputPort;
+      {@required @Named.from(ImagePngResizeUtil) this.imagePngResizeUtil,
+      @required @Named.from(ImageBorderAvatarUtil) this.imageBorderAvatarUtil,
+      @required this.fileDownLoaderUseCaseInputPort});
+
 
   Future<BitmapDescriptor> assertFileToBitmapDescriptor(
       String filepath, Size size) async {
     ByteData issueBallIconBytes = await rootBundle.load(filepath);
-    return BitmapDescriptor.fromBytes(_imagePngResizeUtil.loadResizePngImage(
+    return BitmapDescriptor.fromBytes(imagePngResizeUtil.loadResizePngImage(
         issueBallIconBytes.buffer.asUint8List(),
         size.width.toInt(),
         size.height.toInt()));
   }
 
   Future<BitmapDescriptor> urlPathToAvatarBitmapDescriptor(String url) async {
-    var iconByte = await _fileDownLoaderUseCaseInputPort.downloadToByte(url);
-    List<int> bytes = await _imageBorderAvatarUtil.exportReSizeImageToByte(
+    var iconByte = await fileDownLoaderUseCaseInputPort.downloadToByte(url);
+    List<int> bytes = await imageBorderAvatarUtil.exportReSizeImageToByte(
         iconByte, Size(150, 150));
     return BitmapDescriptor.fromBytes(bytes);
   }

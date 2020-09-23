@@ -62,7 +62,7 @@ abstract class FBallRemoteDataSource {
       {@required List<Uint8List> images, @required FDio tokenFDio});
 
 }
-@Injectable(as: FBallRemoteDataSource)
+@LazySingleton(as: FBallRemoteDataSource)
 class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   @override
   Future<PageWrap<FBallResDto>> findByBallOrderByBI(

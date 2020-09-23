@@ -14,12 +14,13 @@ class TopNavExpendGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_)=>TopNavExpendGroupViewModel(context),
-      child: Consumer<TopNavExpendGroupViewModel>(
-        builder: (_,model,__){
-          return model._getTopNavExpendComponent();
-        }
+      create: (_) => TopNavExpendGroupViewModel(
+        context: context,
+        topNavBtnMediator: sl()
       ),
+      child: Consumer<TopNavExpendGroupViewModel>(builder: (_, model, __) {
+        return model._getTopNavExpendComponent();
+      }),
     );
   }
 }
@@ -27,28 +28,31 @@ class TopNavExpendGroup extends StatelessWidget {
 class TopNavExpendGroupViewModel extends ChangeNotifier {
   TopNavBtnMediator topNavBtnMediator;
   BuildContext context;
-  TopNavExpendGroupViewModel(BuildContext context){
-    topNavBtnMediator = sl();
+
+  TopNavExpendGroupViewModel(
+      {@required BuildContext context, @required this.topNavBtnMediator}) {
     this.context = context;
     topNavBtnMediator.topNavExpendGroupViewModel = this;
   }
 
-  changeExpendWidget(){
+  changeExpendWidget() {
     notifyListeners();
   }
 
-  Widget _getTopNavExpendComponent(){
-    if(topNavBtnMediator.currentTopNavRouter == TopNavRouterType.H001){
+  Widget _getTopNavExpendComponent() {
+    if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.H001) {
       return TopH001NavExpendComponent(
-        topH001NavExpendDto: TopH001NavExpendDto(btnHeightSize: 36,btnWidthSize: MediaQuery.of(context).size.width-75),
+        topH001NavExpendDto: TopH001NavExpendDto(
+            btnHeightSize: 36,
+            btnWidthSize: MediaQuery.of(context).size.width - 75),
       );
-    }else if(topNavBtnMediator.currentTopNavRouter == TopNavRouterType.H003){
+    } else if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.H003) {
       return TopH003NavExpandComponent();
-    }else if(topNavBtnMediator.currentTopNavRouter == TopNavRouterType.X001){
+    } else if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.X001) {
       return TopX001NavExpandComponent();
-    }else if(topNavBtnMediator.currentTopNavRouter == TopNavRouterType.X002){
+    } else if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.X002) {
       return TopX002NavExpandComponent();
-    }else {
+    } else {
       return Container();
     }
   }

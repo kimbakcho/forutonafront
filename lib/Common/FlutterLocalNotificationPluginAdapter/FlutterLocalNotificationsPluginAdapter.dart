@@ -15,7 +15,7 @@ final StreamController<String> selectNotificationSubjectStreamController = Strea
 
 final Stream<String> selectNotificationSubject = selectNotificationSubjectStreamController.stream;
 
-@Injectable(as: FlutterLocalNotificationsPluginAdapter)
+@LazySingleton(as: FlutterLocalNotificationsPluginAdapter)
 class FlutterLocalNotificationsPluginAdapterImpl
     implements FlutterLocalNotificationsPluginAdapter {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

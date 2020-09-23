@@ -16,7 +16,7 @@ abstract class FBallTagRemoteDataSource {
   Future<List<FBallTagResDto>> tagFromBallUuid(
       {@required String ballUuid, @required FDio noneTokenFDio});
 }
-@Injectable(as: FBallTagRemoteDataSource)
+@LazySingleton(as: FBallTagRemoteDataSource)
 class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
   FBallTagRemoteDataSourceImpl();
 

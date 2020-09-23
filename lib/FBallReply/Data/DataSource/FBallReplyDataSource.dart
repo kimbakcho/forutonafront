@@ -24,7 +24,7 @@ abstract class FBallReplyDataSource {
 
 
 }
-@Injectable(as: FBallReplyDataSource)
+@LazySingleton(as: FBallReplyDataSource)
 class FBallReplyDataSourceImpl implements FBallReplyDataSource {
   @override
   Future<FBallReplyResDto> deleteFBallReply(String replyUuid, FDio tokenFDio) async {

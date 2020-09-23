@@ -13,7 +13,7 @@ import 'package:mutex/mutex.dart';
 import 'GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'GeoLocationUtilForeGroundUseCaseInputPort.dart';
 
-@Injectable(as: GeoLocationUtilForeGroundUseCaseInputPort)
+@LazySingleton(as: GeoLocationUtilForeGroundUseCaseInputPort)
 class GeoLocationUtilForeGroundUseCase
     implements GeoLocationUtilForeGroundUseCaseInputPort {
   final GeolocatorAdapter _geolocatorAdapter;

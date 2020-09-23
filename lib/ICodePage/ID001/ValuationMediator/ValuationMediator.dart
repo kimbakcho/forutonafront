@@ -6,6 +6,7 @@ import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
 
 
 import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class ValuationMediatorComponent {
   reqNotification();
@@ -22,7 +23,9 @@ abstract class ValuationMediator {
 
   disLikeAction(ValuationMediatorComponent component);
 
-  getBallLikeState(String ballUuid,{String uid});
+  Future<FBallLikeResDto> getBallLikeState(String ballUuid,{String uid});
+
+  updateValuation(FBallLikeResDto fBallLikeResDto);
 
   int componentCount();
 
@@ -33,7 +36,7 @@ abstract class ValuationMediator {
   int ballDisLikeCount ;
   int likeServiceUseUserCount;
 }
-
+@Injectable(as: ValuationMediator)
 class ValuationMediatorImpl implements ValuationMediator {
   final BallLikeUseCaseInputPort _ballLikeUseCaseInputPort;
   @override
@@ -147,7 +150,7 @@ class ValuationMediatorImpl implements ValuationMediator {
   }
 
   @override
-  getBallLikeState(String ballUuid, {String uid}) async {
+  Future<FBallLikeResDto> getBallLikeState(String ballUuid, {String uid}) async {
       FBallLikeResDto fBallLikeResDto = await _ballLikeUseCaseInputPort.getBallLikeState(ballUuid, uid);
       if(fBallLikeResDto.fballValuationResDto.ballLike>0) {
         ballLikeState = BallLikeState.Up;
@@ -156,7 +159,7 @@ class ValuationMediatorImpl implements ValuationMediator {
       }else {
         ballLikeState = BallLikeState.None;
       }
-      updateValuation(fBallLikeResDto);
+      return fBallLikeResDto;
   }
 
   @override

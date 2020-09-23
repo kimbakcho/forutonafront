@@ -9,7 +9,7 @@ abstract class PersonaSettingNoticeRemoteDataSource {
   Future<PageWrap<PersonaSettingNoticeResDto>> getPersonaSettingNotice(Pageable pageable,FDio noneTokenFDio);
   Future<PersonaSettingNoticeResDto> getPersonaSettingNoticePage(int idx,FDio noneTokenFDio);
 }
-@Injectable(as: PersonaSettingNoticeRemoteDataSource)
+@LazySingleton(as: PersonaSettingNoticeRemoteDataSource)
 class PersonaSettingNoticeRemoteDataSourceImpl implements PersonaSettingNoticeRemoteDataSource {
   @override
   Future<PageWrap<PersonaSettingNoticeResDto>> getPersonaSettingNotice(Pageable pageable,FDio noneTokenFDio) async {

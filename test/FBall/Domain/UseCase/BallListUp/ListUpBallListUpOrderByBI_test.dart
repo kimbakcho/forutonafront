@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/ListUpBallListUpOrderByBI.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
@@ -11,7 +12,7 @@ import 'package:mockito/mockito.dart';
 
 import '../../../../ICodePage/ID001/ID001MainPage2ViewModel_test.dart';
 import '../../../../fixtures/fixture_reader.dart';
-
+class MockFBallRepository extends Mock implements FBallRepository{}
 void main() {
   test('FBallListUpFromInfluencePower search', () async {
     //arrange

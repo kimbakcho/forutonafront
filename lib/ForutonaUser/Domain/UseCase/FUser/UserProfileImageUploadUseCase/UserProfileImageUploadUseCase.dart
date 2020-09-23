@@ -6,7 +6,7 @@ import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dar
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: UserProfileImageUploadUseCaseInputPort)
+@LazySingleton(as: UserProfileImageUploadUseCaseInputPort)
 class UserProfileImageUploadUseCase
     implements UserProfileImageUploadUseCaseInputPort {
   final FlutterImageCompressAdapter _flutterImageCompressAdapter;

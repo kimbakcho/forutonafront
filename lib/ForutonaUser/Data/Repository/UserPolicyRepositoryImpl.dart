@@ -5,7 +5,7 @@ import 'package:forutonafront/ForutonaUser/Domain/Repository/UserPolicyRepositor
 import 'package:forutonafront/ForutonaUser/Dto/UserPolicyResDto.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: UserPolicyRepository)
+@LazySingleton(as: UserPolicyRepository)
 class UserPolicyRepositoryImpl implements UserPolicyRepository {
   UserPolicyRemoteDataSource _userPolicyRemoteDataSource;
 

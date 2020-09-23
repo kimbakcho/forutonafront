@@ -14,7 +14,7 @@ abstract class FireBaseAuthAdapterForUseCase
   void startOnAuthStateChangedListen();
 
 }
-@Injectable(as: FireBaseAuthAdapterForUseCase)
+@LazySingleton(as: FireBaseAuthAdapterForUseCase)
 class FireBaseAuthAdapterForUseCaseImpl
     implements FireBaseAuthAdapterForUseCase {
 

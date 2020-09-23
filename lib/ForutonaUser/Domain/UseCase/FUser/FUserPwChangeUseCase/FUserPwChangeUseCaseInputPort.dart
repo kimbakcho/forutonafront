@@ -6,7 +6,7 @@ abstract class FUserPwChangeUseCaseInputPort {
   Future<void> pwChange(String pw);
 }
 
-@Injectable(as: FUserPwChangeUseCaseInputPort)
+@LazySingleton(as: FUserPwChangeUseCaseInputPort)
 class FUserPwChangeUseCase implements FUserPwChangeUseCaseInputPort {
   final FUserRepository _fUserRepository;
 

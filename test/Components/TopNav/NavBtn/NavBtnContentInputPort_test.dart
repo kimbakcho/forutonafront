@@ -5,27 +5,26 @@ import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendGroup.dart';
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
+
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:mockito/mockito.dart';
 
 class MockCodeMainViewModelInputPort extends Mock implements CodeMainViewModelInputPort{}
 void main() {
   NavBtnContentInputPort navBtnContentInputPort;
-
+  TopNavBtnMediator navBtnMediator;
   setUp(() {
-    di.init();
-    sl.allowReassignment = true;
+    navBtnMediator  = TopNavBtnMediatorImpl();
     navBtnContentInputPort = NavBtnContent(
         topOnMoveMainPage: CodeState.H003CODE,
         btnColor: Colors.amber,
         btnIcon: Icon(Icons.print),
-        navRouterType: TopNavRouterType.H003);
+        navRouterType: TopNavRouterType.H003,
+        navBtnMediator: navBtnMediator,
+    );
   });
   test('버튼 클릭시 애니메이션 Open 액션 테스트', () async {
     //arrange
-    TopNavBtnMediator navBtnMediator = sl();
-
 
     navBtnMediator.aniState = NavBtnMediatorState.Close;
     //act
@@ -36,9 +35,8 @@ void main() {
 
   test('버튼 클릭시 애니메이션 Close 액션 테스트', () async {
     //arrange
-    TopNavBtnMediator navBtnMediator = sl();
 
-    navBtnMediator.topNavExpendGroupViewModel = TopNavExpendGroupViewModel(null);
+    navBtnMediator.topNavExpendGroupViewModel = TopNavExpendGroupViewModel(context: null,topNavBtnMediator: navBtnMediator);
 
     MockCodeMainViewModelInputPort mockCodeMainViewModelInputPort = MockCodeMainViewModelInputPort();
     navBtnMediator.codeMainViewModelInputPort = mockCodeMainViewModelInputPort;

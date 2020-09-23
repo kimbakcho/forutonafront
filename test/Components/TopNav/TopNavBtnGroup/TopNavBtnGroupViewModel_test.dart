@@ -3,14 +3,16 @@ import 'package:forutonafront/Components/TopNav/NavBtn/NavBtn.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/INavBtnGroup.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/TopNavBtnGroupViewModel.dart';
+import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
 
 void main(){
   INavBtnGroup navBtnGroup;
+  TopNavBtnMediator topNavBtnMediator;
   setUp((){
-    di.init();
-    navBtnGroup = TopNavBtnGroupViewModel();
+    topNavBtnMediator = TopNavBtnMediatorImpl();
+    navBtnGroup = TopNavBtnGroupViewModel(topNavBtnMediator: topNavBtnMediator);
   });
 
   test('top 버튼의 이름을 가진 Btn 스택 제일 뒤에 옮기기', () async {

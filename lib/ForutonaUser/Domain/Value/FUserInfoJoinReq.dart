@@ -30,7 +30,7 @@ class FUserInfoJoinReq {
   Preference _preference;
 
 
-  FUserInfoJoinReq({Preference preference}) :_preference = preference;
+  FUserInfoJoinReq();
 
   clearPassword(){
     this.password = "";
@@ -38,7 +38,7 @@ class FUserInfoJoinReq {
 
   get userProfileImageUrl {
     if (_userProfileImageUrl == null) {
-      return _preference.basicProfileImageUrl;
+      return Preference.basicProfileImageUrl;
     }else {
       return _userProfileImageUrl;
     }

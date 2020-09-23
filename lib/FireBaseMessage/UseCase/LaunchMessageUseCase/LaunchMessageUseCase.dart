@@ -4,7 +4,7 @@ import 'package:forutonafront/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMes
 import 'package:injectable/injectable.dart';
 
 @named
-@Injectable(as: BaseMessageUseCaseInputPort)
+@LazySingleton(as: BaseMessageUseCaseInputPort)
 class LaunchMessageUseCase implements BaseMessageUseCaseInputPort {
   @override
   Future<dynamic> message(Map<String, dynamic> message) {

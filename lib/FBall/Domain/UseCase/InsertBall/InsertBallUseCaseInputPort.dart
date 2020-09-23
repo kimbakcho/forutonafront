@@ -9,7 +9,7 @@ abstract class InsertBallUseCaseInputPort {
 abstract class InsertBallUseCaseOutputPort {
   onInsertBall(FBallResDto fBallResDto);
 }
-@Injectable(as: InsertBallUseCaseInputPort)
+@LazySingleton(as: InsertBallUseCaseInputPort)
 class InsertBallUseCase implements InsertBallUseCaseInputPort{
 
   final FBallRepository _fBallRepository;

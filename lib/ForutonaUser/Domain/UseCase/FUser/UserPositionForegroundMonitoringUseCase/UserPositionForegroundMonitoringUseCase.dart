@@ -10,7 +10,7 @@ import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapt
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: UserPositionForegroundMonitoringUseCaseInputPort)
+@LazySingleton(as: UserPositionForegroundMonitoringUseCaseInputPort)
 class UserPositionForegroundMonitoringUseCase
     implements UserPositionForegroundMonitoringUseCaseInputPort {
   final GeoLocationUtilBasicUseCaseInputPort
