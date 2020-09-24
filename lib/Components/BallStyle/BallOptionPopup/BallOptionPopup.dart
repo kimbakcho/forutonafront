@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/BallStyle/BallOptionButton/NoInterestBallAddAction.dart';
+import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class BallOptionPopup {
   Future<void>  showPopup(BuildContext context);
 }
+
+@injectable
 abstract class BallOptionWidget {
   Widget child(BuildContext context);
 }
+
+
 
 class BasicBallOptionPopup implements BallOptionPopup {
 

@@ -25,6 +25,8 @@ abstract class BallListMediator {
 
   List<FBallResDto> ballList;
 
+  hideBall(String ballUuid);
+
   bool get isLastPage;
 
   Position searchPosition();
@@ -120,6 +122,12 @@ class BallListMediatorImpl implements BallListMediator {
     }else {
       return null;
     }
+  }
+
+  @override
+  hideBall(String ballUuid) {
+    this.ballList.removeWhere((element) => element.ballUuid == ballUuid);
+    onPageListUpdate();
   }
 
 

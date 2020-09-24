@@ -86,6 +86,9 @@ import '../Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import '../Common/MapScreenPosition/MapScreenPositionUseCase.dart';
 import '../Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
 import '../ForutonaUser/Domain/SnsLoginMoudleAdapter/NaverLoginAdapterImpl.dart';
+import '../FBall/Domain/Repository/NoInterestBallRepository.dart';
+import '../FBall/Data/Repository/NoInterestBallRepositoryImpl.dart';
+import '../FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
 import '../Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import '../Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import '../Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCase.dart';
@@ -162,10 +165,10 @@ GetIt $initGetIt(
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
-      instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
       instanceName: 'LaunchMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
+      instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
       instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseOpenTalkInputPort>(() => InquireAboutAnythingUseCase());
@@ -195,10 +198,10 @@ GetIt $initGetIt(
   gh.lazySingleton<H001ManagerInputPort>(() => H001Manager());
   gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
       instanceName: 'ImageAvatarUtil');
-  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
-      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
       instanceName: 'ImagePngResizeUtil');
+  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
+      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
   gh.lazySingleton<MapBitmapDescriptorUseCaseInputPort>(() =>
       MapBitmapDescriptorUseCase(
@@ -246,12 +249,12 @@ GetIt $initGetIt(
       () => RankingTagListFromBIManager());
   gh.lazySingleton<SharedPreferencesAdapter>(
       () => SharedPreferencesAdapterImpl());
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => FaceBookLoginAdapterImpl(),
-      instanceName: 'FaceBookLoginAdapterImpl');
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
-      instanceName: 'ForutonaLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => KakaoLoginAdapterImpl(),
       instanceName: 'KakaoLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
+      instanceName: 'ForutonaLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => FaceBookLoginAdapterImpl(),
+      instanceName: 'FaceBookLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => NaverLoginAdapterImpl(),
       instanceName: 'NaverLoginAdapterImpl');
   gh.lazySingleton<TagRepository>(() => TagRepositoryImpl(
@@ -300,6 +303,10 @@ GetIt $initGetIt(
             sharedPreferencesAdapter: get<SharedPreferencesAdapter>(),
             locationAdapter: get<LocationAdapter>(),
           ));
+  gh.lazySingleton<NoInterestBallRepository>(() => NoInterestBallRepositoryImpl(
+      sharedPreferencesAdapter: get<SharedPreferencesAdapter>()));
+  gh.lazySingleton<NoInterestBallUseCaseInputPort>(() => NoInterestBallUseCase(
+      noInterestBallRepository: get<NoInterestBallRepository>()));
   gh.lazySingleton<
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort>(
       () => RelationTagRankingFromTagNameOrderByBallPowerUseCase(
@@ -329,7 +336,7 @@ GetIt $initGetIt(
       UserProfileImageUploadUseCase(
           flutterImageCompressAdapter: get<FlutterImageCompressAdapter>(),
           fUserRepository: get<FUserRepository>()));
-  gh.lazySingleton<BallOptionWidgetFactory>(() => BallOptionWidgetFactory(
+  gh.factory<BallOptionWidgetFactory>(() => BallOptionWidgetFactory(
       signInUserInfoUseCaseInputPort: get<SignInUserInfoUseCaseInputPort>()));
   gh.lazySingleton<CommentChannelBaseServiceUseCaseInputPort>(
       () => FBallReplyFCMServiceUseCase(

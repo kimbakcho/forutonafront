@@ -5,6 +5,8 @@ import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListFromBIManager.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/ListUpBallListUpOrderByBI.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/NoInterestedBallDecorator.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -35,15 +37,19 @@ class H001ViewModel with ChangeNotifier implements H001Listener {
   Future<void> search(Position loadPosition) async {
     var userPosition = await geoLocationUtilBasicUseCaseInputPort.getCurrentWithLastPosition();
 
-    ballListMediator.fBallListUpUseCaseInputPort = ListUpBallListUpOrderByBI(
-      fBallRepository: fBallRepository,
-      listUpReqDto: FBallListUpFromBIReqDto(
-        mapCenterLatitude: loadPosition.latitude,
-        mapCenterLongitude: loadPosition.longitude,
-        userLongitude: userPosition.longitude,
-        userLatitude: userPosition.latitude
-      )
-    );
+    ballListMediator.fBallListUpUseCaseInputPort =
+        NoInterestedBallDecorator(
+          noInterestBallUseCaseInputPort: sl(),
+          fBallListUpUseCaseInputPort: ListUpBallListUpOrderByBI(
+              fBallRepository: fBallRepository,
+              listUpReqDto: FBallListUpFromBIReqDto(
+                  mapCenterLatitude: loadPosition.latitude,
+                  mapCenterLongitude: loadPosition.longitude,
+                  userLongitude: userPosition.longitude,
+                  userLatitude: userPosition.latitude
+              )
+          )
+        );
 
     await rankingTagListFromBIManager.search(loadPosition);
     await ballListMediator.searchFirst();

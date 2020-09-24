@@ -1,17 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionButton/BallBasicOptionButton.dart';
-
+import 'package:forutonafront/Components/BallStyle/BallOptionButton/BallOptionButtonAction.dart';
+import 'package:forutonafront/Components/BallStyle/BallOptionButton/NoInterestBallAddAction.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'BallOptionBallNameWidget.dart';
 import 'BallOptionPopup.dart';
 
 class OtherUserBallPopup implements BallOptionWidget {
   final FBallResDto ballResDto;
+  final BallListMediator ballListMediator;
 
-  OtherUserBallPopup(this.ballResDto);
+  OtherUserBallPopup(
+      {@required this.ballResDto, @required this.ballListMediator});
 
   @override
   Widget child(BuildContext context) {
@@ -27,7 +31,14 @@ class OtherUserBallPopup implements BallOptionWidget {
             Divider(thickness: 1, height: 1, color: Color(0xffE4E7E8)),
             BallBasicOptionButton(ballText: "공유하기"),
             Divider(thickness: 1, height: 1, color: Color(0xffE4E7E8)),
-            BallBasicOptionButton(ballText: "관심없음"),
+            BallBasicOptionButton(
+              ballText: "관심없음",
+              ballOptionButtonAction: NoInterestBallAddAction(
+                noInterestBallUseCaseInputPort: sl(),
+                ballListMediator: ballListMediator,
+                fBallResDto: ballResDto
+              ),
+            ),
             Divider(thickness: 1, height: 1, color: Color(0xffE4E7E8)),
             BallBasicOptionButton(ballText: "즐겨찾기에저장"),
             Divider(thickness: 1, height: 1, color: Color(0xffE4E7E8)),
@@ -39,8 +50,7 @@ class OtherUserBallPopup implements BallOptionWidget {
         ),
         decoration: BoxDecoration(
             color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(15.0))
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(15.0))),
       )),
     );
   }

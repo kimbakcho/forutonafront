@@ -17,7 +17,11 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
   final BallListMediator ballListMediator;
   final BallOptionWidgetFactory ballOptionWidgetFactory;
 
-  IssueBallNotHaveImageWidget({Key key, this.index, this.ballListMediator, this.ballOptionWidgetFactory})
+  IssueBallNotHaveImageWidget(
+      {Key key,
+      this.index,
+      this.ballListMediator,
+      this.ballOptionWidgetFactory})
       : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
             fBallResDto: ballListMediator.ballList[index]),
         super(key: key);
@@ -32,8 +36,7 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
           return Container(
               child: Column(
                 children: <Widget>[
-                  IssueBallTopBar(
-                      ballDisPlayUseCase: issueBallDisPlayUseCase),
+                  IssueBallTopBar(ballDisPlayUseCase: issueBallDisPlayUseCase),
                   Divider(
                     color: Color(0xffF4F4F6).withOpacity(0.9),
                     height: 1,
@@ -43,8 +46,11 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
                     ballDisPlayUseCase: issueBallDisPlayUseCase,
                     gotoDetailPage: model.moveToDetailPage,
                     showOptionPopUp: BasicBallOptionPopup(
-                        ballOptionWidgetFactory.getBallOptionWidget(
-                            issueBallDisPlayUseCase.fBallResDto)),
+                        ballOptionWidgetFactory
+                            .getBallOptionWidget(BallOptionWidgetFactoryParams(
+                                fBallResDto:
+                                    issueBallDisPlayUseCase.fBallResDto,
+                                ballListMediator: ballListMediator))),
                   ),
                   BallTextWidget(
                     gotoDetailPage: model.moveToDetailPage,

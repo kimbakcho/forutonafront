@@ -48,9 +48,10 @@ class IssueBallHaveImageWidget extends StatelessWidget {
                 BallTitleInfoBar(
                   ballDisPlayUseCase: issueBallDisPlayUseCase,
                   gotoDetailPage: model.moveToDetailPage,
-                  showOptionPopUp: BasicBallOptionPopup(
-                      ballOptionWidgetFactory.getBallOptionWidget(
-                          issueBallDisPlayUseCase.fBallResDto)),
+                  showOptionPopUp: BasicBallOptionPopup(ballOptionWidgetFactory
+                      .getBallOptionWidget(BallOptionWidgetFactoryParams(
+                          fBallResDto: issueBallDisPlayUseCase.fBallResDto,
+                          ballListMediator: ballListMediator))),
                 ),
                 Divider(
                   color: Color(0xffF4F4F6).withOpacity(0.9),

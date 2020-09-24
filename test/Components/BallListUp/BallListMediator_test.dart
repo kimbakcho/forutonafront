@@ -102,4 +102,22 @@ void main() {
     //then
     expect(ballListMediator.componentSize(), 0);
   });
+
+  test('볼 숨기기', () async {
+    //given
+    MockBallListMediatorComponent mockBallListMediatorComponent = new MockBallListMediatorComponent();
+    ballListMediator.registerComponent(mockBallListMediatorComponent);
+    PageWrap pageWrap = PageWrap<FBallResDto>.fromJson(
+        json.decode(fixtureString(
+            "/FBall/Data/DataSource/ListUpBallListUpOrderByBIFirst.json")),
+        FBallResDto.fromJson);
+
+    ballListMediator.ballList  = pageWrap.content;
+    //when
+    ballListMediator.hideBall("TESTBALL1UUID");
+    //then
+    var indexWhere = ballListMediator.ballList.indexWhere((element) => element.ballUuid == "TESTBALL1UUID");
+    expect(indexWhere, -1);
+    verify(mockBallListMediatorComponent.onBallListUpUpdate());
+  });
 }
