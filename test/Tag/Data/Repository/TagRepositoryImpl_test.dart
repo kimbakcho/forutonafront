@@ -26,8 +26,6 @@ void main() {
     //arrange
     TagRankingFromBallInfluencePowerReqDto reqDto =
         TagRankingFromBallInfluencePowerReqDto(
-      userLatitude: 37.5012,
-      userLongitude: 126.9203,
       mapCenterLatitude: 37.5012,
       mapCenterLongitude: 126.8976,
     );

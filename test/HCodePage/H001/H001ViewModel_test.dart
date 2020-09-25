@@ -2,8 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
-import 'package:forutonafront/Components/TagList/RankingTagListFromBIManager.dart';
+import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+import 'package:forutonafront/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
 import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:mockito/mockito.dart';
@@ -12,12 +13,14 @@ import 'package:mockito/mockito.dart';
 class MockBallListMediator extends Mock implements BallListMediator {}
 
 class MockRankingTagListFromBIManager extends Mock
-    implements RankingTagListFromBIManager {}
+    implements RankingTagListMediatorImpl {}
 
 class MockGeoLocationUtilBasicUseCaseInputPort extends Mock
     implements GeoLocationUtilBasicUseCaseInputPort {}
 
 class MockFBallRepository extends Mock implements FBallRepository {}
+
+class MockNoInterestBallUseCaseInputPort extends Mock implements NoInterestBallUseCaseInputPort{}
 
 void main() {
   H001ViewModel h001viewModel;
@@ -36,6 +39,7 @@ void main() {
     mockRankingTagListFromBIManager = MockRankingTagListFromBIManager();
     h001viewModel = H001ViewModel(
         ballListMediator: mockBallListMediator,
+        noInterestBallUseCaseInputPort: MockNoInterestBallUseCaseInputPort(),
         h001manager: H001Manager(),
         geoLocationUtilBasicUseCaseInputPort: mockGeoLocationUtilBasicUseCaseInputPort,
         fBallRepository: mockFBallRepository,

@@ -1,42 +1,47 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Components/TagList/RankingTagListFromBIManager.dart';
+import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
+import 'package:forutonafront/Tag/Domain/UseCase/TagRankingUseCaseInputPort.dart';
 import 'package:mockito/mockito.dart';
 
-class MockRankingTagListFromBIListener extends Mock implements RankingTagListFromBIListener{}
+class MockRankingTagListMediatorComponent extends Mock implements RankingTagListMediatorComponent{}
+class MockTagRankingUseCaseInputPort extends Mock implements TagRankingUseCaseInputPort{}
 void main(){
 
-  RankingTagListFromBIManager rankingTagListFromBIManager;
+  RankingTagListMediator rankingTagListFromBIManager;
   setUp((){
-    rankingTagListFromBIManager = RankingTagListFromBIManager();
+    rankingTagListFromBIManager = RankingTagListMediatorImpl();
   });
   test('should 등록 테스트 ', () async {
     //arrange
-    MockRankingTagListFromBIListener mockRankingTagListFromBIListener = MockRankingTagListFromBIListener();
+    MockRankingTagListMediatorComponent mockRankingTagListMediatorComponent = MockRankingTagListMediatorComponent();
     //act
-    rankingTagListFromBIManager.subscribe(mockRankingTagListFromBIListener);
+    rankingTagListFromBIManager.registerComponent(mockRankingTagListMediatorComponent);
     //assert
-    expect(rankingTagListFromBIManager.getSubscribeSize(), 1);
+    expect(rankingTagListFromBIManager.componentSize(), 1);
   });
 
   test('should 제거 테스트 ', () async {
     //arrange
-    MockRankingTagListFromBIListener mockRankingTagListFromBIListener = MockRankingTagListFromBIListener();
-    rankingTagListFromBIManager.subscribe(mockRankingTagListFromBIListener);
+    MockRankingTagListMediatorComponent mockRankingTagListMediatorComponent = MockRankingTagListMediatorComponent();
+    rankingTagListFromBIManager.registerComponent(mockRankingTagListMediatorComponent);
     //act
-    rankingTagListFromBIManager.unSubscribe(mockRankingTagListFromBIListener);
+    rankingTagListFromBIManager.unregisterComponent(mockRankingTagListMediatorComponent);
     //assert
-    expect(rankingTagListFromBIManager.getSubscribeSize(), 0);
+    expect(rankingTagListFromBIManager.componentSize(), 0);
   });
 
   test('should search 명령어 테스트 ', () async {
     //arrange
-    MockRankingTagListFromBIListener mockRankingTagListFromBIListener = MockRankingTagListFromBIListener();
-    rankingTagListFromBIManager.subscribe(mockRankingTagListFromBIListener);
+    MockRankingTagListMediatorComponent mockRankingTagListMediatorComponent = MockRankingTagListMediatorComponent();
+    MockTagRankingUseCaseInputPort mockTagRankingUseCaseInputPort = MockTagRankingUseCaseInputPort();
+    rankingTagListFromBIManager.registerComponent(mockRankingTagListMediatorComponent);
     Position position = Position(latitude: 37.1,longitude: 127.1);
+    rankingTagListFromBIManager.tagRankingUseCaseInputPort = mockTagRankingUseCaseInputPort;
     //act
-    rankingTagListFromBIManager.search(position);
+    await rankingTagListFromBIManager.search(position);
     //assert
-    verify(mockRankingTagListFromBIListener.search(position));
+    verify(mockRankingTagListMediatorComponent.onTagListUpdate());
   });
+
 }

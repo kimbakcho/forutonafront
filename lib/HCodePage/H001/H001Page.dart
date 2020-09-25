@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
-import 'package:forutonafront/Components/BallListUp/FullBallListUp.dart';
-import 'package:forutonafront/Components/TagList/RankingTagListFromBI.dart';
-import 'package:forutonafront/Components/TagList/RankingTagListFromBIManager.dart';
-import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
+import 'package:forutonafront/HCodePage/H001/H001BodyFactory.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
+
+import 'H001ViewModel.dart';
 
 class H001Page extends StatelessWidget {
   @override
@@ -14,10 +12,12 @@ class H001Page extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => H001ViewModel(
             ballListMediator: sl(),
-            rankingTagListFromBIManager: sl(),
+            h001manager: sl(),
+            tagRepository: sl(),
             geoLocationUtilBasicUseCaseInputPort: sl(),
+            rankingTagListFromBIManager: sl(),
             fBallRepository: sl(),
-            h001manager: sl()),
+            noInterestBallUseCaseInputPort: sl()),
         child: Consumer<H001ViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: Container(
@@ -26,16 +26,10 @@ class H001Page extends StatelessWidget {
                     Column(
                       children: <Widget>[
                         Expanded(
-                          child: ListView(
-                            children: <Widget>[
-                              RankingTagListFromBI(
-                                  rankingTagListFromBIManager:
-                                      model.rankingTagListFromBIManager),
-                              FullBallListUp(
-                                  ballListMediator: model.ballListMediator)
-                            ],
-                            padding: EdgeInsets.all(0),
-                          ),
+                          child: H001BodyFactory.getBodyWidget(
+                              rankingTagListFromBIManager:
+                                  model.rankingTagListFromBIManager,
+                              ballListMediator: model.ballListMediator),
                         ),
                         BottomNavigation()
                       ],

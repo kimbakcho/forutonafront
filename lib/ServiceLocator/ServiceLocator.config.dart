@@ -108,7 +108,7 @@ import '../ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCase.dart';
 import '../ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
 import '../Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCae.dart';
 import '../Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCaeInputPort.dart';
-import '../Components/TagList/RankingTagListFromBIManager.dart';
+import '../Components/TagList/RankingTagListMediator.dart';
 import '../Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
 import '../Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
 import '../FireBaseMessage/UseCase/ResumeMessageUseCase/ResumeMessageUseCase.dart';
@@ -125,7 +125,6 @@ import '../ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import '../ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
-import '../Tag/Domain/UseCase/TagRankingFromBallInfluencePowerUseCase.dart';
 import '../Tag/Domain/Repository/TagRepository.dart';
 import '../Tag/Data/Repository/TagRepositoryImpl.dart';
 import '../Components/TopNav/TopNavBtnMediator.dart';
@@ -157,20 +156,25 @@ GetIt $initGetIt(
   gh.factory<BallListMediator>(() => BallListMediatorImpl());
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
-      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleProposalOnServiceSurveyUseCase(),
       instanceName: 'GoogleProposalOnServiceSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
-      instanceName: 'LaunchMessageUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
+      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
+      instanceName: 'LaunchMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
       instanceName: 'BaseMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(
+      () => BackGroundMessageUseCase(
+          baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
+              instanceName: 'BaseMessageUseCase')),
+      instanceName: 'BackGroundMessageUseCase');
   gh.lazySingleton<BaseOpenTalkInputPort>(() => InquireAboutAnythingUseCase());
   gh.lazySingleton<CodeMainPageController>(() => CodeMainPageControllerImpl());
   gh.lazySingleton<DetailPageItemFactory>(() => DetailPageItemFactory());
@@ -245,16 +249,15 @@ GetIt $initGetIt(
       IssueFBalIInsertFCMServiceUseCase(
           flutterLocalNotificationsPluginAdapter:
               get<FlutterLocalNotificationsPluginAdapter>()));
-  gh.factory<RankingTagListFromBIManagerInputPort>(
-      () => RankingTagListFromBIManager());
+  gh.factory<RankingTagListMediator>(() => RankingTagListMediatorImpl());
   gh.lazySingleton<SharedPreferencesAdapter>(
       () => SharedPreferencesAdapterImpl());
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => KakaoLoginAdapterImpl(),
-      instanceName: 'KakaoLoginAdapterImpl');
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
-      instanceName: 'ForutonaLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => FaceBookLoginAdapterImpl(),
       instanceName: 'FaceBookLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
+      instanceName: 'ForutonaLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => KakaoLoginAdapterImpl(),
+      instanceName: 'KakaoLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => NaverLoginAdapterImpl(),
       instanceName: 'NaverLoginAdapterImpl');
   gh.lazySingleton<TagRepository>(() => TagRepositoryImpl(
@@ -273,11 +276,6 @@ GetIt $initGetIt(
   gh.lazySingleton<BallSearchBarHistoryRepository>(() =>
       BallSearchBarHistoryRepositoryImpl(
           localDataSource: get<BallSearchHistoryLocalDataSource>()));
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(
-      () => BackGroundMessageUseCase(
-          baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
-              instanceName: 'BaseMessageUseCase')),
-      instanceName: 'BackGroundMessageUseCase');
   gh.lazySingleton<FBallPlayerListUpInputPort>(() => FBallPlayerListUpUseCae(
       fBallPlayerRepository: get<FBallPlayerRepository>()));
   gh.lazySingleton<FBallReplyRepository>(() => FBallReplyRepositoryImpl(
@@ -323,9 +321,6 @@ GetIt $initGetIt(
       () => SignInUserInfoUseCase(fUserRepository: get<FUserRepository>()));
   gh.lazySingleton<TagFromBallUuidUseCaseInputPort>(
       () => TagFromBallUuidUseCase(tagRepository: get<TagRepository>()));
-  gh.lazySingleton<TagRankingFromBallInfluencePowerUseCaseInputPort>(() =>
-      TagRankingFromBallInfluencePowerUseCase(
-          tagRepository: get<TagRepository>()));
   gh.lazySingleton<UpdateAccountUserInfoUseCaseInputPort>(() =>
       UpdateAccountUserInfoUseCase(fUserRepository: get<FUserRepository>()));
   gh.lazySingleton<UpdateFCMTokenUseCaseInputPort>(

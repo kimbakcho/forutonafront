@@ -9,8 +9,6 @@ part of 'FBallListUpFromBIReqDto.dart';
 FBallListUpFromBIReqDto _$FBallListUpFromBIReqDtoFromJson(
     Map<String, dynamic> json) {
   return FBallListUpFromBIReqDto(
-    userLongitude: (json['userLongitude'] as num)?.toDouble(),
-    userLatitude: (json['userLatitude'] as num)?.toDouble(),
     mapCenterLatitude: (json['mapCenterLatitude'] as num)?.toDouble(),
     mapCenterLongitude: (json['mapCenterLongitude'] as num)?.toDouble(),
   );
@@ -19,8 +17,6 @@ FBallListUpFromBIReqDto _$FBallListUpFromBIReqDtoFromJson(
 Map<String, dynamic> _$FBallListUpFromBIReqDtoToJson(
         FBallListUpFromBIReqDto instance) =>
     <String, dynamic>{
-      'userLatitude': instance.userLatitude,
-      'userLongitude': instance.userLongitude,
       'mapCenterLatitude': instance.mapCenterLatitude,
       'mapCenterLongitude': instance.mapCenterLongitude,
     };

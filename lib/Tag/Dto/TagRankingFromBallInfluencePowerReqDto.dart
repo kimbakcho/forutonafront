@@ -5,16 +5,11 @@ part 'TagRankingFromBallInfluencePowerReqDto.g.dart';
 
 @JsonSerializable()
 class TagRankingFromBallInfluencePowerReqDto {
-  double userLatitude;
-  double userLongitude;
   double mapCenterLatitude;
   double mapCenterLongitude;
 
   TagRankingFromBallInfluencePowerReqDto(
-      {@required this.userLatitude,
-      @required this.userLongitude,
-      @required this.mapCenterLatitude,
-      @required this.mapCenterLongitude});
+      {@required this.mapCenterLatitude, @required this.mapCenterLongitude});
 
   factory TagRankingFromBallInfluencePowerReqDto.fromJson(
           Map<String, dynamic> json) =>

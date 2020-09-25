@@ -4,15 +4,11 @@ part 'FBallListUpFromBIReqDto.g.dart';
 
 @JsonSerializable()
 class FBallListUpFromBIReqDto {
-  final double userLatitude;
-  final double userLongitude;
   final double mapCenterLatitude;
   final double mapCenterLongitude;
 
   FBallListUpFromBIReqDto(
-      {this.userLongitude = 126.890605,
-      this.userLatitude = 37.508797,
-      this.mapCenterLatitude = 37.508797,
+      {this.mapCenterLatitude = 37.508797,
       this.mapCenterLongitude = 126.890605});
 
   factory FBallListUpFromBIReqDto.fromJson(Map<String, dynamic> json) =>

@@ -9,12 +9,9 @@ abstract class BallOptionPopup {
   Future<void>  showPopup(BuildContext context);
 }
 
-@injectable
 abstract class BallOptionWidget {
   Widget child(BuildContext context);
 }
-
-
 
 class BasicBallOptionPopup implements BallOptionPopup {
 

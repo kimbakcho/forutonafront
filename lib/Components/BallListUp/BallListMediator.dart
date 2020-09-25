@@ -5,12 +5,17 @@ import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCase
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:injectable/injectable.dart';
 
+enum BallListMediatorState {
+  Loading,Empty,HasBall,Error
+}
+
 abstract class BallListMediatorComponent {
 
   void onBallListUpUpdate();
 }
 
 abstract class BallListMediator {
+
   FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
 
   void registerComponent(BallListMediatorComponent component);
@@ -30,7 +35,11 @@ abstract class BallListMediator {
   bool get isLastPage;
 
   Position searchPosition();
+
+  BallListMediatorState currentState;
 }
+
+
 @Injectable(as: BallListMediator)
 class BallListMediatorImpl implements BallListMediator {
   FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
@@ -40,6 +49,7 @@ class BallListMediatorImpl implements BallListMediator {
   int _pageCount = 0;
 
   int _pageLimit = 40;
+
 
   PageWrap<FBallResDto> _wrapBallList;
 
@@ -64,10 +74,18 @@ class BallListMediatorImpl implements BallListMediator {
   }
 
   search(Pageable pageable ) async {
+    currentState = BallListMediatorState.Loading;
+    onPageListUpdate();
     if(fBallListUpUseCaseInputPort == null){
+      currentState = BallListMediatorState.Error;
+      onPageListUpdate();
       throw Exception("don't have searchCaseInputPort for need set FBallListUpUseCaseInputPort");
     }
     if(isLastPage){
+      if(_pageCount == 0 && ballList.length == 0){
+        currentState = BallListMediatorState.Empty;
+      }
+      onPageListUpdate();
       return ;
     }
     this._wrapBallList = await this
@@ -78,6 +96,12 @@ class BallListMediatorImpl implements BallListMediator {
     }
     ballList.addAll(_wrapBallList.content);
     _pageCount = pageable.page;
+
+    if(_pageCount == 0 && ballList.length == 0){
+      currentState = BallListMediatorState.Empty;
+    }else {
+      currentState = BallListMediatorState.HasBall;
+    }
     onPageListUpdate();
   }
 
@@ -129,6 +153,9 @@ class BallListMediatorImpl implements BallListMediator {
     this.ballList.removeWhere((element) => element.ballUuid == ballUuid);
     onPageListUpdate();
   }
+
+  @override
+  BallListMediatorState currentState = BallListMediatorState.Loading;
 
 
 }

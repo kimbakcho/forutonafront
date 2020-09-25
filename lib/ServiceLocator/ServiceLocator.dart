@@ -203,8 +203,6 @@ init2() {
   sl.registerSingleton<TagRepository>(
       TagRepositoryImpl(fBallTagRemoteDataSource: sl()));
 
-  sl.registerSingleton<TagRankingFromBallInfluencePowerUseCaseInputPort>(
-      TagRankingFromBallInfluencePowerUseCase(tagRepository: sl()));
 
   sl.registerSingleton<ImageUtilInputPort>(ImageAvatarUtil(),
       instanceName: "ImageAvatarUtil");

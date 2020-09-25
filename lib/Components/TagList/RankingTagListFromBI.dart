@@ -8,12 +8,12 @@ import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dar
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:provider/provider.dart';
 
-import 'RankingTagListFromBIManager.dart';
+import 'RankingTagListMediator.dart';
 
 class RankingTagListFromBI extends StatefulWidget {
-  final RankingTagListFromBIManagerInputPort rankingTagListFromBIManager;
+  final RankingTagListMediator rankingTagListMediator;
 
-  const RankingTagListFromBI({Key key, this.rankingTagListFromBIManager})
+  const RankingTagListFromBI({Key key, this.rankingTagListMediator})
       : super(key: key);
 
   @override
@@ -22,13 +22,12 @@ class RankingTagListFromBI extends StatefulWidget {
 
 class _RankingTagListFromBIState extends State<RankingTagListFromBI>
     with AutomaticKeepAliveClientMixin<RankingTagListFromBI> {
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => RankingTagListFromBIViewModel(
-            geoLocationUtilBasicUseCaseInputPort: sl(),
-            tagRankingFromBallInfluencePowerUseCaseInputPort: sl(),
-            rankingTagListFromBIManager: widget.rankingTagListFromBIManager),
+            rankingTagListMediator: widget.rankingTagListMediator),
         child: Consumer<RankingTagListFromBIViewModel>(builder: (_, model, __) {
           return Container(
               margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
@@ -52,50 +51,31 @@ class _RankingTagListFromBIState extends State<RankingTagListFromBI>
 
 class RankingTagListFromBIViewModel extends ChangeNotifier
     implements
-        RankingTagListFromBIListener,
-        TagRankingFromBallInfluencePowerUseCaseOutputPort {
-  final RankingTagListFromBIManagerInputPort rankingTagListFromBIManager;
-  final GeoLocationUtilBasicUseCaseInputPort
-      geoLocationUtilBasicUseCaseInputPort;
-  List<TagRankingResDto> tagRankingResDtos = [];
-  final TagRankingFromBallInfluencePowerUseCaseInputPort
-      tagRankingFromBallInfluencePowerUseCaseInputPort;
+        RankingTagListMediatorComponent {
+  final RankingTagListMediator rankingTagListMediator;
 
   RankingTagListFromBIViewModel(
-      {@required this.rankingTagListFromBIManager,
-      @required this.geoLocationUtilBasicUseCaseInputPort,
-      @required this.tagRankingFromBallInfluencePowerUseCaseInputPort}) {
-    if (rankingTagListFromBIManager != null) {
-      rankingTagListFromBIManager.subscribe(this);
+      {@required this.rankingTagListMediator}) {
+    if (rankingTagListMediator != null) {
+      rankingTagListMediator.registerComponent(this);
     }
   }
 
   @override
   void dispose() {
-    if (rankingTagListFromBIManager != null) {
-      rankingTagListFromBIManager.unSubscribe(this);
+    if (rankingTagListMediator != null) {
+      rankingTagListMediator.unregisterComponent(this);
     }
     super.dispose();
   }
 
-  @override
-  search(Position searchPosition) async {
-    var userPosition =
-        await geoLocationUtilBasicUseCaseInputPort.getCurrentWithLastPosition();
-    TagRankingFromBallInfluencePowerReqDto reqDto =
-        TagRankingFromBallInfluencePowerReqDto(
-            userLatitude: userPosition.latitude,
-            userLongitude: userPosition.longitude,
-            mapCenterLatitude: searchPosition.latitude,
-            mapCenterLongitude: searchPosition.longitude);
-    await tagRankingFromBallInfluencePowerUseCaseInputPort
-        .reqTagRankingFromBallInfluencePower(reqDto, this);
+  List<TagRankingResDto>  get tagRankingResDtos {
+    return rankingTagListMediator.tagRankingResDtos;
   }
 
+
   @override
-  void onTagRankingFromBallInfluencePower(
-      List<TagRankingResDto> tagRankingDtos) {
-    this.tagRankingResDtos = tagRankingDtos;
+  Future<void> onTagListUpdate() async{
     notifyListeners();
   }
 }

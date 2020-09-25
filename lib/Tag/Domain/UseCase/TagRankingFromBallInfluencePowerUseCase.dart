@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
-import 'package:injectable/injectable.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 
-abstract class TagRankingFromBallInfluencePowerUseCaseInputPort {
-  Future<List<TagRankingResDto>> reqTagRankingFromBallInfluencePower(TagRankingFromBallInfluencePowerReqDto reqDto,TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort);
-}
+import 'TagRankingUseCaseInputPort.dart';
 
 abstract class TagRankingFromBallInfluencePowerUseCaseOutputPort {
-  void onTagRankingFromBallInfluencePower(List<TagRankingResDto> tagRankingDtos);
+  void onTagRankingFromBallInfluencePower(
+      List<TagRankingResDto> tagRankingDtos);
 }
-@LazySingleton(as: TagRankingFromBallInfluencePowerUseCaseInputPort)
-class TagRankingFromBallInfluencePowerUseCase
-    implements TagRankingFromBallInfluencePowerUseCaseInputPort {
-  TagRepository tagRepository;
 
-  TagRankingFromBallInfluencePowerUseCase({@required this.tagRepository})
-      : assert(tagRepository != null);
+class TagRankingFromBallInfluencePowerUseCase
+    implements TagRankingUseCaseInputPort {
+  TagRepository tagRepository;
+  TagRankingFromBallInfluencePowerReqDto reqDto;
+
+  TagRankingFromBallInfluencePowerUseCase({
+    @required this.tagRepository,
+    @required this.reqDto,
+
+  }) : assert(tagRepository != null);
 
   @override
-  Future<List<TagRankingResDto>> reqTagRankingFromBallInfluencePower(
-      TagRankingFromBallInfluencePowerReqDto reqDto,
-      TagRankingFromBallInfluencePowerUseCaseOutputPort outputPort) async {
+  Future<List<TagRankingResDto>> search() async {
     List<TagRankingResDto> fBallTagRankings =
         await tagRepository.getFTagRankingFromBallInfluencePower(reqDto);
-    outputPort.onTagRankingFromBallInfluencePower(fBallTagRankings);
     return fBallTagRankings;
   }
 }
