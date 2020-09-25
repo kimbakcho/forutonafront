@@ -4,6 +4,7 @@ import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
+import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +45,9 @@ class TopH001NavExpendAniContent extends StatelessWidget
                       padding: model.isExpend
                           ? EdgeInsets.fromLTRB(16, 0, 16, 0)
                           : EdgeInsets.all(0),
-                      onPressed: () {},
+                      onPressed: () {
+                        model.jumpToMapExtendView(context);
+                      },
                       child: Text(
                         model.disPlayAddress,
                         style: GoogleFonts.notoSans(
@@ -82,6 +85,7 @@ enum TopH001NavExpendAniContentViewModelExpendState { collapsed, expended }
 
 class TopH001NavExpendAniContentViewModel extends ChangeNotifier
     implements TopH001NavExpendAniContentInputPort {
+
   final GeoLocationUtilForeGroundUseCaseInputPort
       geoLocationUtilForeGroundUseCaseInputPort;
   final LocationAdapter locationAdapter;
@@ -97,7 +101,8 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
       {@required this.geoLocationUtilForeGroundUseCaseInputPort,
       @required this.locationAdapter,
       @required this.fluttertoastAdapter,
-      @required this.h001manager}) {
+      @required this.h001manager
+      }) {
     init();
   }
 
@@ -162,5 +167,15 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
   expended() {
     currentState = TopH001NavExpendAniContentViewModelExpendState.expended;
     notifyListeners();
+  }
+  jumpToMapExtendView(BuildContext context)  async {
+    var currentSearchPosition = h001manager.currentSearchPosition;
+    this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
+        .getPositionAddress(currentSearchPosition);
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_)  {
+        return H007MainPage(currentSearchPosition, searchAddress);
+      }
+    ));
   }
 }

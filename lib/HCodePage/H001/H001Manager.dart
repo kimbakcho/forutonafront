@@ -10,6 +10,7 @@ abstract class H001ManagerInputPort {
   void unSubscribe(H001Listener h001listener);
   int getSubscribeSize();
   search(Position loadPosition);
+  Position currentSearchPosition;
 }
 @LazySingleton(as: H001ManagerInputPort)
 class H001Manager implements H001ManagerInputPort{
@@ -29,9 +30,13 @@ class H001Manager implements H001ManagerInputPort{
   }
 
   search(Position loadPosition){
+    currentSearchPosition = loadPosition;
     _h001Listener.forEach((element) {
       element.search(loadPosition);
     });
   }
+
+  @override
+  Position currentSearchPosition;
 
 }
