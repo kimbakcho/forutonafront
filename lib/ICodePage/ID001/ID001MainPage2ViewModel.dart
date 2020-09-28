@@ -46,9 +46,8 @@ class ID001MainPage2ViewModel extends ChangeNotifier
       this.valuationMediator,
       this.reviewDeleteMediator,
       this.reviewUpdateMediator,
-      this.detailPageController,
       this.geolocatorAdapter
-      }) {
+      }):detailPageController=ScrollController() {
     reviewInertMediator.registerComponent(this);
     reviewDeleteMediator.registerComponent(this);
     reviewUpdateMediator.registerComponent(this);

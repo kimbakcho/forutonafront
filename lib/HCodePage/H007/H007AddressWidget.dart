@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/HCodePage/H010/H010MainView.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class H007AddressWidget extends StatelessWidget {
@@ -15,7 +16,12 @@ class H007AddressWidget extends StatelessWidget {
       height: 36,
       width: MediaQuery.of(context).size.width - 136,
       child: FlatButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            settings: RouteSettings(name: "H010"),
+            builder: (_)=> H010MainView()
+          ));
+        },
         padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
         child: Text(address,
             maxLines: 1,

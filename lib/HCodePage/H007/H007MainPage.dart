@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:forutonafront/HCodePage/H007/H007BackButton.dart';
+
 import 'package:forutonafront/HCodePage/H007/H007MainPageViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
 import 'H007AddressWidget.dart';
-import 'H007BackButton.dart';
 import 'H007BallSearchBtn.dart';
 import 'H007MyLocationMoveBtn.dart';
 import 'MapCenterExpendCircle.dart';
@@ -77,13 +77,17 @@ class _H007MainPageState extends State<H007MainPage>
                 top: MediaQuery.of(context).padding.top + 16,
                 left: 68,
                 child: H007AddressWidget(
-                  address: address,
-                  key: Key(address),
+                  address: model.address,
+                  key: Key(model.address),
                 )),
             Positioned(
               top: MediaQuery.of(context).padding.top + 16,
               right: 16,
-              child: H007MyLocationMoveBtn(),
+              child:
+                  model.cameraMoveFlag ? H007MyLocationMoveBtn(
+                    onGoMyLocation: model.onMyLocation,
+
+                  ) : Container(),
             ),
             IgnorePointer(
               child: MapCenterExpendCircle(),

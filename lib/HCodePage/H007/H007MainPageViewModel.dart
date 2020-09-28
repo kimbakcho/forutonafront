@@ -9,12 +9,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class H007MainPageViewModel extends ChangeNotifier {
   final BuildContext context;
+
   Position initPosition;
-  bool flagIdleIgnore = true;
 
   String address;
   CameraPosition initCameraPosition;
   CameraPosition currentCameraPosition;
+  bool cameraMoveFlag = false;
 
   Completer<GoogleMapController> _googleMapController = Completer();
   GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
@@ -46,21 +47,18 @@ class H007MainPageViewModel extends ChangeNotifier {
   }
 
   onMapCreate(GoogleMapController controller) async {
-    flagIdleIgnore = true;
     _googleMapController.complete(controller);
     await controller
         .moveCamera(CameraUpdate.newCameraPosition(initCameraPosition));
-    flagIdleIgnore = false;
+
   }
 
   onMapIdle() async {
-    if (!flagIdleIgnore) {
       this.address = await _geoLocationUtilUseCaseInputPort.getPositionAddress(
           Position(
               latitude: currentCameraPosition.target.latitude,
               longitude: currentCameraPosition.target.longitude));
       notifyListeners();
-    }
   }
 
   onMyLocation() async {
@@ -75,6 +73,7 @@ class H007MainPageViewModel extends ChangeNotifier {
 
   onCameraMove(CameraPosition value) {
     currentCameraPosition = value;
+    cameraMoveFlag = true;
   }
 
   //H001로 검색한 Position을 Latlng으로 넘겨줌 그러면 H001에서 검색함

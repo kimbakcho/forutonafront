@@ -7,6 +7,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
+import '../Common/AddressSearchHistory/Domain/Repository/AddressSearchHistoryRepository.dart';
+import '../Common/AddressSearchHistory/Data/Repository/AddressSearchHistoryRepositoryImpl.dart';
+import '../Common/AddressSearchHistory/Domain/UseCase/AddressSearchHistoryUseCaseInputPort.dart';
 import '../Common/AndroidIntentAdapter/AndroidIntentAdapter.dart';
 import '../Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
 import '../FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
@@ -63,6 +66,7 @@ import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import '../Common/GeoPlaceAdapter/GeoPlaceAdapter.dart';
 import '../Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import '../Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
 import '../Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
@@ -156,14 +160,14 @@ GetIt $initGetIt(
   gh.factory<BallListMediator>(() => BallListMediatorImpl());
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
+      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleProposalOnServiceSurveyUseCase(),
       instanceName: 'GoogleProposalOnServiceSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
-      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
@@ -198,14 +202,15 @@ GetIt $initGetIt(
   gh.lazySingleton<FlutterLocalNotificationsPluginAdapter>(
       () => FlutterLocalNotificationsPluginAdapterImpl());
   gh.lazySingleton<FluttertoastAdapter>(() => FluttertoastAdapter());
+  gh.factory<GeoPlaceAdapter>(() => GooglePlaceAdapter());
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
   gh.lazySingleton<H001ManagerInputPort>(() => H001Manager());
+  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
+      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
       instanceName: 'ImageAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
       instanceName: 'ImagePngResizeUtil');
-  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
-      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
   gh.lazySingleton<MapBitmapDescriptorUseCaseInputPort>(() =>
       MapBitmapDescriptorUseCase(
@@ -220,14 +225,14 @@ GetIt $initGetIt(
   gh.lazySingleton<NotiSelectActionBaseInputPort>(
       () => PageMoveActionUseCase());
   gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => CommentChannelUseCase(),
-      instanceName: 'CommentChannelUseCase');
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => RadarBasicChannelUseCae(),
       instanceName: 'RadarBasicChannelUseCae');
   gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
       (name, _) =>
           NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => CommentChannelUseCase(),
+      instanceName: 'CommentChannelUseCase');
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>
@@ -252,14 +257,14 @@ GetIt $initGetIt(
   gh.factory<RankingTagListMediator>(() => RankingTagListMediatorImpl());
   gh.lazySingleton<SharedPreferencesAdapter>(
       () => SharedPreferencesAdapterImpl());
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => FaceBookLoginAdapterImpl(),
-      instanceName: 'FaceBookLoginAdapterImpl');
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
-      instanceName: 'ForutonaLoginAdapterImpl');
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => KakaoLoginAdapterImpl(),
-      instanceName: 'KakaoLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => NaverLoginAdapterImpl(),
       instanceName: 'NaverLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => KakaoLoginAdapterImpl(),
+      instanceName: 'KakaoLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
+      instanceName: 'ForutonaLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => FaceBookLoginAdapterImpl(),
+      instanceName: 'FaceBookLoginAdapterImpl');
   gh.lazySingleton<TagRepository>(() => TagRepositoryImpl(
       fBallTagRemoteDataSource: get<FBallTagRemoteDataSource>()));
   gh.lazySingleton<TopNavBtnMediator>(() => TopNavBtnMediatorImpl());
@@ -269,6 +274,13 @@ GetIt $initGetIt(
       userPolicyRemoteDataSource: get<UserPolicyRemoteDataSource>()));
   gh.lazySingleton<UserPolicyUseCaseInputPort>(() =>
       UserPolicyUseCase(userPolicyRepository: get<UserPolicyRepository>()));
+  gh.lazySingleton<AddressSearchHistoryRepository>(() =>
+      AddressSearchHistoryRepositoryImpl(
+          sharedPreferencesAdapter: get<SharedPreferencesAdapter>()));
+  gh.lazySingleton<AddressSearchHistoryUseCaseInputPort>(() =>
+      AddressSearchHistoryUseCase(
+          addressSearchHistoryRepository:
+              get<AddressSearchHistoryRepository>()));
   gh.lazySingleton<AvatarImageMakerUseCaseInputPort>(() =>
       AvatarImageMakerUseCase(
           fileDownLoaderUseCaseInputPort: get<FileDownLoaderUseCaseInputPort>(),

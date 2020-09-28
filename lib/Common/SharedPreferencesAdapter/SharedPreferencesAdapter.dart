@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SharedPreferencesAdapter {
   setDouble(String key, double longitude);
+  setString(String key, String json);
+  Future<String> getString(String key);
   setStringList(String key, List<String>  value);
   Future<List<String>> getStringList(String key);
   Future<double> getDouble(String key);
@@ -31,6 +33,18 @@ class SharedPreferencesAdapterImpl implements SharedPreferencesAdapter {
     var sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getDouble(key);
   }
+
+  @override
+  setString(String key, String json) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.setString(key,json);
+  }
+
+  @override
+  Future<String> getString(String key) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString(key);
+  }
 }
 
 
@@ -52,6 +66,16 @@ class MemorySharePreferencesAdapterImpl implements SharedPreferencesAdapter {
 
   @override
   getDouble(String key) async {
+    return store[key];
+  }
+
+  @override
+  setString(String key, String json) {
+    store[key] = json;
+  }
+
+  @override
+  Future<String> getString(String key) async {
     return store[key];
   }
 }

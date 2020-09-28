@@ -80,7 +80,6 @@ void main() {
         reviewInertMediator: mockReviewInertMediator,
         reviewUpdateMediator: mockReviewUpdateMediator,
         valuationMediator: mockValuationMediator,
-        detailPageController: ScrollController(),
         geolocatorAdapter: mockGeolocatorAdapter,
         ballUuid: testBallUuid);
   });

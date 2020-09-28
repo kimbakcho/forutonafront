@@ -42,7 +42,6 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
               ballUuid: _ballUuid,
               selectBallUseCaseInputPort: sl(),
               fireBaseAuthAdapterForUseCase: sl(),
-              detailPageController: sl(),
               reviewCountMediator: sl(),
               reviewDeleteMediator: sl(),
               reviewInertMediator: sl(),
