@@ -6,7 +6,7 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:injectable/injectable.dart';
 
 enum BallListMediatorState {
-  Loading,Empty,HasBall,Error
+  Empty,HasBall,Error
 }
 
 abstract class BallListMediatorComponent {
@@ -37,6 +37,8 @@ abstract class BallListMediator {
   Position searchPosition();
 
   BallListMediatorState currentState;
+
+  bool isLoading;
 }
 
 
@@ -49,7 +51,6 @@ class BallListMediatorImpl implements BallListMediator {
   int _pageCount = 0;
 
   int _pageLimit = 40;
-
 
   PageWrap<FBallResDto> _wrapBallList;
 
@@ -74,7 +75,7 @@ class BallListMediatorImpl implements BallListMediator {
   }
 
   search(Pageable pageable ) async {
-    currentState = BallListMediatorState.Loading;
+    isLoading = true;
     onPageListUpdate();
     if(fBallListUpUseCaseInputPort == null){
       currentState = BallListMediatorState.Error;
@@ -102,6 +103,7 @@ class BallListMediatorImpl implements BallListMediator {
     }else {
       currentState = BallListMediatorState.HasBall;
     }
+    isLoading = false;
     onPageListUpdate();
   }
 
@@ -155,7 +157,10 @@ class BallListMediatorImpl implements BallListMediator {
   }
 
   @override
-  BallListMediatorState currentState = BallListMediatorState.Loading;
+  BallListMediatorState currentState = BallListMediatorState.HasBall;
+
+  @override
+  bool isLoading = false;
 
 
 }

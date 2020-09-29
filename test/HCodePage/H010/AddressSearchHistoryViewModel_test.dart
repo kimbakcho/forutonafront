@@ -29,4 +29,6 @@ void main(){
     //then
     expect(addressSearchHistoryViewController.addressSearchHistoryViewModel, addressSearchHistoryViewModel);
   });
+
+
 }

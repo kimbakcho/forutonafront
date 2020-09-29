@@ -7,6 +7,7 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
 import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
+import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:mockito/mockito.dart';
 
 
@@ -22,12 +23,15 @@ class MockFBallRepository extends Mock implements FBallRepository {}
 
 class MockNoInterestBallUseCaseInputPort extends Mock implements NoInterestBallUseCaseInputPort{}
 
+class MockTagRepository extends Mock implements TagRepository{}
+
 void main() {
   H001ViewModel h001viewModel;
   MockBallListMediator mockBallListMediator;
   MockRankingTagListFromBIManager mockRankingTagListFromBIManager;
   MockGeoLocationUtilBasicUseCaseInputPort
   mockGeoLocationUtilBasicUseCaseInputPort;
+  MockTagRepository mockTagRepository;
 
   MockFBallRepository mockFBallRepository;
 
@@ -37,12 +41,14 @@ void main() {
         MockGeoLocationUtilBasicUseCaseInputPort();
     mockBallListMediator = MockBallListMediator();
     mockRankingTagListFromBIManager = MockRankingTagListFromBIManager();
+    mockTagRepository = MockTagRepository();
     h001viewModel = H001ViewModel(
         ballListMediator: mockBallListMediator,
         noInterestBallUseCaseInputPort: MockNoInterestBallUseCaseInputPort(),
         h001manager: H001Manager(),
         geoLocationUtilBasicUseCaseInputPort: mockGeoLocationUtilBasicUseCaseInputPort,
         fBallRepository: mockFBallRepository,
+        tagRepository: mockTagRepository,
         rankingTagListFromBIManager: mockRankingTagListFromBIManager);
   });
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/HCodePage/H001/H001BodyFactory.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -34,6 +35,11 @@ class H001Page extends StatelessWidget {
                         BottomNavigation()
                       ],
                     ),
+                    model.ballListMediator.isLoading
+                        ? CommonLoadingComponent(
+                            isTouch: false,
+                          )
+                        : Container()
                   ])));
         }));
   }
