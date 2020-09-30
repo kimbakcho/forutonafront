@@ -1,13 +1,17 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
+import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
 import 'package:forutonafront/MapGeoPage/MapGeoSearchPage.dart';
 import 'package:forutonafront/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class H007MainPageViewModel extends ChangeNotifier {
+class H007MainPageViewModel extends ChangeNotifier
+    implements PlaceListFromSearchTextWidgetListener {
   final BuildContext context;
 
   Position initPosition;
@@ -19,17 +23,29 @@ class H007MainPageViewModel extends ChangeNotifier {
 
   Completer<GoogleMapController> _googleMapController = Completer();
   GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  H007Listener h007listener;
 
   H007MainPageViewModel(
       {this.initPosition,
       this.address,
       this.context,
-        GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort})
+      this.h007listener,
+      GeoLocationUtilForeGroundUseCaseInputPort
+          geoLocationUtilUseCaseInputPort})
       : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     initCameraPosition = CameraPosition(
         target: LatLng(initPosition.latitude, initPosition.longitude),
         zoom: 14.4746);
     currentCameraPosition = initCameraPosition;
+  }
+
+  onSearch() {
+    if(this.h007listener != null ){
+      this.h007listener.onSearchPosition(
+          Position(
+              longitude: currentCameraPosition.target.longitude,
+              latitude: currentCameraPosition.target.latitude),context);
+    }
   }
 
   onPlaceSearchTap() async {
@@ -50,15 +66,14 @@ class H007MainPageViewModel extends ChangeNotifier {
     _googleMapController.complete(controller);
     await controller
         .moveCamera(CameraUpdate.newCameraPosition(initCameraPosition));
-
   }
 
   onMapIdle() async {
-      this.address = await _geoLocationUtilUseCaseInputPort.getPositionAddress(
-          Position(
-              latitude: currentCameraPosition.target.latitude,
-              longitude: currentCameraPosition.target.longitude));
-      notifyListeners();
+    this.address = await _geoLocationUtilUseCaseInputPort.getPositionAddress(
+        Position(
+            latitude: currentCameraPosition.target.latitude,
+            longitude: currentCameraPosition.target.longitude));
+    notifyListeners();
   }
 
   onMyLocation() async {
@@ -87,5 +102,15 @@ class H007MainPageViewModel extends ChangeNotifier {
 
   onBackBtnClick() {
     Navigator.of(context).pop();
+  }
+
+  //FROM H008
+  @override
+  onTabPosition(Position position ) async {
+    Navigator.popUntil(context, (route) => route.settings.name == "H007");
+    final GoogleMapController controller = await _googleMapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(position.latitude, position.longitude), zoom: 14.4746)));
+    notifyListeners();
   }
 }

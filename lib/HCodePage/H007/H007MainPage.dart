@@ -13,10 +13,11 @@ import 'MapCenterExpendCircle.dart';
 
 // ignore: must_be_immutable
 class H007MainPage extends StatefulWidget {
-  Position initPosition;
+  final Position initPosition;
   String address;
+  H007Listener h007listener;
 
-  H007MainPage(this.initPosition, this.address);
+  H007MainPage({this.initPosition, this.address,this.h007listener});
 
   @override
   _H007MainPageState createState() => _H007MainPageState(initPosition, address);
@@ -26,6 +27,7 @@ class _H007MainPageState extends State<H007MainPage>
     with WidgetsBindingObserver {
   Position initPosition;
   String address;
+
   UniqueKey googleMapKey = UniqueKey();
 
   @override
@@ -53,6 +55,7 @@ class _H007MainPageState extends State<H007MainPage>
     return ChangeNotifierProvider(
         create: (_) => H007MainPageViewModel(
             geoLocationUtilUseCaseInputPort: sl(),
+            h007listener: widget.h007listener,
             context: context,
             address: address,
             initPosition: initPosition),
@@ -78,6 +81,7 @@ class _H007MainPageState extends State<H007MainPage>
                 left: 68,
                 child: H007AddressWidget(
                   address: model.address,
+                  placeListFromSearchTextWidgetListener: model,
                   key: Key(model.address),
                 )),
             Positioned(
@@ -95,7 +99,9 @@ class _H007MainPageState extends State<H007MainPage>
             Positioned(
               bottom: 24,
               left: 16,
-              child: H007BallSearchBtn(),
+              child: H007BallSearchBtn(
+                onSearch: model.onSearch,
+              ),
             ),
             Center(child: H007CenterPoint())
           ]));
@@ -120,4 +126,8 @@ class H007CenterPoint extends StatelessWidget {
       ),
     ));
   }
+}
+
+abstract class H007Listener {
+  onSearchPosition(Position position,BuildContext context);
 }

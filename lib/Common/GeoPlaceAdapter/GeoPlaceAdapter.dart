@@ -22,6 +22,8 @@ abstract class GeoPlaceAdapter {
     String sessionToken,
     String fields,
   });
+
+  String addressComponentToString(List<AddressComponent> components);
 }
 @Injectable(as: GeoPlaceAdapter)
 class GooglePlaceAdapter implements GeoPlaceAdapter {
@@ -66,5 +68,21 @@ class GooglePlaceAdapter implements GeoPlaceAdapter {
         region: region
     );
     return detailsResponse;
+  }
+
+
+  @override
+  String addressComponentToString(List<AddressComponent> components) {
+      String result = "";
+      var reverseList = components.reversed.toList();
+      if(reverseList.length >1){
+        reverseList.removeRange(0, 2);
+
+      }
+      reverseList.forEach((element) {
+        result+=element.shortName + " ";
+      });
+      return result;
+
   }
 }

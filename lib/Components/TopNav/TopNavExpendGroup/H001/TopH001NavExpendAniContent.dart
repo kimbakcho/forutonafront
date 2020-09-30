@@ -84,7 +84,7 @@ class TopH001NavExpendAniContent extends StatelessWidget
 enum TopH001NavExpendAniContentViewModelExpendState { collapsed, expended }
 
 class TopH001NavExpendAniContentViewModel extends ChangeNotifier
-    implements TopH001NavExpendAniContentInputPort {
+    implements TopH001NavExpendAniContentInputPort,H007Listener {
 
   final GeoLocationUtilForeGroundUseCaseInputPort
       geoLocationUtilForeGroundUseCaseInputPort;
@@ -130,6 +130,7 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
       this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
           .getPositionAddress(loadPosition);
       h001manager.search(loadPosition);
+      notifyListeners();
     } on FlutterError catch (e) {
       throw e;
     }
@@ -173,9 +174,16 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
     this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
         .getPositionAddress(currentSearchPosition);
     Navigator.of(context).push(MaterialPageRoute(
+      settings: RouteSettings(name: "H007"),
       builder: (_)  {
-        return H007MainPage(currentSearchPosition, searchAddress);
+        return H007MainPage(h007listener: this,initPosition: currentSearchPosition,address: searchAddress);
       }
     ));
+  }
+
+  @override
+  onSearchPosition(Position position,BuildContext context) {
+    Navigator.popUntil(context, (route) => route.settings.name == "MAIN");
+    loadPosition(position);
   }
 }

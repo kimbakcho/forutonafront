@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
 import 'package:forutonafront/HCodePage/H010/H010MainView.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class H007AddressWidget extends StatelessWidget {
   final String address;
-
+  final PlaceListFromSearchTextWidgetListener placeListFromSearchTextWidgetListener;
   const H007AddressWidget({
     Key key,
-    this.address,
+    this.address, this.placeListFromSearchTextWidgetListener,
   }) : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class H007AddressWidget extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
             settings: RouteSettings(name: "H010"),
-            builder: (_)=> H010MainView()
+            builder: (_)=> H010MainView(placeListFromSearchTextWidgetListener: placeListFromSearchTextWidgetListener,)
           ));
         },
         padding: EdgeInsets.fromLTRB(16, 0, 16, 0),

@@ -19,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              settings: RouteSettings(name: "/"),
+              settings: RouteSettings(name: "MAIN"),
               builder: (context) {
                 return CodeMainPage();
               }));
