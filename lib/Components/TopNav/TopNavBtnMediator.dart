@@ -49,7 +49,7 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
 
   TopNavExpendGroupViewModel topNavExpendGroupViewModel;
 
-  TopNavRouterType currentTopNavRouter = TopNavRouterType.H001;
+  TopNavRouterType currentTopNavRouter = TopNavRouterType.H_I_001;
 
   @override
   NavBtnMediatorState aniState;

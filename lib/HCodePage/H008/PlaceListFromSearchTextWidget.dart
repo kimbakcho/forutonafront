@@ -9,6 +9,8 @@ import 'package:google_place/google_place.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import 'H008SearchEmptyRow.dart';
+
 class PlaceListFromSearchTextWidget extends StatelessWidget {
   final String searchText;
   final PlaceListFromSearchTextWidgetListener
@@ -84,28 +86,12 @@ class PlaceListFromSearchTextWidget extends StatelessWidget {
                                           )
                                         ])))));
                   })
-              : Column(children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: Text("조회된 결과가 없습니다.",
-                                  style: GoogleFonts.notoSans(
-                                    fontSize: 14,
-                                    color: const Color(0xff454f63),
-                                    letterSpacing: -0.28,
-                                    height: 1.4285714285714286,
-                                  ))))
-                    ],
-                  )
-                ]);
+              : H008SearchEmptyRow();
         }));
   }
 }
+
+
 
 class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
   final String searchText;

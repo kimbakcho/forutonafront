@@ -9,19 +9,20 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-abstract class TopH001NavExpendAniContentInputPort {
+// ignore: camel_case_types
+abstract class TopH_I_001NavExpendAniContentInputPort {
   expended();
 
   collapsed();
 }
 
-// ignore: must_be_immutable
-class TopH001NavExpendAniContent extends StatelessWidget
-    implements TopH001NavExpendAniContentInputPort {
-  TopH001NavExpendAniContentViewModel _topH001NavExpendAniContentViewModel;
+// ignore: must_be_immutable, camel_case_types
+class TopH_I_001NavExpendAniContent extends StatelessWidget
+    implements TopH_I_001NavExpendAniContentInputPort {
+  TopH_I_001NavExpendAniContentViewModel _topH001NavExpendAniContentViewModel;
 
-  TopH001NavExpendAniContent({Key key}) : super(key: key) {
-    _topH001NavExpendAniContentViewModel = TopH001NavExpendAniContentViewModel(
+  TopH_I_001NavExpendAniContent({Key key}) : super(key: key) {
+    _topH001NavExpendAniContentViewModel = TopH_I_001NavExpendAniContentViewModel(
         fluttertoastAdapter: sl(),
         locationAdapter: sl(),
         h001manager: sl(),
@@ -32,7 +33,7 @@ class TopH001NavExpendAniContent extends StatelessWidget
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: _topH001NavExpendAniContentViewModel,
-      child: Consumer<TopH001NavExpendAniContentViewModel>(
+      child: Consumer<TopH_I_001NavExpendAniContentViewModel>(
         builder: (_, model, __) {
           return Row(
             children: <Widget>[
@@ -83,8 +84,9 @@ class TopH001NavExpendAniContent extends StatelessWidget
 
 enum TopH001NavExpendAniContentViewModelExpendState { collapsed, expended }
 
-class TopH001NavExpendAniContentViewModel extends ChangeNotifier
-    implements TopH001NavExpendAniContentInputPort,H007Listener {
+// ignore: camel_case_types
+class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
+    implements TopH_I_001NavExpendAniContentInputPort,H007Listener {
 
   final GeoLocationUtilForeGroundUseCaseInputPort
       geoLocationUtilForeGroundUseCaseInputPort;
@@ -95,13 +97,15 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
 
   final H001ManagerInputPort h001manager;
 
+  Position currentSearchPosition;
+
   String searchAddress = "로딩중 입니다.";
 
-  TopH001NavExpendAniContentViewModel(
+  TopH_I_001NavExpendAniContentViewModel(
       {@required this.geoLocationUtilForeGroundUseCaseInputPort,
       @required this.locationAdapter,
       @required this.fluttertoastAdapter,
-      @required this.h001manager
+      @required this.h001manager,
       }) {
     init();
   }
@@ -127,6 +131,7 @@ class TopH001NavExpendAniContentViewModel extends ChangeNotifier
 
   loadPosition(Position loadPosition) async {
     try {
+      this.currentSearchPosition = loadPosition;
       this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
           .getPositionAddress(loadPosition);
       h001manager.search(loadPosition);

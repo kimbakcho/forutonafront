@@ -52,7 +52,7 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
     navBtnList.add(NavBtn(
       originIndex: 4,
       navBtnSetDto: NavBtnSetDto(
-          routerType: TopNavRouterType.H001,
+          routerType: TopNavRouterType.H_I_001,
           btnColor: Color(0xff88D4F1),
           btnIcon: Icon(Icons.sort),
           topOnMoveMainPage: CodeState.H001CODE,

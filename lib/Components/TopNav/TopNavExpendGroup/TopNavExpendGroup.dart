@@ -5,9 +5,10 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 import '../TopNavRouterType.dart';
-import 'H001/TopH001NavExpendComponent.dart';
-import 'H001/TopH001NavExpendDto.dart';
+
 import 'H003/TopH003NavExpandComponent.dart';
+import 'H_I_001/TopH_I_001NavExpendComponent.dart';
+import 'H_I_001/TopH_I_001NavExpendDto.dart';
 import 'X002/TopX002NavExpandComponent.dart';
 
 class TopNavExpendGroup extends StatelessWidget {
@@ -40,9 +41,11 @@ class TopNavExpendGroupViewModel extends ChangeNotifier {
   }
 
   Widget _getTopNavExpendComponent() {
-    if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.H001) {
-      return TopH001NavExpendComponent(
-        topH001NavExpendDto: TopH001NavExpendDto(
+    if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.H_I_001) {
+      return TopH_I_001NavExpendComponent(
+        topNavBtnMediator: sl(),
+        codeMainPageController: sl(),
+        topH001NavExpendDto: TopH_I_001NavExpendDto(
             btnHeightSize: 36,
             btnWidthSize: MediaQuery.of(context).size.width - 75),
       );

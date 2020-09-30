@@ -7,76 +7,64 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionFore
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
-enum CodeState { H001CODE, H003CODE, X001CODE, X002CODE }
+enum CodeState { H001CODE, H003CODE, X001CODE, X002CODE, I001CODE }
 
-abstract class CodeMainViewModelInputPort{
+abstract class CodeMainViewModelInputPort {
   jumpToPage(CodeState pageCode);
 }
 
-class CodeMainViewModel with ChangeNotifier implements CodeMainViewModelInputPort{
+class CodeMainViewModel
+    with ChangeNotifier
+    implements CodeMainViewModelInputPort {
   Position lastKnownPosition;
 
   String firstAddress = "";
 
-  FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
 
-  GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
+  GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCaseInputPort;
 
-  CodeMainPageController _codeMainPageController;
+  CodeMainPageController codeMainPageController;
 
   final UserPositionForegroundMonitoringUseCaseInputPort
-      _userPositionForegroundMonitoringUseCaseInputPort;
+      userPositionForegroundMonitoringUseCaseInputPort;
 
-  TopNavBtnMediator _topNavBtnMediator;
+  TopNavBtnMediator topNavBtnMediator;
 
   CodeMainViewModel(
-      {@required
-          FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      @required
-          GeoLocationUtilForeGroundUseCaseInputPort
-              geoLocationUtilUseCaseInputPort,
-      @required
-          CodeMainPageController codeMainPageController,
-      @required
-          UserPositionForegroundMonitoringUseCaseInputPort
-              userPositionForegroundMonitoringUseCaseInputPort})
-      : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
-        _codeMainPageController = codeMainPageController,
-        _userPositionForegroundMonitoringUseCaseInputPort =
-            userPositionForegroundMonitoringUseCaseInputPort {
+      {@required this.fireBaseAuthAdapterForUseCase,
+      @required this.geoLocationUtilUseCaseInputPort,
+      @required this.codeMainPageController,
+      @required this.userPositionForegroundMonitoringUseCaseInputPort,
+      @required this.topNavBtnMediator}) {
     init();
-
   }
 
   init() async {
-    _topNavBtnMediator = sl();
+    topNavBtnMediator.codeMainViewModelInputPort = this;
 
-    _topNavBtnMediator.codeMainViewModelInputPort = this;
-
-    await _geoLocationUtilUseCaseInputPort.useGpsReq();
+    await geoLocationUtilUseCaseInputPort.useGpsReq();
 
     this.lastKnownPosition =
-        await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
+        await geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
 
-    this.firstAddress = await _geoLocationUtilUseCaseInputPort
+    this.firstAddress = await geoLocationUtilUseCaseInputPort
         .getPositionAddress(lastKnownPosition);
 
-    _userPositionForegroundMonitoringUseCaseInputPort
+    userPositionForegroundMonitoringUseCaseInputPort
         .startUserPositionMonitoringAndUpdateToServer();
 
-    _geoLocationUtilUseCaseInputPort.startStreamCurrentPosition();
+    geoLocationUtilUseCaseInputPort.startStreamCurrentPosition();
   }
 
   jumpToPage(CodeState pageCode) {
-    _codeMainPageController.moveToPage(pageCode);
+    codeMainPageController.moveToPage(pageCode);
     notifyListeners();
   }
 
   checkUser() async {
-    return await _fireBaseAuthAdapterForUseCase.isLogin();
+    return await fireBaseAuthAdapterForUseCase.isLogin();
   }
 
   gotoJ001Page(BuildContext context) async {
@@ -88,25 +76,25 @@ class CodeMainViewModel with ChangeNotifier implements CodeMainViewModelInputPor
   }
 
   get pageController {
-    return _codeMainPageController.pageController;
+    return codeMainPageController.pageController;
   }
 
   get currentState {
-    return _codeMainPageController.currentState;
+    return codeMainPageController.currentState;
   }
 
   void swipeRight() async {
-    if (_codeMainPageController.currentState == CodeState.H003CODE) {
+    if (codeMainPageController.currentState == CodeState.H003CODE) {
       _movePageFromTo(
           mainTo: CodeState.H001CODE,
           topFrom: TopNavRouterType.H003,
-          topTo: TopNavRouterType.H001);
-    }else if(_codeMainPageController.currentState == CodeState.X001CODE) {
+          topTo: TopNavRouterType.H_I_001);
+    } else if (codeMainPageController.currentState == CodeState.X001CODE) {
       _movePageFromTo(
           mainTo: CodeState.H003CODE,
           topFrom: TopNavRouterType.X001,
           topTo: TopNavRouterType.H003);
-    }else if(_codeMainPageController.currentState == CodeState.X002CODE) {
+    } else if (codeMainPageController.currentState == CodeState.X002CODE) {
       _movePageFromTo(
           mainTo: CodeState.X001CODE,
           topFrom: TopNavRouterType.X002,
@@ -118,23 +106,23 @@ class CodeMainViewModel with ChangeNotifier implements CodeMainViewModelInputPor
       {CodeState mainTo,
       TopNavRouterType topFrom,
       TopNavRouterType topTo}) async {
-    await _topNavBtnMediator.openNavList(navRouterType: topFrom);
-    _codeMainPageController.moveToPage(mainTo);
-    _topNavBtnMediator.closeNavList(navRouterType: topTo);
+    await topNavBtnMediator.openNavList(navRouterType: topFrom);
+    codeMainPageController.moveToPage(mainTo);
+    topNavBtnMediator.closeNavList(navRouterType: topTo);
   }
 
   void swipeLeft() async {
-    if (_codeMainPageController.currentState == CodeState.H001CODE) {
+    if (codeMainPageController.currentState == CodeState.H001CODE) {
       _movePageFromTo(
           mainTo: CodeState.H003CODE,
-          topFrom: TopNavRouterType.H001,
+          topFrom: TopNavRouterType.H_I_001,
           topTo: TopNavRouterType.H003);
-    }else if(_codeMainPageController.currentState == CodeState.H003CODE){
+    } else if (codeMainPageController.currentState == CodeState.H003CODE) {
       _movePageFromTo(
           mainTo: CodeState.X001CODE,
           topFrom: TopNavRouterType.H003,
           topTo: TopNavRouterType.X001);
-    }else if(_codeMainPageController.currentState == CodeState.X001CODE){
+    } else if (codeMainPageController.currentState == CodeState.X001CODE) {
       _movePageFromTo(
           mainTo: CodeState.X002CODE,
           topFrom: TopNavRouterType.X001,

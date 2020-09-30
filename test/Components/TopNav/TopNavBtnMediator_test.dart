@@ -27,12 +27,12 @@ void main (){
   test('컴포넌트 등록', () async {
     //arrange
     MockTopNavBtnComponent topNavBtnComponent = MockTopNavBtnComponent();
-    navBtnMediator.currentTopNavRouter = TopNavRouterType.H001;
+    navBtnMediator.currentTopNavRouter = TopNavRouterType.H_I_001;
 
 
     //act
     navBtnMediator.topNavBtnRegisterComponent(topNavBtnComponent);
-    navBtnMediator.openNavList(navRouterType: TopNavRouterType.H001);
+    navBtnMediator.openNavList(navRouterType: TopNavRouterType.H_I_001);
     //assert
     verify(topNavBtnComponent.aniForward());
   });
@@ -50,10 +50,10 @@ void main (){
   test('메디에이터 NavOpen 상태 테스트', () async {
     //arrange
     MockTopNavExpendComponent mockTopNavExpendComponent = MockTopNavExpendComponent();
-    when(mockTopNavExpendComponent.getTopNavRouterType()).thenAnswer((realInvocation) => TopNavRouterType.H001);
+    when(mockTopNavExpendComponent.getTopNavRouterType()).thenAnswer((realInvocation) => TopNavRouterType.H_I_001);
     navBtnMediator.topNavExpendRegisterComponent(mockTopNavExpendComponent);
     //act
-    navBtnMediator.openNavList(navRouterType: TopNavRouterType.H001);
+    navBtnMediator.openNavList(navRouterType: TopNavRouterType.H_I_001);
     //assert
     expect(navBtnMediator.aniState,equals(NavBtnMediatorState.Open));
     verify(mockTopNavExpendComponent.closeExpandNav());

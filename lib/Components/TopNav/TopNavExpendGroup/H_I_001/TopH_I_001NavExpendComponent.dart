@@ -1,33 +1,48 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
-import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H001/TopH001NavExpendAniContent.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+
 import '../../TopNavRouterType.dart';
 import '../TopNavExpendComponent.dart';
-import 'TopH001NavExpendDto.dart';
+import 'TopH_I_001NavExpendAniContent.dart';
+import 'TopH_I_001NavExpendDto.dart';
 
-class TopH001NavExpendComponent extends StatefulWidget {
-  final TopH001NavExpendDto topH001NavExpendDto;
+// ignore: camel_case_types
+class TopH_I_001NavExpendComponent extends StatefulWidget {
+  final TopH_I_001NavExpendDto topH001NavExpendDto;
+  final TopNavBtnMediator topNavBtnMediator;
+  final CodeMainPageController codeMainPageController;
 
-  const TopH001NavExpendComponent({Key key, this.topH001NavExpendDto})
+  const TopH_I_001NavExpendComponent(
+      {Key key,
+      this.topH001NavExpendDto,
+      this.topNavBtnMediator,
+      this.codeMainPageController})
       : super(key: key);
 
   @override
-  _TopH001NavExpendComponentState createState() =>
-      _TopH001NavExpendComponentState();
+  _TopH_I_001NavExpendComponentState createState() =>
+      _TopH_I_001NavExpendComponentState(topNavBtnMediator: this.topNavBtnMediator);
 }
 
-class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
+// ignore: camel_case_types
+class _TopH_I_001NavExpendComponentState extends State<TopH_I_001NavExpendComponent>
     with SingleTickerProviderStateMixin
     implements TopNavExpendComponent {
   AnimationController _controller;
+
+  @override
   TopNavBtnMediator topNavBtnMediator;
-  TopH001NavExpendAniContent _topH001NavExpendAniContent;
-  _TopH001NavExpendComponentState() {
-    topNavBtnMediator = sl();
+
+  // ignore: non_constant_identifier_names
+  TopH_I_001NavExpendAniContent _topH_I_001NavExpendAniContent;
+
+  _TopH_I_001NavExpendComponentState({this.topNavBtnMediator}) {
     topNavBtnMediator.topNavExpendRegisterComponent(this);
-    _topH001NavExpendAniContent = TopH001NavExpendAniContent();
+    _topH_I_001NavExpendAniContent = TopH_I_001NavExpendAniContent();
   }
 
   @override
@@ -46,9 +61,9 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
 
   void setListener(status) {
     if (status == AnimationStatus.dismissed) {
-      _topH001NavExpendAniContent.collapsed();
+      _topH_I_001NavExpendAniContent.collapsed();
     } else if (status == AnimationStatus.forward) {
-      _topH001NavExpendAniContent.expended();
+      _topH_I_001NavExpendAniContent.expended();
     }
   }
 
@@ -68,13 +83,12 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
 
   @override
   Widget build(BuildContext context) {
-
-    return TopH001NavExpendAniComponent(
+    return TopH_I_001NavExpendAniComponent(
       animation: getAnimation(),
       child: Row(
         children: <Widget>[
           Expanded(
-            child: _topH001NavExpendAniContent,
+            child: _topH_I_001NavExpendAniContent,
           ),
           SizedBox(
             width: 8,
@@ -85,7 +99,9 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
             decoration:
                 BoxDecoration(color: Color(0xffF6F6F6), shape: BoxShape.circle),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                widget.codeMainPageController.moveToPage(CodeState.I001CODE);
+              },
               padding: EdgeInsets.all(0),
               icon: Icon(
                 Icons.map,
@@ -111,19 +127,17 @@ class _TopH001NavExpendComponentState extends State<TopH001NavExpendComponent>
 
   @override
   getTopNavRouterType() {
-    return TopNavRouterType.H001;
+    return TopNavRouterType.H_I_001;
   }
 }
 
-
-
-
-class TopH001NavExpendAniComponent extends StatelessWidget {
+// ignore: camel_case_types
+class TopH_I_001NavExpendAniComponent extends StatelessWidget {
   final Animation<double> animation;
   final double btnHeightSize;
   final Widget child;
 
-  const TopH001NavExpendAniComponent(
+  const TopH_I_001NavExpendAniComponent(
       {Key key, this.animation, this.btnHeightSize, this.child})
       : super(key: key);
 

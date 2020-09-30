@@ -1,3 +1,3 @@
 enum TopNavRouterType {
-  H001,H003,X001,X002
+  H_I_001,H003,X001,X002
 }

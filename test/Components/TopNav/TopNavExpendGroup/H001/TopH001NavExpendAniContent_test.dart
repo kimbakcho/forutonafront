@@ -4,7 +4,8 @@ import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dar
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
-import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H001/TopH001NavExpendAniContent.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/TopH_I_001NavExpendAniContent.dart';
+
 import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 
 import 'package:mockito/mockito.dart';
@@ -17,7 +18,7 @@ class MockLocationAdapter extends Mock implements LocationAdapter {}
 class MockFluttertoastAdapter extends Mock implements FluttertoastAdapter {}
 class MockH001Listener extends Mock implements H001Listener{}
 void main() {
-  TopH001NavExpendAniContentViewModel topH001NavExpendAniContentViewModel;
+  TopH_I_001NavExpendAniContentViewModel topH001NavExpendAniContentViewModel;
   MockGeoLocationUtilForeGroundUseCaseInputPort
       mockGeoLocationUtilForeGroundUseCaseInputPort;
   MockLocationAdapter mockLocationAdapter;
@@ -41,7 +42,7 @@ void main() {
 
     when(mockGeoLocationUtilForeGroundUseCaseInputPort.useGpsReq()).thenAnswer((realInvocation) async => true);
 
-    topH001NavExpendAniContentViewModel = TopH001NavExpendAniContentViewModel(
+    topH001NavExpendAniContentViewModel = TopH_I_001NavExpendAniContentViewModel(
         geoLocationUtilForeGroundUseCaseInputPort: mockGeoLocationUtilForeGroundUseCaseInputPort,
         locationAdapter: mockLocationAdapter,
         h001manager: h001managerInputPort,

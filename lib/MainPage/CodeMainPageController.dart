@@ -32,6 +32,9 @@ class CodeMainPageControllerImpl implements CodeMainPageController{
       case CodeState.X002CODE:
         pageController.jumpToPage(3);
         break;
+      case CodeState.I001CODE:
+        pageController.jumpToPage(4);
+        break;
     }
   }
 

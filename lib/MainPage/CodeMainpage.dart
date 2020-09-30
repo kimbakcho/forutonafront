@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
@@ -6,6 +7,7 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectAct
 import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBar.dart';
 import 'package:forutonafront/HCodePage/H001/H001Page.dart';
+import 'package:forutonafront/ICodePage/I001/I001MainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +47,8 @@ class _CodeMainPageState extends State<CodeMainPage> {
                 geoLocationUtilUseCaseInputPort: sl(),
                 fireBaseAuthAdapterForUseCase: sl(),
                 codeMainPageController: sl(),
-                userPositionForegroundMonitoringUseCaseInputPort: sl())),
+                userPositionForegroundMonitoringUseCaseInputPort: sl(),
+                topNavBtnMediator: sl())),
       ],
       child: Consumer<CodeMainViewModel>(builder: (_, model, child) {
         return Scaffold(
@@ -73,6 +76,7 @@ class _CodeMainPageState extends State<CodeMainPage> {
                           Container(child: Text("H003")),
                           Container(child: Text("X001")),
                           Container(child: Text("X002")),
+                          I001MainPage()
                           // ICodeMainPage(),
                           // BCodeMainPage(),
                           // KCodeMainPage(),

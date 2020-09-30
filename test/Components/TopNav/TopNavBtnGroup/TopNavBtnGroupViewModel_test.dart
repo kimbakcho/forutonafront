@@ -22,7 +22,7 @@ void main(){
     NavBtn mockINavBtn2 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.H003), originIndex: 2);
     navBtnGroup.registerBtn(mockINavBtn2);
 
-    NavBtn mockINavBtn1 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.H001),originIndex: 1);
+    NavBtn mockINavBtn1 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.H_I_001),originIndex: 1);
     navBtnGroup.registerBtn(mockINavBtn1);
 
     NavBtn mockINavBtn4 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.X002),originIndex: 4);
@@ -38,9 +38,9 @@ void main(){
     expect(lastItem.routerType, equals(TopNavRouterType.X001));
 
     //act
-    navBtnGroup.arrangeBtnIndexStack(top: TopNavRouterType.H001);
+    navBtnGroup.arrangeBtnIndexStack(top: TopNavRouterType.H_I_001);
     //assert
     NavBtn lastIte2 = navBtnGroup.navBtnList.last;
-    expect(lastIte2.routerType, equals(TopNavRouterType.H001));
+    expect(lastIte2.routerType, equals(TopNavRouterType.H_I_001));
   });
 }
