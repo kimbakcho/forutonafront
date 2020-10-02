@@ -10,7 +10,7 @@ class NavBtn extends StatelessWidget implements INavBtn {
 
   @override
   get routerType {
-    return navBtnSetDto.routerType;
+    return navBtnSetDto.topOnMoveMainPage;
   }
 
   @override

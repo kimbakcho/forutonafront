@@ -67,10 +67,10 @@ import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPo
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import '../Common/GeoPlaceAdapter/GeoPlaceAdapter.dart';
+import '../Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import '../Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import '../Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
 import '../Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
-import '../HCodePage/H001/H001Manager.dart';
 import '../FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
 import '../Common/Notification/NotiSelectAction/Domain/PageMoveAction/ID001/ID001PageMoveAction.dart';
 import '../Common/ImageCropUtil/ImageUtilInputPort.dart';
@@ -168,12 +168,12 @@ GetIt $initGetIt(
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
+      instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
       instanceName: 'LaunchMessageUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
-      instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(
       () => BackGroundMessageUseCase(
           baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
@@ -203,8 +203,8 @@ GetIt $initGetIt(
       () => FlutterLocalNotificationsPluginAdapterImpl());
   gh.lazySingleton<FluttertoastAdapter>(() => FluttertoastAdapter());
   gh.factory<GeoPlaceAdapter>(() => GooglePlaceAdapter());
+  gh.lazySingleton<GeoViewSearchManagerInputPort>(() => GeoViewSearchManager());
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
-  gh.lazySingleton<H001ManagerInputPort>(() => H001Manager());
   gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
       instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),

@@ -5,9 +5,9 @@ import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
 import 'BallListMediator.dart';
 
 class ListUpBallWidgetFactory {
-  static Widget getBallWidget(int index,BallListMediator ballListMediator){
+  static Widget getBallWidget(int index,BallListMediator ballListMediator,Axis axis){
     if(ballListMediator.ballList[index].ballType == FBallType.IssueBall){
-      return IssueBallWidgetFactory.getIssueBallWidget(index,ballListMediator);
+      return IssueBallWidgetFactory.getIssueBallWidget(index,ballListMediator,axis);
     }else {
       return Container(child: Text("지원하지 않는 볼 위젯"));
     }

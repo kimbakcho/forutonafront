@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnAction.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 
 import '../TopNavRouterType.dart';
@@ -9,8 +10,8 @@ class NavBtnSetDto {
   final double btnSize;
   final Color btnColor;
   final Icon btnIcon;
-  final TopNavRouterType routerType;
   final CodeState topOnMoveMainPage;
+  final NavBtnAction navBtnAction;
 
   NavBtnSetDto(
       {this.startOffset,
@@ -18,6 +19,6 @@ class NavBtnSetDto {
       this.btnSize,
       this.btnColor,
       this.btnIcon,
-      this.routerType,
-      this.topOnMoveMainPage});
+      this.topOnMoveMainPage,
+      this.navBtnAction});
 }

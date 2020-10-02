@@ -7,6 +7,7 @@ abstract class CodeMainPageController{
   CodeState currentState;
   moveToPage(CodeState pageCode);
 }
+
 @LazySingleton(as: CodeMainPageController)
 class CodeMainPageControllerImpl implements CodeMainPageController{
 

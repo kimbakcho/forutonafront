@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/ListUpBallListUpOrderByBI.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/NoInterestedBallDecorator.dart';
@@ -12,22 +13,20 @@ import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePowerUseCase.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 
-import 'H001Manager.dart';
-
 class H001ViewModel
     with ChangeNotifier
-    implements H001Listener, BallListMediatorComponent {
+    implements GeoViewSearchListener, BallListMediatorComponent {
   final GeoLocationUtilBasicUseCaseInputPort
       geoLocationUtilBasicUseCaseInputPort;
   final BallListMediator ballListMediator;
-  final H001ManagerInputPort h001manager;
+  final GeoViewSearchManagerInputPort geoViewSearchManager;
   final FBallRepository fBallRepository;
   final RankingTagListMediator rankingTagListFromBIManager;
   final NoInterestBallUseCaseInputPort noInterestBallUseCaseInputPort;
   final TagRepository tagRepository;
 
   H001ViewModel(
-      {this.h001manager,
+      {this.geoViewSearchManager,
       this.fBallRepository,
       this.rankingTagListFromBIManager,
       this.ballListMediator,
@@ -35,13 +34,13 @@ class H001ViewModel
       this.noInterestBallUseCaseInputPort,
       this.tagRepository}) {
     ballListMediator.registerComponent(this);
-    h001manager.subscribe(this);
+    geoViewSearchManager.subscribe(this);
   }
 
   @override
   void dispose() {
     ballListMediator.unregisterComponent(this);
-    h001manager.unSubscribe(this);
+    geoViewSearchManager.unSubscribe(this);
     super.dispose();
   }
 

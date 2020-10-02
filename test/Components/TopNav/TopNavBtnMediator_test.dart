@@ -6,6 +6,7 @@ import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendComponent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendGroup.dart';
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:mockito/mockito.dart';
 
 class MockTopNavBtnComponent extends Mock implements TopNavBtnComponent{}
@@ -27,12 +28,12 @@ void main (){
   test('컴포넌트 등록', () async {
     //arrange
     MockTopNavBtnComponent topNavBtnComponent = MockTopNavBtnComponent();
-    navBtnMediator.currentTopNavRouter = TopNavRouterType.H_I_001;
+    navBtnMediator.currentTopNavRouter = CodeState.H001CODE;
 
 
     //act
     navBtnMediator.topNavBtnRegisterComponent(topNavBtnComponent);
-    navBtnMediator.openNavList(navRouterType: TopNavRouterType.H_I_001);
+    navBtnMediator.openNavList(navRouterType: CodeState.H001CODE);
     //assert
     verify(topNavBtnComponent.aniForward());
   });
@@ -50,10 +51,10 @@ void main (){
   test('메디에이터 NavOpen 상태 테스트', () async {
     //arrange
     MockTopNavExpendComponent mockTopNavExpendComponent = MockTopNavExpendComponent();
-    when(mockTopNavExpendComponent.getTopNavRouterType()).thenAnswer((realInvocation) => TopNavRouterType.H_I_001);
+    when(mockTopNavExpendComponent.getTopNavRouterType()).thenAnswer((realInvocation) => CodeState.H001CODE);
     navBtnMediator.topNavExpendRegisterComponent(mockTopNavExpendComponent);
     //act
-    navBtnMediator.openNavList(navRouterType: TopNavRouterType.H_I_001);
+    navBtnMediator.openNavList(navRouterType: CodeState.H001CODE);
     //assert
     expect(navBtnMediator.aniState,equals(NavBtnMediatorState.Open));
     verify(mockTopNavExpendComponent.closeExpandNav());
@@ -65,17 +66,17 @@ void main (){
     navBtnMediator.iNavBtnGroup = mockINavBtnGroup;
     navBtnMediator.topNavExpendGroupViewModel = TopNavExpendGroupViewModel(context: null,topNavBtnMediator: navBtnMediator);
 
-    navBtnMediator.currentTopNavRouter = TopNavRouterType.H003;
+    navBtnMediator.currentTopNavRouter = CodeState.H003CODE;
     MockTopNavExpendComponent mockTopNavExpendComponent = MockTopNavExpendComponent();
-    when(mockTopNavExpendComponent.getTopNavRouterType()).thenAnswer((realInvocation) => TopNavRouterType.H003);
+    when(mockTopNavExpendComponent.getTopNavRouterType()).thenAnswer((realInvocation) => CodeState.H003CODE);
     navBtnMediator.topNavExpendRegisterComponent(mockTopNavExpendComponent);
 
     MockTopNavBtnComponent topNavBtnComponent = MockTopNavBtnComponent();
-    when(topNavBtnComponent.getTopNavRouterType()).thenAnswer((realInvocation) => TopNavRouterType.H003);
+    when(topNavBtnComponent.getTopNavRouterType()).thenAnswer((realInvocation) => CodeState.H003CODE);
     navBtnMediator.topNavBtnRegisterComponent(topNavBtnComponent);
 
     //act
-    navBtnMediator.closeNavList(navRouterType: TopNavRouterType.H003);
+    navBtnMediator.closeNavList(navRouterType: CodeState.H003CODE);
     //assert
     expect(navBtnMediator.aniState,equals(NavBtnMediatorState.Close));
     verify(mockINavBtnGroup.arrangeBtnIndexStack(top: anyNamed("top")));

@@ -1,22 +1,25 @@
 import 'package:flutter/cupertino.dart';
 
-
-class PageScrollController extends ScrollController {
+class PageScrollController {
+  final ScrollController scrollController;
   Function onNextPage;
   Function onRefreshFirst;
 
-  PageScrollController({this.onNextPage,this.onRefreshFirst}) {
-    this.addListener(_onScrollerListener);
+  PageScrollController(
+      {this.scrollController, this.onNextPage, this.onRefreshFirst}) {
+    this.scrollController.addListener(_onScrollerListener);
   }
 
   _onScrollerListener() {
-    if (this.offset >= this.position.maxScrollExtent &&
-        !this.position.outOfRange) {
+    if (this.scrollController.offset >=
+            this.scrollController.position.maxScrollExtent &&
+        !this.scrollController.position.outOfRange) {
       onNextPage();
     }
 
-    if (this.offset <= this.position.minScrollExtent &&
-        !this.position.outOfRange) {
+    if (this.scrollController.offset <=
+            this.scrollController.position.minScrollExtent &&
+        !this.scrollController.position.outOfRange) {
       onRefreshFirst();
     }
   }

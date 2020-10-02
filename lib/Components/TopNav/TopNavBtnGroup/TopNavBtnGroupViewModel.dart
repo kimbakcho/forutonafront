@@ -1,22 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtn.dart';
+import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnAction.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'INavBtnGroup.dart';
-import '../TopNavBtnMediator.dart';
 
-class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
+import '../TopNavBtnMediator.dart';
+import 'INavBtnGroup.dart';
+
+class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup {
   final Duration duration = Duration(milliseconds: 300);
   final TopNavBtnMediator topNavBtnMediator;
-  TopNavBtnGroupViewModel({@required this.topNavBtnMediator}){
+
+  TopNavBtnGroupViewModel({@required this.topNavBtnMediator}) {
     topNavBtnMediator.iNavBtnGroup = this;
     navBtnList.add(NavBtn(
       originIndex: 1,
       navBtnSetDto: NavBtnSetDto(
-          routerType: TopNavRouterType.X002,
           btnColor: Color(0xffF6F6F6),
           btnIcon: Icon(Icons.account_balance),
           topOnMoveMainPage: CodeState.X002CODE,
@@ -28,7 +30,6 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
     navBtnList.add(NavBtn(
       originIndex: 2,
       navBtnSetDto: NavBtnSetDto(
-          routerType: TopNavRouterType.X001,
           btnColor: Color(0xffF6F6F6),
           btnIcon: Icon(Icons.star),
           topOnMoveMainPage: CodeState.X001CODE,
@@ -40,7 +41,6 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
     navBtnList.add(NavBtn(
       originIndex: 3,
       navBtnSetDto: NavBtnSetDto(
-          routerType: TopNavRouterType.H003,
           btnColor: Color(0xffCCCCFF),
           btnIcon: Icon(Icons.playlist_add),
           topOnMoveMainPage: CodeState.H003CODE,
@@ -52,13 +52,13 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
     navBtnList.add(NavBtn(
       originIndex: 4,
       navBtnSetDto: NavBtnSetDto(
-          routerType: TopNavRouterType.H_I_001,
           btnColor: Color(0xff88D4F1),
           btnIcon: Icon(Icons.sort),
           topOnMoveMainPage: CodeState.H001CODE,
           btnSize: 36,
           startOffset: 0,
-          endOffset: 0),
+          endOffset: 0,
+          navBtnAction: H001NavBtnAction(geoViewSearchManager: sl())),
       key: Key("4"),
     ));
     notifyListeners();
@@ -68,11 +68,12 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
   List<NavBtn> navBtnList = [];
 
   @override
-  arrangeBtnIndexStack({TopNavRouterType top}) {
+  arrangeBtnIndexStack({CodeState top}) {
     navBtnList.sort((a, b) {
       return a.originIndex > b.originIndex ? 1 : -1;
     });
-    var indexWhere = navBtnList.indexWhere((element) => element.routerType == top);
+    var indexWhere =
+        navBtnList.indexWhere((element) => element.routerType == top);
     var tempNavBtn = navBtnList[indexWhere];
     navBtnList.removeAt(indexWhere);
     navBtnList.add(tempNavBtn);
@@ -83,5 +84,4 @@ class TopNavBtnGroupViewModel extends ChangeNotifier implements INavBtnGroup{
   registerBtn(NavBtn iNavBtn) {
     navBtnList.add(iNavBtn);
   }
-
 }

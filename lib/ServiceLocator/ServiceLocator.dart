@@ -93,7 +93,6 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseC
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
-import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
@@ -518,7 +517,6 @@ init2() {
 
   sl.registerSingleton<TopNavBtnMediator>(TopNavBtnMediatorImpl());
 
-  sl.registerSingleton<H001Manager>(H001Manager());
 
   sl.registerSingleton<BallOptionWidgetFactory>(BallOptionWidgetFactory(
     signInUserInfoUseCaseInputPort: sl()

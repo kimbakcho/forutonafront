@@ -87,25 +87,25 @@ class CodeMainViewModel
     if (codeMainPageController.currentState == CodeState.H003CODE) {
       _movePageFromTo(
           mainTo: CodeState.H001CODE,
-          topFrom: TopNavRouterType.H003,
-          topTo: TopNavRouterType.H_I_001);
+          topFrom: CodeState.H003CODE,
+          topTo: CodeState.H001CODE);
     } else if (codeMainPageController.currentState == CodeState.X001CODE) {
       _movePageFromTo(
           mainTo: CodeState.H003CODE,
-          topFrom: TopNavRouterType.X001,
-          topTo: TopNavRouterType.H003);
+          topFrom: CodeState.X001CODE,
+          topTo: CodeState.H003CODE);
     } else if (codeMainPageController.currentState == CodeState.X002CODE) {
       _movePageFromTo(
           mainTo: CodeState.X001CODE,
-          topFrom: TopNavRouterType.X002,
-          topTo: TopNavRouterType.X001);
+          topFrom: CodeState.X002CODE,
+          topTo: CodeState.X001CODE);
     }
   }
 
   _movePageFromTo(
       {CodeState mainTo,
-      TopNavRouterType topFrom,
-      TopNavRouterType topTo}) async {
+      CodeState topFrom,
+        CodeState topTo}) async {
     await topNavBtnMediator.openNavList(navRouterType: topFrom);
     codeMainPageController.moveToPage(mainTo);
     topNavBtnMediator.closeNavList(navRouterType: topTo);
@@ -115,18 +115,18 @@ class CodeMainViewModel
     if (codeMainPageController.currentState == CodeState.H001CODE) {
       _movePageFromTo(
           mainTo: CodeState.H003CODE,
-          topFrom: TopNavRouterType.H_I_001,
-          topTo: TopNavRouterType.H003);
+          topFrom: CodeState.H001CODE,
+          topTo: CodeState.H003CODE);
     } else if (codeMainPageController.currentState == CodeState.H003CODE) {
       _movePageFromTo(
           mainTo: CodeState.X001CODE,
-          topFrom: TopNavRouterType.H003,
-          topTo: TopNavRouterType.X001);
+          topFrom: CodeState.H003CODE,
+          topTo: CodeState.X001CODE);
     } else if (codeMainPageController.currentState == CodeState.X001CODE) {
       _movePageFromTo(
           mainTo: CodeState.X002CODE,
-          topFrom: TopNavRouterType.X001,
-          topTo: TopNavRouterType.X002);
+          topFrom: CodeState.X001CODE,
+          topTo: CodeState.X002CODE);
     }
   }
 }

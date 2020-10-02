@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/X001/TopX001NavExpandComponent.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +42,7 @@ class TopNavExpendGroupViewModel extends ChangeNotifier {
   }
 
   Widget _getTopNavExpendComponent() {
-    if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.H_I_001) {
+    if (topNavBtnMediator.currentTopNavRouter == CodeState.H001CODE) {
       return TopH_I_001NavExpendComponent(
         topNavBtnMediator: sl(),
         codeMainPageController: sl(),
@@ -49,11 +50,11 @@ class TopNavExpendGroupViewModel extends ChangeNotifier {
             btnHeightSize: 36,
             btnWidthSize: MediaQuery.of(context).size.width - 75),
       );
-    } else if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.H003) {
+    } else if (topNavBtnMediator.currentTopNavRouter == CodeState.H003CODE) {
       return TopH003NavExpandComponent();
-    } else if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.X001) {
+    } else if (topNavBtnMediator.currentTopNavRouter == CodeState.X001CODE) {
       return TopX001NavExpandComponent();
-    } else if (topNavBtnMediator.currentTopNavRouter == TopNavRouterType.X002) {
+    } else if (topNavBtnMediator.currentTopNavRouter == CodeState.X002CODE) {
       return TopX002NavExpandComponent();
     } else {
       return Container();

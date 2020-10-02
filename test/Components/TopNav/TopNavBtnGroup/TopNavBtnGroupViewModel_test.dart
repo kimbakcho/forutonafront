@@ -4,14 +4,18 @@ import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/INavBtnGroup.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/TopNavBtnGroupViewModel.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
-import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:get_it/get_it.dart';
 
-void main(){
+void main() {
   INavBtnGroup navBtnGroup;
   TopNavBtnMediator topNavBtnMediator;
-  setUp((){
+  setUp(() {
     topNavBtnMediator = TopNavBtnMediatorImpl();
+    final sl = GetIt.instance;
+    sl.registerLazySingleton<GeoViewSearchManagerInputPort>(
+        () => GeoViewSearchManager());
     navBtnGroup = TopNavBtnGroupViewModel(topNavBtnMediator: topNavBtnMediator);
   });
 
@@ -19,28 +23,36 @@ void main(){
     //arrange
     navBtnGroup.navBtnList = [];
 
-    NavBtn mockINavBtn2 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.H003), originIndex: 2);
+    NavBtn mockINavBtn2 = new NavBtn(
+        navBtnSetDto: NavBtnSetDto(topOnMoveMainPage: CodeState.H003CODE),
+        originIndex: 2);
     navBtnGroup.registerBtn(mockINavBtn2);
 
-    NavBtn mockINavBtn1 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.H_I_001),originIndex: 1);
+    NavBtn mockINavBtn1 = new NavBtn(
+        navBtnSetDto: NavBtnSetDto(topOnMoveMainPage: CodeState.H001CODE),
+        originIndex: 1);
     navBtnGroup.registerBtn(mockINavBtn1);
 
-    NavBtn mockINavBtn4 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.X002),originIndex: 4);
+    NavBtn mockINavBtn4 = new NavBtn(
+        navBtnSetDto: NavBtnSetDto(topOnMoveMainPage: CodeState.X002CODE),
+        originIndex: 4);
     navBtnGroup.registerBtn(mockINavBtn4);
 
-    NavBtn mockINavBtn3 = new NavBtn(navBtnSetDto:  NavBtnSetDto(routerType: TopNavRouterType.X001),originIndex: 3);
+    NavBtn mockINavBtn3 = new NavBtn(
+        navBtnSetDto: NavBtnSetDto(topOnMoveMainPage: CodeState.X001CODE),
+        originIndex: 3);
     navBtnGroup.registerBtn(mockINavBtn3);
 
     //act
-    navBtnGroup.arrangeBtnIndexStack(top: TopNavRouterType.X001);
+    navBtnGroup.arrangeBtnIndexStack(top: CodeState.X001CODE);
     //assert
     NavBtn lastItem = navBtnGroup.navBtnList.last;
-    expect(lastItem.routerType, equals(TopNavRouterType.X001));
+    expect(lastItem.routerType, equals(CodeState.X001CODE));
 
     //act
-    navBtnGroup.arrangeBtnIndexStack(top: TopNavRouterType.H_I_001);
+    navBtnGroup.arrangeBtnIndexStack(top: CodeState.H001CODE);
     //assert
     NavBtn lastIte2 = navBtnGroup.navBtnList.last;
-    expect(lastIte2.routerType, equals(TopNavRouterType.H_I_001));
+    expect(lastIte2.routerType, equals(CodeState.H001CODE));
   });
 }

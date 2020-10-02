@@ -127,8 +127,7 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
     jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromMapArea",
         queryParameters: jsonReq);
-    return PageWrap<FBallResDto>.fromJson(response.data,
-        response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
+    return PageWrap<FBallResDto>.fromJson(response.data, FBallResDto.fromJson);
   }
 
   @override

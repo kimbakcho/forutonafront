@@ -13,7 +13,7 @@ class H001Page extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => H001ViewModel(
             ballListMediator: sl(),
-            h001manager: sl(),
+            geoViewSearchManager: sl(),
             tagRepository: sl(),
             geoLocationUtilBasicUseCaseInputPort: sl(),
             rankingTagListFromBIManager: sl(),

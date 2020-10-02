@@ -4,9 +4,9 @@ import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dar
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/TopH_I_001NavExpendAniContent.dart';
 
-import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 
 import 'package:mockito/mockito.dart';
 
@@ -16,17 +16,17 @@ class MockGeoLocationUtilForeGroundUseCaseInputPort extends Mock
 class MockLocationAdapter extends Mock implements LocationAdapter {}
 
 class MockFluttertoastAdapter extends Mock implements FluttertoastAdapter {}
-class MockH001Listener extends Mock implements H001Listener{}
+class MockH001Listener extends Mock implements GeoViewSearchListener{}
 void main() {
   TopH_I_001NavExpendAniContentViewModel topH001NavExpendAniContentViewModel;
   MockGeoLocationUtilForeGroundUseCaseInputPort
       mockGeoLocationUtilForeGroundUseCaseInputPort;
   MockLocationAdapter mockLocationAdapter;
   MockFluttertoastAdapter mockFluttertoastAdapter;
-  H001ManagerInputPort h001managerInputPort;
+  GeoViewSearchManagerInputPort geoViewSearchManager;
   setUp(() {
 
-    h001managerInputPort= H001Manager();
+    geoViewSearchManager= GeoViewSearchManager();
     mockLocationAdapter = MockLocationAdapter();
 
 
@@ -45,7 +45,7 @@ void main() {
     topH001NavExpendAniContentViewModel = TopH_I_001NavExpendAniContentViewModel(
         geoLocationUtilForeGroundUseCaseInputPort: mockGeoLocationUtilForeGroundUseCaseInputPort,
         locationAdapter: mockLocationAdapter,
-        h001manager: h001managerInputPort,
+        geoViewSearchManager: geoViewSearchManager,
         fluttertoastAdapter: mockFluttertoastAdapter);
   });
 
@@ -100,7 +100,7 @@ void main() {
     //arrange
 
     MockH001Listener mockH001Listener = MockH001Listener();
-    h001managerInputPort.subscribe(mockH001Listener);
+    geoViewSearchManager.subscribe(mockH001Listener);
     Position position = Position(latitude: 37.1,longitude: 127.1);
     //act
     await topH001NavExpendAniContentViewModel.loadPosition(position);

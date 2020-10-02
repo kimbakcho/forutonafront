@@ -19,15 +19,15 @@ abstract class TopNavBtnMediator {
 
   topNavExpendUnRegisterComponent(TopNavExpendComponent component);
 
-  openNavList({@required TopNavRouterType navRouterType});
+  openNavList({@required CodeState navRouterType});
 
-  closeNavList({@required TopNavRouterType navRouterType});
+  closeNavList({@required CodeState navRouterType});
 
   set iNavBtnGroup(INavBtnGroup value);
 
   NavBtnMediatorState aniState;
 
-  TopNavRouterType currentTopNavRouter;
+  CodeState currentTopNavRouter;
 
   TopNavExpendGroupViewModel topNavExpendGroupViewModel;
 
@@ -35,7 +35,7 @@ abstract class TopNavBtnMediator {
 
   CodeMainViewModelInputPort codeMainViewModelInputPort;
 
-  void onNavBtnAniStatusListener(AnimationStatus status, TopNavRouterType routerType);
+  void onNavBtnAniStatusListener(AnimationStatus status, CodeState routerType);
 
   void changeMainPage(CodeState topOnMoveMainPage);
 }
@@ -49,7 +49,7 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
 
   TopNavExpendGroupViewModel topNavExpendGroupViewModel;
 
-  TopNavRouterType currentTopNavRouter = TopNavRouterType.H_I_001;
+  CodeState currentTopNavRouter = CodeState.H001CODE;
 
   @override
   NavBtnMediatorState aniState;
@@ -74,7 +74,7 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
     this.topNavBtnComponents.remove(component);
   }
 
-  openNavList({@required TopNavRouterType navRouterType}) async {
+  openNavList({@required CodeState navRouterType}) async {
     topNavBtnForwardAnimation();
     closeExpendComponent();
     await Future.delayed(Duration(milliseconds: animationDuration.inMilliseconds + 100));
@@ -100,7 +100,7 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   }
 
   @override
-  closeNavList({@required TopNavRouterType navRouterType}) {
+  closeNavList({@required CodeState navRouterType}) {
     this.topNavBtnReverseAnimation();
     if (_iNavBtnGroup != null) {
       _iNavBtnGroup.arrangeBtnIndexStack(top: navRouterType);
@@ -141,7 +141,7 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   }
 
   @override
-  void onNavBtnAniStatusListener(AnimationStatus status,TopNavRouterType routerType) {
+  void onNavBtnAniStatusListener(AnimationStatus status,CodeState routerType) {
 
   }
 

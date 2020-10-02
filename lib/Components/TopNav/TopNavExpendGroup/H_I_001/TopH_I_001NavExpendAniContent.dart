@@ -3,7 +3,7 @@ import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dar
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
-import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,53 +22,49 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
   TopH_I_001NavExpendAniContentViewModel _topH001NavExpendAniContentViewModel;
 
   TopH_I_001NavExpendAniContent({Key key}) : super(key: key) {
-    _topH001NavExpendAniContentViewModel = TopH_I_001NavExpendAniContentViewModel(
-        fluttertoastAdapter: sl(),
-        locationAdapter: sl(),
-        h001manager: sl(),
-        geoLocationUtilForeGroundUseCaseInputPort: sl());
+    _topH001NavExpendAniContentViewModel =
+        TopH_I_001NavExpendAniContentViewModel(
+            fluttertoastAdapter: sl(),
+            locationAdapter: sl(),
+            geoViewSearchManager: sl(),
+            geoLocationUtilForeGroundUseCaseInputPort: sl());
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: _topH001NavExpendAniContentViewModel,
-      child: Consumer<TopH_I_001NavExpendAniContentViewModel>(
-        builder: (_, model, __) {
-          return Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                      padding: model.isExpend
-                          ? EdgeInsets.fromLTRB(16, 0, 16, 0)
-                          : EdgeInsets.all(0),
-                      onPressed: () {
-                        model.jumpToMapExtendView(context);
-                      },
-                      child: Text(
-                        model.disPlayAddress,
-                        style: GoogleFonts.notoSans(
-                          fontSize: 14,
-                          color: const Color(0xff454f63),
-                          fontWeight: FontWeight.w700,
-                        ),
-                        overflow: TextOverflow.ellipsis,
+        value: _topH001NavExpendAniContentViewModel,
+        child: Consumer<TopH_I_001NavExpendAniContentViewModel>(
+            builder: (_, model, __) {
+          return Row(children: <Widget>[
+            Expanded(
+              child: Container(
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                    padding: model.isExpend
+                        ? EdgeInsets.fromLTRB(16, 0, 16, 0)
+                        : EdgeInsets.all(0),
+                    onPressed: () {
+                      model.jumpToMapExtendView(context);
+                    },
+                    child: Text(
+                      model.disPlayAddress,
+                      style: GoogleFonts.notoSans(
+                        fontSize: 14,
+                        color: const Color(0xff454f63),
+                        fontWeight: FontWeight.w700,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      color: Color(0xffF6F6F6),
-                    )),
-              )
-            ],
-          );
-        },
-      ),
-    );
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    color: Color(0xffF6F6F6),
+                  )),
+            )
+          ]);
+        }));
   }
 
   @override
@@ -86,8 +82,7 @@ enum TopH001NavExpendAniContentViewModelExpendState { collapsed, expended }
 
 // ignore: camel_case_types
 class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
-    implements TopH_I_001NavExpendAniContentInputPort,H007Listener {
-
+    implements TopH_I_001NavExpendAniContentInputPort, H007Listener {
   final GeoLocationUtilForeGroundUseCaseInputPort
       geoLocationUtilForeGroundUseCaseInputPort;
   final LocationAdapter locationAdapter;
@@ -95,18 +90,18 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   TopH001NavExpendAniContentViewModelExpendState currentState =
       TopH001NavExpendAniContentViewModelExpendState.expended;
 
-  final H001ManagerInputPort h001manager;
+  final GeoViewSearchManagerInputPort geoViewSearchManager;
 
   Position currentSearchPosition;
 
   String searchAddress = "로딩중 입니다.";
 
-  TopH_I_001NavExpendAniContentViewModel(
-      {@required this.geoLocationUtilForeGroundUseCaseInputPort,
-      @required this.locationAdapter,
-      @required this.fluttertoastAdapter,
-      @required this.h001manager,
-      }) {
+  TopH_I_001NavExpendAniContentViewModel({
+    @required this.geoLocationUtilForeGroundUseCaseInputPort,
+    @required this.locationAdapter,
+    @required this.fluttertoastAdapter,
+    @required this.geoViewSearchManager,
+  }) {
     init();
   }
 
@@ -134,7 +129,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
       this.currentSearchPosition = loadPosition;
       this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
           .getPositionAddress(loadPosition);
-      h001manager.search(loadPosition);
+      geoViewSearchManager.search(loadPosition);
       notifyListeners();
     } on FlutterError catch (e) {
       throw e;
@@ -174,20 +169,23 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
     currentState = TopH001NavExpendAniContentViewModelExpendState.expended;
     notifyListeners();
   }
-  jumpToMapExtendView(BuildContext context)  async {
-    var currentSearchPosition = h001manager.currentSearchPosition;
+
+  jumpToMapExtendView(BuildContext context) async {
+    var currentSearchPosition = geoViewSearchManager.currentSearchPosition;
     this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
         .getPositionAddress(currentSearchPosition);
     Navigator.of(context).push(MaterialPageRoute(
-      settings: RouteSettings(name: "H007"),
-      builder: (_)  {
-        return H007MainPage(h007listener: this,initPosition: currentSearchPosition,address: searchAddress);
-      }
-    ));
+        settings: RouteSettings(name: "H007"),
+        builder: (_) {
+          return H007MainPage(
+              h007listener: this,
+              initPosition: currentSearchPosition,
+              address: searchAddress);
+        }));
   }
 
   @override
-  onSearchPosition(Position position,BuildContext context) {
+  onSearchPosition(Position position, BuildContext context) {
     Navigator.popUntil(context, (route) => route.settings.name == "MAIN");
     loadPosition(position);
   }

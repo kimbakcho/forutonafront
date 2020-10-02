@@ -33,7 +33,7 @@ class FullBallListUp extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
                   key: Key(ballListMediator.ballList[index].ballUuid),
                   child: ListUpBallWidgetFactory.getBallWidget(
-                      index, ballListMediator),
+                      index, ballListMediator,Axis.vertical),
                 );
               });
         }));

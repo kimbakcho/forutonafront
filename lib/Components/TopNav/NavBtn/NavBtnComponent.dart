@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
-import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:provider/provider.dart';
 
 import '../TopNavBtnMediator.dart';
+import 'NavBtnAction.dart';
 import 'TopNavBtnComponent.dart';
 
 class NavBtnComponent extends StatefulWidget {
@@ -14,7 +16,8 @@ class NavBtnComponent extends StatefulWidget {
   NavBtnComponent({Key key, this.navBtnSetDto}) : super(key: key);
 
   @override
-  _NavBtnComponentState createState() => _NavBtnComponentState(navBtnSetDto: navBtnSetDto,navBtnMediator: sl());
+  _NavBtnComponentState createState() =>
+      _NavBtnComponentState(navBtnSetDto: navBtnSetDto, navBtnMediator: sl());
 }
 
 class _NavBtnComponentState extends State<NavBtnComponent>
@@ -38,7 +41,8 @@ class _NavBtnComponentState extends State<NavBtnComponent>
     _controller = AnimationController(
         vsync: this, duration: navBtnMediator.animationDuration);
     _controller.addStatusListener((status) {
-      navBtnMediator.onNavBtnAniStatusListener(status, navBtnSetDto.routerType);
+      navBtnMediator.onNavBtnAniStatusListener(
+          status, navBtnSetDto.topOnMoveMainPage);
     });
   }
 
@@ -62,8 +66,8 @@ class _NavBtnComponentState extends State<NavBtnComponent>
         navBtnMediator: navBtnMediator,
         btnColor: navBtnSetDto.btnColor,
         btnIcon: navBtnSetDto.btnIcon,
-        navRouterType: navBtnSetDto.routerType,
         topOnMoveMainPage: navBtnSetDto.topOnMoveMainPage,
+        navBtnAction: navBtnSetDto.navBtnAction,
       ),
       animation: getAnimation(),
       btnSize: navBtnSetDto.btnSize,
@@ -82,52 +86,103 @@ class _NavBtnComponentState extends State<NavBtnComponent>
 
   @override
   getTopNavRouterType() {
-    return navBtnSetDto.routerType;
+    return navBtnSetDto.topOnMoveMainPage;
   }
 }
 
 class NavBtnContent extends StatelessWidget implements NavBtnContentInputPort {
   final Color btnColor;
   final Icon btnIcon;
-  final TopNavRouterType navRouterType;
   final CodeState topOnMoveMainPage;
-
   final TopNavBtnMediator navBtnMediator;
+  final NavBtnAction navBtnAction;
 
   NavBtnContent(
       {Key key,
       this.btnColor,
       this.btnIcon,
-      this.navRouterType,
       this.topOnMoveMainPage,
-      @required this.navBtnMediator})
+      @required this.navBtnMediator,
+      this.navBtnAction})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Color(0xff454F63), width: 2),
-          color: btnColor,
-          shape: BoxShape.circle,
-        ),
-        child: FlatButton(
-          shape: CircleBorder(),
-          padding: EdgeInsets.all(0),
-          onPressed: () {
-            onNavTopBtnTop();
-          },
-          child: btnIcon,
-        ));
+    return ChangeNotifierProvider(
+      create: (_) => NavBtnContentViewModel(
+          codeMainPageController: sl(), topOnMoveMainPage: topOnMoveMainPage),
+      child: Consumer<NavBtnContentViewModel>(builder: (_, model, __) {
+        return Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: Color(0xff454F63), width: model.isMyPage() ? 2 : 0),
+              color: model.isMyPage() ? btnColor : Color(0xffF6F6F6),
+              shape: BoxShape.circle,
+            ),
+            child: FlatButton(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(0),
+              onPressed: () {
+                onNavTopBtnTop();
+              },
+              child: btnIcon,
+            ));
+      }),
+    );
   }
 
+  @override
   void onNavTopBtnTop() {
+    _navListControl();
+    _changePageAction();
+    _btnAction();
+  }
+
+  void _btnAction() {
     if (navBtnMediator.aniState == NavBtnMediatorState.Close) {
-      navBtnMediator.openNavList(navRouterType: navRouterType);
+      if (navBtnAction != null) {
+        navBtnAction.onCloseClick();
+      }
     } else {
-      navBtnMediator.closeNavList(navRouterType: navRouterType);
-      navBtnMediator.changeMainPage(topOnMoveMainPage);
+      if (navBtnAction != null) {
+        navBtnAction.onOpenClick();
+      }
     }
+  }
+
+  void _changePageAction() {
+    if (navBtnMediator.aniState == NavBtnMediatorState.Close) {
+      navBtnMediator.changeMainPage(topOnMoveMainPage);
+    } else {}
+  }
+
+  void _navListControl() {
+    if (navBtnMediator.aniState == NavBtnMediatorState.Close) {
+      navBtnMediator.openNavList(navRouterType: topOnMoveMainPage);
+    } else {
+      navBtnMediator.closeNavList(navRouterType: topOnMoveMainPage);
+    }
+  }
+}
+
+class NavBtnContentViewModel extends ChangeNotifier {
+  final CodeMainPageController codeMainPageController;
+  final CodeState topOnMoveMainPage;
+
+  NavBtnContentViewModel(
+      {this.codeMainPageController, this.topOnMoveMainPage}) {
+    this
+        .codeMainPageController
+        .pageController
+        .addListener(_onCodeMainPageChange);
+  }
+
+  _onCodeMainPageChange() {
+    notifyListeners();
+  }
+
+  bool isMyPage() {
+    return codeMainPageController.currentState == topOnMoveMainPage;
   }
 }
 

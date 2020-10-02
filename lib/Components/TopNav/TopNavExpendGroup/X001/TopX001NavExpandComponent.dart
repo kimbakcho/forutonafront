@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import '../../TopNavRouterType.dart';
@@ -55,7 +56,7 @@ class _TopX001NavExpandComponentState extends State<TopX001NavExpandComponent>
 
   @override
   getTopNavRouterType() {
-    return TopNavRouterType.X001;
+    return CodeState.X001CODE;
   }
 
   @override

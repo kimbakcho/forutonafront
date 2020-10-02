@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
-
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 
@@ -25,11 +24,13 @@ class TopH_I_001NavExpendComponent extends StatefulWidget {
 
   @override
   _TopH_I_001NavExpendComponentState createState() =>
-      _TopH_I_001NavExpendComponentState(topNavBtnMediator: this.topNavBtnMediator);
+      _TopH_I_001NavExpendComponentState(
+          topNavBtnMediator: this.topNavBtnMediator);
 }
 
 // ignore: camel_case_types
-class _TopH_I_001NavExpendComponentState extends State<TopH_I_001NavExpendComponent>
+class _TopH_I_001NavExpendComponentState
+    extends State<TopH_I_001NavExpendComponent>
     with SingleTickerProviderStateMixin
     implements TopNavExpendComponent {
   AnimationController _controller;
@@ -96,11 +97,23 @@ class _TopH_I_001NavExpendComponentState extends State<TopH_I_001NavExpendCompon
           Container(
             width: 36,
             height: 36,
-            decoration:
-                BoxDecoration(color: Color(0xffF6F6F6), shape: BoxShape.circle),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Color(0xff454F63),
+                    width: widget.codeMainPageController.currentState ==
+                            CodeState.I001CODE
+                        ? 2
+                        : 0),
+                color: widget.codeMainPageController.currentState ==
+                        CodeState.I001CODE
+                    ? Color(0xffFFF170)
+                    : Color(0xffF6F6F6),
+                shape: BoxShape.circle),
             child: IconButton(
               onPressed: () {
-                widget.codeMainPageController.moveToPage(CodeState.I001CODE);
+                setState(() {
+                  widget.codeMainPageController.moveToPage(CodeState.I001CODE);
+                });
               },
               padding: EdgeInsets.all(0),
               icon: Icon(
@@ -127,7 +140,7 @@ class _TopH_I_001NavExpendComponentState extends State<TopH_I_001NavExpendCompon
 
   @override
   getTopNavRouterType() {
-    return TopNavRouterType.H_I_001;
+    return CodeState.H001CODE;
   }
 }
 

@@ -3,9 +3,9 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
-import 'package:forutonafront/HCodePage/H001/H001Manager.dart';
 import 'package:forutonafront/HCodePage/H001/H001ViewModel.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:mockito/mockito.dart';
@@ -45,7 +45,7 @@ void main() {
     h001viewModel = H001ViewModel(
         ballListMediator: mockBallListMediator,
         noInterestBallUseCaseInputPort: MockNoInterestBallUseCaseInputPort(),
-        h001manager: H001Manager(),
+        geoViewSearchManager: GeoViewSearchManager(),
         geoLocationUtilBasicUseCaseInputPort: mockGeoLocationUtilBasicUseCaseInputPort,
         fBallRepository: mockFBallRepository,
         tagRepository: mockTagRepository,

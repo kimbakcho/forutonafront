@@ -24,13 +24,15 @@ class H001BallsPanel extends StatelessWidget {
       create: (_) => H001BallsPanelViewModel(
           ballListMediator: this.ballListMediator,
           rankingTagListFromBIManager: this.rankingTagListFromBIManager,
-          fullBallListUpController: fullBallListUpController
-      ),
+          fullBallListUpController: fullBallListUpController),
       child: Consumer<H001BallsPanelViewModel>(
         builder: (_, model, __) {
           return Container(
             child: ListView(
-              controller: PageScrollController(onNextPage: model.onNextPage,onRefreshFirst: model.onRefreshFirst),
+              controller: PageScrollController(
+                      scrollController: ScrollController(),
+                      onNextPage: model.onNextPage,
+                      onRefreshFirst: model.onRefreshFirst).scrollController,
               physics: BouncingScrollPhysics(),
               children: <Widget>[
                 RankingTagListFromBI(
