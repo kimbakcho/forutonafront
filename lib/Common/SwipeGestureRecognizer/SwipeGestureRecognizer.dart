@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:injectable/injectable.dart';
 
 class SwipeGestureRecognizer extends StatefulWidget {
   final Function() onSwipeLeft;
@@ -6,13 +7,14 @@ class SwipeGestureRecognizer extends StatefulWidget {
   final Function() onSwipeUp;
   final Function() onSwipeDown;
   final Widget child;
+  final SwipeGestureRecognizerController swipeGestureRecognizerController;
   SwipeGestureRecognizer({
     Key key,
     this.child,
     this.onSwipeDown,
     this.onSwipeLeft,
     this.onSwipeRight,
-    this.onSwipeUp,
+    this.onSwipeUp, this.swipeGestureRecognizerController,
   }) : super(key: key);
 
   @override
@@ -22,22 +24,46 @@ class SwipeGestureRecognizer extends StatefulWidget {
 class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
   Offset _horizontalSwipeStartingOffset;
   Offset _verticalSwipeStartingOffset;
-
+  bool _enableGesture = true;
   bool _isSwipeLeft;
   bool _isSwipeRight;
   bool _isSwipeUp;
   bool _isSwipeDown;
 
+  _SwipeGestureRecognizerState();
+
   @override
   void initState() {
     super.initState();
+    widget.swipeGestureRecognizerController.swipeGestureRecognizer = this;
     _horizontalSwipeStartingOffset =
         _horizontalSwipeStartingOffset = Offset(0, 0);
     _isSwipeDown = _isSwipeUp = _isSwipeRight = _isSwipeLeft = false;
   }
 
+  _gestureOn(){
+    _enableGesture = true;
+    setState(() {
+
+    });
+
+  }
+
+  _gestureOff(){
+    _enableGesture = false;
+    setState(() {
+
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    if(!_enableGesture){
+      return GestureDetector(
+        child: widget.child,
+      );
+    }
     return (widget.onSwipeLeft != null || widget.onSwipeRight != null) &&
         (widget.onSwipeDown != null || widget.onSwipeUp != null)
         ? GestureDetector(
@@ -135,5 +161,20 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
       },
     )
         : SizedBox.shrink();
+  }
+}
+
+@Injectable()
+class SwipeGestureRecognizerController {
+  _SwipeGestureRecognizerState swipeGestureRecognizer;
+  gestureOff(){
+    if(swipeGestureRecognizer != null){
+      swipeGestureRecognizer._gestureOff();
+    }
+  }
+  gestureOn(){
+    if(swipeGestureRecognizer != null){
+      swipeGestureRecognizer._gestureOn();
+    }
   }
 }

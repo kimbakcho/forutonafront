@@ -20,7 +20,7 @@ class CodeMainPage extends StatefulWidget {
   _CodeMainPageState createState() => _CodeMainPageState();
 }
 
-class _CodeMainPageState extends State<CodeMainPage> {
+class _CodeMainPageState extends State<CodeMainPage>     with AutomaticKeepAliveClientMixin{
   @override
   void initState() {
     super.initState();
@@ -62,6 +62,7 @@ class _CodeMainPageState extends State<CodeMainPage> {
                     child: TopNavBar()),
                 Expanded(
                   child: SwipeGestureRecognizer(
+                    swipeGestureRecognizerController: model.swipeGestureRecognizerController,
                     onSwipeRight: () {
                       model.swipeRight();
                     },
@@ -91,4 +92,7 @@ class _CodeMainPageState extends State<CodeMainPage> {
       }),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

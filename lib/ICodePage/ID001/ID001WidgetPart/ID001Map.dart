@@ -80,7 +80,7 @@ class _ID001MapState extends State<ID001Map>
     markers.add(Marker(
       markerId: MarkerId("UserProfileImage"),
       icon: widget._mapMakerDescriptorContainer
-          .getBitmapDescriptor("UserAvatarIcon"),
+          .getBitmapDescriptor(MapMakerDescriptorType.UserAvatarIcon),
       anchor: Offset(0.5, 0.5),
       position: LatLng(userPosition.latitude, userPosition.longitude),
     ));

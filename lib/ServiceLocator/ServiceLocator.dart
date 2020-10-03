@@ -403,8 +403,6 @@ init2() {
   sl.registerSingleton<UserProfileImageUploadUseCaseInputPort>(
       UserProfileImageUploadUseCase(flutterImageCompressAdapter: sl(),fUserRepository: sl()));
 
-  sl.registerSingleton<CodeMainPageController>(CodeMainPageControllerImpl());
-
   sl.registerSingleton<PersonaSettingNoticeRemoteDataSource>(
       PersonaSettingNoticeRemoteDataSourceImpl());
 

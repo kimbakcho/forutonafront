@@ -173,7 +173,7 @@ class IMB001FullScreenMapViewModel extends ChangeNotifier {
         fBallResDto.ballType, ballUuid, ballPosition));
     markers.add(Marker(
       markerId: MarkerId("UserProfileImage"),
-      icon: _mapMakerDescriptorContainer.getBitmapDescriptor("UserAvatarIcon"),
+      icon: _mapMakerDescriptorContainer.getBitmapDescriptor(MapMakerDescriptorType.UserAvatarIcon),
       anchor: Offset(0.5, 0.5),
       position: LatLng(userPosition.latitude, userPosition.longitude),
     ));

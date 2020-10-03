@@ -127,6 +127,7 @@ import '../ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserIn
 import '../ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart';
 import '../ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import '../ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
+import '../Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import '../Tag/Domain/Repository/TagRepository.dart';
@@ -168,19 +169,18 @@ GetIt $initGetIt(
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
-      instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
       instanceName: 'LaunchMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
+      instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(
       () => BackGroundMessageUseCase(
           baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
               instanceName: 'BaseMessageUseCase')),
       instanceName: 'BackGroundMessageUseCase');
   gh.lazySingleton<BaseOpenTalkInputPort>(() => InquireAboutAnythingUseCase());
-  gh.lazySingleton<CodeMainPageController>(() => CodeMainPageControllerImpl());
   gh.lazySingleton<DetailPageItemFactory>(() => DetailPageItemFactory());
   gh.lazySingleton<FBallPlayerRemoteDataSource>(
       () => FBallPlayerRemoteDataSourceImpl());
@@ -257,14 +257,16 @@ GetIt $initGetIt(
   gh.factory<RankingTagListMediator>(() => RankingTagListMediatorImpl());
   gh.lazySingleton<SharedPreferencesAdapter>(
       () => SharedPreferencesAdapterImpl());
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => NaverLoginAdapterImpl(),
-      instanceName: 'NaverLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => KakaoLoginAdapterImpl(),
       instanceName: 'KakaoLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
       instanceName: 'ForutonaLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => FaceBookLoginAdapterImpl(),
       instanceName: 'FaceBookLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => NaverLoginAdapterImpl(),
+      instanceName: 'NaverLoginAdapterImpl');
+  gh.factory<SwipeGestureRecognizerController>(
+      () => SwipeGestureRecognizerController());
   gh.lazySingleton<TagRepository>(() => TagRepositoryImpl(
       fBallTagRemoteDataSource: get<FBallTagRemoteDataSource>()));
   gh.lazySingleton<TopNavBtnMediator>(() => TopNavBtnMediatorImpl());
@@ -288,6 +290,9 @@ GetIt $initGetIt(
   gh.lazySingleton<BallSearchBarHistoryRepository>(() =>
       BallSearchBarHistoryRepositoryImpl(
           localDataSource: get<BallSearchHistoryLocalDataSource>()));
+  gh.lazySingleton<CodeMainPageController>(() => CodeMainPageControllerImpl(
+      swipeGestureRecognizerController:
+          get<SwipeGestureRecognizerController>()));
   gh.lazySingleton<FBallPlayerListUpInputPort>(() => FBallPlayerListUpUseCae(
       fBallPlayerRepository: get<FBallPlayerRepository>()));
   gh.lazySingleton<FBallReplyRepository>(() => FBallReplyRepositoryImpl(

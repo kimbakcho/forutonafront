@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
@@ -128,5 +129,9 @@ class CodeMainViewModel
           topFrom: CodeState.X001CODE,
           topTo: CodeState.X002CODE);
     }
+  }
+
+  SwipeGestureRecognizerController get swipeGestureRecognizerController {
+    return codeMainPageController.swipeGestureRecognizerController;
   }
 }

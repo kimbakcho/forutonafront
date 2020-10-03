@@ -27,7 +27,9 @@ class IssueBallWidgetFactory {
       }
     } else {
       return IssueBallReduceSizeWidget(
-          fBallResDto: ballListMediator.ballList[index]);
+          issueBallDisPlayUseCase: issueBallDisPlayUseCase,
+          ballListMediator: ballListMediator,
+          index: index);
     }
   }
 }
