@@ -90,4 +90,9 @@ class H001BallsPanelViewModel extends ChangeNotifier
   void onTagListUpdate() {
     notifyListeners();
   }
+
+  @override
+  void onBallListEmpty() {
+
+  }
 }

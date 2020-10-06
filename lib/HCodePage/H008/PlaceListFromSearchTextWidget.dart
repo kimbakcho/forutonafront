@@ -150,7 +150,7 @@ class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
     if (placeListFromSearchTextWidgetListener != null) {
       var location = detailsResponse.result.geometry.location;
       var position = Position(latitude: location.lat, longitude: location.lng);
-      placeListFromSearchTextWidgetListener.onTabPosition(position);
+      placeListFromSearchTextWidgetListener.onPlaceListTabPosition(position);
     }
   }
 
@@ -160,5 +160,5 @@ class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
 }
 
 abstract class PlaceListFromSearchTextWidgetListener {
-  onTabPosition(Position position);
+  onPlaceListTabPosition(Position position);
 }

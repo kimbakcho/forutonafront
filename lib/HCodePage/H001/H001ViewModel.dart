@@ -45,7 +45,7 @@ class H001ViewModel
   }
 
   @override
-  Future<void> search(Position loadPosition) async {
+  Future<void> search(Position loadPosition,double zoomLevel) async {
     ballListMediator.fBallListUpUseCaseInputPort = NoInterestedBallDecorator(
         noInterestBallUseCaseInputPort: noInterestBallUseCaseInputPort,
         fBallListUpUseCaseInputPort: ListUpBallListUpOrderByBI(
@@ -70,5 +70,10 @@ class H001ViewModel
   @override
   void onBallListUpUpdate() {
     notifyListeners();
+  }
+
+  @override
+  void onBallListEmpty() {
+
   }
 }

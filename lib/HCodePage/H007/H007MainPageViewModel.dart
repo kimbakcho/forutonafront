@@ -41,7 +41,7 @@ class H007MainPageViewModel extends ChangeNotifier
 
   onSearch() {
     if(this.h007listener != null ){
-      this.h007listener.onSearchPosition(
+      this.h007listener.onH007SearchPosition(
           Position(
               longitude: currentCameraPosition.target.longitude,
               latitude: currentCameraPosition.target.latitude),context);
@@ -106,7 +106,7 @@ class H007MainPageViewModel extends ChangeNotifier
 
   //FROM H008
   @override
-  onTabPosition(Position position ) async {
+  onPlaceListTabPosition(Position position ) async {
     Navigator.popUntil(context, (route) => route.settings.name == "H007");
     final GoogleMapController controller = await _googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(

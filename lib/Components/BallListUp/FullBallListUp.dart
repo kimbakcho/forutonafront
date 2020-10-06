@@ -72,6 +72,11 @@ class FullBallListUpViewModel extends ChangeNotifier
   onRefreshFirst() async {
     await ballListMediator.searchFirst();
   }
+
+  @override
+  void onBallListEmpty() {
+
+  }
 }
 
 class FullBallListUpController {

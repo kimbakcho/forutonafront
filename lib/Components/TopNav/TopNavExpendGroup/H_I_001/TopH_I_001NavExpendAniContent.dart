@@ -5,9 +5,13 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
+import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import 'TopH_I_ExtendViewAction.dart';
 
 // ignore: camel_case_types
 abstract class TopH_I_001NavExpendAniContentInputPort {
@@ -27,6 +31,7 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
             fluttertoastAdapter: sl(),
             locationAdapter: sl(),
             geoViewSearchManager: sl(),
+            codeMainPageController: sl(),
             geoLocationUtilForeGroundUseCaseInputPort: sl());
   }
 
@@ -36,6 +41,7 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
         value: _topH001NavExpendAniContentViewModel,
         child: Consumer<TopH_I_001NavExpendAniContentViewModel>(
             builder: (_, model, __) {
+          model.context = context;
           return Row(children: <Widget>[
             Expanded(
               child: Container(
@@ -46,7 +52,7 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
                         ? EdgeInsets.fromLTRB(16, 0, 16, 0)
                         : EdgeInsets.all(0),
                     onPressed: () {
-                      model.jumpToMapExtendView(context);
+                      model.jumpToExtendView(context);
                     },
                     child: Text(
                       model.disPlayAddress,
@@ -82,7 +88,10 @@ enum TopH001NavExpendAniContentViewModelExpendState { collapsed, expended }
 
 // ignore: camel_case_types
 class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
-    implements TopH_I_001NavExpendAniContentInputPort, H007Listener {
+    implements
+        TopH_I_001NavExpendAniContentInputPort,
+        H007Listener,
+        PlaceListFromSearchTextWidgetListener {
   final GeoLocationUtilForeGroundUseCaseInputPort
       geoLocationUtilForeGroundUseCaseInputPort;
   final LocationAdapter locationAdapter;
@@ -91,6 +100,10 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
       TopH001NavExpendAniContentViewModelExpendState.expended;
 
   final GeoViewSearchManagerInputPort geoViewSearchManager;
+
+  final CodeMainPageController codeMainPageController;
+
+  BuildContext context;
 
   Position currentSearchPosition;
 
@@ -101,6 +114,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
     @required this.locationAdapter,
     @required this.fluttertoastAdapter,
     @required this.geoViewSearchManager,
+    @required this.codeMainPageController,
   }) {
     init();
   }
@@ -129,7 +143,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
       this.currentSearchPosition = loadPosition;
       this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
           .getPositionAddress(loadPosition);
-      geoViewSearchManager.search(loadPosition);
+      geoViewSearchManager.search(loadPosition,14.46);
       notifyListeners();
     } on FlutterError catch (e) {
       throw e;
@@ -170,22 +184,35 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  jumpToMapExtendView(BuildContext context) async {
+  jumpToExtendView(BuildContext context) async {
     var currentSearchPosition = geoViewSearchManager.currentSearchPosition;
-    this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
-        .getPositionAddress(currentSearchPosition);
-    Navigator.of(context).push(MaterialPageRoute(
-        settings: RouteSettings(name: "H007"),
-        builder: (_) {
-          return H007MainPage(
-              h007listener: this,
-              initPosition: currentSearchPosition,
-              address: searchAddress);
-        }));
+
+    try{
+      this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
+          .getPositionAddress(currentSearchPosition);
+    }on FlutterError catch (ex) {
+      this.searchAddress = ex.message;
+    }
+
+    var extendViewAction = TopH_I_ExtendViewAction.create(
+        codeMainPageController: sl(),
+        searchAddress: searchAddress,
+        h007listener: this,
+        placeListFromSearchTextWidgetListener: this,
+        currentSearchPosition: currentSearchPosition);
+
+    extendViewAction.action(context: context);
   }
 
   @override
-  onSearchPosition(Position position, BuildContext context) {
+  onH007SearchPosition(Position position, BuildContext context) {
+    Navigator.popUntil(context, (route) => route.settings.name == "MAIN");
+    loadPosition(position);
+  }
+
+  //FROM H010
+  @override
+  onPlaceListTabPosition(Position position) {
     Navigator.popUntil(context, (route) => route.settings.name == "MAIN");
     loadPosition(position);
   }

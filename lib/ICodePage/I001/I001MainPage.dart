@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
+import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapBallMarkerFactory.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/FullBallHorizontalPageList.dart';
@@ -10,6 +15,8 @@ import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoVie
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpFromMapArea.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/ICodePage/I001/BallListRefreshBtn.dart';
+import 'package:forutonafront/ICodePage/I001/MyLocationBtn.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -53,34 +60,54 @@ class _I001MainPageState extends State<I001MainPage>
             mapScreenPositionUseCaseInputPort: sl(),
             ballListMediator: sl(),
             mapBallMarkerFactory: sl(),
+            geolocatorAdapter: sl(),
+            geoLocationUtilForeGroundUseCaseInputPort: sl(),
+            fluttertoastAdapter: sl(),
             context: context),
-        child: Consumer<I001MainPageViewModel>(
-          builder: (_, model, __) {
-            return Stack(
-              children: [
-                GoogleMap(
-                  key: model.googleMapKey,
-                  markers: model.ballMarker,
-                  initialCameraPosition: model.googleMapCurrentPosition,
-                  myLocationEnabled: true,
-                  compassEnabled: false,
-                  onMapCreated: model.onMapCreated,
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                ),
-                Positioned(
-                  left: 0,
-                  bottom: 16,
-                  child: FullBallHorizontalPageList(
-                      fullBallHorizontalPageListController:
-                          model.fullBallHorizontalPageListController,
-                      onSelectBall: model.onSelectBall,
-                      ballListMediator: model.ballListMediator),
-                )
-              ],
-            );
-          },
-        ));
+        child: Consumer<I001MainPageViewModel>(builder: (_, model, __) {
+          return Stack(children: [
+            GoogleMap(
+              key: model._googleMapKey,
+              markers: model._ballMarker,
+              initialCameraPosition: model._googleMapCurrentPosition,
+              myLocationEnabled: true,
+              compassEnabled: false,
+              onCameraIdle: model._onCameraIdle,
+              onCameraMove: model.onCameraMove,
+              onMapCreated: model.onMapCreated,
+              myLocationButtonEnabled: false,
+              zoomControlsEnabled: false,
+            ),
+            Positioned(
+              left: 0,
+              bottom: 16,
+              child: FullBallHorizontalPageList(
+                  fullBallHorizontalPageListController:
+                      model._fullBallHorizontalPageListController,
+                  onSelectBall: model.onSelectBall,
+                  ballListMediator: model.ballListMediator),
+            ),
+            model._showRefreshBtn
+                ? Positioned(
+                    top: 16,
+                    left: 16,
+                    child: BallListRefreshBtn(
+                      onRefresh: model._onRefresh,
+                    ),
+                  )
+                : Container(),
+            model._showMyLocationBtn
+                ? Positioned(
+                    top: 16,
+                    right: 16,
+                    child: MyLocationBtn(
+                      onMovetoMyLocation: model._onMovetoMyLocation,
+                    ),
+                  )
+                : Container(),
+            model._isLoading ? CommonLoadingComponent() : Container(),
+          ]);
+        }));
   }
 }
 
@@ -96,38 +123,122 @@ class I001MainPageViewModel extends ChangeNotifier
 
   final MapBallMarkerFactory mapBallMarkerFactory;
 
-  final Set<Marker> ballMarker = Set<Marker>();
+  final Set<Marker> _ballMarker = Set<Marker>();
 
   final FullBallHorizontalPageListController
-      fullBallHorizontalPageListController;
+      _fullBallHorizontalPageListController;
+
+  final FluttertoastAdapter fluttertoastAdapter;
+
+  final GeoLocationUtilForeGroundUseCaseInputPort
+      geoLocationUtilForeGroundUseCaseInputPort;
+
+  final GeolocatorAdapter geolocatorAdapter;
 
   Completer<GoogleMapController> _googleMapController = Completer();
 
-  CameraPosition googleMapCurrentPosition;
+  CameraPosition _googleMapCurrentPosition;
 
-  GlobalKey googleMapKey = GlobalKey();
+  GlobalKey _googleMapKey = GlobalKey();
+
+  bool _showRefreshBtn = false;
+
+  bool _showMyLocationBtn = false;
+
+  int _idleCount = 0;
+
+  Queue<Position> searchQueue = Queue<Position>();
 
   I001MainPageViewModel(
       {this.context,
       this.ballListMediator,
+      this.geolocatorAdapter,
       this.geoViewSearchManagerInputPort,
       this.mapScreenPositionUseCaseInputPort,
+      this.fluttertoastAdapter,
+      this.geoLocationUtilForeGroundUseCaseInputPort,
       this.mapBallMarkerFactory})
-      : fullBallHorizontalPageListController =
+      : _fullBallHorizontalPageListController =
             FullBallHorizontalPageListController() {
     this.init();
+  }
+
+  _onMovetoMyLocation() async {
+    await geoLocationUtilForeGroundUseCaseInputPort.useGpsReq();
+
+    final GoogleMapController controller = await _googleMapController.future;
+
+    var position = await geoLocationUtilForeGroundUseCaseInputPort
+        .getCurrentWithLastPosition();
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(position.latitude, position.longitude), zoom: 14.4746)));
+
+    notifyListeners();
+  }
+
+  _onRefresh() {
+    var target = _googleMapCurrentPosition.target;
+    geoViewSearchManagerInputPort.search(
+        Position(longitude: target.longitude, latitude: target.latitude),_googleMapCurrentPosition.zoom);
+  }
+
+  _onCameraIdle() async {
+    //좌표를 얻기 위해 지도를 그리는 1초 기다림
+    await Future.delayed(Duration(seconds: 1));
+    await viewButtonControl();
+
+    await searchLoadQueue();
+
+    notifyListeners();
+  }
+
+  Future searchLoadQueue() async {
+    while(searchQueue.isNotEmpty){
+      ballListMediator.fBallListUpUseCaseInputPort = FBallListUpFromMapArea(
+          await getAreaPoint(searchQueue.removeLast()),
+          fBallRepository: sl());
+      await ballListMediator.searchFirst();
+      _ballMarker.clear();
+      firstBallSelect();
+      _showRefreshBtn = false;
+      notifyListeners();
+    }
+  }
+
+  Future viewButtonControl() async {
+    if (_idleCount > 0) {
+      _showRefreshBtn = true;
+      var position = geoLocationUtilForeGroundUseCaseInputPort
+          .getCurrentWithLastPositionInMemory();
+      var distanceBetween = await geolocatorAdapter.distanceBetween(
+          position.latitude,
+          position.longitude,
+          _googleMapCurrentPosition.target.latitude,
+          _googleMapCurrentPosition.target.longitude);
+      if (distanceBetween < 10) {
+        _showMyLocationBtn = false;
+      } else {
+        _showMyLocationBtn = true;
+      }
+    }
+    _idleCount++;
+  }
+
+  onCameraMove(CameraPosition cameraPosition) async {
+    _googleMapCurrentPosition = cameraPosition;
   }
 
   onMapCreated(GoogleMapController controller) {
     _googleMapController.complete(controller);
 
     geoViewSearchManagerInputPort
-        .search(geoViewSearchManagerInputPort.currentSearchPosition);
+        .search(geoViewSearchManagerInputPort.currentSearchPosition,14.46);
   }
 
   init() async {
     ballListMediator.registerComponent(this);
-    googleMapCurrentPosition = CameraPosition(
+    _googleMapCurrentPosition = CameraPosition(
         target: LatLng(
             geoViewSearchManagerInputPort.currentSearchPosition.latitude,
             geoViewSearchManagerInputPort.currentSearchPosition.longitude),
@@ -136,13 +247,15 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   @override
-  Future<void> search(Position loadPosition) async {
-    print(loadPosition);
-    ballListMediator.fBallListUpUseCaseInputPort = FBallListUpFromMapArea(
-        await getAreaPoint(loadPosition),
-        fBallRepository: sl());
-    await ballListMediator.searchFirst();
-    firstBallSelect();
+  Future<void> search(Position loadPosition,double zoomLevel) async {
+
+    searchQueue.addFirst(loadPosition);
+
+    final GoogleMapController controller = await _googleMapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(loadPosition.latitude, loadPosition.longitude), zoom: zoomLevel)));
+
+
   }
 
   void firstBallSelect() {
@@ -153,15 +266,17 @@ class I001MainPageViewModel extends ChangeNotifier
 
   Future<BallFromMapAreaReqDto> getAreaPoint(Position centerPosition) async {
     final GoogleMapController controller = await _googleMapController.future;
+
     final RenderBox mapRenderBoxRed =
-        googleMapKey.currentContext.findRenderObject();
+        _googleMapKey.currentContext.findRenderObject();
 
     LatLng southwestPoint =
         await mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
             mapRenderBoxRed,
             controller,
             16,
-            MediaQuery.of(context).size.height - 180);
+            MediaQuery.of(context).size.height - 250);
+
     LatLng northeastPoint =
         await mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
             mapRenderBoxRed,
@@ -179,8 +294,8 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   onSelectBall(FBallResDto fBallResDto) {
-    ballMarker.clear();
-    ballMarker.addAll(_makeMaker(fBallResDto));
+    _ballMarker.clear();
+    _ballMarker.addAll(_makeMaker(fBallResDto));
     notifyListeners();
   }
 
@@ -192,12 +307,16 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   void refreshMapKey() {
-    googleMapKey = GlobalKey();
+    _googleMapKey = GlobalKey();
   }
 
   @override
   void onBallListUpUpdate() {
     notifyListeners();
+  }
+
+  bool get _isLoading {
+    return ballListMediator.isLoading;
   }
 
   Set<Marker> _makeMaker(FBallResDto selectBall) {
@@ -208,12 +327,15 @@ class I001MainPageViewModel extends ChangeNotifier
           element.ballUuid,
           Position(latitude: element.latitude, longitude: element.longitude),
           select: selectBall.ballUuid == element.ballUuid,
-          ballMarkerSize: BallMarkerSize.Small,
-          onTap: (){
-            fullBallHorizontalPageListController.moveToBall(element);
-          }
-      ));
+          ballMarkerSize: BallMarkerSize.Small, onTap: () {
+        _fullBallHorizontalPageListController.moveToBall(element);
+      }));
     });
     return ballMarker;
+  }
+
+  @override
+  void onBallListEmpty() {
+    fluttertoastAdapter.showToast(msg: "여기에는 컨텐츠가 없습니다");
   }
 }

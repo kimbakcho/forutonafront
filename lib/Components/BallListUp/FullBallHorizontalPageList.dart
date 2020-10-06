@@ -55,6 +55,7 @@ class FullBallHorizontalPageList extends StatelessWidget {
 
 class FullBallHorizontalPageListViewModel extends ChangeNotifier
     implements BallListMediatorComponent {
+
   final BallListMediator ballListMediator;
 
   final PageController pageController;
@@ -75,7 +76,7 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
   }
 
   void pageChange(int index) {
-    if (onSelectBall != null) {
+    if (onSelectBall != null && ballListMediator.ballList.length > 0 ) {
       onSelectBall(ballListMediator.ballList[index]);
     }
   }
@@ -110,6 +111,11 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
     var indexWhere = ballListMediator.ballList
         .indexWhere((element) => element.ballUuid == fBallResDto.ballUuid);
     pageController.jumpToPage(indexWhere);
+
+  }
+
+  @override
+  void onBallListEmpty() {
 
   }
 }

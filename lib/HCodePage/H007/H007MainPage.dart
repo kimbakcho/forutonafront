@@ -129,5 +129,5 @@ class H007CenterPoint extends StatelessWidget {
 }
 
 abstract class H007Listener {
-  onSearchPosition(Position position,BuildContext context);
+  onH007SearchPosition(Position position,BuildContext context);
 }

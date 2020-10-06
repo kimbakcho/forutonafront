@@ -2,7 +2,7 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class GeoViewSearchListener {
-  Future<void> search(Position loadPosition);
+  Future<void> search(Position loadPosition,double zoomLevel);
 }
 
 abstract class GeoViewSearchManagerInputPort {
@@ -15,7 +15,7 @@ abstract class GeoViewSearchManagerInputPort {
 
   int getSubscribeSize();
 
-  search(Position loadPosition);
+  search(Position loadPosition,double zoomLevel);
 
   Position currentSearchPosition;
 }
@@ -37,10 +37,10 @@ class GeoViewSearchManager implements GeoViewSearchManagerInputPort {
     return _geoSearchListener.length;
   }
 
-  search(Position loadPosition){
+  search(Position loadPosition,double zoomLevel){
     currentSearchPosition = loadPosition;
     _geoSearchListener.forEach((element) {
-      element.search(loadPosition);
+      element.search(loadPosition,zoomLevel);
     });
   }
 

@@ -36,8 +36,8 @@ void main() {
     geoViewSearchManagerInputPort.subscribe(mockH001Listener);
     Position position = Position(longitude: 127.1,latitude: 37.1);
     //act
-    geoViewSearchManagerInputPort.search(position);
+    geoViewSearchManagerInputPort.search(position,14.46);
     //assert
-    verify(mockH001Listener.search(position));
+    verify(mockH001Listener.search(position,14.46));
   });
 }

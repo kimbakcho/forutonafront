@@ -12,6 +12,8 @@ enum BallListMediatorState {
 abstract class BallListMediatorComponent {
 
   void onBallListUpUpdate();
+
+  void onBallListEmpty();
 }
 
 abstract class BallListMediator {
@@ -86,6 +88,7 @@ class BallListMediatorImpl implements BallListMediator {
       if(_pageCount == 0 && ballList.length == 0){
         currentState = BallListMediatorState.Empty;
       }
+      isLoading = false;
       onPageListUpdate();
       return ;
     }
@@ -100,6 +103,7 @@ class BallListMediatorImpl implements BallListMediator {
 
     if(_pageCount == 0 && ballList.length == 0){
       currentState = BallListMediatorState.Empty;
+      onBallListEmpty();
     }else {
       currentState = BallListMediatorState.HasBall;
     }
@@ -110,6 +114,12 @@ class BallListMediatorImpl implements BallListMediator {
   onPageListUpdate() {
     ballListMediatorComponentList.forEach((element) {
       element.onBallListUpUpdate();
+    });
+  }
+
+  onBallListEmpty(){
+    ballListMediatorComponentList.forEach((element) {
+      element.onBallListEmpty();
     });
   }
 

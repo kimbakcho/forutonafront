@@ -59,7 +59,7 @@ void main() {
         .thenAnswer((realInvocation) async =>
         Position(latitude: 37.2, longitude: 127.2));
     //when
-    await h001viewModel.search(mapPosition);
+    await h001viewModel.search(mapPosition,14.46);
     //then
     verify(mockBallListMediator.searchFirst());
     verify(mockRankingTagListFromBIManager.search(mapPosition));

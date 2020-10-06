@@ -105,7 +105,7 @@ void main() {
     //act
     await topH001NavExpendAniContentViewModel.loadPosition(position);
     //assert
-    verify(mockH001Listener.search(position));
+    verify(mockH001Listener.search(position,14.46));
 
   });
 
