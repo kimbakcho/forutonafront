@@ -7,23 +7,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class AddressSearchHistoryView extends StatelessWidget {
-  final AddressSearchHistoryViewController addressSearchHistoryViewController;
-  final Function(String) onListTapItem;
+import '../../Components/InputSearchBar/InputSearchBar.dart';
 
-  const AddressSearchHistoryView(
-      {Key key, this.addressSearchHistoryViewController,this.onListTapItem})
+class SearchHistoryView extends StatelessWidget {
+  final SearchHistoryViewController searchHistoryViewController;
+  final InputSearchBarListener inputSearchBarListener;
+
+  const SearchHistoryView(
+      {Key key,
+      this.searchHistoryViewController,
+      this.inputSearchBarListener})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) =>
-          AddressSearchHistoryViewModel(
-              addressSearchHistoryViewController:
-              addressSearchHistoryViewController,
-              addressSearchHistoryUseCaseInputPort: sl()),
-      child: Consumer<AddressSearchHistoryViewModel>(
+      create: (_) => SearchHistoryViewModel(
+          searchHistoryViewController: searchHistoryViewController,
+          searchHistoryUseCaseInputPort: sl()),
+      child: Consumer<SearchHistoryViewModel>(
         builder: (_, model, __) {
           return ListView.builder(
               padding: EdgeInsets.all(0),
@@ -34,7 +36,8 @@ class AddressSearchHistoryView extends StatelessWidget {
                   color: Colors.white,
                   child: InkWell(
                     onTap: () {
-                      onListTapItem(model.histories[index].searchText);
+                      inputSearchBarListener
+                          .onSearch(model.histories[index].searchText,context: context);
                     },
                     child: Container(
                         padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
@@ -50,10 +53,9 @@ class AddressSearchHistoryView extends StatelessWidget {
                                         height: 1.4285714285714286,
                                       )))),
                           Container(
-                              margin: EdgeInsets.only(left: 16,right: 16),
+                              margin: EdgeInsets.only(left: 16, right: 16),
                               child: Text(
-                                  DateFormat("yy.MM.dd")
-                                      .format(
+                                  DateFormat("yy.MM.dd").format(
                                       model.histories[index].searchTime),
                                   style: GoogleFonts.notoSans(
                                     fontSize: 14,
@@ -65,19 +67,18 @@ class AddressSearchHistoryView extends StatelessWidget {
                               width: 36,
                               height: 36,
                               child: Material(
-                                color: Colors.white,
+                                  color: Colors.white,
                                   child: InkWell(
                                     onTap: () {
-                                      model.removeHistory(model.histories[index].searchText);
+                                      model.removeHistory(
+                                          model.histories[index].searchText);
                                     },
                                     child: Icon(
                                       ForutonaIcon.removepath,
                                       size: 15,
                                     ),
                                   )))
-                        ])
-
-                    ),
+                        ])),
                   ),
                 );
               });
@@ -87,40 +88,39 @@ class AddressSearchHistoryView extends StatelessWidget {
   }
 }
 
-class AddressSearchHistoryViewModel extends ChangeNotifier {
-  final AddressSearchHistoryUseCaseInputPort
-  addressSearchHistoryUseCaseInputPort;
+class SearchHistoryViewModel extends ChangeNotifier {
+  final SearchHistoryUseCaseInputPort searchHistoryUseCaseInputPort;
 
-  final AddressSearchHistoryViewController addressSearchHistoryViewController;
+  final SearchHistoryViewController searchHistoryViewController;
 
   List<AddressSearchHistoryDto> histories = [];
 
-  AddressSearchHistoryViewModel({this.addressSearchHistoryUseCaseInputPort,
-    this.addressSearchHistoryViewController}) {
-    addressSearchHistoryViewController.addressSearchHistoryViewModel = this;
+  SearchHistoryViewModel(
+      {this.searchHistoryUseCaseInputPort, this.searchHistoryViewController}) {
+    searchHistoryViewController.addressSearchHistoryViewModel = this;
     init();
   }
 
   Future<void> init() async {
-    histories = await addressSearchHistoryUseCaseInputPort.findByAll();
+    histories = await searchHistoryUseCaseInputPort.findByAll();
     notifyListeners();
   }
 
   Future<void> addHistory(String search) async {
-    await addressSearchHistoryUseCaseInputPort.save(search);
-    histories = await addressSearchHistoryUseCaseInputPort.findByAll();
+    await searchHistoryUseCaseInputPort.save(search);
+    histories = await searchHistoryUseCaseInputPort.findByAll();
     notifyListeners();
   }
 
   Future<void> removeHistory(String search) async {
-    await addressSearchHistoryUseCaseInputPort.delete(search);
-    histories = await addressSearchHistoryUseCaseInputPort.findByAll();
+    await searchHistoryUseCaseInputPort.delete(search);
+    histories = await searchHistoryUseCaseInputPort.findByAll();
     notifyListeners();
   }
 }
 
-class AddressSearchHistoryViewController {
-  AddressSearchHistoryViewModel addressSearchHistoryViewModel;
+class SearchHistoryViewController {
+  SearchHistoryViewModel addressSearchHistoryViewModel;
 
   Future<void> addHistory(String text) async {
     if (addressSearchHistoryViewModel != null) {

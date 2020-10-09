@@ -4,14 +4,14 @@ import 'package:forutonafront/Common/AddressSearchHistory/Domain/Value/AddressSe
 import 'package:forutonafront/Common/AddressSearchHistory/Dto/AddressSearchHistoryDto.dart';
 import 'package:injectable/injectable.dart';
 
-abstract class AddressSearchHistoryUseCaseInputPort {
+abstract class SearchHistoryUseCaseInputPort {
   Future<AddressSearchHistoryDto> save(String search);
   Future<void> delete(String search);
   Future<List<AddressSearchHistoryDto>> findByAll();
 }
 
-@LazySingleton(as: AddressSearchHistoryUseCaseInputPort)
-class AddressSearchHistoryUseCase implements AddressSearchHistoryUseCaseInputPort{
+@LazySingleton(as: SearchHistoryUseCaseInputPort)
+class AddressSearchHistoryUseCase implements SearchHistoryUseCaseInputPort{
   final AddressSearchHistoryRepository addressSearchHistoryRepository;
 
   AddressSearchHistoryUseCase({@required this.addressSearchHistoryRepository});

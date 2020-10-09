@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BackButton/BorderCircleBackButton.dart';
 import 'package:provider/provider.dart';
-import '../../Components/AddressInputSearchBar/AddressInputSearchBar.dart';
+import '../../Components/InputSearchBar/InputSearchBar.dart';
 import 'H010MainView.dart';
+import 'SearchHistoryView.dart';
 
 class H010TopSearchBar extends StatelessWidget {
+  final SearchHistoryViewController searchHistoryViewController;
+
+  final InputSearchBarListener inputSearchBarListener;
+
+  const H010TopSearchBar({Key key, this.searchHistoryViewController, this.inputSearchBarListener}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,10 +25,11 @@ class H010TopSearchBar extends StatelessWidget {
           BorderCircleBackButton(),
           SizedBox(width: 16,),
           Expanded(
-            child: AddressInputSearchBar(
+            child: InputSearchBar(
               readOnly: false,
               autoFocusFlag: true,
-              listener: Provider.of<H010MainViewModel>(context),
+              searchHistoryViewController: searchHistoryViewController,
+              inputSearchBarListener: inputSearchBarListener,
               initText: "",
             ),
           )

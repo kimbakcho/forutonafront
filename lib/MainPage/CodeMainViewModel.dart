@@ -17,7 +17,7 @@ abstract class CodeMainViewModelInputPort {
 
 class CodeMainViewModel
     with ChangeNotifier
-    implements CodeMainViewModelInputPort {
+    implements CodeMainViewModelInputPort,CodeMainPageChangeListener {
   Position lastKnownPosition;
 
   String firstAddress = "";
@@ -43,6 +43,7 @@ class CodeMainViewModel
   }
 
   init() async {
+    codeMainPageController.addListener(this);
     topNavBtnMediator.codeMainViewModelInputPort = this;
 
     await geoLocationUtilUseCaseInputPort.useGpsReq();
@@ -133,5 +134,14 @@ class CodeMainViewModel
 
   SwipeGestureRecognizerController get swipeGestureRecognizerController {
     return codeMainPageController.swipeGestureRecognizerController;
+  }
+
+  updatePageRender(){
+    notifyListeners();
+  }
+
+  @override
+  onChangeMainPage() {
+    notifyListeners();
   }
 }

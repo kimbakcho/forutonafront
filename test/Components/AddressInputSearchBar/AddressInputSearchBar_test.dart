@@ -1,16 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
-import 'package:forutonafront/Components/AddressInputSearchBar/AddressInputSearchBar.dart';
+import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
+
 
 import 'package:mockito/mockito.dart';
 
 class MockAddressInputSearchBarListener extends Mock
-    implements AddressInputSearchBarListener {}
+    implements InputSearchBarListener {}
 
 class MockFluttertoastAdapter extends Mock implements FluttertoastAdapter {}
 
 void main() {
-  AddressInputSearchBarViewModel viewModel;
+  InputSearchBarViewModel viewModel;
   MockAddressInputSearchBarListener mockAddressInputSearchBarListener;
   MockFluttertoastAdapter fluttertoastAdapter;
   setUp(() {
@@ -21,28 +22,28 @@ void main() {
     //given
     mockAddressInputSearchBarListener = MockAddressInputSearchBarListener();
     fluttertoastAdapter = MockFluttertoastAdapter();
-    viewModel = AddressInputSearchBarViewModel(
-        listener: mockAddressInputSearchBarListener,
+    viewModel = InputSearchBarViewModel(
+        inputSearchBarListener: mockAddressInputSearchBarListener,
         fluttertoastAdapter: fluttertoastAdapter);
     String searchText = "신도림";
     //when
-    viewModel.addressSearch(searchText);
+    viewModel.onSearch(searchText);
     //then
-    verify(mockAddressInputSearchBarListener.onAddressSearch(searchText));
+    verify(mockAddressInputSearchBarListener.onSearch(searchText));
   });
 
   test('1글자일때 토스트 띄움', () async {
     //given
     mockAddressInputSearchBarListener = MockAddressInputSearchBarListener();
     fluttertoastAdapter = MockFluttertoastAdapter();
-    viewModel = AddressInputSearchBarViewModel(
-        listener: mockAddressInputSearchBarListener,
+    viewModel = InputSearchBarViewModel(
+        inputSearchBarListener: mockAddressInputSearchBarListener,
         fluttertoastAdapter: fluttertoastAdapter);
     String searchText = "신";
     //when
-    viewModel.addressSearch(searchText);
+    viewModel.onSearch(searchText);
     //then
-    verifyNever(mockAddressInputSearchBarListener.onAddressSearch(searchText));
+    verifyNever(mockAddressInputSearchBarListener.onSearch(searchText));
     verify(fluttertoastAdapter.showToast(msg: anyNamed('msg')));
   });
 
@@ -50,9 +51,9 @@ void main() {
     //given
     mockAddressInputSearchBarListener = MockAddressInputSearchBarListener();
     fluttertoastAdapter = MockFluttertoastAdapter();
-    viewModel = AddressInputSearchBarViewModel(
+    viewModel = InputSearchBarViewModel(
       initText: "TEST",
-        listener: mockAddressInputSearchBarListener,
+        inputSearchBarListener: mockAddressInputSearchBarListener,
         fluttertoastAdapter: fluttertoastAdapter);
     //when
 

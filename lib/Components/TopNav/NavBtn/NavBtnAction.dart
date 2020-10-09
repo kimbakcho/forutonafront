@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
+import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:forutonafront/MainPage/CodeMainpage.dart';
+import 'package:provider/provider.dart';
 
 abstract class NavBtnAction {
   onOpenClick();
@@ -7,14 +10,13 @@ abstract class NavBtnAction {
 }
 
 class H001NavBtnAction implements NavBtnAction{
-
+  final BuildContext context;
   final GeoViewSearchManagerInputPort geoViewSearchManager;
 
-  H001NavBtnAction({@required this.geoViewSearchManager});
+  H001NavBtnAction({@required this.geoViewSearchManager,@required this.context});
 
   @override
   onCloseClick() {
-    // geoViewSearchManager.search(geoViewSearchManager.currentSearchPosition);
   }
 
   @override

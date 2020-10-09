@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/AddressSearchHistory/Domain/UseCase/AddressSearchHistoryUseCaseInputPort.dart';
-import 'package:forutonafront/HCodePage/H010/AddressSearchHistoryView.dart';
+import 'package:forutonafront/HCodePage/H010/SearchHistoryView.dart';
 import 'package:mockito/mockito.dart';
 
 
-class MockAddressSearchHistoryUseCaseInputPort extends Mock implements AddressSearchHistoryUseCaseInputPort{}
+class MockAddressSearchHistoryUseCaseInputPort extends Mock implements SearchHistoryUseCaseInputPort{}
 void main(){
 
-  AddressSearchHistoryViewModel addressSearchHistoryViewModel;
+  SearchHistoryViewModel addressSearchHistoryViewModel;
 
   MockAddressSearchHistoryUseCaseInputPort mockAddressSearchHistoryUseCaseInputPort;
 
@@ -19,11 +19,11 @@ void main(){
     //given
 
     //when
-    AddressSearchHistoryViewController addressSearchHistoryViewController = AddressSearchHistoryViewController();
+    SearchHistoryViewController addressSearchHistoryViewController = SearchHistoryViewController();
     mockAddressSearchHistoryUseCaseInputPort = MockAddressSearchHistoryUseCaseInputPort();
-    addressSearchHistoryViewModel = AddressSearchHistoryViewModel(
-        addressSearchHistoryViewController: addressSearchHistoryViewController,
-        addressSearchHistoryUseCaseInputPort: mockAddressSearchHistoryUseCaseInputPort
+    addressSearchHistoryViewModel = SearchHistoryViewModel(
+        searchHistoryViewController: addressSearchHistoryViewController,
+        searchHistoryUseCaseInputPort: mockAddressSearchHistoryUseCaseInputPort
     );
 
     //then

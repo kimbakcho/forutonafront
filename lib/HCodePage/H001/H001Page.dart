@@ -32,7 +32,6 @@ class H001Page extends StatelessWidget {
                                   model.rankingTagListFromBIManager,
                               ballListMediator: model.ballListMediator),
                         ),
-                        BottomNavigation()
                       ],
                     ),
                     model.ballListMediator.isLoading

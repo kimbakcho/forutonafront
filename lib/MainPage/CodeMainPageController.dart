@@ -7,11 +7,16 @@ abstract class CodeMainPageController{
   PageController pageController;
   CodeState currentState;
   moveToPage(CodeState pageCode);
+  addListener(CodeMainPageChangeListener codeMainPageChangeListener);
+  removeListener(CodeMainPageChangeListener codeMainPageChangeListener);
   SwipeGestureRecognizerController swipeGestureRecognizerController;
+  updateChangeListener();
 }
 
 @LazySingleton(as: CodeMainPageController)
 class CodeMainPageControllerImpl implements CodeMainPageController{
+
+  List<CodeMainPageChangeListener> _codeMainPageChangeListener = [];
 
   @override
   CodeState currentState = CodeState.H001CODE;
@@ -23,6 +28,13 @@ class CodeMainPageControllerImpl implements CodeMainPageController{
   SwipeGestureRecognizerController swipeGestureRecognizerController;
 
   CodeMainPageControllerImpl({@required this.swipeGestureRecognizerController});
+
+  addListener(CodeMainPageChangeListener codeMainPageChangeListener){
+    this._codeMainPageChangeListener.add(codeMainPageChangeListener);
+  }
+  removeListener(CodeMainPageChangeListener codeMainPageChangeListener){
+    this._codeMainPageChangeListener.remove(codeMainPageChangeListener);
+  }
 
   @override
   moveToPage(CodeState pageCode) {
@@ -49,11 +61,15 @@ class CodeMainPageControllerImpl implements CodeMainPageController{
         pageController.jumpToPage(4);
         break;
     }
+    updateChangeListener();
+  }
+  updateChangeListener(){
+    _codeMainPageChangeListener.forEach((element) {
+      element.onChangeMainPage();
+    });
   }
 
-
-
-
-
-
+}
+abstract class CodeMainPageChangeListener {
+  onChangeMainPage();
 }

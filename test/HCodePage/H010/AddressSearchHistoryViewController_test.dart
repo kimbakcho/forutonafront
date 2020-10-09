@@ -1,24 +1,26 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/HCodePage/H010/AddressSearchHistoryView.dart';
+import 'package:forutonafront/HCodePage/H010/SearchHistoryView.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAddressSearchHistoryViewModel extends Mock implements AddressSearchHistoryViewModel{}
+
+class MockAddressSearchHistoryViewModel extends Mock implements SearchHistoryViewModel{}
 
 void main () {
 
-  AddressSearchHistoryViewController addressSearchHistoryViewController;
-  MockAddressSearchHistoryViewModel mockAddressSearchHistoryViewModel;
+  SearchHistoryViewController searchHistoryViewController;
+  MockAddressSearchHistoryViewModel searchHistoryViewModel;
   setUp((){
-    mockAddressSearchHistoryViewModel = MockAddressSearchHistoryViewModel();
-    addressSearchHistoryViewController = AddressSearchHistoryViewController();
-    addressSearchHistoryViewController.addressSearchHistoryViewModel =  mockAddressSearchHistoryViewModel;
+    searchHistoryViewController = SearchHistoryViewController();
+
+    searchHistoryViewModel = MockAddressSearchHistoryViewModel();
+
   });
   test('컨트롤러를 통해 ViewModel AdHistory 실행', () async {
     //given
-
+    searchHistoryViewController.addressSearchHistoryViewModel = searchHistoryViewModel;
     //when
-    await addressSearchHistoryViewController.addHistory("test");
+    await searchHistoryViewController.addHistory("test");
     //then
-    verify(mockAddressSearchHistoryViewModel.addHistory("test"));
+    verify(searchHistoryViewModel.addHistory("test"));
   });
 }

@@ -279,7 +279,7 @@ GetIt $initGetIt(
   gh.lazySingleton<AddressSearchHistoryRepository>(() =>
       AddressSearchHistoryRepositoryImpl(
           sharedPreferencesAdapter: get<SharedPreferencesAdapter>()));
-  gh.lazySingleton<AddressSearchHistoryUseCaseInputPort>(() =>
+  gh.lazySingleton<SearchHistoryUseCaseInputPort>(() =>
       AddressSearchHistoryUseCase(
           addressSearchHistoryRepository:
               get<AddressSearchHistoryRepository>()));

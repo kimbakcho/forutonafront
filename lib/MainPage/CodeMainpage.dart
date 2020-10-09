@@ -12,6 +12,7 @@ import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../ServiceLocator/ServiceLocator.dart';
+import 'BottomNavigation.dart';
 
 class CodeMainPage extends StatefulWidget {
   CodeMainPage({Key key}) : super(key: key);
@@ -20,7 +21,8 @@ class CodeMainPage extends StatefulWidget {
   _CodeMainPageState createState() => _CodeMainPageState();
 }
 
-class _CodeMainPageState extends State<CodeMainPage>     with AutomaticKeepAliveClientMixin{
+class _CodeMainPageState extends State<CodeMainPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
@@ -62,7 +64,8 @@ class _CodeMainPageState extends State<CodeMainPage>     with AutomaticKeepAlive
                     child: TopNavBar()),
                 Expanded(
                   child: SwipeGestureRecognizer(
-                    swipeGestureRecognizerController: model.swipeGestureRecognizerController,
+                    swipeGestureRecognizerController:
+                        model.swipeGestureRecognizerController,
                     onSwipeRight: () {
                       model.swipeRight();
                     },
@@ -84,7 +87,8 @@ class _CodeMainPageState extends State<CodeMainPage>     with AutomaticKeepAlive
                           // GCodeMainPage()
                         ]),
                   ),
-                )
+                ),
+                BottomNavigation()
               ],
             )
           ]),

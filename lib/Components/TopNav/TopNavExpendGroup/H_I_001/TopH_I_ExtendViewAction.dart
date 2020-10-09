@@ -2,7 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
+import 'package:forutonafront/HCodePage/H008/H008MainView.dart';
 import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
 import 'package:forutonafront/HCodePage/H010/H010MainView.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
@@ -14,22 +16,23 @@ abstract class TopH_I_ExtendViewAction {
 
   factory TopH_I_ExtendViewAction.create(
       {CodeMainPageController codeMainPageController,
-        PlaceListFromSearchTextWidgetListener placeListFromSearchTextWidgetListener,
-        H007Listener h007listener, Position currentSearchPosition, String searchAddress}){
-    if(codeMainPageController.currentState == CodeState.H001CODE){
+      PlaceListFromSearchTextWidgetListener
+          placeListFromSearchTextWidgetListener,
+      H007Listener h007listener,
+      Position currentSearchPosition,
+      String searchAddress}) {
+    if (codeMainPageController.currentState == CodeState.H001CODE) {
       return H001ExtendViewAction(
-        currentSearchPosition: currentSearchPosition,
-        h007listener: h007listener,
-        searchAddress: searchAddress
-      );
-    }else if(codeMainPageController.currentState == CodeState.I001CODE){
+          currentSearchPosition: currentSearchPosition,
+          h007listener: h007listener,
+          searchAddress: searchAddress);
+    } else if (codeMainPageController.currentState == CodeState.I001CODE) {
       return I001ExtendViewAction(
-        placeListFromSearchTextWidgetListener: placeListFromSearchTextWidgetListener
-      );
-    }else {
+          placeListFromSearchTextWidgetListener:
+              placeListFromSearchTextWidgetListener);
+    } else {
       throw FlutterError("TopH_I_ExtendViewAction not Impl");
     }
-
   }
 }
 
@@ -54,10 +57,10 @@ class H001ExtendViewAction implements TopH_I_ExtendViewAction {
   }
 }
 
-
-class I001ExtendViewAction implements TopH_I_ExtendViewAction {
-
-  final PlaceListFromSearchTextWidgetListener placeListFromSearchTextWidgetListener;
+class I001ExtendViewAction
+    implements TopH_I_ExtendViewAction, InputSearchBarListener {
+  final PlaceListFromSearchTextWidgetListener
+      placeListFromSearchTextWidgetListener;
 
   I001ExtendViewAction({this.placeListFromSearchTextWidgetListener});
 
@@ -67,9 +70,18 @@ class I001ExtendViewAction implements TopH_I_ExtendViewAction {
         settings: RouteSettings(name: "H010"),
         builder: (_) {
           return H010MainView(
-            placeListFromSearchTextWidgetListener: placeListFromSearchTextWidgetListener,
+            inputSearchBarListener: this,
           );
         }));
   }
 
+  @override
+  Future<void> onSearch(String search, {BuildContext context}) async {
+    Navigator.of(context).push(MaterialPageRoute(
+        settings: RouteSettings(name: "/H008"),
+        builder: (_) => H008MainView(
+            initSearchText: search,
+            placeListFromSearchTextWidgetListener:
+                placeListFromSearchTextWidgetListener)));
+  }
 }

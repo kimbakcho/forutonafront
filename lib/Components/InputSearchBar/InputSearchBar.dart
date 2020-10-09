@@ -3,26 +3,31 @@ import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dar
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
-class AddressInputSearchBar extends StatelessWidget {
-  final AddressInputSearchBarListener listener;
+import '../../HCodePage/H010/SearchHistoryView.dart';
+
+class InputSearchBar extends StatelessWidget {
+  final InputSearchBarListener inputSearchBarListener;
   final bool autoFocusFlag;
   final String initText;
   final bool readOnly;
+  final SearchHistoryViewController searchHistoryViewController;
 
-  const AddressInputSearchBar(
-      {Key key, this.listener, this.autoFocusFlag, this.initText, this.readOnly})
+  const InputSearchBar(
+      {Key key, this.inputSearchBarListener, this.autoFocusFlag, this.initText, this.readOnly, this.searchHistoryViewController})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) =>
-            AddressInputSearchBarViewModel(
+            InputSearchBarViewModel(
                 initText: initText,
-                listener: listener,
+                context: context,
+                inputSearchBarListener: inputSearchBarListener,
+                searchHistoryViewController: searchHistoryViewController,
                 fluttertoastAdapter: sl()),
         child:
-        Consumer<AddressInputSearchBarViewModel>(builder: (_, model, __) {
+        Consumer<InputSearchBarViewModel>(builder: (_, model, __) {
           return Stack(children: [
             Container(
               height: 36,
@@ -35,7 +40,7 @@ class AddressInputSearchBar extends StatelessWidget {
                 keyboardType: TextInputType.streetAddress,
                 enableSuggestions: false,
                 onSubmitted: (String search) {
-                  model.addressSearch(search);
+                  model.onSearch(search);
                 },
                 autocorrect: false,
                 cursorColor: Color(0xff707070),
@@ -50,7 +55,8 @@ class AddressInputSearchBar extends StatelessWidget {
                         borderSide: BorderSide(color: Color(0xff3497FD)),
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: readOnly ? Color(0xffF6F6F6): Color(0xff3497FD)),
+                        borderSide: BorderSide(color: readOnly ? Color(
+                            0xffF6F6F6) : Color(0xff3497FD)),
                         borderRadius: BorderRadius.all(Radius.circular(15.0)))),
               ),
             ),
@@ -78,15 +84,17 @@ class AddressInputSearchBar extends StatelessWidget {
   }
 }
 
-class AddressInputSearchBarViewModel extends ChangeNotifier {
-  final AddressInputSearchBarListener listener;
+class InputSearchBarViewModel extends ChangeNotifier {
+  final InputSearchBarListener inputSearchBarListener;
   final TextEditingController textEditingController;
   final FluttertoastAdapter fluttertoastAdapter;
   final String initText;
+  final SearchHistoryViewController searchHistoryViewController;
+  final BuildContext context;
 
 
-  AddressInputSearchBarViewModel(
-      {this.fluttertoastAdapter, this.listener, this.initText})
+  InputSearchBarViewModel(
+      {this.fluttertoastAdapter, this.inputSearchBarListener, this.context, this.initText, this.searchHistoryViewController})
       : textEditingController = TextEditingController() {
     textEditingController.text = initText;
     onChangeText(textEditingController.text);
@@ -103,12 +111,17 @@ class AddressInputSearchBarViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addressSearch(String searchText) {
-    if(listener == null){
-      return ;
+  void onSearch(String searchText) {
+    if (inputSearchBarListener == null) {
+      return;
     }
     if (searchText.length >= 2) {
-      listener.onAddressSearch(searchText);
+      if (searchHistoryViewController != null) {
+        searchHistoryViewController.addHistory(searchText);
+      }
+      if (inputSearchBarListener != null) {
+        inputSearchBarListener.onSearch(searchText, context:context);
+      }
     } else {
       fluttertoastAdapter.showToast(msg: '2글자 이상 입력하세요.');
     }
@@ -119,6 +132,6 @@ class AddressInputSearchBarViewModel extends ChangeNotifier {
   }
 }
 
-abstract class AddressInputSearchBarListener {
-  Future<void> onAddressSearch(String search);
+abstract class InputSearchBarListener {
+  Future<void> onSearch(String search, {BuildContext context});
 }

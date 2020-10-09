@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Components/AddressInputSearchBar/AddressInputSearchBar.dart';
+
 import 'package:forutonafront/Components/BackButton/BorderCircleBackButton.dart';
+import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 
 class H008TopSearchBar extends StatelessWidget {
 
@@ -21,10 +22,11 @@ class H008TopSearchBar extends StatelessWidget {
           BorderCircleBackButton(),
           SizedBox(width: 16,),
           Expanded(
-            child: AddressInputSearchBar(
+            child: InputSearchBar(
               readOnly: true,
               autoFocusFlag: false,
-              listener: null,
+              inputSearchBarListener: null,
+              searchHistoryViewController: null,
               initText: this.initText,
             ),
           )

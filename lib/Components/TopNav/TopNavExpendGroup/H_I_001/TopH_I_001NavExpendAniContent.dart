@@ -6,7 +6,6 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
-import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +30,6 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
             fluttertoastAdapter: sl(),
             locationAdapter: sl(),
             geoViewSearchManager: sl(),
-            codeMainPageController: sl(),
             geoLocationUtilForeGroundUseCaseInputPort: sl());
   }
 
@@ -101,8 +99,6 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
 
   final GeoViewSearchManagerInputPort geoViewSearchManager;
 
-  final CodeMainPageController codeMainPageController;
-
   BuildContext context;
 
   Position currentSearchPosition;
@@ -114,7 +110,6 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
     @required this.locationAdapter,
     @required this.fluttertoastAdapter,
     @required this.geoViewSearchManager,
-    @required this.codeMainPageController,
   }) {
     init();
   }
