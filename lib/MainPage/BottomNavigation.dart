@@ -6,6 +6,8 @@ import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
+import 'KPageNavBtn.dart';
+
 class BottomNavigation extends StatefulWidget {
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
@@ -27,7 +29,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       flex: 1,
                       child: FlatButton(
                           onPressed: () {
-                            model._movetoPage(CodeState.H001CODE);
+                            model._movePageFromTo(CodeState.H001CODE);
                           },
                           child: Icon(
                             Icons.home,
@@ -37,16 +39,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           ))),
                   Expanded(
                       flex: 1,
-                      child: FlatButton(
-                          onPressed: () {
-                            model._movetoPage(CodeState.H003CODE);
-                          },
-                          child: Icon(
-                            Icons.search,
-                            color: model._currentPageState == CodeState.H003CODE
-                                ? Color(0xff454F63)
-                                : Color(0xffE4E7E8),
-                          ))),
+                      child: KPageNavBtn()),
                   Expanded(
                       flex: 1,
                       child:
@@ -55,7 +48,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       flex: 1,
                       child: FlatButton(
                           onPressed: () {
-                            model._movetoPage(CodeState.X001CODE);
+                            model._movePageFromTo(CodeState.X001CODE);
                           },
                           child: Icon(
                             ForutonaIcon.officialchannel,
@@ -67,7 +60,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       flex: 1,
                       child: FlatButton(
                           onPressed: () {
-                            model._movetoPage(CodeState.X002CODE);
+                            model._movePageFromTo(CodeState.X002CODE);
                           },
                           child: Icon(
                             ForutonaIcon.snsservicemenu,
@@ -95,9 +88,17 @@ class BottomNavigationViewModel extends ChangeNotifier {
 
   BottomNavigationViewModel({this.codeMainPageController, this.context});
 
-  _movetoPage(CodeState codeState) {
-    codeMainPageController.moveToPage(codeState);
+  _movePageFromTo(CodeState codeState) {
+    codeMainPageController.movePageFromTo(
+      topTo: codeState,
+      topFrom: codeMainPageController.currentState,
+      mainTo: codeState
+    );
     notifyListeners();
+  }
+
+  jumpToPage(){
+
   }
 
   CodeState get _currentPageState {

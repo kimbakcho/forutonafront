@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/KCodePage/K001/K001PageViewModel.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class K001Page extends StatefulWidget {
+import 'KT001PageViewModel.dart';
+
+class KT001Page extends StatefulWidget {
   @override
-  _K001PageState createState() => _K001PageState();
+  _KT001PageState createState() => _KT001PageState();
 }
 
-class _K001PageState extends State<K001Page> {
+class _KT001PageState extends State<KT001Page> {
 
-  K001PageViewModel k001pageViewModel;
+  KT001PageViewModel k001pageViewModel;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
@@ -74,7 +76,7 @@ class _K001PageState extends State<K001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<K001PageViewModel>().proposalOnServiceMaxDraw}",
+                  "${context.watch<KT001PageViewModel>().proposalOnServiceMaxDraw}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -91,7 +93,7 @@ class _K001PageState extends State<K001Page> {
                 ),
                 TextSpan(
                   text:
-                  context.watch<K001PageViewModel>().proposalOnServicePrize,
+                  context.watch<KT001PageViewModel>().proposalOnServicePrize,
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -102,7 +104,7 @@ class _K001PageState extends State<K001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<K001PageViewModel>().proposalOnServiceLotteryMonth}",
+                  "${context.watch<KT001PageViewModel>().proposalOnServiceLotteryMonth}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -113,7 +115,7 @@ class _K001PageState extends State<K001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<K001PageViewModel>().proposalOnServiceLotteryDay}",
+                  "${context.watch<KT001PageViewModel>().proposalOnServiceLotteryDay}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -135,7 +137,7 @@ class _K001PageState extends State<K001Page> {
             height: 36.0,
             child: FlatButton(
                 onPressed: () {
-                  context.read<K001PageViewModel>().proposalOnServiceClick();
+                  context.read<KT001PageViewModel>().proposalOnServiceClick();
 
                 },
                 child: Text(
@@ -197,7 +199,7 @@ class _K001PageState extends State<K001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<K001PageViewModel>().errorReportMaxDraw}",
+                  "${context.watch<KT001PageViewModel>().errorReportMaxDraw}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -211,7 +213,7 @@ class _K001PageState extends State<K001Page> {
                   ),
                 ),
                 TextSpan(
-                  text: context.watch<K001PageViewModel>().errorReportPrize,
+                  text: context.watch<KT001PageViewModel>().errorReportPrize,
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -226,7 +228,7 @@ class _K001PageState extends State<K001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<K001PageViewModel>().errorReportLotteryMonth}",
+                  "${context.watch<KT001PageViewModel>().errorReportLotteryMonth}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -241,7 +243,7 @@ class _K001PageState extends State<K001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<K001PageViewModel>().errorReportLotteryDay}",
+                  "${context.watch<KT001PageViewModel>().errorReportLotteryDay}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -267,7 +269,7 @@ class _K001PageState extends State<K001Page> {
                 height: 36.0,
                 child: FlatButton(
                   onPressed: () {
-                    context.read<K001PageViewModel>().errorReportSurveyClick();
+                    context.read<KT001PageViewModel>().errorReportSurveyClick();
                   },
                   child: Text(
                     '오류신고',
@@ -323,7 +325,7 @@ class _K001PageState extends State<K001Page> {
               child: FlatButton(
                   onPressed: () {
                     context
-                        .read<K001PageViewModel>()
+                        .read<KT001PageViewModel>()
                         .inquireAboutAnythingClick();
                   },
                   child: SizedBox(

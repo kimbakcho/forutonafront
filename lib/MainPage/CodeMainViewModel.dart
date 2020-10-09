@@ -3,7 +3,6 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
-import 'package:forutonafront/Components/TopNav/TopNavRouterType.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
@@ -43,6 +42,7 @@ class CodeMainViewModel
   }
 
   init() async {
+
     codeMainPageController.addListener(this);
     topNavBtnMediator.codeMainViewModelInputPort = this;
 
@@ -87,45 +87,37 @@ class CodeMainViewModel
 
   void swipeRight() async {
     if (codeMainPageController.currentState == CodeState.H003CODE) {
-      _movePageFromTo(
+      codeMainPageController.movePageFromTo(
           mainTo: CodeState.H001CODE,
           topFrom: CodeState.H003CODE,
           topTo: CodeState.H001CODE);
     } else if (codeMainPageController.currentState == CodeState.X001CODE) {
-      _movePageFromTo(
+      codeMainPageController.movePageFromTo(
           mainTo: CodeState.H003CODE,
           topFrom: CodeState.X001CODE,
           topTo: CodeState.H003CODE);
     } else if (codeMainPageController.currentState == CodeState.X002CODE) {
-      _movePageFromTo(
+      codeMainPageController.movePageFromTo(
           mainTo: CodeState.X001CODE,
           topFrom: CodeState.X002CODE,
           topTo: CodeState.X001CODE);
     }
   }
 
-  _movePageFromTo(
-      {CodeState mainTo,
-      CodeState topFrom,
-        CodeState topTo}) async {
-    await topNavBtnMediator.openNavList(navRouterType: topFrom);
-    codeMainPageController.moveToPage(mainTo);
-    topNavBtnMediator.closeNavList(navRouterType: topTo);
-  }
 
   void swipeLeft() async {
     if (codeMainPageController.currentState == CodeState.H001CODE) {
-      _movePageFromTo(
+      codeMainPageController.movePageFromTo(
           mainTo: CodeState.H003CODE,
           topFrom: CodeState.H001CODE,
           topTo: CodeState.H003CODE);
     } else if (codeMainPageController.currentState == CodeState.H003CODE) {
-      _movePageFromTo(
+      codeMainPageController.movePageFromTo(
           mainTo: CodeState.X001CODE,
           topFrom: CodeState.H003CODE,
           topTo: CodeState.X001CODE);
     } else if (codeMainPageController.currentState == CodeState.X001CODE) {
-      _movePageFromTo(
+      codeMainPageController.movePageFromTo(
           mainTo: CodeState.X002CODE,
           topFrom: CodeState.X001CODE,
           topTo: CodeState.X002CODE);

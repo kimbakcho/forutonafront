@@ -10,10 +10,10 @@ abstract class NavBtnAction {
 }
 
 class H001NavBtnAction implements NavBtnAction{
-  final BuildContext context;
+
   final GeoViewSearchManagerInputPort geoViewSearchManager;
 
-  H001NavBtnAction({@required this.geoViewSearchManager,@required this.context});
+  H001NavBtnAction({@required this.geoViewSearchManager});
 
   @override
   onCloseClick() {

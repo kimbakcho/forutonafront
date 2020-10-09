@@ -13,7 +13,8 @@ void main () {
   setUp((){
     mockSwipeGestureRecognizerController = MockSwipeGestureRecognizerController();
     codeMainPageController = CodeMainPageControllerImpl(
-      swipeGestureRecognizerController: mockSwipeGestureRecognizerController
+      swipeGestureRecognizerController: mockSwipeGestureRecognizerController,
+          topNavBtnMediator: null
     );
 
   });

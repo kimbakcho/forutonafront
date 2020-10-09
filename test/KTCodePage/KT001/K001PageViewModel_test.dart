@@ -5,7 +5,8 @@ import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorRepor
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkOutputPort.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
-import 'package:forutonafront/KCodePage/K001/K001PageViewModel.dart';
+import 'package:forutonafront/KTCodePage/KT001/KT001PageViewModel.dart';
+
 import 'package:mockito/mockito.dart';
 
 class MockInquireAboutAnythingUseCase extends Mock
@@ -30,7 +31,7 @@ void main() {
   MockGoogleProposalOnServiceSurveyUseCase
       mockGoogleProposalOnServiceSurveyUseCase;
 
-  K001PageViewModel k001pageViewModel;
+  KT001PageViewModel kt001pageViewModel;
   setUp(() {
     mockInquireAboutAnythingUseCase = MockInquireAboutAnythingUseCase();
 
@@ -39,7 +40,7 @@ void main() {
     mockGoogleProposalOnServiceSurveyUseCase =
         MockGoogleProposalOnServiceSurveyUseCase();
 
-    k001pageViewModel = K001PageViewModel(
+    kt001pageViewModel = KT001PageViewModel(
         inquireAboutAnythingUseCase: mockInquireAboutAnythingUseCase,
         androidIntentAdapter: mockAndroidIntentAdapter,
         errorReportSurvey: mockGoogleSurveyErrorReportUseCase,
@@ -49,17 +50,17 @@ void main() {
   test('카카오톡 오픈 링크 URL 요청', () async {
     //arrange
     //act
-    k001pageViewModel.inquireAboutAnythingClick();
+    kt001pageViewModel.inquireAboutAnythingClick();
     //assert
     verify(mockInquireAboutAnythingUseCase
-        .reqOpenLinkTalk(k001pageViewModel));
+        .reqOpenLinkTalk(kt001pageViewModel));
   });
 
   test('카카오톡 오픈 Url Intent 요청 메소드 실행 검증', () async {
     //arrange
 
     //act
-    k001pageViewModel.openKakaoOpenTalk("test");
+    kt001pageViewModel.openKakaoOpenTalk("test");
     //assert
     verify(mockAndroidIntentAdapter.createIntent(
         action: "action_view", data: "test"));
@@ -69,16 +70,16 @@ void main() {
     //arrange
 
     //act
-    k001pageViewModel.errorReportSurveyClick();
+    kt001pageViewModel.errorReportSurveyClick();
     //assert
-    verify(mockGoogleSurveyErrorReportUseCase.reqOpenGoogleSurvey(k001pageViewModel));
+    verify(mockGoogleSurveyErrorReportUseCase.reqOpenGoogleSurvey(kt001pageViewModel));
   });
 
   test('오류신고 Url Intent 출력시 Intent 실행 검증 ', () async {
     //arrange
 
     //act
-    k001pageViewModel.openGoogleSurvey("test");
+    kt001pageViewModel.openGoogleSurvey("test");
     //assert
     //assert
     verify(mockAndroidIntentAdapter.createIntent(
@@ -89,16 +90,16 @@ void main() {
     //arrange
 
     //act
-    k001pageViewModel.proposalOnServiceClick();
+    kt001pageViewModel.proposalOnServiceClick();
     //assert
-    verify(mockGoogleProposalOnServiceSurveyUseCase.reqOpenGoogleSurvey(k001pageViewModel));
+    verify(mockGoogleProposalOnServiceSurveyUseCase.reqOpenGoogleSurvey(kt001pageViewModel));
   });
 
   test('서비스 의견 제안하기 버튼 클릭시 Url Intent 출력시 Intent 실행 검증 ', () async {
     //arrange
 
     //act
-    k001pageViewModel.openGoogleSurvey("service");
+    kt001pageViewModel.openGoogleSurvey("service");
     //assert
     //assert
     verify(mockAndroidIntentAdapter.createIntent(

@@ -5,13 +5,13 @@ import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseG
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkOutputPort.dart';
 
-class K001PageViewModel with ChangeNotifier implements BaseOpenTalkOutputPort,BaseGoogleSurveyOutput {
+class KT001PageViewModel with ChangeNotifier implements BaseOpenTalkOutputPort,BaseGoogleSurveyOutput {
   final BaseOpenTalkInputPort _inquireAboutAnythingUseCase;
   final AndroidIntentAdapter _androidIntentAdapter;
   final BaseGoogleSurveyInputPort _errorReportSurvey;
   final BaseGoogleSurveyInputPort _proposalOnServiceSurvey;
 
-  K001PageViewModel({
+  KT001PageViewModel({
     @required BaseOpenTalkInputPort inquireAboutAnythingUseCase,
     @required AndroidIntentAdapter androidIntentAdapter,
     @required BaseGoogleSurveyInputPort errorReportSurvey,

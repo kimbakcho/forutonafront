@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
+import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 import 'package:injectable/injectable.dart';
 
-abstract class CodeMainPageController{
+abstract class CodeMainPageController {
   PageController pageController;
   CodeState currentState;
+
+  movePageFromTo({CodeState mainTo, CodeState topFrom, CodeState topTo});
+
   moveToPage(CodeState pageCode);
+
   addListener(CodeMainPageChangeListener codeMainPageChangeListener);
+
   removeListener(CodeMainPageChangeListener codeMainPageChangeListener);
+
   SwipeGestureRecognizerController swipeGestureRecognizerController;
+
   updateChangeListener();
 }
 
 @LazySingleton(as: CodeMainPageController)
-class CodeMainPageControllerImpl implements CodeMainPageController{
-
+class CodeMainPageControllerImpl implements CodeMainPageController {
   List<CodeMainPageChangeListener> _codeMainPageChangeListener = [];
 
   @override
@@ -27,12 +34,17 @@ class CodeMainPageControllerImpl implements CodeMainPageController{
   @override
   SwipeGestureRecognizerController swipeGestureRecognizerController;
 
-  CodeMainPageControllerImpl({@required this.swipeGestureRecognizerController});
+  TopNavBtnMediator topNavBtnMediator;
 
-  addListener(CodeMainPageChangeListener codeMainPageChangeListener){
+  CodeMainPageControllerImpl(
+      {@required this.swipeGestureRecognizerController,
+      @required this.topNavBtnMediator});
+
+  addListener(CodeMainPageChangeListener codeMainPageChangeListener) {
     this._codeMainPageChangeListener.add(codeMainPageChangeListener);
   }
-  removeListener(CodeMainPageChangeListener codeMainPageChangeListener){
+
+  removeListener(CodeMainPageChangeListener codeMainPageChangeListener) {
     this._codeMainPageChangeListener.remove(codeMainPageChangeListener);
   }
 
@@ -63,13 +75,20 @@ class CodeMainPageControllerImpl implements CodeMainPageController{
     }
     updateChangeListener();
   }
-  updateChangeListener(){
+
+  updateChangeListener() {
     _codeMainPageChangeListener.forEach((element) {
       element.onChangeMainPage();
     });
   }
 
+  movePageFromTo({CodeState mainTo, CodeState topFrom, CodeState topTo}) async {
+    await topNavBtnMediator.openNavList(navRouterType: topFrom);
+    moveToPage(mainTo);
+    topNavBtnMediator.closeNavList(navRouterType: topTo);
+  }
 }
+
 abstract class CodeMainPageChangeListener {
   onChangeMainPage();
 }
