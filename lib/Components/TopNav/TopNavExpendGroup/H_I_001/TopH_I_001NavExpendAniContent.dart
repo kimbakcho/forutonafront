@@ -6,6 +6,7 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -23,13 +24,16 @@ abstract class TopH_I_001NavExpendAniContentInputPort {
 class TopH_I_001NavExpendAniContent extends StatelessWidget
     implements TopH_I_001NavExpendAniContentInputPort {
   TopH_I_001NavExpendAniContentViewModel _topH001NavExpendAniContentViewModel;
+  final CodeMainPageController codeMainPageController;
+  final GeoViewSearchManagerInputPort geoViewSearchManager;
 
-  TopH_I_001NavExpendAniContent({Key key}) : super(key: key) {
+  TopH_I_001NavExpendAniContent({Key key, this.geoViewSearchManager, this.codeMainPageController}) : super(key: key) {
     _topH001NavExpendAniContentViewModel =
         TopH_I_001NavExpendAniContentViewModel(
+          codeMainPageController: codeMainPageController,
             fluttertoastAdapter: sl(),
             locationAdapter: sl(),
-            geoViewSearchManager: sl(),
+            geoViewSearchManager: geoViewSearchManager,
             geoLocationUtilForeGroundUseCaseInputPort: sl());
   }
 
@@ -94,6 +98,8 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
       geoLocationUtilForeGroundUseCaseInputPort;
   final LocationAdapter locationAdapter;
   final FluttertoastAdapter fluttertoastAdapter;
+  final CodeMainPageController codeMainPageController;
+
   TopH001NavExpendAniContentViewModelExpendState currentState =
       TopH001NavExpendAniContentViewModelExpendState.expended;
 
@@ -110,6 +116,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
     @required this.locationAdapter,
     @required this.fluttertoastAdapter,
     @required this.geoViewSearchManager,
+    @required this.codeMainPageController
   }) {
     init();
   }
@@ -190,7 +197,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
     }
 
     var extendViewAction = TopH_I_ExtendViewAction.create(
-        codeMainPageController: sl(),
+        codeMainPageController: codeMainPageController,
         searchAddress: searchAddress,
         h007listener: this,
         placeListFromSearchTextWidgetListener: this,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/HCodePage/H001/H001BodyFactory.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -8,12 +9,17 @@ import 'package:provider/provider.dart';
 import 'H001ViewModel.dart';
 
 class H001Page extends StatelessWidget {
+
+  final GeoViewSearchManagerInputPort geoViewSearchManagerInputPort;
+
+  const H001Page({Key key, this.geoViewSearchManagerInputPort}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => H001ViewModel(
             ballListMediator: sl(),
-            geoViewSearchManager: sl(),
+            geoViewSearchManager: geoViewSearchManagerInputPort,
             tagRepository: sl(),
             geoLocationUtilBasicUseCaseInputPort: sl(),
             rankingTagListFromBIManager: sl(),

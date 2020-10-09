@@ -1,6 +1,6 @@
 import "package:flare_flutter/flare_actor.dart";
 import 'package:flutter/material.dart';
-import 'package:forutonafront/MainPage/CodeMainpage.dart';
+import 'package:forutonafront/MainPage/MainPageView.dart';
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
           MaterialPageRoute(
               settings: RouteSettings(name: "MAIN"),
               builder: (context) {
-                return CodeMainPage();
+                return MainPageView();
               }));
     });
   }

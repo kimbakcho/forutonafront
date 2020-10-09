@@ -5,7 +5,9 @@ import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/INavBtnGroup.dart
 import 'package:forutonafront/Components/TopNav/TopNavBtnGroup/TopNavBtnGroupViewModel.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:forutonafront/HomePage/HomeMainPageViewModel.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
+
 import 'package:get_it/get_it.dart';
 
 void main() {
@@ -21,27 +23,21 @@ void main() {
 
   test('top 버튼의 이름을 가진 Btn 스택 제일 뒤에 옮기기', () async {
     //arrange
-    navBtnGroup.navBtnList = [];
-
     NavBtn mockINavBtn2 = new NavBtn(
         navBtnSetDto: NavBtnSetDto(topOnMoveMainPage: CodeState.H003CODE),
         originIndex: 2);
-    navBtnGroup.registerBtn(mockINavBtn2);
-
     NavBtn mockINavBtn1 = new NavBtn(
         navBtnSetDto: NavBtnSetDto(topOnMoveMainPage: CodeState.H001CODE),
         originIndex: 1);
-    navBtnGroup.registerBtn(mockINavBtn1);
-
     NavBtn mockINavBtn4 = new NavBtn(
         navBtnSetDto: NavBtnSetDto(topOnMoveMainPage: CodeState.X002CODE),
         originIndex: 4);
-    navBtnGroup.registerBtn(mockINavBtn4);
-
     NavBtn mockINavBtn3 = new NavBtn(
         navBtnSetDto: NavBtnSetDto(topOnMoveMainPage: CodeState.X001CODE),
         originIndex: 3);
-    navBtnGroup.registerBtn(mockINavBtn3);
+    navBtnGroup.navBtnList = [
+      mockINavBtn2,mockINavBtn1,mockINavBtn4,mockINavBtn3
+    ];
 
     //act
     navBtnGroup.arrangeBtnIndexStack(top: CodeState.X001CODE);

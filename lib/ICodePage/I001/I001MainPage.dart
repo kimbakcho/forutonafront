@@ -22,14 +22,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class I001MainPage extends StatefulWidget {
-  const I001MainPage({Key key}) : super(key: key);
+
+  final GeoViewSearchManagerInputPort geoViewSearchManagerInputPort;
+
+  const I001MainPage({Key key, this.geoViewSearchManagerInputPort}) : super(key: key);
 
   @override
   _I001MainPageState createState() => _I001MainPageState();
 }
 
 class _I001MainPageState extends State<I001MainPage>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver,AutomaticKeepAliveClientMixin<I001MainPage> {
   _I001MainPageState();
 
   @override
@@ -56,7 +59,7 @@ class _I001MainPageState extends State<I001MainPage>
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => I001MainPageViewModel(
-            geoViewSearchManagerInputPort: sl(),
+            geoViewSearchManagerInputPort: widget.geoViewSearchManagerInputPort,
             mapScreenPositionUseCaseInputPort: sl(),
             ballListMediator: sl(),
             mapBallMarkerFactory: sl(),
@@ -109,6 +112,9 @@ class _I001MainPageState extends State<I001MainPage>
           ]);
         }));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class I001MainPageViewModel extends ChangeNotifier
@@ -301,6 +307,7 @@ class I001MainPageViewModel extends ChangeNotifier
 
   @override
   void dispose() {
+
     ballListMediator.unregisterComponent(this);
     geoViewSearchManagerInputPort.unSubscribe(this);
     super.dispose();

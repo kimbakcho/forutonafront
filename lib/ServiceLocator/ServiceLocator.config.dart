@@ -24,7 +24,6 @@ import '../Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyUseCase.
 import '../FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
 import '../FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
 import '../Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
-import '../MainPage/CodeMainPageController.dart';
 import '../Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
 import '../Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelUseCase.dart';
 import '../FBall/Domain/UseCase/DeleteBall/DeleteBallUseCaseInputPort.dart';
@@ -66,7 +65,6 @@ import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPo
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import '../Common/GeoPlaceAdapter/GeoPlaceAdapter.dart';
-import '../Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import '../Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import '../Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
 import '../Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
@@ -132,7 +130,6 @@ import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import '../Tag/Domain/Repository/TagRepository.dart';
 import '../Tag/Data/Repository/TagRepositoryImpl.dart';
-import '../Components/TopNav/TopNavBtnMediator.dart';
 import '../ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccountUserInfoUseCaseInputPort.dart';
 import '../FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
 import '../ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
@@ -161,16 +158,21 @@ GetIt $initGetIt(
   gh.factory<BallListMediator>(() => BallListMediatorImpl());
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
-      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleProposalOnServiceSurveyUseCase(),
       instanceName: 'GoogleProposalOnServiceSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
+      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(
+      () => BackGroundMessageUseCase(
+          baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
+              instanceName: 'BaseMessageUseCase')),
+      instanceName: 'BackGroundMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
       instanceName: 'LaunchMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
@@ -198,14 +200,13 @@ GetIt $initGetIt(
       () => FlutterLocalNotificationsPluginAdapterImpl());
   gh.lazySingleton<FluttertoastAdapter>(() => FluttertoastAdapter());
   gh.factory<GeoPlaceAdapter>(() => GooglePlaceAdapter());
-  gh.lazySingleton<GeoViewSearchManagerInputPort>(() => GeoViewSearchManager());
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
+  gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
+      instanceName: 'ImagePngResizeUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
       instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
       instanceName: 'ImageAvatarUtil');
-  gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
-      instanceName: 'ImagePngResizeUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
   gh.lazySingleton<MapBitmapDescriptorUseCaseInputPort>(() =>
       MapBitmapDescriptorUseCase(
@@ -220,14 +221,14 @@ GetIt $initGetIt(
   gh.lazySingleton<NotiSelectActionBaseInputPort>(
       () => PageMoveActionUseCase());
   gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => CommentChannelUseCase(),
-      instanceName: 'CommentChannelUseCase');
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => RadarBasicChannelUseCae(),
       instanceName: 'RadarBasicChannelUseCae');
   gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
       (name, _) =>
           NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => CommentChannelUseCase(),
+      instanceName: 'CommentChannelUseCase');
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>
@@ -252,19 +253,18 @@ GetIt $initGetIt(
   gh.factory<RankingTagListMediator>(() => RankingTagListMediatorImpl());
   gh.lazySingleton<SharedPreferencesAdapter>(
       () => SharedPreferencesAdapterImpl());
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => KakaoLoginAdapterImpl(),
-      instanceName: 'KakaoLoginAdapterImpl');
-  gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
-      instanceName: 'ForutonaLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => FaceBookLoginAdapterImpl(),
       instanceName: 'FaceBookLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => ForutonaLoginAdapterImpl(),
+      instanceName: 'ForutonaLoginAdapterImpl');
+  gh.lazySingleton<SnsLoginModuleAdapter>(() => KakaoLoginAdapterImpl(),
+      instanceName: 'KakaoLoginAdapterImpl');
   gh.lazySingleton<SnsLoginModuleAdapter>(() => NaverLoginAdapterImpl(),
       instanceName: 'NaverLoginAdapterImpl');
   gh.factory<SwipeGestureRecognizerController>(
       () => SwipeGestureRecognizerController());
   gh.lazySingleton<TagRepository>(() => TagRepositoryImpl(
       fBallTagRemoteDataSource: get<FBallTagRemoteDataSource>()));
-  gh.lazySingleton<TopNavBtnMediator>(() => TopNavBtnMediatorImpl());
   gh.lazySingleton<UserPolicyRemoteDataSource>(
       () => UserPolicyRemoteDataSourceImpl());
   gh.lazySingleton<UserPolicyRepository>(() => UserPolicyRepositoryImpl(
@@ -281,14 +281,6 @@ GetIt $initGetIt(
   gh.lazySingleton<BallSearchBarHistoryRepository>(() =>
       BallSearchBarHistoryRepositoryImpl(
           localDataSource: get<BallSearchHistoryLocalDataSource>()));
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(
-      () => BackGroundMessageUseCase(
-          baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
-              instanceName: 'BaseMessageUseCase')),
-      instanceName: 'BackGroundMessageUseCase');
-  gh.lazySingleton<CodeMainPageController>(() => CodeMainPageControllerImpl(
-      swipeGestureRecognizerController: get<SwipeGestureRecognizerController>(),
-      topNavBtnMediator: get<TopNavBtnMediator>()));
   gh.lazySingleton<FBallPlayerListUpInputPort>(() => FBallPlayerListUpUseCae(
       fBallPlayerRepository: get<FBallPlayerRepository>()));
   gh.lazySingleton<FBallReplyRepository>(() => FBallReplyRepositoryImpl(

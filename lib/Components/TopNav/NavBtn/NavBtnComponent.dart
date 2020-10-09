@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
+
+import 'package:forutonafront/HomePage/HomeMainPageViewModel.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -12,23 +14,27 @@ import 'TopNavBtnComponent.dart';
 
 class NavBtnComponent extends StatefulWidget {
   final NavBtnSetDto navBtnSetDto;
+  final TopNavBtnMediator navBtnMediator;
+  final CodeMainPageController codeMainPageController;
 
-  NavBtnComponent({Key key, this.navBtnSetDto}) : super(key: key);
+  NavBtnComponent({Key key,
+    @required this.navBtnSetDto,@required this.navBtnMediator,@required this.codeMainPageController}) : super(key: key);
 
   @override
   _NavBtnComponentState createState() =>
-      _NavBtnComponentState(navBtnSetDto: navBtnSetDto, navBtnMediator: sl());
+      _NavBtnComponentState(navBtnSetDto: navBtnSetDto, navBtnMediator: navBtnMediator,codeMainPageController: codeMainPageController);
 }
 
 class _NavBtnComponentState extends State<NavBtnComponent>
     with SingleTickerProviderStateMixin
     implements TopNavBtnComponent {
   final NavBtnSetDto navBtnSetDto;
+  final CodeMainPageController codeMainPageController;
   AnimationController _controller;
 
   final TopNavBtnMediator navBtnMediator;
 
-  _NavBtnComponentState({this.navBtnSetDto, this.navBtnMediator});
+  _NavBtnComponentState({this.navBtnSetDto,this.codeMainPageController ,this.navBtnMediator});
 
   @override
   void initState() {
@@ -63,6 +69,7 @@ class _NavBtnComponentState extends State<NavBtnComponent>
   Widget build(BuildContext context) {
     return NavBtnAniComponent(
       child: NavBtnContent(
+        codeMainPageController: codeMainPageController,
         navBtnMediator: navBtnMediator,
         btnColor: navBtnSetDto.btnColor,
         btnIcon: navBtnSetDto.btnIcon,
@@ -96,6 +103,7 @@ class NavBtnContent extends StatelessWidget implements NavBtnContentInputPort {
   final CodeState topOnMoveMainPage;
   final TopNavBtnMediator navBtnMediator;
   final NavBtnAction navBtnAction;
+  final CodeMainPageController codeMainPageController;
 
   NavBtnContent(
       {Key key,
@@ -103,14 +111,14 @@ class NavBtnContent extends StatelessWidget implements NavBtnContentInputPort {
       this.btnIcon,
       this.topOnMoveMainPage,
       @required this.navBtnMediator,
-      this.navBtnAction})
+      this.navBtnAction, @required this.codeMainPageController})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => NavBtnContentViewModel(
-          codeMainPageController: sl(), topOnMoveMainPage: topOnMoveMainPage),
+          codeMainPageController: codeMainPageController, topOnMoveMainPage: topOnMoveMainPage),
       child: Consumer<NavBtnContentViewModel>(builder: (_, model, __) {
         return Container(
             decoration: BoxDecoration(

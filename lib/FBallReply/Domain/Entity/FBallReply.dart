@@ -1,7 +1,6 @@
 
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FBallReply.g.dart';

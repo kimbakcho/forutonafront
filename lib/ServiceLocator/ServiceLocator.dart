@@ -93,7 +93,6 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseC
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
-import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import 'package:forutonafront/Tag/Data/Repository/TagRepositoryImpl.dart';

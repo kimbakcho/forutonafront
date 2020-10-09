@@ -8,7 +8,7 @@ import 'package:forutonafront/HCodePage/H008/H008MainView.dart';
 import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
 import 'package:forutonafront/HCodePage/H010/H010MainView.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+
 
 // ignore: camel_case_types
 abstract class TopH_I_ExtendViewAction {

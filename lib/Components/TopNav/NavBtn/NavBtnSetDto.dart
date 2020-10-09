@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnAction.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:forutonafront/HomePage/HomeMainPageViewModel.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
+
 
 import '../TopNavRouterType.dart';
 

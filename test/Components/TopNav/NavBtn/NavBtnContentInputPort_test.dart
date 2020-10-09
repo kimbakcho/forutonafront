@@ -4,24 +4,28 @@ import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnAction.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnComponent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendGroup.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
+import 'package:forutonafront/HomePage/HomeMainPageViewModel.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:mockito/mockito.dart';
 
-class MockCodeMainViewModelInputPort extends Mock implements CodeMainViewModelInputPort{}
-class MockNavBtnAction extends Mock implements NavBtnAction{}
+class MockCodeMainViewModelInputPort extends Mock
+    implements HomeMainPageViewModelInputPort {}
+
+class MockNavBtnAction extends Mock implements NavBtnAction {}
+
 void main() {
   NavBtnContentInputPort navBtnContentInputPort;
   TopNavBtnMediator navBtnMediator;
   MockNavBtnAction mockNavBtnAction;
   setUp(() {
-    navBtnMediator  = TopNavBtnMediatorImpl();
+    navBtnMediator = TopNavBtnMediatorImpl();
     mockNavBtnAction = MockNavBtnAction();
     navBtnContentInputPort = NavBtnContent(
-        topOnMoveMainPage: CodeState.H003CODE,
-        btnColor: Colors.amber,
-        btnIcon: Icon(Icons.print),
-        navBtnMediator: navBtnMediator,
-        navBtnAction: mockNavBtnAction,
+      topOnMoveMainPage: CodeState.H003CODE,
+      btnColor: Colors.amber,
+      btnIcon: Icon(Icons.print),
+      navBtnMediator: navBtnMediator,
+      navBtnAction: mockNavBtnAction,
     );
   });
   test('버튼 클릭시 애니메이션 Open 액션 테스트', () async {
@@ -37,9 +41,13 @@ void main() {
   test('버튼 클릭시 애니메이션 Close 액션 테스트', () async {
     //arrange
 
-    navBtnMediator.topNavExpendGroupViewModel = TopNavExpendGroupViewModel(context: null,topNavBtnMediator: navBtnMediator);
+    navBtnMediator.topNavExpendGroupViewModel = TopNavExpendGroupViewModel(
+      codeStateExpendWidgetMap: Map(),
+      topNavBtnMediator: navBtnMediator,
+    );
 
-    MockCodeMainViewModelInputPort mockCodeMainViewModelInputPort = MockCodeMainViewModelInputPort();
+    MockCodeMainViewModelInputPort mockCodeMainViewModelInputPort =
+        MockCodeMainViewModelInputPort();
     navBtnMediator.codeMainViewModelInputPort = mockCodeMainViewModelInputPort;
 
     navBtnMediator.aniState = NavBtnMediatorState.Open;

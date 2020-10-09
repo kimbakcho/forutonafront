@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
 
-import '../../TopNavRouterType.dart';
 import '../TopNavExpendComponent.dart';
+import 'GeoViewSearchManager.dart';
 import 'TopH_I_001NavExpendAniContent.dart';
 import 'TopH_I_001NavExpendDto.dart';
 
@@ -15,41 +14,57 @@ class TopH_I_001NavExpendComponent extends StatefulWidget {
   final TopNavBtnMediator topNavBtnMediator;
   final CodeMainPageController codeMainPageController;
 
+  final GeoViewSearchManagerInputPort geoViewSearchManager;
+
   const TopH_I_001NavExpendComponent(
       {Key key,
       this.topH001NavExpendDto,
       this.topNavBtnMediator,
-      this.codeMainPageController})
+      this.codeMainPageController,
+      this.geoViewSearchManager})
       : super(key: key);
 
   @override
   _TopH_I_001NavExpendComponentState createState() =>
       _TopH_I_001NavExpendComponentState(
-          topNavBtnMediator: this.topNavBtnMediator);
+          topNavBtnMediator: this.topNavBtnMediator,
+          geoViewSearchManager: geoViewSearchManager,
+          codeMainPageController: codeMainPageController);
 }
 
 // ignore: camel_case_types
 class _TopH_I_001NavExpendComponentState
     extends State<TopH_I_001NavExpendComponent>
     with SingleTickerProviderStateMixin
-    implements TopNavExpendComponent {
+    implements TopNavExpendComponent, CodeMainPageChangeListener {
   AnimationController _controller;
+
+  @override
+  CodeMainPageController codeMainPageController;
 
   @override
   TopNavBtnMediator topNavBtnMediator;
 
+  final GeoViewSearchManagerInputPort geoViewSearchManager;
+
   // ignore: non_constant_identifier_names
   TopH_I_001NavExpendAniContent _topH_I_001NavExpendAniContent;
 
-  _TopH_I_001NavExpendComponentState({this.topNavBtnMediator}) {
+  _TopH_I_001NavExpendComponentState(
+      {this.topNavBtnMediator,
+      this.geoViewSearchManager,
+      this.codeMainPageController}) {
     topNavBtnMediator.topNavExpendRegisterComponent(this);
-    _topH_I_001NavExpendAniContent = TopH_I_001NavExpendAniContent();
+    _topH_I_001NavExpendAniContent = TopH_I_001NavExpendAniContent(
+      geoViewSearchManager: geoViewSearchManager,
+      codeMainPageController: codeMainPageController,
+    );
   }
 
   @override
   void initState() {
     initAnimation();
-
+    codeMainPageController.addListener(this);
     super.initState();
   }
 
@@ -77,6 +92,7 @@ class _TopH_I_001NavExpendComponentState
 
   @override
   void dispose() {
+    codeMainPageController.removeListener(this);
     topNavBtnMediator.topNavExpendUnRegisterComponent(this);
     _controller.dispose();
     super.dispose();
@@ -100,19 +116,18 @@ class _TopH_I_001NavExpendComponentState
             decoration: BoxDecoration(
                 border: Border.all(
                     color: Color(0xff454F63),
-                    width: widget.codeMainPageController.currentState ==
+                    width: codeMainPageController.currentState ==
                             CodeState.I001CODE
                         ? 2
                         : 0),
-                color: widget.codeMainPageController.currentState ==
-                        CodeState.I001CODE
+                color: codeMainPageController.currentState == CodeState.I001CODE
                     ? Color(0xffFFF170)
                     : Color(0xffF6F6F6),
                 shape: BoxShape.circle),
             child: IconButton(
               onPressed: () {
                 setState(() {
-                  widget.codeMainPageController.moveToPage(CodeState.I001CODE);
+                  codeMainPageController.moveToPage(CodeState.I001CODE);
                 });
               },
               padding: EdgeInsets.all(0),
@@ -141,6 +156,11 @@ class _TopH_I_001NavExpendComponentState
   @override
   getTopNavRouterType() {
     return CodeState.H001CODE;
+  }
+
+  @override
+  onChangeMainPage() {
+    setState(() {});
   }
 }
 

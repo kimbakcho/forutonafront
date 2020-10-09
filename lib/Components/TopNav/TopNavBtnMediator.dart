@@ -1,14 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/MainPage/CodeMainViewModel.dart';
-import 'package:injectable/injectable.dart';
-
+import 'package:forutonafront/HomePage/HomeMainPageViewModel.dart';
+import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'NavBtn/TopNavBtnComponent.dart';
 import 'TopNavBtnGroup/INavBtnGroup.dart';
 import 'TopNavExpendGroup/TopNavExpendComponent.dart';
 import 'TopNavExpendGroup/TopNavExpendGroup.dart';
-import 'TopNavRouterType.dart';
+
 
 abstract class TopNavBtnMediator {
   topNavBtnRegisterComponent(TopNavBtnComponent component);
@@ -33,13 +31,13 @@ abstract class TopNavBtnMediator {
 
   Duration animationDuration;
 
-  CodeMainViewModelInputPort codeMainViewModelInputPort;
+  HomeMainPageViewModelInputPort codeMainViewModelInputPort;
 
   void onNavBtnAniStatusListener(AnimationStatus status, CodeState routerType);
 
   void changeMainPage(CodeState topOnMoveMainPage);
 }
-@LazySingleton(as: TopNavBtnMediator)
+
 class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   List<TopNavBtnComponent> topNavBtnComponents = [];
 
@@ -49,14 +47,14 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
 
   TopNavExpendGroupViewModel topNavExpendGroupViewModel;
 
-  CodeState currentTopNavRouter = CodeState.H001CODE;
+  CodeState currentTopNavRouter;
 
   @override
   NavBtnMediatorState aniState;
 
   INavBtnGroup _iNavBtnGroup;
 
-  TopNavBtnMediatorImpl() {
+  TopNavBtnMediatorImpl({this.currentTopNavRouter}) {
     aniState = NavBtnMediatorState.Close;
   }
 
@@ -153,7 +151,7 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   }
 
   @override
-  CodeMainViewModelInputPort codeMainViewModelInputPort;
+  HomeMainPageViewModelInputPort codeMainViewModelInputPort;
 
 }
 

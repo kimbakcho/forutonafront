@@ -20,7 +20,6 @@ abstract class GeoViewSearchManagerInputPort {
   Position currentSearchPosition;
 }
 
-@LazySingleton(as: GeoViewSearchManagerInputPort)
 class GeoViewSearchManager implements GeoViewSearchManagerInputPort {
 
   List<GeoViewSearchListener> _geoSearchListener = [];
