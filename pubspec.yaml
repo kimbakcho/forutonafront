@@ -124,6 +124,8 @@ dependencies:
   #좋아요 싫어요 % 표시
   percent_indicator: ^2.1.5
 
+  flutter_sticky_header:
+
 
 dev_dependencies:
   flutter_test:

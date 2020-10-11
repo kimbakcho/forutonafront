@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/HCodePage/H008/H008TopSearchBar.dart';
+import 'package:forutonafront/Components/TopSearchDisPlayBar/TopSearchDisPlayBar.dart';
+
 import 'package:provider/provider.dart';
 
 import 'PlaceListFromSearchTextWidget.dart';
@@ -25,7 +26,7 @@ class H008MainView extends StatelessWidget {
                   margin:
                       EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   child: Column(children: [
-                    H008TopSearchBar(initText: initSearchText),
+                    TopSearchDisPlayBar(initText: initSearchText),
                     Expanded(
                         child: PlaceListFromSearchTextWidget(
                       searchText: initSearchText,

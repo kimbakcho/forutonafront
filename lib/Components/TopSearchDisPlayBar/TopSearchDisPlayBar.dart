@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BackButton/BorderCircleBackButton.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 
-class H008TopSearchBar extends StatelessWidget {
+class TopSearchDisPlayBar extends StatelessWidget {
 
   final String initText;
 
-  const H008TopSearchBar({Key key, this.initText}) : super(key: key);
+  const TopSearchDisPlayBar({Key key, this.initText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

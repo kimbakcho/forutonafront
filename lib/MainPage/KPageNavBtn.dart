@@ -46,6 +46,8 @@ class KPageNavBtnViewModel extends ChangeNotifier
 
     Navigator.of(context).push(MaterialPageRoute(
         settings: RouteSettings(name: "K001"),
-        builder: (_) => KCodeMainPage()));
+        builder: (_) => KCodeMainPage(
+          searchText: search,
+        )));
   }
 }
