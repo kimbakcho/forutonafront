@@ -438,13 +438,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.3"
-  flutter_sticky_header:
-    dependency: "direct main"
-    description:
-      name: flutter_sticky_header
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
   flutter_swiper:
     dependency: "direct main"
     description:
@@ -1036,6 +1029,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.5"
+  sticky_headers:
+    dependency: "direct main"
+    description:
+      name: sticky_headers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.8+1"
   stream_channel:
     dependency: transitive
     description:
@@ -1148,13 +1148,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.2"
-  value_layout_builder:
-    dependency: transitive
-    description:
-      name: value_layout_builder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
   vector_math:
     dependency: transitive
     description:
