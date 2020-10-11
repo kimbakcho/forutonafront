@@ -7,9 +7,8 @@ class K00101MainPage extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => K00101MainPageViewModel(),
         child: Consumer<K00101MainPageViewModel>(builder: (_, model, __) {
-          return CustomScrollView(slivers: [
-            SliverList(
-                delegate: SliverChildListDelegate([
+          return ListView(
+            children: [
               Container(
                 child: Text("123"),
               ),
@@ -20,12 +19,12 @@ class K00101MainPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Container(child: Text("${index}"));
                   }),
-                  FlatButton(
-                    onPressed: model.itemcoutplus,
-                    child: Text("123"),
-                  )
-            ]))
-          ]);
+              FlatButton(
+                onPressed: model.itemcoutplus,
+                child: Text("123"),
+              )
+            ],
+          );
         }));
   }
 }
