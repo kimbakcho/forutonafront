@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 import 'package:forutonafront/HCodePage/H008/H008MainView.dart';
 import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
@@ -33,7 +34,10 @@ class H007AddressWidget extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(
                     settings: RouteSettings(name: "H010"),
                     builder: (_) =>
-                        H010MainView(inputSearchBarListener: model)));
+                        H010MainView(inputSearchBarListener: model,
+                          searchHistoryDataSourceKey: SearchHistoryDataSourceKey
+                              .AddressSearchHistoryDataSource,
+                        )));
               },
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: Text(address,

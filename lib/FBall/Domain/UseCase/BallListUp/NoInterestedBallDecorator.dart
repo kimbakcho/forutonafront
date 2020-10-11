@@ -27,6 +27,7 @@ class NoInterestedBallDecorator implements FBallListUpUseCaseInputPort {
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
       {FBallListUpUseCaseOutputPort outputPort}) async {
+
     var noInterRestBallList = await noInterestBallUseCaseInputPort.findByAll();
     var result = await fBallListUpUseCaseInputPort.search(pageable);
     noInterRestBallList.forEach((element) {

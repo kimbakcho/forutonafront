@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 import 'package:forutonafront/HCodePage/H010/H010MainView.dart';
 import 'package:forutonafront/KCodePage/KCodeMainPage.dart';
@@ -34,6 +35,8 @@ class KPageNavBtnViewModel extends ChangeNotifier
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => H010MainView(
               inputSearchBarListener: this,
+              searchHistoryDataSourceKey:
+                  SearchHistoryDataSourceKey.KPartSearchHistoryDataSource,
             )));
   }
 

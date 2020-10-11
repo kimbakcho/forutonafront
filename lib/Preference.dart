@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:injectable/injectable.dart';
+
 
 
 class Preference {
@@ -18,6 +18,6 @@ class Preference {
 //    String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
 
    //realtestRelese
-//   String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonatest";
+  // static final String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonatest";
 
 }

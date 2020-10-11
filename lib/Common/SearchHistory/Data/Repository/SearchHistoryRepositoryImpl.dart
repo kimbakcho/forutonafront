@@ -1,21 +1,22 @@
 import 'dart:convert';
 
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/Common/AddressSearchHistory/Domain/Repository/AddressSearchHistoryRepository.dart';
-import 'package:forutonafront/Common/AddressSearchHistory/Domain/Value/AddressSearchHistory.dart';
-import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
-import 'package:injectable/injectable.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Value/SearchHistory.dart';
 
-@LazySingleton(as: AddressSearchHistoryRepository)
-class AddressSearchHistoryRepositoryImpl
-    extends AddressSearchHistoryRepository {
+import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
+
+
+
+class SearchHistoryRepositoryImpl
+    extends SearchHistoryRepository {
   final SharedPreferencesAdapter sharedPreferencesAdapter;
   final int limitRow = 5 ;
-  final String _addressSearchHistoryRepositoryKey =
-      "AddressSearchHistoryDataSource";
+  final SearchHistoryDataSourceKey searchHistoryDataSourceKey;
 
-  AddressSearchHistoryRepositoryImpl(
-      {@required this.sharedPreferencesAdapter});
+  SearchHistoryRepositoryImpl(
+      {@required this.sharedPreferencesAdapter,this.searchHistoryDataSourceKey});
 
   @override
   Future<void> delete(String search) async {
@@ -23,14 +24,14 @@ class AddressSearchHistoryRepositoryImpl
     list.removeWhere((element) => element.searchText == search);
     await this
         .sharedPreferencesAdapter
-        .setString(_addressSearchHistoryRepositoryKey, json.encode(list));
+        .setString(EnumToString.convertToString(searchHistoryDataSourceKey), json.encode(list));
   }
 
   @override
-  Future<List<AddressSearchHistory>> findByAll() async {
+  Future<List<SearchHistory>> findByAll() async {
     String value = await this
         .sharedPreferencesAdapter
-        .getString(_addressSearchHistoryRepositoryKey);
+        .getString(EnumToString.convertToString(searchHistoryDataSourceKey));
     if (value == null) {
       return [];
     } else {
@@ -38,9 +39,9 @@ class AddressSearchHistoryRepositoryImpl
         value,
       );
 
-      List<AddressSearchHistory> histories = [];
+      List<SearchHistory> histories = [];
       tempHistories.forEach((element) {
-        histories.add(AddressSearchHistory.fromJson(element));
+        histories.add(SearchHistory.fromJson(element));
       });
 
       return histories;
@@ -48,13 +49,13 @@ class AddressSearchHistoryRepositoryImpl
   }
 
   @override
-  Future<AddressSearchHistory> save(String search) async {
+  Future<SearchHistory> save(String search) async {
     var list = await this.findByAll();
     if (list.length == 0) {
       list = [];
     }
-    AddressSearchHistory addressSearchHistory =
-        AddressSearchHistory(searchText: search, searchTime: DateTime.now());
+    SearchHistory addressSearchHistory =
+        SearchHistory(searchText: search, searchTime: DateTime.now());
 
     var indexWhere = list.indexWhere((element) => element.searchText == search);
     if(indexWhere != -1){
@@ -67,7 +68,7 @@ class AddressSearchHistoryRepositoryImpl
 
     await this
         .sharedPreferencesAdapter
-        .setString(_addressSearchHistoryRepositoryKey, json.encode(list));
+        .setString(EnumToString.convertToString(searchHistoryDataSourceKey), json.encode(list));
     return addressSearchHistory;
   }
 }

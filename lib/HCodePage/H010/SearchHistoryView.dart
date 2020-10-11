@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/AddressSearchHistory/Domain/UseCase/AddressSearchHistoryUseCaseInputPort.dart';
-import 'package:forutonafront/Common/AddressSearchHistory/Dto/AddressSearchHistoryDto.dart';
+import 'package:forutonafront/Common/SearchHistory/Data/Repository/SearchHistoryRepositoryImpl.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/UseCase/SearchHistoryUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SearchHistory/Dto/SearchHistoryDto.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,9 +14,13 @@ import '../../Components/InputSearchBar/InputSearchBar.dart';
 class SearchHistoryView extends StatelessWidget {
   final SearchHistoryViewController searchHistoryViewController;
   final InputSearchBarListener inputSearchBarListener;
+  final SearchHistoryDataSourceKey searchHistoryDataSourceKey;
 
   const SearchHistoryView(
-      {Key key, this.searchHistoryViewController, this.inputSearchBarListener})
+      {Key key,
+      this.searchHistoryViewController,
+      this.inputSearchBarListener,
+      this.searchHistoryDataSourceKey})
       : super(key: key);
 
   @override
@@ -22,7 +28,10 @@ class SearchHistoryView extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => SearchHistoryViewModel(
           searchHistoryViewController: searchHistoryViewController,
-          searchHistoryUseCaseInputPort: sl()),
+          searchHistoryUseCaseInputPort: SearchHistoryUseCase(
+              searchHistoryRepository: SearchHistoryRepositoryImpl(
+                  sharedPreferencesAdapter: sl(),
+                  searchHistoryDataSourceKey: searchHistoryDataSourceKey))),
       child: Consumer<SearchHistoryViewModel>(
         builder: (_, model, __) {
           return model.histories.length > 0
@@ -114,7 +123,7 @@ class SearchHistoryViewModel extends ChangeNotifier {
 
   final SearchHistoryViewController searchHistoryViewController;
 
-  List<AddressSearchHistoryDto> histories = [];
+  List<SearchHistoryDto> histories = [];
 
   SearchHistoryViewModel(
       {this.searchHistoryUseCaseInputPort, this.searchHistoryViewController}) {

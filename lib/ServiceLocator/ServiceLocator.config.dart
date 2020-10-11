@@ -7,8 +7,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../Common/AddressSearchHistory/Domain/Repository/AddressSearchHistoryRepository.dart';
-import '../Common/AddressSearchHistory/Data/Repository/AddressSearchHistoryRepositoryImpl.dart';
 import '../Common/AndroidIntentAdapter/AndroidIntentAdapter.dart';
 import '../Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
 import '../FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
@@ -56,6 +54,7 @@ import '../ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import '../ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import '../FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import '../FireBaseMessage/Presentation/FireBaseMessageController.dart';
+import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
 import '../Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import '../Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import '../Common/FluttertoastAdapter/FluttertoastAdapter.dart';
@@ -117,7 +116,6 @@ import '../Components/FBallReply2/ReviewCountMediator.dart';
 import '../Components/FBallReply2/ReviewDeleteMediator.dart';
 import '../Components/FBallReply2/ReviewInertMediator.dart';
 import '../Components/FBallReply2/ReviewUpdateMediator.dart';
-import '../Common/AddressSearchHistory/Domain/UseCase/AddressSearchHistoryUseCaseInputPort.dart';
 import '../FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import '../Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 import '../ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
@@ -158,14 +156,14 @@ GetIt $initGetIt(
   gh.factory<BallListMediator>(() => BallListMediatorImpl());
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
+      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleProposalOnServiceSurveyUseCase(),
       instanceName: 'GoogleProposalOnServiceSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
-      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(
@@ -173,10 +171,10 @@ GetIt $initGetIt(
           baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
               instanceName: 'BaseMessageUseCase')),
       instanceName: 'BackGroundMessageUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
-      instanceName: 'LaunchMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
       instanceName: 'BaseMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
+      instanceName: 'LaunchMessageUseCase');
   gh.lazySingleton<BaseOpenTalkInputPort>(() => InquireAboutAnythingUseCase());
   gh.lazySingleton<DetailPageItemFactory>(() => DetailPageItemFactory());
   gh.lazySingleton<FBallPlayerRemoteDataSource>(
@@ -221,14 +219,14 @@ GetIt $initGetIt(
   gh.lazySingleton<NotiSelectActionBaseInputPort>(
       () => PageMoveActionUseCase());
   gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => CommentChannelUseCase(),
+      instanceName: 'CommentChannelUseCase');
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => RadarBasicChannelUseCae(),
       instanceName: 'RadarBasicChannelUseCae');
   gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
       (name, _) =>
           NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => CommentChannelUseCase(),
-      instanceName: 'CommentChannelUseCase');
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>
@@ -271,9 +269,6 @@ GetIt $initGetIt(
       userPolicyRemoteDataSource: get<UserPolicyRemoteDataSource>()));
   gh.lazySingleton<UserPolicyUseCaseInputPort>(() =>
       UserPolicyUseCase(userPolicyRepository: get<UserPolicyRepository>()));
-  gh.lazySingleton<AddressSearchHistoryRepository>(() =>
-      AddressSearchHistoryRepositoryImpl(
-          sharedPreferencesAdapter: get<SharedPreferencesAdapter>()));
   gh.lazySingleton<AvatarImageMakerUseCaseInputPort>(() =>
       AvatarImageMakerUseCase(
           fileDownLoaderUseCaseInputPort: get<FileDownLoaderUseCaseInputPort>(),
@@ -322,10 +317,6 @@ GetIt $initGetIt(
       fBallReplyUseCaseInputPort: get<FBallReplyUseCaseInputPort>()));
   gh.factory<ReviewUpdateMediator>(() => ReviewUpdateMediatorImpl(
       fBallReplyUseCaseInputPort: get<FBallReplyUseCaseInputPort>()));
-  gh.lazySingleton<SearchHistoryUseCaseInputPort>(() =>
-      AddressSearchHistoryUseCase(
-          addressSearchHistoryRepository:
-              get<AddressSearchHistoryRepository>()));
   gh.lazySingleton<SignInUserInfoUseCaseInputPort>(
       () => SignInUserInfoUseCase(fUserRepository: get<FUserRepository>()));
   gh.lazySingleton<TagFromBallUuidUseCaseInputPort>(
@@ -382,6 +373,8 @@ GetIt $initGetIt(
         signInUserInfoUseCaseInputPort: get<SignInUserInfoUseCaseInputPort>(),
         updateFCMTokenUseCaseInputPort: get<UpdateFCMTokenUseCaseInputPort>(),
       ));
+  gh.factory<FireBaseSignInValidUseCase>(() => FireBaseSignInValidUseCaseImpl(
+      fireBaseAuthAdapterForUseCase: get<FireBaseAuthAdapterForUseCase>()));
   gh.lazySingleton<LogoutUseCaseInputPort>(() => LogoutUseCase(
       fireBaseAuthAdapterForUseCase: get<FireBaseAuthAdapterForUseCase>(),
       signInUserInfoUseCaseInputPort: get<SignInUserInfoUseCaseInputPort>()));

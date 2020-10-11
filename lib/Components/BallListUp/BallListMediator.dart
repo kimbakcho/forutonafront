@@ -1,8 +1,10 @@
+import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
 
 enum BallListMediatorState {
@@ -60,6 +62,8 @@ class BallListMediatorImpl implements BallListMediator {
 
   bool loadLast = false;
 
+  FluttertoastAdapter fluttertoastAdapter = sl();
+
   BallListMediatorImpl()
   {
     _wrapBallList = PageWrap<FBallResDto>();
@@ -78,9 +82,11 @@ class BallListMediatorImpl implements BallListMediator {
 
   search(Pageable pageable ) async {
     isLoading = true;
+
     onPageListUpdate();
     if(fBallListUpUseCaseInputPort == null){
       currentState = BallListMediatorState.Error;
+      isLoading = false;
       onPageListUpdate();
       throw Exception("don't have searchCaseInputPort for need set FBallListUpUseCaseInputPort");
     }

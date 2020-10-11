@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'AddressSearchHistoryDto.dart';
+part of 'SearchHistoryDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AddressSearchHistoryDto _$AddressSearchHistoryDtoFromJson(
-    Map<String, dynamic> json) {
-  return AddressSearchHistoryDto(
+SearchHistoryDto _$SearchHistoryDtoFromJson(Map<String, dynamic> json) {
+  return SearchHistoryDto(
     searchText: json['searchText'] as String,
     searchTime: json['searchTime'] == null
         ? null
@@ -16,8 +15,7 @@ AddressSearchHistoryDto _$AddressSearchHistoryDtoFromJson(
   );
 }
 
-Map<String, dynamic> _$AddressSearchHistoryDtoToJson(
-        AddressSearchHistoryDto instance) =>
+Map<String, dynamic> _$SearchHistoryDtoToJson(SearchHistoryDto instance) =>
     <String, dynamic>{
       'searchText': instance.searchText,
       'searchTime': instance.searchTime?.toIso8601String(),

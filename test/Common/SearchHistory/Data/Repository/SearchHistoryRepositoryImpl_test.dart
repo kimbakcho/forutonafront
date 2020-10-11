@@ -1,16 +1,19 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Common/AddressSearchHistory/Data/Repository/AddressSearchHistoryRepositoryImpl.dart';
-import 'package:forutonafront/Common/AddressSearchHistory/Domain/Repository/AddressSearchHistoryRepository.dart';
-import 'package:forutonafront/Common/AddressSearchHistory/Domain/Value/AddressSearchHistory.dart';
+import 'package:forutonafront/Common/SearchHistory/Data/Repository/SearchHistoryRepositoryImpl.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Value/SearchHistory.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 
 void main() {
-  AddressSearchHistoryRepository addressSearchHistoryRepository;
+  SearchHistoryRepository addressSearchHistoryRepository;
 
   setUp(() {
     addressSearchHistoryRepository =
-        AddressSearchHistoryRepositoryImpl(
-            sharedPreferencesAdapter: MemorySharePreferencesAdapterImpl());
+        SearchHistoryRepositoryImpl(
+            sharedPreferencesAdapter: MemorySharePreferencesAdapterImpl(),
+          searchHistoryDataSourceKey: SearchHistoryDataSourceKey.AddressSearchHistoryDataSource
+        );
   });
 
   test('should save over 5 ', () async {
@@ -24,7 +27,7 @@ void main() {
     await addressSearchHistoryRepository.save("5");
     await addressSearchHistoryRepository.save("6");
     //then
-    List<AddressSearchHistory> histories = await addressSearchHistoryRepository.findByAll();
+    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll();
 
     expect(histories[0].searchText, "6");
     expect(histories[1].searchText, "5");
@@ -45,7 +48,7 @@ void main() {
 
 
     //then
-    List<AddressSearchHistory> histories = await addressSearchHistoryRepository.findByAll();
+    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll();
 
     expect(histories[0].searchText, "3");
     expect(histories[1].searchText, "2");
@@ -66,7 +69,7 @@ void main() {
 
 
     //then
-    List<AddressSearchHistory> histories = await addressSearchHistoryRepository.findByAll();
+    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll();
 
     expect(histories[0].searchText, "1");
     expect(histories[1].searchText, "3");
@@ -83,11 +86,20 @@ void main() {
     //when
     await addressSearchHistoryRepository.delete("3");
     //then
-    List<AddressSearchHistory> histories = await addressSearchHistoryRepository.findByAll();
+    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll();
     expect(histories[0].searchText, "2");
     expect(histories[1].searchText, "1");
 
     expect(histories.length, 2);
 
+  });
+
+  test('should key String Data', () async {
+    //given
+
+    print(EnumToString.convertToString(SearchHistoryDataSourceKey.AddressSearchHistoryDataSource));
+    //when
+
+    //then
   });
 }

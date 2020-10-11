@@ -2,13 +2,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/HCodePage/H008/H008MainView.dart';
 import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
 import 'package:forutonafront/HCodePage/H010/H010MainView.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
-
 
 // ignore: camel_case_types
 abstract class TopH_I_ExtendViewAction {
@@ -71,6 +71,8 @@ class I001ExtendViewAction
         builder: (_) {
           return H010MainView(
             inputSearchBarListener: this,
+            searchHistoryDataSourceKey:
+                SearchHistoryDataSourceKey.AddressSearchHistoryDataSource,
           );
         }));
   }

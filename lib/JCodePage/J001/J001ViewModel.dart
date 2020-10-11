@@ -13,8 +13,8 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class J001ViewModel extends ChangeNotifier {
   BuildContext context;
-  SingUpUseCaseInputPort _singUpUseCaseInputPort;
-  FireBaseSignInValidUseCase _fireBaseSignInValidUseCase;
+  SingUpUseCaseInputPort singUpUseCaseInputPort;
+  FireBaseSignInValidUseCase fireBaseSignInValidUseCase;
   TextEditingController idTextFieldController;
   TextEditingController pwTextFieldController;
   FocusNode idTextFocusNode;
@@ -23,15 +23,14 @@ class J001ViewModel extends ChangeNotifier {
   bool _isLoading = false;
 
   J001ViewModel(
-      {@required FireBaseSignInValidUseCase fireBaseSignInValidUseCase,
-      @required SingUpUseCaseInputPort singUpUseCaseInputPort,
+      {@required this.fireBaseSignInValidUseCase,
+      @required  this.singUpUseCaseInputPort,
       @required this.idTextFieldController,
       @required this.pwTextFieldController,
       @required this.idTextFocusNode,
       @required this.pwTextFocusNode,
       @required this.context})
-      : _fireBaseSignInValidUseCase = fireBaseSignInValidUseCase,
-        _singUpUseCaseInputPort = singUpUseCaseInputPort{
+      {
     idTextFieldController.addListener(onIdTextFieldController);
     pwTextFieldController.addListener(onPwTextFieldController);
     idTextFocusNode.addListener(onIdTextFocusNode);
@@ -74,11 +73,11 @@ class J001ViewModel extends ChangeNotifier {
 
   onLoginBtnClick() async {
     _setIsLoading(true);
-    await _fireBaseSignInValidUseCase.signInValidWithSignIn(
+    await fireBaseSignInValidUseCase.signInValidWithSignIn(
         idTextFieldController.text, pwTextFieldController.text);
-    if (_fireBaseSignInValidUseCase.hasSignInError()) {
+    if (fireBaseSignInValidUseCase.hasSignInError()) {
       Fluttertoast.showToast(
-          msg: _fireBaseSignInValidUseCase.signInErrorText(),
+          msg: fireBaseSignInValidUseCase.signInErrorText(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIos: 1,
@@ -113,13 +112,13 @@ class J001ViewModel extends ChangeNotifier {
         Navigator.of(context).popUntil(ModalRoute.withName('/'));
       }
     } on NotJoinException catch (e) {
-      _singUpUseCaseInputPort.setNickName(e.fUserSnSLoginReqDto.userNickName);
-      _singUpUseCaseInputPort.setEmail(e.fUserSnSLoginReqDto.email);
-      _singUpUseCaseInputPort
+      singUpUseCaseInputPort.setNickName(e.fUserSnSLoginReqDto.userNickName);
+      singUpUseCaseInputPort.setEmail(e.fUserSnSLoginReqDto.email);
+      singUpUseCaseInputPort
           .setUserProfileImageUrl(e.fUserSnSLoginReqDto.userProfileImageUrl);
-      _singUpUseCaseInputPort
+      singUpUseCaseInputPort
           .setSupportSnsService(snsLoginUseCase.getSnsSupportService());
-      _singUpUseCaseInputPort.setSnsToken(e.fUserSnSLoginReqDto.accessToken);
+      singUpUseCaseInputPort.setSnsToken(e.fUserSnSLoginReqDto.accessToken);
       await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) {
           return J002View();
@@ -140,7 +139,7 @@ class J001ViewModel extends ChangeNotifier {
   }
 
   void forutonaSingUpJumpToJ002() {
-    _singUpUseCaseInputPort.setSupportSnsService(SnsSupportService.Forutona);
+    singUpUseCaseInputPort.setSupportSnsService(SnsSupportService.Forutona);
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
         return J002View();

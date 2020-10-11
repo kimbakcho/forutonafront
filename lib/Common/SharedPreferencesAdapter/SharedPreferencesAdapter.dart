@@ -50,6 +50,8 @@ class SharedPreferencesAdapterImpl implements SharedPreferencesAdapter {
 
 class MemorySharePreferencesAdapterImpl implements SharedPreferencesAdapter {
 
+
+
   Map<String,dynamic> store = Map();
   
   setStringList(String key, List<String>  value) async {

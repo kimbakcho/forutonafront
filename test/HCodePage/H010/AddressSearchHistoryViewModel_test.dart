@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Common/AddressSearchHistory/Domain/UseCase/AddressSearchHistoryUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/UseCase/SearchHistoryUseCaseInputPort.dart';
+
 import 'package:forutonafront/HCodePage/H010/SearchHistoryView.dart';
 import 'package:mockito/mockito.dart';
 

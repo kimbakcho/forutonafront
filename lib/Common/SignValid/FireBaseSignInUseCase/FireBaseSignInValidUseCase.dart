@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class FireBaseSignInValidUseCase {
   String signInErrorText();
@@ -11,7 +12,7 @@ abstract class FireBaseSignInValidUseCase {
   Future<void> signInValidWithSignIn(String email, String pw);
 
 }
-
+@Injectable(as: FireBaseSignInValidUseCase)
 class FireBaseSignInValidUseCaseImpl implements FireBaseSignInValidUseCase {
   bool _signInError = false;
   String _signInErrorText = "";

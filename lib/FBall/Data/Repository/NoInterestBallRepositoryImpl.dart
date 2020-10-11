@@ -21,7 +21,13 @@ class NoInterestBallRepositoryImpl implements NoInterestBallRepository {
 
   @override
   Future<List<String>> findByAll() async {
-    return await sharedPreferencesAdapter.getStringList(_noInterestBallKey);
+    var list = await sharedPreferencesAdapter.getStringList(_noInterestBallKey);
+    if(list == null ){
+      return [];
+    }else {
+      return list;
+    }
+
   }
 
   @override

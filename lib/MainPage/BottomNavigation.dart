@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/JCodePage/J001/J001View.dart';
 import 'package:provider/provider.dart';
 
-import '../HomePage/KPageNavBtn.dart';
+import 'KPageNavBtn.dart';
+
+enum BottomNavigationNavType {
+  HOME,SEARCH,SNS
+}
 
 class BottomNavigation extends StatefulWidget {
+  final BottomNavigationListener bottomNavigationListener;
+
+  const BottomNavigation({Key key, this.bottomNavigationListener}) : super(key: key);
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }
@@ -24,7 +32,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       flex: 1,
                       child: FlatButton(
                         onPressed: () {
-
+                          if(widget.bottomNavigationListener != null){
+                            widget.bottomNavigationListener.onBottomNavClick(BottomNavigationNavType.HOME);
+                          }
                         },
                         child: Icon(Icons.home),
                       )),
@@ -36,14 +46,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   Expanded(
                       flex: 1,
                       child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if(widget.bottomNavigationListener != null){
+                              widget.bottomNavigationListener.onBottomNavClick(BottomNavigationNavType.SNS);
+                            }
+                          },
                           child: Icon(
                             ForutonaIcon.officialchannel,
                           ))),
                   Expanded(
                       flex: 1,
                       child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_)=> J001View()
+                            ));
+                          },
                           child: Icon(
                             ForutonaIcon.snsservicemenu,
                             size: 19,
@@ -66,5 +84,9 @@ class BottomNavigationViewModel extends ChangeNotifier {
 
   BottomNavigationViewModel({this.context});
 
-  jumpToPage() {}
+
+}
+
+abstract class BottomNavigationListener {
+  void onBottomNavClick(BottomNavigationNavType bottomNavigationNavType);
 }
