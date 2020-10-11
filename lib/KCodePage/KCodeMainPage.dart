@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopSearchDisPlayBar/TopSearchDisPlayBar.dart';
 import 'package:provider/provider.dart';
 
+import 'K001_01/K00101MainPage.dart';
 import 'KCodeTopTabBar.dart';
 
 class KCodeMainPage extends StatefulWidget {
@@ -27,55 +28,70 @@ class _KCodeMainPageState extends State<KCodeMainPage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => KCodeMainPageViewModel(),
-      child: Consumer<KCodeMainPageViewModel>(
-        builder: (_, model, __) {
+        create: (_) => KCodeMainPageViewModel(),
+        child: Consumer<KCodeMainPageViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: Container(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            //https://flutter-widget.live/widgets/NestedScrollView
-            child: NestedScrollView(
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverOverlapAbsorber(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context),
-                    sliver: SliverAppBar(
-                      toolbarHeight: 0,
-                      pinned: true,
-                      primary: false,
-                      flexibleSpace: TopSearchDisPlayBar(
-                        initText: widget.searchText,
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  //https://flutter-widget.live/widgets/NestedScrollView
+                  child: NotificationListener<ScrollNotification>(
+                      child: NestedScrollView(
+                        headerSliverBuilder:
+                            (BuildContext context, bool innerBoxIsScrolled) {
+                          return <Widget>[
+                            SliverOverlapAbsorber(
+                              handle: NestedScrollView
+                                  .sliverOverlapAbsorberHandleFor(context),
+                              sliver: SliverAppBar(
+                                toolbarHeight: 0,
+                                pinned: true,
+                                primary: false,
+                                flexibleSpace: TopSearchDisPlayBar(
+                                  initText: widget.searchText,
+                                ),
+                                expandedHeight: 124,
+                                bottom: KCodeTopTabBar(
+                                    tabController: _tabController),
+                              ),
+                            ),
+                          ];
+                        },
+                        body: Container(
+                          padding: EdgeInsets.only(top: 68),
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              K00101MainPage(),
+                              ListView.builder(
+                                padding: EdgeInsets.all(0),
+                                itemCount: 100,
+                                itemBuilder: (context, index) =>
+                                    Container(child: Text("${index + 100}")),
+                              ),
+                              ListView.builder(
+                                padding: EdgeInsets.all(0),
+                                itemCount: 100,
+                                itemBuilder: (context, index) =>
+                                    Container(child: Text("${index + 200}")),
+                              ),
+                              ListView.builder(
+                                padding: EdgeInsets.all(0),
+                                itemCount: 100,
+                                itemBuilder: (context, index) =>
+                                    Container(child: Text("${index + 300}")),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      expandedHeight: 124,
-                      bottom: KCodeTopTabBar(tabController: _tabController),
-                    ),
-                  ),
-                ];
-              },
-              body: Container(
-                padding: EdgeInsets.only(top: 68),
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    ListView.builder(
-                      padding: EdgeInsets.all(0),
-                      itemCount: 100,
-                      itemBuilder: (context,index)=>Container(child:Text("${index}")),
-                    ),
-                    Container(child: Text("123"),),
-                    Container(child: Text("123"),),
-                    Container(child: Text("123"),)
-                  ],
-                ),
-              ),
-              )
-              ,
-          ));
-        },
-      ),
-    );
+                      onNotification: (scrollNotification) {
+                        if (scrollNotification is UserScrollNotification) {
+                          print(scrollNotification);
+                        }
+                        return true;
+                      })));
+        }));
   }
 }
 
