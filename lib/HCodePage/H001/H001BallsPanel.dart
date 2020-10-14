@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageScrollController/PageScrollController.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/FullBallListUp.dart';
 import 'package:forutonafront/Components/TagList/RankingTagList.dart';
@@ -53,7 +54,7 @@ class H001BallsPanel extends StatelessWidget {
 }
 
 class H001BallsPanelViewModel extends ChangeNotifier
-    implements BallListMediatorComponent, RankingTagListMediatorComponent {
+    implements SearchCollectMediatorComponent, RankingTagListMediatorComponent {
   final BallListMediator ballListMediator;
   final RankingTagListMediator rankingTagListFromBIManager;
   final FullBallListUpController fullBallListUpController;
@@ -82,17 +83,18 @@ class H001BallsPanelViewModel extends ChangeNotifier
   }
 
   @override
-  void onBallListUpUpdate() {
-    notifyListeners();
-  }
-
-  @override
   void onTagListUpdate() {
     notifyListeners();
   }
 
-  @override
-  void onBallListEmpty() {
 
+  @override
+  void onItemListEmpty() {
+
+  }
+
+  @override
+  void onItemListUpUpdate() {
+    notifyListeners();
   }
 }

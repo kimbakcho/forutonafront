@@ -25,7 +25,7 @@ class IssueBallHaveImageWidget extends StatelessWidget {
       this.ballListMediator,
       this.ballOptionWidgetFactory})
       : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-            fBallResDto: ballListMediator.ballList[index],
+            fBallResDto: ballListMediator.itemList[index],
             geoLocatorAdapter: sl()),
         super(key: key);
 

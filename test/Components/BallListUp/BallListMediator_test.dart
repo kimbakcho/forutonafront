@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -13,8 +14,8 @@ import '../../fixtures/fixture_reader.dart';
 class MockFBallListUpUseCaseInputPort extends Mock
     implements FBallListUpUseCaseInputPort {}
 
-class MockBallListMediatorComponent extends Mock
-    implements BallListMediatorComponent {}
+class MockSearchCollectMediatorComponent extends Mock
+    implements SearchCollectMediatorComponent {}
 
 void main() {
   BallListMediator ballListMediator;
@@ -39,12 +40,12 @@ void main() {
     ballListMediator.fBallListUpUseCaseInputPort = mockFBallListUpUseCaseInputPort;
     await ballListMediator.searchFirst();
     //then
-    expect(ballListMediator.ballList.length, 3);
+    expect(ballListMediator.itemList.length, 3);
 
     //when
     await ballListMediator.searchNext();
     //then
-    expect(ballListMediator.ballList.length, 3);
+    expect(ballListMediator.itemList.length, 3);
   });
 
   test('should search continue', () async {
@@ -71,53 +72,53 @@ void main() {
     ballListMediator.fBallListUpUseCaseInputPort = mockFBallListUpUseCaseInputPort;
     await ballListMediator.searchFirst();
     //then
-    expect(ballListMediator.ballList.length, 3);
+    expect(ballListMediator.itemList.length, 3);
 
     //when
     await ballListMediator.searchNext();
     //then
-    expect(ballListMediator.ballList.length, 6);
+    expect(ballListMediator.itemList.length, 6);
 
     //when
     await ballListMediator.searchNext();
     //then
-    expect(ballListMediator.ballList.length, 6);
+    expect(ballListMediator.itemList.length, 6);
   });
 
   test('should registerComponent', () async {
     //given
-    MockBallListMediatorComponent mockBallListMediatorComponent = new MockBallListMediatorComponent();
+    MockSearchCollectMediatorComponent mockSearchCollectMediatorComponent = new MockSearchCollectMediatorComponent();
     //when
-    ballListMediator.registerComponent(mockBallListMediatorComponent);
+    ballListMediator.registerComponent(mockSearchCollectMediatorComponent);
     //then
     expect(ballListMediator.componentSize(), 1);
   });
 
   test('should unRegisterComponent', () async {
     //given
-    MockBallListMediatorComponent mockBallListMediatorComponent = new MockBallListMediatorComponent();
-    ballListMediator.registerComponent(mockBallListMediatorComponent);
+    MockSearchCollectMediatorComponent mockSearchCollectMediatorComponent = new MockSearchCollectMediatorComponent();
+    ballListMediator.registerComponent(mockSearchCollectMediatorComponent);
     //when
-    ballListMediator.unregisterComponent(mockBallListMediatorComponent);
+    ballListMediator.unregisterComponent(mockSearchCollectMediatorComponent);
     //then
     expect(ballListMediator.componentSize(), 0);
   });
 
   test('볼 숨기기', () async {
     //given
-    MockBallListMediatorComponent mockBallListMediatorComponent = new MockBallListMediatorComponent();
-    ballListMediator.registerComponent(mockBallListMediatorComponent);
+    MockSearchCollectMediatorComponent mockSearchCollectMediatorComponent = new MockSearchCollectMediatorComponent();
+    ballListMediator.registerComponent(mockSearchCollectMediatorComponent);
     PageWrap pageWrap = PageWrap<FBallResDto>.fromJson(
         json.decode(fixtureString(
             "/FBall/Data/DataSource/ListUpBallListUpOrderByBIFirst.json")),
         FBallResDto.fromJson);
 
-    ballListMediator.ballList  = pageWrap.content;
+    ballListMediator.itemList  = pageWrap.content;
     //when
     ballListMediator.hideBall("TESTBALL1UUID");
     //then
-    var indexWhere = ballListMediator.ballList.indexWhere((element) => element.ballUuid == "TESTBALL1UUID");
+    var indexWhere = ballListMediator.itemList.indexWhere((element) => element.ballUuid == "TESTBALL1UUID");
     expect(indexWhere, -1);
-    verify(mockBallListMediatorComponent.onBallListUpUpdate());
+    verify(mockSearchCollectMediatorComponent.onItemListUpUpdate());
   });
 }

@@ -22,7 +22,7 @@ abstract class RankingTagListMediator {
 
   onTagListUpdate();
 }
-
+// TODO SearchCollectMediator 으로  상속 하여 중복 제거 및 테스트 생성
 @Injectable(as: RankingTagListMediator)
 class RankingTagListMediatorImpl
     implements RankingTagListMediator {

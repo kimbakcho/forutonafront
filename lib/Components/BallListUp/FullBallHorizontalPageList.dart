@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageScrollController/PageScrollController.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +55,7 @@ class FullBallHorizontalPageList extends StatelessWidget {
 }
 
 class FullBallHorizontalPageListViewModel extends ChangeNotifier
-    implements BallListMediatorComponent {
+    implements SearchCollectMediatorComponent {
 
   final BallListMediator ballListMediator;
 
@@ -76,13 +77,13 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
   }
 
   void pageChange(int index) {
-    if (onSelectBall != null && ballListMediator.ballList.length > 0 ) {
-      onSelectBall(ballListMediator.ballList[index]);
+    if (onSelectBall != null && ballListMediator.itemList.length > 0 ) {
+      onSelectBall(ballListMediator.itemList[index]);
     }
   }
 
   List<FBallResDto> get balls {
-    return ballListMediator.ballList;
+    return ballListMediator.itemList;
   }
 
   onNextPage() {
@@ -91,8 +92,8 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
 
   onRefreshFirst() async {
     await ballListMediator.searchFirst();
-    if (ballListMediator.ballList.length > 0) {
-      onSelectBall(ballListMediator.ballList[0]);
+    if (ballListMediator.itemList.length > 0) {
+      onSelectBall(ballListMediator.itemList[0]);
     }
   }
 
@@ -102,22 +103,23 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
     super.dispose();
   }
 
-  @override
-  void onBallListUpUpdate() {
-    notifyListeners();
-  }
-
   _moveToBall(FBallResDto fBallResDto) {
-    var indexWhere = ballListMediator.ballList
+    var indexWhere = ballListMediator.itemList
         .indexWhere((element) => element.ballUuid == fBallResDto.ballUuid);
     pageController.jumpToPage(indexWhere);
 
   }
+  @override
+  void onItemListUpUpdate() {
+    notifyListeners();
+  }
 
   @override
-  void onBallListEmpty() {
+  void onItemListEmpty() {
 
   }
+
+
 }
 
 class FullBallHorizontalPageListController {

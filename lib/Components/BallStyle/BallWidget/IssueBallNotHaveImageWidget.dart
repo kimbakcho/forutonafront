@@ -23,7 +23,7 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
       this.ballListMediator,
       this.ballOptionWidgetFactory})
       : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-            fBallResDto: ballListMediator.ballList[index]),
+            fBallResDto: ballListMediator.itemList[index]),
         super(key: key);
 
   @override

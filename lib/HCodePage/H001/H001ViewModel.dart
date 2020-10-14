@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
@@ -18,7 +19,7 @@ import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dar
 
 class H001ViewModel
     with ChangeNotifier
-    implements GeoViewSearchListener, BallListMediatorComponent {
+    implements GeoViewSearchListener, SearchCollectMediatorComponent {
   final GeoLocationUtilBasicUseCaseInputPort
       geoLocationUtilBasicUseCaseInputPort;
   final BallListMediator ballListMediator;
@@ -72,14 +73,13 @@ class H001ViewModel
     await rankingTagListFromBIManager.search(loadPosition);
 
   }
-
+  
   @override
-  void onBallListUpUpdate() {
-    notifyListeners();
+  void onItemListEmpty() {
   }
 
   @override
-  void onBallListEmpty() {
-
+  void onItemListUpUpdate() {
+    notifyListeners();
   }
 }

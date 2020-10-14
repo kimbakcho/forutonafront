@@ -12,7 +12,7 @@ class IssueBallWidgetFactory {
   static Widget getIssueBallWidget(
       int index, BallListMediator ballListMediator, Axis axis) {
     IssueBallDisPlayUseCase issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: ballListMediator.ballList[index], geoLocatorAdapter: sl());
+        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
     if (axis == Axis.vertical) {
       if (issueBallDisPlayUseCase.isMainPicture()) {
         return IssueBallHaveImageWidget(

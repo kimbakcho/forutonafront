@@ -27,8 +27,8 @@ class RankingTagChip extends StatelessWidget {
         ),
       ),
       decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Color(0xffCCCCCC), width: 1),
+          color: Color(0xffE4E7E8),
+
           borderRadius: BorderRadius.all(Radius.circular(12))),
     );
   }

@@ -16,7 +16,7 @@ class FUserInfoSimpleResDto {
 
   FUserInfoSimpleResDto();
 
-  factory FUserInfoSimpleResDto.fromJson(Map<String, dynamic> json) =>
+  static FUserInfoSimpleResDto fromJson(Map<String, dynamic> json) =>
       _$FUserInfoSimpleResDtoFromJson(json);
 
   static fromFUserInfoSimple(FUserInfoSimple fUserInfoSimple){

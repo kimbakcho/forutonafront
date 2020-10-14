@@ -9,6 +9,7 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/GoogleMapSupport/MapBallMarkerFactory.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/FullBallHorizontalPageList.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
@@ -118,7 +119,7 @@ class _I001MainPageState extends State<I001MainPage>
 }
 
 class I001MainPageViewModel extends ChangeNotifier
-    implements GeoViewSearchListener, BallListMediatorComponent {
+    implements GeoViewSearchListener, SearchCollectMediatorComponent {
   final BuildContext context;
 
   final GeoViewSearchManagerInputPort geoViewSearchManagerInputPort;
@@ -265,8 +266,8 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   void firstBallSelect() {
-    if (ballListMediator.ballList.length > 0) {
-      onSelectBall(ballListMediator.ballList[0]);
+    if (ballListMediator.itemList.length > 0) {
+      onSelectBall(ballListMediator.itemList[0]);
     }
   }
 
@@ -317,10 +318,6 @@ class I001MainPageViewModel extends ChangeNotifier
     _googleMapKey = GlobalKey();
   }
 
-  @override
-  void onBallListUpUpdate() {
-    notifyListeners();
-  }
 
   bool get _isLoading {
     return ballListMediator.isLoading;
@@ -328,7 +325,7 @@ class I001MainPageViewModel extends ChangeNotifier
 
   Set<Marker> _makeMaker(FBallResDto selectBall) {
     Set<Marker> ballMarker = Set<Marker>();
-    ballListMediator.ballList.forEach((element) {
+    ballListMediator.itemList.forEach((element) {
       ballMarker.add(mapBallMarkerFactory.getBallMaker(
           element.ballType,
           element.ballUuid,
@@ -342,7 +339,12 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   @override
-  void onBallListEmpty() {
+  void onItemListEmpty() {
     fluttertoastAdapter.showToast(msg: "여기에는 컨텐츠가 없습니다");
+  }
+
+  @override
+  void onItemListUpUpdate() {
+    notifyListeners();
   }
 }

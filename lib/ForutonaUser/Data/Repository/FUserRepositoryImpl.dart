@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
+
 @LazySingleton(as: FUserRepository)
 class FUserRepositoryImpl implements FUserRepository {
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
@@ -20,7 +24,7 @@ class FUserRepositoryImpl implements FUserRepository {
 
   FUserRepositoryImpl(
       {@required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
-      @required FUserRemoteDataSource fUserRemoteDataSource})
+        @required FUserRemoteDataSource fUserRemoteDataSource})
       : _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
         _fUserRemoteDataSource = fUserRemoteDataSource;
 
@@ -74,6 +78,15 @@ class FUserRepositoryImpl implements FUserRepository {
 
   @override
   Future<FUserInfo> findByMe() async {
-    return await _fUserRemoteDataSource.findByMe(FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+    return await _fUserRemoteDataSource
+        .findByMe(FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+  }
+
+  @override
+  Future<
+      PageWrap<FUserInfoSimpleResDto>> findByUserNickNameWithFullTextMatchIndex(
+      String searchNickName, Pageable pageable) async {
+    return await _fUserRemoteDataSource.getUserNickNameWithFullTextMatchIndex(
+        searchNickName, pageable, FDio.noneToken());
   }
 }

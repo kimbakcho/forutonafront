@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:provider/provider.dart';
 
@@ -26,12 +27,12 @@ class FullBallListUp extends StatelessWidget {
           return ListView.builder(
               shrinkWrap: true,
               physics: physics,
-              itemCount: ballListMediator.ballList.length,
+              itemCount: ballListMediator.itemList.length,
               padding: EdgeInsets.all(0),
               itemBuilder: (_, index) {
                 return Container(
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
-                  key: Key(ballListMediator.ballList[index].ballUuid),
+                  key: Key(ballListMediator.itemList[index].ballUuid),
                   child: ListUpBallWidgetFactory.getBallWidget(
                       index, ballListMediator,Axis.vertical),
                 );
@@ -41,7 +42,7 @@ class FullBallListUp extends StatelessWidget {
 }
 
 class FullBallListUpViewModel extends ChangeNotifier
-    implements BallListMediatorComponent {
+    implements SearchCollectMediatorComponent {
   final BallListMediator ballListMediator;
   final FullBallListUpController fullBallListUpController;
 
@@ -59,11 +60,6 @@ class FullBallListUpViewModel extends ChangeNotifier
   }
 
   @override
-  void onBallListUpUpdate() {
-    notifyListeners();
-  }
-
-  @override
   void dispose() {
     ballListMediator.unregisterComponent(this);
     super.dispose();
@@ -73,9 +69,15 @@ class FullBallListUpViewModel extends ChangeNotifier
     await ballListMediator.searchFirst();
   }
 
-  @override
-  void onBallListEmpty() {
 
+  @override
+  void onItemListEmpty() {
+
+  }
+
+  @override
+  void onItemListUpUpdate() {
+    notifyListeners();
   }
 }
 

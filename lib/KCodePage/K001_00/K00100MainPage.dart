@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/UserInfoCollectWidget/NickNameExpandAbleCollectWidget.dart';
 import 'package:provider/provider.dart';
 
 import '../KRankingTagListWidget.dart';
@@ -14,10 +15,18 @@ class K00100MainPage extends StatelessWidget {
         create: (_) => K00100MainPageViewModel(),
         child: Consumer<K00100MainPageViewModel>(
           builder: (_, model, __) {
-            return ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(0),
-                children: [KRankingTagListWidget(searchText: searchText)]);
+            return Container(
+              child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(0),
+                  children: [
+                    KRankingTagListWidget(searchText: searchText),
+                    NickNameExpandAbleCollectWidget(
+                      searchText: searchText,
+                    )
+                  ]),
+              decoration: BoxDecoration(color: Color(0xffF2F0F1)),
+            );
           },
         ));
   }

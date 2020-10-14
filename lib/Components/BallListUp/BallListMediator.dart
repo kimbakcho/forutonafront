@@ -2,6 +2,7 @@ import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dar
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -11,153 +12,37 @@ enum BallListMediatorState {
   Empty,HasBall,Error
 }
 
-abstract class BallListMediatorComponent {
 
-  void onBallListUpUpdate();
-
-  void onBallListEmpty();
-}
-
-abstract class BallListMediator {
+abstract class BallListMediator extends SearchCollectMediator<FBallResDto>{
 
   FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
-
-  void registerComponent(BallListMediatorComponent component);
-
-  void unregisterComponent(BallListMediatorComponent component);
-
-  int componentSize();
-
-  searchNext();
-
-  searchFirst();
-
-  List<FBallResDto> ballList;
 
   hideBall(String ballUuid);
 
-  bool get isLastPage;
-
   Position searchPosition();
 
-  BallListMediatorState currentState;
-
-  bool isLoading;
 }
 
-
 @Injectable(as: BallListMediator)
-class BallListMediatorImpl implements BallListMediator {
-  FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
-
-  List<BallListMediatorComponent> ballListMediatorComponentList = [];
-
-  int _pageCount = 0;
-
-  int _pageLimit = 40;
-
-  PageWrap<FBallResDto> _wrapBallList;
-
-  List<FBallResDto> ballList = [];
-
-  bool loadLast = false;
-
-  FluttertoastAdapter fluttertoastAdapter = sl();
-
-  BallListMediatorImpl()
-  {
-    _wrapBallList = PageWrap<FBallResDto>();
-  }
-
+class BallListMediatorImpl extends BallListMediator {
 
   @override
-  void registerComponent(BallListMediatorComponent component) {
-    ballListMediatorComponentList.add(component);
-  }
-
-  @override
-  void unregisterComponent(BallListMediatorComponent component) {
-    ballListMediatorComponentList.remove(component);
-  }
-
-  search(Pageable pageable ) async {
-    isLoading = true;
-
-    onPageListUpdate();
-    if(fBallListUpUseCaseInputPort == null){
-      currentState = BallListMediatorState.Error;
-      isLoading = false;
-      onPageListUpdate();
-      throw Exception("don't have searchCaseInputPort for need set FBallListUpUseCaseInputPort");
-    }
-    if(isLastPage){
-      if(_pageCount == 0 && ballList.length == 0){
-        currentState = BallListMediatorState.Empty;
-      }
-      isLoading = false;
-      onPageListUpdate();
-      return ;
-    }
-    this._wrapBallList = await this
+  Future<void> searchUseCase(Pageable pageable) async {
+    this.wrapItemList = await this
         .fBallListUpUseCaseInputPort
         .search(pageable);
-    if (_wrapBallList.first) {
-      ballList.clear();
-    }
-    ballList.addAll(_wrapBallList.content);
-    _pageCount = pageable.page;
+  }
 
-    if(_pageCount == 0 && ballList.length == 0){
-      currentState = BallListMediatorState.Empty;
-      onBallListEmpty();
+  @override
+  bool isNullSearchUseCase(){
+    if(fBallListUpUseCaseInputPort == null) {
+      return true;
     }else {
-      currentState = BallListMediatorState.HasBall;
+      return false;
     }
-    isLoading = false;
-    onPageListUpdate();
-  }
-
-  onPageListUpdate() {
-    ballListMediatorComponentList.forEach((element) {
-      element.onBallListUpUpdate();
-    });
-  }
-
-  onBallListEmpty(){
-    ballListMediatorComponentList.forEach((element) {
-      element.onBallListEmpty();
-    });
   }
 
   @override
-  searchNext() async{
-    _pageCount++;
-    await search(Pageable(page:_pageCount,size:_pageLimit));
-  }
-
-
-  @override
-  searchFirst() async {
-    _pageCount = 0;
-    _wrapBallList = PageWrap<FBallResDto>();
-    await search(Pageable(page:_pageCount,size:_pageLimit));
-  }
-
-  set pageLimit(int value) {
-    this._pageLimit = value;
-  }
-
-  @override
-  bool get isLastPage {
-    return _wrapBallList.last;
-  }
-
-  @override
-  int componentSize() {
-    return ballListMediatorComponentList.length;
-  }
-
-
   Position searchPosition(){
     if(fBallListUpUseCaseInputPort != null){
       return fBallListUpUseCaseInputPort.searchPosition;
@@ -168,15 +53,9 @@ class BallListMediatorImpl implements BallListMediator {
 
   @override
   hideBall(String ballUuid) {
-    this.ballList.removeWhere((element) => element.ballUuid == ballUuid);
+    this.itemList.removeWhere((element) => element.ballUuid == ballUuid);
     onPageListUpdate();
   }
-
-  @override
-  BallListMediatorState currentState = BallListMediatorState.HasBall;
-
-  @override
-  bool isLoading = false;
 
 
 }
