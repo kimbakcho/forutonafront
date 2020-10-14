@@ -1,7 +1,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
-import 'package:forutonafront/Components/TagList/RankingTagListFromBI.dart';
+import 'package:forutonafront/Components/TagList/RankingTagList.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:mockito/mockito.dart';
@@ -14,7 +14,7 @@ class MockGeoLocationUtilBasicUseCaseInputPort extends Mock
 class MockTagRepository extends Mock implements TagRepository {}
 
 void main() {
-  RankingTagListFromBIViewModel rankingTagListFromBIViewModel;
+  RankingTagListViewModel rankingTagListFromBIViewModel;
 
   RankingTagListMediator rankingTagListMediator;
 
@@ -26,7 +26,7 @@ void main() {
 
     mockTagRepository = MockTagRepository();
 
-    rankingTagListFromBIViewModel = RankingTagListFromBIViewModel(
+    rankingTagListFromBIViewModel = RankingTagListViewModel(
         rankingTagListMediator: rankingTagListMediator
     );
   });

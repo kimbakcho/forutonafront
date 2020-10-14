@@ -1,34 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Components/TagList/RankingTagChip.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePowerUseCase.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:provider/provider.dart';
-
 import 'RankingTagListMediator.dart';
 
-class RankingTagListFromBI extends StatefulWidget {
+class RankingTagList extends StatefulWidget {
   final RankingTagListMediator rankingTagListMediator;
 
-  const RankingTagListFromBI({Key key, this.rankingTagListMediator})
+  const RankingTagList({Key key, this.rankingTagListMediator})
       : super(key: key);
 
   @override
-  _RankingTagListFromBIState createState() => _RankingTagListFromBIState();
+  _RankingTagListState createState() => _RankingTagListState();
 }
 
-class _RankingTagListFromBIState extends State<RankingTagListFromBI>
-    with AutomaticKeepAliveClientMixin<RankingTagListFromBI> {
+class _RankingTagListState extends State<RankingTagList>
+    with AutomaticKeepAliveClientMixin<RankingTagList> {
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => RankingTagListFromBIViewModel(
+        create: (_) => RankingTagListViewModel(
             rankingTagListMediator: widget.rankingTagListMediator),
-        child: Consumer<RankingTagListFromBIViewModel>(builder: (_, model, __) {
+        child: Consumer<RankingTagListViewModel>(builder: (_, model, __) {
           return Container(
               margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
               height: 30,
@@ -49,12 +43,12 @@ class _RankingTagListFromBIState extends State<RankingTagListFromBI>
   bool get wantKeepAlive => true;
 }
 
-class RankingTagListFromBIViewModel extends ChangeNotifier
+class RankingTagListViewModel extends ChangeNotifier
     implements
         RankingTagListMediatorComponent {
   final RankingTagListMediator rankingTagListMediator;
 
-  RankingTagListFromBIViewModel(
+  RankingTagListViewModel(
       {@required this.rankingTagListMediator}) {
     if (rankingTagListMediator != null) {
       rankingTagListMediator.registerComponent(this);

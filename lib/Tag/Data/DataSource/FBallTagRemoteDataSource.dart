@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
+import 'package:forutonafront/Tag/Dto/TagRankingFromTextReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:injectable/injectable.dart';
 
@@ -15,7 +16,12 @@ abstract class FBallTagRemoteDataSource {
 
   Future<List<FBallTagResDto>> tagFromBallUuid(
       {@required String ballUuid, @required FDio noneTokenFDio});
+
+  Future<List<TagRankingResDto>> getTagRankingFromTextOrderBySumBI(
+      {@required TagRankingFromTextReqDto tagRankingFromTextReqDto,
+      @required FDio noneTokenFDio});
 }
+
 @LazySingleton(as: FBallTagRemoteDataSource)
 class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
   FBallTagRemoteDataSourceImpl();
@@ -26,7 +32,8 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
     var response = await noneTokenFDio.get(
         "/v1/FTag/RankingFromBallInfluencePower",
         queryParameters: reqDto.toJson());
-    return List<TagRankingResDto>.from(response.data.map((x)=>TagRankingResDto.fromJson(x)));
+    return List<TagRankingResDto>.from(
+        response.data.map((x) => TagRankingResDto.fromJson(x)));
   }
 
   @override
@@ -36,7 +43,8 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
     var response = await noneTokenFDio.get(
         "/v1/FTag/RelationTagRankingFromTagNameOrderByBallPower",
         queryParameters: {"searchTag": searchTag});
-    return List<TagRankingResDto>.from(response.data.map((x)=>TagRankingResDto.fromJson(x)));
+    return List<TagRankingResDto>.from(
+        response.data.map((x) => TagRankingResDto.fromJson(x)));
   }
 
   @override
@@ -46,5 +54,16 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
         queryParameters: {"ballUuid": ballUuid});
     return List<FBallTagResDto>.from(
         response.data.map((x) => FBallTagResDto.fromJson(x)));
+  }
+
+  @override
+  Future<List<TagRankingResDto>> getTagRankingFromTextOrderBySumBI(
+      {@required TagRankingFromTextReqDto tagRankingFromTextReqDto,
+      @required FDio noneTokenFDio}) async {
+    var response = await noneTokenFDio.get(
+        "/v1/FTag/TagRankingFromTextOrderBySumBI",
+        queryParameters: tagRankingFromTextReqDto.toJson());
+    return List<TagRankingResDto>.from(
+        response.data.map((x) => TagRankingResDto.fromJson(x)));
   }
 }

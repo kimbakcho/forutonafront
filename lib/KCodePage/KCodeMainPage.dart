@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopSearchDisPlayBar/TopSearchDisPlayBar.dart';
 import 'package:provider/provider.dart';
 
+import 'K001_00/K00100MainPage.dart';
 import 'K001_01/K00101MainPage.dart';
 import 'KCodeTopTabBar.dart';
 
@@ -62,7 +63,9 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                           child: TabBarView(
                             controller: _tabController,
                             children: [
-                              K00101MainPage(),
+                              K00100MainPage(
+                                searchText: widget.searchText,
+                              ),
                               ListView.builder(
                                 padding: EdgeInsets.all(0),
                                 itemCount: 100,

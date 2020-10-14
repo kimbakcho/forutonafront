@@ -9,6 +9,7 @@ class RankingTagChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints(minWidth: 0,maxWidth: 120),
       margin: EdgeInsets.only(left: 16),
       child:RawMaterialButton(
         padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -16,6 +17,7 @@ class RankingTagChip extends StatelessWidget {
         onPressed: () {},
         child: Text(
           '#$tagName',
+          overflow: TextOverflow.ellipsis,
           style: GoogleFonts.notoSans(
             fontSize: 14,
             color: const Color(0xff454f63),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageScrollController/PageScrollController.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/FullBallListUp.dart';
-import 'package:forutonafront/Components/TagList/RankingTagListFromBI.dart';
+import 'package:forutonafront/Components/TagList/RankingTagList.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +35,7 @@ class H001BallsPanel extends StatelessWidget {
                       onRefreshFirst: model.onRefreshFirst).scrollController,
               physics: BouncingScrollPhysics(),
               children: <Widget>[
-                RankingTagListFromBI(
+                RankingTagList(
                     rankingTagListMediator: model.rankingTagListFromBIManager),
                 FullBallListUp(
                   ballListMediator: model.ballListMediator,

@@ -18,7 +18,6 @@ class TagRankingFromBallInfluencePowerUseCase
   TagRankingFromBallInfluencePowerUseCase({
     @required this.tagRepository,
     @required this.reqDto,
-
   }) : assert(tagRepository != null);
 
   @override
