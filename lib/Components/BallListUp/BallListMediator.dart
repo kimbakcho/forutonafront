@@ -1,16 +1,11 @@
-import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:injectable/injectable.dart';
 
-enum BallListMediatorState {
-  Empty,HasBall,Error
-}
+import 'package:injectable/injectable.dart';
 
 
 abstract class BallListMediator extends SearchCollectMediator<FBallResDto>{
@@ -27,8 +22,8 @@ abstract class BallListMediator extends SearchCollectMediator<FBallResDto>{
 class BallListMediatorImpl extends BallListMediator {
 
   @override
-  Future<void> searchUseCase(Pageable pageable) async {
-    this.wrapItemList = await this
+  Future<PageWrap<FBallResDto>> searchUseCase(Pageable pageable) async {
+    return await this
         .fBallListUpUseCaseInputPort
         .search(pageable);
   }

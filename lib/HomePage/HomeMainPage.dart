@@ -72,6 +72,7 @@ class _HomeMainPageState extends State<HomeMainPage>
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [

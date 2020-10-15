@@ -22,6 +22,8 @@ abstract class SearchCollectMediator<T> {
 
   List<T> itemList = [];
 
+  String sort;
+
   SearchCollectMediator(){
     wrapItemList = PageWrap<T>();
   }
@@ -43,12 +45,12 @@ abstract class SearchCollectMediator<T> {
   searchFirst() async {
     _pageCount = 0;
     wrapItemList = PageWrap<T>();
-    await _search(Pageable(page:_pageCount,size:pageLimit));
+    await _search(Pageable(page:_pageCount,size:pageLimit,sort: sort));
   }
 
   searchNext() async{
     _pageCount++;
-    await _search(Pageable(page:_pageCount,size:pageLimit));
+    await _search(Pageable(page:_pageCount,size:pageLimit,sort: sort));
   }
 
 
@@ -70,11 +72,14 @@ abstract class SearchCollectMediator<T> {
       onPageListUpdate();
       return ;
     }
-    await searchUseCase(pageable);
+    wrapItemList = await searchUseCase(pageable);
     if (wrapItemList.first) {
       itemList.clear();
     }
-    itemList.addAll(wrapItemList.content);
+    if(wrapItemList.content != null){
+      itemList.addAll(wrapItemList.content);
+    }
+
     _pageCount = pageable.page;
 
     if(_pageCount == 0 && itemList.length == 0){
@@ -89,7 +94,7 @@ abstract class SearchCollectMediator<T> {
 
   bool isNullSearchUseCase();
 
-  Future<void> searchUseCase(Pageable pageable);
+  Future<PageWrap<T>> searchUseCase(Pageable pageable);
 
   bool get isLastPage {
     return wrapItemList.last;

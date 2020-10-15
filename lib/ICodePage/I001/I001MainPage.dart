@@ -57,6 +57,7 @@ class _I001MainPageState extends State<I001MainPage>
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => I001MainPageViewModel(

@@ -1,5 +1,4 @@
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromTextReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 

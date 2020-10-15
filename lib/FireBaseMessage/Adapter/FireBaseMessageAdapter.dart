@@ -7,7 +7,6 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUs
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart' as di;
 import 'package:injectable/injectable.dart';
 
 //FirebaseMessage BackGround 에 등록되는 메소드는 는 반드시 Top Level 메소드 여야 한다.

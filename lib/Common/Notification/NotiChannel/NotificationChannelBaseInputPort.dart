@@ -1,8 +1,6 @@
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
 
-import 'Domain/CommentChannel/CommentChannelUseCase.dart';
-import 'Domain/RadarBasicChannel/RadarBasicChannelUseCae.dart';
 
 @Injectable()
 abstract class NotificationChannelBaseInputPort {

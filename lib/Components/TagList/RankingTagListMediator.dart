@@ -1,65 +1,44 @@
-import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingUseCaseInputPort.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:injectable/injectable.dart';
 
-abstract class RankingTagListMediatorComponent {
-  onTagListUpdate();
-}
-
-abstract class RankingTagListMediator {
-  void registerComponent(RankingTagListMediatorComponent component);
-
-  void unregisterComponent(RankingTagListMediatorComponent component);
-
-  int componentSize();
-
-  search(Position searchPosition);
+abstract class RankingTagListMediator
+    extends SearchCollectMediator<TagRankingResDto> {
 
   TagRankingUseCaseInputPort tagRankingUseCaseInputPort;
 
-  List<TagRankingResDto> tagRankingResDtos;
-
-  onTagListUpdate();
 }
-// TODO SearchCollectMediator 으로  상속 하여 중복 제거 및 테스트 생성
+
 @Injectable(as: RankingTagListMediator)
-class RankingTagListMediatorImpl
-    implements RankingTagListMediator {
-
-  List<RankingTagListMediatorComponent> _rankingTagListComponentList = [];
-
-  List<TagRankingResDto> tagRankingResDtos = [];
-
-  Position currentSearchPosition;
+class RankingTagListMediatorImpl extends RankingTagListMediator {
 
   TagRankingUseCaseInputPort tagRankingUseCaseInputPort;
 
-  RankingTagListMediatorImpl();
 
-  void registerComponent(RankingTagListMediatorComponent listener) {
-    this._rankingTagListComponentList.add(listener);
-  }
-
-  void unregisterComponent(RankingTagListMediatorComponent listener) {
-    this._rankingTagListComponentList.remove(listener);
-  }
-
-  int componentSize() {
-    return this._rankingTagListComponentList.length;
-  }
-
-  search(Position searchPosition) async {
-    currentSearchPosition = searchPosition;
-    this.tagRankingResDtos = await tagRankingUseCaseInputPort.search();
-    onTagListUpdate();
+  @override
+  bool isNullSearchUseCase() {
+    if (tagRankingUseCaseInputPort == null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
-  onTagListUpdate() {
-    _rankingTagListComponentList.forEach((element) {
-      element.onTagListUpdate();
-    });
+  Future<PageWrap<TagRankingResDto>> searchUseCase(Pageable pageable) async {
+    // currentSearchPosition = searchPosition;
+    var list = await tagRankingUseCaseInputPort.search();
+    return PageWrap<TagRankingResDto>(content: list,
+        first: true,
+        last: true,
+        empty: false,
+        size: 10,
+        totalPages: 1,
+        totalElements: 10);
   }
 
 }

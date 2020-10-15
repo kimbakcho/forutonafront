@@ -57,13 +57,13 @@ class KRankingTagListWidgetViewModel extends ChangeNotifier {
         TagRankingFromTextOrderBySumBIUseCase(
             reqDto: tagRankingFromTextReqDto, tagRepository: sl());
 
-    await this.rankingTagListMediator.search(position);
+    await this.rankingTagListMediator.searchFirst();
 
     notifyListeners();
   }
 
   bool hasTagRankingItem() {
-    if (this.rankingTagListMediator.tagRankingResDtos.length > 0) {
+    if (this.rankingTagListMediator.itemList.length > 0) {
       return true;
     } else {
       return false;

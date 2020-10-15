@@ -43,6 +43,7 @@ void main() {
     when(mockGeoLocationUtilForeGroundUseCaseInputPort.useGpsReq()).thenAnswer((realInvocation) async => true);
 
     topH001NavExpendAniContentViewModel = TopH_I_001NavExpendAniContentViewModel(
+      codeMainPageController: null,
         geoLocationUtilForeGroundUseCaseInputPort: mockGeoLocationUtilForeGroundUseCaseInputPort,
         locationAdapter: mockLocationAdapter,
         geoViewSearchManager: geoViewSearchManager,

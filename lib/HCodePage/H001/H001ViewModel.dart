@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
+
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
@@ -12,7 +11,6 @@ import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/ListUpBallListUpOr
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/NoInterestedBallDecorator.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingFromBallInfluencePowerUseCase.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
@@ -29,7 +27,6 @@ class H001ViewModel
   final NoInterestBallUseCaseInputPort noInterestBallUseCaseInputPort;
   final TagRepository tagRepository;
 
-  FluttertoastAdapter fluttertoastAdapter = sl();
 
   H001ViewModel(
       {this.geoViewSearchManager,
@@ -70,7 +67,7 @@ class H001ViewModel
 
     await ballListMediator.searchFirst();
 
-    await rankingTagListFromBIManager.search(loadPosition);
+    await rankingTagListFromBIManager.searchFirst();
 
   }
   

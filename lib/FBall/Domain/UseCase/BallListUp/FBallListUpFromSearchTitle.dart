@@ -5,7 +5,6 @@ import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:injectable/injectable.dart';
 
 class FBallListUpFromSearchTitle implements FBallListUpUseCaseInputPort {
   FBallListUpFromSearchTitleReqDto reqDto;

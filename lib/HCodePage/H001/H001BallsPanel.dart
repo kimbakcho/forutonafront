@@ -54,7 +54,7 @@ class H001BallsPanel extends StatelessWidget {
 }
 
 class H001BallsPanelViewModel extends ChangeNotifier
-    implements SearchCollectMediatorComponent, RankingTagListMediatorComponent {
+    implements SearchCollectMediatorComponent {
   final BallListMediator ballListMediator;
   final RankingTagListMediator rankingTagListFromBIManager;
   final FullBallListUpController fullBallListUpController;
@@ -82,10 +82,6 @@ class H001BallsPanelViewModel extends ChangeNotifier
     super.dispose();
   }
 
-  @override
-  void onTagListUpdate() {
-    notifyListeners();
-  }
 
 
   @override

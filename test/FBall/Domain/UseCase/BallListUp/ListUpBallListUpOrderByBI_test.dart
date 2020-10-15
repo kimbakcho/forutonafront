@@ -10,7 +10,7 @@ import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../ICodePage/ID001/ID001MainPage2ViewModel_test.dart';
+
 import '../../../../fixtures/fixture_reader.dart';
 class MockFBallRepository extends Mock implements FBallRepository{}
 void main() {

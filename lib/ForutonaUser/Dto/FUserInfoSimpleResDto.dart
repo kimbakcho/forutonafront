@@ -13,6 +13,7 @@ class FUserInfoSimpleResDto {
   String selfIntroduction;
   double cumulativeInfluence;
   int followCount;
+  double playerPower;
 
   FUserInfoSimpleResDto();
 
@@ -29,6 +30,7 @@ class FUserInfoSimpleResDto {
     fUserInfoSimpleResDto.selfIntroduction = fUserInfoSimple.selfIntroduction;
     fUserInfoSimpleResDto.cumulativeInfluence = fUserInfoSimple.cumulativeInfluence;
     fUserInfoSimpleResDto.followCount = fUserInfoSimple.followCount;
+    fUserInfoSimpleResDto.playerPower = fUserInfoSimple.playerPower;
     return fUserInfoSimpleResDto;
   }
 

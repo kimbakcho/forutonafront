@@ -12,6 +12,7 @@ class FUserInfoSimple {
   String selfIntroduction;
   double cumulativeInfluence;
   int followCount;
+  double playerPower;
 
   FUserInfoSimple();
 

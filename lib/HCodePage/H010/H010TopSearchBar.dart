@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BackButton/BorderCircleBackButton.dart';
-import 'package:provider/provider.dart';
+
 import '../../Components/InputSearchBar/InputSearchBar.dart';
-import 'H010MainView.dart';
+
 import 'SearchHistoryView.dart';
 
 class H010TopSearchBar extends StatelessWidget {

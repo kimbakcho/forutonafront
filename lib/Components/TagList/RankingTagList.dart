@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/TagList/RankingTagChip.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class _RankingTagListState extends State<RankingTagList>
     with AutomaticKeepAliveClientMixin<RankingTagList> {
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => RankingTagListViewModel(
@@ -45,7 +47,7 @@ class _RankingTagListState extends State<RankingTagList>
 
 class RankingTagListViewModel extends ChangeNotifier
     implements
-        RankingTagListMediatorComponent {
+        SearchCollectMediatorComponent {
   final RankingTagListMediator rankingTagListMediator;
 
   RankingTagListViewModel(
@@ -64,12 +66,17 @@ class RankingTagListViewModel extends ChangeNotifier
   }
 
   List<TagRankingResDto>  get tagRankingResDtos {
-    return rankingTagListMediator.tagRankingResDtos;
+    return rankingTagListMediator.itemList;
   }
 
 
   @override
-  Future<void> onTagListUpdate() async{
+  void onItemListEmpty() {
+
+  }
+
+  @override
+  void onItemListUpUpdate() {
     notifyListeners();
   }
 }

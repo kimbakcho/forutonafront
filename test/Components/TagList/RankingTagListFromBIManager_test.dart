@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
 import 'package:forutonafront/Tag/Domain/UseCase/TagRankingUseCaseInputPort.dart';
 import 'package:mockito/mockito.dart';
 
-class MockRankingTagListMediatorComponent extends Mock implements RankingTagListMediatorComponent{}
+class MockRankingTagListMediatorComponent extends Mock implements SearchCollectMediatorComponent{}
 class MockTagRankingUseCaseInputPort extends Mock implements TagRankingUseCaseInputPort{}
 void main(){
 
@@ -36,12 +36,12 @@ void main(){
     MockRankingTagListMediatorComponent mockRankingTagListMediatorComponent = MockRankingTagListMediatorComponent();
     MockTagRankingUseCaseInputPort mockTagRankingUseCaseInputPort = MockTagRankingUseCaseInputPort();
     rankingTagListFromBIManager.registerComponent(mockRankingTagListMediatorComponent);
-    Position position = Position(latitude: 37.1,longitude: 127.1);
+    // Position position = Position(latitude: 37.1,longitude: 127.1);
     rankingTagListFromBIManager.tagRankingUseCaseInputPort = mockTagRankingUseCaseInputPort;
     //act
-    await rankingTagListFromBIManager.search(position);
+    await rankingTagListFromBIManager.searchFirst();
     //assert
-    verify(mockRankingTagListMediatorComponent.onTagListUpdate());
+    verify(mockRankingTagListMediatorComponent.onItemListUpUpdate());
   });
 
 }

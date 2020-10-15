@@ -1,5 +1,4 @@
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:injectable/injectable.dart';
 
 abstract class GeoViewSearchListener {
   Future<void> search(Position loadPosition,double zoomLevel);
@@ -7,7 +6,7 @@ abstract class GeoViewSearchListener {
 
 abstract class GeoViewSearchManagerInputPort {
 
-  List<GeoViewSearchListener> _geoSearchListener;
+  // List<GeoViewSearchListener> _geoSearchListener;
 
   void subscribe(GeoViewSearchListener h001listener);
 

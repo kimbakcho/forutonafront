@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionButton/BallBasicOptionButton.dart';
-import 'package:forutonafront/Components/BallStyle/BallOptionButton/BallOptionButtonAction.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionButton/NoInterestBallAddAction.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';

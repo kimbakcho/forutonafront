@@ -13,7 +13,6 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImage
 import 'package:forutonafront/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 

@@ -62,6 +62,6 @@ void main() {
     await h001viewModel.search(mapPosition,14.46);
     //then
     verify(mockBallListMediator.searchFirst());
-    verify(mockRankingTagListFromBIManager.search(mapPosition));
+    verify(mockRankingTagListFromBIManager.searchFirst());
   });
 }

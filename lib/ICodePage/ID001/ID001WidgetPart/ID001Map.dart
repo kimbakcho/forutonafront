@@ -9,7 +9,6 @@ import 'package:forutonafront/Common/MapIntentButton/MapintentButton.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/ICodePage/IBM001/IMB001FullScreenMap.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

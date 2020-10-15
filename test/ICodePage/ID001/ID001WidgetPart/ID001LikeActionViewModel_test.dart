@@ -12,7 +12,7 @@ import '../../../TestUtil/FBall/FBallTestUtil.dart';
 import '../../../TestUtil/FBallLike/FBallLikeTestUtil.dart';
 import '../../../TestUtil/FUserInfoSimple/FUserInfoSimpleTestUtil.dart';
 import '../../../TestUtil/FballValuation/FBallValuationTestUtil.dart';
-import '../ID001MainPage2ViewModel_test.dart';
+
 import '../ValuationMediator/ValuationMediator_test.dart';
 
 class MockBuildContext extends Mock implements BuildContext {}

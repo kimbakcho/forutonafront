@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 
-import '../HomePage/HomeMainPageViewModel.dart';
+
 
 enum CodeState { H001CODE, H003CODE, X001CODE, X002CODE, I001CODE }
 

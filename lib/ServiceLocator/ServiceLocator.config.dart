@@ -12,6 +12,7 @@ import '../Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
 import '../FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
 import '../FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import '../FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
+import '../Components/BallListUp/BallListMediator.dart';
 import '../Components/BallStyle/BallOptionPopup/BallOptionWidgetFactory.dart';
 import '../FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import '../FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
@@ -131,6 +132,7 @@ import '../ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccount
 import '../FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
 import '../ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
 import '../ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/UpdateUserPositionUseCaseInputPort.dart';
+import '../Components/UserInfoCollectionWidget/UserInfoCollectMediator.dart';
 import '../ForutonaUser/Data/DataSource/UserPolicyRemoteDataSource.dart';
 import '../ForutonaUser/Domain/Repository/UserPolicyRepository.dart';
 import '../ForutonaUser/Data/Repository/UserPolicyRepositoryImpl.dart';
@@ -152,6 +154,7 @@ GetIt $initGetIt(
 }) {
   final gh = GetItHelper(get, environment, environmentFilter);
   gh.lazySingleton<AndroidIntentAdapter>(() => AndroidIntentAdapterImpl());
+  gh.factory<BallListMediator>(() => BallListMediatorImpl());
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
   gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
@@ -197,12 +200,12 @@ GetIt $initGetIt(
   gh.lazySingleton<FluttertoastAdapter>(() => FluttertoastAdapter());
   gh.factory<GeoPlaceAdapter>(() => GooglePlaceAdapter());
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
+  gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
+      instanceName: 'ImageAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
       instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
       instanceName: 'ImagePngResizeUtil');
-  gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
-      instanceName: 'ImageAvatarUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
   gh.lazySingleton<MapBitmapDescriptorUseCaseInputPort>(() =>
       MapBitmapDescriptorUseCase(
@@ -217,14 +220,14 @@ GetIt $initGetIt(
   gh.lazySingleton<NotiSelectActionBaseInputPort>(
       () => PageMoveActionUseCase());
   gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => CommentChannelUseCase(),
+      instanceName: 'CommentChannelUseCase');
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => RadarBasicChannelUseCae(),
       instanceName: 'RadarBasicChannelUseCae');
   gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
       (name, _) =>
           NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => CommentChannelUseCase(),
-      instanceName: 'CommentChannelUseCase');
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>
@@ -261,6 +264,7 @@ GetIt $initGetIt(
       () => SwipeGestureRecognizerController());
   gh.lazySingleton<TagRepository>(() => TagRepositoryImpl(
       fBallTagRemoteDataSource: get<FBallTagRemoteDataSource>()));
+  gh.factory<UserInfoCollectMediator>(() => UserInfoCollectMediatorImpl());
   gh.lazySingleton<UserPolicyRemoteDataSource>(
       () => UserPolicyRemoteDataSourceImpl());
   gh.lazySingleton<UserPolicyRepository>(() => UserPolicyRepositoryImpl(

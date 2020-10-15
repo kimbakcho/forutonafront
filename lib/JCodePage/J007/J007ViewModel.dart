@@ -9,7 +9,6 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserProfileImage
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:image_picker/image_picker.dart';
 
 class J007ViewModel extends ChangeNotifier {

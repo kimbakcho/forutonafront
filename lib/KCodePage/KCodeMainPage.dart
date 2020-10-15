@@ -4,7 +4,7 @@ import 'package:forutonafront/Components/TopSearchDisPlayBar/TopSearchDisPlayBar
 import 'package:provider/provider.dart';
 
 import 'K001_00/K00100MainPage.dart';
-import 'K001_01/K00101MainPage.dart';
+
 import 'KCodeTopTabBar.dart';
 
 class KCodeMainPage extends StatefulWidget {

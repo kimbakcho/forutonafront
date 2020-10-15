@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Components/UserInfoCollectWidget/NickNameExpandAbleCollectWidget.dart';
+import 'package:forutonafront/Components/UserInfoCollectionWidget/SimpleUserInfoCollectWidget.dart';
 import 'package:provider/provider.dart';
 
 import '../KRankingTagListWidget.dart';
@@ -21,7 +21,7 @@ class K00100MainPage extends StatelessWidget {
                   padding: EdgeInsets.all(0),
                   children: [
                     KRankingTagListWidget(searchText: searchText),
-                    NickNameExpandAbleCollectWidget(
+                    SimpleUserInfoCollectWidget(
                       searchText: searchText,
                     )
                   ]),

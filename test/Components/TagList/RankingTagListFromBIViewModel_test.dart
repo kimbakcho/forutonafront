@@ -19,12 +19,12 @@ void main() {
   RankingTagListMediator rankingTagListMediator;
 
 
-  MockTagRepository mockTagRepository;
+
 
   setUp(() {
     rankingTagListMediator = RankingTagListMediatorImpl();
 
-    mockTagRepository = MockTagRepository();
+
 
     rankingTagListFromBIViewModel = RankingTagListViewModel(
         rankingTagListMediator: rankingTagListMediator

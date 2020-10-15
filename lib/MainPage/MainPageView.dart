@@ -15,6 +15,7 @@ class MainPageView extends StatelessWidget {
                   child: Column(children: [
             Expanded(
                 child: PageView(
+                  physics: NeverScrollableScrollPhysics(),
                     controller: model._pageController,
                     children: [HomeMainPage(),Container(child: Text("tet"),)])),
             BottomNavigation(
@@ -37,6 +38,8 @@ class MainPageViewModel extends ChangeNotifier
         break;
       case BottomNavigationNavType.SNS:
         _pageController.jumpToPage(1);
+        break;
+      case BottomNavigationNavType.SEARCH:
         break;
     }
   }

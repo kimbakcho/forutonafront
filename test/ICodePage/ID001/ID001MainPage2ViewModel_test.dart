@@ -1,25 +1,25 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewCountMediator.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewUpdateMediator.dart';
-import 'package:forutonafront/FBall/Domain/Repository/FBallRepository.dart';
+
 import 'package:forutonafront/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
+
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/ICodePage/ID001/ID001MainPage2ViewModel.dart';
 import 'package:forutonafront/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
-import 'package:forutonafront/ICodePage/ID001/Value/BallLikeState.dart';
+
 import 'package:mockito/mockito.dart';
 
 import '../../TestUtil/FBall/FBallTestUtil.dart';
-import '../../TestUtil/FBallLike/FBallLikeTestUtil.dart';
+
 import '../../TestUtil/FUserInfoSimple/FUserInfoSimpleTestUtil.dart';
-import '../../TestUtil/FballValuation/FBallValuationTestUtil.dart';
+
 
 
 class MockFireBaseAuthBaseAdapter extends Mock
@@ -44,7 +44,7 @@ class MockGeolocatorAdapter extends Mock implements GeolocatorAdapter{}
 void main() {
   ID001MainPage2ViewModel id001mainPage2ViewModel;
   String testBallUuid;
-  String loginUid;
+  // String loginUid;
 
   MockFireBaseAuthAdapterForUseCase mockFireBaseAuthAdapterForUseCase;
   MockSelectBallUseCaseInputPort mockSelectBallUseCaseInputPort;
@@ -58,7 +58,7 @@ void main() {
 
   setUp(() {
     testBallUuid = "TESTBallUuid";
-    loginUid = "TESTLoginUid";
+    // loginUid = "TESTLoginUid";
 
 
     mockFireBaseAuthAdapterForUseCase = MockFireBaseAuthAdapterForUseCase();

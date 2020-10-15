@@ -4,7 +4,7 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.d
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/Preference.dart';
+
 import 'package:mockito/mockito.dart';
 
 class MockFUserRepository extends Mock implements FUserRepository {}

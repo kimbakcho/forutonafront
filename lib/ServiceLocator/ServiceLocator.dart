@@ -123,7 +123,7 @@ import '../ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dar
 import '../ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import '../Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
-import '../Tag/Domain/UseCase/TagRankingFromBallInfluencePowerUseCase.dart';
+
 import 'ServiceLocator.config.dart';
 
 

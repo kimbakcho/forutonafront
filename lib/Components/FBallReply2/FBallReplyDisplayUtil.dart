@@ -1,6 +1,6 @@
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/Preference.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+
 
 class FBallReplyDisplayUtil {
   final FBallReplyResDto fBallReplyResDto;

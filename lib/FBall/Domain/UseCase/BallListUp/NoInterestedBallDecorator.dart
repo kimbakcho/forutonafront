@@ -4,7 +4,7 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
-import 'package:forutonafront/FBall/Domain/Repository/NoInterestBallRepository.dart';
+
 import 'package:forutonafront/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
 
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';

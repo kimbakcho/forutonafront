@@ -11,7 +11,6 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'ValuationMediator/ValuationMediator.dart';
 

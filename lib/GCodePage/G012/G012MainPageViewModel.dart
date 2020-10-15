@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
-import 'package:forutonafront/HomePage/HomeMainPageViewModel.dart';
+
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
 import 'package:google_fonts/google_fonts.dart';

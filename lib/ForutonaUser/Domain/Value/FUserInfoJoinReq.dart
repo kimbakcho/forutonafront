@@ -26,8 +26,8 @@ class FUserInfoJoinReq {
   String password;
   String emailUserUid;
 
-  @JsonKey(ignore: true)
-  Preference _preference;
+  // @JsonKey(ignore: true)
+  // Preference _preference;
 
 
   FUserInfoJoinReq();

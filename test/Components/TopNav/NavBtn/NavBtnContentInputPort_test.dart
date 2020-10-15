@@ -21,6 +21,7 @@ void main() {
     navBtnMediator = TopNavBtnMediatorImpl();
     mockNavBtnAction = MockNavBtnAction();
     navBtnContentInputPort = NavBtnContent(
+      codeMainPageController: null,
       topOnMoveMainPage: CodeState.H003CODE,
       btnColor: Colors.amber,
       btnIcon: Icon(Icons.print),
