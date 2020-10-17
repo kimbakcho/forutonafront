@@ -12,7 +12,7 @@ class FBallTagResDto {
 
   FBallTagResDto();
 
-  factory FBallTagResDto.fromJson(Map<String, dynamic> json) => _$FBallTagResDtoFromJson(json);
+  static fromJson(Map<String, dynamic> json) => _$FBallTagResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FBallTagResDtoToJson(this);
 
 

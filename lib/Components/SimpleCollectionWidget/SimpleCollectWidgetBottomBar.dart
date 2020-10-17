@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SimpleCollectWidgetBottomBar extends StatelessWidget {
+
+  final Function moreCollectAction;
+
+  const SimpleCollectWidgetBottomBar({Key key, this.moreCollectAction}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,13 +16,15 @@ class SimpleCollectWidgetBottomBar extends StatelessWidget {
           Expanded(
             child: Material(
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0)),
+                    bottomLeft: Radius.circular(8.0),
+                    bottomRight: Radius.circular(8.0)),
                 color: Colors.white,
                 child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      moreCollectAction();
+                    },
                     child: Container(
-                      padding: EdgeInsets.fromLTRB(0, 11, 0, 12),
+                      padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                       child: Icon(
                         Icons.keyboard_arrow_down,
                         color: Color(0xff454F63),

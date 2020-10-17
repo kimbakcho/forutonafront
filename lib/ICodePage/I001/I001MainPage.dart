@@ -63,7 +63,7 @@ class _I001MainPageState extends State<I001MainPage>
         create: (_) => I001MainPageViewModel(
             geoViewSearchManagerInputPort: widget.geoViewSearchManagerInputPort,
             mapScreenPositionUseCaseInputPort: sl(),
-            ballListMediator: sl(),
+            ballListMediator: BallListMediatorImpl(),
             mapBallMarkerFactory: sl(),
             geolocatorAdapter: sl(),
             geoLocationUtilForeGroundUseCaseInputPort: sl(),

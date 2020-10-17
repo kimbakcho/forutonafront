@@ -14,12 +14,13 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
   final BallDisPlayUseCase issueBallDisPlayUseCase;
   final BallListMediator ballListMediator;
   final int index;
+  final BoxDecoration boxDecoration;
 
   const IssueBallReduceSizeWidget(
       {Key key,
       this.ballListMediator,
       this.index,
-      this.issueBallDisPlayUseCase})
+      this.issueBallDisPlayUseCase, this.boxDecoration})
       : super(key: key);
 
   @override
@@ -34,8 +35,8 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
         child: Consumer<IssueBallReduceSizeWidgetViewModel>(
             builder: (_, model, __) {
           return Material(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+              color: boxDecoration != null ? boxDecoration.color : Colors.white,
+              borderRadius: boxDecoration != null ? boxDecoration.borderRadius : null,
               child: InkWell(
                   onTap: () {
                     model.moveToDetailPage();

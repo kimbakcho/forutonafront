@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/BallNameCollectWidget/SimpleBallNameCollectWidget.dart';
+import 'package:forutonafront/Components/TagContainBallCollectWidget/TagContainBallCollectWidget.dart';
 import 'package:forutonafront/Components/TopSearchDisPlayBar/TopSearchDisPlayBar.dart';
+import 'package:forutonafront/Components/UserInfoCollectionWidget/SimpleUserInfoCollectWidget.dart';
 import 'package:provider/provider.dart';
 
 import 'K001_00/K00100MainPage.dart';
-
 import 'KCodeTopTabBar.dart';
 
 class KCodeMainPage extends StatefulWidget {
@@ -29,7 +31,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => KCodeMainPageViewModel(),
+        create: (_) => KCodeMainPageViewModel(tabController: _tabController),
         child: Consumer<KCodeMainPageViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: Container(
@@ -65,6 +67,9 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                             children: [
                               K00100MainPage(
                                 searchText: widget.searchText,
+                                simpleUserInfoCollectListener: model,
+                                tagContainBallCollectListener: model,
+                                simpleBallNameCollectListener: model,
                               ),
                               ListView.builder(
                                 padding: EdgeInsets.all(0),
@@ -99,9 +104,32 @@ class _KCodeMainPageState extends State<KCodeMainPage>
 }
 
 class KCodeMainPageViewModel extends ChangeNotifier
-    implements KCodeTopTabBarListener {
+    implements
+        KCodeTopTabBarListener,
+        SimpleUserInfoCollectListener,
+        SimpleBallNameCollectListener,
+        TagContainBallCollectListener {
+  final TabController tabController;
+
+  KCodeMainPageViewModel({@required this.tabController});
+
   @override
   onTabChange(KCodeTabType kCodeTabType) {
     print(kCodeTabType);
+  }
+
+  @override
+  void onSimpleUserInfoCollectNextPage(String searchText) {
+    tabController.index = 1;
+  }
+
+  @override
+  void onSimpleBallNameCollectNextPage(String searchText) {
+    tabController.index = 2;
+  }
+
+  @override
+  void onTagContainBallCollectNextPage(String searchText) {
+    tabController.index = 3;
   }
 }

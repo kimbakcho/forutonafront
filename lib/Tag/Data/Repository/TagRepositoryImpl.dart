@@ -1,10 +1,13 @@
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromTextReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
+import 'package:forutonafront/Tag/Dto/TextMatchTagBallReqDto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -40,9 +43,17 @@ class TagRepositoryImpl implements TagRepository {
   @override
   Future<List<TagRankingResDto>> findByTagRankingFromTextOrderBySumBI(
       {@required TagRankingFromTextReqDto tagRankingFromTextReqDto}) async {
-
     return await _fBallTagRemoteDataSource.getTagRankingFromTextOrderBySumBI(
         tagRankingFromTextReqDto: tagRankingFromTextReqDto,
+        noneTokenFDio: FDio.noneToken());
+  }
+
+  @override
+  Future<PageWrap<FBallTagResDto>> findByTagItem(
+      TextMatchTagBallReqDto reqDto, Pageable pageable) async {
+    return await _fBallTagRemoteDataSource.getTagItem(
+        textMatchTagBallReqDto: reqDto,
+        pageable: pageable,
         noneTokenFDio: FDio.noneToken());
   }
 }

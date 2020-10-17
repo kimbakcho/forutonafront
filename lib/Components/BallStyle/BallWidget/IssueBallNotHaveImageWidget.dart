@@ -16,12 +16,13 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
   final BallDisPlayUseCase issueBallDisPlayUseCase;
   final BallListMediator ballListMediator;
   final BallOptionWidgetFactory ballOptionWidgetFactory;
+  final BoxDecoration boxDecoration;
 
   IssueBallNotHaveImageWidget(
       {Key key,
       this.index,
       this.ballListMediator,
-      this.ballOptionWidgetFactory})
+      this.ballOptionWidgetFactory, this.boxDecoration})
       : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
             fBallResDto: ballListMediator.itemList[index]),
         super(key: key);
@@ -58,10 +59,7 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
                   )
                 ],
               ),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                  border: Border.all(color: Color(0xff454F63))));
+              decoration: boxDecoration);
         },
       ),
     );

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
+import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
+import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromBallInfluencePowerReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingFromTextReqDto.dart';
 import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
+import 'package:forutonafront/Tag/Dto/TextMatchTagBallReqDto.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class FBallTagRemoteDataSource {
@@ -19,6 +22,11 @@ abstract class FBallTagRemoteDataSource {
 
   Future<List<TagRankingResDto>> getTagRankingFromTextOrderBySumBI(
       {@required TagRankingFromTextReqDto tagRankingFromTextReqDto,
+      @required FDio noneTokenFDio});
+
+  Future<PageWrap<FBallTagResDto>> getTagItem(
+      {@required TextMatchTagBallReqDto textMatchTagBallReqDto,
+      @required Pageable pageable,
       @required FDio noneTokenFDio});
 }
 
@@ -65,5 +73,18 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
         queryParameters: tagRankingFromTextReqDto.toJson());
     return List<TagRankingResDto>.from(
         response.data.map((x) => TagRankingResDto.fromJson(x)));
+  }
+
+  @override
+  Future<PageWrap<FBallTagResDto>> getTagItem(
+      {TextMatchTagBallReqDto textMatchTagBallReqDto,
+      Pageable pageable,
+      FDio noneTokenFDio}) async {
+    var reqDto = textMatchTagBallReqDto.toJson();
+    reqDto.addAll(pageable.toJson());
+    var response = await noneTokenFDio.get(
+        "/v1/FTag/TagItem",
+        queryParameters: reqDto);
+    return PageWrap.fromJson(response.data, FBallTagResDto.fromJson);
   }
 }

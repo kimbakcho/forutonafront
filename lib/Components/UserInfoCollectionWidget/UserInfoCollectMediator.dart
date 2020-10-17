@@ -12,6 +12,7 @@ abstract class UserInfoCollectMediator extends SearchCollectMediator<FUserInfoSi
   UserInfoListUpUseCaseInputPort userInfoListUpUseCaseInputPort;
 
 }
+
 @Injectable(as: UserInfoCollectMediator)
 class UserInfoCollectMediatorImpl extends UserInfoCollectMediator{
 

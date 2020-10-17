@@ -12,7 +12,6 @@ import '../Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
 import '../FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
 import '../FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import '../FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
-import '../Components/BallListUp/BallListMediator.dart';
 import '../Components/BallStyle/BallOptionPopup/BallOptionWidgetFactory.dart';
 import '../FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
 import '../FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
@@ -154,7 +153,6 @@ GetIt $initGetIt(
 }) {
   final gh = GetItHelper(get, environment, environmentFilter);
   gh.lazySingleton<AndroidIntentAdapter>(() => AndroidIntentAdapterImpl());
-  gh.factory<BallListMediator>(() => BallListMediatorImpl());
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
   gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),

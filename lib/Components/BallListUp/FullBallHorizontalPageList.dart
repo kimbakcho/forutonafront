@@ -47,7 +47,12 @@ class FullBallHorizontalPageList extends StatelessWidget {
                     return Container(
                       padding: EdgeInsets.only(left: 16, right: 16),
                       child: ListUpBallWidgetFactory.getBallWidget(
-                          index, ballListMediator, Axis.horizontal),
+                          index, ballListMediator, BallStyle.Style2,
+                          boxDecoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Color(0xff454F63)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0)))),
                     );
                   }));
         }));
@@ -56,7 +61,6 @@ class FullBallHorizontalPageList extends StatelessWidget {
 
 class FullBallHorizontalPageListViewModel extends ChangeNotifier
     implements SearchCollectMediatorComponent {
-
   final BallListMediator ballListMediator;
 
   final PageController pageController;
@@ -77,7 +81,7 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
   }
 
   void pageChange(int index) {
-    if (onSelectBall != null && ballListMediator.itemList.length > 0 ) {
+    if (onSelectBall != null && ballListMediator.itemList.length > 0) {
       onSelectBall(ballListMediator.itemList[index]);
     }
   }
@@ -107,19 +111,15 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
     var indexWhere = ballListMediator.itemList
         .indexWhere((element) => element.ballUuid == fBallResDto.ballUuid);
     pageController.jumpToPage(indexWhere);
-
   }
+
   @override
   void onItemListUpUpdate() {
     notifyListeners();
   }
 
   @override
-  void onItemListEmpty() {
-
-  }
-
-
+  void onItemListEmpty() {}
 }
 
 class FullBallHorizontalPageListController {

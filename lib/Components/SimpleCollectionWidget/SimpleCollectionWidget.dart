@@ -3,19 +3,23 @@ import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator
 import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:provider/provider.dart';
 
-import 'SimpleCollectWidgetBottomBar.dart';
+import 'SimpleCollectBottomFactory.dart';
 import 'SimpleCollectionTopTitleWidget.dart';
 
 class SimpleCollectionWidget extends StatelessWidget {
   final String searchText;
   final SearchCollectMediator searchCollectMediator;
   final IndexedWidgetBuilder indexedWidgetBuilder;
+  final SimpleCollectionTopNextPageListener simpleCollectionTopNextPageListener;
+  final String titleDescription;
 
   const SimpleCollectionWidget(
       {Key key,
       this.searchText,
       this.searchCollectMediator,
-      this.indexedWidgetBuilder})
+      this.indexedWidgetBuilder,
+      this.simpleCollectionTopNextPageListener,
+      this.titleDescription})
       : super(key: key);
 
   @override
@@ -31,6 +35,9 @@ class SimpleCollectionWidget extends StatelessWidget {
               children: [
                 SimpleCollectionTopTitleWidget(
                   searchText: searchText,
+                  simpleCollectionTopNextPageListener:
+                      simpleCollectionTopNextPageListener,
+                  titleDescription: titleDescription,
                 ),
                 ListView.separated(
                   separatorBuilder: (_, index) {
@@ -42,24 +49,13 @@ class SimpleCollectionWidget extends StatelessWidget {
                   itemCount: model.itemCount,
                   itemBuilder: indexedWidgetBuilder,
                 ),
-                model.isLastPage
-                    ? bottomBuffer()
-                    : SimpleCollectWidgetBottomBar()
+                SimpleCollectBottomFactory(
+                    moreCollectAction: model.moreCollectAction,
+                    searchCollectMediator: model.searchCollectMediator)
               ],
             ),
           );
         }));
-  }
-
-  Container bottomBuffer() {
-    return Container(
-      height: 20,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(15.0),
-              bottomRight: Radius.circular(15.0))),
-    );
   }
 }
 
@@ -101,5 +97,9 @@ class SimpleCollectionWidgetViewModel extends ChangeNotifier
 
   bool get isLastPage {
     return searchCollectMediator.isLastPage;
+  }
+
+  moreCollectAction() {
+    searchCollectMediator.searchNext();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
+import 'package:forutonafront/Components/BallListUp/ListUpBallWidgetFactory.dart';
 import 'package:forutonafront/Components/BallStyle/BallWidget/IssueBallHaveImageWidget.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -10,26 +11,45 @@ import 'IssueBallReduceSizeWidget.dart';
 
 class IssueBallWidgetFactory {
   static Widget getIssueBallWidget(
-      int index, BallListMediator ballListMediator, Axis axis) {
+      int index, BallListMediator searchCollectMediator, BallStyle ballStyle,
+      {BoxDecoration boxDecoration}) {
     IssueBallDisPlayUseCase issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
-    if (axis == Axis.vertical) {
+        fBallResDto: searchCollectMediator.itemList[index],
+        geoLocatorAdapter: sl());
+    if (ballStyle == BallStyle.Style1) {
       if (issueBallDisPlayUseCase.isMainPicture()) {
         return IssueBallHaveImageWidget(
-            index: index,
-            ballListMediator: ballListMediator,
-            ballOptionWidgetFactory: sl());
+          key: Key(searchCollectMediator.itemList[index].ballUuid),
+          index: index,
+          ballListMediator: searchCollectMediator,
+          ballOptionWidgetFactory: sl(),
+          boxDecoration: boxDecoration,
+        );
       } else {
         return IssueBallNotHaveImageWidget(
+            key: Key(searchCollectMediator.itemList[index].ballUuid),
             index: index,
-            ballListMediator: ballListMediator,
-            ballOptionWidgetFactory: sl());
+            ballListMediator: searchCollectMediator,
+            ballOptionWidgetFactory: sl(),
+            boxDecoration: boxDecoration);
       }
-    } else {
+    } else if (ballStyle == BallStyle.Style2) {
       return IssueBallReduceSizeWidget(
-          issueBallDisPlayUseCase: issueBallDisPlayUseCase,
-          ballListMediator: ballListMediator,
-          index: index);
+        key: Key(searchCollectMediator.itemList[index].ballUuid),
+        issueBallDisPlayUseCase: issueBallDisPlayUseCase,
+        ballListMediator: searchCollectMediator,
+        index: index,
+        boxDecoration: boxDecoration,
+      );
+    } else if (ballStyle == BallStyle.Style3) {
+      return IssueBallNotHaveImageWidget(
+          key: Key(searchCollectMediator.itemList[index].ballUuid),
+          index: index,
+          ballListMediator: searchCollectMediator,
+          ballOptionWidgetFactory: sl(),
+          boxDecoration: boxDecoration);
+    } else {
+      return Container(child: Text("지원되지 않는 Style"));
     }
   }
 }

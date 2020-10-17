@@ -7,7 +7,6 @@ import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/FBall/Domain/Value/FBallImageUpload.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
-
 import 'package:forutonafront/FBall/Dto/FBallListUpFromBIReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallListUpFromTagNameReqDto.dart';
@@ -19,8 +18,7 @@ import 'package:meta/meta.dart';
 
 abstract class FBallRemoteDataSource {
   Future<PageWrap<FBallResDto>> findByBallOrderByBI(
-      FBallListUpFromBIReqDto
-          fBallListUpFromBIReqDto,
+      FBallListUpFromBIReqDto fBallListUpFromBIReqDto,
       Pageable pageable,
       FDio noneTokenFDio);
 
@@ -60,21 +58,19 @@ abstract class FBallRemoteDataSource {
 
   Future<FBallImageUpload> ballImageUpload(
       {@required List<Uint8List> images, @required FDio tokenFDio});
-
 }
+
 @LazySingleton(as: FBallRemoteDataSource)
 class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   @override
   Future<PageWrap<FBallResDto>> findByBallOrderByBI(
-      FBallListUpFromBIReqDto
-          fBallListUpFromBIReqDto,
+      FBallListUpFromBIReqDto fBallListUpFromBIReqDto,
       Pageable pageable,
       FDio noneTokenFDio) async {
     Map<String, dynamic> jsonReq = fBallListUpFromBIReqDto.toJson();
     jsonReq.addAll(pageable.toJson());
-    var response = await noneTokenFDio.get(
-        "/v1/FBall/ListUpBallListUpOrderByBI",
-        queryParameters: jsonReq);
+    var response = await noneTokenFDio
+        .get("/v1/FBall/ListUpBallListUpOrderByBI", queryParameters: jsonReq);
     return PageWrap<FBallResDto>.fromJson(response.data, FBallResDto.fromJson);
   }
 
@@ -101,8 +97,7 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
     jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromSearchTitle",
         queryParameters: jsonReq);
-    return PageWrap<FBallResDto>.fromJson(response.data,
-        response.data["content"].map((e) => FBallResDto.fromJson(e)).toList());
+    return PageWrap<FBallResDto>.fromJson(response.data, FBallResDto.fromJson);
   }
 
   @override
@@ -181,5 +176,4 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
         await tokenFDio.post("/v1/FBall/BallImageUpload", data: formData);
     return FBallImageUpload.fromJson(response.data);
   }
-
 }

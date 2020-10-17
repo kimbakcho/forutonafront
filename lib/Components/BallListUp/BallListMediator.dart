@@ -8,9 +8,9 @@ import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
 import 'package:injectable/injectable.dart';
 
 
-abstract class BallListMediator extends SearchCollectMediator<FBallResDto>{
+abstract class BallListMediator<T> extends SearchCollectMediator<FBallResDto>{
 
-  FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
+  T fBallListUpUseCaseInputPort;
 
   hideBall(String ballUuid);
 
@@ -18,8 +18,7 @@ abstract class BallListMediator extends SearchCollectMediator<FBallResDto>{
 
 }
 
-@Injectable(as: BallListMediator)
-class BallListMediatorImpl extends BallListMediator {
+class BallListMediatorImpl extends BallListMediator<FBallListUpUseCaseInputPort> {
 
   @override
   Future<PageWrap<FBallResDto>> searchUseCase(Pageable pageable) async {

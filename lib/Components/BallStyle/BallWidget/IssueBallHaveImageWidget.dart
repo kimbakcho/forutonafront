@@ -18,12 +18,13 @@ class IssueBallHaveImageWidget extends StatelessWidget {
   final BallDisPlayUseCase issueBallDisPlayUseCase;
   final BallListMediator ballListMediator;
   final BallOptionWidgetFactory ballOptionWidgetFactory;
+  final BoxDecoration boxDecoration;
 
   IssueBallHaveImageWidget(
       {Key key,
       this.index,
       this.ballListMediator,
-      this.ballOptionWidgetFactory})
+      this.ballOptionWidgetFactory, this.boxDecoration})
       : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
             fBallResDto: ballListMediator.itemList[index],
             geoLocatorAdapter: sl()),
@@ -64,10 +65,7 @@ class IssueBallHaveImageWidget extends StatelessWidget {
                     ballDisPlayUseCase: issueBallDisPlayUseCase)
               ],
             ),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                border: Border.all(color: Color(0xff454F63))),
+            decoration: boxDecoration,
           );
         },
       ),
