@@ -68,6 +68,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                       },
                       controller: model.scrollController,
                       body: Container(
+                          color: Color(0xffF2F0F1),
                           padding: EdgeInsets.only(top: 68),
                           child:
                           TabBarView(controller: _tabController, children: [
@@ -81,6 +82,8 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                             ),
                             K00101MainPage(
                               searchText: widget.searchText,
+                              mainScroller: model.scrollController,
+                              tabController: _tabController,
                             ),
                             ListView.builder(
                               padding: EdgeInsets.all(0),

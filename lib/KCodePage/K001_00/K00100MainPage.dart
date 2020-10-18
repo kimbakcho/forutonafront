@@ -59,7 +59,6 @@ class K00100MainPage extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                       ]),
-                  decoration: BoxDecoration(color: Color(0xffF2F0F1)),
                 ),
                 KCodeScrollerControllerBtn(
                   kCodeScrollerController: model.kCodeScrollerController,
@@ -81,8 +80,6 @@ class K00100MainPage extends StatelessWidget {
 class K00100MainPageViewModel extends ChangeNotifier {
   ScrollController controller;
 
-  bool showScrollerBtn = false;
-
   KCodeScrollerController kCodeScrollerController = KCodeScrollerController();
 
   final ScrollController mainScroller;
@@ -91,13 +88,10 @@ class K00100MainPageViewModel extends ChangeNotifier {
 
   onEndScroller(ScrollEndNotification scrollNotification) {
     if (scrollNotification.metrics.pixels >= 10.0) {
-      showScrollerBtn = true;
       kCodeScrollerController.forward();
     } else {
-      showScrollerBtn = false;
       kCodeScrollerController.reverse();
     }
     notifyListeners();
   }
-
 }
