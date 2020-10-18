@@ -7,6 +7,7 @@ import 'package:forutonafront/Components/UserInfoCollectionWidget/SimpleUserInfo
 import 'package:provider/provider.dart';
 
 import 'K001_00/K00100MainPage.dart';
+import 'K001_01/K00101MainPage.dart';
 import 'KCodeTopTabBar.dart';
 
 class KCodeMainPage extends StatefulWidget {
@@ -31,74 +32,69 @@ class _KCodeMainPageState extends State<KCodeMainPage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => KCodeMainPageViewModel(tabController: _tabController),
+        create: (_) =>
+            KCodeMainPageViewModel(tabController: _tabController,
+                scrollController: ScrollController()),
         child: Consumer<KCodeMainPageViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: Container(
                   padding:
-                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  EdgeInsets.only(top: MediaQuery
+                      .of(context)
+                      .padding
+                      .top),
                   //https://flutter-widget.live/widgets/NestedScrollView
-                  child: NotificationListener<ScrollNotification>(
-                      child: NestedScrollView(
-                        headerSliverBuilder:
-                            (BuildContext context, bool innerBoxIsScrolled) {
-                          return <Widget>[
-                            SliverOverlapAbsorber(
-                              handle: NestedScrollView
-                                  .sliverOverlapAbsorberHandleFor(context),
-                              sliver: SliverAppBar(
-                                toolbarHeight: 0,
-                                pinned: true,
-                                primary: false,
-                                flexibleSpace: TopSearchDisPlayBar(
-                                  initText: widget.searchText,
-                                ),
-                                expandedHeight: 124,
-                                bottom: KCodeTopTabBar(
-                                    tabController: _tabController),
+                  child: NestedScrollView(
+                      headerSliverBuilder:
+                          (BuildContext context, bool innerBoxIsScrolled) {
+                        return <Widget>[
+                          SliverOverlapAbsorber(
+                            handle:
+                            NestedScrollView.sliverOverlapAbsorberHandleFor(
+                                context),
+                            sliver: SliverAppBar(
+                              toolbarHeight: 0,
+                              pinned: true,
+                              primary: false,
+                              flexibleSpace: TopSearchDisPlayBar(
+                                initText: widget.searchText,
                               ),
+                              expandedHeight: 124,
+                              bottom:
+                              KCodeTopTabBar(tabController: _tabController),
                             ),
-                          ];
-                        },
-                        body: Container(
-                          padding: EdgeInsets.only(top: 68),
-                          child: TabBarView(
-                            controller: _tabController,
-                            children: [
-                              K00100MainPage(
-                                searchText: widget.searchText,
-                                simpleUserInfoCollectListener: model,
-                                tagContainBallCollectListener: model,
-                                simpleBallNameCollectListener: model,
-                              ),
-                              ListView.builder(
-                                padding: EdgeInsets.all(0),
-                                itemCount: 100,
-                                itemBuilder: (context, index) =>
-                                    Container(child: Text("${index + 100}")),
-                              ),
-                              ListView.builder(
-                                padding: EdgeInsets.all(0),
-                                itemCount: 100,
-                                itemBuilder: (context, index) =>
-                                    Container(child: Text("${index + 200}")),
-                              ),
-                              ListView.builder(
-                                padding: EdgeInsets.all(0),
-                                itemCount: 100,
-                                itemBuilder: (context, index) =>
-                                    Container(child: Text("${index + 300}")),
-                              ),
-                            ],
                           ),
-                        ),
-                      ),
-                      onNotification: (scrollNotification) {
-                        if (scrollNotification is UserScrollNotification) {
-                          print(scrollNotification);
-                        }
-                        return true;
-                      })));
+                        ];
+                      },
+                      controller: model.scrollController,
+                      body: Container(
+                          padding: EdgeInsets.only(top: 68),
+                          child:
+                          TabBarView(controller: _tabController, children: [
+                            K00100MainPage(
+                              searchText: widget.searchText,
+                              simpleUserInfoCollectListener: model,
+                              tagContainBallCollectListener: model,
+                              simpleBallNameCollectListener: model,
+                              mainScroller: model.scrollController,
+                              tabController: _tabController,
+                            ),
+                            K00101MainPage(
+                              searchText: widget.searchText,
+                            ),
+                            ListView.builder(
+                              padding: EdgeInsets.all(0),
+                              itemCount: 100,
+                              itemBuilder: (context, index) =>
+                                  Container(child: Text("${index + 200}")),
+                            ),
+                            ListView.builder(
+                              padding: EdgeInsets.all(0),
+                              itemCount: 100,
+                              itemBuilder: (context, index) =>
+                                  Container(child: Text("${index + 300}")),
+                            )
+                          ])))));
         }));
   }
 }
@@ -110,8 +106,10 @@ class KCodeMainPageViewModel extends ChangeNotifier
         SimpleBallNameCollectListener,
         TagContainBallCollectListener {
   final TabController tabController;
+  final ScrollController scrollController;
 
-  KCodeMainPageViewModel({@required this.tabController});
+  KCodeMainPageViewModel(
+      {@required this.tabController, @required this.scrollController });
 
   @override
   onTabChange(KCodeTabType kCodeTabType) {

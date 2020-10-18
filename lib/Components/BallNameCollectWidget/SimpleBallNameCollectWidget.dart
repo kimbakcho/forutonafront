@@ -20,26 +20,23 @@ class SimpleBallNameCollectWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SimpleBallNameCollectWidgetViewModel(
-          ballListMediator: BallListMediatorImpl(),
-          searchText: searchText,
-          geoLocationUtilForeGroundUseCase: sl(),
-          simpleBallNameCollectListener: simpleBallNameCollectListener),
-      child: Consumer<SimpleBallNameCollectWidgetViewModel>(
-        builder: (_, model, __) {
+        create: (_) => SimpleBallNameCollectWidgetViewModel(
+            ballListMediator: BallListMediatorImpl(),
+            searchText: searchText,
+            geoLocationUtilForeGroundUseCase: sl(),
+            simpleBallNameCollectListener: simpleBallNameCollectListener),
+        child: Consumer<SimpleBallNameCollectWidgetViewModel>(
+            builder: (_, model, __) {
           return Container(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: SimpleCollectionWidget(
-              titleDescription: "제목과 연관된 컨텐츠",
-              searchCollectMediator: model.ballListMediator,
-              simpleCollectionTopNextPageListener: model,
-              searchText: searchText,
-              indexedWidgetBuilder: model.getIndexedWidgetBuilder(),
-            ),
-          );
-        },
-      ),
-    );
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SimpleCollectionWidget(
+                titleDescription: "제목과 연관된 컨텐츠",
+                searchCollectMediator: model.ballListMediator,
+                simpleCollectionTopNextPageListener: model,
+                searchText: searchText,
+                indexedWidgetBuilder: model.getIndexedWidgetBuilder(),
+              ));
+        }));
   }
 }
 
@@ -58,7 +55,7 @@ class SimpleBallNameCollectWidgetViewModel extends ChangeNotifier
       @required this.simpleBallNameCollectListener}) {
     var lastPosition =
         geoLocationUtilForeGroundUseCase.getCurrentWithLastPositionInMemory();
-    ballListMediator.pageLimit = 3;
+    ballListMediator.pageLimit = 5;
     ballListMediator.fBallListUpUseCaseInputPort = FBallListUpFromSearchTitle(
         FBallListUpFromSearchTitleReqDto(
           searchText: searchText,

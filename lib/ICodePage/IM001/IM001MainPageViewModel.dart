@@ -42,6 +42,9 @@ class IM001MainPageViewModel extends ChangeNotifier
   String ballUuid;
 
   final String address;
+
+  bool _isDispose = false;
+
   String currentClipBoardData;
   String validYoutubeLink;
   GlobalKey makerAnimationKey = new GlobalKey();
@@ -198,6 +201,7 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   @override
   void dispose() {
+    _isDispose = true;
     super.dispose();
   }
 
@@ -583,5 +587,10 @@ class IM001MainPageViewModel extends ChangeNotifier
   void onMapCreated(GoogleMapController controller) async {
     _googleMapController.complete(controller);
     await _googleMapController.future;
+  }
+
+  @override
+  bool isDispose() {
+    return _isDispose;
   }
 }

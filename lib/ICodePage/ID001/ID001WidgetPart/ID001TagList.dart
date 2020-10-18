@@ -52,6 +52,7 @@ class ID001TagListViewModel extends ChangeNotifier
     implements TagFromBallUuidUseCaseOutputPort {
   final String ballUuid;
   final TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort;
+  bool _isDispose =false;
   List<FBallTagResDto> ballTags = [];
 
   ID001TagListViewModel(
@@ -71,5 +72,17 @@ class ID001TagListViewModel extends ChangeNotifier
   init() async {
     await tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
         ballUuid: ballUuid, outputPort: this);
+  }
+
+
+  @override
+  void dispose() {
+    _isDispose = true;;
+    super.dispose();
+  }
+
+  @override
+  bool isDispose() {
+    return _isDispose;
   }
 }

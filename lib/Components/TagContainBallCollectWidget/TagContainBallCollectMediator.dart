@@ -9,7 +9,7 @@ import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
 class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCaseInputPort>{
 
   TagContainBallCollectMediator(){
-    pageLimit =3;
+    pageLimit =5;
   }
 
   @override

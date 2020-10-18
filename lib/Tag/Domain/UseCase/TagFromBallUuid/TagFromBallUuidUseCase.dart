@@ -17,7 +17,7 @@ class TagFromBallUuidUseCase implements TagFromBallUuidUseCaseInputPort {
       {@required String ballUuid,
       TagFromBallUuidUseCaseOutputPort outputPort}) async {
     List<FBallTagResDto> results = await _tagRepository.tagFromBallUuid(ballUuid);
-    if (outputPort != null) {
+    if (outputPort != null && !outputPort.isDispose() ) {
       outputPort.onTagFromBallUuid(results);
     }
     return results;

@@ -17,7 +17,12 @@ class SimpleCollectEmptyBar extends StatelessWidget {
                 )),
           )
         ],
-      )
+      ),
+      padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(bottomRight: Radius.circular(8),bottomLeft: Radius.circular(8))
+      ),
     );
   }
 }

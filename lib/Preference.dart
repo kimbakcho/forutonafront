@@ -13,11 +13,11 @@ class Preference {
    static final String officialSite="http://neoforutona.cafe24.com/official-channel/";
 
   //testDebug
-   static final String baseBackEndUrl = "http://175.195.195.27:8443";
+  //  static final String baseBackEndUrl = "http://175.195.195.27:8443";
 //  // relese
 //    String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
 
    //realtestRelese
-  // static final String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonatest";
+  static final String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonatest";
 
 }

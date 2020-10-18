@@ -30,24 +30,24 @@ class SimpleCollectionTopTitleWidget extends StatelessWidget {
                   bottom: BorderSide(width: 1, color: Color(0xffE4E7E8)))),
           child: Row(
             children: [
+              Container(
+                constraints: BoxConstraints(minWidth: 0,maxWidth: 100),
+                child: Text("\"$searchText\"",
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.notoSans(
+                      fontSize: 12,
+                      color: const Color(0xff3497fd),
+                      fontWeight: FontWeight.w700,
+                    )),
+              ),
               Expanded(
-                child: RichText(
-                  text: TextSpan(
-                      text: "\"$searchText\"",
+                child: Container(
+                  child: Text(" $titleDescription",
                       style: GoogleFonts.notoSans(
                         fontSize: 12,
-                        color: const Color(0xff3497fd),
-                        fontWeight: FontWeight.w700,
-                      ),
-                      children: [
-                        TextSpan(
-                            text: " $titleDescription",
-                            style: GoogleFonts.notoSans(
-                              fontSize: 12,
-                              color: const Color(0xff454f63),
-                              fontWeight: FontWeight.w500,
-                            ))
-                      ]),
+                        color: const Color(0xff454f63),
+                        fontWeight: FontWeight.w500,
+                      )),
                 ),
               ),
               Container(

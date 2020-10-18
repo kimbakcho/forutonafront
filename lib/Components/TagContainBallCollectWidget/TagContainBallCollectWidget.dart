@@ -21,26 +21,23 @@ class TagContainBallCollectWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => TagContainBallCollectWidgetViewModel(
-          ballListMediator: TagContainBallCollectMediator(),
-          searchText: searchText,
-          geoLocationUtilForeGroundUseCase: sl(),
-          tagContainBallCollectListener: tagContainBallCollectListener),
-      child: Consumer<TagContainBallCollectWidgetViewModel>(
-        builder: (_, model, __) {
+        create: (_) => TagContainBallCollectWidgetViewModel(
+            ballListMediator: TagContainBallCollectMediator(),
+            searchText: searchText,
+            geoLocationUtilForeGroundUseCase: sl(),
+            tagContainBallCollectListener: tagContainBallCollectListener),
+        child: Consumer<TagContainBallCollectWidgetViewModel>(
+            builder: (_, model, __) {
           return Container(
-            margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: SimpleCollectionWidget(
-              searchText: searchText,
-              searchCollectMediator: model.ballListMediator,
-              indexedWidgetBuilder: model.getIndexedWidgetBuilder(),
-              simpleCollectionTopNextPageListener: model,
-              titleDescription: "태그와 연관된 컨텐츠",
-            ),
-          );
-        },
-      ),
-    );
+              margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SimpleCollectionWidget(
+                searchText: searchText,
+                searchCollectMediator: model.ballListMediator,
+                indexedWidgetBuilder: model.getIndexedWidgetBuilder(),
+                simpleCollectionTopNextPageListener: model,
+                titleDescription: "태그와 연관된 컨텐츠",
+              ));
+        }));
   }
 }
 
@@ -57,21 +54,21 @@ class TagContainBallCollectWidgetViewModel extends ChangeNotifier
       @required this.ballListMediator,
       @required this.tagContainBallCollectListener,
       @required this.geoLocationUtilForeGroundUseCase}) {
-    var searchPosition = geoLocationUtilForeGroundUseCase
-        .getCurrentWithLastPositionInMemory();
+    var searchPosition =
+        geoLocationUtilForeGroundUseCase.getCurrentWithLastPositionInMemory();
     ballListMediator.fBallListUpUseCaseInputPort = TagNameItemListUpUseCase(
         tagRepository: sl(),
         reqDto: TextMatchTagBallReqDto(
             searchText: searchText,
             mapCenterLongitude: searchPosition.longitude,
             mapCenterLatitude: searchPosition.latitude));
-
   }
 
   IndexedWidgetBuilder getIndexedWidgetBuilder() {
     return (_, index) {
       return ListUpBallWidgetFactory.getBallWidget(
-          index, ballListMediator, BallStyle.Style3,boxDecoration: BoxDecoration(color: Colors.white));
+          index, ballListMediator, BallStyle.Style3,
+          boxDecoration: BoxDecoration(color: Colors.white));
     };
   }
 

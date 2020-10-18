@@ -46,6 +46,7 @@ class BallTextTagListBarViewModel extends ChangeNotifier
     implements TagFromBallUuidUseCaseOutputPort {
   final TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort;
   final String ballUuid;
+  bool _isDispose = false;
   List<FBallTagResDto> tagDtos = [];
 
   BallTextTagListBarViewModel(
@@ -62,6 +63,20 @@ class BallTextTagListBarViewModel extends ChangeNotifier
   onTagFromBallUuid(List<FBallTagResDto> ballTags) {
     this.tagDtos = ballTags;
     notifyListeners();
+  }
+
+
+  @override
+  void dispose() {
+    _isDispose = true;
+    super.dispose();
+
+
+  }
+
+  @override
+  bool isDispose() {
+    return _isDispose;
   }
 
 
