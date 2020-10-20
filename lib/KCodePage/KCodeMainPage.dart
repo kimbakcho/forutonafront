@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'K001_00/K00100MainPage.dart';
 import 'K001_01/K00101MainPage.dart';
+import 'K001_02/K00102MainPage.dart';
 import 'KCodeTopTabBar.dart';
 
 class KCodeMainPage extends StatefulWidget {
@@ -45,6 +46,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                       .top),
                   //https://flutter-widget.live/widgets/NestedScrollView
                   child: NestedScrollView(
+                      key: model.kCodeNestedScrollViewKey,
                       headerSliverBuilder:
                           (BuildContext context, bool innerBoxIsScrolled) {
                         return <Widget>[
@@ -84,12 +86,12 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                               searchText: widget.searchText,
                               mainScroller: model.scrollController,
                               tabController: _tabController,
+                              kCodeNestedScrollViewKey: model.kCodeNestedScrollViewKey,
                             ),
-                            ListView.builder(
-                              padding: EdgeInsets.all(0),
-                              itemCount: 100,
-                              itemBuilder: (context, index) =>
-                                  Container(child: Text("${index + 200}")),
+                            K00102MainPage(
+                              searchText: widget.searchText,
+                              mainScroller: model.scrollController,
+                              tabController: _tabController,
                             ),
                             ListView.builder(
                               padding: EdgeInsets.all(0),
@@ -111,8 +113,12 @@ class KCodeMainPageViewModel extends ChangeNotifier
   final TabController tabController;
   final ScrollController scrollController;
 
+  final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey = GlobalKey();
+
   KCodeMainPageViewModel(
       {@required this.tabController, @required this.scrollController });
+
+
 
   @override
   onTabChange(KCodeTabType kCodeTabType) {

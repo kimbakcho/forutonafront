@@ -142,14 +142,16 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
 
   loadPosition(Position loadPosition) async {
     try {
-      this.currentSearchPosition = loadPosition;
       this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
           .getPositionAddress(loadPosition);
-      geoViewSearchManager.search(loadPosition,14.46);
-      notifyListeners();
     } on FlutterError catch (e) {
-      throw e;
+      this.searchAddress = e.message;
     }
+
+    this.currentSearchPosition = loadPosition;
+
+    geoViewSearchManager.search(loadPosition,14.46);
+    notifyListeners();
   }
 
   get disPlayAddress {

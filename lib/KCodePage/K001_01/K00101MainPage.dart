@@ -23,11 +23,14 @@ class K00101MainPage extends StatelessWidget {
 
   final TabController tabController;
 
+  final GlobalKey<NestedScrollViewState>  kCodeNestedScrollViewKey;
+
   const K00101MainPage(
       {Key key,
       @required this.searchText,
       @required this.mainScroller,
-      @required this.tabController})
+      @required this.tabController,
+      @required this.kCodeNestedScrollViewKey})
       : super(key: key);
 
   @override
@@ -38,6 +41,7 @@ class K00101MainPage extends StatelessWidget {
             searchText: searchText,
             tabController: tabController,
             mainScroller: mainScroller,
+            kCodeNestedScrollViewKey: kCodeNestedScrollViewKey,
             kCodeScrollerController: KCodeScrollerController(),
             userInfoCollectMediator: sl()),
         child: Consumer<K00101MainPageViewModel>(builder: (_, model, __) {
@@ -48,7 +52,8 @@ class K00101MainPage extends StatelessWidget {
                       padding: EdgeInsets.all(16),
                       child: ListView(
                           padding: EdgeInsets.all(0),
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: BouncingScrollPhysics(),
+                          shrinkWrap: true,
                           children: [
                             KCodeTopFilterBar(
                               searchText: searchText,
@@ -58,16 +63,16 @@ class K00101MainPage extends StatelessWidget {
                             ),
                             ListView.separated(
                                 shrinkWrap: true,
-                                padding: EdgeInsets.all(0),
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: model.itemCount,
+                                padding: EdgeInsets.all(0),
+                                itemCount: model.itemCount * 2,
                                 separatorBuilder: (_, __) {
                                   return SizedBox(height: 16);
                                 },
                                 itemBuilder: (context, index) {
+                                  var d = (index / 2).toInt();
                                   return UserProfileBar(
-                                      fUserInfoSimpleResDto:
-                                          model.itemList[index]);
+                                      fUserInfoSimpleResDto: model.itemList[d]);
                                 })
                           ])),
                   model.currentState == SearchCollectMediatorState.Empty
@@ -99,30 +104,60 @@ class K00101MainPageViewModel extends ChangeNotifier
         K00101DrawerBodyListener {
   final String searchText;
   final BuildContext context;
-
   final UserInfoCollectMediator userInfoCollectMediator;
   final KCodeScrollerController kCodeScrollerController;
   final ScrollController mainScroller;
   final TabController tabController;
+  final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
 
   K00101DrawerItem _selectedK00101DrawerItem = K00101DrawerItem.PlayPoint;
-
+  ScrollController kCodeNestedScrollInnerScrollController ;
   K00101MainPageViewModel(
       {this.searchText,
       this.context,
       this.userInfoCollectMediator,
       this.kCodeScrollerController,
       this.mainScroller,
-      this.tabController}) {
+      this.tabController,
+      this.kCodeNestedScrollViewKey}) {
     userInfoCollectMediator.pageLimit = 40;
 
     userInfoCollectMediator.userInfoListUpUseCaseInputPort =
         UserNickNameWithFullTextMatchIndexUseCase(
             searchText: searchText, fUserRepository: sl());
+    userInfoCollectMediator.sort = "playerPower,DESC";
 
     userInfoCollectMediator.registerComponent(this);
 
     userInfoCollectMediator.searchFirst();
+
+    kCodeNestedScrollInnerScrollController = kCodeNestedScrollViewKey.currentState.innerController;
+
+    kCodeNestedScrollInnerScrollController.addListener(_onScrollerListener);
+  }
+
+  _onScrollerListener() {
+    var positions2 = this.kCodeNestedScrollInnerScrollController.positions.toList();
+    print(positions2[0].pixels);
+    if ( positions2[0].pixels >= positions2[0].maxScrollExtent &&
+        !positions2[0].outOfRange) {
+      print("onNext");
+      onNext();
+    }
+
+    if (positions2[0].pixels <= positions2[0].minScrollExtent &&
+        ! positions2[0].outOfRange) {
+      print("onRefreshFirst");
+      onRefreshFirst();
+    }
+  }
+
+  onRefreshFirst(){
+    userInfoCollectMediator.searchFirst();
+  }
+
+  onNext(){
+    userInfoCollectMediator.searchNext();
   }
 
   @override

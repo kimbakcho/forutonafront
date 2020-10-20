@@ -63,8 +63,9 @@ class HomeMainPageViewModel
     this.lastKnownPosition =
         await geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
 
-    this.firstAddress = await geoLocationUtilUseCaseInputPort
-        .getPositionAddress(lastKnownPosition);
+      this.firstAddress = await geoLocationUtilUseCaseInputPort
+          .getPositionAddress(lastKnownPosition);
+
 
     userPositionForegroundMonitoringUseCaseInputPort
         .startUserPositionMonitoringAndUpdateToServer();

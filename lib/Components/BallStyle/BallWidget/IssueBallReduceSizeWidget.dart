@@ -56,7 +56,7 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
                                 issueBallDisPlayUseCase:
                                     issueBallDisPlayUseCase),
                                 SizedBox(
-                                  height: 5,
+                                  height: 3,
                                 ),
                             ReduceSizeAddressBar(
                                 issueBallDisPlayUseCase:

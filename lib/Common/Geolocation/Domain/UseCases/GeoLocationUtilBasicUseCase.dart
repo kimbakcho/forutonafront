@@ -65,7 +65,10 @@ class GeoLocationUtilBasicUseCase
 
   Future _saveUserPositionClient(Position resultPosition) async {
     currentWithLastPosition = resultPosition;
+
     currentWithLastAddress = await getPositionAddress(currentWithLastPosition);
+
+
     await _sharedPreferencesAdapter.setDouble(
         "currentlong", resultPosition.longitude);
     await _sharedPreferencesAdapter.setDouble(

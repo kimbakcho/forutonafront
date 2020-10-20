@@ -51,8 +51,13 @@ class GeoLocationUtilForeGroundUseCase
       await sharedPreferencesAdapter.setDouble("currentlat", resultPosition.latitude);
     }
     currentWithLastPosition = resultPosition;
-    currentWithLastAddress =
-        await getPositionAddress(currentWithLastPosition);
+    try{
+      currentWithLastAddress =
+          await getPositionAddress(currentWithLastPosition);
+    } catch (ex){
+      currentWithLastAddress = "";
+    }
+
     return resultPosition;
   }
 
