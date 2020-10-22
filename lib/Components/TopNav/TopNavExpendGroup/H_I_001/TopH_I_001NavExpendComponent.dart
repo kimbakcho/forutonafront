@@ -13,6 +13,8 @@ class TopH_I_001NavExpendComponent extends StatefulWidget {
   final TopH_I_001NavExpendDto topH001NavExpendDto;
   final TopNavBtnMediator topNavBtnMediator;
   final CodeMainPageController codeMainPageController;
+  final TopH_I_001NavExpendAniContentController
+      topH_I_001NavExpendAniContentController;
 
   final GeoViewSearchManagerInputPort geoViewSearchManager;
 
@@ -21,7 +23,8 @@ class TopH_I_001NavExpendComponent extends StatefulWidget {
       this.topH001NavExpendDto,
       this.topNavBtnMediator,
       this.codeMainPageController,
-      this.geoViewSearchManager})
+      this.geoViewSearchManager,
+      this.topH_I_001NavExpendAniContentController})
       : super(key: key);
 
   @override
@@ -29,7 +32,9 @@ class TopH_I_001NavExpendComponent extends StatefulWidget {
       _TopH_I_001NavExpendComponentState(
           topNavBtnMediator: this.topNavBtnMediator,
           geoViewSearchManager: geoViewSearchManager,
-          codeMainPageController: codeMainPageController);
+          codeMainPageController: codeMainPageController,
+          topH_I_001NavExpendAniContentController:
+              topH_I_001NavExpendAniContentController);
 }
 
 // ignore: camel_case_types
@@ -50,14 +55,20 @@ class _TopH_I_001NavExpendComponentState
   // ignore: non_constant_identifier_names
   TopH_I_001NavExpendAniContent _topH_I_001NavExpendAniContent;
 
+  final TopH_I_001NavExpendAniContentController
+      topH_I_001NavExpendAniContentController;
+
   _TopH_I_001NavExpendComponentState(
       {this.topNavBtnMediator,
       this.geoViewSearchManager,
+      this.topH_I_001NavExpendAniContentController,
       this.codeMainPageController}) {
     topNavBtnMediator.topNavExpendRegisterComponent(this);
     _topH_I_001NavExpendAniContent = TopH_I_001NavExpendAniContent(
       geoViewSearchManager: geoViewSearchManager,
       codeMainPageController: codeMainPageController,
+      topH_I_001NavExpendAniContentController:
+          topH_I_001NavExpendAniContentController,
     );
   }
 

@@ -24,7 +24,11 @@ class KCodeTopFilterBar extends StatelessWidget {
           builder: (_, model, __) {
             return Row(children: [
               Container(
+                constraints: BoxConstraints(
+                  maxWidth: 100
+                ),
                 child: Text("\"$searchText\" ",
+                    overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.notoSans(
                       fontSize: 12,
                       color: const Color(0xff3497fd),

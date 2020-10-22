@@ -26,14 +26,16 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
   TopH_I_001NavExpendAniContentViewModel _topH001NavExpendAniContentViewModel;
   final CodeMainPageController codeMainPageController;
   final GeoViewSearchManagerInputPort geoViewSearchManager;
+  final TopH_I_001NavExpendAniContentController topH_I_001NavExpendAniContentController;
 
-  TopH_I_001NavExpendAniContent({Key key, this.geoViewSearchManager, this.codeMainPageController}) : super(key: key) {
+  TopH_I_001NavExpendAniContent({Key key, this.geoViewSearchManager, this.codeMainPageController, this.topH_I_001NavExpendAniContentController}) : super(key: key) {
     _topH001NavExpendAniContentViewModel =
         TopH_I_001NavExpendAniContentViewModel(
           codeMainPageController: codeMainPageController,
             fluttertoastAdapter: sl(),
             locationAdapter: sl(),
             geoViewSearchManager: geoViewSearchManager,
+            topH_I_001NavExpendAniContentController: topH_I_001NavExpendAniContentController,
             geoLocationUtilForeGroundUseCaseInputPort: sl());
   }
 
@@ -99,6 +101,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   final LocationAdapter locationAdapter;
   final FluttertoastAdapter fluttertoastAdapter;
   final CodeMainPageController codeMainPageController;
+  final TopH_I_001NavExpendAniContentController topH_I_001NavExpendAniContentController;
 
   TopH001NavExpendAniContentViewModelExpendState currentState =
       TopH001NavExpendAniContentViewModelExpendState.expended;
@@ -116,8 +119,10 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
     @required this.locationAdapter,
     @required this.fluttertoastAdapter,
     @required this.geoViewSearchManager,
-    @required this.codeMainPageController
+    @required this.codeMainPageController,
+    @required this.topH_I_001NavExpendAniContentController
   }) {
+    topH_I_001NavExpendAniContentController._topH_I_001NavExpendAniContentViewModel = this;
     init();
   }
 
@@ -219,5 +224,15 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   onPlaceListTabPosition(Position position) {
     Navigator.popUntil(context, (route) => route.settings.name == "MAIN");
     loadPosition(position);
+  }
+}
+
+// ignore: camel_case_types
+class TopH_I_001NavExpendAniContentController {
+  // ignore: non_constant_identifier_names
+  TopH_I_001NavExpendAniContentViewModel _topH_I_001NavExpendAniContentViewModel;
+
+  void loadPosition(Position position) {
+    _topH_I_001NavExpendAniContentViewModel.loadPosition(position);
   }
 }

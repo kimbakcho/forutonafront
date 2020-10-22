@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../KCodeDrawer/KCodeDrawer.dart';
 import '../KCodeScrollerControllerAniBuilder.dart';
 import '../KCodeScrollerControllerBtn.dart';
+import '../KCodeSelectViewModel.dart';
 import '../KCodeTopFilterBar.dart';
 import 'K00101DrawerBody.dart';
 
@@ -23,7 +24,7 @@ class K00101MainPage extends StatelessWidget {
 
   final TabController tabController;
 
-  final GlobalKey<NestedScrollViewState>  kCodeNestedScrollViewKey;
+  final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
 
   const K00101MainPage(
       {Key key,
@@ -97,11 +98,8 @@ class K00101MainPage extends StatelessWidget {
   }
 }
 
-class K00101MainPageViewModel extends ChangeNotifier
-    implements
-        SearchCollectMediatorComponent,
-        KCodeTopFilterBarListener,
-        K00101DrawerBodyListener {
+class K00101MainPageViewModel extends KCodeSelectViewModel<UserInfoCollectMediator,FUserInfoSimpleResDto>
+    implements KCodeTopFilterBarListener, K00101DrawerBodyListener {
   final String searchText;
   final BuildContext context;
   final UserInfoCollectMediator userInfoCollectMediator;
@@ -109,91 +107,32 @@ class K00101MainPageViewModel extends ChangeNotifier
   final ScrollController mainScroller;
   final TabController tabController;
   final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
-
   K00101DrawerItem _selectedK00101DrawerItem = K00101DrawerItem.PlayPoint;
-  ScrollController kCodeNestedScrollInnerScrollController ;
+
   K00101MainPageViewModel(
       {this.searchText,
       this.context,
-      this.userInfoCollectMediator,
-      this.kCodeScrollerController,
       this.mainScroller,
       this.tabController,
-      this.kCodeNestedScrollViewKey}) {
-    userInfoCollectMediator.pageLimit = 40;
+      this.kCodeNestedScrollViewKey,
+      this.userInfoCollectMediator,
+      this.kCodeScrollerController})
+      : super(
+            searchText,
+            context,
+            userInfoCollectMediator,
+            kCodeScrollerController,
+            mainScroller,
+            tabController,
+            kCodeNestedScrollViewKey,
+            );
 
+  @override
+  settingCollectMediator() {
     userInfoCollectMediator.userInfoListUpUseCaseInputPort =
         UserNickNameWithFullTextMatchIndexUseCase(
             searchText: searchText, fUserRepository: sl());
     userInfoCollectMediator.sort = "playerPower,DESC";
-
-    userInfoCollectMediator.registerComponent(this);
-
-    userInfoCollectMediator.searchFirst();
-
-    kCodeNestedScrollInnerScrollController = kCodeNestedScrollViewKey.currentState.innerController;
-
-    kCodeNestedScrollInnerScrollController.addListener(_onScrollerListener);
-  }
-
-  _onScrollerListener() {
-    var positions2 = this.kCodeNestedScrollInnerScrollController.positions.toList();
-    print(positions2[0].pixels);
-    if ( positions2[0].pixels >= positions2[0].maxScrollExtent &&
-        !positions2[0].outOfRange) {
-      print("onNext");
-      onNext();
-    }
-
-    if (positions2[0].pixels <= positions2[0].minScrollExtent &&
-        ! positions2[0].outOfRange) {
-      print("onRefreshFirst");
-      onRefreshFirst();
-    }
-  }
-
-  onRefreshFirst(){
-    userInfoCollectMediator.searchFirst();
-  }
-
-  onNext(){
-    userInfoCollectMediator.searchNext();
-  }
-
-  @override
-  void dispose() {
-    userInfoCollectMediator.unregisterComponent(this);
-    super.dispose();
-  }
-
-  List<FUserInfoSimpleResDto> get itemList {
-    return userInfoCollectMediator.itemList;
-  }
-
-  int get itemCount {
-    return userInfoCollectMediator.itemList.length;
-  }
-
-  int get totalItemCount {
-    return userInfoCollectMediator.wrapItemList.totalElements;
-  }
-
-  bool get isLoading {
-    return userInfoCollectMediator.isLoading;
-  }
-
-  SearchCollectMediatorState get currentState {
-    return userInfoCollectMediator.currentState;
-  }
-
-  @override
-  void onItemListEmpty() {
-    notifyListeners();
-  }
-
-  @override
-  void onItemListUpUpdate() {
-    notifyListeners();
   }
 
   @override
@@ -209,15 +148,6 @@ class K00101MainPageViewModel extends ChangeNotifier
             k00101drawerBodyListener: this,
           ));
         });
-  }
-
-  void onEndScroller(ScrollEndNotification scrollNotification) {
-    if (scrollNotification.metrics.pixels >= 10.0) {
-      kCodeScrollerController.forward();
-    } else {
-      kCodeScrollerController.reverse();
-    }
-    notifyListeners();
   }
 
   @override

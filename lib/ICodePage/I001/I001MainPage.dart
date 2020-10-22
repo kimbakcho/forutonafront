@@ -13,6 +13,7 @@ import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/FullBallHorizontalPageList.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/TopH_I_001NavExpendAniContent.dart';
 import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpFromMapArea.dart';
 import 'package:forutonafront/FBall/Dto/BallFromMapAreaReqDto.dart';
 import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
@@ -23,17 +24,22 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class I001MainPage extends StatefulWidget {
-
   final GeoViewSearchManagerInputPort geoViewSearchManagerInputPort;
+  final TopH_I_001NavExpendAniContentController
+      topH_I_001NavExpendAniContentController;
 
-  const I001MainPage({Key key, this.geoViewSearchManagerInputPort}) : super(key: key);
+  const I001MainPage(
+      {Key key,
+      this.geoViewSearchManagerInputPort,
+      this.topH_I_001NavExpendAniContentController})
+      : super(key: key);
 
   @override
   _I001MainPageState createState() => _I001MainPageState();
 }
 
 class _I001MainPageState extends State<I001MainPage>
-    with WidgetsBindingObserver,AutomaticKeepAliveClientMixin<I001MainPage> {
+    with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<I001MainPage> {
   _I001MainPageState();
 
   @override
@@ -67,6 +73,7 @@ class _I001MainPageState extends State<I001MainPage>
             mapBallMarkerFactory: sl(),
             geolocatorAdapter: sl(),
             geoLocationUtilForeGroundUseCaseInputPort: sl(),
+            topH_I_001NavExpendAniContentController: widget.topH_I_001NavExpendAniContentController,
             fluttertoastAdapter: sl(),
             context: context),
         child: Consumer<I001MainPageViewModel>(builder: (_, model, __) {
@@ -157,6 +164,9 @@ class I001MainPageViewModel extends ChangeNotifier
 
   Queue<Position> searchQueue = Queue<Position>();
 
+  final TopH_I_001NavExpendAniContentController
+      topH_I_001NavExpendAniContentController;
+
   I001MainPageViewModel(
       {this.context,
       this.ballListMediator,
@@ -165,6 +175,7 @@ class I001MainPageViewModel extends ChangeNotifier
       this.mapScreenPositionUseCaseInputPort,
       this.fluttertoastAdapter,
       this.geoLocationUtilForeGroundUseCaseInputPort,
+      this.topH_I_001NavExpendAniContentController,
       this.mapBallMarkerFactory})
       : _fullBallHorizontalPageListController =
             FullBallHorizontalPageListController() {
@@ -187,22 +198,30 @@ class I001MainPageViewModel extends ChangeNotifier
 
   _onRefresh() {
     var target = _googleMapCurrentPosition.target;
-    geoViewSearchManagerInputPort.search(
-        Position(longitude: target.longitude, latitude: target.latitude),_googleMapCurrentPosition.zoom);
+    topH_I_001NavExpendAniContentController.loadPosition(
+        Position(latitude: target.latitude, longitude: target.longitude));
+    notifyListeners();
+
   }
 
   _onCameraIdle() async {
     //좌표를 얻기 위해 지도를 그리는 1초 기다림
-    await Future.delayed(Duration(seconds: 1));
-    await viewButtonControl();
+    //
+    // await Future.delayed(Duration(seconds: 1));
 
-    await searchLoadQueue();
+    Future.delayed(Duration(seconds: 1),()async{
+      await viewButtonControl();
 
-    notifyListeners();
+      await searchLoadQueue();
+
+      notifyListeners();
+    });
+
+
   }
 
   Future searchLoadQueue() async {
-    while(searchQueue.isNotEmpty){
+    while (searchQueue.isNotEmpty) {
       ballListMediator.fBallListUpUseCaseInputPort = FBallListUpFromMapArea(
           await getAreaPoint(searchQueue.removeLast()),
           fBallRepository: sl());
@@ -240,8 +259,8 @@ class I001MainPageViewModel extends ChangeNotifier
   onMapCreated(GoogleMapController controller) {
     _googleMapController.complete(controller);
 
-    geoViewSearchManagerInputPort
-        .search(geoViewSearchManagerInputPort.currentSearchPosition,14.46);
+    geoViewSearchManagerInputPort.search(
+        geoViewSearchManagerInputPort.currentSearchPosition, 14.46);
   }
 
   init() async {
@@ -255,15 +274,13 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   @override
-  Future<void> search(Position loadPosition,double zoomLevel) async {
-
+  Future<void> search(Position loadPosition, double zoomLevel) async {
     searchQueue.addFirst(loadPosition);
 
     final GoogleMapController controller = await _googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(loadPosition.latitude, loadPosition.longitude), zoom: zoomLevel)));
-
-
+        target: LatLng(loadPosition.latitude, loadPosition.longitude),
+        zoom: zoomLevel)));
   }
 
   void firstBallSelect() {
@@ -309,7 +326,6 @@ class I001MainPageViewModel extends ChangeNotifier
 
   @override
   void dispose() {
-
     ballListMediator.unregisterComponent(this);
     geoViewSearchManagerInputPort.unSubscribe(this);
     super.dispose();
@@ -318,7 +334,6 @@ class I001MainPageViewModel extends ChangeNotifier
   void refreshMapKey() {
     _googleMapKey = GlobalKey();
   }
-
 
   bool get _isLoading {
     return ballListMediator.isLoading;
@@ -348,4 +363,8 @@ class I001MainPageViewModel extends ChangeNotifier
   void onItemListUpUpdate() {
     notifyListeners();
   }
+}
+
+abstract class I001PageListener {
+  void onLoadAddress();
 }

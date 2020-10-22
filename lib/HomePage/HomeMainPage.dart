@@ -8,6 +8,7 @@ import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecogniz
 import 'package:forutonafront/Components/TopNav/TopNavBar.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/TopH_I_001NavExpendAniContent.dart';
 import 'package:forutonafront/HCodePage/H001/H001Page.dart';
 import 'package:forutonafront/ICodePage/I001/I001MainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
@@ -78,11 +79,13 @@ class _HomeMainPageState extends State<HomeMainPage>
       providers: [
         ChangeNotifierProvider<HomeMainPageViewModel>(
             create: (_) => HomeMainPageViewModel(
-              context: context,
+                context: context,
                 geoLocationUtilUseCaseInputPort: sl(),
                 fireBaseAuthAdapterForUseCase: sl(),
                 codeMainPageController: _codeMainPageController,
                 geoViewSearchManagerInputPort: GeoViewSearchManager(),
+                topH_I_001NavExpendAniContentController:
+                    TopH_I_001NavExpendAniContentController(),
                 userPositionForegroundMonitoringUseCaseInputPort: sl(),
                 topNavBtnMediator: _topNavBtnMediator)),
       ],
@@ -123,8 +126,11 @@ class _HomeMainPageState extends State<HomeMainPage>
                           Container(child: Text("X001")),
                           Container(child: Text("X002")),
                           I001MainPage(
-                              geoViewSearchManagerInputPort:
-                                  model.geoViewSearchManagerInputPort)
+                            geoViewSearchManagerInputPort:
+                                model.geoViewSearchManagerInputPort,
+                            topH_I_001NavExpendAniContentController:
+                                model.topH_I_001NavExpendAniContentController,
+                          )
                         ]),
                   ),
                 ),

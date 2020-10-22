@@ -7,6 +7,7 @@ import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H003/TopH003NavExpandComponent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/TopH_I_001NavExpendAniContent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/TopH_I_001NavExpendComponent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/TopH_I_001NavExpendDto.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/X001/TopX001NavExpandComponent.dart';
@@ -43,6 +44,8 @@ class HomeMainPageViewModel
 
   final BuildContext context;
 
+  final TopH_I_001NavExpendAniContentController topH_I_001NavExpendAniContentController;
+
   HomeMainPageViewModel(
       {@required this.fireBaseAuthAdapterForUseCase,
       @required this.context,
@@ -50,7 +53,8 @@ class HomeMainPageViewModel
       @required this.codeMainPageController,
       @required this.userPositionForegroundMonitoringUseCaseInputPort,
       @required this.geoViewSearchManagerInputPort,
-      @required this.topNavBtnMediator}) {
+      @required this.topNavBtnMediator,
+      @required this.topH_I_001NavExpendAniContentController}) {
     init();
   }
 
@@ -79,6 +83,7 @@ class HomeMainPageViewModel
       topNavBtnMediator: topNavBtnMediator,
       geoViewSearchManager: geoViewSearchManagerInputPort,
       codeMainPageController: codeMainPageController,
+      topH_I_001NavExpendAniContentController: topH_I_001NavExpendAniContentController,
       topH001NavExpendDto: TopH_I_001NavExpendDto(
           btnHeightSize: 36,
           btnWidthSize: MediaQuery.of(context).size.width - 75),
