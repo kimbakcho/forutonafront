@@ -18,7 +18,7 @@ abstract class FireBaseAuthBaseAdapter {
 }
 @LazySingleton(as: FireBaseAuthBaseAdapter)
 class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
-  final noneToken = "noneToken";
+  final noneToken = "";
 
   Future<String> getFireBaseIdToken() async {
     var firebaseUser = await FirebaseAuth.instance.currentUser();

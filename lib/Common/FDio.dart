@@ -16,21 +16,23 @@ class FDio extends DioForNative {
   BaseOptions FBaseOption(String token) {
     BaseOptions options = BaseOptions();
     options.baseUrl = Preference.baseBackEndUrl;
-    options.headers = {
+    options.headers = token.length>0 ? {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer " + token
+    } : {
+      HttpHeaders.contentTypeHeader: "application/json",
     };
     return options;
   }
 
   factory FDio.noneToken(){
-    FDio fDio = new FDio("noneToken");
+    FDio fDio = new FDio("");
     return fDio;
   }
 
   factory FDio.token({@required String idToken}){
     if(idToken == null){
-      FDio fDio = new FDio("noneToken");
+      FDio fDio = new FDio("");
       return fDio;
     }else {
       FDio dio = FDio(idToken);
