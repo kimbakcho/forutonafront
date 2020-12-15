@@ -12,7 +12,6 @@ import 'FireBaseAuthBaseAdapter.dart';
 abstract class FireBaseAuthAdapterForUseCase
     extends FireBaseAuthBaseAdapter {
   void startOnAuthStateChangedListen();
-
 }
 @LazySingleton(as: FireBaseAuthAdapterForUseCase)
 class FireBaseAuthAdapterForUseCaseImpl
@@ -54,12 +53,14 @@ class FireBaseAuthAdapterForUseCaseImpl
   }
 
   _onAuthStateChange(FirebaseUser user) async {
+
     if(await isLogin()){
       await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(user.uid);
       await _updateFCMTokenUseCaseInputPort.updateFCMToken(await _fireBaseMessageAdapter.getCurrentToken());
-    }else {
+    } else {
       _signInUserInfoUseCaseInputPort.clearUserInfo();
     }
+
   }
 
   @override

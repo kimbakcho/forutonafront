@@ -54,9 +54,9 @@ dependencies:
   international_phone_input: ^1.0.2
   uuid: ^2.0.1
   #인증 문자 메세지에서 사용
-  sms_receiver:
-    git:
-      url: https://github.com/kimbakcho/flutter_sms_receiver
+#  sms_receiver:
+#    git:
+#      url: https://github.com/kimbakcho/flutter_sms_receiver
   #FCM에 사용
   firebase_messaging: ^6.0.16
   #사진을 여러장 선택 할 필요가 있을때 사용
@@ -106,7 +106,7 @@ dependencies:
   #test할때 사용
   mockito: ^4.1.1
   #Native Background Plugin 목적으로 사용
-  background_fetch: ^0.5.6
+  background_fetch: ^0.6.0
   #statusBarColor 변경을 목적으로 사용
   flutter_statusbarcolor: ^0.2.3
   #인터넷 접속 가능 여부 판단 목적으로 사용
