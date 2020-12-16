@@ -81,7 +81,7 @@ class _TopH_I_001NavExpendComponentState
 
   initAnimation() {
     _controller = AnimationController(
-        vsync: this, duration: topNavBtnMediator.animationDuration);
+        duration: topNavBtnMediator.animationDuration,vsync: this );
     _controller.forward();
     _controller.addStatusListener(setListener);
   }

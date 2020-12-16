@@ -43,7 +43,7 @@ class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
 
   void iniAnimation() {
     _controller = AnimationController(
-        vsync: this, duration: topNavBtnMediator.animationDuration);
+         duration: topNavBtnMediator.animationDuration,vsync: this);
     _controller.forward();
   }
 

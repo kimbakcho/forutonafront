@@ -14,7 +14,7 @@ class _MapCenterExpendCircleState extends State<MapCenterExpendCircle>
   @override
   void initState() {
     _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 2));
+        AnimationController( duration: Duration(seconds: 2),vsync: this);
     _controller.forward();
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {

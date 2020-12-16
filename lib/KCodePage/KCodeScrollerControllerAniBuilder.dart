@@ -26,7 +26,7 @@ class _KCodeScrollerControllerAniBuilderState extends State<KCodeScrollerControl
   @override
   void initState() {
     _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+        AnimationController( duration: Duration(milliseconds: 500),vsync: this);
     scrollerController._kCodeScrollerControllerBtnState = this;
     super.initState();
   }

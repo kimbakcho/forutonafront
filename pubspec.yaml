@@ -43,7 +43,7 @@ dependencies:
   #비동기 처리에 필요
   async: ^2.3.0
   #GoogleMap
-  google_maps_flutter: ^0.5.33
+  google_maps_flutter: ^1.0.6
   #GPS 지도 정보를 사용하기 위해서 사용
   geolocator: ^5.3.1
   #태그 랭킹등에서 사용
@@ -90,7 +90,7 @@ dependencies:
   #게시판등에서 html Viwer 목적으로 사용
   flutter_webview_plugin: ^0.3.11
   #Youtube 등 앱을 실행하기 위해서 사용
-  android_intent: ^0.3.7+1
+  android_intent:
   #googlefont 사용
   google_fonts: ^1.0.0
   #youtube VideoID Paser
@@ -124,7 +124,7 @@ dependencies:
   #좋아요 싫어요 % 표시
   percent_indicator: ^2.1.5
   #ModalDraower 에 사용
-  modal_bottom_sheet: ^0.2.2
+  modal_bottom_sheet: ^1.0.0+1
 
 
 dev_dependencies:

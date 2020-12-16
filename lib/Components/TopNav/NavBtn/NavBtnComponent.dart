@@ -45,7 +45,7 @@ class _NavBtnComponentState extends State<NavBtnComponent>
 
   initAnimation() {
     _controller = AnimationController(
-        vsync: this, duration: navBtnMediator.animationDuration);
+        duration: navBtnMediator.animationDuration,vsync: this);
     _controller.addStatusListener((status) {
       navBtnMediator.onNavBtnAniStatusListener(
           status, navBtnSetDto.topOnMoveMainPage);

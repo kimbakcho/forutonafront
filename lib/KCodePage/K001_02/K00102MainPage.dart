@@ -135,7 +135,7 @@ class K00102MainPageViewModel
         expand: false,
         context: context,
         backgroundColor: Colors.transparent,
-        builder: (context, _) {
+        builder: (context) {
           return KCodeDrawer(
               drawerBody: K00102DrawerBody(
             initSelectItem: _selectedK00102DrawerItem,

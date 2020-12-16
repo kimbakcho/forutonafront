@@ -141,7 +141,8 @@ class K00101MainPageViewModel extends KCodeSelectViewModel<UserInfoCollectMediat
         expand: false,
         context: context,
         backgroundColor: Colors.transparent,
-        builder: (context, _) {
+
+        builder: (context) {
           return KCodeDrawer(
               drawerBody: K00101DrawerBody(
             initSelectItem: _selectedK00101DrawerItem,
