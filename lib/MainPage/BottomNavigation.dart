@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/JCodePage/J001/J001View.dart';
+import 'package:forutonafront/LCodePage/L001/L001BottomSheet/L001BottomSheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import 'KPageNavBtn.dart';
@@ -58,9 +60,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       flex: 1,
                       child: FlatButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_)=> J001View()
-                            ));
+                            model.showL001BottomSheet();
                           },
                           child: Icon(
                             ForutonaIcon.snsservicemenu,
@@ -84,6 +84,16 @@ class BottomNavigationViewModel extends ChangeNotifier {
 
   BottomNavigationViewModel({this.context});
 
+  showL001BottomSheet(){
+    showMaterialModalBottomSheet(
+        context: context,
+        expand: false,
+        backgroundColor: Colors.transparent,
+        enableDrag: true,
+        builder: (context) {
+          return L001BottomSheet();
+        });
+  }
 
 }
 
