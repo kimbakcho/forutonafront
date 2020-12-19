@@ -3,10 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 enum SnsSupportService {
   @JsonValue("FaceBook")
   FaceBook,
-@JsonValue("Naver")
+  @JsonValue("Naver")
   Naver,
-@JsonValue("Kakao")
+  @JsonValue("Kakao")
   Kakao,
-@JsonValue("Forutona")
+  @JsonValue("Forutona")
   Forutona
 }

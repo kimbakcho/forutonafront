@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
@@ -102,7 +103,7 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
       FDio noneTokenFDio) async {
     var response = await noneTokenFDio.get("/v1/FUserInfo/SnsUserJoinCheckInfo",
         queryParameters: {
-          "snsService": snsService,
+          "snsService":  EnumToString.convertToString(snsService) ,
           "accessToken": accessToken
         });
     return FUserSnsCheckJoinResDto.fromJson(response.data);

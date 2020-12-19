@@ -28,7 +28,7 @@ dependencies:
   # add dependency for Google Analytics for Firebase
   firebase_analytics: ^5.0.2
   #NaverLogin을 위해서 사용
-  flutter_naver_login: ^1.0.1
+  flutter_naver_login: ^1.2.0
   #Firebase 인증을 위해서 사용
   firebase_auth: ^0.15.5+3
   #FaceBook인증을 위해서 사용
@@ -62,7 +62,7 @@ dependencies:
   #사진을 여러장 선택 할 필요가 있을때 사용
   multi_image_picker: ^4.6.0
   #Kakao 로그인 할때 사용
-  kakao_flutter_sdk: ^0.4.2
+  kakao_flutter_sdk: ^0.5.2
   #내부 Native Notication을 사용하기위한 사용
   flutter_local_notifications: ^1.4.4+2
   #큐브의 에니메이션 효과등 복잡한 애니메이션을 Flare를 사용하여 처리기위해서 사용
@@ -112,9 +112,9 @@ dependencies:
   #인터넷 접속 가능 여부 판단 목적으로 사용
   data_connection_checker: ^0.3.4
   # add injectable to your dependencies
-  injectable: ^1.0.4
+  injectable: ^1.0.5
   #의존성 주입을 위해 사용
-  get_it: ^4.0.4
+  get_it: ^5.0.3
   #App의 로컬 파일 경로를 얻기 위해 사용
   path_provider: ^1.6.11
   #설치된 App 확인
@@ -125,14 +125,16 @@ dependencies:
   percent_indicator: ^2.1.5
   #ModalDraower 에 사용
   modal_bottom_sheet: ^1.0.0+1
-
+  #Svg 파일 로딩에 사용
+  flutter_svg: ^0.18.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   # add the generator to your dev_dependencies
   injectable_generator:
-  build_runner: ^1.10.1
+  build_runner:
+  build_test:
   json_serializable:
 
 
@@ -153,6 +155,7 @@ flutter:
     - assets/Rive/
     - assets/Brand/
     - assets/MainImage/
+    - assets/LoginIcon/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

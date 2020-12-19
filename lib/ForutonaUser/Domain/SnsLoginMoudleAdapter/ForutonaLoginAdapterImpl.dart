@@ -3,8 +3,6 @@ import 'package:injectable/injectable.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
-@named
-@LazySingleton(as: SnsLoginModuleAdapter)
 class ForutonaLoginAdapterImpl implements SnsLoginModuleAdapter {
   @override
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {

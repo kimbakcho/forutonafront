@@ -7,10 +7,8 @@ import 'package:forutonafront/ForutonaUser/Dto/FUserSnSJoinReqDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:injectable/injectable.dart';
 
 
-@LazySingleton(as: LoginUseCaseInputPort)
 class LoginUseCase implements LoginUseCaseInputPort {
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
   final SnsLoginModuleAdapter _snsLoginModuleAdapter;

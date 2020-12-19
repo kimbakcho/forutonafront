@@ -69,11 +69,7 @@ import 'package:forutonafront/ForutonaUser/Data/Repository/PhoneAuthRepositoryIm
 import 'package:forutonafront/ForutonaUser/Data/Repository/UserPolicyRepositoryImpl.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
 import 'package:forutonafront/ForutonaUser/Domain/Repository/UserPolicyRepository.dart';
-import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
-import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/ForutonaLoginAdapterImpl.dart';
-import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
-import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/NaverLoginAdapterImpl.dart';
-import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
+
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
@@ -82,16 +78,13 @@ import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUs
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/UpdateUserPositionUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
+
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/PhoneAuthUseCase/PhoneAuthUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCase.dart';
 import 'package:forutonafront/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+
 import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
@@ -344,57 +337,6 @@ init2() {
       fUserRepository: sl(),
       fireBaseAuthAdapterForUseCase: sl()));
 
-  sl.registerSingleton<SnsLoginModuleAdapter>(FaceBookLoginAdapterImpl(),
-      instanceName: "FaceBookLoginAdapter");
-
-  sl.registerSingleton<SnsLoginModuleAdapter>(KakaoLoginAdapterImpl(),
-      instanceName: "KakaoLoginAdapter");
-
-  sl.registerSingleton<SnsLoginModuleAdapter>(NaverLoginAdapterImpl(),
-      instanceName: "NaverLoginAdapter");
-
-  sl.registerSingleton<SnsLoginModuleAdapter>(ForutonaLoginAdapterImpl(),
-      instanceName: "ForutonaLoginAdapter");
-
-  sl.registerSingleton<LoginUseCaseInputPort>(
-      LoginUseCase(
-          singUpUseCaseInputPort: sl(),
-          fireBaseAuthAdapterForUseCase: sl(),
-          snsLoginModuleAdapter: sl.get(instanceName: "FaceBookLoginAdapter")),
-      instanceName: "LoginUseCaseFaceBook");
-
-  sl.registerSingleton<LoginUseCaseInputPort>(
-      LoginUseCase(
-          singUpUseCaseInputPort: sl(),
-          fireBaseAuthAdapterForUseCase: sl(),
-          snsLoginModuleAdapter: sl.get(instanceName: "KakaoLoginAdapter")),
-      instanceName: "LoginUseCaseKakao");
-
-  sl.registerSingleton<LoginUseCaseInputPort>(
-      LoginUseCase(
-          singUpUseCaseInputPort: sl(),
-          fireBaseAuthAdapterForUseCase: sl(),
-          snsLoginModuleAdapter: sl.get(instanceName: "NaverLoginAdapter")),
-      instanceName: "LoginUseCaseNaver");
-
-  sl.registerFactoryParam<SnsLoginModuleAdapter, SnsSupportService, String>(
-      (param1, param2) {
-    if (param1 == SnsSupportService.Naver) {
-      return sl.get(instanceName: "NaverLoginAdapter");
-    } else if (param1 == SnsSupportService.Kakao) {
-      return sl.get(instanceName: "KakaoLoginAdapter");
-    } else if (param1 == SnsSupportService.FaceBook) {
-      return sl.get(instanceName: "FaceBookLoginAdapter");
-    } else if (param1 == SnsSupportService.Forutona) {
-      return sl.get(instanceName: "ForutonaLoginAdapter");
-    } else {
-      return null;
-    }
-  }, instanceName: "SnsLoginModuleAdapter");
-
-  sl.registerSingleton<LogoutUseCaseInputPort>(LogoutUseCase(
-      signInUserInfoUseCaseInputPort: sl(),
-      fireBaseAuthAdapterForUseCase: sl()));
 
   sl.registerSingleton<FlutterImageCompressAdapter>(
       FlutterImageCompressAdapterImpl());

@@ -1,4 +1,29 @@
+import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
+import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/ForutonaLoginAdapterImpl.dart';
+import 'package:forutonafront/ForutonaUser/Domain/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
 import 'package:forutonafront/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:injectable/injectable.dart';
+
+import 'NaverLoginAdapterImpl.dart';
+
+@LazySingleton()
+class SnsLoginModuleAdapterFactory {
+  SnsLoginModuleAdapter getInstance(SnsSupportService snsSupportService){
+    switch(snsSupportService){
+      case SnsSupportService.Naver:
+        return NaverLoginAdapterImpl();
+      case SnsSupportService.Kakao:
+        return KakaoLoginAdapterImpl();
+      case SnsSupportService.FaceBook:
+        return FaceBookLoginAdapterImpl();
+      case SnsSupportService.Forutona:
+        return ForutonaLoginAdapterImpl();
+      default:
+        throw Exception("don't support");
+    }
+  }
+}
+
 
 abstract class SnsLoginModuleAdapter {
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo();

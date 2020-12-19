@@ -4,8 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
-@named
-@LazySingleton(as: SnsLoginModuleAdapter)
+
 class FaceBookLoginAdapterImpl implements SnsLoginModuleAdapter{
 
   @override
