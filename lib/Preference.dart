@@ -14,6 +14,8 @@ class Preference {
 
   //testDebug
    static final String baseBackEndUrl = "http://61.84.20.60:8443";
+   static final String managerBaseBackEndUrl = "https://forutona.thkomeet.com:8443/bforutonamanagerment";
+
 //  // relese
 //    String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
 

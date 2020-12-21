@@ -121,6 +121,9 @@ import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
 import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import '../Tag/Domain/Repository/TagRepository.dart';
 import '../Tag/Data/Repository/TagRepositoryImpl.dart';
+import '../ManagerBis/TermsConditions/Domain/Repository/TermsConditionsRepository.dart';
+import '../ManagerBis/TermsConditions/Data/Repository/TermsConditionsRepositoryImpl.dart';
+import '../ManagerBis/TermsConditions/Domain/UseCase/TermsConditionsUseCaseInputPort.dart';
 import '../ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccountUserInfoUseCaseInputPort.dart';
 import '../FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
 import '../ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
@@ -149,20 +152,25 @@ GetIt $initGetIt(
   gh.lazySingleton<AndroidIntentAdapter>(() => AndroidIntentAdapterImpl());
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(
-      () => GoogleSurveyErrorReportUseCase(),
-      instanceName: 'GoogleSurveyErrorReportUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
       instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleProposalOnServiceSurveyUseCase(),
       instanceName: 'GoogleProposalOnServiceSurveyUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(
+      () => GoogleSurveyErrorReportUseCase(),
+      instanceName: 'GoogleSurveyErrorReportUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
+      instanceName: 'BaseMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(
+      () => BackGroundMessageUseCase(
+          baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
+              instanceName: 'BaseMessageUseCase')),
+      instanceName: 'BackGroundMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
       instanceName: 'LaunchMessageUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
-      instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseOpenTalkInputPort>(() => InquireAboutAnythingUseCase());
   gh.lazySingleton<DetailPageItemFactory>(() => DetailPageItemFactory());
   gh.lazySingleton<FBallPlayerRemoteDataSource>(
@@ -189,10 +197,10 @@ GetIt $initGetIt(
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
   gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
       instanceName: 'ImageAvatarUtil');
-  gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
-      instanceName: 'ImagePngResizeUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
       instanceName: 'ImageBorderAvatarUtil');
+  gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
+      instanceName: 'ImagePngResizeUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
   gh.lazySingleton<MapBitmapDescriptorUseCaseInputPort>(() =>
       MapBitmapDescriptorUseCase(
@@ -245,6 +253,9 @@ GetIt $initGetIt(
       () => SwipeGestureRecognizerController());
   gh.lazySingleton<TagRepository>(() => TagRepositoryImpl(
       fBallTagRemoteDataSource: get<FBallTagRemoteDataSource>()));
+  gh.factory<TermsConditionsRepository>(() => TermsConditionsRepositoryImpl());
+  gh.factory<TermsConditionsUseCaseInputPort>(() => TermsConditionsUseCase(
+      termsConditionsRepository: get<TermsConditionsRepository>()));
   gh.factory<UserInfoCollectMediator>(() => UserInfoCollectMediatorImpl());
   gh.lazySingleton<UserPolicyRemoteDataSource>(
       () => UserPolicyRemoteDataSourceImpl());
@@ -259,11 +270,6 @@ GetIt $initGetIt(
   gh.lazySingleton<BallSearchBarHistoryRepository>(() =>
       BallSearchBarHistoryRepositoryImpl(
           localDataSource: get<BallSearchHistoryLocalDataSource>()));
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(
-      () => BackGroundMessageUseCase(
-          baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
-              instanceName: 'BaseMessageUseCase')),
-      instanceName: 'BackGroundMessageUseCase');
   gh.lazySingleton<FBallPlayerListUpInputPort>(() => FBallPlayerListUpUseCae(
       fBallPlayerRepository: get<FBallPlayerRepository>()));
   gh.lazySingleton<FBallReplyRepository>(() => FBallReplyRepositoryImpl(

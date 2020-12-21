@@ -15,14 +15,14 @@ import 'LoginSheetOutputPort.dart';
 
 class LoginSheet extends StatelessWidget {
 
+  final LoginSheetOutputPort loginSheetOutputPort;
+
+  LoginSheet({this.loginSheetOutputPort});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) =>
-          LoginSheetViewModel(
-              sl(), sl(), sl()
-          ),
+      create: (_) => LoginSheetViewModel(sl(), sl(), sl()),
       child: Consumer<LoginSheetViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -68,7 +68,7 @@ class LoginSheet extends StatelessWidget {
                     snsSupportService: SnsSupportService.FaceBook,
                     loginButtonOutputPort: model,
                     label: "FaceBook ID로 진행",
-                    imagePath: "assets/LoginIcon/NaverLogo.png"),
+                    imagePath: "assets/LoginIcon/FacebookLogo.png"),
                 SizedBox(
                   height: 12,
                 ),
@@ -76,7 +76,7 @@ class LoginSheet extends StatelessWidget {
                     snsSupportService: SnsSupportService.Kakao,
                     loginButtonOutputPort: model,
                     label: "KakaoTalk Id으로 진행",
-                    imagePath: "assets/LoginIcon/NaverLogo.png"),
+                    imagePath: "assets/LoginIcon/KakaoTalkLogo.png"),
                 SizedBox(
                   height: 12,
                 ),
@@ -84,7 +84,43 @@ class LoginSheet extends StatelessWidget {
                     snsSupportService: SnsSupportService.Forutona,
                     loginButtonOutputPort: model,
                     label: "등록된 이메일주소 사용",
-                    imagePath: "assets/LoginIcon/NaverLogo.png")
+                    imagePath: "assets/LoginIcon/EmailLogo.png"),
+                Spacer(),
+                Container(
+                  height: 52,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "아직 회원이 아니신가요?",
+                        style: GoogleFonts.notoSans(
+                            fontSize: 15,
+                            color: const Color(0xff000000),
+                            letterSpacing: -0.3,
+                            height: 1.4666666666666666,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                              onTap: () {
+                                loginSheetOutputPort.moveToSignPage();
+                              },
+                              child: Text(
+                                "가입하기",
+                                style: GoogleFonts.notoSans(
+                                    fontSize: 15,
+                                    color: const Color(0xff3497fd),
+                                    letterSpacing: -0.3,
+                                    height: 1.4666666666666666,
+                                    fontWeight: FontWeight.w500),
+                              )))
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xffe4e7e8),
+                  ),
+                )
               ]);
         },
       ),
@@ -94,23 +130,29 @@ class LoginSheet extends StatelessWidget {
 
 class LoginSheetViewModel extends ChangeNotifier
     implements LoginButtonOutputPort {
-
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
   final SnsLoginModuleAdapterFactory _snsLoginModuleAdapter;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final LoginSheetOutputPort loginSheetOutputPort;
 
-  LoginSheetViewModel(
-      this._singUpUseCaseInputPort,
-      this._snsLoginModuleAdapter,
-      this._fireBaseAuthAdapterForUseCase);
+  LoginSheetViewModel(this._singUpUseCaseInputPort, this._snsLoginModuleAdapter,
+      this._fireBaseAuthAdapterForUseCase,{this.loginSheetOutputPort});
 
   @override
   tryLogin(SnsSupportService snsSupportService) async {
-    LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(singUpUseCaseInputPort: this._singUpUseCaseInputPort,
-        fireBaseAuthAdapterForUseCase: this._fireBaseAuthAdapterForUseCase,
-        snsLoginModuleAdapter: _snsLoginModuleAdapter.getInstance(
-            snsSupportService));
-    await loginUseCaseInputPort.tryLogin();
-    notifyListeners();
+    if(snsSupportService == SnsSupportService.Naver
+    || snsSupportService == SnsSupportService.FaceBook || snsSupportService == SnsSupportService.Kakao){
+      LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(
+          singUpUseCaseInputPort: this._singUpUseCaseInputPort,
+          fireBaseAuthAdapterForUseCase: this._fireBaseAuthAdapterForUseCase,
+          snsLoginModuleAdapter:
+          _snsLoginModuleAdapter.getInstance(snsSupportService));
+      await loginUseCaseInputPort.tryLogin();
+      notifyListeners();
+    }else {
+      this.loginSheetOutputPort.moveToEmailLoginPage();
+    }
+
   }
+
 }

@@ -7,6 +7,7 @@ class CommonLinearProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return  LinearProgressIndicator(
       backgroundColor: Color(0xffCCCCCC),
+      minHeight: 1.0,
       valueColor: AlwaysStoppedAnimation<Color>(
         Color(0xff3497FD),
       ),
