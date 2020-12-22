@@ -4,7 +4,7 @@ import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnAction.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnComponent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendGroup.dart';
-import 'package:forutonafront/HomePage/HomeMainPageViewModel.dart';
+import 'package:forutonafront/Page/HomePage/HomeMainPageViewModel.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:mockito/mockito.dart';
 

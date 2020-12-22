@@ -3,8 +3,8 @@ import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionPopup/LogOutUserBallPopup.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionPopup/OtherUserBallPopup.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionPopup/UserBallPopup.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:injectable/injectable.dart';
 
 import 'BallOptionPopup.dart';

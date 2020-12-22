@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionButton/BallOptionButtonAction.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionButton/NoInterestBallAddAction.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:mockito/mockito.dart';
 
 

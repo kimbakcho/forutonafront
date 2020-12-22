@@ -2,9 +2,9 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagItemListUpUseCase.dart';
-import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagItemListUpUseCase.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 
 class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCaseInputPort>{
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
-import 'package:forutonafront/Tag/Dto/FBallTagResDto.dart';
+import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

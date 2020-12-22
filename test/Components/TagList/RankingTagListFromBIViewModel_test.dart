@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'package:forutonafront/Components/TagList/RankingTagList.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
-import 'package:forutonafront/Tag/Domain/Repository/TagRepository.dart';
+import 'package:forutonafront/AppBis/Tag/Domain/Repository/TagRepository.dart';
 import 'package:mockito/mockito.dart';
 
 

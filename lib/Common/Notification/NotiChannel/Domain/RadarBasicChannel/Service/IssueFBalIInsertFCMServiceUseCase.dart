@@ -7,7 +7,7 @@ import 'package:forutonafront/Common/Notification/NotiChannel/Domain/RadarBasicC
 import 'package:forutonafront/Common/Notification/NotiChannel/Dto/NotificationChannelDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ID001PayloadDto.dart';
-import 'package:forutonafront/FireBaseMessage/PlayloadDto/FCMFBallMakeDto.dart';
+import 'package:forutonafront/Common/FireBaseMessage/PlayloadDto/FCMFBallMakeDto.dart';
 import 'package:injectable/injectable.dart';
 
 

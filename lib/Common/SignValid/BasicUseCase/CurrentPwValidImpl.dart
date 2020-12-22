@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
 class CurrentPwValidImpl implements SignValid {
   FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;

@@ -4,8 +4,8 @@ import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/ListUpBallWidgetFactory.dart';
 import 'package:forutonafront/Components/SimpleCollectionWidget/SimpleCollectionTopTitleWidget.dart';
 import 'package:forutonafront/Components/SimpleCollectionWidget/SimpleCollectionWidget.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallListUp/FBallListUpFromSearchTitle.dart';
-import 'package:forutonafront/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallListUp/FBallListUpFromSearchTitle.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallListUpFromSearchTitleReqDto.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 

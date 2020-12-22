@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallStyle/Style2/IssueBallWidgetStyle2.dart';
-import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 
 

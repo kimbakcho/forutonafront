@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/TagList/RankingTagChip.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/TagRankingResDto.dart';
 import 'package:provider/provider.dart';
 import 'RankingTagListMediator.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/SignValid/BasicUseCase/NickNameValidImpl.dart';
 
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFUserRepository extends Mock implements FUserRepository{}

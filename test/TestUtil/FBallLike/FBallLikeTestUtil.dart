@@ -1,5 +1,5 @@
-import 'package:forutonafront/FBallValuation/Dto/FBallLikeResDto.dart';
-import 'package:forutonafront/FBallValuation/Dto/FBallValuationResDto.dart';
+import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallLikeResDto.dart';
+import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallValuationResDto.dart';
 
 class FBallLikeTestUtil {
   static FBallLikeResDto getBasicFBallLikeResDto(

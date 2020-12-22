@@ -1,4 +1,4 @@
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 
 class FUserInfoSimpleTestUtil {
   static FUserInfoSimpleResDto getBasicUserResDto(String userUid){

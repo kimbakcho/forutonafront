@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/HomePage/HomeMainPage.dart';
+import 'package:forutonafront/Page/HomePage/HomeMainPage.dart';
 import 'package:provider/provider.dart';
 
 import 'BottomNavigation.dart';

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/HomePage/HomeMainPageViewModel.dart';
+import 'package:forutonafront/Page/HomePage/HomeMainPageViewModel.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'NavBtn/TopNavBtnComponent.dart';
 import 'TopNavBtnGroup/INavBtnGroup.dart';

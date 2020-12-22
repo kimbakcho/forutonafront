@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallModify/Widget/CommonBallModifyWidget.dart';
 import 'package:forutonafront/Components/BallModify/Widget/CommonBallModifyWidgetResultType.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 
 import '../BallModifyService.dart';
 

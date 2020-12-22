@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
-import 'package:forutonafront/HCodePage/H010/H010MainView.dart';
-import 'package:forutonafront/KCodePage/KCodeMainPage.dart';
+import 'package:forutonafront/Page/HCodePage/H010/H010MainView.dart';
+import 'package:forutonafront/Page/KCodePage/KCodeMainPage.dart';
 import 'package:provider/provider.dart';
 
 class KPageNavBtn extends StatelessWidget {

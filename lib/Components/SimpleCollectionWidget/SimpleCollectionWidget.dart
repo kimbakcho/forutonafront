@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:provider/provider.dart';
 
 import 'SimpleCollectBottomFactory.dart';

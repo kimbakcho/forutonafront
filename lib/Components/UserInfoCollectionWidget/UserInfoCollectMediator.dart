@@ -2,8 +2,8 @@
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
-import 'package:forutonafront/ForutonaUser/Domain/UseCase/FUser/UserInfoListUpUseCaseInputPort.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/UserInfoListUpUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:injectable/injectable.dart';
 
 

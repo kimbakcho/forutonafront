@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Components/BallStyle/Style3/BallStyle3Widget.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 
 class FBallResForMarker {

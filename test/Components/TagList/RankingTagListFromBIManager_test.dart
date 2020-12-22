@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/TagList/RankingTagListMediator.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagRankingUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagRankingUseCaseInputPort.dart';
 import 'package:mockito/mockito.dart';
 
 class MockRankingTagListMediatorComponent extends Mock implements SearchCollectMediatorComponent{}

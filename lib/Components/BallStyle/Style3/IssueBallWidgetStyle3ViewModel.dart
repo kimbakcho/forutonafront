@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
 
-import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 
 
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 
 class IssueBallWidgetStyle3ViewModel extends ChangeNotifier {

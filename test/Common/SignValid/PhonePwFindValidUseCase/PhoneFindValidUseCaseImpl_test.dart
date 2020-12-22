@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/SignValid/PhonePwFindValidUseCase/PhoneFindValidUseCase.dart';
-import 'package:forutonafront/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
 import 'package:mockito/mockito.dart';
 
 class MockPhoneAuthRepository extends Mock implements PhoneAuthRepository {}

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/PageScrollController/PageScrollController.dart';
 import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:provider/provider.dart';
 
 import 'ListUpBallWidgetFactory.dart';

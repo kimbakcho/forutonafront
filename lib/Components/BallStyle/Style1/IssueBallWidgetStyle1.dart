@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Components/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/Components/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';

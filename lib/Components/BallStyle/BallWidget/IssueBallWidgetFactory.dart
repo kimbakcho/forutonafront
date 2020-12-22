@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/ListUpBallWidgetFactory.dart';
 import 'package:forutonafront/Components/BallStyle/BallWidget/IssueBallHaveImageWidget.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'IssueBallHaveImageWidget.dart';

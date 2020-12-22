@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/ICodePage/ID001/ID001MainPage2.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Page/ICodePage/ID001/ID001MainPage2.dart';
 
 abstract class IssueBallBasicStyle {
   Future<void> goIssueDetailPage(FBallResDto issueBall);

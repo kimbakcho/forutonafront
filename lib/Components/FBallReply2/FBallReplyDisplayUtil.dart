@@ -1,4 +1,4 @@
-import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
+import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/Preference.dart';
 
 

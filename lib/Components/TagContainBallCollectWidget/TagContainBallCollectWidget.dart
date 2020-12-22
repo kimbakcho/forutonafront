@@ -6,8 +6,8 @@ import 'package:forutonafront/Components/SimpleCollectionWidget/SimpleCollection
 import 'package:forutonafront/Components/SimpleCollectionWidget/SimpleCollectionWidget.dart';
 import 'package:forutonafront/Components/TagContainBallCollectWidget/TagContainBallCollectMediator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagNameItemListUpUseCase.dart';
-import 'package:forutonafront/Tag/Dto/TextMatchTagBallReqDto.dart';
+import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagNameItemListUpUseCase.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/TextMatchTagBallReqDto.dart';
 import 'package:provider/provider.dart';
 
 class TagContainBallCollectWidget extends StatelessWidget {

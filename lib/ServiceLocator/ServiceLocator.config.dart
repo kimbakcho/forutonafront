@@ -9,49 +9,50 @@ import 'package:injectable/injectable.dart';
 
 import '../Common/AndroidIntentAdapter/AndroidIntentAdapter.dart';
 import '../Common/AvatarIamgeMaker/AvatarImageMakerUseCase.dart';
-import '../FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
-import '../FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
-import '../FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
+import '../Common/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart';
+import '../AppBis/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
+import '../AppBis/FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
 import '../Components/BallStyle/BallOptionPopup/BallOptionWidgetFactory.dart';
-import '../FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
-import '../FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
-import '../FBall/Data/DataStore/BallSearchHistoryLocalDataSource.dart';
+import '../AppBis/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart';
+import '../AppBis/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart';
+import '../AppBis/FBall/Data/DataStore/BallSearchHistoryLocalDataSource.dart';
 import '../Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyInputPort.dart';
 import '../Common/GoogleServey/UseCase/BaseGoogleServey/BaseGoogleSurveyUseCase.dart';
-import '../FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
-import '../FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
+import '../Common/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
+import '../Common/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
 import '../Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkInputPort.dart';
 import '../Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelBaseServiceUseCaseInputPort.dart';
 import '../Common/Notification/NotiChannel/Domain/CommentChannel/CommentChannelUseCase.dart';
-import '../FBall/Domain/UseCase/DeleteBall/DeleteBallUseCaseInputPort.dart';
-import '../DetailPageViewer/DetailPageItemFactory.dart';
-import '../FBallPlayer/Domain/UseCase/FBallPlayerListUp/FBallPlayerListUpUseCaeInputPort.dart';
-import '../FBallPlayer/Data/DataSource/FBallPlayerRemoteDataSource.dart';
-import '../FBallPlayer/Domain/Repository/FBallPlayerRepository.dart';
-import '../FBallPlayer/Data/Repository/FBallPlayerRepositoryImpl.dart';
-import '../FBall/Data/DataStore/FBallRemoteDataSource.dart';
-import '../FBallReply/Data/DataSource/FBallReplyDataSource.dart';
+import '../AppBis/FBall/Domain/UseCase/DeleteBall/DeleteBallUseCaseInputPort.dart';
+import '../Components/DetailPageViewer/DetailPageItemFactory.dart';
+import '../AppBis/FBallPlayer/Domain/UseCase/FBallPlayerListUp/FBallPlayerListUpUseCaeInputPort.dart';
+import '../AppBis/FBallPlayer/Data/DataSource/FBallPlayerRemoteDataSource.dart';
+import '../AppBis/FBallPlayer/Domain/Repository/FBallPlayerRepository.dart';
+import '../AppBis/FBallPlayer/Data/Repository/FBallPlayerRepositoryImpl.dart';
+import '../AppBis/FBall/Data/DataStore/FBallRemoteDataSource.dart';
+import '../AppBis/FBallReply/Data/DataSource/FBallReplyDataSource.dart';
 import '../Common/Notification/NotiChannel/Domain/CommentChannel/Service/FBallReplyFCMServiceUseCase.dart';
-import '../FBallReply/Domain/Repositroy/FBallReplyRepository.dart';
-import '../FBallReply/Data/Repository/FBallReplyRepositoryImpl.dart';
-import '../FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
-import '../FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
-import '../FBall/Domain/Repository/FBallRepository.dart';
-import '../FBall/Data/Repository/FBallRepositoryImpl.dart';
-import '../FBall/Domain/UseCase/FBallSearchBarHistory/FBallSearchBarHistoryUseCaseInputPort.dart';
-import '../Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
-import '../FBallValuation/Data/DataStore/FBallValuationRemoteDataSource.dart';
-import '../FBallValuation/Domain/Repositroy/FBallValuationRepository.dart';
-import '../FBallValuation/Data/Repository/FBallValuationRepositoryImpl.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
-import '../ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
-import '../ForutonaUser/Domain/Repository/FUserRepository.dart';
-import '../ForutonaUser/Data/Repository/FUserRepositoryImpl.dart';
+import '../AppBis/FBallReply/Domain/Repositroy/FBallReplyRepository.dart';
+import '../AppBis/FBallReply/Data/Repository/FBallReplyRepositoryImpl.dart';
+import '../AppBis/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
+import '../AppBis/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
+import '../AppBis/FBall/Domain/Repository/FBallRepository.dart';
+import '../AppBis/FBall/Data/Repository/FBallRepositoryImpl.dart';
+import '../AppBis/FBall/Domain/UseCase/FBallSearchBarHistory/FBallSearchBarHistoryUseCaseInputPort.dart';
+import '../AppBis/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
+import '../AppBis/FBallValuation/Data/DataStore/FBallValuationRemoteDataSource.dart';
+import '../AppBis/FBallValuation/Domain/Repositroy/FBallValuationRepository.dart';
+import '../AppBis/FBallValuation/Data/Repository/FBallValuationRepositoryImpl.dart';
+import '../AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
+import '../AppBis/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import '../AppBis/ForutonaUser/Data/Repository/FUserRepositoryImpl.dart';
 import '../Common/FileDownLoader/FileDownLoaderUseCaseInputPort.dart';
-import '../ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import '../ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
-import '../FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
-import '../FireBaseMessage/Presentation/FireBaseMessageController.dart';
+import '../AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import '../AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
+import '../Common/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
+import '../Common/FireBaseMessage/Presentation/FireBaseMessageController.dart';
 import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dart';
 import '../Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import '../Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
@@ -64,81 +65,81 @@ import '../Common/GeoPlaceAdapter/GeoPlaceAdapter.dart';
 import '../Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import '../Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
 import '../Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
-import '../FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
+import '../AppBis/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
 import '../Common/Notification/NotiSelectAction/Domain/PageMoveAction/ID001/ID001PageMoveAction.dart';
 import '../Common/ImageCropUtil/ImageUtilInputPort.dart';
 import '../Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
-import '../FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import '../AppBis/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
 import '../Common/Notification/NotiChannel/Domain/RadarBasicChannel/Service/IssueFBalIInsertFCMServiceUseCase.dart';
-import '../FireBaseMessage/UseCase/LaunchMessageUseCase/LaunchMessageUseCase.dart';
+import '../Common/FireBaseMessage/UseCase/LaunchMessageUseCase/LaunchMessageUseCase.dart';
 import '../Common/Geolocation/Adapter/LocationAdapter.dart';
-import '../ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import '../Common/GoogleMapSupport/MapBallMarkerFactory.dart';
 import '../Common/GoogleMapSupport/MapBitmapDescriptorUseCaseInputPort.dart';
 import '../Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import '../Common/MapScreenPosition/MapScreenPositionUseCase.dart';
 import '../Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
-import '../FBall/Domain/Repository/NoInterestBallRepository.dart';
-import '../FBall/Data/Repository/NoInterestBallRepositoryImpl.dart';
-import '../FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
+import '../AppBis/FBall/Domain/Repository/NoInterestBallRepository.dart';
+import '../AppBis/FBall/Data/Repository/NoInterestBallRepositoryImpl.dart';
+import '../AppBis/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
 import '../Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import '../Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import '../Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCase.dart';
 import '../Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCaseInputPort.dart';
-import '../ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
-import '../ForutonaUser/Domain/Repository/PersonaSettingNoticeRepository.dart';
-import '../ForutonaUser/Data/Repository/PersonaSettingNoticeRepositoryImpl.dart';
-import '../ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart';
-import '../ForutonaUser/Data/DataSource/PhoneAuthRemoteDataSource.dart';
-import '../ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
-import '../ForutonaUser/Data/Repository/PhoneAuthRepositoryImpl.dart';
-import '../ForutonaUser/Domain/UseCase/PhoneAuthUseCase/PhoneAuthUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart';
+import '../AppBis/ForutonaUser/Domain/Repository/PersonaSettingNoticeRepository.dart';
+import '../AppBis/ForutonaUser/Data/Repository/PersonaSettingNoticeRepositoryImpl.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Data/DataSource/PhoneAuthRemoteDataSource.dart';
+import '../AppBis/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
+import '../AppBis/ForutonaUser/Data/Repository/PhoneAuthRepositoryImpl.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/PhoneAuthUseCase/PhoneAuthUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
 import '../Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCae.dart';
 import '../Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCaeInputPort.dart';
 import '../Components/TagList/RankingTagListMediator.dart';
-import '../Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
-import '../Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
-import '../FireBaseMessage/UseCase/ResumeMessageUseCase/ResumeMessageUseCase.dart';
+import '../AppBis/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCase.dart';
+import '../AppBis/Tag/Domain/UseCase/RelationTagRankingFromTagNameOrderByBallPower/RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort.dart';
+import '../Common/FireBaseMessage/UseCase/ResumeMessageUseCase/ResumeMessageUseCase.dart';
 import '../Components/FBallReply2/ReviewCountMediator.dart';
 import '../Components/FBallReply2/ReviewDeleteMediator.dart';
 import '../Components/FBallReply2/ReviewInertMediator.dart';
 import '../Components/FBallReply2/ReviewUpdateMediator.dart';
-import '../FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+import '../AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import '../Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import '../Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
-import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
-import '../Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
-import '../Tag/Domain/Repository/TagRepository.dart';
-import '../Tag/Data/Repository/TagRepositoryImpl.dart';
+import '../AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
+import '../AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
+import '../AppBis/Tag/Domain/Repository/TagRepository.dart';
+import '../AppBis/Tag/Data/Repository/TagRepositoryImpl.dart';
 import '../ManagerBis/TermsConditions/Domain/Repository/TermsConditionsRepository.dart';
 import '../ManagerBis/TermsConditions/Data/Repository/TermsConditionsRepositoryImpl.dart';
 import '../ManagerBis/TermsConditions/Domain/UseCase/TermsConditionsUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccountUserInfoUseCaseInputPort.dart';
-import '../FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/UpdateUserPositionUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccountUserInfoUseCaseInputPort.dart';
+import '../AppBis/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/UpdateUserPositionUseCaseInputPort.dart';
 import '../Components/UserInfoCollectionWidget/UserInfoCollectMediator.dart';
-import '../ForutonaUser/Data/DataSource/UserPolicyRemoteDataSource.dart';
-import '../ForutonaUser/Domain/Repository/UserPolicyRepository.dart';
-import '../ForutonaUser/Data/Repository/UserPolicyRepositoryImpl.dart';
-import '../ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCase.dart';
-import '../ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
-import '../ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
+import '../AppBis/ForutonaUser/Data/DataSource/UserPolicyRemoteDataSource.dart';
+import '../AppBis/ForutonaUser/Domain/Repository/UserPolicyRepository.dart';
+import '../AppBis/ForutonaUser/Data/Repository/UserPolicyRepositoryImpl.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCase.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart';
+import '../Page/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 
 /// adds generated dependencies
 /// to the provided [GetIt] instance
@@ -152,25 +153,25 @@ GetIt $initGetIt(
   gh.lazySingleton<AndroidIntentAdapter>(() => AndroidIntentAdapterImpl());
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
-      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleProposalOnServiceSurveyUseCase(),
       instanceName: 'GoogleProposalOnServiceSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
+      instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
       instanceName: 'BaseMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
+      instanceName: 'ResumeMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
+      instanceName: 'LaunchMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(
       () => BackGroundMessageUseCase(
           baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
               instanceName: 'BaseMessageUseCase')),
       instanceName: 'BackGroundMessageUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
-      instanceName: 'ResumeMessageUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
-      instanceName: 'LaunchMessageUseCase');
   gh.lazySingleton<BaseOpenTalkInputPort>(() => InquireAboutAnythingUseCase());
   gh.lazySingleton<DetailPageItemFactory>(() => DetailPageItemFactory());
   gh.lazySingleton<FBallPlayerRemoteDataSource>(
@@ -183,6 +184,7 @@ GetIt $initGetIt(
       () => FBallTagRemoteDataSourceImpl());
   gh.lazySingleton<FBallValuationRemoteDataSource>(
       () => FBallValuationRemoteDataSourceImpl());
+  gh.lazySingleton<FUserInfoJoinReq>(() => FUserInfoJoinReq());
   gh.lazySingleton<FUserRemoteDataSource>(() => FUserRemoteDataSourceImpl());
   gh.lazySingleton<FileDownLoaderUseCaseInputPort>(
       () => FileDownLoaderUseCase());
@@ -195,12 +197,12 @@ GetIt $initGetIt(
   gh.lazySingleton<FluttertoastAdapter>(() => FluttertoastAdapter());
   gh.factory<GeoPlaceAdapter>(() => GooglePlaceAdapter());
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
-  gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
-      instanceName: 'ImageAvatarUtil');
-  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
-      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
       instanceName: 'ImagePngResizeUtil');
+  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
+      instanceName: 'ImageBorderAvatarUtil');
+  gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
+      instanceName: 'ImageAvatarUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
   gh.lazySingleton<MapBitmapDescriptorUseCaseInputPort>(() =>
       MapBitmapDescriptorUseCase(

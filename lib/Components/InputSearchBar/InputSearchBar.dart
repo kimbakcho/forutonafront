@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
+import 'package:forutonafront/Page/HCodePage/H010/SearchHistoryView.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
-import '../../HCodePage/H010/SearchHistoryView.dart';
+
 
 class InputSearchBar extends StatelessWidget {
   final InputSearchBarListener inputSearchBarListener;

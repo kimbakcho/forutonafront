@@ -2,8 +2,8 @@
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
-import 'package:forutonafront/Tag/Domain/UseCase/TagRankingUseCaseInputPort.dart';
-import 'package:forutonafront/Tag/Dto/TagRankingResDto.dart';
+import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagRankingUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/TagRankingResDto.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class RankingTagListMediator

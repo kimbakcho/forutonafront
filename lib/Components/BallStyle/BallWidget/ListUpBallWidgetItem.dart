@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
-import 'package:forutonafront/DetailPageViewer/DetailPageViewer.dart';
+import 'package:forutonafront/Components/DetailPageViewer/DetailPageViewer.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 abstract class ListUpBallWidgetItem extends ChangeNotifier {

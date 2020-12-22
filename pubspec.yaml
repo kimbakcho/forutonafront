@@ -88,7 +88,7 @@ dependencies:
   #AutoComPlete 기능을 위해 사용
   google_place: ^0.3.0
   #게시판등에서 html Viwer 목적으로 사용
-  flutter_webview_plugin: ^0.3.11
+  webview_flutter: ^1.0.7
   #Youtube 등 앱을 실행하기 위해서 사용
   android_intent:
   #googlefont 사용

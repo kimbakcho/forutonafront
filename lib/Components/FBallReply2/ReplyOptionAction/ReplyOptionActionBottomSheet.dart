@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
+import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import '../ReviewDeleteMediator.dart';
 import '../ReviewUpdateMediator.dart';
 import 'ReplyDeleteActionBtn.dart';

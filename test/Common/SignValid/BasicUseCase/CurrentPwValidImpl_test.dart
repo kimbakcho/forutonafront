@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forutonafront/Common/SignValid/BasicUseCase/CurrentPwValidImpl.dart';
 
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFireBaseAuthAdapterForUseCase extends Mock implements FireBaseAuthAdapterForUseCase{}

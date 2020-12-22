@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/Domain/Repository/FUserRepository.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/Repository/FUserRepository.dart';
 
 class NickNameValidImpl implements SignValid {
   bool _isTextError = false;

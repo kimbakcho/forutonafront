@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 
 import 'BallDesciprtionImageViwer.dart';
 

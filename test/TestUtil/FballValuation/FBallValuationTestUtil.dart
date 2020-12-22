@@ -1,6 +1,6 @@
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/FBallValuation/Dto/FBallValuationResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallValuationResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 
 class FBallValuationTestUtil {
   static FBallValuationResDto getBasicFBallValuationResDto(

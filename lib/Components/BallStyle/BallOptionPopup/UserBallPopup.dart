@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionButton/BallBasicOptionButton.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 
 import 'BallOptionBallNameWidget.dart';

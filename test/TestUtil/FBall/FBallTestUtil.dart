@@ -1,7 +1,7 @@
-import 'package:forutonafront/FBall/Domain/Value/FBallState.dart';
-import 'package:forutonafront/FBall/Domain/Value/FBallType.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
-import 'package:forutonafront/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallState.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 
 import '../../fixtures/fixture_reader.dart';
 

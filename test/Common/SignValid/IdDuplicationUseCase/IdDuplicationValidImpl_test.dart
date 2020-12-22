@@ -3,7 +3,7 @@ import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/DontHaveIdEr
 import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/HasIdError.dart';
 import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicationValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:mockito/mockito.dart';
 
 class MockSignValid extends Mock implements SignValid {}

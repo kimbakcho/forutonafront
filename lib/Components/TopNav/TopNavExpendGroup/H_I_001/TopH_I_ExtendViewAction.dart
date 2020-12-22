@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
-import 'package:forutonafront/HCodePage/H007/H007MainPage.dart';
-import 'package:forutonafront/HCodePage/H008/H008MainView.dart';
-import 'package:forutonafront/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
-import 'package:forutonafront/HCodePage/H010/H010MainView.dart';
+import 'package:forutonafront/Page/HCodePage/H007/H007MainPage.dart';
+import 'package:forutonafront/Page/HCodePage/H008/H008MainView.dart';
+import 'package:forutonafront/Page/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
+import 'package:forutonafront/Page/HCodePage/H010/H010MainView.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
 // ignore: camel_case_types

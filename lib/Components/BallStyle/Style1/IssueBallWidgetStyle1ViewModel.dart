@@ -6,10 +6,10 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 import 'package:forutonafront/Components/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/Components/BallStyle/BasicStyle/IssueBallBasicStyle.dart';
-import 'package:forutonafront/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
-import 'package:forutonafront/FBall/Domain/Value/IssueBallDescription.dart';
-import 'package:forutonafront/FBall/Dto/FBallDesImagesDto.dart';
-import 'package:forutonafront/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/IssueBallDescription.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 
 class IssueBallWidgetStyle1ViewModel extends ChangeNotifier
