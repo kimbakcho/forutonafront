@@ -76,7 +76,14 @@ class LCodeCheckBoxController {
 
   LCodeCheckBoxController({this.onChangeValue});
 
-  getValue() {
+  bool getValue() {
+    if(_lCodeCheckBoxViewModel == null){
+      return false;
+    }
     return _lCodeCheckBoxViewModel._checkValue;
+  }
+  setValue(bool value ){
+    this._lCodeCheckBoxViewModel._checkValue = value;
+    _lCodeCheckBoxViewModel.notifyListeners();
   }
 }

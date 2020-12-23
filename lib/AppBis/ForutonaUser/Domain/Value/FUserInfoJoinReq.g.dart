@@ -23,6 +23,9 @@ FUserInfoJoinReq _$FUserInfoJoinReqFromJson(Map<String, dynamic> json) {
     ..userIntroduce = json['userIntroduce'] as String
     ..internationalizedPhoneNumber =
         json['internationalizedPhoneNumber'] as String
+    ..ageDate = json['ageDate'] == null
+        ? null
+        : DateTime.parse(json['ageDate'] as String)
     ..phoneAuthToken = json['phoneAuthToken'] as String
     ..password = json['password'] as String
     ..emailUserUid = json['emailUserUid'] as String
@@ -45,6 +48,7 @@ Map<String, dynamic> _$FUserInfoJoinReqToJson(FUserInfoJoinReq instance) =>
       'snsToken': instance.snsToken,
       'userIntroduce': instance.userIntroduce,
       'internationalizedPhoneNumber': instance.internationalizedPhoneNumber,
+      'ageDate': instance.ageDate?.toIso8601String(),
       'phoneAuthToken': instance.phoneAuthToken,
       'password': instance.password,
       'emailUserUid': instance.emailUserUid,

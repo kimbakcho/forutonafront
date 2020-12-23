@@ -127,6 +127,8 @@ dependencies:
   modal_bottom_sheet: ^1.0.0+1
   #Svg 파일 로딩에 사용
   flutter_svg: ^0.18.0
+  #Device Locale 언어 정보 취득
+  devicelocale: ^0.3.3
 
 dev_dependencies:
   flutter_test:
@@ -152,6 +154,7 @@ flutter:
   assets:
     - assets/
     - assets/MarkesImages/
+    - assets/flags/
     - assets/Rive/
     - assets/Brand/
     - assets/MainImage/

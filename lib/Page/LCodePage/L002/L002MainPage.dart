@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/Components/DottedLine/DottedLine.dart';
+import 'package:forutonafront/Page/LCodePage/L004/L004MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeCheckBox/LCodeCheckBox.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -23,9 +24,11 @@ class L002MainPage extends StatelessWidget {
                     LCodeAppBar(
                         title: '이용약관 동의',
                         progressValue: 0.25,
-                        enableTailButton: false,
+                        enableTailButton: model.enableTailButton,
                         tailButtonLabel: "다음",
-                        onTailButtonClick: () {}),
+                        onTailButtonClick: () {
+                          model.nextPage(context);
+                        }),
                     SizedBox(
                       height: 30,
                     ),
@@ -86,6 +89,9 @@ class L002MainPage extends StatelessWidget {
                                 size: 30,
                               )
                             ])),
+                    SizedBox(
+                      height: 22,
+                    ),
                     Container(
                         margin: EdgeInsets.only(left: 16, right: 24),
                         child: Row(
@@ -101,6 +107,9 @@ class L002MainPage extends StatelessWidget {
                                 size: 30,
                               )
                             ])),
+                    SizedBox(
+                      height: 22,
+                    ),
                     Container(
                         margin: EdgeInsets.only(left: 16, right: 24),
                         child: Row(
@@ -116,6 +125,9 @@ class L002MainPage extends StatelessWidget {
                                 size: 30,
                               )
                             ])),
+                    SizedBox(
+                      height: 22,
+                    ),
                     Container(
                         margin: EdgeInsets.only(left: 16, right: 24),
                         child: Row(
@@ -146,7 +158,7 @@ class L002MainPageViewModel extends ChangeNotifier {
 
   L002MainPageViewModel(this._fUserInfoJoinReq) {
     allCheckBoxController =
-        LCodeCheckBoxController(onChangeValue: _checkBoxStateChange);
+        LCodeCheckBoxController(onChangeValue: _allCheckBoxControllerStateChange);
     serviceAgreeCheckBoxController =
         LCodeCheckBoxController(onChangeValue: _checkBoxStateChange);
     privacyAgreeCheckBoxController =
@@ -157,9 +169,48 @@ class L002MainPageViewModel extends ChangeNotifier {
         LCodeCheckBoxController(onChangeValue: _checkBoxStateChange);
   }
 
+  _allCheckBoxControllerStateChange(bool value){
+    serviceAgreeCheckBoxController.setValue(value);
+    privacyAgreeCheckBoxController.setValue(value);
+    positionPrivacyAgreeCheckBoxController.setValue(value);
+    marketingAgreeCheckBoxController.setValue(value);
+    notifyListeners();
+  }
+
+
+  get enableTailButton {
+    return isCheckSatisfied();
+  }
+
   //TODO 여기서 시작 하는데 _fUserInfoJoinReq 가입에 필요한 정보 넣어 주는것 부터
   _checkBoxStateChange(bool value) {
-    print(allCheckBoxController.getValue());
-
+    if(isCheckSatisfied()) {
+      allCheckBoxController.setValue(true);
+    }else {
+      allCheckBoxController.setValue(false);
+    }
+    notifyListeners();
   }
+
+  bool isCheckSatisfied() {
+    if(serviceAgreeCheckBoxController.getValue() &&
+        privacyAgreeCheckBoxController.getValue() &&
+        positionPrivacyAgreeCheckBoxController.getValue())
+      {
+        return true;
+      }else {
+      return false;
+    }
+  }
+
+  void nextPage(BuildContext context) {
+    _fUserInfoJoinReq.martketingAgree = marketingAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReq.forutonaAgree = serviceAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReq.privateAgree = privacyAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReq.positionAgree = positionPrivacyAgreeCheckBoxController.getValue();
+    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+      return L004MainPage();
+    }));
+  }
+
 }

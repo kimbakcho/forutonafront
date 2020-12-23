@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Country/CountrySelectPageViewModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -23,9 +24,6 @@ class CountrySelectPage extends StatelessWidget {
                         0, MediaQuery.of(context).padding.top, 0, 0),
                     child: Column(children: <Widget>[
                       topBar(model),
-                      SizedBox(
-                        height: 8,
-                      ),
                       Expanded(child: countryListView(model,context))
                     ])))
           ]);
@@ -52,8 +50,7 @@ class CountrySelectPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.centerLeft,
                   child: Text(model.countryList[index].name,
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
+                      style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
                         color: index == model.selectCountryIndex
@@ -84,8 +81,7 @@ class CountrySelectPage extends StatelessWidget {
           ),
           Container(
               child: Text("국가",
-                  style: TextStyle(
-                    fontFamily: "Noto Sans CJK KR",
+                  style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w700,
                     fontSize: 20,
                     color: Color(0xff454f63),

@@ -55,6 +55,9 @@ class LCodeAppBar extends StatelessWidget {
             child: TailButton(
               enable: enableTailButton,
               label: tailButtonLabel,
+              buttonClick: (){
+                onTailButtonClick();
+              },
             ),
           ): Container(),
         ]),
