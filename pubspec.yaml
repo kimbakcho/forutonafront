@@ -50,13 +50,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   #허가 관리
   permission_handler: ^3.3.0
-  #전화 번호 입력을 할때 사용 GUI Lib
-  international_phone_input: ^1.0.2
   uuid: ^2.0.1
-  #인증 문자 메세지에서 사용
-#  sms_receiver:
-#    git:
-#      url: https://github.com/kimbakcho/flutter_sms_receiver
   #FCM에 사용
   firebase_messaging: ^6.0.16
   #사진을 여러장 선택 할 필요가 있을때 사용
@@ -129,6 +123,8 @@ dependencies:
   flutter_svg: ^0.18.0
   #Device Locale 언어 정보 취득
   devicelocale: ^0.3.3
+  #sms retriever
+  sms_otp_auto_verify: ^1.2.2
 
 dev_dependencies:
   flutter_test:

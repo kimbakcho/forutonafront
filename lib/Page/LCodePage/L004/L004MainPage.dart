@@ -93,7 +93,7 @@ class L004MainPage extends StatelessWidget {
 }
 
 class L004MainPageViewModel extends ChangeNotifier {
-  bool enableTailButton = false;
+  bool enableTailButton = true;
   DatePickerWidgetController _datePickerWidgetController;
   final FUserInfoJoinReq _fUserInfoJoinReq;
 

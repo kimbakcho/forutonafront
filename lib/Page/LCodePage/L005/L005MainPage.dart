@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
+import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Common/Country/CountrySelectButton.dart';
+import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -60,13 +63,13 @@ class L005MainPage extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 16),
-                          width: 170,
-                          child: CountrySelectButton(),
-                        )
-                        //TODO 휴대폰 인증 구현 필요
 
+                        Container(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: PhoneAuthComponent(),
+                        )
+
+                        //TODO 휴대폰 인증 구현 필요
                       ])));
         }));
   }
@@ -76,7 +79,15 @@ class L005MainPageViewModel extends ChangeNotifier {
   bool enableTailButton = false;
   final FUserInfoJoinReq _fUserInfoJoinReq;
 
-  L005MainPageViewModel(this._fUserInfoJoinReq);
+  PhoneAuthComponentController _phoneAuthComponentController;
+
+  L005MainPageViewModel(this._fUserInfoJoinReq) {
+    this._phoneAuthComponentController = PhoneAuthComponentController();
+  }
+
+  onCurrentCountryItem(CountryItem countryItem) {
+    notifyListeners();
+  }
 
   void nextPage(BuildContext context) {}
 }

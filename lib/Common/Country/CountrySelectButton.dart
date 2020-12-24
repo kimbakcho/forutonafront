@@ -7,10 +7,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class CountrySelectButton extends StatelessWidget {
+  final CountrySelectButtonController countrySelectButtonController;
+
+  const CountrySelectButton({Key key, this.countrySelectButtonController})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => CountrySelectButtonViewModel(),
+      create: (_) => CountrySelectButtonViewModel(countrySelectButtonController: countrySelectButtonController),
       child: Consumer<CountrySelectButtonViewModel>(
         builder: (_, model, child) {
           return Container(
@@ -66,13 +71,18 @@ class CountrySelectButton extends StatelessWidget {
 }
 
 class CountrySelectButtonViewModel extends ChangeNotifier {
+  CountrySelectButtonController countrySelectButtonController;
+
   bool loaded = false;
 
   CountryItem currentCountryItem;
 
   CodeCountry codeCountry;
 
-  CountrySelectButtonViewModel() {
+  CountrySelectButtonViewModel({this.countrySelectButtonController}) {
+    if (this.countrySelectButtonController != null) {
+      countrySelectButtonController._countrySelectButtonViewModel = this;
+    }
     codeCountry = CodeCountry();
     this.init();
   }
@@ -82,6 +92,9 @@ class CountrySelectButtonViewModel extends ChangeNotifier {
     this.currentCountryItem = codeCountry
         .countryList()
         .firstWhere((element) => element.code.toLowerCase() == currentCountry);
+    if(countrySelectButtonController!= null && countrySelectButtonController.onCurrentCountryItem != null){
+      countrySelectButtonController.onCurrentCountryItem(currentCountryItem);
+    }
     loaded = true;
     notifyListeners();
   }
@@ -106,14 +119,40 @@ class CountrySelectButtonViewModel extends ChangeNotifier {
   }
 
   void moveToCountrySelectPage(BuildContext context) async {
-    String code = await Navigator.of(context).push(MaterialPageRoute(builder: (_){
-      return CountrySelectPage(countryCode: currentCountryCode.toUpperCase(),);
+    String code =
+        await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return CountrySelectPage(
+        countryCode: currentCountryCode.toUpperCase(),
+      );
     }));
-    if(code != null){
-      this.currentCountryItem = codeCountry
-          .countryList()
-          .firstWhere((element) => element.code.toLowerCase() == code.toLowerCase());
+
+    if (code != null) {
+      this.currentCountryItem = codeCountry.countryList().firstWhere(
+          (element) => element.code.toLowerCase() == code.toLowerCase());
+
+      if(countrySelectButtonController!= null && countrySelectButtonController.onCurrentCountryItem != null){
+        countrySelectButtonController.onCurrentCountryItem(currentCountryItem);
+      }
       notifyListeners();
+    }
+  }
+}
+
+class CountrySelectButtonController {
+  CountrySelectButtonViewModel _countrySelectButtonViewModel;
+
+  Function(CountryItem countryItem) onCurrentCountryItem;
+  CountrySelectButtonController({this.onCurrentCountryItem});
+
+
+  CountryItem getCurrentCountryItem() {
+    if (_countrySelectButtonViewModel != null) {
+      return _countrySelectButtonViewModel.currentCountryItem;
+    } else {
+      var codeCountry = CodeCountry();
+      return codeCountry
+          .countryList()
+          .firstWhere((element) => element.code.toLowerCase() == "kr");
     }
   }
 }

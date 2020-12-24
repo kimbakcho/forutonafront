@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 
 abstract class PhoneAuthUseCaseInputPort {
   Future<void> reqPhoneAuth(PhoneAuthReqDto reqDto,{PwAuthFromPhoneUseCaseOutputPort outputPort});
-  Future<void> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto, {PwAuthFromPhoneUseCaseOutputPort outputPort});
+  Future<PhoneAuthNumberResDto> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto, {PwAuthFromPhoneUseCaseOutputPort outputPort});
 }
 
 abstract class PwAuthFromPhoneUseCaseOutputPort {
@@ -30,9 +30,11 @@ class PhoneAuthUseCase implements PhoneAuthUseCaseInputPort {
   }
 
   @override
-  Future<void> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto,
+  Future<PhoneAuthNumberResDto> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto,
       {PwAuthFromPhoneUseCaseOutputPort outputPort}) async {
-    outputPort.onNumberAuthReq(await _phoneAuthRepository.reqNumberAuthReq(reqDto));
+    var phoneAuthNumberResDto = await _phoneAuthRepository.reqNumberAuthReq(reqDto);
+    outputPort.onNumberAuthReq(phoneAuthNumberResDto);
+    return phoneAuthNumberResDto;
   }
 
 }

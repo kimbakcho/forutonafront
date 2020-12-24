@@ -3,7 +3,6 @@ import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/ProgressIndicator/CommonLinearProgressIndicator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:international_phone_input/international_phone_input.dart';
 import 'package:provider/provider.dart';
 
 import 'J004ViewModel.dart';
@@ -196,13 +195,7 @@ class J004View extends StatelessWidget {
   Container phoneInputBar(J004ViewModel model) {
     return Container(
         margin: EdgeInsets.fromLTRB(16, 16, 16, 21),
-        child: InternationalPhoneInput(
-            onPhoneNumberChange: model.onPhoneNumberChange,
-            initialPhoneNumber: "",
-            hintText: "휴대폰 번호 입력",
-            hintStyle: GoogleFonts.notoSans(locale: Locale("ko")),
-            errorText: "양식에 맞지 않습니다.",
-            initialSelection: "KR"),
+        child: Container(),
         decoration: BoxDecoration(
           color: Color(0xffffffff),
           boxShadow: [
