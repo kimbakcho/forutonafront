@@ -4,7 +4,7 @@ part 'PhoneAuthNumberReqDto.g.dart';
 @JsonSerializable()
 class PhoneAuthNumberReqDto {
   String phoneNumber;
-  String internationalizedPhoneNumber;
+  String internationalizedDialCode;
   String isoCode;
   String authNumber;
   PhoneAuthNumberReqDto();

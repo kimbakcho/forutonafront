@@ -11,8 +11,7 @@ PhoneAuthNumberResDto _$PhoneAuthNumberResDtoFromJson(
   return PhoneAuthNumberResDto()
     ..phoneAuthToken = json['phoneAuthToken'] as String
     ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedPhoneNumber =
-        json['internationalizedPhoneNumber'] as String
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String
     ..errorFlag = json['errorFlag'] as bool
     ..errorCause = json['errorCause'] as String;
 }
@@ -22,7 +21,7 @@ Map<String, dynamic> _$PhoneAuthNumberResDtoToJson(
     <String, dynamic>{
       'phoneAuthToken': instance.phoneAuthToken,
       'phoneNumber': instance.phoneNumber,
-      'internationalizedPhoneNumber': instance.internationalizedPhoneNumber,
+      'internationalizedDialCode': instance.internationalizedDialCode,
       'errorFlag': instance.errorFlag,
       'errorCause': instance.errorCause,
     };

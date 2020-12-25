@@ -10,8 +10,7 @@ PhoneAuthNumberReqDto _$PhoneAuthNumberReqDtoFromJson(
     Map<String, dynamic> json) {
   return PhoneAuthNumberReqDto()
     ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedPhoneNumber =
-        json['internationalizedPhoneNumber'] as String
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String
     ..isoCode = json['isoCode'] as String
     ..authNumber = json['authNumber'] as String;
 }
@@ -20,7 +19,7 @@ Map<String, dynamic> _$PhoneAuthNumberReqDtoToJson(
         PhoneAuthNumberReqDto instance) =>
     <String, dynamic>{
       'phoneNumber': instance.phoneNumber,
-      'internationalizedPhoneNumber': instance.internationalizedPhoneNumber,
+      'internationalizedDialCode': instance.internationalizedDialCode,
       'isoCode': instance.isoCode,
       'authNumber': instance.authNumber,
     };

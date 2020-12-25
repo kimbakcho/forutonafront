@@ -10,8 +10,7 @@ PwFindPhoneAuthNumberReqDto _$PwFindPhoneAuthNumberReqDtoFromJson(
     Map<String, dynamic> json) {
   return PwFindPhoneAuthNumberReqDto()
     ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedPhoneNumber =
-        json['internationalizedPhoneNumber'] as String
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String
     ..isoCode = json['isoCode'] as String
     ..authNumber = json['authNumber'] as String
     ..email = json['email'] as String;
@@ -21,7 +20,7 @@ Map<String, dynamic> _$PwFindPhoneAuthNumberReqDtoToJson(
         PwFindPhoneAuthNumberReqDto instance) =>
     <String, dynamic>{
       'phoneNumber': instance.phoneNumber,
-      'internationalizedPhoneNumber': instance.internationalizedPhoneNumber,
+      'internationalizedDialCode': instance.internationalizedDialCode,
       'isoCode': instance.isoCode,
       'authNumber': instance.authNumber,
       'email': instance.email,

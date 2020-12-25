@@ -38,6 +38,7 @@ class TailButton extends StatelessWidget {
           ),
           decoration: BoxDecoration(
               shape: BoxShape.rectangle,
+              color: enable ? Colors.white : Color(0xffF6F6F6),
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
               border: Border.all(
                   width: enable ? 1: 0,

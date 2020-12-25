@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Common/Country/CountrySelectButton.dart';
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
+import 'package:forutonafront/Page/LCodePage/L007/L007MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +15,7 @@ class L005MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => L005MainPageViewModel(sl()),
+        create: (_) => L005MainPageViewModel(sl(),context),
         child: Consumer<L005MainPageViewModel>(builder: (_, model, child) {
           return Material(
               child: Container(
@@ -24,10 +26,14 @@ class L005MainPage extends StatelessWidget {
                         LCodeAppBar(
                             progressValue: 0.7,
                             tailButtonLabel: "다음",
-                            enableTailButton: model.enableTailButton,
+                            enableTailButton: true,
+                            //TODO 회원가입 완료시 해당 부분으로 교체
+                            // enableTailButton: model.enableTailButton,
                             title: "휴대폰 인증",
                             onTailButtonClick: () {
-                              model.nextPage(context);
+                              model.testNextButton();
+                              //TODO 회원가입 완료시 해당 부분으로 교체
+                              // model.checkPhoneAuth();
                             }),
                         SizedBox(
                           height: 20,
@@ -66,7 +72,9 @@ class L005MainPage extends StatelessWidget {
 
                         Container(
                           padding: EdgeInsets.only(left: 16, right: 16),
-                          child: PhoneAuthComponent(),
+                          child: PhoneAuthComponent(
+                            phoneAuthComponentController: model._phoneAuthComponentController,
+                          ),
                         )
 
                         //TODO 휴대폰 인증 구현 필요
@@ -79,15 +87,44 @@ class L005MainPageViewModel extends ChangeNotifier {
   bool enableTailButton = false;
   final FUserInfoJoinReq _fUserInfoJoinReq;
 
+  final BuildContext context;
+
   PhoneAuthComponentController _phoneAuthComponentController;
 
-  L005MainPageViewModel(this._fUserInfoJoinReq) {
-    this._phoneAuthComponentController = PhoneAuthComponentController();
+  L005MainPageViewModel(this._fUserInfoJoinReq, this.context) {
+    this._phoneAuthComponentController = PhoneAuthComponentController(
+      onPhoneAuthCheckSuccess: onPhoneAuthCheckSuccess,
+      onTryAuthReqSuccess: onTryAuthReqSuccess
+    );
+  }
+
+  testNextButton(){
+    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+      return L007MainPage();
+    }));
+  }
+
+  onPhoneAuthCheckSuccess(PhoneAuthNumberResDto phoneAuthNumberResDto){
+    _fUserInfoJoinReq.phoneAuthToken = phoneAuthNumberResDto.phoneAuthToken;
+    _fUserInfoJoinReq.internationalizedPhoneNumber =  phoneAuthNumberResDto.internationalizedDialCode + " " + phoneAuthNumberResDto.phoneNumber;
+    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+      return L007MainPage();
+    }));
+  }
+
+  onTryAuthReqSuccess(){
+    enableTailButton = true;
+    notifyListeners();
   }
 
   onCurrentCountryItem(CountryItem countryItem) {
     notifyListeners();
   }
 
-  void nextPage(BuildContext context) {}
+
+  void checkPhoneAuth() {
+    _phoneAuthComponentController.checkAuthCheckNumber();
+  }
+
+
 }

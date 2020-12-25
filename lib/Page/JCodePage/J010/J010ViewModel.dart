@@ -75,7 +75,7 @@ class J010ViewModel extends ChangeNotifier {
     PwFindPhoneAuthReqDto reqDto = PwFindPhoneAuthReqDto();
     reqDto.isoCode = _currentIsoCode;
     reqDto.phoneNumber = _currentPhoneNumber;
-    reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
+    reqDto.internationalizedDialCode = _currentInternationalizedPhoneNumber;
     reqDto.email = _pwFindPhoneUseCaseInputPort.email;
     _setIsLoading(true);
     await _phoneFindValidUseCase.phoneEmailIdValidWithReqPhoneSmsAuth(reqDto);
@@ -147,7 +147,7 @@ class J010ViewModel extends ChangeNotifier {
 
   void reqNumberAuthReq() async {
     PwFindPhoneAuthNumberReqDto reqDto = PwFindPhoneAuthNumberReqDto();
-    reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
+    reqDto.internationalizedDialCode = _currentInternationalizedPhoneNumber;
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.isoCode = _currentIsoCode;
     reqDto.authNumber = authNumberEditingController.text;
@@ -171,7 +171,7 @@ class J010ViewModel extends ChangeNotifier {
       _pwFindPhoneUseCaseInputPort.internationalizedPhoneNumber =
           _phoneFindValidUseCase
               .getPwFindPhoneAuthNumber()
-              .internationalizedPhoneNumber;
+              .internationalizedDialCode;
 
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => J011View()));
     }

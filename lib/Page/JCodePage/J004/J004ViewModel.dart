@@ -76,7 +76,7 @@ class J004ViewModel extends ChangeNotifier
     PhoneAuthReqDto reqDto = PhoneAuthReqDto();
     reqDto.isoCode = _currentIsoCode;
     reqDto.phoneNumber = _currentPhoneNumber;
-    reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
+    reqDto.internationalizedDialCode = _currentInternationalizedPhoneNumber;
     _setIsLoading(true);
     await _phoneAuthUseCaseInputPort.reqPhoneAuth(reqDto, outputPort: this);
     _setIsLoading(false);
@@ -139,7 +139,7 @@ class J004ViewModel extends ChangeNotifier
 
   void reqNumberAuthReq() async {
     PhoneAuthNumberReqDto reqDto = PhoneAuthNumberReqDto();
-    reqDto.internationalizedPhoneNumber = _currentInternationalizedPhoneNumber;
+    reqDto.internationalizedDialCode = _currentInternationalizedPhoneNumber;
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.isoCode = _currentIsoCode;
     reqDto.authNumber = authNumberEditingController.text;

@@ -30,7 +30,7 @@ void main() {
     PhoneAuthReqDto reqDto = PhoneAuthReqDto();
     reqDto.isoCode = "KR";
     reqDto.phoneNumber = "010888442222";
-    reqDto.internationalizedPhoneNumber = "0108484822222";
+    reqDto.internationalizedDialCode = "0108484822222";
     //act
     await phoneAuthUseCaseInputPort.reqPhoneAuth(reqDto,
         outputPort: mockPwAuthFromPhoneUseCaseOutputPort);
@@ -42,7 +42,7 @@ void main() {
   test('레포지토리를 통해 서버에 요청 인증 번호 확인 Output Port 로 출력', () async {
     //arrange
     PhoneAuthNumberReqDto reqDto = PhoneAuthNumberReqDto();
-    reqDto.internationalizedPhoneNumber = "TEST";
+    reqDto.internationalizedDialCode = "TEST";
     reqDto.phoneNumber = "TEST";
     reqDto.isoCode = "KR";
     reqDto.authNumber = "202000";

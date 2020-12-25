@@ -45,7 +45,9 @@ class _PhoneAuthComponentState extends State<PhoneAuthComponent>
 
   @override
   void dispose() {
+
     _ticker.dispose();
+    SmsRetrieved.stopListening();
     super.dispose();
   }
 
@@ -95,20 +97,21 @@ class _PhoneAuthComponentState extends State<PhoneAuthComponent>
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(15))),
                                 child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                      color: model.isActiveAuthButton
-                                          ? Color(0xff3497FD)
-                                          : Color(0xffD4D4D4),
-                                    ),
-                                    child: Center(
-                                        child: Text("인증 번호 요청",
-                                            style: GoogleFonts.notoSans(
-                                              fontSize: 10,
-                                              color: const Color(0xffffffff),
-                                              letterSpacing: 0.2,
-                                            )))))))
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    color: model.isActiveAuthButton
+                                        ? Color(0xff3497FD)
+                                        : Color(0xffD4D4D4),
+                                  ),
+                                  child: Center(
+                                      child: Text(model._activeButtonText,
+                                          style: GoogleFonts.notoSans(
+                                            fontSize: 10,
+                                            color: const Color(0xffffffff),
+                                            letterSpacing: 0.2,
+                                          ))),
+                                ))))
                   ]))
                 ]),
                 SizedBox(
@@ -121,22 +124,24 @@ class _PhoneAuthComponentState extends State<PhoneAuthComponent>
                       decoration: InputDecoration(
                           hintText: "인증번호 입력",
                           errorText:
-                              model._isAuthNumberError ? "인증 숫자 틀림" : null),
+                              model._isAuthNumberError ? model._authCheckErrorText : null),
                       controller: model._currentAuthNumberController,
                     ),
-                    Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                            child: Text(
-                          '${model.reActiveTime}',
-                          style: GoogleFonts.notoSans(
-                            fontSize: 14,
-                            color: const Color(0xffff4f9a),
-                            letterSpacing: -0.28,
-                            height: 1.2142857142857142,
-                          ),
-                        )))
+                    model._isDisplayCanAuthNumberTime
+                        ? Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                                child: Text(
+                              '${model._authNumberRemindTime}',
+                              style: GoogleFonts.notoSans(
+                                fontSize: 14,
+                                color: const Color(0xffff4f9a),
+                                letterSpacing: -0.28,
+                                height: 1.2142857142857142,
+                              ),
+                            )))
+                        : Container(),
                   ]))
                 ])
               ]));
@@ -159,11 +164,15 @@ class PhoneAuthComponentViewModel extends ChangeNotifier
 
   bool _isAuthNumberError = false;
 
+  bool _isTryReqAuthNumber = false;
+
+  String _authCheckErrorText = "";
+
   PhoneAuthComponentViewModel(
       {this.phoneAuthComponentController,
       @required this.phoneAuthUseCaseInputPort})
       : _currentPhoneNumberController = TextEditingController(),
-        _currentAuthNumberController = TextEditingController(){
+        _currentAuthNumberController = TextEditingController() {
     if (phoneAuthComponentController != null) {
       phoneAuthComponentController._phoneAuthComponentViewModel = this;
     }
@@ -184,18 +193,24 @@ class PhoneAuthComponentViewModel extends ChangeNotifier
     PhoneAuthReqDto reqDto = PhoneAuthReqDto();
     reqDto.isoCode = currentCountryItem.code;
     reqDto.phoneNumber = _currentPhoneNumberController.text;
-    reqDto.internationalizedPhoneNumber = currentCountryItem.dialCode;
+    reqDto.internationalizedDialCode = currentCountryItem.dialCode;
+    waitSmsRetrieved();
     await phoneAuthUseCaseInputPort.reqPhoneAuth(reqDto, outputPort: this);
 
+
+  }
+
+  //인증 번호 요청전에 항상 Call 해야함.
+  waitSmsRetrieved() async {
     var authCode = await SmsRetrieved.startListeningSms();
 
     var indexOf = authCode.indexOf("인증번호:");
-    var indexOf2 = authCode.indexOf("]",indexOf);
-    var authNumber = authCode.substring(indexOf+5,indexOf2);
+    var indexOf2 = authCode.indexOf("]", indexOf);
+    var authNumber = authCode.substring(indexOf + 5, indexOf2);
 
     _currentAuthNumberController.text = authNumber;
-
   }
+
 
   get isActiveAuthButton {
     if (_currentPhoneNumberController.text.length >= 9 &&
@@ -210,7 +225,7 @@ class PhoneAuthComponentViewModel extends ChangeNotifier
     }
   }
 
-  get reActiveTime {
+  String get reActiveTime {
     if (authRemindTime == null) {
       return "02:00";
     } else if (authRemindTime.isAfter(DateTime.now())) {
@@ -224,27 +239,84 @@ class PhoneAuthComponentViewModel extends ChangeNotifier
     }
   }
 
-  _checkAuthCheckNumber(){
-    //TODO 해당 부분 개발 필요
-    phoneAuthUseCaseInputPort.reqNumberAuthReq(reqDto)
+  DateTime _canAuthNumberTime;
+
+  _checkAuthCheckNumber() {
+    PhoneAuthNumberReqDto reqDto = PhoneAuthNumberReqDto();
+    var currentCountryItem =
+        this._countrySelectButtonController.getCurrentCountryItem();
+    reqDto.internationalizedDialCode = currentCountryItem.dialCode;
+    reqDto.phoneNumber = _currentPhoneNumberController.text;
+    reqDto.isoCode = currentCountryItem.code;
+    reqDto.authNumber = _currentAuthNumberController.text;
+    phoneAuthUseCaseInputPort.reqNumberAuthReq(reqDto, outputPort: this);
   }
 
   @override
   void onNumberAuthReq(PhoneAuthNumberResDto phoneAuthNumberResDto) {
-    // TODO: implement onNumberAuthReq
+    if (phoneAuthNumberResDto.errorFlag) {
+      _isAuthNumberError = true;
+      _authCheckErrorText = phoneAuthNumberResDto.errorCause;
+    } else {
+      if (phoneAuthComponentController != null && phoneAuthComponentController.onPhoneAuthCheckSuccess != null) {
+        phoneAuthComponentController
+            .onPhoneAuthCheckSuccess(phoneAuthNumberResDto);
+      }
+    }
   }
 
   @override
   void onPhoneAuth(PhoneAuthResDto resDto) {
     authRemindTime = resDto.authRetryAvailableTime;
+    _canAuthNumberTime = resDto.authTime;
+    _isTryReqAuthNumber = true;
+    if(phoneAuthComponentController != null && phoneAuthComponentController.onTryAuthReqSuccess != null){
+      phoneAuthComponentController.onTryAuthReqSuccess();
+    }
     notifyListeners();
+  }
+
+  bool get _isDisplayCanAuthNumberTime {
+    if (_canAuthNumberTime != null &&
+        _isTryReqAuthNumber &&
+        _canAuthNumberTime.isAfter(DateTime.now())) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  String get _authNumberRemindTime {
+    if (_canAuthNumberTime != null) {
+      var difference = _canAuthNumberTime.difference(DateTime.now());
+      return "${difference.inMinutes.toString().padLeft(2, '0')}:${(difference.inSeconds % 60).toString().padLeft(2, '0')}";
+    } else {
+      return "";
+    }
+  }
+
+  String get _activeButtonText {
+    if (!_isTryReqAuthNumber) {
+      return "인증 번호 요청";
+    }
+    if (isActiveAuthButton) {
+      return "인증 번호 요청";
+    } else {
+      return reActiveTime;
+    }
   }
 }
 
 class PhoneAuthComponentController {
   PhoneAuthComponentViewModel _phoneAuthComponentViewModel;
 
-  checkAuthCheckNumber(){
+  final Function(PhoneAuthNumberResDto) onPhoneAuthCheckSuccess;
+
+  final Function onTryAuthReqSuccess;
+
+  PhoneAuthComponentController({this.onPhoneAuthCheckSuccess, this.onTryAuthReqSuccess});
+
+  checkAuthCheckNumber() {
     _phoneAuthComponentViewModel._checkAuthCheckNumber();
   }
 }

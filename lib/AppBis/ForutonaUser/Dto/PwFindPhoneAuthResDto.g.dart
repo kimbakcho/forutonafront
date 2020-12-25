@@ -10,8 +10,7 @@ PwFindPhoneAuthResDto _$PwFindPhoneAuthResDtoFromJson(
     Map<String, dynamic> json) {
   return PwFindPhoneAuthResDto()
     ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedPhoneNumber =
-        json['internationalizedPhoneNumber'] as String
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String
     ..isoCode = json['isoCode'] as String
     ..authTime = json['authTime'] == null
         ? null
@@ -30,7 +29,7 @@ Map<String, dynamic> _$PwFindPhoneAuthResDtoToJson(
         PwFindPhoneAuthResDto instance) =>
     <String, dynamic>{
       'phoneNumber': instance.phoneNumber,
-      'internationalizedPhoneNumber': instance.internationalizedPhoneNumber,
+      'internationalizedDialCode': instance.internationalizedDialCode,
       'isoCode': instance.isoCode,
       'authTime': instance.authTime?.toIso8601String(),
       'authRetryAvailableTime':
