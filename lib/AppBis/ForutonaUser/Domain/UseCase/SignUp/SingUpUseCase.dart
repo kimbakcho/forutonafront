@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/Repository/FUserRepository.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
@@ -33,10 +32,10 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
   }
 
   @override
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReq fUserInfoJoinReq) async {
-    await _fireBaseAuthAdapterForUseCase.createUserWithEmailAndPassword(fUserInfoJoinReq.email,fUserInfoJoinReq.password);
-    fUserInfoJoinReq.clearPassword();
-    FUserInfoJoinResDto fUserInfoJoinResDto = await _fUserRepository.joinUser(FUserInfoJoinReqDto.fromFUserInfoJoinReq(fUserInfoJoinReq));
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto fUserInfoJoinReqDto,List<int> profileImage,List<int> backgroundImage) async {
+    var userUid = await _fireBaseAuthAdapterForUseCase.createUserWithEmailAndPassword(fUserInfoJoinReqDto.email,fUserInfoJoinReqDto.password);
+    fUserInfoJoinReqDto.emailUserUid = userUid;
+    FUserInfoJoinResDto fUserInfoJoinResDto = await _fUserRepository.joinUser(fUserInfoJoinReqDto,profileImage,backgroundImage);
     await _fireBaseAuthAdapterForUseCase.signInWithCustomToken(fUserInfoJoinResDto.customToken);
     return fUserInfoJoinResDto;
   }

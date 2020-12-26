@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/SignSheet/SiginButton/SignButton.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/SignSheet/SignSheetOutputPort.dart';
 import 'package:forutonafront/Page/LCodePage/L002/L002MainPage.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +18,7 @@ class SignSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => SignSheetViewModel(context),
+        create: (_) => SignSheetViewModel(context,sl()),
         child: Consumer<SignSheetViewModel>(builder: (_, model, child) {
           return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,10 +125,14 @@ class SignSheetViewModel extends ChangeNotifier
     implements SignButtonOutputPort {
   final BuildContext context;
 
-  SignSheetViewModel(this.context);
+  final FUserInfoJoinReqDto fUserInfoJoinReqDto;
+
+  SignSheetViewModel(this.context,this.fUserInfoJoinReqDto);
+
 
   @override
   trySign(SnsSupportService snsSupportService) {
+    fUserInfoJoinReqDto.snsSupportService = snsSupportService;
     if (snsSupportService == SnsSupportService.Forutona) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) {

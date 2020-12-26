@@ -6,7 +6,8 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberResDto.dart
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthResDto.dart';
 import 'package:forutonafront/Common/Country/CountryItem.dart';
-import 'package:forutonafront/Common/Country/CountrySelectButton.dart';
+import 'package:forutonafront/Components/CountrySelect/CountrySelectButton.dart';
+
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'package:google_fonts/google_fonts.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
+import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountryItem.dart';
-import 'package:forutonafront/Common/Country/CountrySelectButton.dart';
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
 import 'package:forutonafront/Page/LCodePage/L007/L007MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
@@ -15,7 +15,7 @@ class L005MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => L005MainPageViewModel(sl(),context),
+        create: (_) => L005MainPageViewModel(sl(), context),
         child: Consumer<L005MainPageViewModel>(builder: (_, model, child) {
           return Material(
               child: Container(
@@ -26,14 +26,14 @@ class L005MainPage extends StatelessWidget {
                         LCodeAppBar(
                             progressValue: 0.7,
                             tailButtonLabel: "다음",
-                            enableTailButton: true,
+                            // enableTailButton: true,
                             //TODO 회원가입 완료시 해당 부분으로 교체
-                            // enableTailButton: model.enableTailButton,
+                            enableTailButton: model.enableTailButton,
                             title: "휴대폰 인증",
                             onTailButtonClick: () {
-                              model.testNextButton();
+                              // model.testNextButton();
                               //TODO 회원가입 완료시 해당 부분으로 교체
-                              // model.checkPhoneAuth();
+                              model.checkPhoneAuth();
                             }),
                         SizedBox(
                           height: 20,
@@ -69,15 +69,13 @@ class L005MainPage extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
-
                         Container(
                           padding: EdgeInsets.only(left: 16, right: 16),
                           child: PhoneAuthComponent(
-                            phoneAuthComponentController: model._phoneAuthComponentController,
+                            phoneAuthComponentController:
+                                model._phoneAuthComponentController,
                           ),
                         )
-
-                        //TODO 휴대폰 인증 구현 필요
                       ])));
         }));
   }
@@ -85,34 +83,43 @@ class L005MainPage extends StatelessWidget {
 
 class L005MainPageViewModel extends ChangeNotifier {
   bool enableTailButton = false;
-  final FUserInfoJoinReq _fUserInfoJoinReq;
+  final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
 
   final BuildContext context;
 
   PhoneAuthComponentController _phoneAuthComponentController;
 
-  L005MainPageViewModel(this._fUserInfoJoinReq, this.context) {
+  L005MainPageViewModel(this._fUserInfoJoinReqDto, this.context) {
     this._phoneAuthComponentController = PhoneAuthComponentController(
-      onPhoneAuthCheckSuccess: onPhoneAuthCheckSuccess,
-      onTryAuthReqSuccess: onTryAuthReqSuccess
-    );
+        onPhoneAuthCheckSuccess: onPhoneAuthCheckSuccess,
+        onTryAuthReqSuccess: onTryAuthReqSuccess);
   }
 
-  testNextButton(){
-    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+  testNextButton() {
+    _fUserInfoJoinReqDto.countryCode = "KR";
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return L007MainPage();
     }));
   }
 
-  onPhoneAuthCheckSuccess(PhoneAuthNumberResDto phoneAuthNumberResDto){
-    _fUserInfoJoinReq.phoneAuthToken = phoneAuthNumberResDto.phoneAuthToken;
-    _fUserInfoJoinReq.internationalizedPhoneNumber =  phoneAuthNumberResDto.internationalizedDialCode + " " + phoneAuthNumberResDto.phoneNumber;
-    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+  onPhoneAuthCheckSuccess(PhoneAuthNumberResDto phoneAuthNumberResDto) {
+    _fUserInfoJoinReqDto.phoneAuthToken = phoneAuthNumberResDto.phoneAuthToken;
+    _fUserInfoJoinReqDto.internationalizedPhoneNumber =
+        phoneAuthNumberResDto.internationalizedDialCode +
+            " " +
+            phoneAuthNumberResDto.phoneNumber;
+    CodeCountry codeCountry = CodeCountry();
+    var selectedCountryItem = codeCountry.countryList().firstWhere((element) =>
+        element.dialCode == phoneAuthNumberResDto.internationalizedDialCode);
+
+    _fUserInfoJoinReqDto.countryCode = selectedCountryItem.code;
+
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return L007MainPage();
     }));
   }
 
-  onTryAuthReqSuccess(){
+  onTryAuthReqSuccess() {
     enableTailButton = true;
     notifyListeners();
   }
@@ -121,10 +128,7 @@ class L005MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void checkPhoneAuth() {
     _phoneAuthComponentController.checkAuthCheckNumber();
   }
-
-
 }

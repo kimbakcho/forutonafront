@@ -12,7 +12,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 abstract class FUserRepository {
-  Future<FUserInfo> findByMe();
+  Future<FUserInfoResDto> findByMe();
 
   Future<void> updateUserPosition(LatLng latLng);
 
@@ -30,7 +30,7 @@ abstract class FUserRepository {
   Future<FUserSnsCheckJoinResDto> getSnsUserJoinCheckInfo(
       SnsSupportService snsService, String accessToken);
 
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto);
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,List<int> profileImage,List<int> backgroundImage);
 
   Future<PageWrap<FUserInfoSimpleResDto>> findByUserNickNameWithFullTextMatchIndex(
       String searchNickName, Pageable pageable);

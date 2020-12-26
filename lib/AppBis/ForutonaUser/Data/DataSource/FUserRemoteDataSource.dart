@@ -35,9 +35,9 @@ abstract class FUserRemoteDataSource {
       SnsSupportService snsService, String accessToken, FDio noneTokenFDio);
 
   Future<FUserInfoJoinResDto> joinUser(
-      FUserInfoJoinReqDto reqDto, FDio noneTokenFDio);
+      FUserInfoJoinReqDto reqDto,List<int> profileImage,List<int> backgroundImage, FDio noneTokenFDio);
 
-  Future<FUserInfo> findByMe(FDio tokenFDio);
+  Future<FUserInfoResDto> findByMe(FDio tokenFDio);
 
   Future<PageWrap<FUserInfoSimpleResDto>> getUserNickNameWithFullTextMatchIndex(
       String searchNickName, Pageable pageable, FDio noneTokenFDio);
@@ -101,26 +101,45 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
       SnsSupportService snsService,
       String accessToken,
       FDio noneTokenFDio) async {
-    var response = await noneTokenFDio.get("/v1/FUserInfo/SnsUserJoinCheckInfo",
-        queryParameters: {
-          "snsService":  EnumToString.convertToString(snsService) ,
-          "accessToken": accessToken
-        });
+    var response = await noneTokenFDio
+        .get("/v1/FUserInfo/SnsUserJoinCheckInfo", queryParameters: {
+      "snsService": EnumToString.convertToString(snsService),
+      "accessToken": accessToken
+    });
     return FUserSnsCheckJoinResDto.fromJson(response.data);
   }
 
   @override
   Future<FUserInfoJoinResDto> joinUser(
-      FUserInfoJoinReqDto reqDto, FDio noneTokenFDio) async {
+      FUserInfoJoinReqDto reqDto,List<int> profileImage,List<int> backgroundImage, FDio noneTokenFDio) async {
+    var formData = FormData.fromMap(reqDto.toJson());
+
+    if(profileImage != null){
+      MapEntry<String, MultipartFile> profileImage =
+      MapEntry<String, MultipartFile>("profileImage",
+          MultipartFile.fromBytes(backgroundImage, filename: "profileImage.png"));
+
+      formData.files.add(profileImage);
+    }
+
+    if(backgroundImage != null){
+      MapEntry<String, MultipartFile> backGroundImage =
+      MapEntry<String, MultipartFile>("backGroundImage",
+          MultipartFile.fromBytes(backgroundImage, filename: "backGroundImage.png"));
+
+      formData.files.add(backGroundImage);
+    }
+
+
     var response = await noneTokenFDio.post("/v1/FUserInfo/JoinUser",
-        data: reqDto.toJson());
+        data: formData);
     return FUserInfoJoinResDto.fromJson(response.data);
   }
 
   @override
-  Future<FUserInfo> findByMe(FDio tokenFDio) async {
+  Future<FUserInfoResDto> findByMe(FDio tokenFDio) async {
     var response = await tokenFDio.get("/v1/FUserInfo");
-    return FUserInfo.fromJson(response.data);
+    return FUserInfoResDto.fromJson(response.data);
   }
 
   @override
@@ -128,7 +147,8 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
       String searchNickName, Pageable pageable, FDio noneTokenFDio) async {
     var params = pageable.toJson();
     params["searchNickName"] = searchNickName;
-    var response = await noneTokenFDio.get("/v1/FUserInfo/UserNickNameWithFullTextMatchIndex",
+    var response = await noneTokenFDio.get(
+        "/v1/FUserInfo/UserNickNameWithFullTextMatchIndex",
         queryParameters: params);
     return PageWrap.fromJson(response.data, FUserInfoSimpleResDto.fromJson);
   }

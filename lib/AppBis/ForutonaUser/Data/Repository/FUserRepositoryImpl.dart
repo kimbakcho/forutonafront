@@ -72,12 +72,12 @@ class FUserRepositoryImpl implements FUserRepository {
   }
 
   @override
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto) async {
-    return await _fUserRemoteDataSource.joinUser(reqDto, FDio.noneToken());
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,List<int> profileImage,List<int> backgroundImage) async {
+    return await _fUserRemoteDataSource.joinUser(reqDto,profileImage,backgroundImage, FDio.noneToken());
   }
 
   @override
-  Future<FUserInfo> findByMe() async {
+  Future<FUserInfoResDto> findByMe() async {
     return await _fUserRemoteDataSource
         .findByMe(FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
   }

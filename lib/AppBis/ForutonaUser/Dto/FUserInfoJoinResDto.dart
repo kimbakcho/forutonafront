@@ -11,7 +11,6 @@ class FUserInfoJoinResDto {
 
   FUserInfoJoinResDto();
 
-
   factory FUserInfoJoinResDto.fromJson(Map<String, dynamic> json) => _$FUserInfoJoinResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FUserInfoJoinResDtoToJson(this);
 

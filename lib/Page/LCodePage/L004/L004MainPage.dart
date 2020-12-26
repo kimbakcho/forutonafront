@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/Components/SliderDatePicker/date_picker_theme.dart';
 import 'package:forutonafront/Components/SliderDatePicker/i18n/date_picker_i18n.dart';
 import 'package:forutonafront/Components/SliderDatePicker/widget/date_picker_widget.dart';
@@ -95,9 +95,9 @@ class L004MainPage extends StatelessWidget {
 class L004MainPageViewModel extends ChangeNotifier {
   bool enableTailButton = true;
   DatePickerWidgetController _datePickerWidgetController;
-  final FUserInfoJoinReq _fUserInfoJoinReq;
+  final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
 
-  L004MainPageViewModel(this._fUserInfoJoinReq){
+  L004MainPageViewModel(this._fUserInfoJoinReqDto){
     _datePickerWidgetController = new DatePickerWidgetController();
   }
 
@@ -113,8 +113,8 @@ class L004MainPageViewModel extends ChangeNotifier {
   }
 
   void nextPage(BuildContext context) {
-    this._fUserInfoJoinReq.forutonaAgree = true;
-    this._fUserInfoJoinReq.ageDate = _datePickerWidgetController.getCurrentDateTime();
+    this._fUserInfoJoinReqDto.forutonaAgree = true;
+    this._fUserInfoJoinReqDto.ageDate = _datePickerWidgetController.getCurrentDateTime();
     Navigator.of(context).push(MaterialPageRoute(builder: (_){
       return L005MainPage();
     }));

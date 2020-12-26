@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/Components/DottedLine/DottedLine.dart';
 import 'package:forutonafront/Page/LCodePage/L004/L004MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
@@ -154,9 +154,9 @@ class L002MainPageViewModel extends ChangeNotifier {
   LCodeCheckBoxController privacyAgreeCheckBoxController;
   LCodeCheckBoxController positionPrivacyAgreeCheckBoxController;
   LCodeCheckBoxController marketingAgreeCheckBoxController;
-  final FUserInfoJoinReq _fUserInfoJoinReq;
+  final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
 
-  L002MainPageViewModel(this._fUserInfoJoinReq) {
+  L002MainPageViewModel(this._fUserInfoJoinReqDto) {
     allCheckBoxController =
         LCodeCheckBoxController(onChangeValue: _allCheckBoxControllerStateChange);
     serviceAgreeCheckBoxController =
@@ -204,10 +204,10 @@ class L002MainPageViewModel extends ChangeNotifier {
   }
 
   void nextPage(BuildContext context) {
-    _fUserInfoJoinReq.martketingAgree = marketingAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReq.forutonaAgree = serviceAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReq.privateAgree = privacyAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReq.positionAgree = positionPrivacyAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto.martketingAgree = marketingAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto.forutonaAgree = serviceAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto.privateAgree = privacyAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto.positionAgree = positionPrivacyAgreeCheckBoxController.getValue();
     Navigator.of(context).push(MaterialPageRoute(builder: (_){
       return L004MainPage();
     }));

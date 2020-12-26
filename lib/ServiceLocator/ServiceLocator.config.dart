@@ -43,7 +43,7 @@ import '../AppBis/Tag/Data/DataSource/FBallTagRemoteDataSource.dart';
 import '../AppBis/FBallValuation/Data/DataStore/FBallValuationRemoteDataSource.dart';
 import '../AppBis/FBallValuation/Domain/Repositroy/FBallValuationRepository.dart';
 import '../AppBis/FBallValuation/Data/Repository/FBallValuationRepositoryImpl.dart';
-import '../AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
+import '../AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
 import '../AppBis/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart';
 import '../AppBis/ForutonaUser/Domain/Repository/FUserRepository.dart';
@@ -184,7 +184,7 @@ GetIt $initGetIt(
       () => FBallTagRemoteDataSourceImpl());
   gh.lazySingleton<FBallValuationRemoteDataSource>(
       () => FBallValuationRemoteDataSourceImpl());
-  gh.lazySingleton<FUserInfoJoinReq>(() => FUserInfoJoinReq());
+  gh.lazySingleton<FUserInfoJoinReqDto>(() => FUserInfoJoinReqDto());
   gh.lazySingleton<FUserRemoteDataSource>(() => FUserRemoteDataSourceImpl());
   gh.lazySingleton<FileDownLoaderUseCaseInputPort>(
       () => FileDownLoaderUseCase());

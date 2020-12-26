@@ -11,7 +11,8 @@ FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
     ..uid = json['uid'] as String
     ..nickName = json['nickName'] as String
     ..profilePictureUrl = json['profilePictureUrl'] as String
-    ..gender = json['gender'] as int
+    ..backGroundImageUrl = json['backGroundImageUrl'] as String
+    ..gender = _$enumDecodeNullable(_$GenderTypeEnumMap, json['gender'])
     ..ageDate = json['ageDate'] == null
         ? null
         : DateTime.parse(json['ageDate'] as String)
@@ -65,7 +66,8 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
       'uid': instance.uid,
       'nickName': instance.nickName,
       'profilePictureUrl': instance.profilePictureUrl,
-      'gender': instance.gender,
+      'backGroundImageUrl': instance.backGroundImageUrl,
+      'gender': _$GenderTypeEnumMap[instance.gender],
       'ageDate': instance.ageDate?.toIso8601String(),
       'email': instance.email,
       'forutonaAgree': instance.forutonaAgree,
@@ -136,6 +138,12 @@ T _$enumDecodeNullable<T>(
   }
   return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
+
+const _$GenderTypeEnumMap = {
+  GenderType.Male: 'Male',
+  GenderType.FeMale: 'FeMale',
+  GenderType.None: 'None',
+};
 
 const _$SnsSupportServiceEnumMap = {
   SnsSupportService.FaceBook: 'FaceBook',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Country/CountrySelectPageViewModel.dart';
+import 'package:forutonafront/Components/CountrySelect/CountrySelectPageViewModel.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

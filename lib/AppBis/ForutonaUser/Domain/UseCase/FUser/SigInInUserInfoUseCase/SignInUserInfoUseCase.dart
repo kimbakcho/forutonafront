@@ -10,7 +10,7 @@ import 'package:injectable/injectable.dart';
 import 'SignInUserInfoUseCaseOutputPort.dart';
 @LazySingleton(as: SignInUserInfoUseCaseInputPort)
 class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
-  FUserInfo _fUserInfo;
+  FUserInfoResDto _fUserInfo;
   FUserRepository _fUserRepository;
   bool isLogin = false;
 
@@ -33,9 +33,9 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
           "Don't Have UserInfo in Memory use to saveSignInInfoInMemoryFromAPiServer");
     }
     if (outputPort != null) {
-      outputPort.onSignInUserInfoFromMemory(FUserInfoResDto.fromFUserInfo(_fUserInfo));
+      outputPort.onSignInUserInfoFromMemory(_fUserInfo);
     }
-    return FUserInfoResDto.fromFUserInfo(_fUserInfo);
+    return _fUserInfo;
   }
 
   @override
@@ -43,10 +43,9 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
       {SignInUserInfoUseCaseOutputPort outputPort}) async {
     _fUserInfo = await _fUserRepository.findByMe();
     isLogin= true;
-    FUserInfoResDto fUserInfoResDto = FUserInfoResDto.fromFUserInfo(_fUserInfo);
-    _fUserInfoStreamController.add(fUserInfoResDto);
+    _fUserInfoStreamController.add(_fUserInfo);
     if (outputPort != null) {
-      outputPort.onSignInUserInfoFromMemory(fUserInfoResDto);
+      outputPort.onSignInUserInfoFromMemory(_fUserInfo);
     }
   }
 

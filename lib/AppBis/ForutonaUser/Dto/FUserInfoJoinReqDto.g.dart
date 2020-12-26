@@ -16,7 +16,6 @@ FUserInfoJoinReqDto _$FUserInfoJoinReqDtoFromJson(Map<String, dynamic> json) {
     ..ageLimitAgree = json['ageLimitAgree'] as bool
     ..nickName = json['nickName'] as String
     ..email = json['email'] as String
-    ..userProfileImageUrl = json['userProfileImageUrl'] as String
     ..snsSupportService = _$enumDecodeNullable(
         _$SnsSupportServiceEnumMap, json['snsSupportService'])
     ..countryCode = json['countryCode'] as String
@@ -26,7 +25,11 @@ FUserInfoJoinReqDto _$FUserInfoJoinReqDtoFromJson(Map<String, dynamic> json) {
         json['internationalizedPhoneNumber'] as String
     ..phoneAuthToken = json['phoneAuthToken'] as String
     ..password = json['password'] as String
-    ..emailUserUid = json['emailUserUid'] as String;
+    ..emailUserUid = json['emailUserUid'] as String
+    ..ageDate = json['ageDate'] == null
+        ? null
+        : DateTime.parse(json['ageDate'] as String)
+    ..gender = _$enumDecodeNullable(_$GenderTypeEnumMap, json['gender']);
 }
 
 Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
@@ -40,7 +43,6 @@ Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
       'ageLimitAgree': instance.ageLimitAgree,
       'nickName': instance.nickName,
       'email': instance.email,
-      'userProfileImageUrl': instance.userProfileImageUrl,
       'snsSupportService':
           _$SnsSupportServiceEnumMap[instance.snsSupportService],
       'countryCode': instance.countryCode,
@@ -50,6 +52,8 @@ Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
       'phoneAuthToken': instance.phoneAuthToken,
       'password': instance.password,
       'emailUserUid': instance.emailUserUid,
+      'ageDate': instance.ageDate?.toIso8601String(),
+      'gender': _$GenderTypeEnumMap[instance.gender],
     };
 
 T _$enumDecode<T>(
@@ -89,4 +93,10 @@ const _$SnsSupportServiceEnumMap = {
   SnsSupportService.Naver: 'Naver',
   SnsSupportService.Kakao: 'Kakao',
   SnsSupportService.Forutona: 'Forutona',
+};
+
+const _$GenderTypeEnumMap = {
+  GenderType.Male: 'Male',
+  GenderType.FeMale: 'FeMale',
+  GenderType.None: 'None',
 };

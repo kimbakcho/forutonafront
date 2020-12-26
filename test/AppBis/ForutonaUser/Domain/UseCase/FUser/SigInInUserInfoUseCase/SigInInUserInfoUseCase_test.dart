@@ -31,7 +31,7 @@ void main () {
 
   test('UserInfo 정보를 Repository를 사용하여 저장함', () async {
     //arrange
-    FUserInfo fUserInfo = new FUserInfo();
+    FUserInfoResDto fUserInfo = new FUserInfoResDto();
     fUserInfo.uid = "testUid";
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);
@@ -43,7 +43,7 @@ void main () {
 
   test('메모리에서 저장하고 유저 정보 요청', () async {
     //arrange
-    FUserInfo fUserInfo = new FUserInfo();
+    FUserInfoResDto fUserInfo = new FUserInfoResDto();
     fUserInfo.uid = "testUid";
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);
@@ -59,7 +59,7 @@ void main () {
 
   test('유저 정보 서버로 부터 가져온뒤에 onSignInUserInfoFromMemory 실행 ', () async {
     //arrange
-    FUserInfo fUserInfo = new FUserInfo();
+    FUserInfoResDto fUserInfo = new FUserInfoResDto();
     fUserInfo.uid = "testUid";
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);

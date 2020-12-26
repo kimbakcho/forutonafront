@@ -1,11 +1,13 @@
 
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/Value/FUserInfoJoinReq.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/Components/GenderSelectComponent/GenderType.dart';
+import 'package:injectable/injectable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserInfoJoinReqDto.g.dart';
 
 @JsonSerializable()
+@lazySingleton
 class FUserInfoJoinReqDto {
 
   bool forutonaAgree;
@@ -16,7 +18,6 @@ class FUserInfoJoinReqDto {
   bool ageLimitAgree;
   String nickName;
   String email;
-  String userProfileImageUrl;
   SnsSupportService snsSupportService;
   String countryCode;
   String snsToken;
@@ -26,31 +27,12 @@ class FUserInfoJoinReqDto {
   String phoneAuthToken;
   String password;
   String emailUserUid;
+  DateTime ageDate;
+  GenderType gender;
 
   factory FUserInfoJoinReqDto.fromJson(Map<String, dynamic> json) => _$FUserInfoJoinReqDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FUserInfoJoinReqDtoToJson(this);
 
   FUserInfoJoinReqDto();
 
-  factory FUserInfoJoinReqDto.fromFUserInfoJoinReq(FUserInfoJoinReq item){
-    FUserInfoJoinReqDto reqDto = new FUserInfoJoinReqDto();
-    reqDto.forutonaAgree = item.forutonaAgree;
-    reqDto.forutonaManagementAgree = item.forutonaManagementAgree;
-    reqDto.privateAgree = item.privateAgree;
-    reqDto.positionAgree = item.positionAgree;
-    reqDto.martketingAgree = item.martketingAgree;
-    reqDto.ageLimitAgree = item.ageLimitAgree;
-    reqDto.nickName = item.nickName;
-    reqDto.email = item.email;
-    reqDto.userProfileImageUrl = item.userProfileImageUrl;
-    reqDto.snsSupportService = item.snsSupportService;
-    reqDto.countryCode = item.countryCode;
-    reqDto.snsToken = item.snsToken;
-    reqDto.userIntroduce = item.userIntroduce;
-    reqDto.internationalizedPhoneNumber = item.internationalizedPhoneNumber;
-    reqDto.phoneAuthToken = item.phoneAuthToken;
-    reqDto.password = item.password;
-    reqDto.emailUserUid = item.emailUserUid;
-    return reqDto;
-  }
 }
