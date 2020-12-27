@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/Components/SliderDatePicker/date_picker_theme.dart';
 import 'package:forutonafront/Components/SliderDatePicker/i18n/date_picker_i18n.dart';
 import 'package:forutonafront/Components/SliderDatePicker/widget/date_picker_widget.dart';
 import 'package:forutonafront/Page/LCodePage/L005/L005MainPage.dart';
+import 'package:forutonafront/Page/LCodePage/L008/L008MainPage.dart';
 
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -115,8 +117,15 @@ class L004MainPageViewModel extends ChangeNotifier {
   void nextPage(BuildContext context) {
     this._fUserInfoJoinReqDto.forutonaAgree = true;
     this._fUserInfoJoinReqDto.ageDate = _datePickerWidgetController.getCurrentDateTime();
-    Navigator.of(context).push(MaterialPageRoute(builder: (_){
-      return L005MainPage();
-    }));
+    if(this._fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Forutona){
+      Navigator.of(context).push(MaterialPageRoute(builder: (_){
+        return L005MainPage();
+      }));
+    }else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_){
+        return L008MainPage();
+      }));
+    }
+
   }
 }

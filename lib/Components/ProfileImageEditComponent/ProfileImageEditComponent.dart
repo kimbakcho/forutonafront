@@ -9,12 +9,16 @@ class ProfileImageEditComponent extends StatelessWidget {
 
   final ProfileImageEditComponentController profileImageEditComponentController;
 
-  const ProfileImageEditComponent({Key key, this.profileImageEditComponentController}) : super(key: key);
+  final String initProfileImageUrl;
+
+  const ProfileImageEditComponent({Key key, this.profileImageEditComponentController,this.initProfileImageUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => ProfileImageEditComponentViewModel(profileImageEditComponentController: profileImageEditComponentController),
+        create: (_) => ProfileImageEditComponentViewModel(
+            profileImageEditComponentController: profileImageEditComponentController,
+        initProfileImageUrl: initProfileImageUrl),
         child: Consumer<ProfileImageEditComponentViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -71,23 +75,7 @@ class ProfileImageEditComponent extends StatelessWidget {
                       onTap: () {
                         model.showProfileSelectImageModalBottomSheet(context);
                       },
-                      child: model._profileImageProvider != null
-                          ? Container(
-                              width: 74,
-                              height: 74,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: model._profileImageProvider,
-                                  ),
-                                  shape: BoxShape.circle),
-                            )
-                          : SvgPicture.asset(
-                              "assets/IconImage/user-circle.svg",
-                              height: 74,
-                              width: 74,
-                              color: Color(0xffD4D4D4),
-                            ),
+                      child: model.getProfileImageWidget(),
                     ),
                   ),
                   Positioned(
@@ -122,16 +110,23 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
 
   FileImage _backgroundImageProvider;
 
+  NetworkImage _profileImageUrlProvider;
+
   ImageSelectModalBottomSheet _imageProfileSelectModalBottomSheet;
 
   ImageSelectModalBottomSheet _imageBackGroundSelectModalBottomSheet;
 
-  ProfileImageEditComponentViewModel({this.profileImageEditComponentController}) {
+  String initProfileImageUrl;
+
+  ProfileImageEditComponentViewModel({this.profileImageEditComponentController,this.initProfileImageUrl}) {
     _imageProfileSelectModalBottomSheet =
         ImageSelectModalBottomSheet(onSelectImage: onProfileSelectImage);
     _imageBackGroundSelectModalBottomSheet =
         ImageSelectModalBottomSheet(onSelectImage: onBackgroundSelectImage);
     profileImageEditComponentController._profileImageEditComponentViewModel = this;
+    if(initProfileImageUrl!= null){
+      setProfileImageUrl(initProfileImageUrl);
+    }
   }
 
   showProfileSelectImageModalBottomSheet(BuildContext context) {
@@ -139,6 +134,7 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
   }
 
   onProfileSelectImage(FileImage imageProvider) {
+    _profileImageUrlProvider = null;
     _profileImageProvider = imageProvider;
     notifyListeners();
   }
@@ -151,6 +147,41 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
     _backgroundImageProvider = imageProvider;
     notifyListeners();
   }
+
+  setProfileImageUrl(String value){
+    _profileImageUrlProvider = NetworkImage(value);
+    _profileImageProvider = null;
+    notifyListeners();
+  }
+
+  Widget getProfileImageWidget(){
+    ImageProvider imageProvider;
+    if(_profileImageUrlProvider != null ){
+      imageProvider = _profileImageUrlProvider;
+    }else if(_profileImageProvider != null){
+      imageProvider = _profileImageProvider;
+    }
+    if(imageProvider != null){
+      return Container(
+        width: 74,
+        height: 74,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: imageProvider,
+            ),
+            shape: BoxShape.circle),
+      );
+    }else {
+      return SvgPicture.asset(
+        "assets/IconImage/user-circle.svg",
+        height: 74,
+        width: 74,
+        color: Color(0xffD4D4D4),
+      );
+    }
+  }
+
 }
 
 class ProfileImageEditComponentController {
@@ -163,5 +194,14 @@ class ProfileImageEditComponentController {
   FileImage getBackgroundImageProvider(){
     return _profileImageEditComponentViewModel._backgroundImageProvider;
   }
+
+  NetworkImage getProfileImageUrlProvider(){
+    return _profileImageEditComponentViewModel._profileImageUrlProvider;
+  }
+
+  setProfileImageUrl(String url){
+    _profileImageEditComponentViewModel.setProfileImageUrl(url);
+  }
+
 
 }

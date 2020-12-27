@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/Page/GCodePage/G001/G001MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import 'KPageNavBtn.dart';
 
-enum BottomNavigationNavType {
-  HOME,SEARCH,SNS
-}
+enum BottomNavigationNavType { HOME, SEARCH, SNS }
 
 class BottomNavigation extends StatefulWidget {
   final BottomNavigationListener bottomNavigationListener;
 
-  const BottomNavigation({Key key, this.bottomNavigationListener}) : super(key: key);
+  const BottomNavigation({Key key, this.bottomNavigationListener})
+      : super(key: key);
+
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }
@@ -22,7 +27,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => BottomNavigationViewModel(context: context),
+        create: (_) => BottomNavigationViewModel(
+            context: context, signInUserInfoUseCaseInputPort: sl()),
         child: Consumer<BottomNavigationViewModel>(builder: (_, model, __) {
           return Consumer<BottomNavigationViewModel>(
               builder: (_, model, child) {
@@ -33,8 +39,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       flex: 1,
                       child: FlatButton(
                         onPressed: () {
-                          if(widget.bottomNavigationListener != null){
-                            widget.bottomNavigationListener.onBottomNavClick(BottomNavigationNavType.HOME);
+                          if (widget.bottomNavigationListener != null) {
+                            widget.bottomNavigationListener
+                                .onBottomNavClick(BottomNavigationNavType.HOME);
                           }
                         },
                         child: Icon(Icons.home),
@@ -48,23 +55,44 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       flex: 1,
                       child: FlatButton(
                           onPressed: () {
-                            if(widget.bottomNavigationListener != null){
-                              widget.bottomNavigationListener.onBottomNavClick(BottomNavigationNavType.SNS);
+                            if (widget.bottomNavigationListener != null) {
+                              widget.bottomNavigationListener.onBottomNavClick(
+                                  BottomNavigationNavType.SNS);
                             }
                           },
                           child: Icon(
                             ForutonaIcon.officialchannel,
                           ))),
                   Expanded(
-                      flex: 1,
-                      child: FlatButton(
-                          onPressed: () {
+                    flex: 1,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          if(model.isLogin){
+                            model.jumpToPersona();
+                          }else {
                             model.showL001BottomSheet();
-                          },
-                          child: Icon(
-                            ForutonaIcon.snsservicemenu,
-                            size: 19,
-                          ))),
+                          }
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            model._getProfilePictureWidget(),
+                            Container(
+                              margin: EdgeInsets.only(top: 5),
+                              child: Text('프로필',
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 9,
+                                    color: const Color(0xff000000),
+                                    fontWeight: FontWeight.w300,
+                                  )),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
                 ]),
                 decoration: BoxDecoration(color: Color(0xffffffff), boxShadow: [
                   BoxShadow(
@@ -79,11 +107,58 @@ class _BottomNavigationState extends State<BottomNavigation> {
 }
 
 class BottomNavigationViewModel extends ChangeNotifier {
+  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
   final BuildContext context;
 
-  BottomNavigationViewModel({this.context});
+  BottomNavigationViewModel(
+      {this.context, this.signInUserInfoUseCaseInputPort}) {
+    signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) {
+      notifyListeners();
+    });
+  }
 
-  showL001BottomSheet(){
+  bool get isLogin {
+    return this.signInUserInfoUseCaseInputPort.isLogin;
+  }
+
+  String get profileImageUrl {
+    return this
+        .signInUserInfoUseCaseInputPort
+        .reqSignInUserInfoFromMemory()
+        .profilePictureUrl;
+  }
+
+  Widget _getEmptyProfileImage() {
+    return Container(
+      width: 20,
+      height: 20,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      child: SvgPicture.asset("assets/IconImage/user-circle.svg"),
+    );
+  }
+
+  Widget _getProfilePictureWidget() {
+    if (isLogin) {
+      if (profileImageUrl == null) {
+        return _getEmptyProfileImage();
+      } else {
+        return Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  fit: BoxFit.cover, image: NetworkImage(profileImageUrl))),
+        );
+      }
+    } else {
+      return _getEmptyProfileImage();
+    }
+  }
+
+  showL001BottomSheet() {
     showMaterialModalBottomSheet(
         context: context,
         expand: false,
@@ -94,6 +169,11 @@ class BottomNavigationViewModel extends ChangeNotifier {
         });
   }
 
+  jumpToPersona(){
+    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+      return G001MainPage();
+    }));
+  }
 
 }
 

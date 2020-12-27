@@ -30,6 +30,8 @@ class FUserInfoJoinReqDto {
   DateTime ageDate;
   GenderType gender;
 
+  String profileImageUrl;
+
   factory FUserInfoJoinReqDto.fromJson(Map<String, dynamic> json) => _$FUserInfoJoinReqDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FUserInfoJoinReqDtoToJson(this);
 

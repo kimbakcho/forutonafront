@@ -1,12 +1,13 @@
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/SnsLoginMoudleAdapter/ForutonaLoginAdapterImpl.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
+
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/Common/SnsLoginMoudleAdapter/FaceBookLoginAdapterImpl.dart';
+import 'package:forutonafront/Common/SnsLoginMoudleAdapter/ForutonaLoginAdapterImpl.dart';
+import 'package:forutonafront/Common/SnsLoginMoudleAdapter/KakaoLoginAdapterImpl.dart';
 import 'package:injectable/injectable.dart';
 
 import 'NaverLoginAdapterImpl.dart';
 
-@LazySingleton()
+@lazySingleton
 class SnsLoginModuleAdapterFactory {
   SnsLoginModuleAdapter getInstance(SnsSupportService snsSupportService){
     switch(snsSupportService){
@@ -37,5 +38,6 @@ class SnsLoginModuleResDto {
   String userNickName;
   String email;
   String userProfileImageUrl;
-  SnsLoginModuleResDto(this.uid, this.accessToken,{this.userNickName,this.email,this.userProfileImageUrl});
+  String appUid;
+  SnsLoginModuleResDto(this.uid, this.accessToken,{this.userNickName,this.email,this.userProfileImageUrl,this.appUid});
 }

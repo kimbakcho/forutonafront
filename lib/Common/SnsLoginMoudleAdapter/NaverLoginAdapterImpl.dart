@@ -21,7 +21,9 @@ class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
             neverLoginResult.account.id, currentAccessToken.accessToken,
             userNickName: neverLoginResult.account.nickname,
             email: neverLoginResult.account.email,
-            userProfileImageUrl: neverLoginResult.account.profileImage);
+            userProfileImageUrl: neverLoginResult.account.profileImage,
+            appUid: "naver"+ neverLoginResult.account.id
+        );
       case NaverLoginStatus.cancelledByUser:
         throw ("cancelledByUser");
         break;

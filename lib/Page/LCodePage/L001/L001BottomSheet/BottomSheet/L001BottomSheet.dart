@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Components/CloseButton/BottomSheetCloseButton.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSlider/L001BottomSheetPageSlider.dart';
 
@@ -19,21 +20,34 @@ class L001BottomSheet extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15.0),
                       topRight: Radius.circular(15.0))),
-              child: Container(
-                  child: Column(children: [
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 16, top: 16),
-                    child: BottomSheetCloseButton(),
-                  )
-                ]),
-                SizedBox(
-                  height: 30,
-                ),
-                Expanded(child: Container(child: L001BottomSheetPageSlider()))
-              ])));
+              child: Stack(
+                children: [
+                  Container(
+                      child: Column(children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 16, top: 16),
+                        child: BottomSheetCloseButton(),
+                      )
+                    ]),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Expanded(
+                        child: Container(child: L001BottomSheetPageSlider()))
+                  ])),
+                  model.isLoading ? CommonLoadingComponent() : Container()
+                ],
+              ));
         }));
   }
 }
 
-class L001BottomSheetViewModel extends ChangeNotifier {}
+class L001BottomSheetViewModel extends ChangeNotifier {
+  bool isLoading = false;
+
+  setLoading(bool value){
+    isLoading = value;
+    notifyListeners();
+  }
+}

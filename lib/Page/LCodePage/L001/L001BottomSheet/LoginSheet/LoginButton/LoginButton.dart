@@ -42,7 +42,7 @@ class LoginButton extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-                  loginButtonOutputPort.tryLogin(snsSupportService);
+                  loginButtonOutputPort.tryLogin(snsSupportService,context);
                 })));
   }
 }

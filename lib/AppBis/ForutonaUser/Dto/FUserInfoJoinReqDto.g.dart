@@ -29,7 +29,8 @@ FUserInfoJoinReqDto _$FUserInfoJoinReqDtoFromJson(Map<String, dynamic> json) {
     ..ageDate = json['ageDate'] == null
         ? null
         : DateTime.parse(json['ageDate'] as String)
-    ..gender = _$enumDecodeNullable(_$GenderTypeEnumMap, json['gender']);
+    ..gender = _$enumDecodeNullable(_$GenderTypeEnumMap, json['gender'])
+    ..profileImageUrl = json['profileImageUrl'] as String;
 }
 
 Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
@@ -54,6 +55,7 @@ Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
       'emailUserUid': instance.emailUserUid,
       'ageDate': instance.ageDate?.toIso8601String(),
       'gender': _$GenderTypeEnumMap[instance.gender],
+      'profileImageUrl': instance.profileImageUrl,
     };
 
 T _$enumDecode<T>(

@@ -53,14 +53,12 @@ class FireBaseAuthAdapterForUseCaseImpl
   }
 
   _onAuthStateChange(FirebaseUser user) async {
-
     if(await isLogin()){
       await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(user.uid);
       await _updateFCMTokenUseCaseInputPort.updateFCMToken(await _fireBaseMessageAdapter.getCurrentToken());
     } else {
       _signInUserInfoUseCaseInputPort.clearUserInfo();
     }
-
   }
 
   @override

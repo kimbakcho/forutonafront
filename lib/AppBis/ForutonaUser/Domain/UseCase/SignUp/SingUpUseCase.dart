@@ -33,8 +33,6 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
 
   @override
   Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto fUserInfoJoinReqDto,List<int> profileImage,List<int> backgroundImage) async {
-    var userUid = await _fireBaseAuthAdapterForUseCase.createUserWithEmailAndPassword(fUserInfoJoinReqDto.email,fUserInfoJoinReqDto.password);
-    fUserInfoJoinReqDto.emailUserUid = userUid;
     FUserInfoJoinResDto fUserInfoJoinResDto = await _fUserRepository.joinUser(fUserInfoJoinReqDto,profileImage,backgroundImage);
     await _fireBaseAuthAdapterForUseCase.signInWithCustomToken(fUserInfoJoinResDto.customToken);
     return fUserInfoJoinResDto;

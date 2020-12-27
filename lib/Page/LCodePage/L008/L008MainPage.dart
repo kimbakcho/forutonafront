@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
@@ -18,7 +20,7 @@ class L008MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => L008MainPageViewModel(sl(),sl(),sl()),
+      create: (_) => L008MainPageViewModel(sl(), sl(), sl(),sl()),
       child: Consumer<L008MainPageViewModel>(
         builder: (_, model, child) {
           return Scaffold(
@@ -29,7 +31,7 @@ class L008MainPage extends StatelessWidget {
                       enableTailButton: model.isCanNext,
                       progressValue: 1,
                       onTailButtonClick: () {
-                        if(model.isCanNext) {
+                        if (model.isCanNext) {
                           model._validWithNextPage(context);
                         }
                       },
@@ -81,6 +83,7 @@ class L008MainPage extends StatelessWidget {
                             height: 22,
                           ),
                           ProfileImageEditComponent(
+                            initProfileImageUrl: model.profileImageUrl,
                             profileImageEditComponentController:
                                 model._profileImageEditComponentController,
                           ),
@@ -88,6 +91,7 @@ class L008MainPage extends StatelessWidget {
                           Container(
                             margin: EdgeInsets.only(left: 16, right: 16),
                             child: NickNameEditComponent(
+                              initNickName: model.currentNickNameText,
                               nickNameEditComponentController:
                                   model._nickNameEditComponentController,
                             ),
@@ -106,7 +110,8 @@ class L008MainPage extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: GenderSelectComponent(
-                                    genderSelectComponentController: model._genderSelectComponentController,
+                                    genderSelectComponentController:
+                                        model._genderSelectComponentController,
                                   ),
                                 )
                               ])),
@@ -114,10 +119,12 @@ class L008MainPage extends StatelessWidget {
                             height: 30,
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 16,right: 16),
-                            child: SelfIntroduceEditComponent(selfIntroduceEditController: model._selfIntroduceEditController, ),
+                            padding: EdgeInsets.only(left: 16, right: 16),
+                            child: SelfIntroduceEditComponent(
+                              selfIntroduceEditController:
+                                  model._selfIntroduceEditController,
+                            ),
                           )
-
                         ])))
                   ])));
         },
@@ -149,7 +156,14 @@ class L008MainPageViewModel extends ChangeNotifier {
 
   SingUpUseCaseInputPort _singUpUseCaseInputPort;
 
-  L008MainPageViewModel(this._fUserInfoJoinReqDto,this._flutterImageCompressAdapter,this._singUpUseCaseInputPort) {
+  FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
+
+  L008MainPageViewModel(this._fUserInfoJoinReqDto,
+      this._flutterImageCompressAdapter, this._singUpUseCaseInputPort,this.fireBaseAuthAdapterForUseCase) {
+    if (_fUserInfoJoinReqDto.nickName != null) {
+      currentNickNameText = _fUserInfoJoinReqDto.nickName;
+    }
+
     _profileImageEditComponentController =
         ProfileImageEditComponentController();
     _nickNameEditComponentController =
@@ -157,22 +171,25 @@ class L008MainPageViewModel extends ChangeNotifier {
       this.currentNickNameText = value;
       notifyListeners();
     });
+
     _countrySelectButtonController = CountrySelectButtonController();
 
     _genderSelectComponentController = GenderSelectComponentController();
 
-    _selfIntroduceEditController = SelfIntroduceEditController(
-      onChangesSelfIntroduceText: (value) {
-        currentSelfIntroduce = value;
-        notifyListeners();
-      }
-    );
+    _selfIntroduceEditController =
+        SelfIntroduceEditController(onChangesSelfIntroduceText: (value) {
+      currentSelfIntroduce = value;
+      notifyListeners();
+    });
 
     CodeCountry codeCountry = CodeCountry();
 
-    initCountryItem = codeCountry
-        .countryList()
-        .firstWhere((element) => element.code == _fUserInfoJoinReqDto.countryCode);
+    initCountryItem = codeCountry.countryList().firstWhere(
+        (element) => element.code == _fUserInfoJoinReqDto.countryCode);
+  }
+
+  get profileImageUrl {
+    return _fUserInfoJoinReqDto.profileImageUrl;
   }
 
   get isCanNext {
@@ -180,20 +197,21 @@ class L008MainPageViewModel extends ChangeNotifier {
   }
 
   _validWithNextPage(BuildContext context) async {
-
     var nickNameResult = await _nickNameEditComponentController.valid();
 
-    if(nickNameResult){
-      return ;
+    if (nickNameResult) {
+      return;
     }
 
-    _fUserInfoJoinReqDto.nickName = _nickNameEditComponentController.nickNameValue;
+    _fUserInfoJoinReqDto.nickName =
+        _nickNameEditComponentController.nickNameValue;
 
     var currentGenderType = _genderSelectComponentController.currentGenderType;
 
     _fUserInfoJoinReqDto.gender = currentGenderType;
 
-    var currentCountryItem = _countrySelectButtonController.getCurrentCountryItem();
+    var currentCountryItem =
+        _countrySelectButtonController.getCurrentCountryItem();
 
     _fUserInfoJoinReqDto.countryCode = currentCountryItem.code;
 
@@ -201,23 +219,40 @@ class L008MainPageViewModel extends ChangeNotifier {
 
     _fUserInfoJoinReqDto.userIntroduce = selfIntroduceText;
 
-    var profileImageProvider = _profileImageEditComponentController.getProfileImageProvider();
-    List<int> profileImage ;
-    if(profileImageProvider != null){
+    var profileImageProvider =
+        _profileImageEditComponentController.getProfileImageProvider();
+    List<int> profileImage;
+    if (profileImageProvider != null) {
       profileImage = await profileImageProvider.file.readAsBytes();
 
-      profileImage = await _flutterImageCompressAdapter.compressImage(profileImage, 70);
+      profileImage =
+          await _flutterImageCompressAdapter.compressImage(profileImage, 70);
     }
 
-    var backGroundImageProvider = _profileImageEditComponentController.getBackgroundImageProvider();
-    List<int>  backGroundImage;
-    if(backGroundImageProvider != null){
+    if (_profileImageEditComponentController.getProfileImageProvider() ==
+            null &&
+        _profileImageEditComponentController.getProfileImageUrlProvider() ==
+            null) {
+      _fUserInfoJoinReqDto.profileImageUrl = null;
+    }
+
+    var backGroundImageProvider =
+        _profileImageEditComponentController.getBackgroundImageProvider();
+    List<int> backGroundImage;
+    if (backGroundImageProvider != null) {
       backGroundImage = await backGroundImageProvider.file.readAsBytes();
 
-      backGroundImage = await _flutterImageCompressAdapter.compressImage(backGroundImage, 70);
+      backGroundImage =
+          await _flutterImageCompressAdapter.compressImage(backGroundImage, 70);
     }
 
-    var fUserInfoJoinResDto = await _singUpUseCaseInputPort.joinUser(_fUserInfoJoinReqDto, profileImage, backGroundImage);
+    if(_fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Forutona){
+      var userUid = await fireBaseAuthAdapterForUseCase.createUserWithEmailAndPassword(_fUserInfoJoinReqDto.email,_fUserInfoJoinReqDto.password);
+      _fUserInfoJoinReqDto.emailUserUid = userUid;
+    }
+
+    var fUserInfoJoinResDto = await _singUpUseCaseInputPort.joinUser(
+        _fUserInfoJoinReqDto, profileImage, backGroundImage);
 
     Navigator.of(context).popUntil((route) => route.settings.name == "MAIN");
   }

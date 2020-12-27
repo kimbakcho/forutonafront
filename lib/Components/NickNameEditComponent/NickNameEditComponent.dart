@@ -9,10 +9,12 @@ class NickNameEditComponent extends StatelessWidget {
   //기존 유저 닉네임 -> 만약 valid 할때 자기 닉네임과 같으면 valid 하지 않기 위해서
   final String userNickName;
 
+  final String initNickName;
+
   final NickNameEditComponentController nickNameEditComponentController;
 
   const NickNameEditComponent(
-      {Key key, this.userNickName, this.nickNameEditComponentController})
+      {Key key, this.userNickName, this.nickNameEditComponentController,this.initNickName})
       : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class NickNameEditComponent extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => NickNameEditComponentViewModel(
             userNickName: userNickName,
-            nickNameEditComponentController: nickNameEditComponentController),
+            nickNameEditComponentController: nickNameEditComponentController,initNickName: initNickName),
         child: Consumer<NickNameEditComponentViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -65,6 +67,8 @@ class NickNameEditComponent extends StatelessWidget {
 class NickNameEditComponentViewModel extends ChangeNotifier {
   final String userNickName;
 
+  String initNickName;
+
   SignValid _nickNameValid;
 
   TextEditingController _nickNameEditController;
@@ -72,9 +76,10 @@ class NickNameEditComponentViewModel extends ChangeNotifier {
   NickNameEditComponentController nickNameEditComponentController;
 
   NickNameEditComponentViewModel(
-      {this.userNickName, this.nickNameEditComponentController})
+      {this.userNickName, this.nickNameEditComponentController,this.initNickName})
       : _nickNameValid = NickNameValidImpl(fUserRepository: sl()) {
     _nickNameEditController = TextEditingController();
+    _nickNameEditController.text  = initNickName;
     if (nickNameEditComponentController != null) {
       nickNameEditComponentController._nickNameEditComponentViewModel = this;
     }
@@ -116,6 +121,10 @@ class NickNameEditComponentController {
 
   get nickNameValue {
     return _nickNameEditComponentViewModel._nickNameEditController.text;
+  }
+
+  set nickNameValue(String value) {
+    _nickNameEditComponentViewModel._nickNameEditController.text = value;
   }
 
   Future<bool> valid() async {

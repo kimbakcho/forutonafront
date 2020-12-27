@@ -116,7 +116,7 @@ import '../AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignI
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
-import '../AppBis/ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
+import '../Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import '../Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import '../AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
 import '../AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
@@ -154,19 +154,19 @@ GetIt $initGetIt(
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
-      () => GoogleProposalOnServiceSurveyUseCase(),
-      instanceName: 'GoogleProposalOnServiceSurveyUseCase');
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(
+      () => GoogleProposalOnServiceSurveyUseCase(),
+      instanceName: 'GoogleProposalOnServiceSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
       instanceName: 'BaseGoogleSurveyUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
-      instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
       instanceName: 'LaunchMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
+      instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(
       () => BackGroundMessageUseCase(
           baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
@@ -216,15 +216,15 @@ GetIt $initGetIt(
       () => MapScreenPositionUseCase());
   gh.lazySingleton<NotiSelectActionBaseInputPort>(
       () => PageMoveActionUseCase());
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => CommentChannelUseCase(),
+      instanceName: 'CommentChannelUseCase');
   gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
       (name, _) =>
           NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
   gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => RadarBasicChannelUseCae(),
       instanceName: 'RadarBasicChannelUseCae');
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => CommentChannelUseCase(),
-      instanceName: 'CommentChannelUseCase');
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>
@@ -372,8 +372,10 @@ GetIt $initGetIt(
   gh.factory<FireBaseSignInValidUseCase>(() => FireBaseSignInValidUseCaseImpl(
       fireBaseAuthAdapterForUseCase: get<FireBaseAuthAdapterForUseCase>()));
   gh.lazySingleton<LogoutUseCaseInputPort>(() => LogoutUseCase(
-      fireBaseAuthAdapterForUseCase: get<FireBaseAuthAdapterForUseCase>(),
-      signInUserInfoUseCaseInputPort: get<SignInUserInfoUseCaseInputPort>()));
+        fireBaseAuthAdapterForUseCase: get<FireBaseAuthAdapterForUseCase>(),
+        signInUserInfoUseCaseInputPort: get<SignInUserInfoUseCaseInputPort>(),
+        snsLoginModuleAdapterFactory: get<SnsLoginModuleAdapterFactory>(),
+      ));
   gh.lazySingleton<MapBallMarkerFactory>(() => MapBallMarkerFactory(
       mapMakerDescriptorContainer: get<MapMakerDescriptorContainer>()));
   gh.lazySingleton<PwFindEmailUseCaseInputPort>(() => PwFindEmailUseCase(

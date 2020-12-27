@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,6 @@ import 'LoginButton/LoginButtonOutputPort.dart';
 import 'LoginSheetOutputPort.dart';
 
 class LoginSheet extends StatelessWidget {
-
   final LoginSheetOutputPort loginSheetOutputPort;
 
   LoginSheet({this.loginSheetOutputPort});
@@ -131,28 +130,29 @@ class LoginSheet extends StatelessWidget {
 class LoginSheetViewModel extends ChangeNotifier
     implements LoginButtonOutputPort {
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
-  final SnsLoginModuleAdapterFactory _snsLoginModuleAdapter;
+  final SnsLoginModuleAdapterFactory _snsLoginModuleAdapterFactory;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final LoginSheetOutputPort loginSheetOutputPort;
 
-  LoginSheetViewModel(this._singUpUseCaseInputPort, this._snsLoginModuleAdapter,
-      this._fireBaseAuthAdapterForUseCase,{this.loginSheetOutputPort});
+  LoginSheetViewModel(this._singUpUseCaseInputPort,
+      this._snsLoginModuleAdapterFactory, this._fireBaseAuthAdapterForUseCase,
+      {this.loginSheetOutputPort});
 
   @override
-  tryLogin(SnsSupportService snsSupportService) async {
-    if(snsSupportService == SnsSupportService.Naver
-    || snsSupportService == SnsSupportService.FaceBook || snsSupportService == SnsSupportService.Kakao){
+  tryLogin(SnsSupportService snsSupportService,BuildContext context) async {
+    if (snsSupportService == SnsSupportService.Naver ||
+        snsSupportService == SnsSupportService.FaceBook ||
+        snsSupportService == SnsSupportService.Kakao) {
       LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(
           singUpUseCaseInputPort: this._singUpUseCaseInputPort,
           fireBaseAuthAdapterForUseCase: this._fireBaseAuthAdapterForUseCase,
           snsLoginModuleAdapter:
-          _snsLoginModuleAdapter.getInstance(snsSupportService));
+              _snsLoginModuleAdapterFactory.getInstance(snsSupportService));
       await loginUseCaseInputPort.tryLogin();
+      Navigator.of(context).pop();
       notifyListeners();
-    }else {
+    } else {
       this.loginSheetOutputPort.moveToEmailLoginPage();
     }
-
   }
-
 }

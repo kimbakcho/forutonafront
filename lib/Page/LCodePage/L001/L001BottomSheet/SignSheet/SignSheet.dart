@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
+import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/SignSheet/SiginButton/SignButton.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/SignSheet/SignSheetOutputPort.dart';
 import 'package:forutonafront/Page/LCodePage/L002/L002MainPage.dart';
@@ -18,7 +23,7 @@ class SignSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => SignSheetViewModel(context,sl()),
+        create: (_) => SignSheetViewModel(context, sl(), sl(),sl()),
         child: Consumer<SignSheetViewModel>(builder: (_, model, child) {
           return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,17 +132,53 @@ class SignSheetViewModel extends ChangeNotifier
 
   final FUserInfoJoinReqDto fUserInfoJoinReqDto;
 
-  SignSheetViewModel(this.context,this.fUserInfoJoinReqDto);
+  final SnsLoginModuleAdapterFactory snsLoginModuleAdapterFactory;
+
+  final SingUpUseCaseInputPort singUpUseCaseInputPort;
+
+
+
+  SignSheetViewModel(this.context, this.fUserInfoJoinReqDto,
+      this.snsLoginModuleAdapterFactory, this.singUpUseCaseInputPort);
 
 
   @override
-  trySign(SnsSupportService snsSupportService) {
+  trySign(SnsSupportService snsSupportService) async {
     fUserInfoJoinReqDto.snsSupportService = snsSupportService;
     if (snsSupportService == SnsSupportService.Forutona) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) {
-        return L002MainPage();
-      }));
+            return L002MainPage();
+          }));
+    } else {
+      Provider.of<L001BottomSheetViewModel>(context,listen: false).setLoading(true);
+      var instance = snsLoginModuleAdapterFactory.getInstance(
+          snsSupportService);
+
+      LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(singUpUseCaseInputPort: sl(),
+          fireBaseAuthAdapterForUseCase: sl(),
+          snsLoginModuleAdapter: instance);
+
+      var snsLoginModuleResDto = await instance.getSnsModuleUserInfo();
+      var fUserSnsCheckJoinResDto = await singUpUseCaseInputPort
+          .snsUidJoinCheck(snsSupportService, snsLoginModuleResDto.accessToken);
+
+      if (fUserSnsCheckJoinResDto.join) {
+        await loginUseCaseInputPort.tryLogin();
+        Navigator.of(context).pop();
+      } else {
+        fUserInfoJoinReqDto.email = fUserSnsCheckJoinResDto.email;
+        fUserInfoJoinReqDto.nickName = fUserSnsCheckJoinResDto.userSnsName;
+        fUserInfoJoinReqDto.profileImageUrl = fUserSnsCheckJoinResDto.pictureUrl;
+        fUserInfoJoinReqDto.countryCode = "KR";
+        fUserInfoJoinReqDto.snsToken = snsLoginModuleResDto.accessToken;
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) {
+              return L002MainPage();
+            }));
+      }
+      Provider.of<L001BottomSheetViewModel>(context,listen: false).setLoading(false);
     }
   }
 }
+
