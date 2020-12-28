@@ -8,6 +8,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:injectable/injectable.dart';
 
 import 'SignInUserInfoUseCaseOutputPort.dart';
+
 @LazySingleton(as: SignInUserInfoUseCaseInputPort)
 class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   FUserInfoResDto _fUserInfo;
@@ -18,12 +19,12 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   Stream<FUserInfoResDto> fUserInfoStream;
 
   StreamController _fUserInfoStreamController;
+
   SignInUserInfoUseCase({@required FUserRepository fUserRepository})
       : _fUserRepository = fUserRepository {
     _fUserInfoStreamController = StreamController<FUserInfoResDto>.broadcast();
     fUserInfoStream = _fUserInfoStreamController.stream;
   }
-
 
   @override
   FUserInfoResDto reqSignInUserInfoFromMemory(
@@ -39,20 +40,36 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   }
 
   @override
-  Future<void> saveSignInInfoInMemoryFromAPiServer(String uid,
+  Future<FUserInfoResDto> saveSignInInfoInMemoryFromAPiServer(
       {SignInUserInfoUseCaseOutputPort outputPort}) async {
     _fUserInfo = await _fUserRepository.findByMe();
-    isLogin= true;
+    isLogin = true;
     _fUserInfoStreamController.add(_fUserInfo);
     if (outputPort != null) {
       outputPort.onSignInUserInfoFromMemory(_fUserInfo);
+    }
+    return _fUserInfo;
+  }
+
+  bool checkMaliciousPopup() {
+    var fUserInfoResDto = reqSignInUserInfoFromMemory();
+    if (isLogin) {
+      if (fUserInfoResDto.maliciousCount > 0 &&
+          fUserInfoResDto.maliciousMessageCheck == false &&
+          fUserInfoResDto.stopPeriod == null) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
   @override
   void clearUserInfo() {
     _fUserInfo = null;
-    isLogin= false;
+    isLogin = false;
     _fUserInfoStreamController.add(null);
   }
 

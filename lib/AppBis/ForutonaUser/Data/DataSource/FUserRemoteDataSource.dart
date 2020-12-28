@@ -41,6 +41,7 @@ abstract class FUserRemoteDataSource {
 
   Future<PageWrap<FUserInfoSimpleResDto>> getUserNickNameWithFullTextMatchIndex(
       String searchNickName, Pageable pageable, FDio noneTokenFDio);
+
 }
 
 @LazySingleton(as: FUserRemoteDataSource)
@@ -115,19 +116,19 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
     var formData = FormData.fromMap(reqDto.toJson());
 
     if(profileImage != null){
-      MapEntry<String, MultipartFile> profileImage =
+      MapEntry<String, MultipartFile> profileImageEntry =
       MapEntry<String, MultipartFile>("profileImage",
-          MultipartFile.fromBytes(backgroundImage, filename: "profileImage.png"));
+          MultipartFile.fromBytes(profileImage, filename: "profileImage.png"));
 
-      formData.files.add(profileImage);
+      formData.files.add(profileImageEntry);
     }
 
     if(backgroundImage != null){
-      MapEntry<String, MultipartFile> backGroundImage =
+      MapEntry<String, MultipartFile> backGroundImageEntry =
       MapEntry<String, MultipartFile>("backGroundImage",
           MultipartFile.fromBytes(backgroundImage, filename: "backGroundImage.png"));
 
-      formData.files.add(backGroundImage);
+      formData.files.add(backGroundImageEntry);
     }
 
 

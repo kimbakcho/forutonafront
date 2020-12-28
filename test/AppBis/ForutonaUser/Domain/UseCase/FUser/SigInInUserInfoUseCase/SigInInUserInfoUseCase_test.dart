@@ -36,7 +36,7 @@ void main () {
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);
     //act
-    await signInUserInfoUseCase.saveSignInInfoInMemoryFromAPiServer(fUserInfo.uid);
+    await signInUserInfoUseCase.saveSignInInfoInMemoryFromAPiServer();
     //assert
     verify(mockFUserRepository.findByMe());
   });
@@ -48,7 +48,7 @@ void main () {
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);
     //act
-    await signInUserInfoUseCase.saveSignInInfoInMemoryFromAPiServer(fUserInfo.uid);
+    await signInUserInfoUseCase.saveSignInInfoInMemoryFromAPiServer();
     signInUserInfoUseCase.reqSignInUserInfoFromMemory(outputPort: mockSignInUserInfoUseCaseOutputPort);
     //assert
     var captured2 = verify(mockSignInUserInfoUseCaseOutputPort.onSignInUserInfoFromMemory(captureAny)).captured;
@@ -64,7 +64,7 @@ void main () {
     fUserInfo.nickName = "testNickName";
     when(mockFUserRepository.findByMe()).thenAnswer((realInvocation)async => fUserInfo);
     //act
-    await signInUserInfoUseCase.saveSignInInfoInMemoryFromAPiServer(fUserInfo.uid,outputPort: mockSignInUserInfoUseCaseOutputPort);
+    await signInUserInfoUseCase.saveSignInInfoInMemoryFromAPiServer(outputPort: mockSignInUserInfoUseCaseOutputPort);
     //assert
     verify(mockSignInUserInfoUseCaseOutputPort.onSignInUserInfoFromMemory(any));
   });

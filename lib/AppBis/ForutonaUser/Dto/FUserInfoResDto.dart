@@ -49,6 +49,10 @@ class FUserInfoResDto {
    int alarmFollowNewContent;
    int alarmSponNewContent;
    int deactivation;
+   int maliciousCount;
+   DateTime stopPeriod;
+   bool maliciousMessageCheck;
+   String maliciousCause;
 
    FUserInfoResDto();
 

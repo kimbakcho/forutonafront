@@ -89,4 +89,11 @@ class FUserRepositoryImpl implements FUserRepository {
     return await _fUserRemoteDataSource.getUserNickNameWithFullTextMatchIndex(
         searchNickName, pageable, FDio.noneToken());
   }
+
+  @override
+  Future<void> updateMaliciousMessageCheck() async{
+    var fDio = FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken());
+    await fDio.put("/v1/FUserInfo/maliciousMessageCheck");
+
+  }
 }

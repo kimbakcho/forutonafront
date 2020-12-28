@@ -58,7 +58,13 @@ FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
     ..alarmReplyAndReply = json['alarmReplyAndReply'] as int
     ..alarmFollowNewContent = json['alarmFollowNewContent'] as int
     ..alarmSponNewContent = json['alarmSponNewContent'] as int
-    ..deactivation = json['deactivation'] as int;
+    ..deactivation = json['deactivation'] as int
+    ..maliciousCount = json['maliciousCount'] as int
+    ..stopPeriod = json['stopPeriod'] == null
+        ? null
+        : DateTime.parse(json['stopPeriod'] as String)
+    ..maliciousMessageCheck = json['maliciousMessageCheck'] as bool
+    ..maliciousCause = json['maliciousCause'] as String;
 }
 
 Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
@@ -105,6 +111,10 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
       'alarmFollowNewContent': instance.alarmFollowNewContent,
       'alarmSponNewContent': instance.alarmSponNewContent,
       'deactivation': instance.deactivation,
+      'maliciousCount': instance.maliciousCount,
+      'stopPeriod': instance.stopPeriod?.toIso8601String(),
+      'maliciousMessageCheck': instance.maliciousMessageCheck,
+      'maliciousCause': instance.maliciousCause,
     };
 
 T _$enumDecode<T>(

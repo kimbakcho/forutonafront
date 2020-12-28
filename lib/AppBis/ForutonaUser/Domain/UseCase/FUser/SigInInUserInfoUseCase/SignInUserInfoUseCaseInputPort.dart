@@ -6,7 +6,8 @@ import 'SignInUserInfoUseCaseOutputPort.dart';
 abstract class SignInUserInfoUseCaseInputPort {
   Stream<FUserInfoResDto> fUserInfoStream;
   FUserInfoResDto reqSignInUserInfoFromMemory({SignInUserInfoUseCaseOutputPort outputPort});
-  Future<void> saveSignInInfoInMemoryFromAPiServer(String uid,{SignInUserInfoUseCaseOutputPort outputPort});
+  Future<FUserInfoResDto> saveSignInInfoInMemoryFromAPiServer({SignInUserInfoUseCaseOutputPort outputPort});
   void clearUserInfo();
   bool isLogin;
+  checkMaliciousPopup();
 }

@@ -36,8 +36,7 @@ Future<FireBaseAuthAdapterForUseCase> loginUserInfoDataSaveForMemory(
   fireBaseAuthAdapterForUseCase.startOnAuthStateChangedListen();
   if (await fireBaseAuthAdapterForUseCase.isLogin()) {
     SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort = sl();
-    await signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(
-        await fireBaseAuthAdapterForUseCase.userUid());
+    await signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
   }
   return fireBaseAuthAdapterForUseCase;
 }
@@ -90,7 +89,7 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
     if (await _fireBaseAuthBaseAdapter.isLogin()) {
       var uid = await _fireBaseAuthBaseAdapter.userUid();
      await _signInUserInfoUseCaseInputPort
-          .saveSignInInfoInMemoryFromAPiServer(uid);
+          .saveSignInInfoInMemoryFromAPiServer();
       _updateFCMTokenUseCaseInputPort.updateFCMToken(token);
     }
   }

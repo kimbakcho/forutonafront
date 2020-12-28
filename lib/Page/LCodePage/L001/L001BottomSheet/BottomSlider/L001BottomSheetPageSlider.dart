@@ -27,12 +27,6 @@ class L001BottomSheetPageSliderViewModel extends ChangeNotifier implements Login
   PageController _pageController = new PageController();
 
   @override
-  moveToEmailLoginPage() {
-    // TODO: implement moveToLoginPage
-    throw UnimplementedError();
-  }
-
-  @override
   moveToSignPage() {
     _pageController.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.linear);
   }

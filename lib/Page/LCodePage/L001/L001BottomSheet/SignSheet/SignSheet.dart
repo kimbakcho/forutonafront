@@ -156,7 +156,6 @@ class SignSheetViewModel extends ChangeNotifier
           snsSupportService);
 
       LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(singUpUseCaseInputPort: sl(),
-          fireBaseAuthAdapterForUseCase: sl(),
           snsLoginModuleAdapter: instance);
 
       var snsLoginModuleResDto = await instance.getSnsModuleUserInfo();

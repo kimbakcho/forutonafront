@@ -27,7 +27,6 @@ void main() {
     mocSnsSdkAdapter = MockSnsLoginModuleAdapter();
     loginUseCase = LoginUseCase(
         singUpUseCaseInputPort: mockSingUpUseCaseInputPort,
-        fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
         snsLoginModuleAdapter: mocSnsSdkAdapter);
   });
 

@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/Common/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
+import 'package:forutonafront/MainPage/MainPageView.dart';
 import 'package:injectable/injectable.dart';
 
 import 'FireBaseAuthBaseAdapter.dart';
@@ -25,6 +27,7 @@ class FireBaseAuthAdapterForUseCaseImpl
 
   final UpdateFCMTokenUseCaseInputPort _updateFCMTokenUseCaseInputPort;
 
+
   FireBaseAuthAdapterForUseCaseImpl(
       {@required FireBaseMessageAdapter fireBaseMessageAdapter,
       @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
@@ -35,6 +38,7 @@ class FireBaseAuthAdapterForUseCaseImpl
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
         _updateFCMTokenUseCaseInputPort = updateFCMTokenUseCaseInputPort,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
+
 
   startOnAuthStateChangedListen(){
     FirebaseAuth.instance.onAuthStateChanged.listen(_onAuthStateChange);
@@ -54,12 +58,14 @@ class FireBaseAuthAdapterForUseCaseImpl
 
   _onAuthStateChange(FirebaseUser user) async {
     if(await isLogin()){
-      await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(user.uid);
+      await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
       await _updateFCMTokenUseCaseInputPort.updateFCMToken(await _fireBaseMessageAdapter.getCurrentToken());
     } else {
       _signInUserInfoUseCaseInputPort.clearUserInfo();
     }
   }
+
+
 
   @override
   Future<String> userEmail() async {

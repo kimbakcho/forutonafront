@@ -1,10 +1,17 @@
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:injectable/injectable.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
 class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
+
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+
+  NaverLoginAdapterImpl(this._fireBaseAuthAdapterForUseCase);
+
   @override
   // ignore: missing_return
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {
@@ -39,5 +46,11 @@ class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
   @override
   Future<void> logout() async{
     await FlutterNaverLogin.logOut();
+  }
+
+  @override
+  Future<void> login(FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto) async {
+    await _fireBaseAuthAdapterForUseCase
+        .signInWithCustomToken(fUserSnsCheckJoinResDto.firebaseCustomToken);
   }
 }

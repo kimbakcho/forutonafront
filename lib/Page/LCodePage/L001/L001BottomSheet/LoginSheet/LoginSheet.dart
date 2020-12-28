@@ -5,8 +5,10 @@ import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUs
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
+import 'package:forutonafront/Page/LCodePage/L009/L009BottomSheet.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import 'LoginButton/LoginButton.dart';
@@ -21,7 +23,7 @@ class LoginSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => LoginSheetViewModel(sl(), sl(), sl()),
+      create: (_) => LoginSheetViewModel(sl(), sl()),
       child: Consumer<LoginSheetViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -131,28 +133,42 @@ class LoginSheetViewModel extends ChangeNotifier
     implements LoginButtonOutputPort {
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
   final SnsLoginModuleAdapterFactory _snsLoginModuleAdapterFactory;
-  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   final LoginSheetOutputPort loginSheetOutputPort;
 
   LoginSheetViewModel(this._singUpUseCaseInputPort,
-      this._snsLoginModuleAdapterFactory, this._fireBaseAuthAdapterForUseCase,
+      this._snsLoginModuleAdapterFactory,
       {this.loginSheetOutputPort});
 
   @override
-  tryLogin(SnsSupportService snsSupportService,BuildContext context) async {
+  tryLogin(SnsSupportService snsSupportService, BuildContext context) async {
     if (snsSupportService == SnsSupportService.Naver ||
         snsSupportService == SnsSupportService.FaceBook ||
         snsSupportService == SnsSupportService.Kakao) {
       LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(
           singUpUseCaseInputPort: this._singUpUseCaseInputPort,
-          fireBaseAuthAdapterForUseCase: this._fireBaseAuthAdapterForUseCase,
           snsLoginModuleAdapter:
               _snsLoginModuleAdapterFactory.getInstance(snsSupportService));
       await loginUseCaseInputPort.tryLogin();
       Navigator.of(context).pop();
       notifyListeners();
     } else {
-      this.loginSheetOutputPort.moveToEmailLoginPage();
+      showMaterialModalBottomSheet(
+          backgroundColor: Colors.white,
+          enableDrag: true,
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(15.0),
+                topLeft: Radius.circular(15.0)),
+          ),
+          builder: (_) {
+            return Container(
+              height: MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top -
+                  16,
+              child: L009BottomSheet(),
+            );
+          });
     }
   }
 }

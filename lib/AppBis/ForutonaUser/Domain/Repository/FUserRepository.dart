@@ -34,4 +34,6 @@ abstract class FUserRepository {
 
   Future<PageWrap<FUserInfoSimpleResDto>> findByUserNickNameWithFullTextMatchIndex(
       String searchNickName, Pageable pageable);
+
+  Future<void> updateMaliciousMessageCheck();
 }

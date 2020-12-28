@@ -254,6 +254,11 @@ class L008MainPageViewModel extends ChangeNotifier {
     var fUserInfoJoinResDto = await _singUpUseCaseInputPort.joinUser(
         _fUserInfoJoinReqDto, profileImage, backGroundImage);
 
+    if(_fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Forutona){
+      await fireBaseAuthAdapterForUseCase.logout();
+      await fireBaseAuthAdapterForUseCase.signInWithEmailAndPassword(_fUserInfoJoinReqDto.email,_fUserInfoJoinReqDto.password);
+    }
+
     Navigator.of(context).popUntil((route) => route.settings.name == "MAIN");
   }
 }

@@ -229,7 +229,6 @@ class G001MainPageViewModel extends ChangeNotifier
 
   void getUserInfoBackEndApi() async {
     _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(
-        await _fireBaseAuthAdapterForUseCase.userUid(),
         outputPort: this);
   }
 }

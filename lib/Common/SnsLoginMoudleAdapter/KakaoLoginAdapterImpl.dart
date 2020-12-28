@@ -1,10 +1,17 @@
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 
 import 'SnsLoginModuleAdapter.dart';
 
 class KakaoLoginAdapterImpl implements SnsLoginModuleAdapter {
+
+  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+
+  KakaoLoginAdapterImpl(this._fireBaseAuthAdapterForUseCase);
+
   @override
   Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {
     try {
@@ -33,5 +40,11 @@ class KakaoLoginAdapterImpl implements SnsLoginModuleAdapter {
     UserApi _userApi = UserApi.instance;
     await _userApi.logout();
     await AccessTokenStore.instance.clear();
+  }
+
+  @override
+  Future<void> login(FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto) async {
+    await _fireBaseAuthAdapterForUseCase
+        .signInWithCustomToken(fUserSnsCheckJoinResDto.firebaseCustomToken);
   }
 }
