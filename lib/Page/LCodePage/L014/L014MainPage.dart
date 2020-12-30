@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
+import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
+import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+class L014MainPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+        create: (_) => L014MainPageViewModel(sl()),
+        child: Consumer<L014MainPageViewModel>(builder: (_, model, child) {
+          return Scaffold(
+              body: Container(
+                  padding: MediaQuery.of(context).padding,
+                  child: Column(children: [
+                    LCodeAppBar(
+                      title: "휴대폰 인증하기",
+                      progressValue: 0.6,
+                      visibleTailButton: true,
+                      onTailButtonClick: () {
+                        model._checkAuth();
+                      },
+                      tailButtonLabel: "다음",
+                      enableTailButton: model._isCanNext,
+                    ),
+                    Expanded(
+                        child: Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width,
+                            child: SingleChildScrollView(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                  SizedBox(
+                                    height: 21,
+                                  ),
+                                  Container(
+                                      margin:
+                                          EdgeInsets.only(left: 16, right: 16),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          style: GoogleFonts.notoSans(
+                                            fontSize: 14,
+                                            color: const Color(0xff000000),
+                                            letterSpacing: -0.28,
+                                            height: 1.4285714285714286,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  '연락 받을 수 있는 휴대폰 번호를 입력하세요. \n',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  '패스워드 변경을 위해 휴대폰 인증을 진행합니다.',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      )),
+                                      SizedBox(
+                                        height: 28,
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 16,right: 16),
+                                        child: PhoneAuthComponent(
+                                          phoneAuthComponentController:
+                                          model._phoneAuthComponentController,
+                                        ),
+                                      )
+                                ]))))
+                  ])));
+        }));
+  }
+}
+
+class L014MainPageViewModel extends ChangeNotifier {
+
+  PhoneAuthComponentController _phoneAuthComponentController;
+
+  final PwFindPhoneAuthNumberReqDto _pwFindPhoneAuthNumberReqDto;
+
+
+  bool _hasTryReqAuth = false;
+
+  L014MainPageViewModel(this._pwFindPhoneAuthNumberReqDto){
+    _phoneAuthComponentController = PhoneAuthComponentController(
+      onTryAuthReqSuccess: _onTryAuthReqSuccess,
+      onPwFindPhoneAuthCheckSuccess: _onPwFindPhoneAuthCheckSuccess
+    );
+  }
+
+  _onTryAuthReqSuccess(){
+    _hasTryReqAuth = true;
+    notifyListeners();
+  }
+
+  bool get _isCanNext {
+    return _hasTryReqAuth;
+  }
+
+  _checkAuth(){
+    _phoneAuthComponentController.checkAuthCheckNumberWithEmail(_pwFindPhoneAuthNumberReqDto);
+  }
+
+  _onPwFindPhoneAuthCheckSuccess(PwFindPhoneAuthNumberResDto pwFindPhoneAuthNumberResDto){
+    print(pwFindPhoneAuthNumberResDto.toJson());
+  }
+
+}

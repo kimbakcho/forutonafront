@@ -7,6 +7,7 @@ import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import 'package:forutonafront/Components/BackButton/BorderCircleBackButton.dart';
 import 'package:forutonafront/Components/CloseButton/BottomSheetCloseButton.dart';
+import 'package:forutonafront/Page/LCodePage/L012/L012MainPage.dart';
 
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -96,7 +97,9 @@ class L009BottomSheet extends StatelessWidget {
                             child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      model._jumpToFindPWPage(context);
+                                    },
                                     child: Text('혹시 비밀번호를 분실하셨나요?',
                                         style: GoogleFonts.notoSans(
                                           fontSize: 12,
@@ -200,7 +203,12 @@ class L009BottomSheetViewModel extends ChangeNotifier {
        var errorText = fireBaseValidErrorUtil.getErrorText(ex);
        _fluttertoastAdapter.showToast(msg: errorText);
     }
+  }
 
+  _jumpToFindPWPage(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+      return L012MainPage();
+    }));
   }
 
 }

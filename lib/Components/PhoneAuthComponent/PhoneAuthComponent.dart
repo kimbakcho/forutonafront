@@ -5,6 +5,8 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
 import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Components/CountrySelect/CountrySelectButton.dart';
 
@@ -197,18 +199,14 @@ class PhoneAuthComponentViewModel extends ChangeNotifier
     reqDto.internationalizedDialCode = currentCountryItem.dialCode;
     waitSmsRetrieved();
     await phoneAuthUseCaseInputPort.reqPhoneAuth(reqDto, outputPort: this);
-
-
   }
 
   //인증 번호 요청전에 항상 Call 해야함.
   waitSmsRetrieved() async {
     var authCode = await SmsRetrieved.startListeningSms();
-
     var indexOf = authCode.indexOf("인증번호:");
     var indexOf2 = authCode.indexOf("]", indexOf);
     var authNumber = authCode.substring(indexOf + 5, indexOf2);
-
     _currentAuthNumberController.text = authNumber;
   }
 
@@ -253,6 +251,26 @@ class PhoneAuthComponentViewModel extends ChangeNotifier
     phoneAuthUseCaseInputPort.reqNumberAuthReq(reqDto, outputPort: this);
   }
 
+  Future<PwFindPhoneAuthNumberResDto> _checkAuthCheckNumberWithEmail(PwFindPhoneAuthNumberReqDto reqDto) async {
+    var currentCountryItem =
+    this._countrySelectButtonController.getCurrentCountryItem();
+    reqDto.internationalizedDialCode = currentCountryItem.dialCode;
+    reqDto.phoneNumber = _currentPhoneNumberController.text;
+    reqDto.isoCode = currentCountryItem.code;
+    reqDto.authNumber = _currentAuthNumberController.text;
+    var pwFindPhoneAuthNumberResDto = await phoneAuthUseCaseInputPort.reqPwFindNumberAuth(reqDto);
+    if (pwFindPhoneAuthNumberResDto.errorFlag) {
+      _isAuthNumberError = true;
+      _authCheckErrorText = pwFindPhoneAuthNumberResDto.errorCause;
+    } else {
+      if (phoneAuthComponentController != null && phoneAuthComponentController.onPwFindPhoneAuthCheckSuccess != null) {
+        phoneAuthComponentController
+            .onPwFindPhoneAuthCheckSuccess(pwFindPhoneAuthNumberResDto);
+      }
+    }
+    return pwFindPhoneAuthNumberResDto;
+  }
+
   @override
   void onNumberAuthReq(PhoneAuthNumberResDto phoneAuthNumberResDto) {
     if (phoneAuthNumberResDto.errorFlag) {
@@ -265,6 +283,8 @@ class PhoneAuthComponentViewModel extends ChangeNotifier
       }
     }
   }
+
+
 
   @override
   void onPhoneAuth(PhoneAuthResDto resDto) {
@@ -313,11 +333,17 @@ class PhoneAuthComponentController {
 
   final Function(PhoneAuthNumberResDto) onPhoneAuthCheckSuccess;
 
+  final Function(PwFindPhoneAuthNumberResDto) onPwFindPhoneAuthCheckSuccess;
+
   final Function onTryAuthReqSuccess;
 
-  PhoneAuthComponentController({this.onPhoneAuthCheckSuccess, this.onTryAuthReqSuccess});
+  PhoneAuthComponentController({this.onPhoneAuthCheckSuccess, this.onTryAuthReqSuccess,this.onPwFindPhoneAuthCheckSuccess});
 
   checkAuthCheckNumber() {
     _phoneAuthComponentViewModel._checkAuthCheckNumber();
+  }
+
+  checkAuthCheckNumberWithEmail(PwFindPhoneAuthNumberReqDto pwFindPhoneAuthNumberReqDto){
+    _phoneAuthComponentViewModel._checkAuthCheckNumberWithEmail(pwFindPhoneAuthNumberReqDto);
   }
 }

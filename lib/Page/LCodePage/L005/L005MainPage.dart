@@ -26,13 +26,9 @@ class L005MainPage extends StatelessWidget {
                         LCodeAppBar(
                             progressValue: 0.7,
                             tailButtonLabel: "다음",
-                            // enableTailButton: true,
-                            //TODO 회원가입 완료시 해당 부분으로 교체
                             enableTailButton: model.enableTailButton,
                             title: "휴대폰 인증",
                             onTailButtonClick: () {
-                              // model.testNextButton();
-                              //TODO 회원가입 완료시 해당 부분으로 교체
                               model.checkPhoneAuth();
                             }),
                         SizedBox(

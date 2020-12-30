@@ -76,7 +76,7 @@ class J010ViewModel extends ChangeNotifier {
     reqDto.isoCode = _currentIsoCode;
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.internationalizedDialCode = _currentInternationalizedPhoneNumber;
-    reqDto.email = _pwFindPhoneUseCaseInputPort.email;
+    // reqDto.email = _pwFindPhoneUseCaseInputPort.email;
     _setIsLoading(true);
     await _phoneFindValidUseCase.phoneEmailIdValidWithReqPhoneSmsAuth(reqDto);
     if (_phoneFindValidUseCase.hasPhoneEmailError()) {
@@ -151,7 +151,7 @@ class J010ViewModel extends ChangeNotifier {
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.isoCode = _currentIsoCode;
     reqDto.authNumber = authNumberEditingController.text;
-    reqDto.email = _pwFindPhoneUseCaseInputPort.email;
+    // reqDto.email = _pwFindPhoneUseCaseInputPort.email;
     _setIsLoading(true);
     await _phoneFindValidUseCase.phoneAuthNumberValid(reqDto);
     if (_phoneFindValidUseCase.hasPhoneAuthNumberError()) {
@@ -165,13 +165,13 @@ class J010ViewModel extends ChangeNotifier {
           fontSize: 12.0);
     } else {
 
-      _pwFindPhoneUseCaseInputPort.emailPhoneAuthToken =
-          _phoneFindValidUseCase.getPwFindPhoneAuthNumber().emailPhoneAuthToken;
-
-      _pwFindPhoneUseCaseInputPort.internationalizedPhoneNumber =
-          _phoneFindValidUseCase
-              .getPwFindPhoneAuthNumber()
-              .internationalizedDialCode;
+      // _pwFindPhoneUseCaseInputPort.emailPhoneAuthToken =
+      //     _phoneFindValidUseCase.getPwFindPhoneAuthNumber().emailPhoneAuthToken;
+      //
+      // _pwFindPhoneUseCaseInputPort.internationalizedPhoneNumber =
+      //     _phoneFindValidUseCase
+      //         .getPwFindPhoneAuthNumber()
+      //         .internationalizedDialCode;
 
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => J011View()));
     }

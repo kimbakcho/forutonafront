@@ -99,7 +99,7 @@ import '../AppBis/ForutonaUser/Data/Repository/PhoneAuthRepositoryImpl.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/PhoneAuthUseCase/PhoneAuthUseCaseInputPort.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCase.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
-import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCase.dart';
+import '../AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
 import '../Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCae.dart';
 import '../Common/Notification/NotiChannel/Domain/RadarBasicChannel/RadarBasicChannelUseCaeInputPort.dart';
@@ -236,6 +236,8 @@ GetIt $initGetIt(
       phoneAuthRemoteSource: get<PhoneAuthRemoteSource>()));
   gh.lazySingleton<PhoneAuthUseCaseInputPort>(
       () => PhoneAuthUseCase(phoneAuthRepository: get<PhoneAuthRepository>()));
+  gh.lazySingleton<PwFindPhoneAuthNumberReqDto>(
+      () => PwFindPhoneAuthNumberReqDto());
   gh.lazySingleton<PwFindPhoneUseCaseInputPort>(() =>
       PwFindPhoneUseCase(phoneAuthRepository: get<PhoneAuthRepository>()));
   gh.lazySingleton<RadarBasicChannelUseCaeInputPort>(() =>

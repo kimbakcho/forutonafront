@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCase.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
 import 'package:forutonafront/Page/JCodePage/J010/J010View.dart';
 
@@ -48,7 +47,7 @@ class J009ViewModel extends ChangeNotifier {
     await _duplicationEmailValid.valid(idEditingController.text);
     _hasComplete = true;
     if (!_duplicationEmailValid.hasError()) {
-      _pwFindPhoneUseCase.email = idEditingController.text;
+      // _pwFindPhoneUseCase.email = idEditingController.text;
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => J010View()));
     }
     _setIsLoading(false);

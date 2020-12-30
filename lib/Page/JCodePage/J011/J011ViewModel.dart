@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseOutputPort.dart';
+// import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseOutputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 
-class J011ViewModel extends ChangeNotifier
-    implements PwFindPhoneUseCaseOutputPort {
+class J011ViewModel extends ChangeNotifier {
   final BuildContext context;
   final TextEditingController pwEditingController;
   final TextEditingController pwCheckEditingController;
@@ -52,9 +51,9 @@ class J011ViewModel extends ChangeNotifier
 
   onCompleteBtnClick() async {
     if (!_pwValid.hasError() && !_pwCheckValid.hasError()) {
-      _pwFindPhoneUseCaseInputPort.password = pwEditingController.text;
-      _setIsLoading(true);
-      await _pwFindPhoneUseCaseInputPort.phonePwChange(outputPort: this);
+      // _pwFindPhoneUseCaseInputPort.password = pwEditingController.text;
+      // _setIsLoading(true);
+      // await _pwFindPhoneUseCaseInputPort.phonePwChange(outputPort: this);
       _setIsLoading(false);
     }
   }

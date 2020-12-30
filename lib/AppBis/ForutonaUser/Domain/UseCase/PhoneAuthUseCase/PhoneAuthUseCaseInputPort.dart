@@ -4,11 +4,16 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberReqDto.dart
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
+import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class PhoneAuthUseCaseInputPort {
-  Future<void> reqPhoneAuth(PhoneAuthReqDto reqDto,{PwAuthFromPhoneUseCaseOutputPort outputPort});
+  Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto,{PwAuthFromPhoneUseCaseOutputPort outputPort});
   Future<PhoneAuthNumberResDto> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto, {PwAuthFromPhoneUseCaseOutputPort outputPort});
+
+  Future<PwFindPhoneAuthNumberResDto> reqPwFindNumberAuth(PwFindPhoneAuthNumberReqDto reqDto);
 }
 
 abstract class PwAuthFromPhoneUseCaseOutputPort {
@@ -24,7 +29,7 @@ class PhoneAuthUseCase implements PhoneAuthUseCaseInputPort {
       : _phoneAuthRepository = phoneAuthRepository;
 
   @override
-  Future<void> reqPhoneAuth(PhoneAuthReqDto reqDto,
+  Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto,
       {PwAuthFromPhoneUseCaseOutputPort outputPort}) async {
     outputPort.onPhoneAuth(await _phoneAuthRepository.reqPhoneAuth(reqDto));
   }
@@ -36,5 +41,14 @@ class PhoneAuthUseCase implements PhoneAuthUseCaseInputPort {
     outputPort.onNumberAuthReq(phoneAuthNumberResDto);
     return phoneAuthNumberResDto;
   }
+
+  @override
+  Future<PwFindPhoneAuthNumberResDto> reqPwFindNumberAuth(PwFindPhoneAuthNumberReqDto reqDto) async {
+    var pwFindPhoneAuthNumberResDto = await _phoneAuthRepository.reqPwFindNumberAuth(reqDto);
+    return pwFindPhoneAuthNumberResDto;
+  }
+
+
+
 
 }
