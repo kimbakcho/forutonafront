@@ -5,11 +5,12 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDt
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart';
+import 'package:injectable/injectable.dart';
 
 
 abstract class PhoneFindValidUseCase {
 
-  Future<void> phoneEmailIdValidWithReqPhoneSmsAuth(
+  Future<PwFindPhoneAuthResDto> phoneEmailIdValidWithReqPhoneSmsAuth(
       PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto);
 
   bool hasPhoneEmailError();
@@ -18,7 +19,7 @@ abstract class PhoneFindValidUseCase {
 
   PwFindPhoneAuthResDto getPhoneAuth();
 
-  Future<void> phoneAuthNumberValid(
+  Future<PwFindPhoneAuthNumberResDto> phoneAuthNumberValid(
       PwFindPhoneAuthNumberReqDto pwFindPhoneAuthReqDto);
 
   bool hasPhoneAuthNumberError();
@@ -28,7 +29,7 @@ abstract class PhoneFindValidUseCase {
   PwFindPhoneAuthNumberResDto getPwFindPhoneAuthNumber();
 
 }
-
+@Injectable(as: PhoneFindValidUseCase)
 class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
   PwFindPhoneAuthResDto _resPhoneAuth;
   bool _isPhoneEmailError = true;
@@ -44,7 +45,7 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
       : _phoneAuthRepository = phoneAuthRepository;
 
   @override
-  Future<void> phoneEmailIdValidWithReqPhoneSmsAuth(
+  Future<PwFindPhoneAuthResDto> phoneEmailIdValidWithReqPhoneSmsAuth(
       PwFindPhoneAuthReqDto pwFindPhoneAuthReqDto) async {
     _isPhoneEmailError = false;
     _phoneEmailErrorText = "";
@@ -57,14 +58,12 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
         _phoneEmailErrorText = "입력하신 정보와 일치하는 계정이 없습니다.\n"
             "휴대폰 번호를 변경하셨다면, 이메일 인증으로 패스워드를 찾아주세요.";
       }
-      return;
-    } else {
-      return;
     }
+    return _resPhoneAuth;
   }
 
   @override
-  Future<void> phoneAuthNumberValid(
+  Future<PwFindPhoneAuthNumberResDto> phoneAuthNumberValid(
       PwFindPhoneAuthNumberReqDto pwFindPhoneAuthReqDto) async {
     _isPhoneAuthNumberError = false;
     _phoneAuthNumberErrorText = "";
@@ -75,6 +74,7 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
       _isPhoneAuthNumberError = true;
       _phoneAuthNumberErrorText = _authNumber.errorCause;
     }
+    return this._authNumber;
   }
 
   @override

@@ -4,7 +4,6 @@ import 'PhoneAuthNumberReqDto.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'PwFindPhoneAuthNumberReqDto.g.dart';
 
-@lazySingleton
 @JsonSerializable()
 class PwFindPhoneAuthNumberReqDto extends PhoneAuthNumberReqDto{
   String email;

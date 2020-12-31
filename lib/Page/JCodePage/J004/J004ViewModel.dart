@@ -12,8 +12,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthResDto.dart';
 import 'package:forutonafront/Page/JCodePage/J006/J006View.dart';
 
-class J004ViewModel extends ChangeNotifier
-    implements PwAuthFromPhoneUseCaseOutputPort {
+class J004ViewModel extends ChangeNotifier {
   final BuildContext context;
   final PhoneAuthUseCaseInputPort _phoneAuthUseCaseInputPort;
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
@@ -78,7 +77,7 @@ class J004ViewModel extends ChangeNotifier
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.internationalizedDialCode = _currentInternationalizedPhoneNumber;
     _setIsLoading(true);
-    await _phoneAuthUseCaseInputPort.reqPhoneAuth(reqDto, outputPort: this);
+    await _phoneAuthUseCaseInputPort.reqPhoneAuth(reqDto);
     _setIsLoading(false);
     notifyListeners();
   }
@@ -143,7 +142,7 @@ class J004ViewModel extends ChangeNotifier
     reqDto.phoneNumber = _currentPhoneNumber;
     reqDto.isoCode = _currentIsoCode;
     reqDto.authNumber = authNumberEditingController.text;
-    await _phoneAuthUseCaseInputPort.reqNumberAuthReq(reqDto, outputPort: this);
+    await _phoneAuthUseCaseInputPort.reqNumberAuthReq(reqDto);
   }
 
   @override

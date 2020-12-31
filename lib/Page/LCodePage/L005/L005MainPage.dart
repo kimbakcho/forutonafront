@@ -5,6 +5,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberResDto.dart
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
+import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthMode/PhoneAuthModeUseCase.dart';
 import 'package:forutonafront/Page/LCodePage/L007/L007MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -68,6 +69,7 @@ class L005MainPage extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.only(left: 16, right: 16),
                           child: PhoneAuthComponent(
+                            phoneAuthMode: PhoneAuthMode.SignIn,
                             phoneAuthComponentController:
                                 model._phoneAuthComponentController,
                           ),

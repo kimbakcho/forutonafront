@@ -1,8 +1,10 @@
 
+import 'package:injectable/injectable.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'PwChangeFromPhoneAuthReqDto.g.dart';
 
 @JsonSerializable()
+@lazySingleton
 class PwChangeFromPhoneAuthReqDto {
   String password;
   String email;

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/Common/SignValid/BasicUseCase/EmailValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/DontHaveIdError.dart';
@@ -100,9 +101,9 @@ class L013MainPageViewModel extends ChangeNotifier {
 
   String _currentEmailId = "";
 
-  final PwFindPhoneAuthNumberReqDto _pwFindPhoneAuthNumberReqDto;
+  final PwChangeFromPhoneAuthReqDto _pwChangeFromPhoneAuthReqDto;
 
-  L013MainPageViewModel(this._pwFindPhoneAuthNumberReqDto) {
+  L013MainPageViewModel(this._pwChangeFromPhoneAuthReqDto) {
     _emailCheckComponentController =
         EmailCheckComponentController(onChangeEditText: (value) {
       _currentEmailId = value;
@@ -117,7 +118,7 @@ class L013MainPageViewModel extends ChangeNotifier {
   _nextPage(BuildContext context) async {
     bool result = await _emailCheckComponentController.valid();
     if (result) {
-      _pwFindPhoneAuthNumberReqDto.email = _emailCheckComponentController.emailValue;
+      _pwChangeFromPhoneAuthReqDto.email = _emailCheckComponentController.emailValue;
       Navigator.of(context).push(MaterialPageRoute(builder: (_) {
         return L014MainPage();
       }));

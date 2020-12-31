@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PhoneAuthNumberResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberResDto.dart';
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
+import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthMode/PhoneAuthModeUseCase.dart';
+import 'package:forutonafront/Page/LCodePage/L015/L015MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +15,7 @@ class L014MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => L014MainPageViewModel(sl()),
+        create: (_) => L014MainPageViewModel(sl(), context),
         child: Consumer<L014MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
               body: Container(
@@ -70,16 +73,20 @@ class L014MainPage extends StatelessWidget {
                                         ),
                                         textAlign: TextAlign.left,
                                       )),
-                                      SizedBox(
-                                        height: 28,
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 16,right: 16),
-                                        child: PhoneAuthComponent(
-                                          phoneAuthComponentController:
+                                  SizedBox(
+                                    height: 28,
+                                  ),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(left: 16, right: 16),
+                                    child: PhoneAuthComponent(
+                                      phoneAuthMode: PhoneAuthMode.PhonePwFind,
+                                      email: model
+                                          ._pwChangeFromPhoneAuthReqDto.email,
+                                      phoneAuthComponentController:
                                           model._phoneAuthComponentController,
-                                        ),
-                                      )
+                                    ),
+                                  )
                                 ]))))
                   ])));
         }));
@@ -87,22 +94,24 @@ class L014MainPage extends StatelessWidget {
 }
 
 class L014MainPageViewModel extends ChangeNotifier {
-
   PhoneAuthComponentController _phoneAuthComponentController;
-
-  final PwFindPhoneAuthNumberReqDto _pwFindPhoneAuthNumberReqDto;
-
 
   bool _hasTryReqAuth = false;
 
-  L014MainPageViewModel(this._pwFindPhoneAuthNumberReqDto){
+  BuildContext context;
+
+  final PwChangeFromPhoneAuthReqDto _pwChangeFromPhoneAuthReqDto;
+
+  L014MainPageViewModel(this._pwChangeFromPhoneAuthReqDto, this.context) {
     _phoneAuthComponentController = PhoneAuthComponentController(
-      onTryAuthReqSuccess: _onTryAuthReqSuccess,
-      onPwFindPhoneAuthCheckSuccess: _onPwFindPhoneAuthCheckSuccess
-    );
+        onTryAuthReqSuccess: _onTryAuthReqSuccess,
+        onPhoneAuthCheckSuccess: (PhoneAuthNumberResDto phoneAuthNumberResDto) {
+          _onPhoneAuthCheckSuccess(
+              phoneAuthNumberResDto as PwFindPhoneAuthNumberResDto);
+        });
   }
 
-  _onTryAuthReqSuccess(){
+  _onTryAuthReqSuccess() {
     _hasTryReqAuth = true;
     notifyListeners();
   }
@@ -111,12 +120,22 @@ class L014MainPageViewModel extends ChangeNotifier {
     return _hasTryReqAuth;
   }
 
-  _checkAuth(){
-    _phoneAuthComponentController.checkAuthCheckNumberWithEmail(_pwFindPhoneAuthNumberReqDto);
+  _onPhoneAuthCheckSuccess(
+      PwFindPhoneAuthNumberResDto pwFindPhoneAuthNumberResDto) {
+    _pwChangeFromPhoneAuthReqDto.email = pwFindPhoneAuthNumberResDto.email;
+    _pwChangeFromPhoneAuthReqDto.emailPhoneAuthToken =
+        pwFindPhoneAuthNumberResDto.emailPhoneAuthToken;
+    _pwChangeFromPhoneAuthReqDto.internationalizedPhoneNumber =
+        pwFindPhoneAuthNumberResDto.internationalizedDialCode +
+            " " +
+            pwFindPhoneAuthNumberResDto.phoneNumber;
+
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return L015MainPage();
+    }));
   }
 
-  _onPwFindPhoneAuthCheckSuccess(PwFindPhoneAuthNumberResDto pwFindPhoneAuthNumberResDto){
-    print(pwFindPhoneAuthNumberResDto.toJson());
+  void _checkAuth() async {
+    _phoneAuthComponentController.checkAuthCheckNumber();
   }
-
 }

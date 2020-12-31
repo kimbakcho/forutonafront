@@ -10,17 +10,11 @@ import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.d
 import 'package:injectable/injectable.dart';
 
 abstract class PhoneAuthUseCaseInputPort {
-  Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto,{PwAuthFromPhoneUseCaseOutputPort outputPort});
-  Future<PhoneAuthNumberResDto> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto, {PwAuthFromPhoneUseCaseOutputPort outputPort});
-
+  Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto);
+  Future<PhoneAuthNumberResDto> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto);
   Future<PwFindPhoneAuthNumberResDto> reqPwFindNumberAuth(PwFindPhoneAuthNumberReqDto reqDto);
 }
 
-abstract class PwAuthFromPhoneUseCaseOutputPort {
-  void onPhoneAuth(PhoneAuthResDto resDto);
-
-  void onNumberAuthReq(PhoneAuthNumberResDto phoneAuthNumberResDto);
-}
 @LazySingleton(as: PhoneAuthUseCaseInputPort)
 class PhoneAuthUseCase implements PhoneAuthUseCaseInputPort {
   PhoneAuthRepository _phoneAuthRepository;
@@ -29,16 +23,13 @@ class PhoneAuthUseCase implements PhoneAuthUseCaseInputPort {
       : _phoneAuthRepository = phoneAuthRepository;
 
   @override
-  Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto,
-      {PwAuthFromPhoneUseCaseOutputPort outputPort}) async {
-    outputPort.onPhoneAuth(await _phoneAuthRepository.reqPhoneAuth(reqDto));
+  Future<PhoneAuthResDto> reqPhoneAuth(PhoneAuthReqDto reqDto) async {
+    return await _phoneAuthRepository.reqPhoneAuth(reqDto);
   }
 
   @override
-  Future<PhoneAuthNumberResDto> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto,
-      {PwAuthFromPhoneUseCaseOutputPort outputPort}) async {
+  Future<PhoneAuthNumberResDto> reqNumberAuthReq(PhoneAuthNumberReqDto reqDto) async {
     var phoneAuthNumberResDto = await _phoneAuthRepository.reqNumberAuthReq(reqDto);
-    outputPort.onNumberAuthReq(phoneAuthNumberResDto);
     return phoneAuthNumberResDto;
   }
 
