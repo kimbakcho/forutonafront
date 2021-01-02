@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Page/LCodePage/L013/L013MainPage.dart';
+import 'package:forutonafront/Page/LCodePage/L016/L016MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +49,11 @@ class L012MainPage extends StatelessWidget {
                       child: L012MainButton(
                         title: "이메일 인증하기",
                         description: "계정에 사용한 이메일 주소를 인증하고 패스워드를 변경합니다.",
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_){
+                            return L016MainPage();
+                          }));
+                        },
                       ),
                     )
 
