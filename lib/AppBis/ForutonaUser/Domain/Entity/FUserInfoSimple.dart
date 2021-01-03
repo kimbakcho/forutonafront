@@ -7,11 +7,13 @@ class FUserInfoSimple {
   String uid;
   String nickName;
   String profilePictureUrl;
+  String backGroundImageUrl;
   String isoCode;
   double userLevel;
   String selfIntroduction;
   double cumulativeInfluence;
-  int followCount;
+  int followerCount;
+  int followingCount;
   double playerPower;
 
   FUserInfoSimple();

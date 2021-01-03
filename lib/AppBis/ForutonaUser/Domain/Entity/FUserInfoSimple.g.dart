@@ -11,11 +11,13 @@ FUserInfoSimple _$FUserInfoSimpleFromJson(Map<String, dynamic> json) {
     ..uid = json['uid'] as String
     ..nickName = json['nickName'] as String
     ..profilePictureUrl = json['profilePictureUrl'] as String
+    ..backGroundImageUrl = json['backGroundImageUrl'] as String
     ..isoCode = json['isoCode'] as String
     ..userLevel = (json['userLevel'] as num)?.toDouble()
     ..selfIntroduction = json['selfIntroduction'] as String
     ..cumulativeInfluence = (json['cumulativeInfluence'] as num)?.toDouble()
-    ..followCount = json['followCount'] as int
+    ..followerCount = json['followerCount'] as int
+    ..followingCount = json['followingCount'] as int
     ..playerPower = (json['playerPower'] as num)?.toDouble();
 }
 
@@ -24,10 +26,12 @@ Map<String, dynamic> _$FUserInfoSimpleToJson(FUserInfoSimple instance) =>
       'uid': instance.uid,
       'nickName': instance.nickName,
       'profilePictureUrl': instance.profilePictureUrl,
+      'backGroundImageUrl': instance.backGroundImageUrl,
       'isoCode': instance.isoCode,
       'userLevel': instance.userLevel,
       'selfIntroduction': instance.selfIntroduction,
       'cumulativeInfluence': instance.cumulativeInfluence,
-      'followCount': instance.followCount,
+      'followerCount': instance.followerCount,
+      'followingCount': instance.followingCount,
       'playerPower': instance.playerPower,
     };

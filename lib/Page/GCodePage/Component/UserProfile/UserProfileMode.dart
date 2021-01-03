@@ -1,0 +1,3 @@
+enum UserProfileMode {
+  ME,OtherUser
+}

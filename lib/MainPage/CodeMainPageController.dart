@@ -4,7 +4,7 @@ import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 
 
 
-enum CodeState { H001CODE, H003CODE, X001CODE, X002CODE, I001CODE }
+enum CodeState { H001CODE, H003CODE, X001CODE, X002CODE, I001CODE, G001CODE,G003CODE }
 
 abstract class CodeMainPageController {
   PageController pageController;

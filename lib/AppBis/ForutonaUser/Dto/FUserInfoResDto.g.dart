@@ -37,7 +37,8 @@ FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
     ..joinTime = json['joinTime'] == null
         ? null
         : DateTime.parse(json['joinTime'] as String)
-    ..followCount = json['followCount'] as int
+    ..followerCount = json['followerCount'] as int
+    ..followingCount = json['followingCount'] as int
     ..backOut = json['backOut'] as int
     ..lastBackOutTime = json['lastBackOutTime'] == null
         ? null
@@ -91,7 +92,8 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
       'expPoint': instance.expPoint,
       'fCMtoken': instance.fCMtoken,
       'joinTime': instance.joinTime?.toIso8601String(),
-      'followCount': instance.followCount,
+      'followerCount': instance.followerCount,
+      'followingCount': instance.followingCount,
       'backOut': instance.backOut,
       'lastBackOutTime': instance.lastBackOutTime?.toIso8601String(),
       'selfIntroduction': instance.selfIntroduction,

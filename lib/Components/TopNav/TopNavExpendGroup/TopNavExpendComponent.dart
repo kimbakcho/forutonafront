@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
 import '../TopNavBtnMediator.dart';
@@ -8,5 +9,5 @@ abstract class TopNavExpendComponent {
   openExpandNav();
   closeExpandNav();
   getTopNavRouterType();
-  getAnimation();
+  getAnimation(BuildContext context);
 }

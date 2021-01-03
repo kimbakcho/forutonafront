@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/Page/GCodePage/G001/G001MainPage.dart';
+import 'package:forutonafront/Page/GCodePage/G001/G001MainPageTemp.dart';
+import 'package:forutonafront/Page/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -171,7 +172,7 @@ class BottomNavigationViewModel extends ChangeNotifier {
 
   jumpToPersona(){
     Navigator.of(context).push(MaterialPageRoute(builder: (_){
-      return G001MainPage();
+      return GCodeMainPage();
     }));
   }
 

@@ -55,15 +55,15 @@ class _TopH003NavExpandComponentState extends State<TopH003NavExpandComponent>
     super.dispose();
   }
 
-  Animation<double> getAnimation() {
+  Animation<double> getAnimation(BuildContext context) {
     return Tween<double>(begin: 0, end: 280).animate(_controller);
   }
 
   @override
   Widget build(BuildContext context) {
     return TopH003NavExpandAniComponent(
-      animation: getAnimation(),
-      btnHeightSize: 30,
+      animation: getAnimation(context),
+      btnHeightSize: 36,
       child: TopH003NavExpendAniContent(),
     );
   }

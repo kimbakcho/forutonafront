@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Page/HomePage/HomeMainPageViewModel.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
+import 'MainPageViewModelInputPort.dart';
 import 'NavBtn/TopNavBtnComponent.dart';
 import 'TopNavBtnGroup/INavBtnGroup.dart';
 import 'TopNavExpendGroup/TopNavExpendComponent.dart';
@@ -31,7 +32,7 @@ abstract class TopNavBtnMediator {
 
   Duration animationDuration;
 
-  HomeMainPageViewModelInputPort codeMainViewModelInputPort;
+  MainPageViewModelInputPort codeMainViewModelInputPort;
 
   void onNavBtnAniStatusListener(AnimationStatus status, CodeState routerType);
 
@@ -151,7 +152,7 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   }
 
   @override
-  HomeMainPageViewModelInputPort codeMainViewModelInputPort;
+  MainPageViewModelInputPort codeMainViewModelInputPort;
 
 }
 

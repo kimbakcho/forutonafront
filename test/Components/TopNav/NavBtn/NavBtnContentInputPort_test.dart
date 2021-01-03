@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:forutonafront/Components/TopNav/MainPageViewModelInputPort.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnAction.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnComponent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
@@ -9,7 +10,7 @@ import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:mockito/mockito.dart';
 
 class MockCodeMainViewModelInputPort extends Mock
-    implements HomeMainPageViewModelInputPort {}
+    implements MainPageViewModelInputPort {}
 
 class MockNavBtnAction extends Mock implements NavBtnAction {}
 

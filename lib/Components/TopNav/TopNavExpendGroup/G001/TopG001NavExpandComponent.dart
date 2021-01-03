@@ -1,37 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
+import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendComponent.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
-import '../TopNavExpendComponent.dart';
-
-class TopX001NavExpandComponent extends StatefulWidget {
+class TopG001NavExpandComponent extends StatefulWidget {
   final TopNavBtnMediator topNavBtnMediator;
   final CodeMainPageController codeMainPageController;
 
-  const TopX001NavExpandComponent(
+  const TopG001NavExpandComponent(
       {Key key, this.topNavBtnMediator, this.codeMainPageController})
       : super(key: key);
 
   @override
-  _TopX001NavExpandComponentState createState() =>
-      _TopX001NavExpandComponentState(
+  _TopG001NavExpandComponentState createState() =>
+      _TopG001NavExpandComponentState(
           topNavBtnMediator: topNavBtnMediator,
           codeMainPageController: codeMainPageController);
 }
 
-class _TopX001NavExpandComponentState extends State<TopX001NavExpandComponent>
+class _TopG001NavExpandComponentState extends State<TopG001NavExpandComponent>
     with SingleTickerProviderStateMixin
-    implements TopNavExpendComponent,CodeMainPageChangeListener {
+    implements TopNavExpendComponent, CodeMainPageChangeListener {
   AnimationController _controller;
-
-  @override
-  TopNavBtnMediator topNavBtnMediator;
 
   @override
   CodeMainPageController codeMainPageController;
 
-  _TopX001NavExpandComponentState(
-      {this.topNavBtnMediator, this.codeMainPageController});
+  @override
+  TopNavBtnMediator topNavBtnMediator;
+
+  _TopG001NavExpandComponentState(
+      {@required this.topNavBtnMediator, this.codeMainPageController});
 
   @override
   void initState() {
@@ -43,7 +42,7 @@ class _TopX001NavExpandComponentState extends State<TopX001NavExpandComponent>
 
   void iniAnimation() {
     _controller = AnimationController(
-        duration: topNavBtnMediator.animationDuration,vsync: this);
+        duration: topNavBtnMediator.animationDuration, vsync: this);
     _controller.forward();
   }
 
@@ -57,10 +56,10 @@ class _TopX001NavExpandComponentState extends State<TopX001NavExpandComponent>
 
   @override
   Widget build(BuildContext context) {
-    return TopX001NavExpandAniComponent(
+    return TopG001NavExpandAniComponent(
       animation: getAnimation(context),
-      btnHeightSize: 30,
-      child: TopX001NavExpendAniContent(),
+      btnHeightSize: 36,
+      child: TopG001NavExpendContent(),
     );
   }
 
@@ -70,43 +69,55 @@ class _TopX001NavExpandComponentState extends State<TopX001NavExpandComponent>
   }
 
   @override
+  getAnimation(BuildContext context) {
+    return Tween<double>(begin: 0, end: 52).animate(_controller);
+  }
+
+  @override
   getTopNavRouterType() {
-    return CodeState.X001CODE;
+    return CodeState.G001CODE;
+  }
+
+  @override
+  onChangeMainPage() {
+    setState(() {});
   }
 
   @override
   openExpandNav() {
     _controller.forward();
   }
-
-  @override
-  getAnimation(BuildContext context) {
-    return Tween<double>(begin: 0, end: 280).animate(_controller);
-  }
-
-  @override
-  onChangeMainPage() {
-    setState(() {
-
-    });
-  }
 }
 
-class TopX001NavExpendAniContent extends StatelessWidget {
+class TopG001NavExpendContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("X001"),
+      child: Material(
+        shape: CircleBorder(),
+        color: Color(0xffF6F6F6),
+        child: InkWell(
+          customBorder: CircleBorder(),
+          onTap: () {
+
+          },
+            child: Icon(
+            Icons.settings,
+            size: 25,
+              color: Color(0xffB1B1B1),
+            ),
+        ),
+      ),
     );
   }
 }
 
-class TopX001NavExpandAniComponent extends StatelessWidget {
+class TopG001NavExpandAniComponent extends StatelessWidget {
   final Animation<double> animation;
   final double btnHeightSize;
   final Widget child;
 
-  const TopX001NavExpandAniComponent(
+  const TopG001NavExpandAniComponent(
       {Key key, this.animation, this.btnHeightSize, this.child})
       : super(key: key);
 
@@ -116,7 +127,7 @@ class TopX001NavExpandAniComponent extends StatelessWidget {
       animation: animation,
       builder: (context, child) => Positioned(
         right: 0,
-        top: 4,
+        top: 0,
         width: animation.value,
         height: btnHeightSize,
         child: child,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Components/TopNav/MainPageViewModelInputPort.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtn.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnAction.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
@@ -18,13 +19,9 @@ import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 
 
-abstract class HomeMainPageViewModelInputPort {
-  jumpToPage(CodeState pageCode);
-}
-
 class HomeMainPageViewModel
     with ChangeNotifier
-    implements HomeMainPageViewModelInputPort, CodeMainPageChangeListener {
+    implements MainPageViewModelInputPort, CodeMainPageChangeListener {
   Position lastKnownPosition;
 
   String firstAddress = "";

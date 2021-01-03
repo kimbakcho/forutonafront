@@ -124,7 +124,7 @@ class BallDisPlayUseCase {
     if (fBallResDto.ballDeleteFlag) {
       return "-";
     } else {
-      return fBallResDto.uid.followCount.toString();
+      return fBallResDto.uid.followerCount.toString();
     }
   }
 

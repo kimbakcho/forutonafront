@@ -99,6 +99,7 @@ import '../AppBis/ForutonaUser/Domain/Repository/PhoneAuthRepository.dart';
 import '../AppBis/ForutonaUser/Data/Repository/PhoneAuthRepositoryImpl.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/PhoneAuthUseCase/PhoneAuthUseCaseInputPort.dart';
 import '../Common/SignValid/PhonePwFindValidUseCase/PhoneFindValidUseCase.dart';
+import '../Page/GCodePage/Component/UserProfile/ProfileModeUseCase/ProfileModeUseCaseInputPort.dart';
 import '../AppBis/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCase.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
@@ -133,6 +134,7 @@ import '../AppBis/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dar
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/UpdateUserPositionUseCaseInputPort.dart';
 import '../Components/UserInfoCollectionWidget/UserInfoCollectMediator.dart';
+import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserInfoUseCaseInputPort.dart';
 import '../AppBis/ForutonaUser/Data/DataSource/UserPolicyRemoteDataSource.dart';
 import '../AppBis/ForutonaUser/Domain/Repository/UserPolicyRepository.dart';
 import '../AppBis/ForutonaUser/Data/Repository/UserPolicyRepositoryImpl.dart';
@@ -159,11 +161,11 @@ GetIt $initGetIt(
   gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
       instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
-      () => GoogleProposalOnServiceSurveyUseCase(),
-      instanceName: 'GoogleProposalOnServiceSurveyUseCase');
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(
+      () => GoogleProposalOnServiceSurveyUseCase(),
+      instanceName: 'GoogleProposalOnServiceSurveyUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
       instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
@@ -214,15 +216,15 @@ GetIt $initGetIt(
       () => MapScreenPositionUseCase());
   gh.lazySingleton<NotiSelectActionBaseInputPort>(
       () => PageMoveActionUseCase());
-  gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
-      (name, _) =>
-          NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
   gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => CommentChannelUseCase(),
       instanceName: 'CommentChannelUseCase');
   gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => RadarBasicChannelUseCae(),
       instanceName: 'RadarBasicChannelUseCae');
+  gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
+      (name, _) =>
+          NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>
@@ -240,6 +242,8 @@ GetIt $initGetIt(
       () => PhoneAuthUseCase(phoneAuthRepository: get<PhoneAuthRepository>()));
   gh.factory<PhoneFindValidUseCase>(() => PhoneFindValidUseCaseImpl(
       phoneAuthRepository: get<PhoneAuthRepository>()));
+  gh.lazySingleton<ProfileModeUseCaseFactory>(
+      () => ProfileModeUseCaseFactory());
   gh.lazySingleton<PwChangeFromPhoneAuthReqDto>(
       () => PwChangeFromPhoneAuthReqDto());
   gh.lazySingleton<PwFindPhoneUseCaseInputPort>(() =>
@@ -332,6 +336,8 @@ GetIt $initGetIt(
       () => UpdateFCMTokenUseCase(fUserRepository: get<FUserRepository>()));
   gh.lazySingleton<UpdateUserPositionUseCaseInputPort>(
       () => UpdateUserPositionUseCase(fUserRepository: get<FUserRepository>()));
+  gh.lazySingleton<UserInfoUseCaseInputPort>(
+      () => UserInfoUseCase(get<FUserRepository>()));
   gh.lazySingleton<UserProfileImageUploadUseCaseInputPort>(() =>
       UserProfileImageUploadUseCase(
           flutterImageCompressAdapter: get<FlutterImageCompressAdapter>(),

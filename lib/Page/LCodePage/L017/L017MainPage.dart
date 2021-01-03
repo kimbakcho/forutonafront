@@ -14,7 +14,7 @@ class L017MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => L017MainPageViewModel(email,sl()),
+        create: (_) => L017MainPageViewModel(email, sl()),
         child: Consumer<L017MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
               body: Container(
@@ -40,35 +40,33 @@ class L017MainPage extends StatelessWidget {
                                         EdgeInsets.only(left: 16, right: 16),
                                     child: Text.rich(
                                       TextSpan(
-                                        style: GoogleFonts.notoSans(
-                                          fontSize: 14,
-                                          color: const Color(0xff000000),
-                                          letterSpacing: -0.28,
-                                          height: 1.4285714285714286,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: '패스워드를 변경하고 로그인하세요.\n',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                            ),
+                                          style: GoogleFonts.notoSans(
+                                            fontSize: 14,
+                                            color: const Color(0xff000000),
+                                            letterSpacing: -0.28,
+                                            height: 1.4285714285714286,
                                           ),
-                                          TextSpan(
-                                            text: email,
-                                            style: TextStyle(
-                                              color: const Color(0xff3497fd),
-                                              fontWeight: FontWeight.w500,
+                                          children: [
+                                            TextSpan(
+                                              text: '패스워드를 변경하고 로그인하세요.\n',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                '로 \n패스워드를 재설정하실 수 있는 메일을 발송하였습니다.',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w300,
+                                            TextSpan(
+                                              text: email,
+                                              style: TextStyle(
+                                                color: const Color(0xff3497fd),
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
+                                            TextSpan(
+                                                text:
+                                                    '로 \n패스워드를 재설정하실 수 있는 메일을 발송하였습니다.',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w300,
+                                                ))
+                                          ]),
                                       textAlign: TextAlign.left,
                                     ),
                                   ),
@@ -76,29 +74,30 @@ class L017MainPage extends StatelessWidget {
                                     height: 38,
                                   ),
                                   Container(
-                                    margin:
-                                        EdgeInsets.only(left: 68, right: 68),
-                                    child: Row(children: [
-                                      Expanded(
-                                          child: FlatButton(
-                                              height: 50,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(30))),
-                                              color: Color(0xff3497FD),
-                                              onPressed: () {
-                                                model._pop(context);
-                                              },
-                                              child: Text('다시 로그인하기',
-                                                  style: GoogleFonts.notoSans(
-                                                    fontSize: 16,
-                                                    color:
-                                                        const Color(0xfff9f9f9),
-                                                    fontWeight: FontWeight.w500,
-                                                  ))))
-                                    ]),
-                                  ),
+                                      margin:
+                                          EdgeInsets.only(left: 68, right: 68),
+                                      child: Row(children: [
+                                        Expanded(
+                                            child: FlatButton(
+                                                height: 50,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                30))),
+                                                color: Color(0xff3497FD),
+                                                onPressed: () {
+                                                  model._pop(context);
+                                                },
+                                                child: Text('다시 로그인하기',
+                                                    style: GoogleFonts.notoSans(
+                                                      fontSize: 16,
+                                                      color: const Color(
+                                                          0xfff9f9f9),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ))))
+                                      ])),
                                   SizedBox(
                                     height: 64,
                                   ),
@@ -133,7 +132,7 @@ class L017MainPageViewModel extends ChangeNotifier {
 
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
-  L017MainPageViewModel(this.email,this._fireBaseAuthAdapterForUseCase);
+  L017MainPageViewModel(this.email, this._fireBaseAuthAdapterForUseCase);
 
   _pop(BuildContext context) {
     //until L001
@@ -143,7 +142,7 @@ class L017MainPageViewModel extends ChangeNotifier {
     Navigator.of(context).pop();
   }
 
-  _sendPwResetEmail(BuildContext context)async{
+  _sendPwResetEmail(BuildContext context) async {
     await this._fireBaseAuthAdapterForUseCase.sendPasswordResetEmail(email);
     Navigator.of(context).pop();
   }

@@ -58,7 +58,7 @@ class _TopX002NavExpandComponentState extends State<TopX002NavExpandComponent>
   @override
   Widget build(BuildContext context) {
     return TopX002NavExpandAniComponent(
-      animation: getAnimation(),
+      animation: getAnimation(context),
       btnHeightSize: 30,
       child: TopX002NavExpendAniContent(),
     );
@@ -80,7 +80,7 @@ class _TopX002NavExpandComponentState extends State<TopX002NavExpandComponent>
   }
 
   @override
-  getAnimation() {
+  getAnimation(BuildContext context) {
     return Tween<double>(begin: 0, end: 280).animate(_controller);
   }
 

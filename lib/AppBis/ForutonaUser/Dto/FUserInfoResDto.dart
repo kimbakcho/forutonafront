@@ -30,7 +30,8 @@ class FUserInfoResDto {
    double expPoint;
    String fCMtoken;
    DateTime joinTime;
-   int followCount;
+   int followerCount;
+   int followingCount;
    int backOut;
    DateTime lastBackOutTime;
    String selfIntroduction;

@@ -52,7 +52,7 @@ class UserProfileBar extends StatelessWidget {
                 color: const Color(0xff78849e),
               )),
           TextSpan(
-              text: "팔로워 ${fUserInfoSimpleResDto.followCount.toInt()} 명",
+              text: "팔로워 ${fUserInfoSimpleResDto.followerCount.toInt()} 명",
               style: GoogleFonts.notoSans(
                 fontSize: 10,
                 color: const Color(0xff78849e),

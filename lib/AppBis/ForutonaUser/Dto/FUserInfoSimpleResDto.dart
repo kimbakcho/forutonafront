@@ -8,11 +8,13 @@ class FUserInfoSimpleResDto {
   String uid;
   String nickName;
   String profilePictureUrl;
+  String backGroundImageUrl;
   String isoCode;
   double userLevel;
   String selfIntroduction;
   double cumulativeInfluence;
-  int followCount;
+  int followerCount;
+  int followingCount;
   double playerPower;
 
   FUserInfoSimpleResDto();
@@ -25,11 +27,13 @@ class FUserInfoSimpleResDto {
     fUserInfoSimpleResDto.uid = fUserInfoSimple.uid;
     fUserInfoSimpleResDto.nickName = fUserInfoSimple.nickName;
     fUserInfoSimpleResDto.profilePictureUrl = fUserInfoSimple.profilePictureUrl;
+    fUserInfoSimpleResDto.backGroundImageUrl = fUserInfoSimple.backGroundImageUrl;
     fUserInfoSimpleResDto.isoCode = fUserInfoSimple.isoCode;
     fUserInfoSimpleResDto.userLevel = fUserInfoSimple.userLevel;
     fUserInfoSimpleResDto.selfIntroduction = fUserInfoSimple.selfIntroduction;
     fUserInfoSimpleResDto.cumulativeInfluence = fUserInfoSimple.cumulativeInfluence;
-    fUserInfoSimpleResDto.followCount = fUserInfoSimple.followCount;
+    fUserInfoSimpleResDto.followerCount = fUserInfoSimple.followerCount;
+    fUserInfoSimpleResDto.followingCount = fUserInfoSimple.followingCount;
     fUserInfoSimpleResDto.playerPower = fUserInfoSimple.playerPower;
     return fUserInfoSimpleResDto;
   }

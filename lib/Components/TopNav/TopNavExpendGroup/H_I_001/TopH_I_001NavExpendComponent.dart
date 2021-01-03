@@ -94,7 +94,7 @@ class _TopH_I_001NavExpendComponentState
     }
   }
 
-  Animation<double> getAnimation() {
+  Animation<double> getAnimation(BuildContext context) {
     double smallSizeBtn = 80;
     return Tween<double>(
             begin: smallSizeBtn, end: widget.topH001NavExpendDto.btnWidthSize)
@@ -112,7 +112,7 @@ class _TopH_I_001NavExpendComponentState
   @override
   Widget build(BuildContext context) {
     return TopH_I_001NavExpendAniComponent(
-      animation: getAnimation(),
+      animation: getAnimation(context),
       child: Row(
         children: <Widget>[
           Expanded(

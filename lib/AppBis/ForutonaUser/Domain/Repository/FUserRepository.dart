@@ -36,4 +36,6 @@ abstract class FUserRepository {
       String searchNickName, Pageable pageable);
 
   Future<void> updateMaliciousMessageCheck();
+
+  Future<FUserInfoSimpleResDto> getFUserInfoSimple(String userUid) {}
 }

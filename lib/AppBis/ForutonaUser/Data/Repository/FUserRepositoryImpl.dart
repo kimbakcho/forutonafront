@@ -94,6 +94,14 @@ class FUserRepositoryImpl implements FUserRepository {
   Future<void> updateMaliciousMessageCheck() async{
     var fDio = FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken());
     await fDio.put("/v1/FUserInfo/maliciousMessageCheck");
+  }
 
+  @override
+  Future<FUserInfoSimpleResDto> getFUserInfoSimple(String userUid) async{
+    var fDio = FDio.noneToken();
+    var response = await fDio.get("/v1/FUserInfo/FUserInfoSimple",queryParameters: {
+      "userUid": userUid
+    });
+    return FUserInfoSimpleResDto.fromJson(response.data);
   }
 }
