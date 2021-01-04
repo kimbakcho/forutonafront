@@ -19,7 +19,8 @@ class G001MainPage extends StatelessWidget {
                     UserProfileComponent(
                       userUid: model.userUid,
                       userProfileMode: UserProfileMode.ME,
-                    )
+                    ),
+                    Text("123123")
                   ],
                 ),
               ),

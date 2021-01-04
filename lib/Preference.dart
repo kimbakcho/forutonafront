@@ -13,7 +13,7 @@ class Preference {
    static final String officialSite="http://neoforutona.cafe24.com/official-channel/";
 
   //testDebug
-   static final String baseBackEndUrl = "http://14.47.44.50:8443";
+   static final String baseBackEndUrl = "http://211.226.88.230:8443";
 
 
 //  // relese
