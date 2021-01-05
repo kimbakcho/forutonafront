@@ -22,6 +22,7 @@ class FBallListUpUserMakerBall implements FBallListUpUseCaseInputPort {
     executeOutPort(outputPort, pageWrap);
     return pageWrap;
   }
+
   void executeOutPort(
       FBallListUpUseCaseOutputPort outputPort, PageWrap<FBallResDto> pageWrap) {
     if (outputPort != null) {

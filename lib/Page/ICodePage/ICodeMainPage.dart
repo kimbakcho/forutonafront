@@ -125,7 +125,8 @@ class _ICodeMainPageState extends State<ICodeMainPage>
           onPageChanged: model.onBallListSelectChanged,
           itemCount: model.listUpBalls.length,
           itemBuilder: (context, index) {
-            return model.listUpBalls[index].ballStyle3Widget;
+            return Container();
+            // return model.listUpBalls[index].ballStyle3Widget;
           }),
     );
   }

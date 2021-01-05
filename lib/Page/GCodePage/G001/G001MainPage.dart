@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/Page/GCodePage/Component/UserMakeBallList/UserMakeBallList.dart';
 import 'package:forutonafront/Page/GCodePage/Component/UserProfile/UserProfileComponent.dart';
 import 'package:forutonafront/Page/GCodePage/Component/UserProfile/UserProfileMode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -20,7 +21,13 @@ class G001MainPage extends StatelessWidget {
                       userUid: model.userUid,
                       userProfileMode: UserProfileMode.ME,
                     ),
-                    Text("123123")
+                    SizedBox(
+                      height: 16,
+                    ),
+                    UserMakeBallList(
+                      //Todo 추후에 model.userUid 변경 지금은 테스트용 ID
+                      userUid: "h2q2jl3nRPXZ8809Uvi9KdzSss83",
+                    )
                   ],
                 ),
               ),

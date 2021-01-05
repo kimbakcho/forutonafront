@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'ListUpBallWidgetItem.dart';
@@ -20,7 +21,8 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
       {Key key,
       this.ballListMediator,
       this.index,
-      this.issueBallDisPlayUseCase, this.boxDecoration})
+      this.issueBallDisPlayUseCase,
+      this.boxDecoration})
       : super(key: key);
 
   @override
@@ -36,43 +38,68 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
             builder: (_, model, __) {
           return Material(
               color: boxDecoration != null ? boxDecoration.color : Colors.white,
-              borderRadius: boxDecoration != null ? boxDecoration.borderRadius : null,
+              borderRadius:
+                  boxDecoration != null ? boxDecoration.borderRadius : null,
               child: InkWell(
                   onTap: () {
                     model.moveToDetailPage();
                   },
-                  child: Container(
-                      padding: EdgeInsets.fromLTRB(14, 16, 14, 16),
-                      child: Column(children: [
-                        ReduceSizeTopBar(
-                            issueBallDisPlayUseCase: issueBallDisPlayUseCase),
-                        SizedBox(
-                          height: 11,
-                        ),
-                        Row(children: [
-                          Expanded(
-                              child: Column(children: [
-                            ReduceSizeBallTitleWidget(
+                  child: Stack(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.fromLTRB(14, 16, 14, 16),
+                          child: Column(children: [
+                            ReduceSizeTopBar(
                                 issueBallDisPlayUseCase:
                                     issueBallDisPlayUseCase),
+                            SizedBox(
+                              height: 11,
+                            ),
+                            Row(children: [
+                              Expanded(
+                                  child: Column(children: [
+                                ReduceSizeBallTitleWidget(
+                                    issueBallDisPlayUseCase:
+                                        issueBallDisPlayUseCase),
                                 SizedBox(
                                   height: 3,
                                 ),
-                            ReduceSizeAddressBar(
-                                issueBallDisPlayUseCase:
-                                    issueBallDisPlayUseCase)
-                          ])),
-                          Container(
-                            width: 70,
-                            height: 53,
-                            child: issueBallDisPlayUseCase.isMainPicture()
-                                ? ReduceSizeImageWidget(
+                                ReduceSizeAddressBar(
                                     issueBallDisPlayUseCase:
                                         issueBallDisPlayUseCase)
-                                : Container(),
-                          )
-                        ]),
-                      ]))));
+                              ])),
+                              Container(
+                                width: 70,
+                                height: 53,
+                                child: issueBallDisPlayUseCase.isMainPicture()
+                                    ? ReduceSizeImageWidget(
+                                        issueBallDisPlayUseCase:
+                                            issueBallDisPlayUseCase)
+                                    : Container(),
+                              )
+                            ]),
+                          ])),
+                      model.isFinishBall ?
+                      Positioned.fill(
+                          child: Container(
+                            child: Center(
+                              child: Text(
+                                '종료된',
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 18,
+                                  color: const Color(0xffffffff),
+                                  height: 0.7777777777777778,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              color: Colors.black.withOpacity(0.4),
+                            ),
+                      )): Container()
+                    ],
+                  )));
         }));
   }
 }
@@ -86,4 +113,9 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
       BallListMediator ballListMediator,
       int index})
       : super(context, ballListMediator, index);
+
+  bool get isFinishBall {
+    return ballListMediator.itemList[index].activationTime
+        .isBefore(DateTime.now());
+  }
 }
