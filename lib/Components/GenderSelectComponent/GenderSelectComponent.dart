@@ -6,15 +6,20 @@ import 'package:provider/provider.dart';
 import 'GenderType.dart';
 
 class GenderSelectComponent extends StatelessWidget {
-
   final GenderSelectComponentController genderSelectComponentController;
 
-  const GenderSelectComponent({Key key, this.genderSelectComponentController}) : super(key: key);
+  final GenderType initGender;
+
+  const GenderSelectComponent(
+      {Key key, this.genderSelectComponentController, this.initGender})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => GenderSelectComponentViewModel(genderSelectComponentController: genderSelectComponentController),
+      create: (_) => GenderSelectComponentViewModel(
+          genderSelectComponentController: genderSelectComponentController,
+          initGender: initGender),
       child: Consumer<GenderSelectComponentViewModel>(
         builder: (_, model, child) {
           return Container(
@@ -45,14 +50,20 @@ class GenderSelectComponent extends StatelessWidget {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                  color: model._currentGenderType == GenderType.Male ? Color(0xff668FF7) : Color(0xffE4E7E8),
+                                  color: model._currentGenderType ==
+                                          GenderType.Male
+                                      ? Color(0xff668FF7)
+                                      : Color(0xffE4E7E8),
                                   shape: BoxShape.circle),
                               width: 32,
                               height: 32,
                               padding: EdgeInsets.all(4),
                               child: SvgPicture.asset(
                                 "assets/IconImage/male.svg",
-                                color: model._currentGenderType == GenderType.Male ? Color(0xffF6F6F6) : Color(0xffD4D4D4),
+                                color:
+                                    model._currentGenderType == GenderType.Male
+                                        ? Color(0xffF6F6F6)
+                                        : Color(0xffD4D4D4),
                               ),
                             ),
                           ],
@@ -63,7 +74,9 @@ class GenderSelectComponent extends StatelessWidget {
                       "남성",
                       style: GoogleFonts.notoSans(
                         fontSize: 14,
-                        color: model._currentGenderType == GenderType.Male ? Color(0xff668FF7) : Color(0xffb1b1b1),
+                        color: model._currentGenderType == GenderType.Male
+                            ? Color(0xff668FF7)
+                            : Color(0xffb1b1b1),
                         letterSpacing: -0.28,
                         fontWeight: FontWeight.w300,
                         height: 1.2142857142857142,
@@ -80,14 +93,20 @@ class GenderSelectComponent extends StatelessWidget {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                  color: model._currentGenderType == GenderType.FeMale ? Color(0xffF68D9A) : Color(0xffE4E7E8),
+                                  color: model._currentGenderType ==
+                                          GenderType.FeMale
+                                      ? Color(0xffF68D9A)
+                                      : Color(0xffE4E7E8),
                                   shape: BoxShape.circle),
                               width: 32,
                               height: 32,
                               padding: EdgeInsets.all(4),
                               child: SvgPicture.asset(
                                 "assets/IconImage/female.svg",
-                                color: model._currentGenderType == GenderType.FeMale ? Color(0xffF6F6F6) : Color(0xffD4D4D4),
+                                color: model._currentGenderType ==
+                                        GenderType.FeMale
+                                    ? Color(0xffF6F6F6)
+                                    : Color(0xffD4D4D4),
                               ),
                             ),
                           ],
@@ -98,7 +117,9 @@ class GenderSelectComponent extends StatelessWidget {
                       "여성",
                       style: GoogleFonts.notoSans(
                         fontSize: 14,
-                        color: model._currentGenderType == GenderType.FeMale ? Color(0xffF68D9A) : Color(0xffb1b1b1),
+                        color: model._currentGenderType == GenderType.FeMale
+                            ? Color(0xffF68D9A)
+                            : Color(0xffb1b1b1),
                         letterSpacing: -0.28,
                         fontWeight: FontWeight.w300,
                         height: 1.2142857142857142,
@@ -116,27 +137,30 @@ class GenderSelectComponent extends StatelessWidget {
 }
 
 class GenderSelectComponentViewModel extends ChangeNotifier {
-
   final GenderSelectComponentController genderSelectComponentController;
+
+  GenderType initGender;
 
   GenderType _currentGenderType = GenderType.None;
 
-  GenderSelectComponentViewModel({this.genderSelectComponentController}){
-    if(this.genderSelectComponentController != null){
+  GenderSelectComponentViewModel(
+      {this.genderSelectComponentController, this.initGender}) {
+    if (this.genderSelectComponentController != null) {
       genderSelectComponentController._genderSelectComponentViewModel = this;
+    }
+    if (initGender != null) {
+      _currentGenderType = initGender;
     }
   }
 
-  _setCurrentGenderType(GenderType type){
-    if(_currentGenderType == type){
+  _setCurrentGenderType(GenderType type) {
+    if (_currentGenderType == type) {
       _currentGenderType = GenderType.None;
-    }else {
+    } else {
       _currentGenderType = type;
     }
     notifyListeners();
   }
-
-
 }
 
 class GenderSelectComponentController {
@@ -145,6 +169,4 @@ class GenderSelectComponentController {
   GenderType get currentGenderType {
     return _genderSelectComponentViewModel._currentGenderType;
   }
-
-
 }

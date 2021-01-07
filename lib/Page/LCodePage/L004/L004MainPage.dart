@@ -8,7 +8,7 @@ import 'package:forutonafront/Components/SliderDatePicker/widget/date_picker_wid
 import 'package:forutonafront/Page/LCodePage/L005/L005MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L008/L008MainPage.dart';
 
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +26,7 @@ class L004MainPage extends StatelessWidget {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        LCodeAppBar(
+                        CodeAppBar(
                           progressValue: 0.5,
                           tailButtonLabel: "다음",
                           enableTailButton: model.enableTailButton,

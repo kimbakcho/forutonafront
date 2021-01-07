@@ -5,7 +5,7 @@ import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/DontHaveIdEr
 import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicationValidImpl.dart';
 import 'package:forutonafront/Components/EmailCheckComponent/EmailCheckComponent.dart';
 import 'package:forutonafront/Page/LCodePage/L017/L017MainPage.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class L016MainPage extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      LCodeAppBar(
+                      CodeAppBar(
                           title: "이메일 인증하기",
                           visibleTailButton: true,
                           enableTailButton: model.isCanNext,

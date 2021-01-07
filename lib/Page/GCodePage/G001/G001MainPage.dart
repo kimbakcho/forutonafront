@@ -4,35 +4,32 @@ import 'package:forutonafront/Page/GCodePage/Component/UserMakeBallList/UserMake
 import 'package:forutonafront/Page/GCodePage/Component/UserProfile/UserProfileComponent.dart';
 import 'package:forutonafront/Page/GCodePage/Component/UserProfile/UserProfileMode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
 class G001MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G001MainPageViewModel(sl()),
+        create: (_) => G001MainPageViewModel(sl(),sl()),
         child: Consumer<G001MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
-            body: Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    UserProfileComponent(
-                      userUid: model.userUid,
-                      userProfileMode: UserProfileMode.ME,
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    UserMakeBallList(
-                      //Todo 추후에 model.userUid 변경 지금은 테스트용 ID
-                      userUid: "h2q2jl3nRPXZ8809Uvi9KdzSss83",
-                    )
-                  ],
-                ),
-              ),
+              body: Container(
+                  child: SingleChildScrollView(
+                      child: Column(children: [
+            UserProfileComponent(
+              userProfileComponentViewModelController: model._userProfileComponentViewModelController,
+              userUid: model.userUid,
+              userProfileMode: UserProfileMode.ME,
             ),
-          );
+            SizedBox(
+              height: 16,
+            ),
+            UserMakeBallList(
+              //Todo 추후에 model.userUid 변경 지금은 테스트용 ID
+              userUid: "h2q2jl3nRPXZ8809Uvi9KdzSss83",
+            )
+          ]))));
         }));
   }
 }
@@ -40,11 +37,31 @@ class G001MainPage extends StatelessWidget {
 class G001MainPageViewModel extends ChangeNotifier {
   SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
-  G001MainPageViewModel(this._signInUserInfoUseCaseInputPort);
+  UserProfileComponentViewModelController _userProfileComponentViewModelController;
+
+  G001MainPageViewModelController _g001mainPageViewModelController;
+
+  G001MainPageViewModel(this._signInUserInfoUseCaseInputPort,this._g001mainPageViewModelController){
+    _userProfileComponentViewModelController = UserProfileComponentViewModelController();
+    if(_g001mainPageViewModelController != null){
+      _g001mainPageViewModelController._g001mainPageViewModel = this;
+    }
+  }
 
   String get userUid {
     var reqSignInUserInfoFromMemory =
         this._signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
     return reqSignInUserInfoFromMemory.uid;
   }
+
+
+}
+@lazySingleton
+class G001MainPageViewModelController {
+  G001MainPageViewModel _g001mainPageViewModel;
+
+  reloadUserProfile(){
+    _g001mainPageViewModel._userProfileComponentViewModelController.reloadUserInfo();
+  }
+
 }

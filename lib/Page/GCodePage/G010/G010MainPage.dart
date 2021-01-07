@@ -1,350 +1,279 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccountUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserAccountUpdateReqDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/Common/Country/CodeCountry.dart';
+import 'package:forutonafront/Common/Country/CountryItem.dart';
+import 'package:forutonafront/Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/Common/SignValid/BasicUseCase/NickNameValidImpl.dart';
-import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/Page/GCodePage/G010/G010MainPageViewModel.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
+import 'package:forutonafront/Components/CountrySelect/CountrySelectButton.dart';
+import 'package:forutonafront/Components/GenderSelectComponent/GenderSelectComponent.dart';
+import 'package:forutonafront/Components/GenderSelectComponent/GenderType.dart';
+import 'package:forutonafront/Components/NickNameEditComponent/NickNameEditComponent.dart';
+import 'package:forutonafront/Components/ProfileImageEditComponent/ProfileImageEditComponent.dart';
+import 'package:forutonafront/Components/SelfIntroduceEditComponent/SelfIntroduceEditComponent.dart';
+import 'package:forutonafront/MainPage/BottomNavigation.dart';
+import 'package:forutonafront/MainPage/MainPageView.dart';
+import 'package:forutonafront/Page/GCodePage/G001/G001MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
 class G010MainPage extends StatelessWidget {
-  TextEditingController nickNameController = new TextEditingController();
-  TextEditingController userIntroduceController = new TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G010MainPageViewModel(
-          context: context,
-          updateAccountUserInfoUseCaseInputPort: sl(),
-          userIntroduceController: userIntroduceController,
-          nickNameController: nickNameController,
-          userProfileImageUploadUseCaseInputPort: sl(),
-          signInUserInfoUseCaseInputPort: sl(),
-          nickNameValid: NickNameValidImpl(fUserRepository: sl()),
-        ),
-        child: Consumer<G010MainPageViewModel>(builder: (_, model, child) {
-          return Stack(children: <Widget>[
-            Scaffold(
-                body: Container(
-                    color: Color(0xfff2f0f1),
-                    padding: EdgeInsets.fromLTRB(
-                        0, MediaQuery.of(context).padding.top, 0, 0),
-                    child: Column(children: <Widget>[
-                      topBar(model),
-                      Expanded(
-                          child: ListView(
-                              padding: EdgeInsets.all(0),
-                              children: <Widget>[
-                            userProfileImageBar(model),
-                            userCountrySelectRowBar(model),
-                            nickNameEditor(model, context),
-                            userIntroduceEditor(model, context)
-                          ]))
-                    ]))),
-            model.getIsLoading() ? CommonLoadingComponent(isTouch: false) : Container()
-          ]);
-        }));
-  }
-
-  Container userIntroduceEditor(
-      G010MainPageViewModel model, BuildContext context) {
-    return Container(
-        height: MediaQuery.of(context).size.height - 398,
-        color: Colors.white,
-        child: Column(children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Row(
-              children: <Widget>[
-                Text("자기소개",
-                    style: GoogleFonts.notoSans(
-                      fontSize: 12,
-                      color: Color(0xff454f63),
-                    )),
-                Spacer(),
-                Container(
-                  child: Text("(${model.userIntroduceInputTextLength}/100)",
-                      style: GoogleFonts.notoSans(
-                        fontSize: 10,
-                        color: Color(0xffd4d4d4),
-                      )),
-                )
-              ],
+      create: (_) => G010MainPageViewModel(sl(), sl(),sl(),sl(),sl()),
+      child: Consumer<G010MainPageViewModel>(
+        builder: (_, model, child) {
+          return Scaffold(
+            body: Container(
+              padding: MediaQuery
+                  .of(context)
+                  .padding,
+              child: Column(
+                children: [
+                  CodeAppBar(
+                    title: "계정",
+                    visibleTailButton: true,
+                    tailButtonLabel: "완료",
+                    progressValue: 0,
+                    onTailButtonClick: () {
+                      model.updateUserInfo(context);
+                    },
+                    enableTailButton: model.isCanComplete,
+                  ),
+                  Expanded(
+                      child:
+                      model._loaded ?
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ProfileImageEditComponent(
+                              initProfileImageUrl: model.profileImageUrl,
+                              initBackGroundImageUrl: model.backGroundImageUrl,
+                              profileImageEditComponentController:
+                              model._profileImageEditComponentController,
+                            ),
+                            SizedBox(height: 33),
+                            Container(
+                              margin: EdgeInsets.only(left: 16, right: 16),
+                              child: NickNameEditComponent(
+                                initNickName: model.currentNickNameText,
+                                userNickName: model.currentNickNameText,
+                                nickNameEditComponentController: model
+                                    ._nickNameEditComponentController,
+                              ),
+                            ),
+                            Container(
+                                padding: EdgeInsets.only(left: 16, right: 16),
+                                child: Row(children: [
+                                  Expanded(
+                                      child: CountrySimpleSelectButton(
+                                        initCountryItem: model.initCountryItem,
+                                        countrySelectButtonController:
+                                        model._countrySelectButtonController,
+                                      )),
+                                  SizedBox(
+                                    width: 26,
+                                  ),
+                                  Expanded(
+                                    child: GenderSelectComponent(
+                                      initGender: model.initGender,
+                                      genderSelectComponentController:
+                                      model._genderSelectComponentController,
+                                    ),
+                                  )
+                                ])),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 16, right: 16),
+                              child: SelfIntroduceEditComponent(
+                                initSelfIntroduce: model.initSelfIntroduce,
+                                selfIntroduceEditController:
+                                model._selfIntroduceEditController,
+                              ),
+                            )
+                          ],
+                        ),
+                      ) : CommonLoadingComponent()
+                  )
+                ],
+              ),
             ),
-          ),
-          Container(
-              child: TextField(
-                  minLines: 1,
-                  maxLines: null,
-                  maxLength: 100,
-                  controller: model.userIntroduceController,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                      hintText: "자기소개를 입력해주세요.",
-                      hintStyle: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        color: Color(0xffd4d4d4),
-                      ),
-                      counter: Container(width: 0, height: 0),
-                      enabledBorder: OutlineInputBorder(
-                          gapPadding: 0,
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 0)),
-                      focusedBorder: OutlineInputBorder(
-                          gapPadding: 0,
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 0)))))
-        ]));
-  }
-
-  Container nickNameEditor(G010MainPageViewModel model, BuildContext context) {
-    return Container(
-        height: 85,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(children: <Widget>[
-          Positioned(
-              top: 17,
-              width: MediaQuery.of(context).size.width,
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                  child: Row(
-                    children: <Widget>[
-                      Text("닉네임",
-                          style: GoogleFonts.notoSans(
-                            fontSize: 12,
-                            color: Color(0xff454f63),
-                          )),
-                      Spacer(),
-                      Text("(${model.nickNameInputTextLength}/20)",
-                          style: TextStyle(
-                            fontFamily: "Noto Sans CJK KR",
-                            fontSize: 10,
-                            color: Color(0xffd4d4d4),
-                          ))
-                    ],
-                  ))),
-          Positioned(
-              top: 46,
-              width: MediaQuery.of(context).size.width,
-              child: Container(
-                  height: 24,
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                  child: TextField(
-                      onEditingComplete: model.onEditCompleteNickName,
-                      controller: model.nickNameController,
-                      style: GoogleFonts.notoSans(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        color: Color(0xff454f63),
-                      ),
-                      maxLength: 20,
-                      decoration: InputDecoration(
-                        hintText: "닉네임을 입력해주세요",
-                        hintStyle: GoogleFonts.notoSans(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                          color: Color(0xffd4d4d4),
-                        ),
-                        contentPadding: EdgeInsets.all(0),
-                        counter: Container(
-                          width: 0,
-                          height: 0,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                            gapPadding: 0,
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 0)),
-                        focusedBorder: OutlineInputBorder(
-                            gapPadding: 0,
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 0)),
-                      )))),
-          Positioned(
-              top: 60,
-              left: 16,
-              child: model.hasNickNameError()
-                  ? Container(
-                  child: Text(model.nickNameErrorText(),
-                      style: TextStyle(
-                          fontFamily: "Noto Sans CJK KR",
-                          fontSize: 12,
-                          color: Color(0xffff4f9a))))
-                  : Container())
-        ]),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border(
-                bottom: BorderSide(color: Color(0xffE4E7E8), width: 1))));
-  }
-
-  Container userProfileImageBar(G010MainPageViewModel model) {
-    return Container(
-      height: 145,
-      child: Center(
-          child : Stack(alignment: Alignment.bottomRight, children: <Widget>[
-            Container(
-                height: 69.00,
-                width: 69.00,
-                child: FlatButton(
-                  child: Container(),
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(0),
-                  onPressed: model.onChangeProfileImageTab,
-                ),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fitWidth,
-                      image: model.currentProfileImage,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0.00, 3.00),
-                        color: Color(0xff000000).withOpacity(0.16),
-                        blurRadius: 6,
-                      ),
-                    ],
-                    shape: BoxShape.circle)),
-            Positioned(
-                child: Container(
-                    height: 21.00,
-                    width: 21.00,
-                    child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      onPressed: model.onChangeProfileImageTab,
-                      child: Icon(
-                        ForutonaIcon.pencil,
-                        color: Colors.white,
-                        size: 10,
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Color(0xffb1b1b1),
-                      border: Border.all(
-                        width: 1.00,
-                        color: Color(0xfff2f0f1),
-                      ),
-                      shape: BoxShape.circle,
-                    )))
-          ]
-          )),
+          );
+        },
+      ),
     );
   }
+}
 
-  Container userCountrySelectRowBar(G010MainPageViewModel model) {
-    return Container(
-      height: 85,
-      child: FlatButton(
-          padding: EdgeInsets.all(0),
-          onPressed: model.jumpCountrySelect,
-          child: Stack(children: <Widget>[
-            Positioned(
-                top: 20,
-                left: 16,
-                child: Container(
-                  height: 30,
-                  child: Text("국가",
-                      style: TextStyle(
-                        fontFamily: "Noto Sans CJK KR",
-                        fontSize: 12,
-                        color: Color(0xff454f63),
-                      )),
-                )),
-            Positioned(
-                top: 41,
-                left: 16,
-                child: Container(
-                    child: Text(model.getUserCountry(),
-                        style: GoogleFonts.notoSans(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                          color: Color(0xff454f63),
-                        ))))
-          ])),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border:
-              Border(bottom: BorderSide(color: Color(0xffE4E7E8), width: 1))),
+class G010MainPageViewModel extends ChangeNotifier {
+
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+
+  ProfileImageEditComponentController _profileImageEditComponentController;
+
+  NickNameEditComponentController _nickNameEditComponentController;
+
+  CountrySelectButtonController _countrySelectButtonController;
+
+  GenderSelectComponentController _genderSelectComponentController;
+
+  SelfIntroduceEditController _selfIntroduceEditController;
+
+  final FlutterImageCompressAdapter _flutterImageCompressAdapter;
+
+  final UpdateAccountUserInfoUseCaseInputPort _updateAccountUserInfoUseCaseInputPort;
+
+  final MainPageViewModelController _mainPageViewModelController;
+
+  G001MainPageViewModelController _g001mainPageViewModelController;
+
+  bool _loaded = false;
+
+  String _currentNickName ="";
+
+  G010MainPageViewModel(this._signInUserInfoUseCaseInputPort,
+      this._flutterImageCompressAdapter,this._updateAccountUserInfoUseCaseInputPort,this._mainPageViewModelController,this._g001mainPageViewModelController) {
+    _profileImageEditComponentController =
+        ProfileImageEditComponentController();
+    _nickNameEditComponentController = NickNameEditComponentController(
+        onChangeNickNameText: (value) {
+          _currentNickName = value;
+        }
     );
+    _countrySelectButtonController = CountrySelectButtonController(
+        onCurrentCountryItem: (value) {
+          notifyListeners();
+        }
+    );
+    _selfIntroduceEditController = SelfIntroduceEditController(
+        onChangesSelfIntroduceText: (value) {
+          notifyListeners();
+        }
+    );
+    _genderSelectComponentController = GenderSelectComponentController();
+    _init();
+  }
+
+  FUserInfoResDto _fUserInfoResDto;
+
+  _init() async {
+    _fUserInfoResDto =
+    await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
+    _currentNickName = _fUserInfoResDto.nickName;
+    _loaded = true;
+
+    notifyListeners();
+  }
+
+  String get currentNickNameText {
+    return _fUserInfoResDto.nickName;
+  }
+
+  CountryItem get initCountryItem {
+    return CodeCountry().countryList().firstWhere((element) =>
+    element.code == _fUserInfoResDto.isoCode);
+  }
+
+  GenderType get initGender {
+    return _fUserInfoResDto.gender;
+  }
+
+  String get profileImageUrl {
+    return _fUserInfoResDto.profilePictureUrl;
+  }
+
+  String get backGroundImageUrl {
+    return _fUserInfoResDto.backGroundImageUrl;
+  }
+
+  String get initSelfIntroduce {
+    return _fUserInfoResDto.selfIntroduction;
+  }
+
+   bool get isCanComplete {
+    return _currentNickName.isNotEmpty;
+  }
+
+  updateUserInfo(BuildContext context) async {
+    _loaded = false;
+    notifyListeners();
+
+    FUserAccountUpdateReqDto fUserAccountUpdateReqDto = FUserAccountUpdateReqDto();
+
+    var isError = await _nickNameEditComponentController.valid();
+    if (isError) {
+      _loaded = false;
+      notifyListeners();
+      return ;
+    } else {
+      fUserAccountUpdateReqDto.nickName =
+          _nickNameEditComponentController.nickNameValue;
+    }
+
+
+    List<int> profileImage;
+    if (_profileImageEditComponentController.getProfileImageProvider() !=
+        null) {
+      profileImage = await _profileImageEditComponentController
+          .getProfileImageProvider()
+          .file
+          .readAsBytes();
+      profileImage =
+      await _flutterImageCompressAdapter.compressImage(profileImage, 70);
+    }
+
+    if (_profileImageEditComponentController.getProfileImageProvider() ==
+        null &&
+        _profileImageEditComponentController.getProfileImageUrlProvider() ==
+            null) {
+      fUserAccountUpdateReqDto.profileImageIsEmpty = true;
+    } else {
+      fUserAccountUpdateReqDto.profileImageIsEmpty = false;
+    }
+
+
+    List<int> backGroundImage;
+    if (_profileImageEditComponentController.getBackgroundImageProvider() !=
+        null) {
+      backGroundImage = await _profileImageEditComponentController
+          .getBackgroundImageProvider()
+          .file
+          .readAsBytes();
+      backGroundImage =
+      await _flutterImageCompressAdapter.compressImage(backGroundImage, 70);
+    }
+
+    if (_profileImageEditComponentController.getBackgroundImageUrlProvider() ==
+        null &&
+        _profileImageEditComponentController.getBackgroundImageProvider() ==
+            null) {
+      fUserAccountUpdateReqDto.backGroundIsEmpty = true;
+    } else {
+      fUserAccountUpdateReqDto.backGroundIsEmpty = false;
+    }
+
+    fUserAccountUpdateReqDto.gender =
+        _genderSelectComponentController.currentGenderType;
+
+    fUserAccountUpdateReqDto.isoCode = _countrySelectButtonController.getCurrentCountryItem().code;
+
+    fUserAccountUpdateReqDto.selfIntroduction = _selfIntroduceEditController.selfIntroduceText;
+
+    await _updateAccountUserInfoUseCaseInputPort.updateAccountUserInfo(fUserAccountUpdateReqDto, profileImage, backGroundImage);
+
+    _loaded = true;
+
+    _g001mainPageViewModelController.reloadUserProfile();
+
+    Navigator.of(context).pop();
+
   }
 
 
-
-  Container topBar(G010MainPageViewModel model) {
-    return Container(
-      height: 56,
-      color: Colors.white,
-      child: Row(children: [
-        Container(
-            child: FlatButton(
-                padding: EdgeInsets.all(0),
-                onPressed: model.onBackBtnTap,
-                child: Icon(Icons.arrow_back)),
-            width: 48),
-        Container(
-            child: Text("계정",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20,
-                  color: Color(0xff454f63),
-                ))),
-        Spacer(),
-        model.isValidComplete()
-            ? Container(
-                margin: EdgeInsets.only(right: 16),
-                height: 32.00,
-                width: 75.00,
-                child: FlatButton(
-                  onPressed: model.onCompleteTap,
-                  child: Text("완료",
-                      style: GoogleFonts.notoSans(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                        color: Color(0xff454f63),
-                      )),
-                ),
-                decoration: BoxDecoration(
-                    color: Color(0xffffffff),
-                    border: Border.all(
-                      width: 1.00,
-                      color: Color(0xff454f63),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0.00, 12.00),
-                        color: Color(0xff455b63).withOpacity(0.08),
-                        blurRadius: 16,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(5.00)))
-            : Container(
-                margin: EdgeInsets.only(right: 16),
-                height: 32.00,
-                width: 75.00,
-                child: FlatButton(
-                  onPressed: null,
-                  child: Text("완료",
-                      style: GoogleFonts.notoSans(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                        color: Color(0xffb1b1b1),
-                      )),
-                ),
-                decoration: BoxDecoration(
-                    color: Color(0xffd4d4d4),
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(0.00, 12.00),
-                          color: Color(0xff455b63).withOpacity(0.08),
-                          blurRadius: 16)
-                    ],
-                    borderRadius: BorderRadius.circular(5.00)))
-      ]),
-    );
-  }
 }

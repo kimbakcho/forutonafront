@@ -17,7 +17,7 @@ import 'package:forutonafront/Preference.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-class G010MainPageViewModel extends ChangeNotifier
+class G010MainPageViewModelTemp extends ChangeNotifier
     implements SignInUserInfoUseCaseOutputPort {
   final BuildContext context;
   final SignValid _nickNameValid;
@@ -50,7 +50,7 @@ class G010MainPageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  G010MainPageViewModel(
+  G010MainPageViewModelTemp(
       {@required
           this.context,
       @required
@@ -96,7 +96,7 @@ class G010MainPageViewModel extends ChangeNotifier
 
     reqDto.isoCode = _currentIsoCode;
 
-    _fUserInfoResDto = await _updateAccountUserInfoUseCaseInputPort.updateAccountUserInfo(reqDto);
+    // _fUserInfoResDto = await _updateAccountUserInfoUseCaseInputPort.updateAccountUserInfo(reqDto);
 
     Fluttertoast.showToast(
         msg: "수정 되었습니다.",
@@ -115,14 +115,14 @@ class G010MainPageViewModel extends ChangeNotifier
   }
 
   Future setProfileImage(FUserAccountUpdateReqDto reqDto) async {
-    if (_isChangeProfileImage && _currentPickProfileImage != null) {
-      reqDto.userProfileImageUrl = await _userProfileImageUploadUseCaseInputPort
-          .upload(_currentPickProfileImage);
-    } else if (_isChangeProfileImage && _currentPickProfileImage == null) {
-      reqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
-    } else {
-      reqDto.userProfileImageUrl = _fUserInfoResDto.profilePictureUrl;
-    }
+    // if (_isChangeProfileImage && _currentPickProfileImage != null) {
+    //   reqDto.userProfileImageUrl = await _userProfileImageUploadUseCaseInputPort
+    //       .upload(_currentPickProfileImage);
+    // } else if (_isChangeProfileImage && _currentPickProfileImage == null) {
+    //   reqDto.userProfileImageUrl = Preference.basicProfileImageUrl;
+    // } else {
+    //   reqDto.userProfileImageUrl = _fUserInfoResDto.profilePictureUrl;
+    // }
   }
 
   Future setNickName(FUserAccountUpdateReqDto reqDto) async {

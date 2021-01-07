@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'KPageNavBtn.dart';
 
-enum BottomNavigationNavType { HOME, SEARCH, SNS }
+enum BottomNavigationNavType { HOME, SEARCH, SNS ,Profile}
 
 class BottomNavigation extends StatefulWidget {
   final BottomNavigationListener bottomNavigationListener;
@@ -71,7 +71,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       child: InkWell(
                         onTap: () {
                           if(model.isLogin){
-                            model.jumpToPersona();
+                            if (widget.bottomNavigationListener != null) {
+                              widget.bottomNavigationListener
+                                  .onBottomNavClick(BottomNavigationNavType.Profile);
+                            }
                           }else {
                             model.showL001BottomSheet();
                           }

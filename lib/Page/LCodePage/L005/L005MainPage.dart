@@ -7,7 +7,7 @@ import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthMode/PhoneAuthModeUseCase.dart';
 import 'package:forutonafront/Page/LCodePage/L007/L007MainPage.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,7 @@ class L005MainPage extends StatelessWidget {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        LCodeAppBar(
+                        CodeAppBar(
                             progressValue: 0.7,
                             tailButtonLabel: "다음",
                             enableTailButton: model.enableTailButton,

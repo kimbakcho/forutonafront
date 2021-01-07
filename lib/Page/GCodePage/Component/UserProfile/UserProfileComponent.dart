@@ -14,13 +14,22 @@ class UserProfileComponent extends StatelessWidget {
 
   final UserProfileMode userProfileMode;
 
-  const UserProfileComponent({Key key, this.userUid, this.userProfileMode})
+  final UserProfileComponentViewModelController
+      userProfileComponentViewModelController;
+
+  const UserProfileComponent(
+      {Key key,
+      this.userUid,
+      this.userProfileMode,
+      this.userProfileComponentViewModelController})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => UserProfileComponentViewModel(sl(), userProfileMode),
+      create: (_) => UserProfileComponentViewModel(sl(), userProfileMode,
+          userProfileComponentViewModelController:
+              userProfileComponentViewModelController),
       child:
           Consumer<UserProfileComponentViewModel>(builder: (_, model, child) {
         return Container(
@@ -195,6 +204,9 @@ class UserProfileComponentViewModel extends ChangeNotifier {
 
   final UserProfileMode userProfileMode;
 
+  final UserProfileComponentViewModelController
+      userProfileComponentViewModelController;
+
   ProfileModeUseCaseInputPort _profileModeUseCaseInputPort;
 
   UserProfileComponentInfoDto _userProfileComponentInfoDto;
@@ -204,13 +216,20 @@ class UserProfileComponentViewModel extends ChangeNotifier {
   CodeCountry codeCountry = CodeCountry();
 
   UserProfileComponentViewModel(
-      this._profileModeUseCaseFactory, this.userProfileMode) {
+      this._profileModeUseCaseFactory, this.userProfileMode,
+      {this.userProfileComponentViewModelController}) {
     _profileModeUseCaseInputPort =
         _profileModeUseCaseFactory.getInstance(userProfileMode);
+    if (userProfileComponentViewModelController != null) {
+      userProfileComponentViewModelController._userProfileComponentViewModel =
+          this;
+    }
     _init();
   }
 
   _init() async {
+    _isLoaded = false;
+    notifyListeners();
     _userProfileComponentInfoDto =
         await _profileModeUseCaseInputPort.getUserInfo();
     _isLoaded = true;
@@ -280,5 +299,13 @@ class UserProfileComponentViewModel extends ChangeNotifier {
         ),
       );
     }
+  }
+}
+
+class UserProfileComponentViewModelController {
+  UserProfileComponentViewModel _userProfileComponentViewModel;
+
+  reloadUserInfo() {
+    _userProfileComponentViewModel._init();
   }
 }

@@ -5,7 +5,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class UpdateAccountUserInfoUseCaseInputPort {
-  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto);
+  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,List<int> profileImage,List<int> backgroundImage);
 }
 
 @LazySingleton(as: UpdateAccountUserInfoUseCaseInputPort)
@@ -15,8 +15,8 @@ class UpdateAccountUserInfoUseCase implements UpdateAccountUserInfoUseCaseInputP
   UpdateAccountUserInfoUseCase({@required FUserRepository fUserRepository}):_fUserRepository=fUserRepository;
 
   @override
-  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto) async {
-    FUserInfoResDto fUserInfoResDto = await _fUserRepository.updateAccountUserInfo(reqDto);
+  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,List<int> profileImage,List<int> backgroundImage) async {
+    FUserInfoResDto fUserInfoResDto = await _fUserRepository.updateAccountUserInfo(reqDto,profileImage,backgroundImage);
     return fUserInfoResDto;
   }
 

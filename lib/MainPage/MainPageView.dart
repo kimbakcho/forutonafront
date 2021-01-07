@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/Page/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/Page/HomePage/HomeMainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L010/L010MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L011/L011MainPage.dart';
@@ -14,7 +15,7 @@ class MainPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => MainPageViewModel(sl(),context),
+        create: (_) => MainPageViewModel(sl(), context,sl()),
         child: Consumer<MainPageViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: model.isNotLockMaliciousUser
@@ -26,6 +27,7 @@ class MainPageView extends StatelessWidget {
                               controller: model._pageController,
                               children: [
                             HomeMainPage(),
+                            GCodeMainPage(),
                             Container(
                               child: Text("tet"),
                             )
@@ -41,34 +43,35 @@ class MainPageView extends StatelessWidget {
 
 class MainPageViewModel extends ChangeNotifier
     implements BottomNavigationListener {
-
   final BuildContext context;
 
   PageController _pageController = PageController();
 
+  MainPageViewModelController _mainPageViewModelController;
 
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
-
-  MainPageViewModel(this._signInUserInfoUseCaseInputPort,this.context){
+  MainPageViewModel(this._signInUserInfoUseCaseInputPort, this.context,this._mainPageViewModelController) {
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen(onLoginStateChange);
 
-    if(_signInUserInfoUseCaseInputPort.isLogin){
-      var fUserInfoResDto = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-      Future.delayed(Duration.zero,(){
+    this._mainPageViewModelController._mainPageViewModel = this;
+
+    if (_signInUserInfoUseCaseInputPort.isLogin) {
+      var fUserInfoResDto =
+          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      Future.delayed(Duration.zero, () {
         onLoginStateChange(fUserInfoResDto);
       });
     }
   }
 
   Future<void> onLoginStateChange(FUserInfoResDto fUserInfoResDto) async {
-    if(_signInUserInfoUseCaseInputPort.checkMaliciousPopup()){
-      Navigator.of(context).push(MaterialPageRoute(builder: (_){
+    if (_signInUserInfoUseCaseInputPort.checkMaliciousPopup()) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) {
         return L010MainPage();
       }));
     }
   }
-
 
   @override
   void onBottomNavClick(BottomNavigationNavType bottomNavigationNavType) {
@@ -80,6 +83,9 @@ class MainPageViewModel extends ChangeNotifier
         _pageController.jumpToPage(1);
         break;
       case BottomNavigationNavType.SEARCH:
+        break;
+      case BottomNavigationNavType.Profile:
+        _pageController.jumpToPage(1);
         break;
     }
   }
@@ -97,5 +103,15 @@ class MainPageViewModel extends ChangeNotifier
     } else {
       return true;
     }
+  }
+}
+
+@lazySingleton
+class MainPageViewModelController {
+  MainPageViewModel _mainPageViewModel;
+
+  moveToMainPage(BottomNavigationNavType bottomNavigationNavType){
+    _mainPageViewModel.onBottomNavClick(bottomNavigationNavType);
+
   }
 }

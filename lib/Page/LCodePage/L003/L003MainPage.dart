@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/ManagerBis/TermsConditions/Domain/UseCase/TermsConditionsUseCaseInputPort.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -20,7 +20,7 @@ class L003MainPage extends StatelessWidget {
               child: Container(
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
-                    LCodeAppBar(
+                    CodeAppBar(
                       progressValue: 0,
                       visibleTailButton: false,
                       title: model.termsTitle,

@@ -1,4 +1,5 @@
 
+import 'package:forutonafront/Components/GenderSelectComponent/GenderType.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserAccountUpdateReqDto.g.dart';
@@ -8,7 +9,9 @@ class FUserAccountUpdateReqDto {
   String isoCode;
   String nickName;
   String selfIntroduction;
-  String userProfileImageUrl;
+  GenderType gender;
+  bool profileImageIsEmpty;
+  bool backGroundIsEmpty;
 
   FUserAccountUpdateReqDto();
 

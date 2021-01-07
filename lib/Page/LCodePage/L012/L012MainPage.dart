@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Page/LCodePage/L013/L013MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L016/L016MainPage.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +21,7 @@ class L012MainPage extends StatelessWidget {
                 color: Color(0xffF2F3F5),
                 child: Column(
                   children: [
-                    LCodeAppBar(
+                    CodeAppBar(
                       title: "패스워드 찾기",
                       visibleTailButton: false,
                       progressValue: 0,

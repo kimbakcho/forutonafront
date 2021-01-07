@@ -6,7 +6,7 @@ import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicatio
 import 'package:forutonafront/Components/EmailCheckComponent/EmailCheckComponent.dart';
 import 'package:forutonafront/Components/PwInputAndCheckComponent/PwInputAndCheckComponent.dart';
 import 'package:forutonafront/Page/LCodePage/L008/L008MainPage.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class L007MainPage extends StatelessWidget {
             padding: MediaQuery.of(context).padding,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              LCodeAppBar(
+              CodeAppBar(
                 title: "아이디 등록",
                 tailButtonLabel: "다음",
                 visibleTailButton: true,

@@ -6,7 +6,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUs
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseOutputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:forutonafront/Page/GCodePage/G010/G010MainPage.dart';
+import 'package:forutonafront/Page/GCodePage/G010/G010MainPageTemp.dart';
 import 'package:forutonafront/Page/GCodePage/G011/G011MainPage.dart';
 import 'package:forutonafront/Page/GCodePage/G015/G015MainPage.dart';
 import 'package:forutonafront/Page/GCodePage/G016/G016MainPage.dart';
@@ -15,7 +15,7 @@ import 'package:forutonafront/Page/GCodePage/G019/G019MainPage.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
 
-class G009MainPageViewModel extends ChangeNotifier
+class G009MainPageViewModelTemp extends ChangeNotifier
     implements LogoutUseCaseOutputPort, SignInUserInfoUseCaseOutputPort {
   final BuildContext context;
   final LogoutUseCaseInputPort _logoutUseCaseInputPort;
@@ -24,7 +24,7 @@ class G009MainPageViewModel extends ChangeNotifier
 
   FUserInfoResDto _fUserInfoResDto;
 
-  G009MainPageViewModel(
+  G009MainPageViewModelTemp(
       {@required this.context,
       @required LogoutUseCaseInputPort logoutUseCaseInputPort,
       @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
@@ -42,7 +42,7 @@ class G009MainPageViewModel extends ChangeNotifier
 
   void goAccountSettingPage() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G010MainPage(), settings: RouteSettings(name: "/G010")));
+        builder: (_) => G010MainTempPage(), settings: RouteSettings(name: "/G010")));
   }
 
   void goSecurityPage() async {

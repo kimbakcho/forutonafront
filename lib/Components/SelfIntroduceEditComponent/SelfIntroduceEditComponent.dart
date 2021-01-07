@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 
 class SelfIntroduceEditComponent extends StatelessWidget {
   final SelfIntroduceEditController selfIntroduceEditController;
-
-  const SelfIntroduceEditComponent({Key key, this.selfIntroduceEditController})
+  final String initSelfIntroduce;
+  const SelfIntroduceEditComponent({Key key, this.selfIntroduceEditController,this.initSelfIntroduce})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => SelfIntroduceEditComponentViewModel(selfIntroduceEditController: selfIntroduceEditController),
+        create: (_) => SelfIntroduceEditComponentViewModel(selfIntroduceEditController: selfIntroduceEditController,initSelfIntroduce: initSelfIntroduce),
         child: Consumer<SelfIntroduceEditComponentViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -55,9 +55,11 @@ class SelfIntroduceEditComponent extends StatelessWidget {
 class SelfIntroduceEditComponentViewModel extends ChangeNotifier {
   final SelfIntroduceEditController selfIntroduceEditController;
 
+  String initSelfIntroduce;
+
   TextEditingController _selfIntroduceEditController;
 
-  SelfIntroduceEditComponentViewModel({this.selfIntroduceEditController}) {
+  SelfIntroduceEditComponentViewModel({this.selfIntroduceEditController,this.initSelfIntroduce}) {
     _selfIntroduceEditController = TextEditingController();
     if (this.selfIntroduceEditController != null) {
       selfIntroduceEditController._selfIntroduceEditComponentViewModel = this;
@@ -68,6 +70,9 @@ class SelfIntroduceEditComponentViewModel extends ChangeNotifier {
         selfIntroduceEditController
             .onChangesSelfIntroduceText(_selfIntroduceEditController.text);
       });
+    }
+    if(initSelfIntroduce != null){
+      _selfIntroduceEditController.text =initSelfIntroduce;
     }
   }
 }
@@ -83,4 +88,5 @@ class SelfIntroduceEditController {
     return _selfIntroduceEditComponentViewModel
         ._selfIntroduceEditController.text;
   }
+
 }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
@@ -53,9 +54,28 @@ class FUserRepositoryImpl implements FUserRepository {
 
   @override
   Future<FUserInfoResDto> updateAccountUserInfo(
-      FUserAccountUpdateReqDto reqDto) async {
-    return await _fUserRemoteDataSource.updateAccountUserInfo(
-        reqDto, FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+      FUserAccountUpdateReqDto reqDto,List<int> profileImage,List<int> backgroundImage) async {
+    var fDio = FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken());
+    var formData = FormData.fromMap(reqDto.toJson());
+
+    if(profileImage != null){
+      MapEntry<String, MultipartFile> profileImageEntry =
+      MapEntry<String, MultipartFile>("profileImage",
+          MultipartFile.fromBytes(profileImage, filename: "profileImage.png"));
+
+      formData.files.add(profileImageEntry);
+    }
+
+    if(backgroundImage != null){
+      MapEntry<String, MultipartFile> backGroundImageEntry =
+      MapEntry<String, MultipartFile>("backGroundImage",
+          MultipartFile.fromBytes(backgroundImage, filename: "backGroundImage.png"));
+
+      formData.files.add(backGroundImageEntry);
+    }
+
+    var response = await fDio.put("/v1/FUserInfo/AccountUserInfo",data: formData);
+    return FUserInfoResDto.fromJson(response.data);
   }
 
   @override

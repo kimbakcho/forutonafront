@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendComponent.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
+import 'package:forutonafront/Page/GCodePage/G009/G009MainPage.dart';
+
 
 class TopG001NavExpandComponent extends StatefulWidget {
   final TopNavBtnMediator topNavBtnMediator;
@@ -90,6 +92,11 @@ class _TopG001NavExpandComponentState extends State<TopG001NavExpandComponent>
 }
 
 class TopG001NavExpendContent extends StatelessWidget {
+
+
+
+  const TopG001NavExpendContent({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -99,7 +106,9 @@ class TopG001NavExpendContent extends StatelessWidget {
         child: InkWell(
           customBorder: CircleBorder(),
           onTap: () {
-
+            Navigator.of(context).push(MaterialPageRoute(builder: (_){
+              return G009MainPage();
+            }));
           },
             child: Icon(
             Icons.settings,

@@ -6,7 +6,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthNumberResDt
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthMode/PhoneAuthModeUseCase.dart';
 import 'package:forutonafront/Page/LCodePage/L015/L015MainPage.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ class L014MainPage extends StatelessWidget {
               body: Container(
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
-                    LCodeAppBar(
+                    CodeAppBar(
                       title: "휴대폰 인증하기",
                       progressValue: 0.6,
                       visibleTailButton: true,

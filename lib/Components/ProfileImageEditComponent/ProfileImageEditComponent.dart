@@ -11,94 +11,88 @@ class ProfileImageEditComponent extends StatelessWidget {
 
   final String initProfileImageUrl;
 
-  const ProfileImageEditComponent({Key key, this.profileImageEditComponentController,this.initProfileImageUrl}) : super(key: key);
+  final String initBackGroundImageUrl;
+
+  const ProfileImageEditComponent(
+      {Key key, this.profileImageEditComponentController, this.initProfileImageUrl, this.initBackGroundImageUrl})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => ProfileImageEditComponentViewModel(
-            profileImageEditComponentController: profileImageEditComponentController,
-        initProfileImageUrl: initProfileImageUrl),
+        create: (_) =>
+            ProfileImageEditComponentViewModel(
+                profileImageEditComponentController: profileImageEditComponentController,
+                initBackGroundImageUrl: initBackGroundImageUrl,
+                initProfileImageUrl: initProfileImageUrl),
         child: Consumer<ProfileImageEditComponentViewModel>(
             builder: (_, model, child) {
-          return Container(
-              constraints: BoxConstraints(
-                  maxHeight: 230,
-                  maxWidth: MediaQuery.of(context).size.width,
-                  minHeight: 0,
-                  minWidth: 0),
-              decoration: BoxDecoration(color: Color(0xffF4F5F5)),
-              child: Stack(fit: StackFit.expand, children: [
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      model.showBackGroundImageModalBottomSheet(context);
-                    },
-                    child: Container(
-                      constraints: BoxConstraints(
-                          maxHeight: 230,
-                          maxWidth: MediaQuery.of(context).size.width,
-                          minHeight: 0,
-                          minWidth: 0),
-                      decoration: model._backgroundImageProvider != null
-                          ? BoxDecoration(
-                              color: Colors.transparent,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: model._backgroundImageProvider,
-                              ))
-                          : BoxDecoration(
-                              color: Colors.transparent,
-                            ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                    top: 16,
-                    right: 16,
-                    child: InkWell(
-                      onTap: () {
-                        model.showBackGroundImageModalBottomSheet(context);
-                      },
-                      child: SvgPicture.asset(
-                        "assets/IconImage/image-add.svg",
-                        color: Color(0xffD4D4D4),
+              return Container(
+                  constraints: BoxConstraints(
+                      maxHeight: 230,
+                      maxWidth: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      minHeight: 0,
+                      minWidth: 0),
+                  decoration: BoxDecoration(color: Color(0xffF4F5F5)),
+                  child: Stack(fit: StackFit.expand, children: [
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          model.showBackGroundImageModalBottomSheet(context);
+                        },
+                        child: model.getBackGroundImageWidget(context),
                       ),
-                    )),
-                Center(
-                    child: Stack(children: [
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      customBorder: CircleBorder(),
-                      onTap: () {
-                        model.showProfileSelectImageModalBottomSheet(context);
-                      },
-                      child: model.getProfileImageWidget(),
                     ),
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                          width: 23,
-                          height: 23,
-                          decoration: BoxDecoration(
-                              color: Color(0xffB1B1B1),
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  color: Color(0xffF2F0F1), width: 1)),
-                          child: Center(
-                            child: SvgPicture.asset(
-                                "assets/IconImage/pencil.svg",
-                                color: Colors.white,
-                                width: 10,
-                                height: 10),
-                          )))
-                ]))
-              ]));
-        }));
+                    Positioned(
+                        top: 16,
+                        right: 16,
+                        child: InkWell(
+                          onTap: () {
+                            model.showBackGroundImageModalBottomSheet(context);
+                          },
+                          child: SvgPicture.asset(
+                            "assets/IconImage/image-add.svg",
+                            color: Color(0xffD4D4D4),
+                          ),
+                        )),
+                    Center(
+                        child: Stack(children: [
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              customBorder: CircleBorder(),
+                              onTap: () {
+                                model.showProfileSelectImageModalBottomSheet(
+                                    context);
+                              },
+                              child: model.getProfileImageWidget(),
+                            ),
+                          ),
+                          Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                  width: 23,
+                                  height: 23,
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffB1B1B1),
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Color(0xffF2F0F1), width: 1)),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                        "assets/IconImage/pencil.svg",
+                                        color: Colors.white,
+                                        width: 10,
+                                        height: 10),
+                                  )))
+                        ]))
+                  ]));
+            }));
   }
 }
 
@@ -112,20 +106,29 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
 
   NetworkImage _profileImageUrlProvider;
 
+  NetworkImage _backGroundImageUrlProvider;
+
   ImageSelectModalBottomSheet _imageProfileSelectModalBottomSheet;
 
   ImageSelectModalBottomSheet _imageBackGroundSelectModalBottomSheet;
 
   String initProfileImageUrl;
 
-  ProfileImageEditComponentViewModel({this.profileImageEditComponentController,this.initProfileImageUrl}) {
+  String initBackGroundImageUrl;
+
+  ProfileImageEditComponentViewModel(
+      {this.profileImageEditComponentController, this.initProfileImageUrl, this.initBackGroundImageUrl}) {
     _imageProfileSelectModalBottomSheet =
         ImageSelectModalBottomSheet(onSelectImage: onProfileSelectImage);
     _imageBackGroundSelectModalBottomSheet =
         ImageSelectModalBottomSheet(onSelectImage: onBackgroundSelectImage);
-    profileImageEditComponentController._profileImageEditComponentViewModel = this;
-    if(initProfileImageUrl!= null){
+    profileImageEditComponentController._profileImageEditComponentViewModel =
+    this;
+    if (initProfileImageUrl != null) {
       setProfileImageUrl(initProfileImageUrl);
+    }
+    if (initBackGroundImageUrl != null) {
+      setBackGroundImageUrlProvider(initBackGroundImageUrl);
     }
   }
 
@@ -144,24 +147,31 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
   }
 
   onBackgroundSelectImage(FileImage imageProvider) {
+    _backGroundImageUrlProvider = null;
     _backgroundImageProvider = imageProvider;
     notifyListeners();
   }
 
-  setProfileImageUrl(String value){
+  setProfileImageUrl(String value) {
     _profileImageUrlProvider = NetworkImage(value);
     _profileImageProvider = null;
     notifyListeners();
   }
 
-  Widget getProfileImageWidget(){
+  setBackGroundImageUrlProvider(String value) {
+    _backGroundImageUrlProvider = NetworkImage(value);
+    _backgroundImageProvider = null;
+    notifyListeners();
+  }
+
+  Widget getProfileImageWidget() {
     ImageProvider imageProvider;
-    if(_profileImageUrlProvider != null ){
+    if (_profileImageUrlProvider != null) {
       imageProvider = _profileImageUrlProvider;
-    }else if(_profileImageProvider != null){
+    } else if (_profileImageProvider != null) {
       imageProvider = _profileImageProvider;
     }
-    if(imageProvider != null){
+    if (imageProvider != null) {
       return Container(
         width: 74,
         height: 74,
@@ -172,7 +182,7 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
             ),
             shape: BoxShape.circle),
       );
-    }else {
+    } else {
       return SvgPicture.asset(
         "assets/IconImage/user-circle.svg",
         height: 74,
@@ -182,24 +192,58 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
     }
   }
 
+  Widget getBackGroundImageWidget(BuildContext context) {
+    ImageProvider imageProvider;
+    if (_backGroundImageUrlProvider != null) {
+      imageProvider = _backGroundImageUrlProvider;
+    } else if (_backgroundImageProvider != null) {
+      imageProvider = _backgroundImageProvider;
+    }
+    return Container(
+      constraints: BoxConstraints(
+          maxHeight: 230,
+          maxWidth: MediaQuery
+              .of(context)
+              .size
+              .width,
+          minHeight: 0,
+          minWidth: 0),
+      decoration: imageProvider != null
+          ? BoxDecoration(
+          color: Colors.transparent,
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: imageProvider,
+          ))
+          : BoxDecoration(
+        color: Colors.transparent,
+      ),
+    );
+  }
+
 }
 
 class ProfileImageEditComponentController {
   ProfileImageEditComponentViewModel _profileImageEditComponentViewModel;
 
-  FileImage getProfileImageProvider(){
+  FileImage getProfileImageProvider() {
     return _profileImageEditComponentViewModel._profileImageProvider;
   }
 
-  FileImage getBackgroundImageProvider(){
+  FileImage getBackgroundImageProvider() {
     return _profileImageEditComponentViewModel._backgroundImageProvider;
   }
 
-  NetworkImage getProfileImageUrlProvider(){
+  NetworkImage getProfileImageUrlProvider() {
     return _profileImageEditComponentViewModel._profileImageUrlProvider;
   }
 
-  setProfileImageUrl(String url){
+  NetworkImage getBackgroundImageUrlProvider() {
+    return _profileImageEditComponentViewModel._backGroundImageUrlProvider;
+  }
+
+
+  setProfileImageUrl(String url) {
     _profileImageEditComponentViewModel.setProfileImageUrl(url);
   }
 

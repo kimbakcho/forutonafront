@@ -11,7 +11,7 @@ import 'package:forutonafront/Components/GenderSelectComponent/GenderSelectCompo
 import 'package:forutonafront/Components/NickNameEditComponent/NickNameEditComponent.dart';
 import 'package:forutonafront/Components/ProfileImageEditComponent/ProfileImageEditComponent.dart';
 import 'package:forutonafront/Components/SelfIntroduceEditComponent/SelfIntroduceEditComponent.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +27,7 @@ class L008MainPage extends StatelessWidget {
               body: Container(
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
-                    LCodeAppBar(
+                    CodeAppBar(
                       enableTailButton: model.isCanNext,
                       progressValue: 1,
                       onTailButtonClick: () {

@@ -4,7 +4,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPh
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwChangeFromPhoneAuthReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwChangeFromPhoneAuthResDto.dart';
 import 'package:forutonafront/Components/PwInputAndCheckComponent/PwInputAndCheckComponent.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class L015MainPage extends StatelessWidget {
               body: Container(
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
-                    LCodeAppBar(
+                    CodeAppBar(
                       title: "신규 패스워드 만들기",
                       progressValue: 1,
                       tailButtonLabel: "완료",

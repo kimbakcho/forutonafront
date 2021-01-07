@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ class L017MainPage extends StatelessWidget {
               body: Container(
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
-                    LCodeAppBar(
+                    CodeAppBar(
                         title: "이메일 인증하기",
                         visibleTailButton: false,
                         enableTailButton: false,

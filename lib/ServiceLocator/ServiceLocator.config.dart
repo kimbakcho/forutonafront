@@ -58,6 +58,7 @@ import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dar
 import '../Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
 import '../Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import '../Common/FluttertoastAdapter/FluttertoastAdapter.dart';
+import '../Page/GCodePage/G001/G001MainPage.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCase.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
 import '../Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCase.dart';
@@ -76,6 +77,7 @@ import '../Common/FireBaseMessage/UseCase/LaunchMessageUseCase/LaunchMessageUseC
 import '../Common/Geolocation/Adapter/LocationAdapter.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
+import '../MainPage/MainPageView.dart';
 import '../Common/GoogleMapSupport/MapBallMarkerFactory.dart';
 import '../Common/GoogleMapSupport/MapBitmapDescriptorUseCaseInputPort.dart';
 import '../Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
@@ -161,11 +163,11 @@ GetIt $initGetIt(
   gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
       instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
-      () => GoogleSurveyErrorReportUseCase(),
-      instanceName: 'GoogleSurveyErrorReportUseCase');
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleProposalOnServiceSurveyUseCase(),
       instanceName: 'GoogleProposalOnServiceSurveyUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(
+      () => GoogleSurveyErrorReportUseCase(),
+      instanceName: 'GoogleSurveyErrorReportUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
       instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
@@ -195,6 +197,8 @@ GetIt $initGetIt(
   gh.lazySingleton<FlutterLocalNotificationsPluginAdapter>(
       () => FlutterLocalNotificationsPluginAdapterImpl());
   gh.lazySingleton<FluttertoastAdapter>(() => FluttertoastAdapter());
+  gh.lazySingleton<G001MainPageViewModelController>(
+      () => G001MainPageViewModelController());
   gh.factory<GeoPlaceAdapter>(() => GooglePlaceAdapter());
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
   gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
@@ -204,6 +208,8 @@ GetIt $initGetIt(
   gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
       instanceName: 'ImageAvatarUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
+  gh.lazySingleton<MainPageViewModelController>(
+      () => MainPageViewModelController());
   gh.lazySingleton<MapBitmapDescriptorUseCaseInputPort>(() =>
       MapBitmapDescriptorUseCase(
         imagePngResizeUtil:
@@ -216,15 +222,15 @@ GetIt $initGetIt(
       () => MapScreenPositionUseCase());
   gh.lazySingleton<NotiSelectActionBaseInputPort>(
       () => PageMoveActionUseCase());
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => CommentChannelUseCase(),
-      instanceName: 'CommentChannelUseCase');
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => RadarBasicChannelUseCae(),
-      instanceName: 'RadarBasicChannelUseCae');
   gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
       (name, _) =>
           NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => RadarBasicChannelUseCae(),
+      instanceName: 'RadarBasicChannelUseCae');
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => CommentChannelUseCase(),
+      instanceName: 'CommentChannelUseCase');
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>

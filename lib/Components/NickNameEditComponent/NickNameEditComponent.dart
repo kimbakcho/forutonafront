@@ -99,7 +99,6 @@ class NickNameEditComponentViewModel extends ChangeNotifier {
         userNickName != _nickNameEditController.text) {
       await _nickNameValid.valid(_nickNameEditController.text);
     }
-    notifyListeners();
   }
 
   bool get currentIsError {
@@ -119,8 +118,12 @@ class NickNameEditComponentController {
   NickNameEditComponentController({this.onChangeNickNameText});
 
 
-  get nickNameValue {
-    return _nickNameEditComponentViewModel._nickNameEditController.text;
+  String get nickNameValue {
+    if(_nickNameEditComponentViewModel == null){
+      return "";
+    }else {
+      return _nickNameEditComponentViewModel._nickNameEditController.text;
+    }
   }
 
   set nickNameValue(String value) {

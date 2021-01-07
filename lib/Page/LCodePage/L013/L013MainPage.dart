@@ -7,7 +7,7 @@ import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/DontHaveIdEr
 import 'package:forutonafront/Common/SignValid/IdDuplicationUseCase/IdDuplicationValidImpl.dart';
 import 'package:forutonafront/Components/EmailCheckComponent/EmailCheckComponent.dart';
 import 'package:forutonafront/Page/LCodePage/L014/L014MainPage.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class L013MainPage extends StatelessWidget {
               body: Container(
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
-                    LCodeAppBar(
+                    CodeAppBar(
                       title: "휴대폰 인증하기",
                       visibleTailButton: true,
                       progressValue: 0.3,

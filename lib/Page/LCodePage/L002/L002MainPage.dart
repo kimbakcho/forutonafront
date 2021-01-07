@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/Components/DottedLine/DottedLine.dart';
 import 'package:forutonafront/Page/LCodePage/L004/L004MainPage.dart';
-import 'package:forutonafront/Page/LCodePage/LCodeAppBar/LCodeAppBar.dart';
+
 import 'package:forutonafront/Page/LCodePage/LCodeCheckBox/LCodeCheckBox.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,7 +22,7 @@ class L002MainPage extends StatelessWidget {
               child: Container(
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
-                    LCodeAppBar(
+                    CodeAppBar(
                         title: '이용약관 동의',
                         progressValue: 0.25,
                         enableTailButton: model.enableTailButton,

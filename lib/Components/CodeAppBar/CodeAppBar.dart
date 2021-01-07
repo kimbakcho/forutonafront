@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'TailButton.dart';
 
-class LCodeAppBar extends StatelessWidget {
+class CodeAppBar extends StatelessWidget {
   final Function onTailButtonClick;
 
   final String tailButtonLabel;
@@ -19,7 +19,7 @@ class LCodeAppBar extends StatelessWidget {
 
   final String title;
 
-  const LCodeAppBar(
+  const CodeAppBar(
       {Key key,
       this.onTailButtonClick,
       this.tailButtonLabel,
