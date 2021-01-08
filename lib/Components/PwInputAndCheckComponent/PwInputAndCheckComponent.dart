@@ -9,8 +9,17 @@ import 'package:provider/provider.dart';
 class PwInputAndCheckComponent extends StatelessWidget {
   final PwInputAndCheckComponentController pwInputAndCheckComponentController;
 
+  final bool visibleTitleLabel;
+
+  final String passwordHintLabel;
+  final String passwordCheckHintLabel;
+
   const PwInputAndCheckComponent(
-      {Key key, this.pwInputAndCheckComponentController})
+      {Key key,
+      this.pwInputAndCheckComponentController,
+      this.visibleTitleLabel = true,
+      this.passwordHintLabel = "패스워드 입력",
+      this.passwordCheckHintLabel = "패스워드 입력"})
       : super(key: key);
 
   @override
@@ -25,14 +34,16 @@ class PwInputAndCheckComponent extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                Text("패스워드",
-                    style: GoogleFonts.notoSans(
-                      fontSize: 14,
-                      color: const Color(0xff000000),
-                      letterSpacing: -0.28,
-                      fontWeight: FontWeight.w700,
-                      height: 1.2142857142857142,
-                    )),
+                visibleTitleLabel
+                    ? Text("패스워드",
+                        style: GoogleFonts.notoSans(
+                          fontSize: 14,
+                          color: const Color(0xff000000),
+                          letterSpacing: -0.28,
+                          fontWeight: FontWeight.w700,
+                          height: 1.2142857142857142,
+                        ))
+                    : Container(),
                 Row(
                   children: [
                     Expanded(
@@ -45,7 +56,7 @@ class PwInputAndCheckComponent extends StatelessWidget {
                                 errorText: model._isPwError
                                     ? model._pwErrorText
                                     : null,
-                                hintText: "패스워드 입력",
+                                hintText: passwordHintLabel,
                                 hintStyle: GoogleFonts.notoSans(
                                   fontSize: 14,
                                   color: const Color(0xffb1b1b1),
@@ -63,17 +74,21 @@ class PwInputAndCheckComponent extends StatelessWidget {
                     ))
                   ],
                 ),
-                SizedBox(
-                  height: 25,
-                ),
-                Text("패스워드 확인",
-                    style: GoogleFonts.notoSans(
-                      fontSize: 14,
-                      color: const Color(0xff000000),
-                      letterSpacing: -0.28,
-                      fontWeight: FontWeight.w700,
-                      height: 1.2142857142857142,
-                    )),
+                visibleTitleLabel
+                    ? SizedBox(
+                        height: 25,
+                      )
+                    : Container(),
+                visibleTitleLabel
+                    ? Text("패스워드 확인",
+                        style: GoogleFonts.notoSans(
+                          fontSize: 14,
+                          color: const Color(0xff000000),
+                          letterSpacing: -0.28,
+                          fontWeight: FontWeight.w700,
+                          height: 1.2142857142857142,
+                        ))
+                    : Container(),
                 Row(
                   children: [
                     Expanded(
@@ -86,7 +101,7 @@ class PwInputAndCheckComponent extends StatelessWidget {
                                   errorText: model._isPwCheckError
                                       ? model._pwCheckErrorText
                                       : null,
-                                  hintText: "패스워드 입력",
+                                  hintText: passwordCheckHintLabel,
                                   hintStyle: GoogleFonts.notoSans(
                                     fontSize: 14,
                                     color: const Color(0xffb1b1b1),
@@ -206,6 +221,7 @@ class PwInputAndCheckComponentController {
 
     return result;
   }
+
   String getPwValue() {
     return _pwInputAndCheckComponentViewModel._pwEditController.text;
   }

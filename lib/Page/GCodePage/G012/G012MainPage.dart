@@ -1,328 +1,213 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/Common/SignValid/BasicUseCase/CurrentPwValidImpl.dart';
-import 'package:forutonafront/Common/SignValid/BasicUseCase/PwCheckValidImpl.dart';
-import 'package:forutonafront/Common/SignValid/BasicUseCase/PwValidImpl.dart';
-import 'package:forutonafront/Common/SignValid/SignValid.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
+import 'package:forutonafront/Components/PwInputAndCheckComponent/PwInputAndCheckComponent.dart';
+import 'package:forutonafront/MainPage/BottomNavigation.dart';
+import 'package:forutonafront/MainPage/MainPageView.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'G012MainPageViewModel.dart';
-
-// ignore: must_be_immutable
 class G012MainPage extends StatelessWidget {
-  TextEditingController currentPwController = new TextEditingController();
-  TextEditingController newPwController = new TextEditingController();
-  TextEditingController checkPwController = new TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (_) {
-      SignValid pwCheckValid = PwValidImpl();
-      return G012MainPageViewModel(
-          context: context,
-          pwValid: pwCheckValid,
-          fUserPwChangeUseCaseInputPort: sl(),
-          pwCheckValid: PwCheckValidImpl(pwCheckValid),
-          currentPwValid:
-              CurrentPwValidImpl(fireBaseAuthAdapterForUseCase: sl()),
-          checkPwController: checkPwController,
-          currentPwController: currentPwController,
-          newPwController: newPwController,
-          codeMainPageController: sl(),
-          logoutUseCaseInputPort: sl());
-    }, child: Consumer<G012MainPageViewModel>(builder: (_, model, child) {
-      return Stack(children: <Widget>[
-        Scaffold(
-            body: Container(
-                color: Color(0xfff2f0f1),
-                padding: EdgeInsets.fromLTRB(
-                    0, MediaQuery.of(context).padding.top, 0, 0),
-                child: Column(children: <Widget>[
-                  topBar(model),
-                  Expanded(
-                      child: Container(
-                          child: ListView(
-                              shrinkWrap: true,
-                              padding: EdgeInsets.all(0),
-                              children: <Widget>[
-                        discriptionBar(context),
-                        currentPwTextField(model),
-                        currentPwErrorBar(model),
-                        newPwTextField(model),
-                        newPwErrorBar(model),
-                        checkPwTextField(model),
-                        checkPwErrorBar(model),
-                      ])))
-                ]))),
-        model.getIsLoading()
-            ? CommonLoadingComponent(isTouch: false)
-            : Container()
-      ]);
-    }));
-  }
-
-  Container checkPwErrorBar(G012MainPageViewModel model) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
-      child: model.isCheckPasswordError()
-          ? Text(model.getCheckPasswordErrorText(),
-              style: GoogleFonts.notoSans(
-                fontSize: 12,
-                color: Color(0xffff4f9a),
-              ))
-          : Container(),
-    );
-  }
-
-  Container checkPwTextField(G012MainPageViewModel model) {
-    return Container(
-        height: 49.00,
-        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: TextField(
-            obscureText: true,
-            controller: model.checkPwController,
-            onChanged: model.checkPwEditChange,
-            onEditingComplete: model.onCheckEditComplete,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-              hintText: " 새 패스워드 확인",
-              hintStyle: GoogleFonts.notoSans(
-                fontSize: 14,
-                color: Color(0xffb1b1b1),
-              ),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  gapPadding: 0,
-                  borderSide: !model.isCheckPasswordError()
-                      ? BorderSide(color: Colors.white, width: 0)
-                      : BorderSide(color: Color(0xffFF4F9A), width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  gapPadding: 0,
-                  borderSide: !model.isCheckPasswordError()
-                      ? BorderSide(color: Color(0xff3497FD), width: 0)
-                      : BorderSide(color: Color(0xffFF4F9A), width: 1)),
-            )));
-  }
-
-  Container newPwTextField(G012MainPageViewModel model) {
-    return Container(
-        height: 49.00,
-        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: TextField(
-            obscureText: true,
-            controller: model.newPwController,
-            onChanged: model.onNewPwEditChange,
-            onEditingComplete: model.onNewPwEditComplete,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-              hintText: " 새 패스워드",
-              hintStyle: GoogleFonts.notoSans(
-                fontSize: 14,
-                color: Color(0xffb1b1b1),
-              ),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  gapPadding: 0,
-                  borderSide: !model.isNewPasswordError()
-                      ? BorderSide(color: Colors.white, width: 0)
-                      : BorderSide(color: Color(0xffFF4F9A), width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  gapPadding: 0,
-                  borderSide: !model.isNewPasswordError()
-                      ? BorderSide(color: Color(0xff3497FD), width: 0)
-                      : BorderSide(color: Color(0xffFF4F9A), width: 1)),
-            )));
-  }
-
-  Container newPwErrorBar(G012MainPageViewModel model) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
-      child: model.isNewPasswordError()
-          ? Text(model.getNewPasswordErrorText(),
-              style: GoogleFonts.notoSans(
-                fontSize: 12,
-                color: Color(0xffff4f9a),
-              ))
-          : Container(),
-    );
-  }
-
-  Container currentPwErrorBar(G012MainPageViewModel model) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(32, 8, 16, 8),
-      child: model.isCurrentPasswordError()
-          ? Text(model.getCurrentPasswordErrorText(),
-              style: GoogleFonts.notoSans(
-                fontSize: 12,
-                color: Color(0xffff4f9a),
-              ))
-          : Container(),
-    );
-  }
-
-  Container currentPwTextField(G012MainPageViewModel model) {
-    return Container(
-        height: 49.00,
-        margin: EdgeInsets.fromLTRB(16, 26, 16, 0),
-        child: TextField(
-            obscureText: true,
-            controller: model.currentPwController,
-            onChanged: model.onCurrentPwEditChange,
-            onEditingComplete: model.onCurrentPwEditComplete,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-              hintText: "현재 패스워드",
-              hintStyle: GoogleFonts.notoSans(
-                fontSize: 14,
-                color: Color(0xffb1b1b1),
-              ),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  gapPadding: 0,
-                  borderSide: !model.isCurrentPasswordError()
-                      ? BorderSide(color: Colors.white, width: 0)
-                      : BorderSide(color: Color(0xffFF4F9A), width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  gapPadding: 0,
-                  borderSide: !model.isCurrentPasswordError()
-                      ? BorderSide(color: Color(0xff3497FD), width: 0)
-                      : BorderSide(color: Color(0xffFF4F9A), width: 1)),
-            )));
-  }
-
-  Container discriptionBar(BuildContext context) {
-    return Container(
-        height: 121.00,
-        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-        child: Container(
-            child: Stack(children: <Widget>[
-          Positioned(
-              top: 0,
-              left: 0,
-              child: Text("권장사항",
-                  style: GoogleFonts.notoSans(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                    color: Color(0xff454f63),
-                  ))),
-          Positioned(
-            top: 34,
-            left: 0,
-            width: MediaQuery.of(context).size.width - 64,
-            child: Text(
-                "*패스워드는 주기적으로 바꾸어 사용하시는 것이 안전합니다." +
-                    "\n*패스워드에 8-16자리 영문 대소문자, 숫자, 특수문자를 조합" +
-                    "하시면 비밀번호 안전도가 높아져 도용의 위험이 줄어듭니다.",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontSize: 11,
-                  color: Color(0xff454f63),
-                )),
-          )
-        ])),
-        decoration: BoxDecoration(
-          color: Color(0xfff5f5f5),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0.00, 4.00),
-              color: Color(0xff455b63).withOpacity(0.08),
-              blurRadius: 16,
-            )
-          ],
-          borderRadius: BorderRadius.circular(12.00),
-        ));
-  }
-
-  Container topBar(G012MainPageViewModel model) {
-    return Container(
-      height: 56,
-      color: Colors.white,
-      child: Row(children: [
-        Container(
-            child: FlatButton(
-                padding: EdgeInsets.all(0),
-                onPressed: model.onBackBtnTap,
-                child: Icon(Icons.arrow_back)),
-            width: 48),
-        Container(
-            child: Text("패스워드 재설정",
-                style: GoogleFonts.notoSans(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20,
-                  color: Color(0xff454f63),
-                ))),
-        Spacer(),
-        model.isCanComplete()
-            ? new Container(
-                height: 32.00,
-                width: 75.00,
-                margin: EdgeInsets.only(right: 16),
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: model.onPwChangeComplete,
-                  child: Text("완료",
-                      style: GoogleFonts.notoSans(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                        color: Color(0xff454f63),
-                      )),
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xffffffff),
-                  border: Border.all(
-                    width: 1.00,
-                    color: Color(0xff454f63),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0.00, 12.00),
-                      color: Color(0xff455b63).withOpacity(0.08),
-                      blurRadius: 16,
+    return ChangeNotifierProvider(
+        create: (_) => G012MainPageViewModel(sl(), sl(), sl(), sl()),
+        child: Consumer<G012MainPageViewModel>(builder: (_, model, child) {
+          return Scaffold(
+              body: Container(
+                  padding: MediaQuery.of(context).padding,
+                  child: Column(children: [
+                    CodeAppBar(
+                      title: "패스워드 재설정",
+                      visibleTailButton: true,
+                      enableTailButton: model._isCanComplete,
+                      onTailButtonClick: () {
+                        model._changePw(context);
+                      },
+                      tailButtonLabel: "완료",
+                      progressValue: 0,
                     ),
-                  ],
-                  borderRadius: BorderRadius.circular(5.00),
-                ),
-              )
-            : Container(
-                height: 32.00,
-                width: 75.00,
-                margin: EdgeInsets.only(right: 16),
-                child: FlatButton(
-                  onPressed: null,
-                  padding: EdgeInsets.all(0),
-                  child: Text("완료",
-                      style: GoogleFonts.notoSans(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                        color: Color(0xffb1b1b1),
-                      )),
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xffd4d4d4),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0.00, 12.00),
-                      color: Color(0xff455b63).withOpacity(0.08),
-                      blurRadius: 16,
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(5.00),
-                ),
-              )
-      ]),
-    );
+                    Expanded(
+                        child: SingleChildScrollView(
+                            child: Column(children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(left: 16, right: 16),
+                          padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                          constraints: BoxConstraints.tightForFinite(),
+                          height: 135,
+                          decoration: BoxDecoration(
+                              color: Color(0xffF2F3F5),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              border: Border.all(color: Color(0xffE4E7E8))),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                Text('권장사항',
+                                    style: GoogleFonts.notoSans(
+                                      fontSize: 14,
+                                      color: const Color(0xff000000),
+                                      fontWeight: FontWeight.w700,
+                                    )),
+                                SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  '* 패스워드는 주기적으로 바꾸어 사용하는 것이 안전합니다.\n'
+                                  '* 패스워드는 8-16자리 영문 대소문자, 숫자, 특수문자를 조합하여 사용하면 도용의 위험이 줄어듭니다.\n',
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 12,
+                                    color: const Color(0xff3a3e3f),
+                                  ),
+                                  textAlign: TextAlign.left,
+                                )
+                              ])),
+                      SizedBox(height: 34),
+                      Container(
+                        margin: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '패스워드 변경',
+                              style: GoogleFonts.notoSans(
+                                fontSize: 14,
+                                color: const Color(0xff000000),
+                                letterSpacing: -0.28,
+                                fontWeight: FontWeight.w700,
+                                height: 1.2142857142857142,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: Stack(
+                                  children: [
+                                    TextField(
+                                      obscureText: true,
+                                      controller:
+                                          model._currentPwFieldController,
+                                      decoration: InputDecoration(
+                                          errorText: model.currentPwErrorFlag
+                                              ? model.currentPwErrorText
+                                              : null,
+                                          hintText: "현재 패스워드 입력",
+                                          hintStyle: GoogleFonts.notoSans(
+                                            fontSize: 14,
+                                            color: const Color(0xffb1b1b1),
+                                            letterSpacing: -0.28,
+                                            fontWeight: FontWeight.w300,
+                                            height: 1.2142857142857142,
+                                          )),
+                                    ),
+                                    Positioned(
+                                        right: 0,
+                                        top: 13,
+                                        child: model.currentPwCheckComplete
+                                            ? Icon(Icons.check_circle,
+                                                color: Colors.blue)
+                                            : Container())
+                                  ],
+                                ))
+                              ],
+                            ),
+                            PwInputAndCheckComponent(
+                                pwInputAndCheckComponentController:
+                                    model._pwInputAndCheckComponentController,
+                                passwordHintLabel: "새 패스워드 입력",
+                                passwordCheckHintLabel: "새 패스워드 확인",
+                                visibleTitleLabel: false)
+                          ],
+                        ),
+                      )
+                    ])))
+                  ])));
+        }));
+  }
+}
+
+class G012MainPageViewModel extends ChangeNotifier {
+  PwInputAndCheckComponentController _pwInputAndCheckComponentController;
+
+  TextEditingController _currentPwFieldController;
+
+  String currentPw = "";
+
+  String newPassword = "";
+
+  String newPasswordCheck = "";
+
+  String currentPwErrorText = "";
+
+  bool currentPwErrorFlag = false;
+
+  bool currentPwCheckComplete = false;
+
+  FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+
+  SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+
+  FUserPwChangeUseCaseInputPort _fUserPwChangeUseCaseInputPort;
+
+  MainPageViewModelController _mainPageViewModelController;
+
+  G012MainPageViewModel(
+      this._fireBaseAuthAdapterForUseCase,
+      this._signInUserInfoUseCaseInputPort,
+      this._fUserPwChangeUseCaseInputPort,
+      this._mainPageViewModelController) {
+    _pwInputAndCheckComponentController =
+        PwInputAndCheckComponentController(onChangeEditValue: (pw, pwCheck) {
+      newPassword = pw;
+      newPasswordCheck = pwCheck;
+      notifyListeners();
+    });
+
+    _currentPwFieldController = TextEditingController();
+    _currentPwFieldController.addListener(() {
+      currentPwCheckComplete = false;
+      currentPw = _currentPwFieldController.text;
+      notifyListeners();
+    });
+  }
+
+  bool get _isCanComplete {
+    return currentPw.isNotEmpty &&
+        newPassword.isNotEmpty &&
+        newPasswordCheck.isNotEmpty;
+  }
+
+  _changePw(BuildContext context) async {
+    var reqSignInUserInfoFromMemory =
+        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+    try {
+      await this._fireBaseAuthAdapterForUseCase.signInWithEmailAndPassword(
+          reqSignInUserInfoFromMemory.email, currentPw);
+    } catch (ex) {
+      currentPwErrorFlag = true;
+      currentPwErrorText = "*현재 패스워드와 일치하지 않습니다.";
+      notifyListeners();
+      return;
+    }
+    currentPwCheckComplete = true;
+    notifyListeners();
+    var result = await _pwInputAndCheckComponentController.valid();
+
+    if (result) {
+      await _fUserPwChangeUseCaseInputPort.pwChange(newPassword);
+      _fireBaseAuthAdapterForUseCase.logout();
+      _mainPageViewModelController.moveToMainPage(BottomNavigationNavType.HOME);
+      Navigator.of(context).popUntil((route) => route.settings.name == 'MAIN');
+
+    }
+
   }
 }

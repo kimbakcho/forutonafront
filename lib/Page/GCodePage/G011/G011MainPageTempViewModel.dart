@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
-import 'package:forutonafront/Page/GCodePage/G012/G012MainPage.dart';
+import 'package:forutonafront/Page/GCodePage/G012/G012MainPageTemp.dart';
 
-class G011MainPageViewModel extends ChangeNotifier {
+class G011MainPageTempViewModel extends ChangeNotifier {
   final BuildContext context;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
-  G011MainPageViewModel(
+  G011MainPageTempViewModel(
       {@required this.context,
       @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort}):
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
@@ -55,7 +55,7 @@ class G011MainPageViewModel extends ChangeNotifier {
     }
 
     await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => G012MainPage(),settings: RouteSettings(name: "/G012")));
+        .push(MaterialPageRoute(builder: (_) => G012MainPageTemp(),settings: RouteSettings(name: "/G012")));
 
   }
 }

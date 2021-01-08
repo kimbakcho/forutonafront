@@ -7,7 +7,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUs
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/Page/GCodePage/G010/G010MainPageTemp.dart';
-import 'package:forutonafront/Page/GCodePage/G011/G011MainPage.dart';
+import 'package:forutonafront/Page/GCodePage/G011/G011MainPageTemp.dart';
 import 'package:forutonafront/Page/GCodePage/G015/G015MainPage.dart';
 import 'package:forutonafront/Page/GCodePage/G016/G016MainPage.dart';
 import 'package:forutonafront/Page/GCodePage/G019/G019MainPage.dart';
@@ -47,7 +47,7 @@ class G009MainPageViewModelTemp extends ChangeNotifier
 
   void goSecurityPage() async {
     await Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G011MainPage(), settings: RouteSettings(name: "/G011")));
+        builder: (_) => G011MainPageTemp(), settings: RouteSettings(name: "/G011")));
   }
 
   void logout() async {

@@ -8,7 +8,7 @@ import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-class G012MainPageViewModel extends ChangeNotifier {
+class G012MainPageTempViewModel extends ChangeNotifier {
   final BuildContext context;
 
   final TextEditingController currentPwController;
@@ -40,7 +40,7 @@ class G012MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  G012MainPageViewModel(
+  G012MainPageTempViewModel(
       {@required this.context,
       @required this.currentPwController,
       @required this.newPwController,
