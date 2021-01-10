@@ -87,6 +87,9 @@ import '../AppBis/FBall/Domain/Repository/NoInterestBallRepository.dart';
 import '../AppBis/FBall/Data/Repository/NoInterestBallRepositoryImpl.dart';
 import '../AppBis/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
 import '../Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
+import '../ManagerBis/Notice/Domain/NoticeRepository.dart';
+import '../ManagerBis/Notice/Data/NoticeRepositoryImpl.dart';
+import '../ManagerBis/Notice/Domain/NoticeUseCaseInputPort.dart';
 import '../Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
 import '../Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCase.dart';
 import '../Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCaseInputPort.dart';
@@ -203,10 +206,10 @@ GetIt $initGetIt(
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
   gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
       instanceName: 'ImagePngResizeUtil');
-  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
-      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
       instanceName: 'ImageAvatarUtil');
+  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
+      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
   gh.lazySingleton<MainPageViewModelController>(
       () => MainPageViewModelController());
@@ -222,15 +225,18 @@ GetIt $initGetIt(
       () => MapScreenPositionUseCase());
   gh.lazySingleton<NotiSelectActionBaseInputPort>(
       () => PageMoveActionUseCase());
+  gh.factory<NoticeRepository>(() => NoticeRepositoryImpl());
+  gh.factory<NoticeUseCaseInputPort>(
+      () => NoticeUseCase(get<NoticeRepository>()));
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => CommentChannelUseCase(),
+      instanceName: 'CommentChannelUseCase');
   gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
       (name, _) =>
           NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
   gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => RadarBasicChannelUseCae(),
       instanceName: 'RadarBasicChannelUseCae');
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => CommentChannelUseCase(),
-      instanceName: 'CommentChannelUseCase');
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>

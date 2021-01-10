@@ -118,7 +118,6 @@ import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dar
 
 import 'ServiceLocator.config.dart';
 
-
 final sl = GetIt.instance;
 
 @InjectableInit(

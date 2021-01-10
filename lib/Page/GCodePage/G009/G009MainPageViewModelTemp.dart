@@ -8,8 +8,8 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/Page/GCodePage/G010/G010MainPageTemp.dart';
 import 'package:forutonafront/Page/GCodePage/G011/G011MainPageTemp.dart';
-import 'package:forutonafront/Page/GCodePage/G015/G015MainPage.dart';
-import 'package:forutonafront/Page/GCodePage/G016/G016MainPage.dart';
+import 'package:forutonafront/Page/GCodePage/G015/G015MainPageTemp.dart';
+import 'package:forutonafront/Page/GCodePage/G016/G016MainPageTemp.dart';
 import 'package:forutonafront/Page/GCodePage/G019/G019MainPage.dart';
 
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
@@ -56,12 +56,12 @@ class G009MainPageViewModelTemp extends ChangeNotifier
 
   void goAlarmSettingPage() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G015MainPage(), settings: RouteSettings(name: "/G015")));
+        builder: (_) => G015MainPageTemp(), settings: RouteSettings(name: "/G015")));
   }
 
   void goNoticePage() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G016MainPage(), settings: RouteSettings(name: "/G016")));
+        builder: (_) => G016MainPageTemp(), settings: RouteSettings(name: "/G016")));
   }
 
   void goCustomCenter() {

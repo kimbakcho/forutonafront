@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SwitchWidget/SwitchStyle1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class G015MainPageViewModel extends ChangeNotifier {
+class G015MainPageTempViewModel extends ChangeNotifier {
   final BuildContext _context;
 
   bool isChatMessageAlarm = true;
@@ -18,21 +18,21 @@ class G015MainPageViewModel extends ChangeNotifier {
   SwitchStyle1Controller sponsorNewContentSwitchController = new SwitchStyle1Controller();
 
 
-  G015MainPageViewModel(this._context){
+  G015MainPageTempViewModel(this._context){
     init();
   }
 
   void init() async {
-    isChatMessageAlarm = await getAlarmSetting("ChatAlarmSetting");
-    chatAlarmSwitchController.moveSwitch(isChatMessageAlarm);
-    isMyContentReplyAlarm = await getAlarmSetting("MyContentReplyAlarm");
-    myContentReplyAlarmSwitchController.moveSwitch(isMyContentReplyAlarm);
-    isMyReplyReplyAlarm = await getAlarmSetting("MyReplyReplyAlarm");
-    myReplyReplyAlarmSwitchController.moveSwitch(isMyReplyReplyAlarm);
-    isFollowNewContent = await getAlarmSetting("FollowNewContent");
-    followNewContentSwitchController.moveSwitch(isFollowNewContent);
-    isSponsorNewContent = await getAlarmSetting("SponsorNewContent");
-    sponsorNewContentSwitchController.moveSwitch(isSponsorNewContent);
+    // isChatMessageAlarm = await getAlarmSetting("ChatAlarmSetting");
+    // chatAlarmSwitchController.moveSwitch(isChatMessageAlarm);
+    // isMyContentReplyAlarm = await getAlarmSetting("MyContentReplyAlarm");
+    // myContentReplyAlarmSwitchController.moveSwitch(isMyContentReplyAlarm);
+    // isMyReplyReplyAlarm = await getAlarmSetting("MyReplyReplyAlarm");
+    // myReplyReplyAlarmSwitchController.moveSwitch(isMyReplyReplyAlarm);
+    // isFollowNewContent = await getAlarmSetting("FollowNewContent");
+    // followNewContentSwitchController.moveSwitch(isFollowNewContent);
+    // isSponsorNewContent = await getAlarmSetting("SponsorNewContent");
+    // sponsorNewContentSwitchController.moveSwitch(isSponsorNewContent);
     notifyListeners();
   }
 

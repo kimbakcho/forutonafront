@@ -44,11 +44,11 @@ class FUserInfoResDto {
    int sponsorHistoryOpenAll;
    int sponsorHistoryOpenSponAndFollowFromMe;
    int sponsorHistoryOpenSponNoOpen;
-   int alarmChatMessage;
-   int alarmContentReply;
-   int alarmReplyAndReply;
-   int alarmFollowNewContent;
-   int alarmSponNewContent;
+   bool alarmChatMessage;
+   bool alarmContentReply;
+   bool alarmReplyAndReply;
+   bool alarmFollowNewContent;
+   bool alarmSponNewContent;
    int deactivation;
    int maliciousCount;
    DateTime stopPeriod;

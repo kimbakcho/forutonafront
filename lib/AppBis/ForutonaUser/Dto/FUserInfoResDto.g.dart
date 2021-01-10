@@ -54,11 +54,11 @@ FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
     ..sponsorHistoryOpenSponAndFollowFromMe =
         json['sponsorHistoryOpenSponAndFollowFromMe'] as int
     ..sponsorHistoryOpenSponNoOpen = json['sponsorHistoryOpenSponNoOpen'] as int
-    ..alarmChatMessage = json['alarmChatMessage'] as int
-    ..alarmContentReply = json['alarmContentReply'] as int
-    ..alarmReplyAndReply = json['alarmReplyAndReply'] as int
-    ..alarmFollowNewContent = json['alarmFollowNewContent'] as int
-    ..alarmSponNewContent = json['alarmSponNewContent'] as int
+    ..alarmChatMessage = json['alarmChatMessage'] as bool
+    ..alarmContentReply = json['alarmContentReply'] as bool
+    ..alarmReplyAndReply = json['alarmReplyAndReply'] as bool
+    ..alarmFollowNewContent = json['alarmFollowNewContent'] as bool
+    ..alarmSponNewContent = json['alarmSponNewContent'] as bool
     ..deactivation = json['deactivation'] as int
     ..maliciousCount = json['maliciousCount'] as int
     ..stopPeriod = json['stopPeriod'] == null

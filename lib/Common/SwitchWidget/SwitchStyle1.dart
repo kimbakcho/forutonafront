@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
 
-class SwitchStyle1Controller {
-  Function(bool) moveSwitch;
-}
 
 class SwitchStyle1 extends StatefulWidget {
-  final bool value;
+  final bool initValue;
   final ValueChanged<bool> onChanged;
   final Color activeColor;
   final Color inactiveColor = Colors.grey;
@@ -14,7 +11,7 @@ class SwitchStyle1 extends StatefulWidget {
 
   const SwitchStyle1({
     Key key,
-    this.value,
+    this.initValue,
     this.onChanged,
     this.activeColor,
     this.switchStyle1Controller
@@ -29,17 +26,20 @@ class _SwitchStyle1State extends State<SwitchStyle1>
   Animation _circleAnimation;
   AnimationController _animationController;
 
+  bool value;
+
   @override
   void initState() {
     super.initState();
     _animationController =
         AnimationController(duration: Duration(milliseconds: 60),vsync: this);
     _circleAnimation = AlignmentTween(
-            begin: widget.value ? Alignment.centerRight : Alignment.centerLeft,
-            end: widget.value ? Alignment.centerLeft : Alignment.centerRight)
+            begin: widget.initValue ? Alignment.centerRight : Alignment.centerLeft,
+            end: widget.initValue ? Alignment.centerLeft : Alignment.centerRight)
         .animate(CurvedAnimation(
             parent: _animationController, curve: Curves.linear));
-    widget.switchStyle1Controller.moveSwitch =  moveSwitch;
+    widget.switchStyle1Controller._switchStyle1State =  this;
+    value = widget.initValue;
   }
 
   moveSwitch(bool value){
@@ -62,9 +62,8 @@ class _SwitchStyle1State extends State<SwitchStyle1>
                 } else {
                   _animationController.forward();
                 }
-                widget.value == false
-                    ? widget.onChanged(true)
-                    : widget.onChanged(false);
+                value = !value;
+                widget.onChanged(value);
               },
               child: Container(
                 height: 25.00,
@@ -108,4 +107,29 @@ class _SwitchStyle1State extends State<SwitchStyle1>
               ));
         });
   }
+}
+
+class SwitchStyle1Controller {
+
+  _SwitchStyle1State _switchStyle1State;
+
+  SwitchStyle1Controller();
+
+  check() {
+    if(_switchStyle1State != null){
+      _switchStyle1State._animationController.forward();
+    }
+
+  }
+
+  unCheck(){
+    if(_switchStyle1State != null){
+      _switchStyle1State._animationController.reverse();
+    }
+  }
+
+  bool get isCheck{
+    return _switchStyle1State.value;
+  }
+
 }

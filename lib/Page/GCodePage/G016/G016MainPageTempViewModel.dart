@@ -6,7 +6,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PersonaSettingN
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
 import 'package:forutonafront/Page/GCodePage/G017/G017MainPage.dart';
 
-class G016MainPageViewModel extends ChangeNotifier {
+class G016MainPageTempViewModel extends ChangeNotifier {
   final BuildContext context;
 
   final PersonaSettingNoticeUseCaseInputPort
@@ -16,7 +16,7 @@ class G016MainPageViewModel extends ChangeNotifier {
   Pageable _pageable = Pageable(page:0,size: 10,sort: "noticeWriteDateTime,DESC");
   final ScrollController mainScrollController;
 
-  G016MainPageViewModel(
+  G016MainPageTempViewModel(
       {@required
           this.context,
       @required

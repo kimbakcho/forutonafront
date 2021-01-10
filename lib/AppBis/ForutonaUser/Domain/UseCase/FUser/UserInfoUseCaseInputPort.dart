@@ -19,4 +19,6 @@ class UserInfoUseCase implements UserInfoUseCaseInputPort {
     return fUserInfoSimpleResDto;
   }
 
+
+
 }

@@ -1,4 +1,5 @@
 
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/UserAlarmConfigUpdateReqDto.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/Entity/FUserInfo.dart';
@@ -38,4 +39,6 @@ abstract class FUserRepository {
   Future<void> updateMaliciousMessageCheck();
 
   Future<FUserInfoSimpleResDto> getFUserInfoSimple(String userUid) {}
+
+  Future<FUserInfoResDto> userAlarmConfigUpdate(UserAlarmConfigUpdateReqDto userAlarmConfigUpdateReqDto);
 }

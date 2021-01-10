@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/UserAlarmConfigUpdateReqDto.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
@@ -123,5 +124,15 @@ class FUserRepositoryImpl implements FUserRepository {
       "userUid": userUid
     });
     return FUserInfoSimpleResDto.fromJson(response.data);
+  }
+
+  @override
+  Future<FUserInfoResDto> userAlarmConfigUpdate(UserAlarmConfigUpdateReqDto userAlarmConfigUpdateReqDto) async{
+    var fDio = FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken());
+
+    var response = await fDio.put("/v1/FUserInfo/UpdateAlarmConfig",data:  userAlarmConfigUpdateReqDto.toJson());
+
+    return FUserInfoResDto.fromJson(response.data);
+
   }
 }

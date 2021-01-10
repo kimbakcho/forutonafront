@@ -36,11 +36,12 @@ class G012MainPage extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
+                      
                       Container(
                           margin: EdgeInsets.only(left: 16, right: 16),
                           padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                           constraints: BoxConstraints.tightForFinite(),
-                          height: 135,
+                          height: 137,
                           decoration: BoxDecoration(
                               color: Color(0xffF2F3F5),
                               borderRadius:
@@ -49,7 +50,6 @@ class G012MainPage extends StatelessWidget {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
                                 Text('권장사항',
                                     style: GoogleFonts.notoSans(
                                       fontSize: 14,

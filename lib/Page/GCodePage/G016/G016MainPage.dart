@@ -1,108 +1,121 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Page/GCodePage/G016/G016MainPageViewModel.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/PageScrollController/PageScrollController.dart';
+import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
+import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
+import 'package:forutonafront/ManagerBis/Notice/Dto/NoticeResDto.dart';
+import 'package:forutonafront/Page/GCodePage/G016/G016PageCollectMediator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
-import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
 class G016MainPage extends StatelessWidget {
-  ScrollController mainScrollController = new ScrollController();
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G016MainPageViewModel(
-            context: context,
-            mainScrollController: mainScrollController,
-            personaSettingNoticeUseCaseInputPort: sl()),
+        create: (_) => G016MainPageViewModel(),
         child: Consumer<G016MainPageViewModel>(builder: (_, model, child) {
-          return Stack(children: <Widget>[
-            Scaffold(
-                body: Container(
-                    color: Color(0xfff2f0f1),
-                    padding: EdgeInsets.fromLTRB(
-                        0, MediaQuery.of(context).padding.top, 0, 0),
-                    child: Column(children: <Widget>[
-                      topBar(model),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Expanded(
-                        child: noticeListView(model, context),
-                      )
-                    ])))
-          ]);
+          return Scaffold(body: Container(
+            color: Colors.white,
+              padding: MediaQuery.of(context).padding,
+
+              child: Column(children: [
+            CodeAppBar(
+              progressValue: 0,
+              title: "공지사항",
+              visibleTailButton: false,
+            ),
+            Expanded(child:
+            model.isLoaded ?
+            Container(
+              child: ListView.builder(
+                itemCount: model.notices.length,
+                controller: PageScrollController(
+                    scrollController: ScrollController(),
+                    onNextPage: model.onNextPage,
+                    onRefreshFirst: model.onRefreshFirst).scrollController,
+
+                  itemBuilder: (context,index){
+                return Container(
+                  key: Key(model.notices[index].idx.toString()),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: (){
+
+                      },
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(10, 8, 16, 8),
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              Text(
+                                model.notices[index].title,
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 14,
+                                  color: const Color(0xff3a3e3f),
+                                ),
+                                textAlign: TextAlign.center,
+                              )
+                            ]),
+                            Row(children: [
+                              Text(
+                                TimeDisplayUtil.getCalcToStrFromNow(model.notices[index].modifyDate),
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 12,
+                                  color: const Color(0xff7a7a7a),
+                                  letterSpacing: -0.24,
+                                  fontWeight: FontWeight.w300,
+                                  height: 1.8333333333333333,
+                                ),
+                                textAlign: TextAlign.left,
+                              )
+                            ],)
+                          ],
+                        ),
+                      ) 
+                          
+                      ,
+                    ),
+                  )
+                );
+              }),
+
+            ): CommonLoadingComponent())
+
+          ])));
         }));
   }
+}
 
-  ListView noticeListView(G016MainPageViewModel model, BuildContext context) {
-    return ListView.builder(
-        controller: model.mainScrollController,
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.all(0),
-        itemCount: model.notice.length,
-        itemBuilder: (_, index) {
-          return Container(
-            height: 64,
-            child: FlatButton(
-                padding: EdgeInsets.all(0),
-                onPressed: () {
-                  model.goNoticePageInner(model.notice[index].idx);
-                },
-                child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(model.notice[index].noticeName,
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: Color(0xff454f63),
-                              )),
-                          Text(
-                              DateFormat("yy.MM.dd").format(
-                                  model.notice[index].noticeWriteDateTime),
-                              style: TextStyle(
-                                fontFamily: "Noto Sans CJK KR",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 10,
-                                color: Color(0xff454f63),
-                              ))
-                        ]))),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                    bottom: BorderSide(color: Color(0xfff2f0f1), width: 1))),
-          );
-        });
+class G016MainPageViewModel extends ChangeNotifier {
+
+  G016PageCollectMediator _g016pageCollectMediator;
+
+  bool isLoaded = false;
+
+  G016MainPageViewModel(){
+    _g016pageCollectMediator = G016PageCollectMediator(sl());
+    init();
   }
 
-  Container topBar(G016MainPageViewModel model) {
-    return Container(
-      height: 56,
-      color: Colors.white,
-      child: Row(children: [
-        Container(
-            child: FlatButton(
-                padding: EdgeInsets.all(0),
-                onPressed: model.onBackTap,
-                child: Icon(Icons.arrow_back)),
-            width: 48),
-        Container(
-            child: Text("공지사항",
-                style: TextStyle(
-                  fontFamily: "Noto Sans CJK KR",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20,
-                  color: Color(0xff454f63),
-                )))
-      ]),
-    );
+  init() async {
+    isLoaded = false;
+    notifyListeners();
+    await _g016pageCollectMediator.searchFirst();
+    isLoaded = true;
+    notifyListeners();
+  }
+
+  List<NoticeResDto> get notices {
+    return _g016pageCollectMediator.itemList;
+  }
+
+  onNextPage() {
+    _g016pageCollectMediator.searchNext();
+  }
+
+  onRefreshFirst() {
+    _g016pageCollectMediator.searchFirst();
   }
 }
