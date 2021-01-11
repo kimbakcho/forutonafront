@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 
 abstract class NoticeUseCaseInputPort {
   Future<PageWrap<NoticeResDto>> getNotices(Pageable pageable);
+  Future<NoticeResDto> getNotice(int idx);
 }
 
 @Injectable(as: NoticeUseCaseInputPort)
@@ -19,6 +20,12 @@ class NoticeUseCase implements NoticeUseCaseInputPort{
   Future<PageWrap<NoticeResDto>> getNotices(Pageable pageable) async{
     return await _noticeRepository.findByAll(pageable);
   }
+
+  @override
+  Future<NoticeResDto> getNotice(int idx) async {
+    return await _noticeRepository.findById(idx);
+  }
+
 
 
 }

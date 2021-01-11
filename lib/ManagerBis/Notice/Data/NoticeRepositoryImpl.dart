@@ -16,4 +16,13 @@ class NoticeRepositoryImpl implements NoticeRepository {
     return pageWrap;
   }
 
+  @override
+  Future<NoticeResDto> findById(int idx) async {
+    FDio dio = FDio.noneToken();
+    var response = await dio.get("/Notice",queryParameters: {
+      "idx": idx
+    });
+    return NoticeResDto.fromJson(response.data);
+  }
+
 }

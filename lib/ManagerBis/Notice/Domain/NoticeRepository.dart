@@ -4,4 +4,6 @@ import 'package:forutonafront/ManagerBis/Notice/Dto/NoticeResDto.dart';
 
 abstract class NoticeRepository {
   Future<PageWrap<NoticeResDto>> findByAll(Pageable pageable);
+
+  Future<NoticeResDto> findById(int idx);
 }

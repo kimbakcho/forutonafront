@@ -3,9 +3,9 @@ import 'package:forutonafront/Page/GCodePage/G022/G022MainPage.dart';
 
 import 'package:forutonafront/Page/GCodePage/G023/G023MainPage.dart';
 
-class G019MainPageViewModel extends ChangeNotifier{
+class G019MainPageTempViewModel extends ChangeNotifier{
   final BuildContext _context;
-  G019MainPageViewModel(this._context);
+  G019MainPageTempViewModel(this._context);
 
   void onBackTap() {
     Navigator.of(_context).pop();

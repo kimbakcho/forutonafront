@@ -14,6 +14,7 @@ import 'package:forutonafront/Page/GCodePage/G010/G010MainPage.dart';
 import 'package:forutonafront/Page/GCodePage/G011/G011MainPage.dart';
 import 'package:forutonafront/Page/GCodePage/G015/G015MainPage.dart';
 import 'package:forutonafront/Page/GCodePage/G016/G016MainPage.dart';
+import 'package:forutonafront/Page/GCodePage/G019/G019MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -125,7 +126,11 @@ class G009MainPage extends StatelessWidget {
                           size: 30,
                         ),
                         text: "고객센터",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_){
+                            return G019MainPage();
+                          }));
+                        },
                       ),
                       Material(
                         child: InkWell(

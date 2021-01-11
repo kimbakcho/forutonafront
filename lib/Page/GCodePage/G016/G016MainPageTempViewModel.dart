@@ -4,7 +4,7 @@ import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
-import 'package:forutonafront/Page/GCodePage/G017/G017MainPage.dart';
+import 'package:forutonafront/Page/GCodePage/G017/G017MainPageTemp.dart';
 
 class G016MainPageTempViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -64,7 +64,7 @@ class G016MainPageTempViewModel extends ChangeNotifier {
 
   void goNoticePageInner(int idx) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return G017MainPage(idx);
+      return G017MainPageTemp(idx);
     }));
   }
 }

@@ -10,7 +10,7 @@ import 'package:forutonafront/Page/GCodePage/G010/G010MainPageTemp.dart';
 import 'package:forutonafront/Page/GCodePage/G011/G011MainPageTemp.dart';
 import 'package:forutonafront/Page/GCodePage/G015/G015MainPageTemp.dart';
 import 'package:forutonafront/Page/GCodePage/G016/G016MainPageTemp.dart';
-import 'package:forutonafront/Page/GCodePage/G019/G019MainPage.dart';
+import 'package:forutonafront/Page/GCodePage/G019/G019MainPageTemp.dart';
 
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
@@ -66,7 +66,7 @@ class G009MainPageViewModelTemp extends ChangeNotifier
 
   void goCustomCenter() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => G019MainPage(), settings: RouteSettings(name: "/G019")));
+        builder: (_) => G019MainPageTemp(), settings: RouteSettings(name: "/G019")));
   }
 
   bool isForutonaUser() {

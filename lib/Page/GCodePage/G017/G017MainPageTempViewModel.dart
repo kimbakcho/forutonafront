@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
 
-class G017MainPageViewModel extends ChangeNotifier {
+class G017MainPageTempViewModel extends ChangeNotifier {
   final BuildContext context;
   final int idx;
 
@@ -13,7 +13,7 @@ class G017MainPageViewModel extends ChangeNotifier {
 
   String htmlUrl = "";
 
-  G017MainPageViewModel(
+  G017MainPageTempViewModel(
       {this.context,
       this.idx,
       @required
