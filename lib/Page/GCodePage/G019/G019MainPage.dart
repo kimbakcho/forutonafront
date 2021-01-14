@@ -78,6 +78,7 @@ class G019MainPage extends StatelessWidget {
                             }));
                           },
                           text: "오픈소스 라이센스",
+
                           icon: Icon(Icons.article),
                         ),
                         SizedBox(height: 4),
