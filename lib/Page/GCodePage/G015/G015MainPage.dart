@@ -213,6 +213,8 @@ class G015MainPageViewModel extends ChangeNotifier {
     await this
         ._updateAccountUserInfoUseCaseInputPort
         .userAlarmConfigUpdate(userAlarmConfigUpdateReqDto);
+
+    await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
     notifyListeners();
   }
 

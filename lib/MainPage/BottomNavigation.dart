@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'KPageNavBtn.dart';
 
-enum BottomNavigationNavType { HOME, SEARCH, SNS ,Profile}
+enum BottomNavigationNavType { HOME, SEARCH,MakeBall, SNS ,Profile}
 
 class BottomNavigation extends StatefulWidget {
   final BottomNavigationListener bottomNavigationListener;
@@ -51,7 +51,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   Expanded(
                       flex: 1,
                       child:
-                          FlatButton(onPressed: () {}, child: Icon(Icons.add))),
+                          FlatButton(onPressed: () {
+                            widget.bottomNavigationListener
+                                .onBottomNavClick(BottomNavigationNavType.MakeBall);
+                          }, child: Icon(Icons.add))),
                   Expanded(
                       flex: 1,
                       child: FlatButton(

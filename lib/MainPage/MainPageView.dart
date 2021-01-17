@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/Page/GCodePage/GCodeMainPage.dart';
+import 'package:forutonafront/Page/HCodePage/H002/BottomMakeComponent/BottomMakeComponent.dart';
 import 'package:forutonafront/Page/HomePage/HomeMainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L010/L010MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L011/L011MainPage.dart';
@@ -15,7 +16,7 @@ class MainPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => MainPageViewModel(sl(), context,sl()),
+        create: (_) => MainPageViewModel(sl(), context, sl()),
         child: Consumer<MainPageViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: model.isNotLockMaliciousUser
@@ -51,7 +52,8 @@ class MainPageViewModel extends ChangeNotifier
 
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
-  MainPageViewModel(this._signInUserInfoUseCaseInputPort, this.context,this._mainPageViewModelController) {
+  MainPageViewModel(this._signInUserInfoUseCaseInputPort, this.context,
+      this._mainPageViewModelController) {
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen(onLoginStateChange);
 
     this._mainPageViewModelController._mainPageViewModel = this;
@@ -82,6 +84,9 @@ class MainPageViewModel extends ChangeNotifier
       case BottomNavigationNavType.SNS:
         _pageController.jumpToPage(1);
         break;
+      case BottomNavigationNavType.MakeBall:
+        _showMakePanel();
+        break;
       case BottomNavigationNavType.SEARCH:
         break;
       case BottomNavigationNavType.Profile:
@@ -104,14 +109,24 @@ class MainPageViewModel extends ChangeNotifier
       return true;
     }
   }
+
+  _showMakePanel() {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (_) {
+          return BottomMakeComponent(
+
+          );
+        });
+  }
 }
 
 @lazySingleton
 class MainPageViewModelController {
   MainPageViewModel _mainPageViewModel;
 
-  moveToMainPage(BottomNavigationNavType bottomNavigationNavType){
+  moveToMainPage(BottomNavigationNavType bottomNavigationNavType) {
     _mainPageViewModel.onBottomNavClick(bottomNavigationNavType);
-
   }
 }

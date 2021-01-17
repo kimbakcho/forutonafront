@@ -26,7 +26,7 @@ import 'package:youtube_parser/youtube_parser.dart';
 
 import 'BallImageItem.dart';
 
-class IM001MainPageViewModel extends ChangeNotifier
+class IM001MainPageViewModelTemp extends ChangeNotifier
     implements
         InsertBallUseCaseOutputPort,
         SelectBallUseCaseOutputPort,
@@ -92,7 +92,7 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   IM001MainPageEnterMode mode;
 
-  IM001MainPageViewModel(
+  IM001MainPageViewModelTemp(
       {this.context,
       this.setUpPosition,
       this.address,

@@ -126,6 +126,7 @@ dependencies:
   #sms retriever
   sms_otp_auto_verify: ^1.2.2
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -156,6 +157,7 @@ flutter:
     - assets/MainImage/
     - assets/LoginIcon/
     - assets/IconImage/
+    - assets/BallMakeImage/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
