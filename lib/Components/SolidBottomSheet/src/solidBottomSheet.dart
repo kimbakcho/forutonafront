@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../solid_bottom_sheet.dart';
@@ -68,6 +70,8 @@ class SolidBottomSheet extends StatefulWidget {
 
   bool isShow = false;
 
+  Color bodyColor;
+
   SolidBottomSheet({
     Key key,
     @required this.headerBar,
@@ -84,6 +88,7 @@ class SolidBottomSheet extends StatefulWidget {
     this.showOnAppear = false,
     this.onShow,
     this.onHide,
+    this.bodyColor
   })  : assert(elevation >= 0.0),
         assert(minHeight >= 0.0),
         super(key: key) {
@@ -143,61 +148,45 @@ class _SolidBottomSheetState extends State<SolidBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        GestureDetector(
-          onVerticalDragUpdate:
-              widget.canUserSwipe ? _onVerticalDragUpdate : null,
-          onVerticalDragEnd: widget.autoSwiped ? _onVerticalDragEnd : null,
-          onTap: widget.toggleVisibilityOnTap ? _onTap : null,
-          child: Container(
-            decoration: widget.elevation > 0
-                ? BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      color: Colors.black54,
-                      blurRadius: widget.elevation,
-                    ),
-                  ])
-                : null,
-            width: MediaQuery.of(context).size.width,
-            child: widget.headerBar,
-          ),
+    return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      GestureDetector(
+        onVerticalDragUpdate:
+            widget.canUserSwipe ? _onVerticalDragUpdate : null,
+        onVerticalDragEnd: widget.autoSwiped ? _onVerticalDragEnd : null,
+        onTap: widget.toggleVisibilityOnTap ? _onTap : null,
+        child: Container(
+          decoration: widget.elevation > 0
+              ? BoxDecoration(boxShadow: [
+                  BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: widget.elevation,
+                  ),
+                ])
+              : null,
+          width: MediaQuery.of(context).size.width,
+          child: widget.headerBar,
         ),
-        StreamBuilder<double>(
+      ),
+      StreamBuilder<double>(
           stream: widget.controller.heightStream,
           initialData: widget.controller.height,
           builder: (_, snapshot) {
-            print(snapshot.data);
-            return Container(
-              child: SingleChildScrollView(
-                child: AnimatedContainer(
-                  curve: Curves.easeOut,
-                  onEnd: (){
-                    if(snapshot.data == widget.maxHeight){
-                      animationDelay = 0;
-                    }else {
-                      animationDelay = widget.controller.smoothness.value;
-                    }
-                  },
-                  duration: Duration(milliseconds: animationDelay),
-                  height: snapshot.data - MediaQuery.of(context).viewInsets.bottom,
-                  child: GestureDetector(
-                    onVerticalDragUpdate:
-                    widget.draggableBody ? _onVerticalDragUpdate : null,
-                    onVerticalDragEnd:
-                    widget.autoSwiped ? _onVerticalDragEnd : null,
-                    onTap: widget.toggleVisibilityOnTap ? _onTap : null,
-                    child: widget.body,
-                  ),
-                ),
-              ),
-            )
-              ;
-          },
-        ),
-      ],
-    );
+            return AnimatedContainer(
+              color: widget.bodyColor,
+                curve: Curves.easeOut,
+                onEnd: () {
+                  if (snapshot.data == widget.maxHeight) {
+                    animationDelay = 0;
+                  } else {
+                    animationDelay = widget.controller.smoothness.value;
+                  }
+                },
+                duration: Duration(milliseconds: animationDelay),
+                height:
+                  max(snapshot.data - MediaQuery.of(context).viewInsets.bottom,0),
+                child: widget.body);
+          })
+    ]);
   }
 
   void _hide() {
