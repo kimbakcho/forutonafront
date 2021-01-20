@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Repository/FBallRepository.dart';
-import 'package:forutonafront/Page/ICodePage/IM001/BallImageItem.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Page/ICodePage/IM001/Component/BallImageItem.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class BallImageListUpLoadUseCaseInputPort {

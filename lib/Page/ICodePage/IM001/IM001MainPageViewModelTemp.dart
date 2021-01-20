@@ -24,7 +24,7 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:youtube_parser/youtube_parser.dart';
 
-import 'BallImageItem.dart';
+import 'Component/BallImageItem.dart';
 
 class IM001MainPageViewModelTemp extends ChangeNotifier
     implements
@@ -232,13 +232,13 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
 
   Future<List<FBallDesImages>> fBallImageUpload() async {
     List<FBallDesImages> imageList = [];
-    List<BallImageItem> fillUrlBallImageList =
-        await _ballImageListUpLoadUseCaseInputPort
-            .ballImageListUpLoadAndFillUrls(this.ballImageList);
-    for (var index = 0; index < fillUrlBallImageList.length; index++) {
-      imageList.add(FBallDesImages.fromBallImageItemDto(
-          index, fillUrlBallImageList[index]));
-    }
+    // List<BallImageItem> fillUrlBallImageList =
+    //     await _ballImageListUpLoadUseCaseInputPort
+    //         .ballImageListUpLoadAndFillUrls(this.ballImageList);
+    // for (var index = 0; index < fillUrlBallImageList.length; index++) {
+    //   imageList.add(FBallDesImages.fromBallImageItemDto(
+    //       index, fillUrlBallImageList[index]));
+    // }
     return imageList;
   }
 
@@ -280,9 +280,9 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
     if (images != null) {
       for (var i in images) {
         ByteData imageData = await i.getByteData(quality: 88);
-        BallImageItem itemDto = new BallImageItem();
-        itemDto.imageByte = imageData.buffer.asUint8List();
-        ballImageList.add(itemDto);
+        // BallImageItem itemDto = new BallImageItem();
+        // itemDto.imageByte = imageData.buffer.asUint8List();
+        // ballImageList.add(itemDto);
       }
     }
     Navigator.of(context).pop();
@@ -293,9 +293,9 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
   onCameraPick() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     Uint8List imageData = await image.readAsBytes();
-    BallImageItem itemDto = new BallImageItem();
-    itemDto.imageByte = imageData.buffer.asUint8List();
-    ballImageList.add(itemDto);
+    // BallImageItem itemDto = new BallImageItem();
+    // itemDto.imageByte = imageData.buffer.asUint8List();
+    // ballImageList.add(itemDto);
     Navigator.of(context).pop();
     moveToBottomScroller();
     notifyListeners();

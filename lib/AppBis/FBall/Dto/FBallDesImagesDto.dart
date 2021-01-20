@@ -1,5 +1,5 @@
 
-import 'package:forutonafront/Page/ICodePage/IM001/BallImageItem.dart';
+import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Page/ICodePage/IM001/Component/BallImageItem.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FBallDesImagesDto.g.dart';

@@ -8,9 +8,13 @@ class ImageSelectModalBottomSheet {
 
   final Function(FileImage) onSelectImage;
 
+  final Color color;
+
+  final isShowBasicImageSelect;
+
   final _picker = ImagePicker();
 
-  ImageSelectModalBottomSheet({@required this.onSelectImage});
+  ImageSelectModalBottomSheet({@required this.onSelectImage,this.color = Colors.transparent,this.isShowBasicImageSelect = true});
 
   show(BuildContext context,String label){
     showModalBottomSheet(
@@ -21,7 +25,8 @@ class ImageSelectModalBottomSheet {
                 topRight: Radius.circular(15.0))),
         builder: (_) {
           return Container(
-              height: 280,
+              color:  color,
+              height: isShowBasicImageSelect ? 270 : 240,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -33,12 +38,12 @@ class ImageSelectModalBottomSheet {
                               color: const Color(0xff3a3e3f),
                             ))),
                     Divider(height: 1, color: Color(0xffE4E7E8)),
-                    ListTile(
+                    isShowBasicImageSelect ? ListTile(
                       title: Text("기본 이미지"),
                       onTap: () {
                         onSelectImage(null);
                       },
-                    ),
+                    ): Container(),
                     ListTile(
                       title: Text("카메라"),
                       onTap: () async {

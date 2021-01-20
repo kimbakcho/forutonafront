@@ -11,7 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'BallImageItem.dart';
+import 'Component/BallImageItem.dart';
 
 // ignore: must_be_immutable
 class IM001MainPageTemp extends StatefulWidget {
@@ -405,13 +405,13 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
   }
 
   Container ballImageFromDto(BallImageItem imageItem) {
-    if (imageItem.hasImageUrl()) {
+    if (false) {
       return Container(
         height: 62,
         width: 75,
         decoration: BoxDecoration(
-          image: DecorationImage(
-              image: NetworkImage(imageItem.imageUrl), fit: BoxFit.cover),
+          // image: DecorationImage(
+          //     image: NetworkImage(imageItem.imageUrl), fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(12.00),
         ),
       );
