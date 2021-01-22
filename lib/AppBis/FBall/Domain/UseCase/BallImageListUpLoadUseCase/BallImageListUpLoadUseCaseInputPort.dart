@@ -1,9 +1,8 @@
-import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Repository/FBallRepository.dart';
-import 'file:///C:/workproject/FlutterPro/forutonafront/lib/Page/ICodePage/IM001/Component/BallImageItem.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
+
+
 import 'package:injectable/injectable.dart';
 
 abstract class BallImageListUpLoadUseCaseInputPort {
@@ -19,27 +18,15 @@ class BallImageListUpLoadUseCase implements BallImageListUpLoadUseCaseInputPort 
 
   @override
   Future<List<BallImageItem>> ballImageListUpLoadAndFillUrls(List<BallImageItem> refSrcList) async{
-    List<Uint8List> images = [];
-    List<BallImageItem> uploadListImageItemDto = [];
-    for (var o in refSrcList) {
-      if (o.imageByte != null) {
-        var image = await decodeImageFromList(o.imageByte);
-        var compressImage = await FlutterImageCompress.compressWithList(
-          o.imageByte,
-          minHeight: image.height.toInt(),
-          minWidth: image.width.toInt(),
-          quality: 70,
-        );
-        images.add(Uint8List.fromList(compressImage));
-        uploadListImageItemDto.add(o);
-      }
-    }
-    //이미지 업로드 해서 URL 가져옴
+    var list = refSrcList.map((e) => e.imageByte).toList();
+
     var fBallImageUploadResDto =
-        await _fBallRepository.ballImageUpload(images: images);
+        await _fBallRepository.ballImageUpload(images: list);
+
     for (int i = 0; i < fBallImageUploadResDto.urls.length; i++) {
-      uploadListImageItemDto[i].imageUrl = fBallImageUploadResDto.urls[i];
+      refSrcList[i].imageUrl = fBallImageUploadResDto.urls[i];
     }
+
     return refSrcList;
   }
 

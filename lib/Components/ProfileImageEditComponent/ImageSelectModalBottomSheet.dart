@@ -52,6 +52,7 @@ class ImageSelectModalBottomSheet {
                           var _image = File(pickedFile.path);
                           onSelectImage(FileImage(_image));
                         }
+                        Navigator.of(context).pop();
                       },
                     ),
                     ListTile(
@@ -62,6 +63,7 @@ class ImageSelectModalBottomSheet {
                           var _image = File(pickedFile.path);
                           onSelectImage(FileImage(_image));
                         }
+                        Navigator.of(context).pop();
                       },
                     ),
                     Row(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
+import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -9,14 +11,15 @@ import 'BallImageItem.dart';
 
 class BallImageEditComponent extends StatelessWidget {
   final BallImageEditComponentController ballImageEditComponentController;
+  final EdgeInsets margin;
 
-  const BallImageEditComponent({Key key, this.ballImageEditComponentController})
+  const BallImageEditComponent({Key key, this.ballImageEditComponentController,this.margin = EdgeInsets.zero})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => BallImageEditComponentViewModel(
+      create: (_) => BallImageEditComponentViewModel(sl(),
           ballImageEditComponentController: ballImageEditComponentController),
       child: Consumer<BallImageEditComponentViewModel>(
         builder: (_, model, child) {
@@ -28,7 +31,9 @@ class BallImageEditComponent extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          SizedBox(width: 16,),
+                          SizedBox(
+                            width: 16,
+                          ),
                           Text("이미지",
                               style: GoogleFonts.notoSans(
                                 fontSize: 14,
@@ -43,13 +48,14 @@ class BallImageEditComponent extends StatelessWidget {
                               color: const Color(0xffd4d4d4),
                             ),
                           ),
-                          SizedBox(width: 16,)
+                          SizedBox(
+                            width: 16,
+                          )
                         ],
                       ),
                       Expanded(
                           child: ListView.builder(
-                            padding: EdgeInsets.only(left: 16),
-
+                        padding: EdgeInsets.only(left: 16),
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: model.images.length,
@@ -77,7 +83,11 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
 
   final BallImageEditComponentController ballImageEditComponentController;
 
-  BallImageEditComponentViewModel({this.ballImageEditComponentController}) {
+  final BallImageListUpLoadUseCaseInputPort
+      _ballImageListUpLoadUseCaseInputPort;
+
+  BallImageEditComponentViewModel(this._ballImageListUpLoadUseCaseInputPort,
+      {this.ballImageEditComponentController}) {
     if (ballImageEditComponentController != null) {
       ballImageEditComponentController._ballImageEditComponentViewModel = this;
     }
@@ -103,7 +113,14 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  _updateImageAndFillImageUrl() async {}
+  Future<void> _updateImageAndFillImageUrl() async {
+    var hasByteImages =
+        images.where((element) => element.imageByte != null).toList();
+    if (hasByteImages.isNotEmpty) {
+      await _ballImageListUpLoadUseCaseInputPort
+          .ballImageListUpLoadAndFillUrls(hasByteImages);
+    }
+  }
 
   List<FBallDesImages> _getImageItemUrlList() {
     List<FBallDesImages> ballImages = [];
@@ -122,9 +139,15 @@ class BallImageEditComponentController {
 
   final Function(List<BallImageItem> ballList) onChangeItemList;
 
+  final FluttertoastAdapter _fluttertoastAdapter = sl();
+
   BallImageEditComponentController({this.onChangeItemList});
 
+
   addImage(FileImage imageProvider) async {
+    if(_ballImageEditComponentViewModel.images.length > 20){
+      _fluttertoastAdapter.showToast(msg: "20개를 초과 하였습니다.");
+    }
     if (imageProvider != null) {
       await _ballImageEditComponentViewModel._addImage(imageProvider);
     }
@@ -141,7 +164,7 @@ class BallImageEditComponentController {
     return _ballImageEditComponentViewModel._getImageItemUrlList();
   }
 
-  updateImageAndFillImageUrl() async {
+  Future<void> updateImageAndFillImageUrl() async {
     await _ballImageEditComponentViewModel._updateImageAndFillImageUrl();
   }
 }

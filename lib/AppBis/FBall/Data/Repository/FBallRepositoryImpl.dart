@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:forutonafront/Common/FDio.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
@@ -16,6 +17,7 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqD
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:http_parser/http_parser.dart';
 
 @LazySingleton(as: FBallRepository)
 class FBallRepositoryImpl implements FBallRepository {
@@ -112,11 +114,15 @@ class FBallRepositoryImpl implements FBallRepository {
   @override
   Future<FBallImageUpload> ballImageUpload(
       {@required List<Uint8List> images}) async {
-    var fBallImageUpload = await fBallRemoteDataSource.ballImageUpload(
-        images: images,
-        tokenFDio: FDio.token(
-            idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken()));
-    return fBallImageUpload;
+    FDio fDio = FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken());
+    List<MultipartFile> imageFiles = [];
+    for (var image in images) {
+      imageFiles.add(MultipartFile.fromBytes(image,
+          contentType: MediaType("image", "jpeg"), filename: "ballImage.jpg"));
+    }
+    var formData = FormData.fromMap({"imageFiles": imageFiles});
+    var response = await fDio.post("/v1/FBall/BallImageUpload", data: formData);
+    return FBallImageUpload.fromJson(response.data);
   }
 
 

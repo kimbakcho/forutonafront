@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Components/ProfileImageEditComponent/ImageSelectModalBottomSheet.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/Component/YoutubeUrlUploadComponent.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'Component/BallImageEditComponent.dart';
-import 'Component/BallImageItem.dart';
+import 'Component/BallImageEdit/BallImageEditComponent.dart';
+import 'Component/BallImageEdit/BallImageItem.dart';
+import 'Component/BallTageEdit/BallTagEditComponent.dart';
+
 
 class IM001BottomSheetBody extends StatelessWidget {
   final Function(String) onChangeAddress;
@@ -120,13 +126,21 @@ class IM001BottomSheetBody extends StatelessWidget {
                                   fontWeight: FontWeight.w300,
                                   height: 1.2142857142857142,
                                 )))),
-                    SizedBox(
-                      height: 32,
-                    ),
+
                     BallImageEditComponent(
+                      margin: EdgeInsets.only(top: 32),
                       ballImageEditComponentController:
                           model.ballImageEditComponentController,
                     ),
+                    YoutubeUrlUploadComponent(
+                      margin: EdgeInsets.only(top: 32,right: 16,left: 16),
+                      youtubeUrlUploadComponentController: model.youtubeUrlUploadComponentController,
+                    ),
+                    BallTagEditComponent(
+                      ballTagEditComponentController: model.ballTagEditComponentController,
+                      margin: EdgeInsets.only(left: 16,right: 16,top: 32),
+                    )
+
                   ],
                 )),
               )),
@@ -147,8 +161,8 @@ class IM001BottomSheetBody extends StatelessWidget {
                         color: Color(0xff3A3E3F),
                       ),
                       onTap: () {
-                        model.imageSelectModalBottomSheet
-                            .show(context, "Ball 이미지 선택");
+                       model.selectImage(ImageSource.camera);
+
                       },
                     ),
                     SizedBox(
@@ -161,7 +175,9 @@ class IM001BottomSheetBody extends StatelessWidget {
                         Icons.picture_in_picture,
                         color: Color(0xff3A3E3F),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        model.selectImage(ImageSource.gallery);
+                      },
                     ),
                     SizedBox(
                       width: 16,
@@ -173,7 +189,9 @@ class IM001BottomSheetBody extends StatelessWidget {
                         Icons.play_circle_fill,
                         color: Color(0xff3A3E3F),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        model.youtubeUrlUploadComponentController.toggle();
+                      },
                     ),
                     SizedBox(
                       width: 16,
@@ -185,7 +203,9 @@ class IM001BottomSheetBody extends StatelessWidget {
                         Icons.tag,
                         color: Color(0xff3A3E3F),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        model.ballTagEditComponentController.toggle();
+                      },
                     )
                   ],
                 ),
@@ -211,22 +231,28 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   final IM001BottomSheetBodyController im001bottomSheetBodyController;
 
+  YoutubeUrlUploadComponentController youtubeUrlUploadComponentController;
+
   FocusNode titleFocus;
 
   FocusNode contentFocus;
 
   BallImageEditComponentController ballImageEditComponentController;
 
-  ImageSelectModalBottomSheet imageSelectModalBottomSheet;
+  BallTagEditComponentController ballTagEditComponentController;
+
+  final _picker = ImagePicker();
 
   IM001BottomSheetBodyViewModel(this.onChangeAddress, this.initAddress,
       this.im001bottomSheetBodyController) {
+
+    youtubeUrlUploadComponentController = YoutubeUrlUploadComponentController();
+
     ballImageEditComponentController = BallImageEditComponentController(
         onChangeItemList: _imageItemListChange);
-    imageSelectModalBottomSheet = ImageSelectModalBottomSheet(
-        onSelectImage: _onSelectBallImage,
-        color: Colors.white,
-        isShowBasicImageSelect: false);
+
+    ballTagEditComponentController = BallTagEditComponentController();
+
     titleFocus = FocusNode();
     titleFocus.addListener(() {
       notifyListeners();
@@ -270,6 +296,14 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
   _onSelectBallImage(FileImage fileImage) async {
     await ballImageEditComponentController.addImage(fileImage);
     notifyListeners();
+  }
+
+  void selectImage(ImageSource imageSource) async {
+    var pickedFile = await _picker.getImage(source: imageSource);
+    if(pickedFile != null){
+      var _image = File(pickedFile.path);
+      _onSelectBallImage(FileImage(_image));
+    }
   }
 }
 

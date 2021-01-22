@@ -57,8 +57,6 @@ abstract class FBallRemoteDataSource {
   Future<int> ballHit(
       {@required String ballUuid, @required FDio noneTokenFDio});
 
-  Future<FBallImageUpload> ballImageUpload(
-      {@required List<Uint8List> images, @required FDio tokenFDio});
 }
 
 @LazySingleton(as: FBallRemoteDataSource)
@@ -163,17 +161,5 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
     return FBallResDto.fromJson(response.data);
   }
 
-  @override
-  Future<FBallImageUpload> ballImageUpload(
-      {@required List<Uint8List> images, @required FDio tokenFDio}) async {
-    List<MultipartFile> imageFiles = [];
-    for (var image in images) {
-      imageFiles.add(MultipartFile.fromBytes(image,
-          contentType: MediaType("image", "jpeg"), filename: "ballImage.jpg"));
-    }
-    var formData = FormData.fromMap({"imageFiles": imageFiles});
-    var response =
-        await tokenFDio.post("/v1/FBall/BallImageUpload", data: formData);
-    return FBallImageUpload.fromJson(response.data);
-  }
+
 }

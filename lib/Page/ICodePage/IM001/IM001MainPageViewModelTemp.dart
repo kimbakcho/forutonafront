@@ -24,7 +24,9 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:youtube_parser/youtube_parser.dart';
 
-import 'Component/BallImageItem.dart';
+import 'Component/BallImageEdit/BallImageItem.dart';
+
+
 
 class IM001MainPageViewModelTemp extends ChangeNotifier
     implements

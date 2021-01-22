@@ -270,7 +270,9 @@ class IM001MainPageViewModel extends ChangeNotifier {
 
     String address =
         await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
+
     _im001bottomSheetBodyController.changeDisplayAddress(address);
+
     _im001bottomSheetHeaderController.changeDisplayAddress(address);
 
     headBarAddress = address;

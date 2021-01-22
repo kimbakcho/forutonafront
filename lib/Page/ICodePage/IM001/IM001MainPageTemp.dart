@@ -11,7 +11,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'Component/BallImageItem.dart';
+import 'Component/BallImageEdit/BallImageItem.dart';
+
 
 // ignore: must_be_immutable
 class IM001MainPageTemp extends StatefulWidget {
