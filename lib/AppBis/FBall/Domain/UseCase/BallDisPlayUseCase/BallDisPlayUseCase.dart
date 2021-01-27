@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
@@ -5,6 +6,8 @@ import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/BallDescription.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class BallDisPlayUseCase {
   FBallResDto fBallResDto;
@@ -160,11 +163,16 @@ class BallDisPlayUseCase {
     }
   }
 
-  List<FBallDesImages> getDesImages() {
+  List<BallImageItem> getDesImages() {
     if (fBallResDto.ballDeleteFlag) {
       return [];
     } else {
-      return ballDescription.desimages;
+      var list = ballDescription.desimages.map((e) {
+        var imageItem =  BallImageItem(sl());
+        imageItem.addImage( imageProvider: NetworkImage(e.src));
+        return imageItem;
+      }).toList();
+      return list;
     }
   }
 

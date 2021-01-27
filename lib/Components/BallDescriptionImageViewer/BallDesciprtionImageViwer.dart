@@ -20,13 +20,13 @@ abstract class BallDescriptionImageViewer {
   Widget getImageViewerWidget();
 
   jumpToBallImageViewer(int indexNumber) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return BallImageViewer(
-        desImages,
-        null,
-        initIndex: indexNumber,
-      );
-    }));
+    // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+    //   return BallImageViewer(
+    //     desImages,
+    //     null,
+    //     initIndex: indexNumber,
+    //   );
+    // }));
   }
 
   factory BallDescriptionImageViewer.descriptionImages(

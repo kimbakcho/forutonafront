@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Components/FBallReply2/BasicReViewsContentBars.dart';
 import 'package:forutonafront/Components/FBallReply2/BasicReviews.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001MainPage2ViewModel.dart';
@@ -9,9 +10,12 @@ import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001MakerInf
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001Pictures.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001ReviewsPageBtn.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'ID001Mode.dart';
 import 'ID001WidgetPart/ID001AppBar.dart';
 import 'ID001WidgetPart/ID001TagList.dart';
 import 'ID001WidgetPart/ID001TextContent.dart';
@@ -21,7 +25,20 @@ import 'ID001WidgetPart/ID001YoutubeWidget.dart';
 class ID001MainPage2 extends StatefulWidget {
   final String _ballUuid;
 
-  ID001MainPage2({String ballUuid}) : _ballUuid = ballUuid;
+  final ID001Mode id001mode;
+
+  final FBallResDto preViewResDto;
+  final List<BallImageItem> preViewBallImage;
+
+  final Function onCreateBall;
+
+  ID001MainPage2(
+      {String ballUuid,
+      this.id001mode = ID001Mode.publish,
+      this.preViewBallImage,
+      this.preViewResDto,
+      this.onCreateBall})
+      : _ballUuid = ballUuid;
 
   @override
   _ID001MainPage2State createState() =>
@@ -40,6 +57,9 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
         create: (_) {
           var id001mainPage2ViewModel = ID001MainPage2ViewModel(
               ballUuid: _ballUuid,
+              id001mode: widget.id001mode,
+              preViewBallImage: widget.preViewBallImage,
+              preViewResDto: widget.preViewResDto,
               selectBallUseCaseInputPort: sl(),
               fireBaseAuthAdapterForUseCase: sl(),
               reviewCountMediator: sl(),
@@ -47,8 +67,7 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
               reviewInertMediator: sl(),
               reviewUpdateMediator: sl(),
               valuationMediator: sl(),
-              geolocatorAdapter: sl()
-          );
+              geolocatorAdapter: sl());
           id001mainPage2ViewModel.init();
           return id001mainPage2ViewModel;
         },
@@ -147,7 +166,32 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                       reviewUpdateMediator: model.reviewUpdateMediator,
                       reviewDeleteMediator: model.reviewDeleteMediator,
                       reviewCountMediator: model.reviewCountMediator),
-                )
+                ),
+                widget.id001mode == ID001Mode.preview
+                    ? Positioned(
+                        bottom: 80,
+                        height: 48,
+                        width: MediaQuery.of(context).size.width,
+                        child: Container(
+                          margin: EdgeInsets.only(left: 16, right: 16),
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            onPressed: () {
+                              if (widget.onCreateBall != null) {
+                                widget.onCreateBall();
+                              }
+                            },
+                            color: Color(0xff3497FD),
+                            child: Text("등록 하기",
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 16,
+                                  color: const Color(0xfff9f9f9),
+                                  fontWeight: FontWeight.w500,
+                                )),
+                          ),
+                        ))
+                    : Container()
               ],
             ))
         : Container();

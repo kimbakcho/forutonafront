@@ -127,4 +127,8 @@ class BallTagEditComponentController {
   toggle() {
     _viewModel._toggle();
   }
+  List<TagEditItemDto> getTags() {
+    var list = _viewModel.ballEditTagChips.map((e) => e.tagEditItemDto).toList();
+    return list;
+  }
 }

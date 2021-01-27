@@ -54,7 +54,7 @@ dependencies:
   #FCM에 사용
   firebase_messaging: ^6.0.16
   #사진을 여러장 선택 할 필요가 있을때 사용
-  multi_image_picker: ^4.6.0
+  multi_image_picker: ^4.7.14
   #Kakao 로그인 할때 사용
   kakao_flutter_sdk: ^0.5.2
   #내부 Native Notication을 사용하기위한 사용

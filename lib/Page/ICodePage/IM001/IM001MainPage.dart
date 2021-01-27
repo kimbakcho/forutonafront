@@ -1,17 +1,37 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallState.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/IssueBallDescription.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/TagInsertReqDto.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapBallMarkerFactory.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
+import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Components/BackButton/BorderCircleBackButton.dart';
+import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 import 'package:forutonafront/Components/SolidBottomSheet/src/solidBottomSheet.dart';
 import 'package:forutonafront/Components/SolidBottomSheet/src/solidController.dart';
+import 'package:forutonafront/Page/HCodePage/H008/H008MainView.dart';
+import 'package:forutonafront/Page/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
+import 'package:forutonafront/Page/HCodePage/H010/H010MainView.dart';
+import 'package:forutonafront/Page/ICodePage/ID001/ID001MainPage2.dart';
+import 'package:forutonafront/Page/ICodePage/ID001/ID001Mode.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001BottomSheetBody.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001BottomSheetHeader.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class IM001MainPage extends StatefulWidget {
   @override
@@ -39,7 +59,7 @@ class _IM001MainPageState extends State<IM001MainPage>
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) =>
-            IM001MainPageViewModel(sl(), context, _aniController, sl()),
+            IM001MainPageViewModel(sl(), context, _aniController, sl(),sl(),sl()),
         child: Consumer<IM001MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
               bottomSheet: model.getBottomSheet(),
@@ -57,7 +77,9 @@ class _IM001MainPageState extends State<IM001MainPage>
                                 shape: CircleBorder(),
                                 child: InkWell(
                                   customBorder: CircleBorder(),
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
                                   child: Container(
                                     width: 36,
                                     height: 36,
@@ -76,7 +98,10 @@ class _IM001MainPageState extends State<IM001MainPage>
                                   customBorder: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(15.0))),
-                                  onTap: () {},
+                                  onTap: () {
+                                    model.gotoAddressSearchPage();
+
+                                  },
                                   child: Container(
                                     height: 36,
                                     padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
@@ -170,7 +195,9 @@ class _IM001MainPageState extends State<IM001MainPage>
                                       side: model.isCanComplete ? BorderSide(color: Colors.black,width: 1): BorderSide.none
                                   ),
                                   color: Colors.white,
-                                  onPressed: model.isCanComplete ? () {}: null,
+                                  onPressed: model.isCanComplete ? () {
+                                    model.showPreViewDetailPage(context);
+                                  }: null,
                                   child: Text("완료")),
                             )
                           ],
@@ -180,11 +207,14 @@ class _IM001MainPageState extends State<IM001MainPage>
   }
 }
 
-class IM001MainPageViewModel extends ChangeNotifier {
+class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarListener,PlaceListFromSearchTextWidgetListener{
   CameraPosition initCameraPosition;
+
   final GeoLocationUtilForeGroundUseCaseInputPort
       _geoLocationUtilForeGroundUseCase;
+
   CameraPosition currentPosition;
+
   Completer<GoogleMapController> _googleMapController = Completer();
 
   bool isBallPosition = true;
@@ -203,10 +233,17 @@ class IM001MainPageViewModel extends ChangeNotifier {
 
   String headBarAddress;
 
+  bool isCanComplete =false;
+
+
   IM001BottomSheetBodyController _im001bottomSheetBodyController;
 
+  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
+
+  final InsertBallUseCaseInputPort insertBallUseCaseInputPort;
+
   IM001MainPageViewModel(this._geoLocationUtilForeGroundUseCase, this.context,
-      this.aniController, this._mapBallMarkerFactory) {
+      this.aniController, this._mapBallMarkerFactory,this.signInUserInfoUseCaseInputPort,this.insertBallUseCaseInputPort) {
     headBarAddress = '로딩중';
 
     _im001bottomSheetBodyController = IM001BottomSheetBodyController();
@@ -244,6 +281,7 @@ class IM001MainPageViewModel extends ChangeNotifier {
       ),
       body: IM001BottomSheetBody(
         initAddress: "로딩중",
+        onComplete: onComplete,
         im001bottomSheetBodyController: _im001bottomSheetBodyController,
         onChangeAddress: (value) {
           _im001bottomSheetHeaderController.changeDisplayAddress(value);
@@ -252,8 +290,11 @@ class IM001MainPageViewModel extends ChangeNotifier {
     );
   }
 
-  get isCanComplete{
-    return false;
+
+
+  onComplete(bool value){
+    isCanComplete = value;
+    notifyListeners();
   }
 
   getBottomSheet() {
@@ -303,5 +344,112 @@ class IM001MainPageViewModel extends ChangeNotifier {
 
   void onCameraMove(CameraPosition position) async {
     currentPosition = position;
+  }
+
+  showPreViewDetailPage(BuildContext context) async {
+    FBallResDto fBallResDto = FBallResDto();
+    fBallResDto.ballName = _im001bottomSheetBodyController.getBallName();
+    fBallResDto.ballDeleteFlag = false;
+    fBallResDto.makeTime = DateTime.now();
+    fBallResDto.latitude = currentPosition.target.latitude;
+    fBallResDto.longitude = currentPosition.target.longitude;
+    fBallResDto.activationTime = DateTime.now().add(Duration(days: 7));
+    fBallResDto.ballHits = 0;
+    var reqSignInUserInfoFromMemory = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+    fBallResDto.uid = FUserInfoSimpleResDto.fromFUserInfoResDto(reqSignInUserInfoFromMemory);
+    fBallResDto.placeAddress = _im001bottomSheetBodyController.getPlaceAddress();
+    fBallResDto.commentCount = 0;
+    fBallResDto.ballState = FBallState.Play;
+    fBallResDto.ballType = FBallType.IssueBall;
+    fBallResDto.contributor = 0;
+    fBallResDto.ballPower = 0;
+    IssueBallDescription issueBallDescription = IssueBallDescription();
+    issueBallDescription.text = _im001bottomSheetBodyController.getContent();
+    issueBallDescription.desimages  = [];
+    issueBallDescription.youtubeVideoId = _im001bottomSheetBodyController.getYoutubeId();
+    fBallResDto.description = json.encode(issueBallDescription) ;
+
+    showDialog(context: context,child: ID001MainPage2(
+      onCreateBall: _onCreateBall,
+      id001mode: ID001Mode.preview,
+      preViewResDto: fBallResDto,
+      preViewBallImage: _im001bottomSheetBodyController.getBallImages(),
+    ));
+  }
+
+  _onCreateBall() async {
+
+
+    showDialog(context: context,
+        child: CommonLoadingComponent()
+    );
+
+     var imageItems = await _im001bottomSheetBodyController.updateImageAndFillImageUrl();
+
+    FBallInsertReqDto fBallInsertReqDto = FBallInsertReqDto();
+
+    IssueBallDescription issueBallDescription = IssueBallDescription();
+
+    issueBallDescription.text = _im001bottomSheetBodyController.getContent();
+
+    issueBallDescription.desimages  = [];
+    for(int i =0;i<imageItems.length;i++){
+      FBallDesImages fBallDesImages = new FBallDesImages();
+      fBallDesImages.src = imageItems[i].imageUrl;
+      fBallDesImages.index = i;
+      issueBallDescription.desimages.add(fBallDesImages);
+    }
+    issueBallDescription.youtubeVideoId = _im001bottomSheetBodyController.getYoutubeId();
+
+    fBallInsertReqDto.ballName = _im001bottomSheetBodyController.getBallName();
+    fBallInsertReqDto.description = json.encode(issueBallDescription);
+    fBallInsertReqDto.ballType = FBallType.IssueBall;
+    fBallInsertReqDto.placeAddress = _im001bottomSheetBodyController.getPlaceAddress();
+    fBallInsertReqDto.latitude = currentPosition.target.latitude;
+    fBallInsertReqDto.longitude = currentPosition.target.longitude;
+    fBallInsertReqDto.ballUuid =Uuid().v4();
+
+    var tags = _im001bottomSheetBodyController.getTags();
+    fBallInsertReqDto.tags = [];
+    for(int i=0;i<tags.length;i++){
+      TagInsertReqDto tagInsertReqDto = TagInsertReqDto();
+      tagInsertReqDto.ballUuid = fBallInsertReqDto.ballUuid;
+      tagInsertReqDto.tagItem = tags[i].text;
+      fBallInsertReqDto.tags.add(tagInsertReqDto);
+    }
+
+    await insertBallUseCaseInputPort.insertBall(fBallInsertReqDto);
+
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+
+    notifyListeners();
+
+  }
+
+  void gotoAddressSearchPage() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+      return H010MainView(inputSearchBarListener: this, searchHistoryDataSourceKey: SearchHistoryDataSourceKey.AddressSearchHistoryDataSource);
+    }));
+  }
+
+  //지도 찾기
+  @override
+  Future<void> onSearch(String search, {BuildContext context}) async {
+    Navigator.of(this.context).pop();
+    Navigator.of(this.context).push(MaterialPageRoute(builder: (_){
+      return H008MainView(initSearchText: search,placeListFromSearchTextWidgetListener: this);
+    }));
+  }
+
+  @override
+  onPlaceListTabPosition(Position position) async {
+    Navigator.of(context).pop();
+    GoogleMapController mapController = await _googleMapController.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(position.latitude, position.longitude), zoom: 14.5)));
+
+    headBarAddress =  await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
   }
 }

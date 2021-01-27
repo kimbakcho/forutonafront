@@ -167,4 +167,8 @@ class BallImageEditComponentController {
   Future<void> updateImageAndFillImageUrl() async {
     await _ballImageEditComponentViewModel._updateImageAndFillImageUrl();
   }
+
+  List<BallImageItem> getBallImageItems(){
+    return _ballImageEditComponentViewModel.images;
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -15,7 +16,7 @@ class BallImageViewer extends StatelessWidget {
 
   String tag;
   int initIndex ;
-  List<FBallDesImages> imageList;
+  List<BallImageItem> imageList;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class BallImageViewer extends StatelessWidget {
                     pageController: model.pageController,
                     builder: (BuildContext context, int index) {
                       return PhotoViewGalleryPageOptions(
-                        imageProvider: NetworkImage(imageList[index].src),
+                        imageProvider: imageList[index].imageProvider,
                         initialScale: PhotoViewComputedScale.contained * 1,
                         heroAttributes: tag != null
                             ? PhotoViewHeroAttributes(tag: tag,)

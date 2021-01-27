@@ -7,10 +7,11 @@ import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001OnePicture.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001ThreePicture.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001TwoPicture.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ID001Pictures extends StatelessWidget {
-  final List<FBallDesImages> desImages;
+  final List<BallImageItem> desImages;
 
   ID001Pictures({this.desImages});
 
@@ -77,7 +78,7 @@ class ID001Pictures extends StatelessWidget {
     )):Container();
   }
 
-  Widget selectPictureWidget(List<FBallDesImages> desImages) {
+  Widget selectPictureWidget(List<BallImageItem> desImages) {
     if (desImages.length == 0) {
       return Container();
     } else if (desImages.length == 1) {

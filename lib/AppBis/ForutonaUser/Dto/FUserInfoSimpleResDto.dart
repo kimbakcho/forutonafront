@@ -1,4 +1,5 @@
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/Entity/FUserInfoSimple.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FUserInfoSimpleResDto.g.dart';
@@ -35,6 +36,21 @@ class FUserInfoSimpleResDto {
     fUserInfoSimpleResDto.followerCount = fUserInfoSimple.followerCount;
     fUserInfoSimpleResDto.followingCount = fUserInfoSimple.followingCount;
     fUserInfoSimpleResDto.playerPower = fUserInfoSimple.playerPower;
+    return fUserInfoSimpleResDto;
+  }
+
+  static fromFUserInfoResDto(FUserInfoResDto fUserInfoResDto){
+    FUserInfoSimpleResDto fUserInfoSimpleResDto = new FUserInfoSimpleResDto();
+    fUserInfoSimpleResDto.uid = fUserInfoResDto.uid;
+    fUserInfoSimpleResDto.nickName = fUserInfoResDto.nickName;
+    fUserInfoSimpleResDto.profilePictureUrl = fUserInfoResDto.profilePictureUrl;
+    fUserInfoSimpleResDto.backGroundImageUrl = fUserInfoResDto.backGroundImageUrl;
+    fUserInfoSimpleResDto.isoCode = fUserInfoResDto.isoCode;
+    fUserInfoSimpleResDto.userLevel = fUserInfoResDto.userLevel;
+    fUserInfoSimpleResDto.selfIntroduction = fUserInfoResDto.selfIntroduction;
+    fUserInfoSimpleResDto.cumulativeInfluence = fUserInfoResDto.cumulativeInfluence;
+    fUserInfoSimpleResDto.followerCount = fUserInfoResDto.followerCount;
+    fUserInfoSimpleResDto.followingCount = fUserInfoResDto.followingCount;
     return fUserInfoSimpleResDto;
   }
 

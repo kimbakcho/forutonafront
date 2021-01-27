@@ -11,7 +11,9 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 
+import 'ID001Mode.dart';
 import 'ValuationMediator/ValuationMediator.dart';
 
 class ID001MainPage2ViewModel extends ChangeNotifier
@@ -36,8 +38,16 @@ class ID001MainPage2ViewModel extends ChangeNotifier
 
   final ScrollController detailPageController;
 
+  final ID001Mode id001mode;
+
+  final FBallResDto preViewResDto;
+  final List<BallImageItem> preViewBallImage;
+
   ID001MainPage2ViewModel(
       {this.ballUuid,
+      this.id001mode = ID001Mode.publish,
+        this.preViewBallImage,
+        this.preViewResDto,
       this.selectBallUseCaseInputPort,
       this.fireBaseAuthAdapterForUseCase,
       this.reviewInertMediator,
@@ -62,7 +72,11 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   }
 
   _selectBall() async {
-    _fBallResDto = await selectBallUseCaseInputPort.selectBall(ballUuid);
+    if(id001mode == ID001Mode.publish){
+      _fBallResDto = await selectBallUseCaseInputPort.selectBall(ballUuid);
+    }else if (id001mode == ID001Mode.preview){
+      _fBallResDto = preViewResDto;
+    }
     _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
         fBallResDto: _fBallResDto, geoLocatorAdapter: geolocatorAdapter);
     _loadBallComplete = true;
@@ -121,7 +135,11 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   }
 
   getBallDesImages() {
-    return _issueBallDisPlayUseCase.getDesImages();
+    if(id001mode == ID001Mode.publish){
+      return _issueBallDisPlayUseCase.getDesImages();
+    }else {
+      return preViewBallImage;
+    }
   }
 
   getBallYoutubeId() {

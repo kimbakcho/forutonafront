@@ -11,10 +11,13 @@ import 'package:provider/provider.dart';
 import 'Component/BallImageEdit/BallImageEditComponent.dart';
 import 'Component/BallImageEdit/BallImageItem.dart';
 import 'Component/BallTageEdit/BallTagEditComponent.dart';
+import 'Component/BallTageEdit/TagEditDto.dart';
 
 
 class IM001BottomSheetBody extends StatelessWidget {
   final Function(String) onChangeAddress;
+
+  final Function(bool) onComplete;
 
   final String initAddress;
   final IM001BottomSheetBodyController im001bottomSheetBodyController;
@@ -23,6 +26,7 @@ class IM001BottomSheetBody extends StatelessWidget {
       {Key key,
       this.initAddress,
       this.onChangeAddress,
+        this.onComplete,
       this.im001bottomSheetBodyController})
       : super(key: key);
 
@@ -30,7 +34,7 @@ class IM001BottomSheetBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => IM001BottomSheetBodyViewModel(
-          onChangeAddress, initAddress, im001bottomSheetBodyController),
+          onChangeAddress, initAddress, onComplete,im001bottomSheetBodyController,),
       child: Consumer<IM001BottomSheetBodyViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -114,7 +118,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                         margin: EdgeInsets.only(left: 16, right: 16),
                         child: TextField(
                             focusNode: model.contentFocus,
-                            controller: model._titleTextController,
+                            controller: model._contentTextController,
                             maxLength: 2000,
                             maxLines: null,
                             decoration: InputDecoration(
@@ -227,6 +231,8 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   TextEditingController _titleTextController;
 
+  TextEditingController _contentTextController;
+
   final Function(String) onChangeAddress;
 
   final IM001BottomSheetBodyController im001bottomSheetBodyController;
@@ -243,8 +249,23 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   final _picker = ImagePicker();
 
+  final Function(bool) onComplete;
+
   IM001BottomSheetBodyViewModel(this.onChangeAddress, this.initAddress,
+      this.onComplete,
       this.im001bottomSheetBodyController) {
+
+    _titleTextController = TextEditingController();
+
+    _titleTextController.addListener(() {
+      _checkComplete();
+    });
+
+    _contentTextController = TextEditingController();
+
+    _contentTextController.addListener(() {
+      _checkComplete();
+    });
 
     youtubeUrlUploadComponentController = YoutubeUrlUploadComponentController();
 
@@ -274,6 +295,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
       if (onChangeAddress != null) {
         onChangeAddress(_addressTextController.text);
       }
+      _checkComplete();
     });
   }
 
@@ -283,6 +305,14 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   get isContentFocus {
     return contentFocus.hasFocus;
+  }
+
+  _checkComplete(){
+    if(_titleTextController.text.isNotEmpty && _addressTextController.text.isNotEmpty && _contentTextController.text.isNotEmpty){
+      this.onComplete(true);
+    }else {
+      this.onComplete(false);
+    }
   }
 
   int get imageEditComponentImageLength {
@@ -313,4 +343,36 @@ class IM001BottomSheetBodyController {
   changeDisplayAddress(String value) {
     _im001bottomSheetBodyViewModel._addressTextController.text = value;
   }
+
+  String getBallName() {
+    return _im001bottomSheetBodyViewModel._titleTextController.text;
+  }
+
+  String getPlaceAddress() {
+    return _im001bottomSheetBodyViewModel._currentAddress;
+
+  }
+
+  String getContent() {
+    return _im001bottomSheetBodyViewModel._contentTextController.text;
+  }
+
+  String getYoutubeId() {
+    return _im001bottomSheetBodyViewModel.youtubeUrlUploadComponentController.getYoutubeId();
+  }
+
+  List<BallImageItem> getBallImages() {
+    return _im001bottomSheetBodyViewModel.ballImageEditComponentController.getBallImageItems();
+  }
+
+  Future<List<BallImageItem>> updateImageAndFillImageUrl() async {
+    await _im001bottomSheetBodyViewModel.ballImageEditComponentController.updateImageAndFillImageUrl();
+    return getBallImages();
+  }
+
+  List<TagEditItemDto> getTags() {
+    return _im001bottomSheetBodyViewModel.ballTagEditComponentController.getTags();
+  }
+
+
 }

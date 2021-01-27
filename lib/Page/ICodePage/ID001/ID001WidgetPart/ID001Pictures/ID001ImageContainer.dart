@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 
 
 class ID001ImageContainer extends StatelessWidget {
-  final List<FBallDesImages> fBallDesImages;
+  final List<BallImageItem> fBallDesImages;
   final int index;
 
   ID001ImageContainer(this.fBallDesImages, this.index);
@@ -27,7 +28,7 @@ class ID001ImageContainer extends StatelessWidget {
       decoration: BoxDecoration(
           image: DecorationImage(
         fit: BoxFit.cover,
-        image: NetworkImage(fBallDesImages[index].src),
+        image: fBallDesImages[index].imageProvider,
       )),
     );
   }

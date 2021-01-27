@@ -143,7 +143,7 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
   Future<FBallResDto> insertBall(
       {@required FBallInsertReqDto reqDto, @required FDio fDio}) async {
     var response = await fDio.post("/v1/FBall", data: reqDto.toJson());
-    return response.data;
+    return FBallResDto.fromJson(response.data);
   }
 
   @override
