@@ -73,7 +73,8 @@ class FullReviewPage extends StatelessWidget {
                         child: IgnorePointer(
                             child: ReviewTextActionRow(
                           autoFocus: false,
-                          userProfileImageUrl: model.userProfileImage,
+                          userProfileImage: NetworkImage(model.userProfileImage),
+                              padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
                         )))
                   ])));
         }));

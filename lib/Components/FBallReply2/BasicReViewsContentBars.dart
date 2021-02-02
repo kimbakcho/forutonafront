@@ -59,6 +59,7 @@ class BasicReViewsContentBars extends StatelessWidget {
                 shrinkWrap: true,
                 controller: model.scrollController,
                 itemCount: model.replys.length,
+                padding: EdgeInsets.all(0),
                 itemBuilder: (_, index) {
                   return BasicReViewsContentBar(
                       key: Key(model.replys[index].replyUuid + "_barId"),
@@ -112,7 +113,7 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
     if (!loadedLatPage) {
       PageWrap<FBallReplyResDto> replysTemp =
           await _fBallReplyUseCaseInputPort.reqFBallReply(reqDto,
-              Pageable(page: page, size: pageLimit, sort: "replyNumber,DESC"));
+              Pageable(page: page, size: pageLimit, sort: "replyNumber,ASC"));
       if (replysTemp.first) {
         replys.clear();
       } else if (replysTemp.last) {
@@ -145,7 +146,7 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
   @override
   onInserted(FBallReplyResDto fBallReplyResDto) {
     if (isRootReply(fBallReplyResDto)) {
-      replys.insert(0, fBallReplyResDto);
+      replys.add(fBallReplyResDto);
     }
     notifyListeners();
   }

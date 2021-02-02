@@ -16,7 +16,7 @@ abstract class ReviewUpdateMediator {
   int componentCount();
   Future<FBallReplyResDto> updateReView(FBallReplyUpdateReqDto fBallReplyUpdateReqDto);
 }
-@Injectable(as: ReviewUpdateMediator)
+
 class ReviewUpdateMediatorImpl extends ReviewUpdateMediator {
 
   List<ReviewUpdateMediatorComponent> components = [];

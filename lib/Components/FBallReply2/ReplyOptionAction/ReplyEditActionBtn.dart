@@ -9,11 +9,12 @@ import 'BasicReViewUpdate.dart';
 class ReplyEditActionBtn extends StatelessWidget {
   final FBallReplyResDto _fBallReplyResDto;
   final ReviewUpdateMediator _reviewUpdateMediator;
+  final Function updateFinish;
 
   const ReplyEditActionBtn({
     FBallReplyResDto fBallReplyResDto,
     ReviewUpdateMediator reviewUpdateMediator,
-    Key key,
+    Key key, this.updateFinish,
   })  : _fBallReplyResDto = fBallReplyResDto,
         _reviewUpdateMediator = reviewUpdateMediator,
         super(key: key);
@@ -21,29 +22,31 @@ class ReplyEditActionBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: <Widget>[
-      InkWell(
-          onTap: () {
-            showModalBottomSheet(
+      Expanded(child: InkWell(
+          onTap: () async {
+            Navigator.of(context).pop();
+            await showModalBottomSheet(
               context: context,
               builder: (_) =>
                   BasicReViewUpdate(fBallReplyResDto: _fBallReplyResDto,reviewUpdateMediator: _reviewUpdateMediator,),
             );
+
+
           },
           child: Container(
             alignment: AlignmentDirectional.center,
-            width: MediaQuery.of(context).size.width,
             height: 50,
             child: Text(
-              "수정",
+              "수정 하기",
               style: GoogleFonts.notoSans(
-                fontSize: 16,
-                color: const Color(0xff000000),
+                fontSize: 14,
+                color: const Color(0xff3a3e3f),
                 fontWeight: FontWeight.w700,
-                height: 1.25,
               ),
             ),
-            decoration: BoxDecoration(border: Border(bottom: BorderSide())),
-          ))
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xffE4E7E8)))),
+          )))
+
     ]);
   }
 }

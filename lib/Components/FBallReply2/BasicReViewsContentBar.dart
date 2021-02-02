@@ -7,6 +7,7 @@ import 'package:forutonafront/AppBis/FBallReply/Domain/UseCase/FBallReply/FBallR
 import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Components/FBallReply2/ReplyOptionAction/ReplyOptionActionAlertDialogSheet.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -39,7 +40,7 @@ class BasicReViewsContentBar extends StatelessWidget {
       ReviewInertMediator reviewInertMediator,
       ReviewCountMediator reviewCountMediator,
       ReviewDeleteMediator reviewDeleteMediator,
-        ReviewUpdateMediator reviewUpdateMediator,
+      ReviewUpdateMediator reviewUpdateMediator,
       this.showChildReply,
       this.showEditBtn,
       this.canSubReplyInsert,
@@ -67,136 +68,141 @@ class BasicReViewsContentBar extends StatelessWidget {
             fBallReplyResDto: _fBallReplyResDto),
         child:
             Consumer<BasicReViewsContentBarViewModel>(builder: (_, model, __) {
-          return InkWell(
-            onTap: () {
-              if (canSubReplyInsert) {
-                model.subReplyInsertOpen(context);
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.fromLTRB(0, 16, 0, hasBottomPadding ? 16 : 0),
-              key: Key(_fBallReplyResDto.replyUuid),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
-                        width: 38,
-                        height: 38,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image:
-                                    NetworkImage(model.userProfilePictureUrl),
-                                fit: BoxFit.cover)),
-                      ),
-                      Expanded(
-                          child: Column(children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: Text(model.userNickName,
-                                  style: GoogleFonts.notoSans(
-                                    fontSize: 14,
-                                    color: const Color(0xff454f63),
-                                    fontWeight: FontWeight.w700,
-                                  )),
-                            ),
-                          ],
+          return Material(
+            color: Colors.white,
+            child: InkWell(
+              onTap: () {
+                if (canSubReplyInsert) {
+                  model.subReplyInsertOpen(context);
+                }
+              },
+              child: Container(
+                padding:
+                    EdgeInsets.fromLTRB(0, 16, 0, hasBottomPadding ? 16 : 0),
+                key: Key(_fBallReplyResDto.replyUuid),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              model.isRootReply() ? 16 : 65, 0, 8, 0),
+                          width: model.isRootReply() ? 38 : 24,
+                          height: model.isRootReply() ? 38 : 24,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image:
+                                      NetworkImage(model.userProfilePictureUrl),
+                                  fit: BoxFit.cover)),
                         ),
-                        Row(children: <Widget>[
-                          Container(
-                              child: Text(
-                            model.getDisplayWriteTime(),
-                            style: GoogleFonts.notoSans(
-                              fontSize: 10,
-                              color: const Color(0xff78849e),
-                              height: 1.6,
-                            ),
-                          )),
-                          model.hasValuationHistory()
-                              ? Container(
-                                  margin: EdgeInsets.fromLTRB(5, 3, 5, 0),
-                                  height: 7,
-                                  width: 1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: Color(0xffE4E7E8),
-                                  ),
-                                )
-                              : Container(),
-                          Container(
-                            child: Text(model.getEvaluationInformation(),
-                                style: GoogleFonts.notoSans(
-                                  fontSize: 10,
-                                  color: const Color(0xff3497fd),
-                                  height: 1.6,
-                                )),
-                          )
-                        ]),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                child: Text(model.replyText,
+                        Expanded(
+                            child: Column(children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                child: Text(model.userNickName,
                                     style: GoogleFonts.notoSans(
-                                      fontSize: 14,
+                                      fontSize: model.isRootReply() ? 14 : 12,
                                       color: const Color(0xff454f63),
-                                      height: 1.1428571428571428,
+                                      fontWeight: FontWeight.w700,
                                     )),
                               ),
+                            ],
+                          ),
+                          Row(children: <Widget>[
+                            Container(
+                                child: Text(
+                              model.getDisplayWriteTime(),
+                              style: GoogleFonts.notoSans(
+                                fontSize: 10,
+                                color: const Color(0xff78849e),
+                                height: 1.6,
+                              ),
+                            )),
+                            model.hasValuationHistory()
+                                ? Container(
+                                    margin: EdgeInsets.fromLTRB(5, 3, 5, 0),
+                                    height: 7,
+                                    width: 1,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Color(0xffE4E7E8),
+                                    ),
+                                  )
+                                : Container(),
+                            Container(
+                              child: Text(model.getEvaluationInformation(),
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 10,
+                                    color: const Color(0xff3497fd),
+                                    height: 1.6,
+                                  )),
                             )
-                          ],
-                        ),
-                        model.isChildReplyShow
-                            ? childReplyToggleBtn(model)
+                          ]),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  child: Text(model.replyText,
+                                      style: GoogleFonts.notoSans(
+                                        fontSize: 14,
+                                        color: const Color(0xff454f63),
+                                        height: 1.1428571428571428,
+                                      )),
+                                ),
+                              )
+                            ],
+                          ),
+                          model.isChildReplyShow
+                              ? childReplyToggleBtn(model)
+                              : Container()
+                        ])),
+                        showEditBtn
+                            ? Container(
+                                child: InkWell(
+                                    onTap: () {
+                                      model.showOptionButtonDialog();
+                                    },
+                                    child: Container(
+                                      alignment: Alignment(0.0, -1.0),
+                                      height: 52,
+                                      width: 52,
+                                      child: Icon(ForutonaIcon.pointdash,
+                                          size: 20, color: Colors.black),
+                                    )))
                             : Container()
-                      ])),
-                      showEditBtn
-                          ? Container(
-                              child: InkWell(
-                                  onTap: () {
-                                    model.showOptionButtonDialog();
-                                  },
-                                  child: Container(
-                                    alignment: Alignment(0.0, -1.0),
-                                    height: 32,
-                                    width: 32,
-                                    child: Icon(ForutonaIcon.pointdash,
-                                        size: 13, color: Colors.black),
-                                  )))
-                          : Container()
-                    ],
-                  ),
-                  model.isChildReplyOpen
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount:
-                              _fBallReplyResDto.childFBallReplyResDto.length,
-                          itemBuilder: (_, index) {
-                            return BasicReViewsContentBar(
-                                canSubReplyInsert: false,
-                                showEditBtn: true,
-                                hasBoardLine: false,
-                                hasBottomPadding: false,
-                                reviewCountMediator: _reviewCountMediator,
-                                reviewDeleteMediator: _reviewDeleteMediator,
-                                fBallReplyResDto: _fBallReplyResDto
-                                    .childFBallReplyResDto[index],
-                                showChildReply: false);
-                          },
-                        )
-                      : Container()
-                ],
+                      ],
+                    ),
+                    model.isChildReplyOpen
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount:
+                                _fBallReplyResDto.childFBallReplyResDto.length,
+                            itemBuilder: (_, index) {
+                              return BasicReViewsContentBar(
+                                  canSubReplyInsert: false,
+                                  showEditBtn: true,
+                                  hasBoardLine: false,
+                                  hasBottomPadding: false,
+                                  reviewCountMediator: _reviewCountMediator,
+                                  reviewDeleteMediator: _reviewDeleteMediator,
+                                  fBallReplyResDto: _fBallReplyResDto
+                                      .childFBallReplyResDto[index],
+                                  showChildReply: false);
+                            },
+                          )
+                        : Container()
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            color: Color(0xffF4F4F6),
+                            width: hasBoardLine ? 1 : 0))),
               ),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          color: Color(0xffF4F4F6),
-                          width: hasBoardLine ? 1 : 0))),
             ),
           );
         }));
@@ -237,7 +243,7 @@ class BasicReViewsContentBar extends StatelessWidget {
   }
 }
 
-class BasicReViewsContentBarViewModel extends ChangeNotifier{
+class BasicReViewsContentBarViewModel extends ChangeNotifier {
   final FBallReplyResDto fBallReplyResDto;
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
@@ -258,7 +264,7 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier{
       FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       ReviewInertMediator reviewInertMediator,
       ReviewDeleteMediator reviewDeleteMediator,
-        ReviewUpdateMediator reviewUpdateMediator,
+      ReviewUpdateMediator reviewUpdateMediator,
       ReviewCountMediator reviewCountMediator})
       : _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
@@ -339,8 +345,9 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier{
     reqDto.ballUuid = fBallReplyResDto.ballUuid.ballUuid;
     reqDto.replyNumber = fBallReplyResDto.replyNumber;
     reqDto.reqOnlySubReply = true;
-    PageWrap<FBallReplyResDto> pageDtos = await _fBallReplyUseCaseInputPort
-        .reqFBallReply(reqDto, Pageable(page: 0,size: 99999,sort: "ReplySort,ASC"));
+    PageWrap<FBallReplyResDto> pageDtos =
+        await _fBallReplyUseCaseInputPort.reqFBallReply(
+            reqDto, Pageable(page: 0, size: 99999, sort: "ReplySort,ASC"));
     return pageDtos.content;
   }
 
@@ -381,19 +388,14 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier{
     if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
       String userUid = await _fireBaseAuthAdapterForUseCase.userUid();
       if (userUid == fBallReplyResDto.uid.uid) {
-        await showModalBottomSheet(
+        await showDialog(
             context: context,
-            isDismissible: true,
-            isScrollControlled: true,
-            builder: (context) {
-              return ReplyOptionActionBottomSheet(
-                fBallReplyResDto: fBallReplyResDto,
-                reviewUpdateMediator: _reviewUpdateMediator,
-                reviewDeleteMediator: _reviewDeleteMediator,
-              );
-            });
+            child: ReplyOptionActionAlertDialogSheet(
+              fBallReplyResDto: fBallReplyResDto,
+              reviewDeleteMediator: _reviewDeleteMediator,
+              reviewUpdateMediator: _reviewUpdateMediator,
+            ));
       }
     }
   }
-
 }

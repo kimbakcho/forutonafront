@@ -15,7 +15,7 @@ abstract class ReviewInertMediator {
   int componentCount();
   Future<FBallReplyResDto> insertReview(FBallReplyInsertReqDto reqDto);
 }
-@Injectable(as: ReviewInertMediator)
+
 class ReviewInertMediatorImpl implements ReviewInertMediator {
 
   List<ReviewInertMediatorComponent> components = [];

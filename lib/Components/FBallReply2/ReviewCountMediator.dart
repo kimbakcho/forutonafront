@@ -19,7 +19,7 @@ abstract class ReviewCountMediator {
 
   int reviewCount;
 }
-@Injectable(as: ReviewCountMediator)
+
 class ReviewCountMediatorImpl implements ReviewCountMediator{
   int reviewCount = 0;
 

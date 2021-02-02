@@ -37,10 +37,11 @@ class BasicReViewUpdate extends StatelessWidget {
           padding: MediaQuery.of(context).viewInsets,
           child: ReviewTextActionRow(
             ballUuid: model.ballUuid,
-            userProfileImageUrl: model.userProfileImage,
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+            userProfileImage: NetworkImage(model.userProfileImage),
             autoFocus: true,
             actionReply: model.updateReply,
-            replyTextEditController: model.textEditingController,
+            reviewTextActionRowController: model.reviewTextActionRowController,
           ),
         );
       }),
@@ -52,7 +53,7 @@ class BasicReViewUpdateViewModel extends ChangeNotifier {
   final FBallReplyResDto fBallReplyResDto;
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
   FUserInfoResDto _fUserInfo;
-  final TextEditingController textEditingController;
+  ReviewTextActionRowController reviewTextActionRowController;
   final ReviewUpdateMediator _reviewUpdateMediator;
   final BuildContext context;
   StreamSubscription keyBoardSubscription;
@@ -63,10 +64,10 @@ class BasicReViewUpdateViewModel extends ChangeNotifier {
       SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
       ReviewUpdateMediator reviewUpdateMediator})
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
-        _reviewUpdateMediator = reviewUpdateMediator,
-        textEditingController =
-            TextEditingController(text: fBallReplyResDto.replyText) {
-    _fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+        _reviewUpdateMediator = reviewUpdateMediator
+      {
+  reviewTextActionRowController = ReviewTextActionRowController(initReplyText: fBallReplyResDto.replyText);
+  _fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
     keyBoardSubscription = KeyboardVisibility.onChange.listen(keyBoardListen);
   }
 
@@ -94,7 +95,7 @@ class BasicReViewUpdateViewModel extends ChangeNotifier {
 
   updateReply(String ballUuid) async {
     FBallReplyUpdateReqDto reqDto = FBallReplyUpdateReqDto();
-    reqDto.replyText = textEditingController.text;
+    reqDto.replyText = reviewTextActionRowController.replyText;
     reqDto.replyUuid = fBallReplyResDto.replyUuid;
     FBallReplyResDto recvFBallReplyResDto = await _reviewUpdateMediator.updateReView(reqDto);
     fBallReplyResDto.replyText = recvFBallReplyResDto.replyText;

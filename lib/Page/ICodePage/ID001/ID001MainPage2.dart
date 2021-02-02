@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Components/FBallReply2/BasicReViewsContentBars.dart';
 import 'package:forutonafront/Components/FBallReply2/BasicReviews.dart';
+import 'package:forutonafront/Components/FBallReply3/FBallReply3.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001MainPage2ViewModel.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001ActionBottomBar.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001LikeState.dart';
@@ -135,23 +136,8 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                               reviewCountMediator: model.reviewCountMediator,
                               ballUuid: model.getBallUuid(),
                             ),
-                            BasicReViewsContentBars(
-                              key: model.basicReViewsContentBarsKey,
-                              reviewInertMediator: model.reviewInertMediator,
-                              reviewCountMediator: model.reviewCountMediator,
-                              canSubReplyInsert: false,
-                              showEditBtn: false,
-                              showChildReply: false,
-                              ballUuid: model.getBallUuid(),
-                              listable: false,
-                              pageLimit: 3,
-                            ),
-                            ID001ReviewsPageBtn(
-                              reviewCountMediator: model.reviewCountMediator,
-                              reviewUpdateMediator: model.reviewUpdateMediator,
-                              reviewDeleteMediator: model.reviewDeleteMediator,
-                              reviewInertMediator: model.reviewInertMediator,
-                              ballUuid: _ballUuid,
+                            FBallReply3(
+                              ballUuid: model.ballUuid,
                             )
                           ]),
                     )

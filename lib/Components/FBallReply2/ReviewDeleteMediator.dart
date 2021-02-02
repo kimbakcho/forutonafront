@@ -17,7 +17,7 @@ abstract class ReviewDeleteMediator {
   int componentCount();
   deleteReview(FBallReplyResDto fBallReplyResDto);
 }
-@Injectable(as: ReviewDeleteMediator)
+
 class ReviewDeleteMediatorImpl implements ReviewDeleteMediator {
   List<ReviewDeleteMediatorComponent> components = [];
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;

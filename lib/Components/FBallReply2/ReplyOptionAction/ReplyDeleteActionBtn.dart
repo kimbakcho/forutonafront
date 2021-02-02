@@ -27,24 +27,22 @@ class ReplyDeleteActionBtn extends StatelessWidget {
       child: Consumer<ReplyDeleteActionBtnViewModel>(builder: (_, model, __) {
         return Row(
           children: <Widget>[
-            InkWell(
+            Expanded(child:InkWell(
                 onTap: () async {
                   model.showDeleteDialog();
                 },
                 child: Container(
                   alignment: AlignmentDirectional.center,
-                  width: MediaQuery.of(context).size.width,
                   height: 50,
-                  child: Text("삭제",
+                  child: Text("삭제 하기",
                       style: GoogleFonts.notoSans(
-                        fontSize: 16,
-                        color: const Color(0xff000000),
+                        fontSize: 14,
+                        color: const Color(0xff3a3e3f),
                         fontWeight: FontWeight.w700,
-                        height: 1.25,
                       )),
-                  decoration:
-                      BoxDecoration(border: Border(bottom: BorderSide())),
-                ))
+                  decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xffE4E7E8)))),
+                )))
+
           ],
         );
       }),
@@ -64,6 +62,7 @@ class ReplyDeleteActionBtnViewModel extends ChangeNotifier {
       : _reviewDeleteMediator = reviewDeleteMediator;
 
   showDeleteDialog() async {
+    Navigator.of(context).pop();
     await showGeneralDialog(
         context: context,
         barrierDismissible: true,

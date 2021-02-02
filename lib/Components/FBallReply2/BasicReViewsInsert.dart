@@ -62,9 +62,10 @@ class BasicReViewsInsert extends StatelessWidget {
               ReviewTextActionRow(
                 autoFocus: this.autoFocus,
                 ballUuid: model.ballUuid,
-                userProfileImageUrl: model.userProfileImage,
+                padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                userProfileImage: NetworkImage(model.userProfileImage),
                 actionReply: model.insertReply,
-                replyTextEditController: model.replyTextEditController,
+                reviewTextActionRowController: model.reviewTextActionRowController,
               )
             ],
           );
@@ -80,7 +81,7 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
   final ReviewCountMediator _reviewCountMediator;
   final FBallReplyResDto parentFBallReplyResDto;
   String userProfileImage;
-  TextEditingController replyTextEditController;
+  ReviewTextActionRowController reviewTextActionRowController;
   StreamSubscription keyBoardSubscription;
 
   ID001ReplyInsertViewModel(
@@ -93,7 +94,7 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator {
-    replyTextEditController = TextEditingController();
+    reviewTextActionRowController = ReviewTextActionRowController();
     FUserInfoResDto fUserInfoResDto =
         this._signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
     userProfileImage = fUserInfoResDto.profilePictureUrl;
@@ -122,7 +123,7 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
     if (parentFBallReplyResDto != null) {
       reqDto.replyUuid = parentFBallReplyResDto.replyUuid;
     }
-    reqDto.replyText = replyTextEditController.text;
+    reqDto.replyText = reviewTextActionRowController.replyText;
     await this._reviewInertMediator.insertReview(reqDto);
     await this._reviewCountMediator.reqReviewCount(ballUuid);
     keyBoardSubscription.cancel();
