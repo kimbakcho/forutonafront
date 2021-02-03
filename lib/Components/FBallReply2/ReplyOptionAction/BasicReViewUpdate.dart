@@ -7,6 +7,7 @@ import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyUpdateR
 
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -94,13 +95,31 @@ class BasicReViewUpdateViewModel extends ChangeNotifier {
   }
 
   updateReply(String ballUuid) async {
+
+
+    reviewTextActionRowController.textFieldUnFocus();
+    keyBoardSubscription.cancel();
+    keyBoardSubscription = null;
+
+    Navigator.of(context).pop();
+
+    showGeneralDialog(context: context,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          _updateReplyInLoading(context);
+          return CommonLoadingComponent();
+        });
+
+
+
+  }
+
+  void _updateReplyInLoading(BuildContext context) async{
     FBallReplyUpdateReqDto reqDto = FBallReplyUpdateReqDto();
     reqDto.replyText = reviewTextActionRowController.replyText;
     reqDto.replyUuid = fBallReplyResDto.replyUuid;
     FBallReplyResDto recvFBallReplyResDto = await _reviewUpdateMediator.updateReView(reqDto);
     fBallReplyResDto.replyText = recvFBallReplyResDto.replyText;
-    keyBoardSubscription.cancel();
-    keyBoardSubscription = null;
     Navigator.of(context).pop();
   }
+
 }

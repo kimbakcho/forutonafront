@@ -9,7 +9,9 @@ import 'package:forutonafront/Components/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewInsertRow.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
+import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class FBallReply3 extends StatelessWidget {
@@ -107,7 +109,15 @@ class FBallReply3ViewModel extends ChangeNotifier {
                 reviewInertMediator: _reviewInertMediator);
           });
     } else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
+
+      showMaterialModalBottomSheet(
+          context: context,
+          expand: false,
+          backgroundColor: Colors.transparent,
+          enableDrag: true,
+          builder: (context) {
+            return L001BottomSheet();
+          });
     }
   }
 

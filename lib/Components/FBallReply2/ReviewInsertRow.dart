@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 class ReviewTextActionRow extends StatelessWidget {
   final ImageProvider userProfileImage;
-  final FocusNode replyTextFocusNode;
   final bool autoFocus;
   final ReviewTextActionRowController reviewTextActionRowController;
   final Function(String) actionReply;
@@ -16,7 +15,6 @@ class ReviewTextActionRow extends StatelessWidget {
   const ReviewTextActionRow(
       {Key key,
       this.userProfileImage,
-      this.replyTextFocusNode,
       this.autoFocus,
       this.reviewTextActionRowController,
       this.actionReply,
@@ -46,8 +44,12 @@ class ReviewTextActionRow extends StatelessWidget {
                     child: TextField(
                       minLines: 1,
                       maxLines: 4,
-                      focusNode: replyTextFocusNode,
+                      focusNode: model.replyTextFocusNode,
                       autocorrect: false,
+                      onAppPrivateCommand: (value, value1) {
+                        print("onAppPrivateCommand");
+                        print(value);
+                      },
                       decoration: InputDecoration(
                         hintText: "댓글 입력하기",
                           hintStyle: GoogleFonts.notoSans(
@@ -99,6 +101,8 @@ class ReviewTextActionRowViewModel extends ChangeNotifier {
 
   TextEditingController replyTextEditController;
 
+  FocusNode replyTextFocusNode = FocusNode();
+
   final ReviewTextActionRowController reviewTextActionRowController;
 
   ReviewTextActionRowViewModel({this.reviewTextActionRowController}){
@@ -113,6 +117,8 @@ class ReviewTextActionRowViewModel extends ChangeNotifier {
     replyTextEditController.addListener(() {
       changeReplyText();
     });
+
+
   }
   changeReplyText(){
     notifyListeners();
@@ -129,6 +135,9 @@ class ReviewTextActionRowViewModel extends ChangeNotifier {
     return replyTextEditController.text;
   }
 
+  _textFieldUnFocus(){
+    replyTextFocusNode.unfocus();
+  }
 }
 
 class ReviewTextActionRowController  {
@@ -147,5 +156,8 @@ class ReviewTextActionRowController  {
     }else {
       return "";
     }
+  }
+  textFieldUnFocus(){
+    _viewModel._textFieldUnFocus();
   }
 }

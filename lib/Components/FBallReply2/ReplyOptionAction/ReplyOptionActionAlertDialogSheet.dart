@@ -39,6 +39,25 @@ class ReplyOptionActionAlertDialogSheet extends StatelessWidget {
                     ReplyDeleteActionBtn(
                         fBallReplyResDto: fBallReplyResDto,
                         reviewDeleteMediator: reviewDeleteMediator),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(child: Material(
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: Colors.white,
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              
+                              height: 50,
+                              child: Center(child:  Text("닫기"),),
+                            ),
+                          ),
+                        ))
+                      ],
+                    )
                   ],
                 ),
                 decoration: BoxDecoration(

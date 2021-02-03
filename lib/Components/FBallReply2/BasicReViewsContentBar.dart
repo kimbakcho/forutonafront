@@ -61,6 +61,7 @@ class BasicReViewsContentBar extends StatelessWidget {
             fBallReplyUseCaseInputPort: sl(),
             fireBaseAuthAdapterForUseCase: sl(),
             context: context,
+            showEditBtn: showEditBtn,
             reviewCountMediator: _reviewCountMediator,
             reviewDeleteMediator: _reviewDeleteMediator,
             reviewInertMediator: _reviewInertMediator,
@@ -72,7 +73,7 @@ class BasicReViewsContentBar extends StatelessWidget {
             color: Colors.white,
             child: InkWell(
               onTap: () {
-                if (canSubReplyInsert) {
+                if (canSubReplyInsert && !model._isDeleteReply) {
                   model.subReplyInsertOpen(context);
                 }
               },
@@ -159,7 +160,7 @@ class BasicReViewsContentBar extends StatelessWidget {
                               ? childReplyToggleBtn(model)
                               : Container()
                         ])),
-                        showEditBtn
+                        model._isShowEditButton
                             ? Container(
                                 child: InkWell(
                                     onTap: () {
@@ -177,6 +178,7 @@ class BasicReViewsContentBar extends StatelessWidget {
                     ),
                     model.isChildReplyOpen
                         ? ListView.builder(
+                            padding: EdgeInsets.all(0),
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount:
@@ -188,6 +190,8 @@ class BasicReViewsContentBar extends StatelessWidget {
                                   hasBoardLine: false,
                                   hasBottomPadding: false,
                                   reviewCountMediator: _reviewCountMediator,
+                                  reviewUpdateMediator: _reviewUpdateMediator,
+                                  reviewInertMediator: _reviewInertMediator,
                                   reviewDeleteMediator: _reviewDeleteMediator,
                                   fBallReplyResDto: _fBallReplyResDto
                                       .childFBallReplyResDto[index],
@@ -200,7 +204,7 @@ class BasicReViewsContentBar extends StatelessWidget {
                 decoration: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
-                            color: Color(0xffF4F4F6),
+                            color: hasBoardLine ? Color(0xffF4F4F6) : Colors.white,
                             width: hasBoardLine ? 1 : 0))),
               ),
             ),
@@ -243,7 +247,7 @@ class BasicReViewsContentBar extends StatelessWidget {
   }
 }
 
-class BasicReViewsContentBarViewModel extends ChangeNotifier {
+class BasicReViewsContentBarViewModel extends ChangeNotifier implements ReviewDeleteMediatorComponent,ReviewUpdateMediatorComponent{
   final FBallReplyResDto fBallReplyResDto;
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
@@ -255,11 +259,13 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
   bool isChildReplyOpen = false;
   bool showChildReply;
   FBallReplyDisplayUtil _fBallReplyDisplayUtil;
+  bool showEditBtn;
 
   BasicReViewsContentBarViewModel(
       {this.fBallReplyResDto,
       this.showChildReply,
       this.context,
+        this.showEditBtn,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
       FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       ReviewInertMediator reviewInertMediator,
@@ -273,6 +279,19 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
         _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
     _fBallReplyDisplayUtil = new FBallReplyDisplayUtil(this.fBallReplyResDto);
+    initStateOpenReply();
+    if(_reviewDeleteMediator != null){
+      _reviewDeleteMediator.registerComponent(this);
+    }
+    if(_reviewUpdateMediator != null){
+      _reviewUpdateMediator.registerComponent(this);
+    }
+  }
+
+  void initStateOpenReply() {
+    if(isChildReplyShow && !isChildReplyOpen){
+      toggleChildOpenState();
+    }
   }
 
   get isChildReplyShow {
@@ -320,6 +339,7 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
 
   String get replyText {
     return _fBallReplyDisplayUtil.replyText;
+
   }
 
   String getOpenedText() {
@@ -397,5 +417,35 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier {
             ));
       }
     }
+  }
+
+  bool get _isShowEditButton {
+    return showEditBtn && !_isDeleteReply;
+  }
+
+  bool get _isDeleteReply {
+    return fBallReplyResDto.deleteFlag;
+  }
+
+  @override
+  onDeleted(FBallReplyResDto fBallReplyResDto) {
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if(_reviewDeleteMediator != null ){
+      _reviewDeleteMediator.unregisterComponent(this);
+    }
+    if(_reviewUpdateMediator != null){
+      _reviewUpdateMediator.unregisterComponent(this);
+    }
+
+  }
+
+  @override
+  onUpdated(FBallReplyResDto fBallReplyResDto) {
+    notifyListeners();
   }
 }

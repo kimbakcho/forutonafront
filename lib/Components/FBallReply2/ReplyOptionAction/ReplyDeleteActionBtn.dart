@@ -66,8 +66,6 @@ class ReplyDeleteActionBtnViewModel extends ChangeNotifier {
     await showGeneralDialog(
         context: context,
         barrierDismissible: true,
-        transitionDuration: Duration(milliseconds: 300),
-        barrierColor: Colors.black.withOpacity(0.3),
         barrierLabel:
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pageBuilder:

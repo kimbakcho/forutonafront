@@ -6,6 +6,7 @@ import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyInsertR
 import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
@@ -49,15 +50,15 @@ class BasicReViewsInsert extends StatelessWidget {
             children: <Widget>[
               model.parentFBallReplyResDto != null
                   ? BasicReViewsContentBar(
-                      showChildReply: false,
-                      showEditBtn: false,
-                      hasBottomPadding: false,
-                      hasBoardLine: false,
-                      canSubReplyInsert: false,
-                      reviewCountMediator: _reviewCountMediator,
-                      reviewInertMediator: _reviewInertMediator,
-                      fBallReplyResDto: model.parentFBallReplyResDto,
-                    )
+                showChildReply: false,
+                showEditBtn: false,
+                hasBottomPadding: false,
+                hasBoardLine: false,
+                canSubReplyInsert: false,
+                reviewCountMediator: _reviewCountMediator,
+                reviewInertMediator: _reviewInertMediator,
+                fBallReplyResDto: model.parentFBallReplyResDto,
+              )
                   : Container(),
               ReviewTextActionRow(
                 autoFocus: this.autoFocus,
@@ -68,7 +69,9 @@ class BasicReViewsInsert extends StatelessWidget {
                 reviewTextActionRowController: model.reviewTextActionRowController,
               )
             ],
-          );
+          )
+
+            ;
         }));
   }
 }
@@ -118,6 +121,22 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
   Future<void> loadUserInfo() async {}
 
   void insertReply(String ballUuid) async {
+
+    reviewTextActionRowController.textFieldUnFocus();
+    keyBoardSubscription.cancel();
+    keyBoardSubscription = null;
+
+    Navigator.of(context).pop();
+
+    showGeneralDialog(context: context,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          _insertReplyInLoading(context);
+      return CommonLoadingComponent();
+    });
+
+  }
+
+  void _insertReplyInLoading(BuildContext context)async{
     FBallReplyInsertReqDto reqDto = FBallReplyInsertReqDto();
     reqDto.ballUuid = ballUuid;
     if (parentFBallReplyResDto != null) {
@@ -126,8 +145,7 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
     reqDto.replyText = reviewTextActionRowController.replyText;
     await this._reviewInertMediator.insertReview(reqDto);
     await this._reviewCountMediator.reqReviewCount(ballUuid);
-    keyBoardSubscription.cancel();
-    keyBoardSubscription = null;
     Navigator.of(context).pop();
   }
+
 }
