@@ -18,6 +18,7 @@ import 'SiginButton/SignButtonOutputPort.dart';
 class SignSheet extends StatelessWidget {
   final SignSheetOutputPort signSheetOutputPort;
 
+
   const SignSheet({Key key, this.signSheetOutputPort}) : super(key: key);
 
   @override
@@ -137,9 +138,9 @@ class SignSheetViewModel extends ChangeNotifier
   final SingUpUseCaseInputPort singUpUseCaseInputPort;
 
 
-
   SignSheetViewModel(this.context, this.fUserInfoJoinReqDto,
       this.snsLoginModuleAdapterFactory, this.singUpUseCaseInputPort);
+
 
 
   @override
@@ -152,32 +153,11 @@ class SignSheetViewModel extends ChangeNotifier
           }));
     } else {
       Provider.of<L001BottomSheetViewModel>(context,listen: false).setLoading(true);
-      var instance = snsLoginModuleAdapterFactory.getInstance(
-          snsSupportService);
+      await singUpUseCaseInputPort.trySignSns(snsSupportService, context);
 
-      LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(singUpUseCaseInputPort: sl(),
-          snsLoginModuleAdapter: instance);
-
-      var snsLoginModuleResDto = await instance.getSnsModuleUserInfo();
-      var fUserSnsCheckJoinResDto = await singUpUseCaseInputPort
-          .snsUidJoinCheck(snsSupportService, snsLoginModuleResDto.accessToken);
-
-      if (fUserSnsCheckJoinResDto.join) {
-        await loginUseCaseInputPort.tryLogin();
-        Navigator.of(context).pop();
-      } else {
-        fUserInfoJoinReqDto.email = fUserSnsCheckJoinResDto.email;
-        fUserInfoJoinReqDto.nickName = fUserSnsCheckJoinResDto.userSnsName;
-        fUserInfoJoinReqDto.profileImageUrl = fUserSnsCheckJoinResDto.pictureUrl;
-        fUserInfoJoinReqDto.countryCode = "KR";
-        fUserInfoJoinReqDto.snsToken = snsLoginModuleResDto.accessToken;
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) {
-              return L002MainPage();
-            }));
-      }
       Provider.of<L001BottomSheetViewModel>(context,listen: false).setLoading(false);
     }
   }
 }
+
 

@@ -63,10 +63,6 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
               preViewResDto: widget.preViewResDto,
               selectBallUseCaseInputPort: sl(),
               fireBaseAuthAdapterForUseCase: sl(),
-              reviewCountMediator: sl(),
-              reviewDeleteMediator: sl(),
-              reviewInertMediator: sl(),
-              reviewUpdateMediator: sl(),
               valuationMediator: sl(),
               geolocatorAdapter: sl());
           id001mainPage2ViewModel.init();

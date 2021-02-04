@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/SignUp/NotJoinException.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoJoinReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart';
 import 'package:forutonafront/Page/LCodePage/L009/L009BottomSheet.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -18,12 +21,14 @@ import 'LoginSheetOutputPort.dart';
 class LoginSheet extends StatelessWidget {
   final LoginSheetOutputPort loginSheetOutputPort;
 
+
+
   LoginSheet({this.loginSheetOutputPort});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => LoginSheetViewModel(sl(), sl()),
+      create: (_) => LoginSheetViewModel(sl(), sl(),sl()),
       child: Consumer<LoginSheetViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -135,8 +140,10 @@ class LoginSheetViewModel extends ChangeNotifier
   final SnsLoginModuleAdapterFactory _snsLoginModuleAdapterFactory;
   final LoginSheetOutputPort loginSheetOutputPort;
 
+  final FUserInfoJoinReqDto fUserInfoJoinReqDto;
+
   LoginSheetViewModel(this._singUpUseCaseInputPort,
-      this._snsLoginModuleAdapterFactory,
+      this._snsLoginModuleAdapterFactory, this.fUserInfoJoinReqDto,
       {this.loginSheetOutputPort});
 
   @override
@@ -148,8 +155,18 @@ class LoginSheetViewModel extends ChangeNotifier
           singUpUseCaseInputPort: this._singUpUseCaseInputPort,
           snsLoginModuleAdapter:
               _snsLoginModuleAdapterFactory.getInstance(snsSupportService));
-      await loginUseCaseInputPort.tryLogin();
-      Navigator.of(context).pop();
+      try{
+        await loginUseCaseInputPort.tryLogin();
+        Navigator.of(context).pop();
+      }on NotJoinException catch(ex) {
+        showGeneralDialog(context: context,
+            pageBuilder: (context, animation, secondaryAnimation) {
+              trySignSns(context,ex.fUserSnSLoginReqDto.snsService);
+              return CommonLoadingComponent();
+            });
+
+
+      }
       notifyListeners();
     } else {
       showMaterialModalBottomSheet(
@@ -170,5 +187,9 @@ class LoginSheetViewModel extends ChangeNotifier
             );
           });
     }
+  }
+
+  trySignSns(BuildContext context,SnsSupportService snsSupportService) async{
+    await _singUpUseCaseInputPort.trySignSns(snsSupportService, context);
   }
 }

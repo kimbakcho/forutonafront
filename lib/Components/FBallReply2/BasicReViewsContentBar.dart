@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'BasicReViewsInsert.dart';
 import 'FBallReplyDisplayUtil.dart';
 import 'ReplyOptionAction/ReplyOptionActionBottomSheet.dart';
+import 'ReplyOptionAction/ReplyReportActionAlertDialogSheet.dart';
 import 'ReviewCountMediator.dart';
 import 'ReviewDeleteMediator.dart';
 import 'ReviewInertMediator.dart';
@@ -414,6 +415,12 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier implements ReviewDe
               fBallReplyResDto: fBallReplyResDto,
               reviewDeleteMediator: _reviewDeleteMediator,
               reviewUpdateMediator: _reviewUpdateMediator,
+            ));
+      }else {
+        await showDialog(
+            context: context,
+            child: ReplyReportActionAlertDialogSheet(
+              fBallReplyResDto: fBallReplyResDto,
             ));
       }
     }

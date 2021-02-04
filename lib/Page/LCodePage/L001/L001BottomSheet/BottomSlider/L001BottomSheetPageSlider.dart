@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/SignSheet/SignSheet.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/SignSheet/SignSheetOutputPort.dart';
 import 'package:provider/provider.dart';
 import '../LoginSheet/LoginSheet.dart';
 import '../LoginSheet/LoginSheetOutputPort.dart';
-
 
 class L001BottomSheetPageSlider extends StatelessWidget {
   const L001BottomSheetPageSlider({Key key}) : super(key: key);
@@ -18,22 +18,29 @@ class L001BottomSheetPageSlider extends StatelessWidget {
           return PageView(
               controller: model._pageController,
               scrollDirection: Axis.horizontal,
-              children: [LoginSheet(loginSheetOutputPort: model,), SignSheet(signSheetOutputPort: model,)]);
+              children: [
+                LoginSheet(
+                    loginSheetOutputPort: model),
+                SignSheet(
+                    signSheetOutputPort: model)
+              ]);
         }));
   }
 }
 
-class L001BottomSheetPageSliderViewModel extends ChangeNotifier implements LoginSheetOutputPort,SignSheetOutputPort{
+class L001BottomSheetPageSliderViewModel extends ChangeNotifier
+    implements LoginSheetOutputPort, SignSheetOutputPort {
   PageController _pageController = new PageController();
-
   @override
   moveToSignPage() {
-    _pageController.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.linear);
+    _pageController.animateToPage(1,
+        duration: Duration(milliseconds: 300), curve: Curves.linear);
   }
 
   @override
   moveToLoginPage() {
-    _pageController.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.linear);
+    _pageController.animateToPage(0,
+        duration: Duration(milliseconds: 300), curve: Curves.linear);
   }
 
 }

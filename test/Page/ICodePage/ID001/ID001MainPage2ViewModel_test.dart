@@ -75,10 +75,7 @@ void main() {
     id001mainPage2ViewModel = new ID001MainPage2ViewModel(
         fireBaseAuthAdapterForUseCase: mockFireBaseAuthAdapterForUseCase,
         selectBallUseCaseInputPort: mockSelectBallUseCaseInputPort,
-        reviewCountMediator: mockReviewCountMediator,
-        reviewDeleteMediator: mockReviewDeleteMediator,
-        reviewInertMediator: mockReviewInertMediator,
-        reviewUpdateMediator: mockReviewUpdateMediator,
+
         valuationMediator: mockValuationMediator,
         geolocatorAdapter: mockGeolocatorAdapter,
         ballUuid: testBallUuid);

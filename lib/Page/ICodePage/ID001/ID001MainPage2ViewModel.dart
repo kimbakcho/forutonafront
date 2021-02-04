@@ -12,6 +12,7 @@ import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.
 import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallLikeResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'ID001Mode.dart';
 import 'ValuationMediator/ValuationMediator.dart';
@@ -27,10 +28,10 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   bool _loadBallComplete = false;
   IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
   FBallResDto _fBallResDto;
-  final ReviewInertMediator reviewInertMediator;
-  final ReviewCountMediator reviewCountMediator;
-  final ReviewUpdateMediator reviewUpdateMediator;
-  final ReviewDeleteMediator reviewDeleteMediator;
+   ReviewInertMediator reviewInertMediator;
+   ReviewCountMediator reviewCountMediator;
+   ReviewUpdateMediator reviewUpdateMediator;
+   ReviewDeleteMediator reviewDeleteMediator;
   final ValuationMediator valuationMediator;
   final GeolocatorAdapter geolocatorAdapter;
   bool isDisPose = false;
@@ -50,16 +51,30 @@ class ID001MainPage2ViewModel extends ChangeNotifier
         this.preViewResDto,
       this.selectBallUseCaseInputPort,
       this.fireBaseAuthAdapterForUseCase,
-      this.reviewInertMediator,
-      this.reviewCountMediator,
       this.valuationMediator,
-      this.reviewDeleteMediator,
-      this.reviewUpdateMediator,
       this.geolocatorAdapter
       }):detailPageController=ScrollController() {
+
+    this.reviewInertMediator = ReviewInertMediatorImpl(
+      fBallReplyUseCaseInputPort: sl()
+    );
+
+    this.reviewCountMediator = ReviewCountMediatorImpl(
+      fBallReplyUseCaseInputPort: sl()
+    );
+
+    this.reviewUpdateMediator = ReviewUpdateMediatorImpl(
+      fBallReplyUseCaseInputPort: sl()
+    );
+    this.reviewDeleteMediator = ReviewDeleteMediatorImpl(
+      fBallReplyUseCaseInputPort: sl()
+    );
+
     reviewInertMediator.registerComponent(this);
     reviewDeleteMediator.registerComponent(this);
     reviewUpdateMediator.registerComponent(this);
+
+
   }
 
   init() async {
