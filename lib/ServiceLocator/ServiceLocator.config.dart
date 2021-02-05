@@ -78,6 +78,9 @@ import '../Common/Geolocation/Adapter/LocationAdapter.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart';
 import '../AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import '../MainPage/MainPageView.dart';
+import '../AppBis/MaliciousReply/Domain/Repository/MaliciousReplyRepository.dart';
+import '../AppBis/MaliciousReply/Data/Repository/MaliciousReplyRepositoryImpl.dart';
+import '../AppBis/MaliciousReply/Domain/UseCase/MaliciousReplyUseCaseInputPort.dart';
 import '../Common/GoogleMapSupport/MapBallMarkerFactory.dart';
 import '../Common/GoogleMapSupport/MapBitmapDescriptorUseCaseInputPort.dart';
 import '../Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
@@ -160,11 +163,11 @@ GetIt $initGetIt(
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
-      () => GoogleProposalOnServiceSurveyUseCase(),
-      instanceName: 'GoogleProposalOnServiceSurveyUseCase');
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleSurveyErrorReportUseCase(),
       instanceName: 'GoogleSurveyErrorReportUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(
+      () => GoogleProposalOnServiceSurveyUseCase(),
+      instanceName: 'GoogleProposalOnServiceSurveyUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
       instanceName: 'BaseGoogleSurveyUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
@@ -202,13 +205,17 @@ GetIt $initGetIt(
   gh.lazySingleton<GeolocatorAdapter>(() => GeolocatorAdapterImpl());
   gh.lazySingleton<ImageUtilInputPort>(() => ImageAvatarUtil(),
       instanceName: 'ImageAvatarUtil');
-  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
-      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<ImageUtilInputPort>(() => ImagePngResizeUtil(),
       instanceName: 'ImagePngResizeUtil');
+  gh.lazySingleton<ImageUtilInputPort>(() => ImageBorderAvatarUtil(),
+      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<LocationAdapter>(() => LocationAdapterImpl());
   gh.lazySingleton<MainPageViewModelController>(
       () => MainPageViewModelController());
+  gh.lazySingleton<MaliciousReplyRepository>(
+      () => MaliciousReplyRepositoryImpl(get<FireBaseAuthBaseAdapter>()));
+  gh.lazySingleton<MaliciousReplyUseCaseInputPort>(
+      () => MaliciousReplyUseCase(get<MaliciousReplyRepository>()));
   gh.lazySingleton<MapBitmapDescriptorUseCaseInputPort>(() =>
       MapBitmapDescriptorUseCase(
         imagePngResizeUtil:
@@ -227,12 +234,12 @@ GetIt $initGetIt(
   gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => RadarBasicChannelUseCae(),
       instanceName: 'RadarBasicChannelUseCae');
-  gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
-      (name, _) =>
-          NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
   gh.lazySingleton<NotificationChannelBaseInputPort>(
       () => CommentChannelUseCase(),
       instanceName: 'CommentChannelUseCase');
+  gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
+      (name, _) =>
+          NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>
