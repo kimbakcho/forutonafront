@@ -125,6 +125,8 @@ dependencies:
   devicelocale: ^0.3.3
   #sms retriever
   sms_otp_auto_verify: ^1.2.2
+  #bottom_Sheet_SnappingUI에사용
+  sliding_sheet: ^0.4.1
 
 
 dev_dependencies:

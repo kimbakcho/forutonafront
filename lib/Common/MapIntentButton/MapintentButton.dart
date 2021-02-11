@@ -16,6 +16,8 @@ class MapIntentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 37,
+      height: 37,
       decoration:
           BoxDecoration(color: Color(0xff007EFF), shape: BoxShape.circle),
       child: FlatButton(

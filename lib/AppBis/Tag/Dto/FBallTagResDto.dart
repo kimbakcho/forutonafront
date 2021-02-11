@@ -7,7 +7,8 @@ part 'FBallTagResDto.g.dart';
 class FBallTagResDto {
   int idx;
   String tagItem;
-  FBallResDto ballUuid;
+  String ballUuid;
+  int tagIndex;
 
 
   FBallTagResDto();

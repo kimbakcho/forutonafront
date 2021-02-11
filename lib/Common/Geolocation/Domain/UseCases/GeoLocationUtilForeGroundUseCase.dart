@@ -82,13 +82,17 @@ class GeoLocationUtilForeGroundUseCase
   }
 
   @override
-  Future<void> reqBallDistanceDisplayText({@required Position ballLatLng,
+  Future<String> reqBallDistanceDisplayText({@required Position ballLatLng,
     @required GeoLocationUtilUseForeGroundCaseOutputPort geoLocationUtilUseCaseOp}) async {
     var position = await getLastKnowPonePosition();
     var distance = await geolocatorAdapter.distanceBetween(ballLatLng.latitude,
         ballLatLng.longitude, position.latitude, position.longitude);
-    geoLocationUtilUseCaseOp.onBallDistanceDisplayText(
-        displayDistanceText: DistanceDisplayUtil.changeDisplayStr(distance));
+    var changeDisplayStr = DistanceDisplayUtil.changeDisplayStr(distance);
+    if(geoLocationUtilUseCaseOp != null){
+      geoLocationUtilUseCaseOp.onBallDistanceDisplayText(
+          displayDistanceText: changeDisplayStr);
+    }
+    return changeDisplayStr;
   }
 
   @override

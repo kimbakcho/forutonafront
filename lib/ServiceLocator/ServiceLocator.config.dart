@@ -163,19 +163,24 @@ GetIt $initGetIt(
   gh.lazySingleton<BallSearchHistoryLocalDataSource>(
       () => BallSearchHistoryLocalDataSourceImpl());
   gh.lazySingleton<BaseGoogleSurveyInputPort>(
-      () => GoogleSurveyErrorReportUseCase(),
-      instanceName: 'GoogleSurveyErrorReportUseCase');
-  gh.lazySingleton<BaseGoogleSurveyInputPort>(
       () => GoogleProposalOnServiceSurveyUseCase(),
       instanceName: 'GoogleProposalOnServiceSurveyUseCase');
+  gh.lazySingleton<BaseGoogleSurveyInputPort>(
+      () => GoogleSurveyErrorReportUseCase(),
+      instanceName: 'GoogleSurveyErrorReportUseCase');
   gh.lazySingleton<BaseGoogleSurveyInputPort>(() => BaseGoogleSurveyUseCase(),
       instanceName: 'BaseGoogleSurveyUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
-      instanceName: 'ResumeMessageUseCase');
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
-      instanceName: 'LaunchMessageUseCase');
   gh.lazySingleton<BaseMessageUseCaseInputPort>(() => BaseMessageUseCase(),
       instanceName: 'BaseMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => LaunchMessageUseCase(),
+      instanceName: 'LaunchMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(
+      () => BackGroundMessageUseCase(
+          baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
+              instanceName: 'BaseMessageUseCase')),
+      instanceName: 'BackGroundMessageUseCase');
+  gh.lazySingleton<BaseMessageUseCaseInputPort>(() => ResumeMessageUseCase(),
+      instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<BaseOpenTalkInputPort>(() => InquireAboutAnythingUseCase());
   gh.lazySingleton<DetailPageItemFactory>(() => DetailPageItemFactory());
   gh.lazySingleton<FBallPlayerRemoteDataSource>(
@@ -231,15 +236,15 @@ GetIt $initGetIt(
   gh.factory<NoticeRepository>(() => NoticeRepositoryImpl());
   gh.factory<NoticeUseCaseInputPort>(
       () => NoticeUseCase(get<NoticeRepository>()));
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => RadarBasicChannelUseCae(),
-      instanceName: 'RadarBasicChannelUseCae');
-  gh.lazySingleton<NotificationChannelBaseInputPort>(
-      () => CommentChannelUseCase(),
-      instanceName: 'CommentChannelUseCase');
   gh.factoryParam<NotificationChannelBaseInputPort, String, dynamic>(
       (name, _) =>
           NotificationChannelBaseInputPort.serviceChannelUseCaseName(name));
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => CommentChannelUseCase(),
+      instanceName: 'CommentChannelUseCase');
+  gh.lazySingleton<NotificationChannelBaseInputPort>(
+      () => RadarBasicChannelUseCae(),
+      instanceName: 'RadarBasicChannelUseCae');
   gh.lazySingleton<PersonaSettingNoticeRemoteDataSource>(
       () => PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<PersonaSettingNoticeRepository>(() =>
@@ -291,11 +296,6 @@ GetIt $initGetIt(
   gh.lazySingleton<BallSearchBarHistoryRepository>(() =>
       BallSearchBarHistoryRepositoryImpl(
           localDataSource: get<BallSearchHistoryLocalDataSource>()));
-  gh.lazySingleton<BaseMessageUseCaseInputPort>(
-      () => BackGroundMessageUseCase(
-          baseMessageUseCaseInputPort: get<BaseMessageUseCaseInputPort>(
-              instanceName: 'BaseMessageUseCase')),
-      instanceName: 'BackGroundMessageUseCase');
   gh.lazySingleton<FBallPlayerListUpInputPort>(() => FBallPlayerListUpUseCae(
       fBallPlayerRepository: get<FBallPlayerRepository>()));
   gh.lazySingleton<FBallReplyRepository>(() => FBallReplyRepositoryImpl(

@@ -19,21 +19,10 @@ class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCas
         .fBallListUpUseCaseInputPort
         .search(pageable);
 
-    PageWrap<FBallResDto> changePage = new PageWrap(
-      pageable: response.pageable,
-      sort: response.sort,
-      totalElements: response.totalElements,
-      totalPages: response.totalPages,
-      size: response.size,
-      empty: response.empty,
-      last: response.last,
-      first: response.first,
-      number: response.number,
-      numberOfElements: response.numberOfElements,
-      content: response.content.map((e) => e.ballUuid).toList()
-    );
+    var content = response.content;
+    //TODO 추후에 여기서 BALL들을 조회 하는 API를 BackEnd 에서 만들고 가져와서 리턴해주기 지금은 임시로 null 로 리턴
 
-    return changePage;
+    return null;
   }
 
   @override

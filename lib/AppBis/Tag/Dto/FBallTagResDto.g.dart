@@ -10,9 +10,8 @@ FBallTagResDto _$FBallTagResDtoFromJson(Map<String, dynamic> json) {
   return FBallTagResDto()
     ..idx = json['idx'] as int
     ..tagItem = json['tagItem'] as String
-    ..ballUuid = json['ballUuid'] == null
-        ? null
-        : FBallResDto.fromJson(json['ballUuid'] as Map<String, dynamic>);
+    ..ballUuid = json['ballUuid'] as String
+    ..tagIndex = json['tagIndex'] as int;
 }
 
 Map<String, dynamic> _$FBallTagResDtoToJson(FBallTagResDto instance) =>
@@ -20,4 +19,5 @@ Map<String, dynamic> _$FBallTagResDtoToJson(FBallTagResDto instance) =>
       'idx': instance.idx,
       'tagItem': instance.tagItem,
       'ballUuid': instance.ballUuid,
+      'tagIndex': instance.tagIndex,
     };
