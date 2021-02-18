@@ -31,7 +31,11 @@ FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
         ? null
         : FUserInfoSimpleResDto.fromJson(json['uid'] as Map<String, dynamic>)
     ..contributor = json['contributor'] as int
-    ..ballDeleteFlag = json['ballDeleteFlag'] as bool;
+    ..ballDeleteFlag = json['ballDeleteFlag'] as bool
+    ..isEditContent = json['isEditContent'] as bool
+    ..editContentTime = json['editContentTime'] == null
+        ? null
+        : DateTime.parse(json['editContentTime'] as String);
 }
 
 Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
@@ -54,6 +58,8 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'uid': instance.uid?.toJson(),
       'contributor': instance.contributor,
       'ballDeleteFlag': instance.ballDeleteFlag,
+      'isEditContent': instance.isEditContent,
+      'editContentTime': instance.editContentTime?.toIso8601String(),
     };
 
 T _$enumDecode<T>(

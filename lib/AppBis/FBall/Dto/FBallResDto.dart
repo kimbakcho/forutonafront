@@ -26,6 +26,8 @@ class FBallResDto {
   FUserInfoSimpleResDto uid;
   int contributor;
   bool ballDeleteFlag;
+  bool isEditContent;
+  DateTime editContentTime;
 
   FBallResDto();
 
@@ -33,27 +35,27 @@ class FBallResDto {
 
   Map<String, dynamic> toJson() => _$FBallResDtoToJson(this);
 
-  factory FBallResDto.fromFBall(FBall fBall){
-    FBallResDto fBallResDto = FBallResDto();
-    fBallResDto.latitude = fBall.latitude;
-    fBallResDto.longitude = fBall.longitude;
-    fBallResDto.ballUuid = fBall.ballUuid;
-    fBallResDto.ballName = fBall.ballName;
-    fBallResDto.ballType = fBall.ballType;
-    fBallResDto.ballState = fBall.ballState;
-    fBallResDto.placeAddress = fBall.placeAddress;
-    fBallResDto.ballHits = fBall.ballHits;
-    fBallResDto.ballLikes = fBall.ballLikes;
-    fBallResDto.ballDisLikes = fBall.ballDisLikes;
-    fBallResDto.commentCount = fBall.commentCount;
-    fBallResDto.ballPower = fBall.ballPower;
-    fBallResDto.activationTime = fBall.activationTime;
-    fBallResDto.makeTime = fBall.makeTime;
-    fBallResDto.description = fBall.description;
-    fBallResDto.uid = FUserInfoSimpleResDto.fromFUserInfoSimple(fBall.uid);
-    fBallResDto.contributor = fBall.contributor;
-    fBallResDto.ballDeleteFlag = fBall.ballDeleteFlag;
-    return fBallResDto;
-  }
+  // factory FBallResDto.fromFBall(FBall fBall){
+  //   FBallResDto fBallResDto = FBallResDto();
+  //   fBallResDto.latitude = fBall.latitude;
+  //   fBallResDto.longitude = fBall.longitude;
+  //   fBallResDto.ballUuid = fBall.ballUuid;
+  //   fBallResDto.ballName = fBall.ballName;
+  //   fBallResDto.ballType = fBall.ballType;
+  //   fBallResDto.ballState = fBall.ballState;
+  //   fBallResDto.placeAddress = fBall.placeAddress;
+  //   fBallResDto.ballHits = fBall.ballHits;
+  //   fBallResDto.ballLikes = fBall.ballLikes;
+  //   fBallResDto.ballDisLikes = fBall.ballDisLikes;
+  //   fBallResDto.commentCount = fBall.commentCount;
+  //   fBallResDto.ballPower = fBall.ballPower;
+  //   fBallResDto.activationTime = fBall.activationTime;
+  //   fBallResDto.makeTime = fBall.makeTime;
+  //   fBallResDto.description = fBall.description;
+  //   fBallResDto.uid = FUserInfoSimpleResDto.fromFUserInfoSimple(fBall.uid);
+  //   fBallResDto.contributor = fBall.contributor;
+  //   fBallResDto.ballDeleteFlag = fBall.ballDeleteFlag;
+  //   return fBallResDto;
+  // }
 
 }

@@ -7,12 +7,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-class ID001LikeState extends StatelessWidget {
+class ID01LikeState extends StatelessWidget {
   final String ballUuid;
   final DateTime ballActivationTime;
   final ValuationMediator valuationMediator;
 
-  ID001LikeState(
+  ID01LikeState(
       {this.ballUuid, this.ballActivationTime, this.valuationMediator}) {
     print(ballUuid);
     print(ballActivationTime);
@@ -21,11 +21,11 @@ class ID001LikeState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => ID001LikeStateViewModel(
+        create: (_) => ID01LikeStateViewModel(
             valuationMediator: valuationMediator,
             ballUuid: ballUuid,
             ballActivationTime: ballActivationTime),
-        child: Consumer<ID001LikeStateViewModel>(builder: (_, model, __) {
+        child: Consumer<ID01LikeStateViewModel>(builder: (_, model, __) {
           return Container(
               height: 187,
               padding: EdgeInsets.fromLTRB(16, 16, 0, 0),
@@ -39,7 +39,7 @@ class ID001LikeState extends StatelessWidget {
   }
 
   Container disLikeProgress(
-      BuildContext context, ID001LikeStateViewModel model) {
+      BuildContext context, ID01LikeStateViewModel model) {
     return Container(
       margin: EdgeInsets.only(top: 21),
       child: Row(
@@ -79,7 +79,7 @@ class ID001LikeState extends StatelessWidget {
     );
   }
 
-  Container likeProgress(BuildContext context, ID001LikeStateViewModel model) {
+  Container likeProgress(BuildContext context, ID01LikeStateViewModel model) {
     return Container(
       margin: EdgeInsets.only(top: 21),
       child: Row(
@@ -119,7 +119,7 @@ class ID001LikeState extends StatelessWidget {
     );
   }
 
-  Row secondState(ID001LikeStateViewModel model) {
+  Row secondState(ID01LikeStateViewModel model) {
     return Row(children: <Widget>[
       Icon(Icons.people, color: Color(0xffCCCCCC)),
       Container(
@@ -155,7 +155,7 @@ class ID001LikeState extends StatelessWidget {
     ]);
   }
 
-  Row topState(ID001LikeStateViewModel model) {
+  Row topState(ID01LikeStateViewModel model) {
     return Row(children: <Widget>[
       Container(
           child: Text(
@@ -187,13 +187,13 @@ class ID001LikeState extends StatelessWidget {
   }
 }
 
-class ID001LikeStateViewModel extends ChangeNotifier
+class ID01LikeStateViewModel extends ChangeNotifier
     implements ValuationMediatorComponent {
   String ballUuid;
   DateTime _ballActivationTime;
   final ValuationMediator _valuationMediator;
 
-  ID001LikeStateViewModel(
+  ID01LikeStateViewModel(
       {String ballUuid,
       DateTime ballActivationTime,
       @required ValuationMediator valuationMediator})

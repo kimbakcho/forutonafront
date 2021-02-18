@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -72,25 +73,36 @@ class UserProfileBar extends StatelessWidget {
     );
   }
 
-  CachedNetworkImage avatar() {
-    return CachedNetworkImage(
-      fit: BoxFit.fitWidth,
-      imageUrl: fUserInfoSimpleResDto.profilePictureUrl,
-        imageBuilder: (context, imageProvider) => Container(
-          width: 34,
-          height: 34,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit.cover,
+  Widget avatar() {
+    if(fUserInfoSimpleResDto.profilePictureUrl.isNotEmpty){
+      return CachedNetworkImage(
+          fit: BoxFit.fitWidth,
+          imageUrl: fUserInfoSimpleResDto.profilePictureUrl,
+          imageBuilder: (context, imageProvider) => Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
+          placeholder: (context, url) => Container(
+            child: Icon(Icons.image, color: Color(0xffE4E7E8), size: 40),
+          )
+      );
+    }else {
+      return  Container(
+        width: 34,
+        height: 34,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
         ),
-        placeholder: (context, url) => Container(
-          child: Icon(Icons.image, color: Color(0xffE4E7E8), size: 40),
-        )
-    );
+        child: SvgPicture.asset("assets/IconImage/user-circle.svg"),
+      );
+    }
   }
 }
 

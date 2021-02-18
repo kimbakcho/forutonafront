@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:selectable_autolink_text/selectable_autolink_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ID001TextContent extends StatelessWidget {
+class ID01TextContent extends StatelessWidget {
   final String content;
   final String makeTime;
 
-  ID001TextContent({@required this.content, @required this.makeTime});
+  ID01TextContent({@required this.content, @required this.makeTime});
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +34,18 @@ class ID001TextContent extends StatelessWidget {
               textAlign: TextAlign.left,
             )))
           ]),
-          Row(children: <Widget>[
-            Expanded(
-                child: Container(
-                    child: Text(
-              makeTime,
-              style: GoogleFonts.notoSans(
-                fontSize: 13,
-                color: const Color(0xffb8b8b8),
-              ),
-              textAlign: TextAlign.right,
-            )))
-          ])
+          // Row(children: <Widget>[
+          //   Expanded(
+          //       child: Container(
+          //           child: Text(
+          //     makeTime,
+          //     style: GoogleFonts.notoSans(
+          //       fontSize: 13,
+          //       color: const Color(0xffb8b8b8),
+          //     ),
+          //     textAlign: TextAlign.right,
+          //   )))
+          // ])
         ]));
   }
 }

@@ -6,11 +6,10 @@ import 'package:forutonafront/Components/FBallReply2/BasicReviews.dart';
 import 'package:forutonafront/Components/FBallReply3/FBallReply3.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001MainPage2ViewModel.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001ActionBottomBar.dart';
-import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001LikeState.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001MakerInfo.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
-import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001Pictures.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001ReviewsPageBtn.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01Pictures/ID01Pictures.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,9 +18,9 @@ import 'package:provider/provider.dart';
 import 'ID001Mode.dart';
 import 'ID001WidgetPart/ID001AppBar.dart';
 import 'ID001WidgetPart/ID001TagList.dart';
-import 'ID001WidgetPart/ID001TextContent.dart';
+import '../ID01/ID01Component/ID01TextContent.dart';
 import 'ID001WidgetPart/ID001Title.dart';
-import 'ID001WidgetPart/ID001YoutubeWidget.dart';
+import '../ID01/ID01Component/ID01YoutubeWidget.dart';
 
 class ID001MainPage2 extends StatefulWidget {
   final String _ballUuid;
@@ -112,20 +111,15 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                               userInfluencePower:
                                   model.getMakerInfluencePower(),
                             ),
-                            ID001TextContent(
+                            ID01TextContent(
                               content: model.getBallTextContent(),
                               makeTime: model.getBallMakeTime(),
                             ),
-                            ID001Pictures(
+                            ID01Pictures(
                               desImages: model.getBallDesImages(),
                             ),
-                            ID001YoutubeWidget(
+                            ID01YoutubeWidget(
                               youtubeVideoId: model.getBallYoutubeId(),
-                            ),
-                            ID001LikeState(
-                              ballUuid: model.getBallUuid(),
-                              valuationMediator: model.valuationMediator,
-                              ballActivationTime: model.getBallActivationTime(),
                             ),
                             BasicReviews(
                               reviewInertMediator: model.reviewInertMediator,

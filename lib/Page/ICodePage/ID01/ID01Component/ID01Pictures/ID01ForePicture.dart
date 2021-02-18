@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
-import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001ImageContainer.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 
-class ID001ThreePicture extends StatelessWidget {
+import 'ID01ImageContainer.dart';
+
+class ID01ForePicture extends StatelessWidget {
   final List<BallImageItem> fBallDesImages;
 
-  ID001ThreePicture({this.fBallDesImages});
+  ID01ForePicture({this.fBallDesImages});
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +15,28 @@ class ID001ThreePicture extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: ID001ImageContainer(fBallDesImages, 0),
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ID01ImageContainer(fBallDesImages, 0),
+                  ),
+                  Expanded(
+                    child: ID01ImageContainer(fBallDesImages, 2),
+                  )
+                ],
+              ),
+            ),
           ),
           Expanded(
             child: Container(
               child: Column(
                 children: <Widget>[
                   Expanded(
-                    child: ID001ImageContainer(fBallDesImages, 1),
+                    child: ID01ImageContainer(fBallDesImages, 1),
                   ),
                   Expanded(
-                    child: ID001ImageContainer(fBallDesImages, 2),
+                    child: ID01ImageContainer(fBallDesImages, 3),
                   )
                 ],
               ),

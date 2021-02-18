@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 
-import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001ImageContainer.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 
-class ID001TwoPicture extends StatelessWidget {
+import 'ID01ImageContainer.dart';
+
+class ID01TwoPicture extends StatelessWidget {
   final List<BallImageItem> fBallDesImages;
 
-  ID001TwoPicture({this.fBallDesImages});
+  ID01TwoPicture({this.fBallDesImages});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +16,10 @@ class ID001TwoPicture extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: ID001ImageContainer(fBallDesImages,0),
+            child: ID01ImageContainer(fBallDesImages,0),
           ),
           Expanded(
-            child: ID001ImageContainer(fBallDesImages,1)
+            child: ID01ImageContainer(fBallDesImages,1)
           )
         ]
       ),

@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
-
-import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001ForePicture.dart';
-import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001OnePicture.dart';
-import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001ThreePicture.dart';
-import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Pictures/ID001TwoPicture.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ID001Pictures extends StatelessWidget {
+import 'ID01ForePicture.dart';
+import 'ID01OnePicture.dart';
+import 'ID01ThreePicture.dart';
+import 'ID01TwoPicture.dart';
+
+class ID01Pictures extends StatelessWidget {
   final List<BallImageItem> desImages;
 
-  ID001Pictures({this.desImages});
+  ID01Pictures({this.desImages});
 
   @override
   Widget build(BuildContext context) {
@@ -82,15 +82,15 @@ class ID001Pictures extends StatelessWidget {
     if (desImages.length == 0) {
       return Container();
     } else if (desImages.length == 1) {
-      return ID001OnePicture(
+      return ID01OnePicture(
         fBallDesImages: desImages[0],
       );
     } else if (desImages.length == 2) {
-      return ID001TwoPicture(fBallDesImages: desImages);
+      return ID01TwoPicture(fBallDesImages: desImages);
     } else if (desImages.length == 3) {
-      return ID001ThreePicture(fBallDesImages: desImages);
+      return ID01ThreePicture(fBallDesImages: desImages);
     } else if (desImages.length >= 4) {
-      return ID001ForePicture(fBallDesImages: desImages);
+      return ID01ForePicture(fBallDesImages: desImages);
     } else {
       return Container();
     }

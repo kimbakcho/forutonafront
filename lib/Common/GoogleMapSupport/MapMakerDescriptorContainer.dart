@@ -65,13 +65,14 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
         "assets/MarkesImages/issueselectballmaker.png", Size(100, 100));
     container.putIfAbsent(MapMakerDescriptorType.IssueBallIconSelectSmall, () => issueBallIconSelectSmall);
 
+
+
     BitmapDescriptor userAvatarIcon =
     await _mapBitmapDescriptorUseCaseInputPort
         .urlPathToAvatarBitmapDescriptor(
         Preference.basicProfileImageUrl);
     container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
     container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
-
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) async {
       await mapPutUserAvatarIcon();
     });
@@ -86,6 +87,12 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
               .urlPathToAvatarBitmapDescriptor(userInfo.profilePictureUrl);
       container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
       container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
+    }else {
+      BitmapDescriptor noneAvatarIcon =
+      await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
+          "assets/MainImage/emptyuserimage.png", Size(100, 100));
+      container[MapMakerDescriptorType.UserAvatarIcon] = noneAvatarIcon ;
+      container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => noneAvatarIcon);
     }
   }
 
