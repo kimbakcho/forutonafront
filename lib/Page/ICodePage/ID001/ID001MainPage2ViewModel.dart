@@ -9,7 +9,7 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/Iss
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
-import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallLikeResDto.dart';
+import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallVoteResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -79,7 +79,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier
 
   init() async {
     await _selectBall();
-    valuationMediator.updateValuation(await _getBallLikeState());
+    // valuationMediator.updateValuation(await _getBallLikeState());
   }
 
   String getBallTitle() {
@@ -165,7 +165,7 @@ class ID001MainPage2ViewModel extends ChangeNotifier
     return _fBallResDto.activationTime;
   }
 
-  Future<FBallLikeResDto> _getBallLikeState() async {
+  Future<FBallVoteResDto> _getBallLikeState() async {
     if (await fireBaseAuthAdapterForUseCase.isLogin()) {
       return await valuationMediator.getBallLikeState(ballUuid,
           uid: await fireBaseAuthAdapterForUseCase.userUid());

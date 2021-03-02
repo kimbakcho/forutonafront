@@ -65,7 +65,6 @@ import 'package:forutonafront/AppBis/FBallReply/Data/Repository/FBallReplyReposi
 import 'package:forutonafront/AppBis/FBallReply/Domain/Repositroy/FBallReplyRepository.dart';
 import 'package:forutonafront/AppBis/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCase.dart';
 import 'package:forutonafront/AppBis/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
-import 'package:forutonafront/AppBis/FBallValuation/Data/DataStore/FBallValuationRemoteDataSource.dart';
 import 'package:forutonafront/AppBis/FBallValuation/Data/Repository/FBallValuationRepositoryImpl.dart';
 import 'package:forutonafront/AppBis/FBallValuation/Domain/Repositroy/FBallValuationRepository.dart';
 import 'package:forutonafront/AppBis/FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart';
@@ -438,11 +437,6 @@ init2() {
   sl.registerSingleton<FUserPwChangeUseCaseInputPort>(
       FUserPwChangeUseCase(fUserRepository: sl()));
 
-  sl.registerSingleton<FBallValuationRemoteDataSource>(
-      FBallValuationRemoteDataSourceImpl());
-
-  sl.registerSingleton<FBallValuationRepository>(FBallValuationRepositoryImpl(
-      fBallValuationRemoteDataSource: sl(), fireBaseAuthBaseAdapter: sl()));
 
   sl.registerSingleton<BallLikeUseCaseInputPort>(
       BallLikeUseCase(fBallValuationRepository: sl()));

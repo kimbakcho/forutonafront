@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/Repository/FUserRepository.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';

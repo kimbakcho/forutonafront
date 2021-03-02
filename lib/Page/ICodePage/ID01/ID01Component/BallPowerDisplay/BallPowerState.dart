@@ -26,24 +26,7 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
             padding: EdgeInsets.all(16),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Text('${widget.fBallResDto.ballPower}',
-                        style: GoogleFonts.notoSans(
-                          fontSize: 36,
-                          color: const Color(0xff000000),
-                          fontWeight: FontWeight.w700,
-                          height: 0.5555555555555556,
-                        )),
-                        Text(
-                          'Ball Power',
-                          style: GoogleFonts.notoSans(
-                            fontSize: 10,
-                            color: const Color(0xff78849e),
-                          ),
-                        )
-                  ],
-                ),
+
                 Row(children: <Widget>[
                   Icon(Icons.people, color: Color(0xffCCCCCC)),
                   Container(
@@ -102,7 +85,7 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
                       Container(
                         margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Text(
-                            "${(model.ballLikePercent * 100).toStringAsFixed(0)}%",
+                            "${widget.fBallResDto.ballLikes} (${(model.ballLikePercent * 100).toStringAsFixed(0)}%)",
                             style: GoogleFonts.notoSans(
                               fontSize: 14,
                               color: const Color(0xff000000),

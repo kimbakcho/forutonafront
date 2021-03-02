@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FBallLikeReqDto.dart';
+part of 'FBallVoteReqDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FBallLikeReqDto _$FBallLikeReqDtoFromJson(Map<String, dynamic> json) {
-  return FBallLikeReqDto()
-    ..valueUuid = json['valueUuid'] as String
+FBallVoteReqDto _$FBallVoteReqDtoFromJson(Map<String, dynamic> json) {
+  return FBallVoteReqDto()
     ..ballUuid = json['ballUuid'] as String
     ..likePoint = json['likePoint'] as int
     ..disLikePoint = json['disLikePoint'] as int
@@ -16,9 +15,8 @@ FBallLikeReqDto _$FBallLikeReqDtoFromJson(Map<String, dynamic> json) {
         _$enumDecodeNullable(_$LikeActionTypeEnumMap, json['likeActionType']);
 }
 
-Map<String, dynamic> _$FBallLikeReqDtoToJson(FBallLikeReqDto instance) =>
+Map<String, dynamic> _$FBallVoteReqDtoToJson(FBallVoteReqDto instance) =>
     <String, dynamic>{
-      'valueUuid': instance.valueUuid,
       'ballUuid': instance.ballUuid,
       'likePoint': instance.likePoint,
       'disLikePoint': instance.disLikePoint,
@@ -58,7 +56,6 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$LikeActionTypeEnumMap = {
-  LikeActionType.LIKE: 'LIKE',
-  LikeActionType.DISLIKE: 'DISLIKE',
+  LikeActionType.Vote: 'Vote',
   LikeActionType.CANCEL: 'CANCEL',
 };

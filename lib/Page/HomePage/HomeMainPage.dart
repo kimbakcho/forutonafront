@@ -62,14 +62,17 @@ class _HomeMainPageState extends State<HomeMainPage>
     return mapCodeMainPageLink;
   }
 
-  void _configureSelectNotificationSubject() {
-    selectNotificationSubject.listen((String payload) async {
-      var actionPayloadDto = ActionPayloadDto.fromJson(json.decode(payload));
-      NotiSelectActionBaseInputPort notiSelectActionBaseInputPort = sl.get(
-          instanceName: "NotiSelectActionBaseInputPortFactory",
-          param1: actionPayloadDto.commandKey);
-      notiSelectActionBaseInputPort.action(actionPayloadDto, context);
-    });
+  void _configureSelectNotificationSubject() async {
+    if(await selectNotificationSubject.isEmpty){
+      selectNotificationSubject.listen((String payload) async {
+        var actionPayloadDto = ActionPayloadDto.fromJson(json.decode(payload));
+        NotiSelectActionBaseInputPort notiSelectActionBaseInputPort = sl.get(
+            instanceName: "NotiSelectActionBaseInputPortFactory",
+            param1: actionPayloadDto.commandKey);
+        notiSelectActionBaseInputPort.action(actionPayloadDto, context);
+      });
+    }
+
   }
 
   @override
@@ -87,7 +90,9 @@ class _HomeMainPageState extends State<HomeMainPage>
                 topH_I_001NavExpendAniContentController:
                     TopH_I_001NavExpendAniContentController(),
                 userPositionForegroundMonitoringUseCaseInputPort: sl(),
-                topNavBtnMediator: _topNavBtnMediator)),
+                topNavBtnMediator: _topNavBtnMediator,
+                globalInitMutex: sl()
+            )),
       ],
       child: Consumer<HomeMainPageViewModel>(builder: (_, model, child) {
         return Scaffold(

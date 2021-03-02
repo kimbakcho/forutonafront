@@ -1,24 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_parser/youtube_parser.dart';
+
+import '../IM001Mode.dart';
 
 class YoutubeUrlUploadComponent extends StatelessWidget {
   final YoutubeUrlUploadComponentController youtubeUrlUploadComponentController;
 
   final EdgeInsets margin;
 
+  final IM001Mode im001mode;
+
+  final FBallResDto preSetBallResDto;
+
   const YoutubeUrlUploadComponent(
-      {Key key, this.youtubeUrlUploadComponentController, this.margin = const EdgeInsets.all(0)})
+      {Key key,
+      this.youtubeUrlUploadComponentController,
+      this.margin = const EdgeInsets.all(0),
+      this.im001mode,
+      this.preSetBallResDto})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => YoutubeUrlUploadComponentViewModel(
-            this.youtubeUrlUploadComponentController),
+            this.youtubeUrlUploadComponentController,
+            im001mode,
+            preSetBallResDto),
         child: Consumer<YoutubeUrlUploadComponentViewModel>(
             builder: (_, model, child) {
           return model.isShow
@@ -77,15 +92,30 @@ class YoutubeUrlUploadComponent extends StatelessWidget {
 class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
   final YoutubeUrlUploadComponentController youtubeUrlUploadComponentController;
 
+  final IM001Mode im001mode;
+
+  final FBallResDto preSetBallResDto;
+
   bool isShow = false;
 
   String youtubeLink = "";
 
   String youtubeId = "";
 
-  YoutubeUrlUploadComponentViewModel(this.youtubeUrlUploadComponentController) {
+  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
+
+  YoutubeUrlUploadComponentViewModel(this.youtubeUrlUploadComponentController,
+      this.im001mode, this.preSetBallResDto) {
     if (this.youtubeUrlUploadComponentController != null) {
       this.youtubeUrlUploadComponentController._viewModel = this;
+    }
+    if (im001mode == IM001Mode.modify) {
+      _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+          fBallResDto: preSetBallResDto, geoLocatorAdapter: sl());
+      if (_issueBallDisPlayUseCase.getYoutubeId() != "") {
+        youtubeId = _issueBallDisPlayUseCase.getYoutubeId();
+        isShow = true;
+      }
     }
   }
 
@@ -128,6 +158,10 @@ class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
     }
   }
 
+  setYoutubeId(String videoId) {
+    youtubeId = videoId;
+  }
+
   void _deleteYoutubeUrl() {
     youtubeLink = "";
     youtubeId = "";
@@ -144,6 +178,10 @@ class YoutubeUrlUploadComponentController {
 
   String getYoutubeId() {
     return _viewModel.youtubeId;
+  }
+
+  void setYoutubeId(String videoId) {
+    _viewModel.setYoutubeId(videoId);
   }
 
   deleteYoutubeUrl() {

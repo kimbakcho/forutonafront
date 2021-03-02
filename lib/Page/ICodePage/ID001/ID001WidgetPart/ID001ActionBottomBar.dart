@@ -135,7 +135,7 @@ class ID001ActionBottomBarViewModel extends ChangeNotifier
   }
 
   BallLikeState get ballLikeState {
-    return _valuationMediator.ballLikeState;
+    // return _valuationMediator.ballLikeState;
   }
 
   @override
@@ -146,7 +146,7 @@ class ID001ActionBottomBarViewModel extends ChangeNotifier
   }
 
   @override
-  reqNotification() {
+  valuationReqNotification() {
     notifyListeners();
   }
 

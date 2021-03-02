@@ -1,4 +1,4 @@
 
 enum LikeActionType {
-  LIKE,DISLIKE,CANCEL
+  Vote,CANCEL
 }

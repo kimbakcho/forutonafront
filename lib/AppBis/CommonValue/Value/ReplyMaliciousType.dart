@@ -1,4 +1,4 @@
-enum ReplyMaliciousType {
+enum MaliciousType {
   crime,
   abuse,
   privacy,

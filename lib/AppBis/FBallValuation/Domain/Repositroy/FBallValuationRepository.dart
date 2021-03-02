@@ -1,9 +1,9 @@
 
 
-import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallLikeReqDto.dart';
-import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallLikeResDto.dart';
+import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallVoteReqDto.dart';
+import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallVoteResDto.dart';
 
 abstract class FBallValuationRepository {
-    Future<FBallLikeResDto> ballLike(FBallLikeReqDto reqDto);
-    Future<FBallLikeResDto> getBallLikeState(String ballUuid,String uid);
+    Future<FBallVoteResDto> ballVote(FBallVoteReqDto reqDto);
+    Future<FBallVoteResDto> findByBallVoteState(String ballUuid);
 }

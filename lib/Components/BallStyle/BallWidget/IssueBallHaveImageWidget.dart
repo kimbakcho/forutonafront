@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionPopup.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionWidgetFactory.dart';
@@ -6,6 +7,7 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/Bal
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import 'BallBigImagePanelWidget.dart';
 import 'BallPositionInfoBar.dart';
@@ -15,7 +17,7 @@ import 'ListUpBallWidgetItem.dart';
 
 class IssueBallHaveImageWidget extends StatelessWidget {
   final int index;
-  final BallDisPlayUseCase issueBallDisPlayUseCase;
+
   final BallListMediator ballListMediator;
   final BallOptionWidgetFactory ballOptionWidgetFactory;
   final BoxDecoration boxDecoration;
@@ -24,49 +26,53 @@ class IssueBallHaveImageWidget extends StatelessWidget {
       {Key key,
       this.index,
       this.ballListMediator,
-      this.ballOptionWidgetFactory, this.boxDecoration})
-      : issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-            fBallResDto: ballListMediator.itemList[index],
-            geoLocatorAdapter: sl()),
-        super(key: key);
+      this.ballOptionWidgetFactory,
+      this.boxDecoration})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => IssueBallHaveImageWidgetViewModel(
-          context: context,
-          ballListMediator: ballListMediator,
-          issueBallDisPlayUseCase: issueBallDisPlayUseCase,
-          index: index),
+      create: (_) => IssueBallHaveImageWidgetViewModel(sl(),
+          context: context, ballListMediator: ballListMediator, index: index),
       child: Consumer<IssueBallHaveImageWidgetViewModel>(
         builder: (_, model, __) {
-          return Container(
-            child: Column(
-              children: <Widget>[
-                IssueBallTopBar(ballDisPlayUseCase: issueBallDisPlayUseCase),
-                BallBigImagePanelWidget(
-                    ballDisPlayUseCase: issueBallDisPlayUseCase),
-                BallTitleInfoBar(
-                  ballDisPlayUseCase: issueBallDisPlayUseCase,
-                  gotoDetailPage: model.moveToDetailPage,
-                  showOptionPopUp: BasicBallOptionPopup(ballOptionWidgetFactory
-                      .getBallOptionWidget(BallOptionWidgetFactoryParams(
-                          fBallResDto: issueBallDisPlayUseCase.fBallResDto,
-                          ballListMediator: ballListMediator))),
-                ),
-                Divider(
-                  color: Color(0xffF4F4F6).withOpacity(0.9),
-                  height: 1,
-                  thickness: 1,
-                ),
-                BallPositionInfoBar(
-                    gotoDetailPage: model.moveToDetailPage,
-                    ballSearchPosition: ballListMediator.searchPosition(),
-                    ballDisPlayUseCase: issueBallDisPlayUseCase)
-              ],
-            ),
-            decoration: boxDecoration,
-          );
+          return model.issueBallDisPlayUseCase.fBallResDto.ballDeleteFlag
+              ? Container(
+                  width: 0,
+                  height: 0,
+                )
+              : Container(
+                  child: Column(
+                    key: Key(model.ballWidgetKey),
+                    children: <Widget>[
+                      IssueBallTopBar(
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase),
+                      BallBigImagePanelWidget(
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase),
+                      BallTitleInfoBar(
+                        ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                        gotoDetailPage: model.moveToDetailPage,
+                        showOptionPopUp: BasicBallOptionPopup(
+                            ballOptionWidgetFactory.getBallOptionWidget(
+                                BallOptionWidgetFactoryParams(
+                                    fBallResDto: model
+                                        .issueBallDisPlayUseCase.fBallResDto,
+                                    ballListMediator: ballListMediator))),
+                      ),
+                      Divider(
+                        color: Color(0xffF4F4F6).withOpacity(0.9),
+                        height: 1,
+                        thickness: 1,
+                      ),
+                      BallPositionInfoBar(
+                          gotoDetailPage: model.moveToDetailPage,
+                          ballSearchPosition: ballListMediator.searchPosition(),
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase)
+                    ],
+                  ),
+                  decoration: boxDecoration,
+                );
         },
       ),
     );
@@ -74,12 +80,23 @@ class IssueBallHaveImageWidget extends StatelessWidget {
 }
 
 class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
-  final BallDisPlayUseCase issueBallDisPlayUseCase;
+  BallDisPlayUseCase issueBallDisPlayUseCase;
+  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
 
-  IssueBallHaveImageWidgetViewModel(
-      {this.issueBallDisPlayUseCase,
-      BuildContext context,
-      BallListMediator ballListMediator,
-      int index})
-      : super(context, ballListMediator, index);
+  IssueBallHaveImageWidgetViewModel(this._selectBallUseCaseInputPort,
+      {BuildContext context, BallListMediator ballListMediator, int index})
+      : super(context, ballListMediator, index) {
+    issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
+  }
+
+  @override
+  onReFreshBall() async {
+    ballListMediator.itemList[index] = await _selectBallUseCaseInputPort
+        .selectBall(ballListMediator.itemList[index].ballUuid);
+    issueBallDisPlayUseCase =
+        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
+    ballWidgetKey = Uuid().v4();
+    notifyListeners();
+  }
 }

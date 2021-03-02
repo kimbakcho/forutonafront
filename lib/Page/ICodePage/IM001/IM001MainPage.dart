@@ -3,14 +3,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallState.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/IssueBallDescription.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/TagInsertReqDto.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
@@ -26,6 +29,8 @@ import 'package:forutonafront/Page/HCodePage/H008/PlaceListFromSearchTextWidget.
 import 'package:forutonafront/Page/HCodePage/H010/H010MainView.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001MainPage2.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001Mode.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001BottomSheetBody.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001BottomSheetHeader.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -33,7 +38,20 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import 'IM001Mode.dart';
+
 class IM001MainPage extends StatefulWidget {
+  final IM001Mode im001mode;
+  final FBallResDto preSetBallResDto;
+  final List<FBallTagResDto> preSetFBallTagResDtos;
+
+  const IM001MainPage(
+      {Key key,
+      this.im001mode = IM001Mode.create,
+      this.preSetBallResDto,
+      this.preSetFBallTagResDtos})
+      : super(key: key);
+
   @override
   _IM001MainPageState createState() => _IM001MainPageState();
 }
@@ -58,8 +76,11 @@ class _IM001MainPageState extends State<IM001MainPage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) =>
-            IM001MainPageViewModel(sl(), context, _aniController, sl(),sl(),sl()),
+        create: (_) => IM001MainPageViewModel(
+            sl(), context, _aniController, sl(), sl(), sl(), sl(),
+            im001mode: widget.im001mode,
+            preSetBallResDto: widget.preSetBallResDto,
+            preSetFBallTagResDtos: widget.preSetFBallTagResDtos),
         child: Consumer<IM001MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
               bottomSheet: model.getBottomSheet(),
@@ -100,7 +121,6 @@ class _IM001MainPageState extends State<IM001MainPage>
                                           Radius.circular(15.0))),
                                   onTap: () {
                                     model.gotoAddressSearchPage();
-
                                   },
                                   child: Container(
                                     height: 36,
@@ -187,18 +207,27 @@ class _IM001MainPageState extends State<IM001MainPage>
                             Container(
                               margin: EdgeInsets.only(right: 16),
                               child: FlatButton(
-                                disabledTextColor: Color(0xffD4D4D4),
-                                disabledColor: Color(0xffF6F6F6),
+                                  disabledTextColor: Color(0xffD4D4D4),
+                                  disabledColor: Color(0xffF6F6F6),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)),
-                                      side: model.isCanComplete ? BorderSide(color: Colors.black,width: 1): BorderSide.none
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(12)),
+                                      side: model.isCanComplete
+                                          ? BorderSide(
+                                              color: Colors.black, width: 1)
+                                          : BorderSide.none),
                                   color: Colors.white,
-                                  onPressed: model.isCanComplete ? () {
-                                    model.showPreViewDetailPage(context);
-                                  }: null,
-                                  child: Text("완료")),
+                                  onPressed: model.isCanComplete
+                                      ? () {
+                                          widget.im001mode == IM001Mode.create
+                                              ? model._onCreateBall()
+                                              : model._onModifyBall();
+                                        }
+                                      : null,
+                                  child: Text(
+                                      widget.im001mode == IM001Mode.create
+                                          ? "완료"
+                                          : "수정")),
                             )
                           ],
                         ))
@@ -207,7 +236,8 @@ class _IM001MainPageState extends State<IM001MainPage>
   }
 }
 
-class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarListener,PlaceListFromSearchTextWidgetListener{
+class IM001MainPageViewModel extends ChangeNotifier
+    implements InputSearchBarListener, PlaceListFromSearchTextWidgetListener {
   CameraPosition initCameraPosition;
 
   final GeoLocationUtilForeGroundUseCaseInputPort
@@ -233,8 +263,7 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
 
   String headBarAddress;
 
-  bool isCanComplete =false;
-
+  bool isCanComplete = false;
 
   IM001BottomSheetBodyController _im001bottomSheetBodyController;
 
@@ -242,17 +271,41 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
 
   final InsertBallUseCaseInputPort insertBallUseCaseInputPort;
 
-  IM001MainPageViewModel(this._geoLocationUtilForeGroundUseCase, this.context,
-      this.aniController, this._mapBallMarkerFactory,this.signInUserInfoUseCaseInputPort,this.insertBallUseCaseInputPort) {
-    headBarAddress = '로딩중';
+  final UpdateBallUseCaseInputPort updateBallUseCaseInputPort;
 
+  final IM001Mode im001mode;
+
+  final FBallResDto preSetBallResDto;
+
+  final List<FBallTagResDto> preSetFBallTagResDtos;
+
+  IM001MainPageViewModel(
+      this._geoLocationUtilForeGroundUseCase,
+      this.context,
+      this.aniController,
+      this._mapBallMarkerFactory,
+      this.signInUserInfoUseCaseInputPort,
+      this.insertBallUseCaseInputPort,
+      this.updateBallUseCaseInputPort,
+      {this.im001mode,
+      this.preSetBallResDto,
+      this.preSetFBallTagResDtos}) {
+    headBarAddress = '로딩중';
     _im001bottomSheetBodyController = IM001BottomSheetBodyController();
-    var currentWithLastPositionInMemory =
-        _geoLocationUtilForeGroundUseCase.getCurrentWithLastPositionInMemory();
-    initCameraPosition = new CameraPosition(
-        zoom: 14.56,
-        target: LatLng(currentWithLastPositionInMemory.latitude,
-            currentWithLastPositionInMemory.longitude));
+    if (im001mode == IM001Mode.create) {
+      var currentWithLastPositionInMemory = _geoLocationUtilForeGroundUseCase
+          .getCurrentWithLastPositionInMemory();
+      initCameraPosition = new CameraPosition(
+          zoom: 14.56,
+          target: LatLng(currentWithLastPositionInMemory.latitude,
+              currentWithLastPositionInMemory.longitude));
+    } else {
+      initCameraPosition = new CameraPosition(
+          zoom: 14.56,
+          target:
+              LatLng(preSetBallResDto.latitude, preSetBallResDto.longitude));
+    }
+
     _solidController = SolidController();
 
     _im001bottomSheetHeaderController = IM001BottomSheetHeaderController();
@@ -278,6 +331,8 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
         },
         displayAddress: "로딩중",
         im001bottomSheetHeaderController: _im001bottomSheetHeaderController,
+        im001mode: im001mode,
+        preSetBallResDto: preSetBallResDto,
       ),
       body: IM001BottomSheetBody(
         initAddress: "로딩중",
@@ -286,13 +341,13 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
         onChangeAddress: (value) {
           _im001bottomSheetHeaderController.changeDisplayAddress(value);
         },
+        im001mode: im001mode,
+        preSetBallResDto: preSetBallResDto,
       ),
     );
   }
 
-
-
-  onComplete(bool value){
+  onComplete(bool value) {
     isCanComplete = value;
     notifyListeners();
   }
@@ -355,9 +410,12 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
     fBallResDto.longitude = currentPosition.target.longitude;
     fBallResDto.activationTime = DateTime.now().add(Duration(days: 7));
     fBallResDto.ballHits = 0;
-    var reqSignInUserInfoFromMemory = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-    fBallResDto.uid = FUserInfoSimpleResDto.fromFUserInfoResDto(reqSignInUserInfoFromMemory);
-    fBallResDto.placeAddress = _im001bottomSheetBodyController.getPlaceAddress();
+    var reqSignInUserInfoFromMemory =
+        signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+    fBallResDto.uid =
+        FUserInfoSimpleResDto.fromFUserInfoResDto(reqSignInUserInfoFromMemory);
+    fBallResDto.placeAddress =
+        _im001bottomSheetBodyController.getPlaceAddress();
     fBallResDto.commentCount = 0;
     fBallResDto.ballState = FBallState.Play;
     fBallResDto.ballType = FBallType.IssueBall;
@@ -365,53 +423,72 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
     fBallResDto.ballPower = 0;
     IssueBallDescription issueBallDescription = IssueBallDescription();
     issueBallDescription.text = _im001bottomSheetBodyController.getContent();
-    issueBallDescription.desimages  = [];
-    issueBallDescription.youtubeVideoId = _im001bottomSheetBodyController.getYoutubeId();
-    fBallResDto.description = json.encode(issueBallDescription) ;
+    issueBallDescription.desimages = [];
+    issueBallDescription.youtubeVideoId =
+        _im001bottomSheetBodyController.getYoutubeId();
+    fBallResDto.description = json.encode(issueBallDescription);
+    fBallResDto.ballUuid = "TESTUUuid";
+    fBallResDto.activationTime = DateTime.now().add(Duration(days: 7));
+    fBallResDto.isEditContent = false;
+    fBallResDto.ballLikes = 0;
+    fBallResDto.ballDisLikes = 0;
+    List<FBallTagResDto> fBallTagResDtos = [];
+    var tags = _im001bottomSheetBodyController.getTags();
 
-    showDialog(context: context,child: ID001MainPage2(
-      onCreateBall: _onCreateBall,
-      id001mode: ID001Mode.preview,
-      preViewResDto: fBallResDto,
-      preViewBallImage: _im001bottomSheetBodyController.getBallImages(),
-    ));
+    for (int i = 0; i < tags.length; i++) {
+      FBallTagResDto fBallTagResDto = new FBallTagResDto();
+      fBallTagResDto.ballUuid = "TESTUUuid";
+      fBallTagResDto.tagItem = tags[i].text;
+      fBallTagResDto.idx = i;
+      fBallTagResDto.tagIndex = i;
+      fBallTagResDtos.add(fBallTagResDto);
+    }
+
+    showDialog(
+        context: context,
+        child: ID01MainPage(
+          onCreateBall: _onCreateBall,
+          preViewResDto: fBallResDto,
+          preViewBallImage: _im001bottomSheetBodyController.getBallImages(),
+          id01Mode: ID01Mode.preview,
+          preViewfBallTagResDtos: fBallTagResDtos,
+        ));
   }
 
   _onCreateBall() async {
-
-
-    showDialog(context: context,
-        child: CommonLoadingComponent()
-    );
-
-     var imageItems = await _im001bottomSheetBodyController.updateImageAndFillImageUrl();
+    showDialog(context: context, child: CommonLoadingComponent());
 
     FBallInsertReqDto fBallInsertReqDto = FBallInsertReqDto();
+
+    var imageItems =
+        await _im001bottomSheetBodyController.updateImageAndFillImageUrl();
 
     IssueBallDescription issueBallDescription = IssueBallDescription();
 
     issueBallDescription.text = _im001bottomSheetBodyController.getContent();
 
-    issueBallDescription.desimages  = [];
-    for(int i =0;i<imageItems.length;i++){
+    issueBallDescription.desimages = [];
+    for (int i = 0; i < imageItems.length; i++) {
       FBallDesImages fBallDesImages = new FBallDesImages();
       fBallDesImages.src = imageItems[i].imageUrl;
       fBallDesImages.index = i;
       issueBallDescription.desimages.add(fBallDesImages);
     }
-    issueBallDescription.youtubeVideoId = _im001bottomSheetBodyController.getYoutubeId();
+    issueBallDescription.youtubeVideoId =
+        _im001bottomSheetBodyController.getYoutubeId();
 
     fBallInsertReqDto.ballName = _im001bottomSheetBodyController.getBallName();
     fBallInsertReqDto.description = json.encode(issueBallDescription);
     fBallInsertReqDto.ballType = FBallType.IssueBall;
-    fBallInsertReqDto.placeAddress = _im001bottomSheetBodyController.getPlaceAddress();
+    fBallInsertReqDto.placeAddress =
+        _im001bottomSheetBodyController.getPlaceAddress();
     fBallInsertReqDto.latitude = currentPosition.target.latitude;
     fBallInsertReqDto.longitude = currentPosition.target.longitude;
-    fBallInsertReqDto.ballUuid =Uuid().v4();
+    fBallInsertReqDto.ballUuid = Uuid().v4();
 
     var tags = _im001bottomSheetBodyController.getTags();
     fBallInsertReqDto.tags = [];
-    for(int i=0;i<tags.length;i++){
+    for (int i = 0; i < tags.length; i++) {
       TagInsertReqDto tagInsertReqDto = TagInsertReqDto();
       tagInsertReqDto.ballUuid = fBallInsertReqDto.ballUuid;
       tagInsertReqDto.tagItem = tags[i].text;
@@ -425,12 +502,62 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
     Navigator.of(context).pop();
 
     notifyListeners();
+  }
 
+  _onModifyBall() async {
+    showDialog(context: context, child: CommonLoadingComponent());
+
+    var imageItems =
+        await _im001bottomSheetBodyController.updateImageAndFillImageUrl();
+
+    FBallUpdateReqDto fBallUpdateReqDto = FBallUpdateReqDto();
+    IssueBallDescription issueBallDescription = IssueBallDescription();
+
+    issueBallDescription.text = _im001bottomSheetBodyController.getContent();
+
+    issueBallDescription.desimages = [];
+    for (int i = 0; i < imageItems.length; i++) {
+      FBallDesImages fBallDesImages = new FBallDesImages();
+      fBallDesImages.src = imageItems[i].imageUrl;
+      fBallDesImages.index = i;
+      issueBallDescription.desimages.add(fBallDesImages);
+    }
+    issueBallDescription.youtubeVideoId =
+        _im001bottomSheetBodyController.getYoutubeId();
+
+    fBallUpdateReqDto.ballName = _im001bottomSheetBodyController.getBallName();
+    fBallUpdateReqDto.description = json.encode(issueBallDescription);
+    fBallUpdateReqDto.ballType = FBallType.IssueBall;
+    fBallUpdateReqDto.placeAddress =
+        _im001bottomSheetBodyController.getPlaceAddress();
+    fBallUpdateReqDto.latitude = currentPosition.target.latitude;
+    fBallUpdateReqDto.longitude = currentPosition.target.longitude;
+    fBallUpdateReqDto.ballUuid = preSetBallResDto.ballUuid;
+
+    var tags = _im001bottomSheetBodyController.getTags();
+    fBallUpdateReqDto.tags = [];
+    for (int i = 0; i < tags.length; i++) {
+      TagInsertReqDto tagInsertReqDto = TagInsertReqDto();
+      tagInsertReqDto.ballUuid = fBallUpdateReqDto.ballUuid;
+      tagInsertReqDto.tagItem = tags[i].text;
+      fBallUpdateReqDto.tags.add(tagInsertReqDto);
+    }
+
+    await updateBallUseCaseInputPort.updateBall(fBallUpdateReqDto);
+
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+
+    notifyListeners();
   }
 
   void gotoAddressSearchPage() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_){
-      return H010MainView(inputSearchBarListener: this, searchHistoryDataSourceKey: SearchHistoryDataSourceKey.AddressSearchHistoryDataSource);
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return H010MainView(
+          inputSearchBarListener: this,
+          searchHistoryDataSourceKey:
+              SearchHistoryDataSourceKey.AddressSearchHistoryDataSource);
     }));
   }
 
@@ -438,8 +565,9 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
   @override
   Future<void> onSearch(String search, {BuildContext context}) async {
     Navigator.of(this.context).pop();
-    Navigator.of(this.context).push(MaterialPageRoute(builder: (_){
-      return H008MainView(initSearchText: search,placeListFromSearchTextWidgetListener: this);
+    Navigator.of(this.context).push(MaterialPageRoute(builder: (_) {
+      return H008MainView(
+          initSearchText: search, placeListFromSearchTextWidgetListener: this);
     }));
   }
 
@@ -450,6 +578,7 @@ class IM001MainPageViewModel extends ChangeNotifier implements InputSearchBarLis
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 14.5)));
 
-    headBarAddress =  await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
+    headBarAddress =
+        await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
   }
 }

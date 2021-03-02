@@ -9,6 +9,7 @@ import 'package:forutonafront/Page/LCodePage/L011/L011MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import 'BottomNavigation.dart';
 
@@ -27,7 +28,9 @@ class MainPageView extends StatelessWidget {
                               physics: NeverScrollableScrollPhysics(),
                               controller: model._pageController,
                               children: [
-                            HomeMainPage(),
+                            HomeMainPage(
+                              key: model.homepageWidgetKey,
+                            ),
                             GCodeMainPage(),
                             Container(
                               child: Text("tet"),
@@ -46,6 +49,8 @@ class MainPageViewModel extends ChangeNotifier
     implements BottomNavigationListener {
   final BuildContext context;
 
+  Key homepageWidgetKey;
+
   PageController _pageController = PageController();
 
   MainPageViewModelController _mainPageViewModelController;
@@ -54,6 +59,7 @@ class MainPageViewModel extends ChangeNotifier
 
   MainPageViewModel(this._signInUserInfoUseCaseInputPort, this.context,
       this._mainPageViewModelController) {
+    homepageWidgetKey = Key(Uuid().v4());
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen(onLoginStateChange);
 
     this._mainPageViewModelController._mainPageViewModel = this;
@@ -110,8 +116,8 @@ class MainPageViewModel extends ChangeNotifier
     }
   }
 
-  _showMakePanel() {
-    showModalBottomSheet(
+  _showMakePanel() async {
+    await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         builder: (_) {
@@ -119,6 +125,8 @@ class MainPageViewModel extends ChangeNotifier
 
           );
         });
+    homepageWidgetKey = Key(Uuid().v4());
+    notifyListeners();
   }
 }
 

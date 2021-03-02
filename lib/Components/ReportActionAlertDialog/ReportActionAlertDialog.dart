@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
-import 'package:forutonafront/AppBis/MaliciousReply/Domain/UseCase/MaliciousReplyUseCaseInputPort.dart';
-import 'package:forutonafront/AppBis/MaliciousReply/Domain/Value/ReplyMaliciousType.dart';
-import 'package:forutonafront/AppBis/MaliciousReply/Dto/MaliciousReplyReqDto.dart';
+import 'package:forutonafront/AppBis/CommonValue/Value/ReplyMaliciousType.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
-class ReplyReportActionAlertDialogSheet extends StatelessWidget {
+class MaliciousReportActionAlertDialog extends StatelessWidget {
 
-  final FBallReplyResDto fBallReplyResDto;
+  final Function(MaliciousType replyMaliciousType) onReportMalicious;
 
-  const ReplyReportActionAlertDialogSheet({Key key, this.fBallReplyResDto}) : super(key: key);
+  const MaliciousReportActionAlertDialog({Key key, this.onReportMalicious}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ReplyReportActionAlertDialogSheetViewModel(fBallReplyResDto,sl()),
-      child: Consumer<ReplyReportActionAlertDialogSheetViewModel>(
+      create: (_) => MaliciousReportActionAlertDialogViewModel(onReportMalicious),
+      child: Consumer<MaliciousReportActionAlertDialogViewModel>(
         builder: (_, model, child) {
           return Scaffold(
             backgroundColor: Colors.transparent,
@@ -83,21 +79,21 @@ class ReplyReportActionAlertDialogSheet extends StatelessWidget {
   }
 }
 
-class ReplyReportActionAlertDialogSheetViewModel extends ChangeNotifier {
 
-  final FBallReplyResDto fBallReplyResDto;
-  final MaliciousReplyUseCaseInputPort maliciousReplyUseCase;
+class MaliciousReportActionAlertDialogViewModel extends ChangeNotifier {
 
-  ReplyReportActionAlertDialogSheetViewModel(this.fBallReplyResDto, this.maliciousReplyUseCase);
+  final Function(MaliciousType replyMaliciousType) onReportMalicious;
 
-  reportMaliciousReply(BuildContext context,ReplyMaliciousType replyMaliciousType) async {
-    await maliciousReplyUseCase.reportMaliciousReply(replyMaliciousType,fBallReplyResDto.replyUuid);
+  MaliciousReportActionAlertDialogViewModel(this.onReportMalicious);
+
+  reportMaliciousReply(BuildContext context,MaliciousType replyMaliciousType) async {
+    await onReportMalicious(replyMaliciousType);
     Navigator.of(context).pop();
     Navigator.of(context).pop();
     Navigator.of(context).pop();
   }
 
-  reportMaliciousReplyWithLoading(BuildContext context,ReplyMaliciousType replyMaliciousType){
+  reportMaliciousWithLoading(BuildContext context,MaliciousType replyMaliciousType){
     showGeneralDialog(context: context, pageBuilder: (context, animation, secondaryAnimation) {
       reportMaliciousReply(context,replyMaliciousType);
       return CommonLoadingComponent();
@@ -107,9 +103,9 @@ class ReplyReportActionAlertDialogSheetViewModel extends ChangeNotifier {
   void showReportItem(BuildContext context){
 
     showModalBottomSheet(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(topRight: Radius.circular(15.0),topLeft: Radius.circular(15.0))
+            borderRadius: BorderRadius.only(topRight: Radius.circular(15.0),topLeft: Radius.circular(15.0))
         ),
         context: context, builder: (context) {
       return Container(
@@ -119,40 +115,40 @@ class ReplyReportActionAlertDialogSheetViewModel extends ChangeNotifier {
             ListTile(
               title: Text("범죄 또는 이름 조장"),
               onTap: (){
-                reportMaliciousReplyWithLoading(context,ReplyMaliciousType.crime);
+                reportMaliciousWithLoading(context,MaliciousType.crime);
               },
             ),
             ListTile(
               title: Text("욕설,차별,사칭 등 타인에 대한 위협 및 피해"),
               onTap: (){
-                reportMaliciousReplyWithLoading(context,ReplyMaliciousType.abuse);
+                reportMaliciousWithLoading(context,MaliciousType.abuse);
               },
             ),
             ListTile(
               title: Text("사생활 침해,개인정보 노출"),
               onTap: (){
-                reportMaliciousReplyWithLoading(context,ReplyMaliciousType.privacy);
+                reportMaliciousWithLoading(context,MaliciousType.privacy);
               },
             ),
             ListTile(
               title: Text("성적인 메세지"),
               onTap: (){
-                reportMaliciousReplyWithLoading(context,ReplyMaliciousType.sexual);
+                reportMaliciousWithLoading(context,MaliciousType.sexual);
               },
             ),
             ListTile(
               title: Text("광고성 메시지"),
               onTap: (){
-                reportMaliciousReplyWithLoading(context,ReplyMaliciousType.advertising);
+                reportMaliciousWithLoading(context,MaliciousType.advertising);
               },
             ),
             ListTile(
               title: Text("기타"),
               onTap: (){
-                reportMaliciousReply(context,ReplyMaliciousType.etc);
+                reportMaliciousReply(context,MaliciousType.etc);
               },
             )
-         ],
+          ],
         ),
       );
     });

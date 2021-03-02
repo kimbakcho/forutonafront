@@ -70,19 +70,19 @@ class ID001LikeActionViewModel extends ChangeNotifier
 
   likeAction() async {
     if (await fireBaseAuthAdapterForUseCase.isLogin()) {
-      valuationMediator.likeAction(this);
+      // valuationMediator.voteAction(this);
     } else {
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
     }
   }
 
   BallLikeState get ballLikeState {
-    return valuationMediator.ballLikeState;
+    // return valuationMediator.ballLikeState;
   }
 
   disLikeAction() async {
     if (await fireBaseAuthAdapterForUseCase.isLogin()) {
-      valuationMediator.disLikeAction(this);
+      // valuationMediator.disLikeAction(this);
     } else {
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
     }
@@ -92,7 +92,7 @@ class ID001LikeActionViewModel extends ChangeNotifier
   String ballUuid;
 
   @override
-  reqNotification() {
+  valuationReqNotification() {
     notifyListeners();
   }
 

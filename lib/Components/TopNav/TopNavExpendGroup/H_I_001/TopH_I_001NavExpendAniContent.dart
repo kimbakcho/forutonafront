@@ -3,6 +3,7 @@ import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dar
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/GlobalInitMutex/GlobalInitMutex.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/H_I_001/GeoViewSearchManager.dart';
 import 'package:forutonafront/Page/HCodePage/H007/H007MainPage.dart';
 import 'package:forutonafront/Page/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
@@ -36,7 +37,8 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
             locationAdapter: sl(),
             geoViewSearchManager: geoViewSearchManager,
             topH_I_001NavExpendAniContentController: topH_I_001NavExpendAniContentController,
-            geoLocationUtilForeGroundUseCaseInputPort: sl());
+            geoLocationUtilForeGroundUseCaseInputPort: sl(),
+            globalInitMutex: sl());
   }
 
   @override
@@ -108,6 +110,8 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
 
   final GeoViewSearchManagerInputPort geoViewSearchManager;
 
+  final GlobalInitMutex globalInitMutex;
+
   BuildContext context;
 
   Position currentSearchPosition;
@@ -120,13 +124,15 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
     @required this.fluttertoastAdapter,
     @required this.geoViewSearchManager,
     @required this.codeMainPageController,
-    @required this.topH_I_001NavExpendAniContentController
+    @required this.topH_I_001NavExpendAniContentController,
+    @required this.globalInitMutex
   }) {
     topH_I_001NavExpendAniContentController._topH_I_001NavExpendAniContentViewModel = this;
     init();
   }
 
   init() async {
+    await globalInitMutex.geoRequestMutex.acquire();
     bool serviceCheck = await this.locationAdapter.serviceEnabled();
     if (!serviceCheck) {
       searchAddress = "위치정보를 사용수가 없습니다.";
@@ -142,6 +148,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
       this.searchAddress = e.message;
       fluttertoastAdapter.showToast(msg: e.message);
     }
+    globalInitMutex.geoRequestMutex.release();
     notifyListeners();
   }
 

@@ -1,33 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FDio.dart';
-import 'package:forutonafront/AppBis/FBallValuation/Data/DataStore/FBallValuationRemoteDataSource.dart';
 import 'package:forutonafront/AppBis/FBallValuation/Domain/Repositroy/FBallValuationRepository.dart';
-import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallLikeReqDto.dart';
-import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallLikeResDto.dart';
+import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallVoteReqDto.dart';
+import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallVoteResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:injectable/injectable.dart';
+
 @LazySingleton(as: FBallValuationRepository)
 class FBallValuationRepositoryImpl implements FBallValuationRepository {
   final FireBaseAuthAdapterForUseCase _fireBaseAuthBaseAdapter;
-  final FBallValuationRemoteDataSource _fBallValuationRemoteDataSource;
 
   FBallValuationRepositoryImpl(
-      {@required FireBaseAuthAdapterForUseCase fireBaseAuthBaseAdapter,
-      @required FBallValuationRemoteDataSource fBallValuationRemoteDataSource})
-      : _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
-        _fBallValuationRemoteDataSource = fBallValuationRemoteDataSource;
+      {@required FireBaseAuthAdapterForUseCase fireBaseAuthBaseAdapter})
+      : _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter;
 
   @override
-  Future<FBallLikeResDto> ballLike(FBallLikeReqDto reqDto) async {
-    return _fBallValuationRemoteDataSource.ballLike(
-        reqDto: reqDto,
-        tokenFDio: FDio.token(
-            idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken()));
+  Future<FBallVoteResDto> ballVote(FBallVoteReqDto reqDto) async {
+    var fDio = FDio.token(
+        idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken());
+    var response =
+        await fDio.post("/v1/FBallValuation/BallVote", data: reqDto.toJson());
+    return FBallVoteResDto.fromJson(response.data);
   }
 
   @override
-  Future<FBallLikeResDto> getBallLikeState(String ballUuid, String uid) async {
-    return _fBallValuationRemoteDataSource.getBallLikeState(
-        ballUuid: ballUuid, uid: uid, noneTokenFDio: FDio.noneToken());
+  Future<FBallVoteResDto> findByBallVoteState(String ballUuid) async {
+    var fDio = FDio.token(
+        idToken: await _fireBaseAuthBaseAdapter.getFireBaseIdToken());
+    var response = await fDio.get("/v1/FBallValuation/BallVote",
+        queryParameters: {"ballUuid": ballUuid});
+    return FBallVoteResDto.fromJson(response.data);
   }
 }

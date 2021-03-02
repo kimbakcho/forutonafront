@@ -1,13 +1,14 @@
 
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/CommonValue/Value/ReplyMaliciousType.dart';
 import 'package:forutonafront/AppBis/MaliciousReply/Domain/Repository/MaliciousReplyRepository.dart';
-import 'package:forutonafront/AppBis/MaliciousReply/Domain/Value/ReplyMaliciousType.dart';
+
 import 'package:forutonafront/AppBis/MaliciousReply/Dto/MaliciousReplyReqDto.dart';
 import 'package:forutonafront/AppBis/MaliciousReply/Dto/MaliciousReplyResDto.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class  MaliciousReplyUseCaseInputPort {
-   Future<MaliciousReplyResDto> reportMaliciousReply(ReplyMaliciousType replyMaliciousType, String replyUuid);
+   Future<MaliciousReplyResDto> reportMaliciousReply(MaliciousType replyMaliciousType, String replyUuid);
 }
 @LazySingleton(as: MaliciousReplyUseCaseInputPort)
 class MaliciousReplyUseCase implements MaliciousReplyUseCaseInputPort{
@@ -17,7 +18,7 @@ class MaliciousReplyUseCase implements MaliciousReplyUseCaseInputPort{
   MaliciousReplyUseCase(this._maliciousReplyRepository);
 
   @override
-  Future<MaliciousReplyResDto> reportMaliciousReply(ReplyMaliciousType replyMaliciousType, String replyUuid) async {
+  Future<MaliciousReplyResDto> reportMaliciousReply(MaliciousType replyMaliciousType, String replyUuid) async {
 
     MaliciousReplyReqDto replyReqDto = new MaliciousReplyReqDto();
 
@@ -28,24 +29,23 @@ class MaliciousReplyUseCase implements MaliciousReplyUseCaseInputPort{
     replyReqDto.privacy = 0;
     replyReqDto.sexual = 0;
 
-
     switch(replyMaliciousType){
-      case ReplyMaliciousType.abuse:
+      case MaliciousType.abuse:
         replyReqDto.abuse = 1;
         break;
-      case ReplyMaliciousType.advertising:
+      case MaliciousType.advertising:
         replyReqDto.advertising = 1;
         break;
-      case ReplyMaliciousType.crime:
+      case MaliciousType.crime:
         replyReqDto.crime= 1;
         break;
-      case ReplyMaliciousType.etc:
+      case MaliciousType.etc:
         replyReqDto.etc= 1;
         break;
-      case ReplyMaliciousType.privacy:
+      case MaliciousType.privacy:
         replyReqDto.privacy= 1;
         break;
-      case ReplyMaliciousType.sexual:
+      case MaliciousType.sexual:
         replyReqDto.sexual= 1;
         break;
     }

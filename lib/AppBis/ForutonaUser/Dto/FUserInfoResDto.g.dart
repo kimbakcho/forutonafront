@@ -65,7 +65,16 @@ FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['stopPeriod'] as String)
     ..maliciousMessageCheck = json['maliciousMessageCheck'] as bool
-    ..maliciousCause = json['maliciousCause'] as String;
+    ..maliciousCause = json['maliciousCause'] as String
+    ..influenceTicket = json['influenceTicket'] as int
+    ..maxInfluenceTicket = json['maxInfluenceTicket'] as int
+    ..influenceTicketReceiveTime = json['influenceTicketReceiveTime'] == null
+        ? null
+        : DateTime.parse(json['influenceTicketReceiveTime'] as String)
+    ..nextGiveInfluenceTicketTime = json['nextGiveInfluenceTicketTime'] == null
+        ? null
+        : DateTime.parse(json['nextGiveInfluenceTicketTime'] as String)
+    ..playerPower = (json['playerPower'] as num)?.toDouble();
 }
 
 Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
@@ -117,6 +126,13 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
       'stopPeriod': instance.stopPeriod?.toIso8601String(),
       'maliciousMessageCheck': instance.maliciousMessageCheck,
       'maliciousCause': instance.maliciousCause,
+      'influenceTicket': instance.influenceTicket,
+      'maxInfluenceTicket': instance.maxInfluenceTicket,
+      'influenceTicketReceiveTime':
+          instance.influenceTicketReceiveTime?.toIso8601String(),
+      'nextGiveInfluenceTicketTime':
+          instance.nextGiveInfluenceTicketTime?.toIso8601String(),
+      'playerPower': instance.playerPower,
     };
 
 T _$enumDecode<T>(

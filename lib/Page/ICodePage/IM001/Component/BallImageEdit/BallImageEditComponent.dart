@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,14 +15,22 @@ import 'BallImageItem.dart';
 class BallImageEditComponent extends StatelessWidget {
   final BallImageEditComponentController ballImageEditComponentController;
   final EdgeInsets margin;
+  final IM001Mode im001mode;
 
-  const BallImageEditComponent({Key key, this.ballImageEditComponentController,this.margin = EdgeInsets.zero})
+  final FBallResDto preSetBallResDto;
+
+  const BallImageEditComponent(
+      {Key key,
+      this.ballImageEditComponentController,
+      this.margin = EdgeInsets.zero,
+      this.im001mode,
+      this.preSetBallResDto})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => BallImageEditComponentViewModel(sl(),
+      create: (_) => BallImageEditComponentViewModel(sl(),im001mode,preSetBallResDto,
           ballImageEditComponentController: ballImageEditComponentController),
       child: Consumer<BallImageEditComponentViewModel>(
         builder: (_, model, child) {
@@ -79,6 +90,10 @@ class BallImageEditComponent extends StatelessWidget {
 }
 
 class BallImageEditComponentViewModel extends ChangeNotifier {
+
+  final IM001Mode im001mode;
+
+  final FBallResDto preSetBallResDto;
   List<BallImageItem> images = [];
 
   final BallImageEditComponentController ballImageEditComponentController;
@@ -86,10 +101,16 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
   final BallImageListUpLoadUseCaseInputPort
       _ballImageListUpLoadUseCaseInputPort;
 
-  BallImageEditComponentViewModel(this._ballImageListUpLoadUseCaseInputPort,
+  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
+
+  BallImageEditComponentViewModel(this._ballImageListUpLoadUseCaseInputPort, this.im001mode, this.preSetBallResDto,
       {this.ballImageEditComponentController}) {
     if (ballImageEditComponentController != null) {
       ballImageEditComponentController._ballImageEditComponentViewModel = this;
+    }
+    if(im001mode==IM001Mode.modify){
+      _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto: preSetBallResDto,geoLocatorAdapter: sl());
+      images = _issueBallDisPlayUseCase.getDesImages();
     }
   }
 
@@ -143,9 +164,8 @@ class BallImageEditComponentController {
 
   BallImageEditComponentController({this.onChangeItemList});
 
-
-  addImage(FileImage imageProvider) async {
-    if(_ballImageEditComponentViewModel.images.length > 20){
+  addImage(ImageProvider imageProvider) async {
+    if (_ballImageEditComponentViewModel.images.length > 20) {
       _fluttertoastAdapter.showToast(msg: "20개를 초과 하였습니다.");
     }
     if (imageProvider != null) {
@@ -168,7 +188,7 @@ class BallImageEditComponentController {
     await _ballImageEditComponentViewModel._updateImageAndFillImageUrl();
   }
 
-  List<BallImageItem> getBallImageItems(){
+  List<BallImageItem> getBallImageItems() {
     return _ballImageEditComponentViewModel.images;
   }
 }

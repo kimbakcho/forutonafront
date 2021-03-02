@@ -1,9 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/IssueBallDescription.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Components/ProfileImageEditComponent/ImageSelectModalBottomSheet.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/YoutubeUrlUploadComponent.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +17,7 @@ import 'Component/BallImageEdit/BallImageEditComponent.dart';
 import 'Component/BallImageEdit/BallImageItem.dart';
 import 'Component/BallTageEdit/BallTagEditComponent.dart';
 import 'Component/BallTageEdit/TagEditDto.dart';
-
+import 'IM001Mode.dart';
 
 class IM001BottomSheetBody extends StatelessWidget {
   final Function(String) onChangeAddress;
@@ -22,19 +27,34 @@ class IM001BottomSheetBody extends StatelessWidget {
   final String initAddress;
   final IM001BottomSheetBodyController im001bottomSheetBodyController;
 
+  final IM001Mode im001mode;
+
+  final FBallResDto preSetBallResDto;
+
+  final List<FBallTagResDto> preSetFBallTagResDtos;
+
   const IM001BottomSheetBody(
       {Key key,
       this.initAddress,
       this.onChangeAddress,
-        this.onComplete,
-      this.im001bottomSheetBodyController})
+      this.onComplete,
+      this.im001bottomSheetBodyController,
+      this.im001mode,
+      this.preSetBallResDto,
+      this.preSetFBallTagResDtos})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => IM001BottomSheetBodyViewModel(
-          onChangeAddress, initAddress, onComplete,im001bottomSheetBodyController,),
+          onChangeAddress,
+          initAddress,
+          onComplete,
+          im001bottomSheetBodyController,
+          im001mode,
+          preSetBallResDto,
+          preSetFBallTagResDtos),
       child: Consumer<IM001BottomSheetBodyViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -130,21 +150,24 @@ class IM001BottomSheetBody extends StatelessWidget {
                                   fontWeight: FontWeight.w300,
                                   height: 1.2142857142857142,
                                 )))),
-
                     BallImageEditComponent(
-                      margin: EdgeInsets.only(top: 32),
-                      ballImageEditComponentController:
-                          model.ballImageEditComponentController,
-                    ),
+                        margin: EdgeInsets.only(top: 32),
+                        ballImageEditComponentController:
+                            model.ballImageEditComponentController,
+                        im001mode: im001mode,
+                        preSetBallResDto: preSetBallResDto),
                     YoutubeUrlUploadComponent(
-                      margin: EdgeInsets.only(top: 32,right: 16,left: 16),
-                      youtubeUrlUploadComponentController: model.youtubeUrlUploadComponentController,
+                      margin: EdgeInsets.only(top: 32, right: 16, left: 16),
+                      youtubeUrlUploadComponentController:
+                          model.youtubeUrlUploadComponentController,
+                      im001mode: im001mode,
+                      preSetBallResDto: preSetBallResDto,
                     ),
                     BallTagEditComponent(
-                      ballTagEditComponentController: model.ballTagEditComponentController,
-                      margin: EdgeInsets.only(left: 16,right: 16,top: 32),
+                      ballTagEditComponentController:
+                          model.ballTagEditComponentController,
+                      margin: EdgeInsets.only(left: 16, right: 16, top: 32),
                     )
-
                   ],
                 )),
               )),
@@ -165,8 +188,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                         color: Color(0xff3A3E3F),
                       ),
                       onTap: () {
-                       model.selectImage(ImageSource.camera);
-
+                        model.selectImage(ImageSource.camera);
                       },
                     ),
                     SizedBox(
@@ -251,10 +273,22 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   final Function(bool) onComplete;
 
-  IM001BottomSheetBodyViewModel(this.onChangeAddress, this.initAddress,
-      this.onComplete,
-      this.im001bottomSheetBodyController) {
+  final IM001Mode im001mode;
 
+  final FBallResDto preSetBallResDto;
+
+  final List<FBallTagResDto> preSetFBallTagResDtos;
+
+  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
+
+  IM001BottomSheetBodyViewModel(
+      this.onChangeAddress,
+      this.initAddress,
+      this.onComplete,
+      this.im001bottomSheetBodyController,
+      this.im001mode,
+      this.preSetBallResDto,
+      this.preSetFBallTagResDtos) {
     _titleTextController = TextEditingController();
 
     _titleTextController.addListener(() {
@@ -297,6 +331,15 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
       }
       _checkComplete();
     });
+
+    if (im001mode == IM001Mode.modify) {
+      _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+          fBallResDto: preSetBallResDto, geoLocatorAdapter: sl());
+      _titleTextController.text = _issueBallDisPlayUseCase.ballName();
+      _contentTextController.text = _issueBallDisPlayUseCase.descriptionText();
+      _addressTextController.text = _issueBallDisPlayUseCase.placeAddress();
+      _checkComplete();
+    }
   }
 
   get isTitleFocus {
@@ -307,10 +350,12 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
     return contentFocus.hasFocus;
   }
 
-  _checkComplete(){
-    if(_titleTextController.text.isNotEmpty && _addressTextController.text.isNotEmpty && _contentTextController.text.isNotEmpty){
+  _checkComplete() {
+    if (_titleTextController.text.isNotEmpty &&
+        _addressTextController.text.isNotEmpty &&
+        _contentTextController.text.isNotEmpty) {
       this.onComplete(true);
-    }else {
+    } else {
       this.onComplete(false);
     }
   }
@@ -330,7 +375,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   void selectImage(ImageSource imageSource) async {
     var pickedFile = await _picker.getImage(source: imageSource);
-    if(pickedFile != null){
+    if (pickedFile != null) {
       var _image = File(pickedFile.path);
       _onSelectBallImage(FileImage(_image));
     }
@@ -350,7 +395,6 @@ class IM001BottomSheetBodyController {
 
   String getPlaceAddress() {
     return _im001bottomSheetBodyViewModel._currentAddress;
-
   }
 
   String getContent() {
@@ -358,21 +402,23 @@ class IM001BottomSheetBodyController {
   }
 
   String getYoutubeId() {
-    return _im001bottomSheetBodyViewModel.youtubeUrlUploadComponentController.getYoutubeId();
+    return _im001bottomSheetBodyViewModel.youtubeUrlUploadComponentController
+        .getYoutubeId();
   }
 
   List<BallImageItem> getBallImages() {
-    return _im001bottomSheetBodyViewModel.ballImageEditComponentController.getBallImageItems();
+    return _im001bottomSheetBodyViewModel.ballImageEditComponentController
+        .getBallImageItems();
   }
 
   Future<List<BallImageItem>> updateImageAndFillImageUrl() async {
-    await _im001bottomSheetBodyViewModel.ballImageEditComponentController.updateImageAndFillImageUrl();
+    await _im001bottomSheetBodyViewModel.ballImageEditComponentController
+        .updateImageAndFillImageUrl();
     return getBallImages();
   }
 
   List<TagEditItemDto> getTags() {
-    return _im001bottomSheetBodyViewModel.ballTagEditComponentController.getTags();
+    return _im001bottomSheetBodyViewModel.ballTagEditComponentController
+        .getTags();
   }
-
-
 }

@@ -15,7 +15,12 @@ abstract class LocationAdapter {
 
 @LazySingleton(as: LocationAdapter)
 class LocationAdapterImpl implements LocationAdapter {
-  Location.Location location = new Location.Location();
+  Location.Location location;
+  LocationAdapterImpl(){
+    location = new Location.Location();
+  }
+
+
 
   @override
   Future<Adapter.PermissionStatus>  hasPermission() async {
@@ -50,5 +55,6 @@ class LocationAdapterImpl implements LocationAdapter {
   Future<bool> requestService() async{
     return await location.requestService();
   }
+
 
 }

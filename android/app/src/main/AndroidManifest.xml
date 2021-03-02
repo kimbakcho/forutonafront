@@ -70,7 +70,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU"/>
 
-        <service android:enabled="true" android:exported="true"  android:name="com.wing.forutonafront.AppService" />
+        <service android:enabled="true" android:exported="true"  android:name="com.wing.forutonafront.AppService"  android:foregroundServiceType="location"   />
         <meta-data
                 android:name="flutterEmbedding"
                 android:value="2" />
@@ -82,4 +82,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
 </manifest>

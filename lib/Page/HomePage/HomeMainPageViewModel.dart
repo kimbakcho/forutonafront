@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/GlobalInitMutex/GlobalInitMutex.dart';
 import 'package:forutonafront/Components/TopNav/MainPageViewModelInputPort.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtn.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnAction.dart';
@@ -43,6 +44,8 @@ class HomeMainPageViewModel
 
   final TopH_I_001NavExpendAniContentController topH_I_001NavExpendAniContentController;
 
+  final GlobalInitMutex globalInitMutex;
+
   HomeMainPageViewModel(
       {@required this.fireBaseAuthAdapterForUseCase,
       @required this.context,
@@ -51,13 +54,15 @@ class HomeMainPageViewModel
       @required this.userPositionForegroundMonitoringUseCaseInputPort,
       @required this.geoViewSearchManagerInputPort,
       @required this.topNavBtnMediator,
-      @required this.topH_I_001NavExpendAniContentController}) {
+      @required this.topH_I_001NavExpendAniContentController,
+      @required this.globalInitMutex}) {
     init();
   }
 
   init() async {
     codeMainPageController.addListener(this);
     topNavBtnMediator.codeMainViewModelInputPort = this;
+    await globalInitMutex.geoRequestMutex.acquire();
 
     await geoLocationUtilUseCaseInputPort.useGpsReq();
 
@@ -72,6 +77,7 @@ class HomeMainPageViewModel
         .startUserPositionMonitoringAndUpdateToServer();
 
     geoLocationUtilUseCaseInputPort.startStreamCurrentPosition();
+    globalInitMutex.geoRequestMutex.release();
   }
 
   Map<CodeState, Widget> getCodeStateExpendWidgetMap() {

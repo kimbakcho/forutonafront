@@ -1,16 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/BallPowerDisplay/SmallBallPowerDisplay.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01BallTitle/ID01LimitTag.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../ID01Mode.dart';
+
 class ID01BallTitle extends StatelessWidget {
   final FBallResDto fBallResDto;
 
-  const ID01BallTitle({Key key, this.fBallResDto}) : super(key: key);
+  final ID01Mode id01Mode;
+
+  final List<FBallTagResDto> preViewfBallTagResDtos;
+
+  const ID01BallTitle({Key key, this.fBallResDto, this.id01Mode, this.preViewfBallTagResDtos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,7 @@ class ID01BallTitle extends StatelessWidget {
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: Column(
               children: [
-                ID01LimitTag(ballUuid: model.fBallResDto.ballUuid),
+                ID01LimitTag(ballUuid: model.fBallResDto.ballUuid,id01Mode: id01Mode,preViewfBallTagResDtos: preViewfBallTagResDtos),
                 Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Expanded(
                       child: Container(

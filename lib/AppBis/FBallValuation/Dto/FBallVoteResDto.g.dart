@@ -1,28 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FBallLikeResDto.dart';
+part of 'FBallVoteResDto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FBallLikeResDto _$FBallLikeResDtoFromJson(Map<String, dynamic> json) {
-  return FBallLikeResDto()
+FBallVoteResDto _$FBallVoteResDtoFromJson(Map<String, dynamic> json) {
+  return FBallVoteResDto()
     ..ballLike = json['ballLike'] as int
     ..ballDislike = json['ballDislike'] as int
     ..likeServiceUseUserCount = json['likeServiceUseUserCount'] as int
     ..ballPower = json['ballPower'] as int
-    ..fballValuationResDto = json['fballValuationResDto'] == null
-        ? null
-        : FBallValuationResDto.fromJson(
-            json['fballValuationResDto'] as Map<String, dynamic>);
+    ..fballValuationResDto = (json['fballValuationResDto'] as List)
+        ?.map((e) => e == null
+            ? null
+            : FBallValuationResDto.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
-Map<String, dynamic> _$FBallLikeResDtoToJson(FBallLikeResDto instance) =>
+Map<String, dynamic> _$FBallVoteResDtoToJson(FBallVoteResDto instance) =>
     <String, dynamic>{
       'ballLike': instance.ballLike,
       'ballDislike': instance.ballDislike,
       'likeServiceUseUserCount': instance.likeServiceUseUserCount,
       'ballPower': instance.ballPower,
-      'fballValuationResDto': instance.fballValuationResDto?.toJson(),
+      'fballValuationResDto':
+          instance.fballValuationResDto?.map((e) => e?.toJson())?.toList(),
     };

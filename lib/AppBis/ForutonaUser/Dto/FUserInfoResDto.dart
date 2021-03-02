@@ -1,5 +1,4 @@
 
-import 'package:forutonafront/AppBis/ForutonaUser/Domain/Entity/FUserInfo.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/Components/GenderSelectComponent/GenderType.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -54,6 +53,13 @@ class FUserInfoResDto {
    DateTime stopPeriod;
    bool maliciousMessageCheck;
    String maliciousCause;
+   int influenceTicket;
+
+   int maxInfluenceTicket;
+   DateTime influenceTicketReceiveTime;
+   DateTime nextGiveInfluenceTicketTime;
+
+   double playerPower;
 
    FUserInfoResDto();
 

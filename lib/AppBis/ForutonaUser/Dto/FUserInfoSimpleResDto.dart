@@ -51,6 +51,7 @@ class FUserInfoSimpleResDto {
     fUserInfoSimpleResDto.cumulativeInfluence = fUserInfoResDto.cumulativeInfluence;
     fUserInfoSimpleResDto.followerCount = fUserInfoResDto.followerCount;
     fUserInfoSimpleResDto.followingCount = fUserInfoResDto.followingCount;
+    fUserInfoSimpleResDto.playerPower = fUserInfoResDto.playerPower;
     return fUserInfoSimpleResDto;
   }
 

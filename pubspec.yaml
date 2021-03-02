@@ -49,12 +49,12 @@ dependencies:
   #태그 랭킹등에서 사용
   flutter_swiper: ^1.1.6
   #허가 관리
-  permission_handler: ^3.3.0
+  permission_handler: ^5.1.0+2
   uuid: ^2.0.1
   #FCM에 사용
   firebase_messaging: ^6.0.16
   #사진을 여러장 선택 할 필요가 있을때 사용
-  multi_image_picker: ^4.7.14
+  multi_image_picker:
   #Kakao 로그인 할때 사용
   kakao_flutter_sdk: ^0.5.2
   #내부 Native Notication을 사용하기위한 사용
@@ -78,7 +78,7 @@ dependencies:
   # 검색시 히스토리 저장 목적으로 사용
   shared_preferences: ^0.5.6+3
   #location 허가용
-  location: ^3.0.2
+  location: ^3.2.4
   #AutoComPlete 기능을 위해 사용
   google_place: ^0.3.0
   #게시판등에서 html Viwer 목적으로 사용
@@ -100,7 +100,7 @@ dependencies:
   #test할때 사용
   mockito: ^4.1.1
   #Native Background Plugin 목적으로 사용
-  background_fetch: ^0.6.0
+  background_fetch: ^0.7.0
   #statusBarColor 변경을 목적으로 사용
   flutter_statusbarcolor: ^0.2.3
   #인터넷 접속 가능 여부 판단 목적으로 사용
@@ -128,6 +128,8 @@ dependencies:
   #bottom_Sheet_SnappingUI에사용
   sliding_sheet: ^0.4.1
 
+module:
+  androidX: true
 
 dev_dependencies:
   flutter_test:

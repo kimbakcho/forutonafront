@@ -237,7 +237,7 @@ class ID01LikeStateViewModel extends ChangeNotifier
   }
 
   @override
-  reqNotification() {
+  valuationReqNotification() {
     notifyListeners();
   }
 

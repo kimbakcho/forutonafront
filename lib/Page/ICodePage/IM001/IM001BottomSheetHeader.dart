@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import 'IM001Mode.dart';
 
 class IM001BottomSheetHeader extends StatelessWidget {
   final String displayAddress;
   final Function onNextBtnTap;
+  final IM001Mode im001mode;
+
+  final FBallResDto preSetBallResDto;
 
   final IM001BottomSheetHeaderController im001bottomSheetHeaderController;
 
   const IM001BottomSheetHeader(
-      {Key key, this.displayAddress, this.im001bottomSheetHeaderController, this.onNextBtnTap})
+      {Key key,
+      this.displayAddress,
+      this.im001bottomSheetHeaderController,
+      this.onNextBtnTap,
+      this.im001mode,
+      this.preSetBallResDto})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => IM001BottomSheetHeaderViewModel(displayAddress,
+      create: (_) => IM001BottomSheetHeaderViewModel(
+          displayAddress, im001mode, preSetBallResDto,
           im001bottomSheetHeaderController: im001bottomSheetHeaderController),
       child: Consumer<IM001BottomSheetHeaderViewModel>(
         builder: (_, model, child) {
           return Container(
-
             padding: EdgeInsets.only(left: 16, right: 16),
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -105,16 +116,24 @@ class IM001BottomSheetHeader extends StatelessWidget {
 enum IM001BottomSheetHeaderMode { show, hide }
 
 class IM001BottomSheetHeaderViewModel extends ChangeNotifier {
+  final IM001Mode im001mode;
+
+  final FBallResDto preSetBallResDto;
+
   IM001BottomSheetHeaderController im001bottomSheetHeaderController;
 
   IM001BottomSheetHeaderMode _currentMode;
 
   String displayAddress;
 
-  IM001BottomSheetHeaderViewModel(this.displayAddress,
+  IM001BottomSheetHeaderViewModel(
+      this.displayAddress, this.im001mode, this.preSetBallResDto,
       {this.im001bottomSheetHeaderController}) {
     if (im001bottomSheetHeaderController != null) {
       im001bottomSheetHeaderController._iM001BottomSheetHeaderViewModel = this;
+    }
+    if(im001mode == IM001Mode.modify){
+      this.displayAddress = preSetBallResDto.placeAddress;
     }
     _currentMode = IM001BottomSheetHeaderMode.hide;
   }
@@ -124,11 +143,10 @@ class IM001BottomSheetHeaderViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  changeDisplayAddress(String value){
+  changeDisplayAddress(String value) {
     displayAddress = value;
     notifyListeners();
   }
-
 }
 
 class IM001BottomSheetHeaderController {
@@ -138,7 +156,7 @@ class IM001BottomSheetHeaderController {
     _iM001BottomSheetHeaderViewModel.changeHeaderMode(mode);
   }
 
-  changeDisplayAddress(String value){
+  changeDisplayAddress(String value) {
     _iM001BottomSheetHeaderViewModel.changeDisplayAddress(value);
   }
 }

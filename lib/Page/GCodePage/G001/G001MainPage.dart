@@ -26,8 +26,7 @@ class G001MainPage extends StatelessWidget {
               height: 16,
             ),
             UserMakeBallList(
-              //Todo 추후에 model.userUid 변경 지금은 테스트용 ID
-              userUid: "h2q2jl3nRPXZ8809Uvi9KdzSss83",
+              userUid: model.userUid,
             )
           ]))));
         }));

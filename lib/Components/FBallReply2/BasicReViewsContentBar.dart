@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/CommonValue/Value/ReplyMaliciousType.dart';
+import 'package:forutonafront/AppBis/MaliciousReply/Domain/UseCase/MaliciousReplyUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
@@ -8,6 +10,7 @@ import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyReqDto.
 import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Components/FBallReply2/ReplyOptionAction/ReplyOptionActionAlertDialogSheet.dart';
+import 'package:forutonafront/Components/ReportActionAlertDialog/ReportActionAlertDialog.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -17,7 +20,6 @@ import 'package:provider/provider.dart';
 import 'BasicReViewsInsert.dart';
 import 'FBallReplyDisplayUtil.dart';
 import 'ReplyOptionAction/ReplyOptionActionBottomSheet.dart';
-import 'ReplyOptionAction/ReplyReportActionAlertDialogSheet.dart';
 import 'ReviewCountMediator.dart';
 import 'ReviewDeleteMediator.dart';
 import 'ReviewInertMediator.dart';
@@ -67,7 +69,9 @@ class BasicReViewsContentBar extends StatelessWidget {
             reviewDeleteMediator: _reviewDeleteMediator,
             reviewInertMediator: _reviewInertMediator,
             reviewUpdateMediator: _reviewUpdateMediator,
-            fBallReplyResDto: _fBallReplyResDto),
+            fBallReplyResDto: _fBallReplyResDto,
+            maliciousReplyUseCase: sl()
+        ),
         child:
             Consumer<BasicReViewsContentBarViewModel>(builder: (_, model, __) {
           return Material(
@@ -205,7 +209,8 @@ class BasicReViewsContentBar extends StatelessWidget {
                 decoration: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
-                            color: hasBoardLine ? Color(0xffF4F4F6) : Colors.white,
+                            color:
+                                hasBoardLine ? Color(0xffF4F4F6) : Colors.white,
                             width: hasBoardLine ? 1 : 0))),
               ),
             ),
@@ -248,7 +253,8 @@ class BasicReViewsContentBar extends StatelessWidget {
   }
 }
 
-class BasicReViewsContentBarViewModel extends ChangeNotifier implements ReviewDeleteMediatorComponent,ReviewUpdateMediatorComponent{
+class BasicReViewsContentBarViewModel extends ChangeNotifier
+    implements ReviewDeleteMediatorComponent, ReviewUpdateMediatorComponent {
   final FBallReplyResDto fBallReplyResDto;
   final ReviewInertMediator _reviewInertMediator;
   final ReviewCountMediator _reviewCountMediator;
@@ -256,6 +262,7 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier implements ReviewDe
   final ReviewUpdateMediator _reviewUpdateMediator;
   final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final MaliciousReplyUseCaseInputPort _maliciousReplyUseCase;
   final BuildContext context;
   bool isChildReplyOpen = false;
   bool showChildReply;
@@ -266,31 +273,33 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier implements ReviewDe
       {this.fBallReplyResDto,
       this.showChildReply,
       this.context,
-        this.showEditBtn,
+      this.showEditBtn,
       FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
       FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
       ReviewInertMediator reviewInertMediator,
       ReviewDeleteMediator reviewDeleteMediator,
       ReviewUpdateMediator reviewUpdateMediator,
-      ReviewCountMediator reviewCountMediator})
+      ReviewCountMediator reviewCountMediator,
+      MaliciousReplyUseCaseInputPort maliciousReplyUseCase})
       : _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
         _reviewDeleteMediator = reviewDeleteMediator,
         _reviewUpdateMediator = reviewUpdateMediator,
         _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
-        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
+        _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
+        _maliciousReplyUseCase = maliciousReplyUseCase {
     _fBallReplyDisplayUtil = new FBallReplyDisplayUtil(this.fBallReplyResDto);
     initStateOpenReply();
-    if(_reviewDeleteMediator != null){
+    if (_reviewDeleteMediator != null) {
       _reviewDeleteMediator.registerComponent(this);
     }
-    if(_reviewUpdateMediator != null){
+    if (_reviewUpdateMediator != null) {
       _reviewUpdateMediator.registerComponent(this);
     }
   }
 
   void initStateOpenReply() {
-    if(isChildReplyShow && !isChildReplyOpen){
+    if (isChildReplyShow && !isChildReplyOpen) {
       toggleChildOpenState();
     }
   }
@@ -340,7 +349,6 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier implements ReviewDe
 
   String get replyText {
     return _fBallReplyDisplayUtil.replyText;
-
   }
 
   String getOpenedText() {
@@ -416,11 +424,11 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier implements ReviewDe
               reviewDeleteMediator: _reviewDeleteMediator,
               reviewUpdateMediator: _reviewUpdateMediator,
             ));
-      }else {
+      } else {
         await showDialog(
             context: context,
-            child: ReplyReportActionAlertDialogSheet(
-              fBallReplyResDto: fBallReplyResDto,
+            child: MaliciousReportActionAlertDialog(
+              onReportMalicious: onReportMalicious,
             ));
       }
     }
@@ -442,12 +450,16 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier implements ReviewDe
   @override
   void dispose() {
     super.dispose();
-    if(_reviewDeleteMediator != null ){
+    if (_reviewDeleteMediator != null) {
       _reviewDeleteMediator.unregisterComponent(this);
     }
-    if(_reviewUpdateMediator != null){
+    if (_reviewUpdateMediator != null) {
       _reviewUpdateMediator.unregisterComponent(this);
     }
+  }
+
+  onReportMalicious(MaliciousType replyMaliciousType) async {
+    await _maliciousReplyUseCase.reportMaliciousReply(replyMaliciousType,fBallReplyResDto.replyUuid);
 
   }
 

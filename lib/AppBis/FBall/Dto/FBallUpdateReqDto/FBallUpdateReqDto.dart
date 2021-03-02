@@ -1,4 +1,5 @@
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/AppBis/Tag/Dto/TagInsertReqDto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -13,6 +14,8 @@ class FBallUpdateReqDto {
   FBallType ballType;
   String placeAddress;
   String description;
+  List<TagInsertReqDto> tags;
+
 
   FBallUpdateReqDto();
 

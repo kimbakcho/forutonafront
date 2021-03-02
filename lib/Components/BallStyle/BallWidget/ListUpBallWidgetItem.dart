@@ -5,16 +5,20 @@ import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/DetailPageViewer/DetailPageViewer.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class ListUpBallWidgetItem extends ChangeNotifier {
   final BuildContext context;
   final BallListMediator ballListMediator;
   final int index;
+  String ballWidgetKey;
 
-  ListUpBallWidgetItem(this.context, this.ballListMediator, this.index);
+  ListUpBallWidgetItem(this.context, this.ballListMediator, this.index){
+    ballWidgetKey = Uuid().v4();
+  }
 
-  moveToDetailPage() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+  moveToDetailPage() async{
+    await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       var ballType2 = ballListMediator.itemList[index].ballType;
       switch (ballType2) {
         case FBallType.IssueBall:
@@ -33,5 +37,8 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
       //   initIndex: index,
       // );
     }));
+    onReFreshBall();
+
   }
+  onReFreshBall();
 }
