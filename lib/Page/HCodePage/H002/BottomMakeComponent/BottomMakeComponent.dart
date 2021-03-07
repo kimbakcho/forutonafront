@@ -7,6 +7,10 @@ import 'package:provider/provider.dart';
 
 class BottomMakeComponent extends StatelessWidget {
 
+  final Function makeBallPop;
+
+  const BottomMakeComponent({Key key, this.makeBallPop}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -26,10 +30,11 @@ class BottomMakeComponent extends StatelessWidget {
                     ballName: "이슈볼",
                     leftImage: AssetImage("assets/BallMakeImage/issubalImakeimage.png"),
                     mainColor: Color(0xffDC3E57),
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (_){
+                    onTap: () async {
+                      await Navigator.of(context).push(MaterialPageRoute(builder: (_){
                         return IM001MainPage();
                       }));
+                      makeBallPop();
                     },
                   ),
                 ),

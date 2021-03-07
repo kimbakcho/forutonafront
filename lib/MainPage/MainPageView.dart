@@ -122,11 +122,12 @@ class MainPageViewModel extends ChangeNotifier
         backgroundColor: Colors.transparent,
         builder: (_) {
           return BottomMakeComponent(
-
+            makeBallPop: () {
+              homepageWidgetKey = Key(Uuid().v4());
+              notifyListeners();
+            },
           );
         });
-    homepageWidgetKey = Key(Uuid().v4());
-    notifyListeners();
   }
 }
 

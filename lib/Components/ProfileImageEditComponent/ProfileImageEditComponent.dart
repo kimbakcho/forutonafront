@@ -119,9 +119,9 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
   ProfileImageEditComponentViewModel(
       {this.profileImageEditComponentController, this.initProfileImageUrl, this.initBackGroundImageUrl}) {
     _imageProfileSelectModalBottomSheet =
-        ImageSelectModalBottomSheet(onSelectImage: onProfileSelectImage);
+        ImageSelectModalBottomSheet(onSelectImage: onProfileSelectImage,color: Colors.white);
     _imageBackGroundSelectModalBottomSheet =
-        ImageSelectModalBottomSheet(onSelectImage: onBackgroundSelectImage);
+        ImageSelectModalBottomSheet(onSelectImage: onBackgroundSelectImage,color: Colors.white);
     profileImageEditComponentController._profileImageEditComponentViewModel =
     this;
     if (initProfileImageUrl != null) {

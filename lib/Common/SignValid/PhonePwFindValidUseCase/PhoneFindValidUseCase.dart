@@ -55,8 +55,7 @@ class PhoneFindValidUseCaseImpl extends PhoneFindValidUseCase {
     if (_resPhoneAuth.error) {
       _isPhoneEmailError = true;
       if (_resPhoneAuth.cause == "MissMatchEmailAndPhone") {
-        _phoneEmailErrorText = "입력하신 정보와 일치하는 계정이 없습니다.\n"
-            "휴대폰 번호를 변경하셨다면, 이메일 인증으로 패스워드를 찾아주세요.";
+        _phoneEmailErrorText = "폰으로 패스워드 찾기에서 인증번호 \n유효성검사 메시지 오류";
       }
     }
     return _resPhoneAuth;

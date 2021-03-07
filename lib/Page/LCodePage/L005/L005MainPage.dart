@@ -25,7 +25,7 @@ class L005MainPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CodeAppBar(
-                            progressValue: 0.7,
+                            progressValue: 0.6,
                             tailButtonLabel: "다음",
                             enableTailButton: model.enableTailButton,
                             title: "휴대폰 인증",

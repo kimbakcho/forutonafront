@@ -24,7 +24,7 @@ class L002MainPage extends StatelessWidget {
                   child: Column(children: [
                     CodeAppBar(
                         title: '이용약관 동의',
-                        progressValue: 0.25,
+                        progressValue: 0.2,
                         enableTailButton: model.enableTailButton,
                         tailButtonLabel: "다음",
                         onTailButtonClick: () {
@@ -99,7 +99,25 @@ class L002MainPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TermsTextLink(
-                                label: '위치기반 서비스 이용약관 동의(필수)',
+                                label: '운영정책 동의(필수)',
+                                termsIdx: 17,
+                              ),
+                              LCodeCheckBox(
+                                controller: model
+                                    .operationalPoliciesAgreeCheckBoxController,
+                                size: 30,
+                              )
+                            ])),
+                    SizedBox(
+                      height: 22,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(left: 16, right: 24),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TermsTextLink(
+                                label: '위치정보 처리방침(필수)',
                                 termsIdx: 17,
                               ),
                               LCodeCheckBox(
@@ -135,6 +153,7 @@ class L002MainPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TermsTextLink(
+                                gotoPageFlag: false,
                                 label: '마케팅 전체 수신동의(선택)',
                                 termsIdx: 15,
                               ),
@@ -155,11 +174,12 @@ class L002MainPageViewModel extends ChangeNotifier {
   LCodeCheckBoxController privacyAgreeCheckBoxController;
   LCodeCheckBoxController positionPrivacyAgreeCheckBoxController;
   LCodeCheckBoxController marketingAgreeCheckBoxController;
+  LCodeCheckBoxController operationalPoliciesAgreeCheckBoxController;
   final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
 
   L002MainPageViewModel(this._fUserInfoJoinReqDto) {
-    allCheckBoxController =
-        LCodeCheckBoxController(onChangeValue: _allCheckBoxControllerStateChange);
+    allCheckBoxController = LCodeCheckBoxController(
+        onChangeValue: _allCheckBoxControllerStateChange);
     serviceAgreeCheckBoxController =
         LCodeCheckBoxController(onChangeValue: _checkBoxStateChange);
     privacyAgreeCheckBoxController =
@@ -168,16 +188,18 @@ class L002MainPageViewModel extends ChangeNotifier {
         LCodeCheckBoxController(onChangeValue: _checkBoxStateChange);
     marketingAgreeCheckBoxController =
         LCodeCheckBoxController(onChangeValue: _checkBoxStateChange);
+    operationalPoliciesAgreeCheckBoxController =
+        LCodeCheckBoxController(onChangeValue: _checkBoxStateChange);
   }
 
-  _allCheckBoxControllerStateChange(bool value){
+  _allCheckBoxControllerStateChange(bool value) {
     serviceAgreeCheckBoxController.setValue(value);
     privacyAgreeCheckBoxController.setValue(value);
     positionPrivacyAgreeCheckBoxController.setValue(value);
     marketingAgreeCheckBoxController.setValue(value);
+    operationalPoliciesAgreeCheckBoxController.setValue(value);
     notifyListeners();
   }
-
 
   get enableTailButton {
     return isCheckSatisfied();
@@ -185,33 +207,39 @@ class L002MainPageViewModel extends ChangeNotifier {
 
   //TODO 여기서 시작 하는데 _fUserInfoJoinReq 가입에 필요한 정보 넣어 주는것 부터
   _checkBoxStateChange(bool value) {
-    if(isCheckSatisfied()) {
+    if (isCheckSatisfied()) {
       allCheckBoxController.setValue(true);
-    }else {
+    } else {
       allCheckBoxController.setValue(false);
     }
     notifyListeners();
   }
 
   bool isCheckSatisfied() {
-    if(serviceAgreeCheckBoxController.getValue() &&
+    if (serviceAgreeCheckBoxController.getValue() &&
         privacyAgreeCheckBoxController.getValue() &&
-        positionPrivacyAgreeCheckBoxController.getValue())
-      {
-        return true;
-      }else {
+        positionPrivacyAgreeCheckBoxController.getValue() &&
+        operationalPoliciesAgreeCheckBoxController.getValue() &&
+        marketingAgreeCheckBoxController.getValue()) {
+      return true;
+    } else {
       return false;
     }
   }
 
   void nextPage(BuildContext context) {
-    _fUserInfoJoinReqDto.martketingAgree = marketingAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReqDto.forutonaAgree = serviceAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReqDto.privateAgree = privacyAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReqDto.positionAgree = positionPrivacyAgreeCheckBoxController.getValue();
-    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+    _fUserInfoJoinReqDto.martketingAgree =
+        marketingAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto.forutonaAgree =
+        serviceAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto.privateAgree =
+        privacyAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto.positionAgree =
+        positionPrivacyAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto.forutonaManagementAgree =
+        operationalPoliciesAgreeCheckBoxController.getValue();
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return L004MainPage();
     }));
   }
-
 }

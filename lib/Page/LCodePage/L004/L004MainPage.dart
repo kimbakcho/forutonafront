@@ -27,7 +27,7 @@ class L004MainPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CodeAppBar(
-                          progressValue: 0.5,
+                          progressValue: 0.4,
                           tailButtonLabel: "다음",
                           enableTailButton: model.enableTailButton,
                           title: "사용자 연령 확인",
@@ -75,7 +75,7 @@ class L004MainPage extends StatelessWidget {
                                 dateFormat: "MM월-dd일-yyyy년",
                                 locale: DateTimePickerLocale.ko,
                                 initialDate: DateTime.now()
-                                    .add(Duration(days: -365 * 20)),
+                                    .add(Duration(days: -365 * 14)),
                                 datePickerWidgetController:
                                     model._datePickerWidgetController,
                                 onChange: model.onDateTimeChange,
@@ -105,7 +105,7 @@ class L004MainPageViewModel extends ChangeNotifier {
 
   onDateTimeChange(DateTime dateTime, List<int> selectedIndex) {
     var nowYear = DateTime.now().year;
-    int limitYear = nowYear - 20;
+    int limitYear = nowYear - 14;
     if (dateTime.year > limitYear) {
       this.enableTailButton = false;
     } else {

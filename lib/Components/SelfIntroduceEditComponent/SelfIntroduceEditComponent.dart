@@ -45,7 +45,7 @@ class SelfIntroduceEditComponent extends StatelessWidget {
                   controller: model._selfIntroduceEditController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  maxLength: 80,
+                  maxLength: 100,
                 )
               ]));
         }));

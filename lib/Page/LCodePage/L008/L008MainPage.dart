@@ -193,7 +193,7 @@ class L008MainPageViewModel extends ChangeNotifier {
   }
 
   get isCanNext {
-    return currentNickNameText.isNotEmpty && currentSelfIntroduce.isNotEmpty;
+    return currentNickNameText.isNotEmpty;
   }
 
   _validWithNextPage(BuildContext context) async {

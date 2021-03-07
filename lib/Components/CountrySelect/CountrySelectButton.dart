@@ -5,6 +5,7 @@ import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Components/CountrySelect/CountrySelectPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sim_info/sim_info.dart';
 
 class CountrySelectButton extends StatelessWidget {
   final CountrySelectButtonController countrySelectButtonController;
@@ -173,7 +174,8 @@ class CountrySelectButtonViewModel extends ChangeNotifier {
   }
 
   init() async {
-    var currentCountry = await getDeviceCountry();
+    var currentCountry = await getMobileCountry();
+
     this.currentCountryItem = codeCountry
         .countryList()
         .firstWhere((element) => element.code.toLowerCase() == currentCountry);
@@ -197,10 +199,11 @@ class CountrySelectButtonViewModel extends ChangeNotifier {
     return currentCountryItem.name;
   }
 
-  Future<String> getDeviceCountry() async {
-    String locale = await Devicelocale.currentLocale;
-    var lastIndexOf = locale.lastIndexOf("_");
-    var countryCode = locale.substring(lastIndexOf + 1);
+  Future<String> getMobileCountry() async {
+    String mobileCountryCode = await SimInfo.getIsoCountryCode;
+    // String locale = await Devicelocale.currentLocale;
+    var lastIndexOf = mobileCountryCode.lastIndexOf("_");
+    var countryCode = mobileCountryCode.substring(lastIndexOf + 1);
     return countryCode.toLowerCase();
   }
 

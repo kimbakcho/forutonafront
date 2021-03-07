@@ -146,6 +146,7 @@ class _PhoneAuthComponentState extends State<PhoneAuthComponent>
                               ? model._authCheckErrorText
                               : null),
                       controller: model._currentAuthNumberController,
+                      keyboardType: TextInputType.number,
                     ),
                     model._isDisplayCanAuthNumberTime
                         ? Positioned(

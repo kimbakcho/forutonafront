@@ -127,6 +127,8 @@ dependencies:
   sms_otp_auto_verify: ^1.2.2
   #bottom_Sheet_SnappingUI에사용
   sliding_sheet: ^0.4.1
+  #Sim 정보를 얻어와 국가 설정을 위해 사용
+  sim_info: ^0.1.3
 
 module:
   androidX: true

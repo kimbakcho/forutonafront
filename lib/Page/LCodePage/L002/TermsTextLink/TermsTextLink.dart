@@ -9,10 +9,12 @@ class TermsTextLink extends StatelessWidget {
 
   final int termsIdx;
 
+  final bool gotoPageFlag;
+
   TermsTextLink(
       {Key key,
       @required this.label,
-      @required this.termsIdx})
+      @required this.termsIdx, this.gotoPageFlag=true})
       : super(key: key);
 
   @override
@@ -25,9 +27,11 @@ class TermsTextLink extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_){
-                          return L003MainPage(termsIdx: this.termsIdx);
-                        }));
+                        if(gotoPageFlag){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_){
+                            return L003MainPage(termsIdx: this.termsIdx);
+                          }));
+                        }
                       },
                       child: Text(
                         label,

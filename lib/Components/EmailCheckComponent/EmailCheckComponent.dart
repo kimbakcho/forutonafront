@@ -47,7 +47,9 @@ class EmailCheckComponent extends StatelessWidget {
                               letterSpacing: -0.28,
                               fontWeight: FontWeight.w300,
                               height: 1.2142857142857142,
-                            ))),
+                            )),
+                        keyboardType: TextInputType.emailAddress,
+                    ),
                     model._satisfied
                         ? Positioned(
                             right: 0,
