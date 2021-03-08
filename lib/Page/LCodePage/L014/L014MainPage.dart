@@ -57,14 +57,14 @@ class L014MainPage extends StatelessWidget {
                                           children: [
                                             TextSpan(
                                               text:
-                                                  '연락 받을 수 있는 휴대폰 번호를 입력하세요. \n',
+                                                  '아이디에 저장된 휴대폰번호와 일치하지 않습니다. \n',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
                                             TextSpan(
                                               text:
-                                                  '패스워드 변경을 위해 휴대폰 인증을 진행합니다.',
+                                                  '번호변경 시, 이메일 인증으로 패스워드를 변경해주세요.',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w300,
                                               ),

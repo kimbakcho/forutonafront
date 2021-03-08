@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseOutputPort.dart';
+import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,11 +11,13 @@ class J013ViewModel extends ChangeNotifier implements PwFindEmailUseCaseOutputPo
   final BuildContext context;
   final String email;
   final PwFindEmailUseCaseInputPort _pwFindEmailUseCaseInputPort;
+  final FluttertoastAdapter fluttertoastAdapter;
 
   J013ViewModel({
     this.context,
     this.email,
-    @required PwFindEmailUseCaseInputPort pwFindEmailUseCaseInputPort
+    @required PwFindEmailUseCaseInputPort pwFindEmailUseCaseInputPort,
+    @required this.fluttertoastAdapter
   }): _pwFindEmailUseCaseInputPort =pwFindEmailUseCaseInputPort;
 
   void onBackTap() {
@@ -80,7 +84,14 @@ class J013ViewModel extends ChangeNotifier implements PwFindEmailUseCaseOutputPo
                             child: FlatButton(
                                 onPressed: () async {
                                   await _pwFindEmailUseCaseInputPort.sendPasswordResetEmail(email,outputPort: this);
-
+                                  fluttertoastAdapter.showToast(
+                                      msg: "재전송하였습니다.",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIos: 1,
+                                      backgroundColor: Color(0xff454F63),
+                                      textColor: Colors.white,
+                                      fontSize: 12.0);
                                 },
                                 child: Text("재발송",
                                     style: GoogleFonts.notoSans(

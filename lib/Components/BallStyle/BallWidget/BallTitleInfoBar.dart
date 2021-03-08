@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionPopup.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
+import 'package:forutonafront/Components/UserProfileImageWidget/UserProfileImageWidget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,14 +22,10 @@ class BallTitleInfoBar extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(12, 12, 0, 12),
       child: Row(
         children: <Widget>[
-          Container(
-            width: 30,
+          UserProfileImageWidget(
             height: 30,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: NetworkImage(
-                        ballDisPlayUseCase.profilePictureUrl()))),
+            width: 30,
+            imageUrl: ballDisPlayUseCase.profilePictureUrl(),
           ),
           SizedBox(width: 8),
           Expanded(
@@ -42,8 +39,7 @@ class BallTitleInfoBar extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                                child: Text(
-                                    ballDisPlayUseCase.ballName(),
+                                child: Text(ballDisPlayUseCase.ballName(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.notoSans(
@@ -67,7 +63,7 @@ class BallTitleInfoBar extends StatelessWidget {
                                 Container(
                                   child: Text(
                                       '• 조회수 '
-                                          '${ballDisPlayUseCase.ballHits()}회  •  ${ballDisPlayUseCase.remainTime()}',
+                                      '${ballDisPlayUseCase.ballHits()}회  •  ${ballDisPlayUseCase.remainTime()}',
                                       maxLines: 1,
                                       style: GoogleFonts.notoSans(
                                         fontSize: 10,

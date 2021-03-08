@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'KPageNavBtn.dart';
 
-enum BottomNavigationNavType { HOME, SEARCH,MakeBall, SNS ,Profile}
+enum BottomNavigationNavType { HOME, SEARCH, MakeBall, SNS, Profile }
 
 class BottomNavigation extends StatefulWidget {
   final BottomNavigationListener bottomNavigationListener;
@@ -28,87 +28,97 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => BottomNavigationViewModel(
-            context: context, signInUserInfoUseCaseInputPort: sl()),
+        create: (_) =>
+            BottomNavigationViewModel(
+                context: context, signInUserInfoUseCaseInputPort: sl()),
         child: Consumer<BottomNavigationViewModel>(builder: (_, model, __) {
           return Consumer<BottomNavigationViewModel>(
               builder: (_, model, child) {
-            return Container(
-                height: 52,
-                child: Row(children: <Widget>[
-                  Expanded(
-                      flex: 1,
-                      child: FlatButton(
-                        onPressed: () {
-                          if (widget.bottomNavigationListener != null) {
-                            widget.bottomNavigationListener
-                                .onBottomNavClick(BottomNavigationNavType.HOME);
-                          }
-                        },
-                        child: Icon(Icons.home),
-                      )),
-                  Expanded(flex: 1, child: KPageNavBtn()),
-                  Expanded(
-                      flex: 1,
-                      child:
+                return Container(
+                    height: 52,
+                    child: Row(children: <Widget>[
+                      Expanded(
+                          flex: 1,
+                          child: FlatButton(
+                            onPressed: () {
+                              if (widget.bottomNavigationListener != null) {
+                                widget.bottomNavigationListener
+                                    .onBottomNavClick(
+                                    BottomNavigationNavType.HOME);
+                              }
+                            },
+                            child: Icon(Icons.home),
+                          )),
+                      Expanded(flex: 1, child: KPageNavBtn()),
+                      Expanded(
+                          flex: 1,
+                          child:
                           FlatButton(onPressed: () {
-                            widget.bottomNavigationListener
-                                .onBottomNavClick(BottomNavigationNavType.MakeBall);
-                          }, child: Icon(Icons.add))),
-                  Expanded(
-                      flex: 1,
-                      child: FlatButton(
-                          onPressed: () {
-                            if (widget.bottomNavigationListener != null) {
-                              widget.bottomNavigationListener.onBottomNavClick(
-                                  BottomNavigationNavType.SNS);
-                            }
-                          },
-                          child: Icon(
-                            ForutonaIcon.officialchannel,
-                          ))),
-                  Expanded(
-                    flex: 1,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          if(model.isLogin){
-                            if (widget.bottomNavigationListener != null) {
+                            if (model.isLogin) {
                               widget.bottomNavigationListener
-                                  .onBottomNavClick(BottomNavigationNavType.Profile);
+                                  .onBottomNavClick(
+                                  BottomNavigationNavType.MakeBall);
+                            }else {
+                              model.showL001BottomSheet();
                             }
-                          }else {
-                            model.showL001BottomSheet();
-                          }
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            model._getProfilePictureWidget(),
-                            Container(
-                              margin: EdgeInsets.only(top: 5),
-                              child: Text('프로필',
-                                  style: GoogleFonts.notoSans(
-                                    fontSize: 9,
-                                    color: const Color(0xff000000),
-                                    fontWeight: FontWeight.w300,
-                                  )),
-                            )
-                          ],
+                          } , child: Icon(Icons.add))),
+                      Expanded(
+                          flex: 1,
+                          child: FlatButton(
+                              onPressed: () {
+                                if (widget.bottomNavigationListener != null) {
+                                  widget.bottomNavigationListener
+                                      .onBottomNavClick(
+                                      BottomNavigationNavType.SNS);
+                                }
+                              },
+                              child: Icon(
+                                ForutonaIcon.officialchannel,
+                              ))),
+                      Expanded(
+                        flex: 1,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              if (model.isLogin) {
+                                if (widget.bottomNavigationListener != null) {
+                                  widget.bottomNavigationListener
+                                      .onBottomNavClick(
+                                      BottomNavigationNavType.Profile);
+                                }
+                              } else {
+                                model.showL001BottomSheet();
+                              }
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                model._getProfilePictureWidget(),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: Text('프로필',
+                                      style: GoogleFonts.notoSans(
+                                        fontSize: 9,
+                                        color: const Color(0xff000000),
+                                        fontWeight: FontWeight.w300,
+                                      )),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  )
-                ]),
-                decoration: BoxDecoration(color: Color(0xffffffff), boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0.00, 3.00),
-                    color: Color(0xff000000).withOpacity(0.16),
-                    blurRadius: 6,
-                  )
-                ]));
-          });
+                      )
+                    ]),
+                    decoration: BoxDecoration(
+                        color: Color(0xffffffff), boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0.00, 3.00),
+                        color: Color(0xff000000).withOpacity(0.16),
+                        blurRadius: 6,
+                      )
+                    ]));
+              });
         }));
   }
 }
@@ -134,6 +144,7 @@ class BottomNavigationViewModel extends ChangeNotifier {
         .reqSignInUserInfoFromMemory()
         .profilePictureUrl;
   }
+
 
   Widget _getEmptyProfileImage() {
     return Container(
@@ -176,8 +187,8 @@ class BottomNavigationViewModel extends ChangeNotifier {
         });
   }
 
-  jumpToPersona(){
-    Navigator.of(context).push(MaterialPageRoute(builder: (_){
+  jumpToPersona() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return GCodeMainPage();
     }));
   }

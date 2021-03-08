@@ -121,7 +121,7 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
       BuildContext context,
       BallListMediator ballListMediator,
       int index})
-      : super(context, ballListMediator, index);
+      : super(context, ballListMediator, index,sl());
 
   bool get isFinishBall {
     return ballListMediator.itemList[index].activationTime

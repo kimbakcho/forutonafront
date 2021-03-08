@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
@@ -117,6 +118,8 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   Position currentSearchPosition;
 
   String searchAddress = "로딩중 입니다.";
+  
+  bool isLoadPosition = false;
 
   TopH_I_001NavExpendAniContentViewModel({
     @required this.geoLocationUtilForeGroundUseCaseInputPort,
@@ -153,6 +156,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   }
 
   loadPosition(Position loadPosition) async {
+    isLoadPosition = false;
     try {
       this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
           .getPositionAddress(loadPosition);
@@ -164,6 +168,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
 
     geoViewSearchManager.search(loadPosition,14.46);
     notifyListeners();
+    isLoadPosition = true;
   }
 
   get disPlayAddress {
@@ -201,6 +206,11 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   }
 
   jumpToExtendView(BuildContext context) async {
+    if(!isLoadPosition){
+      Fluttertoast.showToast(msg: "위치 확인중입니다");
+      return;
+    }
+    
     var currentSearchPosition = geoViewSearchManager.currentSearchPosition;
 
     try{

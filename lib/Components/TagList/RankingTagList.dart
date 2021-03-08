@@ -27,7 +27,7 @@ class _RankingTagListState extends State<RankingTagList>
         child: Consumer<RankingTagListViewModel>(builder: (_, model, __) {
           return Container(
               margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
-              height: 30,
+              height: model.tagRankingResDtos.length == 0 ? 0 : 30,
               child: ListView.builder(
                   padding: EdgeInsets.only(right: 16),
                   scrollDirection: Axis.horizontal,

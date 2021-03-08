@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/HCodePage/H002/BottomMakeComponent/BallMakeButton.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
@@ -48,7 +49,14 @@ class BottomMakeComponent extends StatelessWidget {
                     leftImage: AssetImage("assets/BallMakeImage/questBallMakeImage.png"),
                     mainColor: Color(0xff4f72ff),
                     onTap: (){
-
+                      Fluttertoast.showToast(
+                          msg: "준비중입니다",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIos: 1,
+                          backgroundColor: Color(0xff454F63),
+                          textColor: Colors.white,
+                          fontSize: 12.0);
                     },
                   ),
                 ),

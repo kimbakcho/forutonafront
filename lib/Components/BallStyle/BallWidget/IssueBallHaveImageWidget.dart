@@ -68,7 +68,8 @@ class IssueBallHaveImageWidget extends StatelessWidget {
                       BallPositionInfoBar(
                           gotoDetailPage: model.moveToDetailPage,
                           ballSearchPosition: ballListMediator.searchPosition(),
-                          ballDisPlayUseCase: model.issueBallDisPlayUseCase)
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                          )
                     ],
                   ),
                   decoration: boxDecoration,
@@ -85,17 +86,18 @@ class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
 
   IssueBallHaveImageWidgetViewModel(this._selectBallUseCaseInputPort,
       {BuildContext context, BallListMediator ballListMediator, int index})
-      : super(context, ballListMediator, index) {
+      : super(context, ballListMediator, index,sl()) {
     issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
         fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
   }
 
   @override
   onReFreshBall() async {
+
     ballListMediator.itemList[index] = await _selectBallUseCaseInputPort
         .selectBall(ballListMediator.itemList[index].ballUuid);
     issueBallDisPlayUseCase =
-        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
+        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
     ballWidgetKey = Uuid().v4();
     notifyListeners();
   }

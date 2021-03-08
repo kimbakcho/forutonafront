@@ -80,7 +80,7 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
 
   IssueBallNotHaveImageWidgetViewModel(this._selectBallUseCaseInputPort,
       {BuildContext context, BallListMediator ballListMediator, int index})
-      : super(context, ballListMediator, index) {
+      : super(context, ballListMediator, index,sl()) {
     issueBallDisPlayUseCase =
         IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
   }

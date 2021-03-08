@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/DetailPageViewer/DetailPageViewer.dart';
@@ -11,13 +12,17 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
   final BuildContext context;
   final BallListMediator ballListMediator;
   final int index;
+  final HitBallUseCaseInputPort hitBallUseCaseInputPort;
   String ballWidgetKey;
 
-  ListUpBallWidgetItem(this.context, this.ballListMediator, this.index){
+  ListUpBallWidgetItem(this.context, this.ballListMediator, this.index,
+      this.hitBallUseCaseInputPort) {
     ballWidgetKey = Uuid().v4();
   }
 
-  moveToDetailPage() async{
+  moveToDetailPage() async {
+    var hits = await hitBallUseCaseInputPort.hit(ballListMediator.itemList[index].ballUuid);
+    ballListMediator.itemList[index].ballHits = hits;
     await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       var ballType2 = ballListMediator.itemList[index].ballType;
       switch (ballType2) {
@@ -28,7 +33,7 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
           );
         case FBallType.QuestBall:
           return Container();
-        default :
+        default:
           return Container();
       }
       // return DetailPageViewer(
@@ -38,7 +43,7 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
       // );
     }));
     onReFreshBall();
-
   }
+
   onReFreshBall();
 }

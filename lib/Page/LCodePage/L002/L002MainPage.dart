@@ -207,7 +207,7 @@ class L002MainPageViewModel extends ChangeNotifier {
 
   //TODO 여기서 시작 하는데 _fUserInfoJoinReq 가입에 필요한 정보 넣어 주는것 부터
   _checkBoxStateChange(bool value) {
-    if (isCheckSatisfied()) {
+    if (isAllCheck()) {
       allCheckBoxController.setValue(true);
     } else {
       allCheckBoxController.setValue(false);
@@ -216,6 +216,17 @@ class L002MainPageViewModel extends ChangeNotifier {
   }
 
   bool isCheckSatisfied() {
+    if (serviceAgreeCheckBoxController.getValue() &&
+        privacyAgreeCheckBoxController.getValue() &&
+        positionPrivacyAgreeCheckBoxController.getValue() &&
+        operationalPoliciesAgreeCheckBoxController.getValue()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isAllCheck() {
     if (serviceAgreeCheckBoxController.getValue() &&
         privacyAgreeCheckBoxController.getValue() &&
         positionPrivacyAgreeCheckBoxController.getValue() &&

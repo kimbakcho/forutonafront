@@ -74,7 +74,7 @@ class UserProfileBar extends StatelessWidget {
   }
 
   Widget avatar() {
-    if(fUserInfoSimpleResDto.profilePictureUrl.isNotEmpty){
+    if(fUserInfoSimpleResDto.profilePictureUrl != null && fUserInfoSimpleResDto.profilePictureUrl.isNotEmpty){
       return CachedNetworkImage(
           fit: BoxFit.fitWidth,
           imageUrl: fUserInfoSimpleResDto.profilePictureUrl,

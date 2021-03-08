@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
@@ -8,6 +9,7 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BallDisPlayUseCase {
   FBallResDto fBallResDto;
@@ -63,10 +65,25 @@ class BallDisPlayUseCase {
 
   String profilePictureUrl() {
     if (fBallResDto.ballDeleteFlag) {
-      return "-";
+      return "";
     } else {
-      return fBallResDto.uid.profilePictureUrl;
+      if(fBallResDto.uid.profilePictureUrl != null && fBallResDto.uid.profilePictureUrl.isNotEmpty){
+        return fBallResDto.uid.profilePictureUrl;
+      }else {
+        return "";
+      }
     }
+  }
+
+  Container _basicProfileImageWidget() {
+    return Container(
+      width: 30,
+      height: 30,
+      child: SvgPicture.asset("assets/IconImage/user-circle.svg"),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle
+      ),
+    );
   }
 
   String ballName() {

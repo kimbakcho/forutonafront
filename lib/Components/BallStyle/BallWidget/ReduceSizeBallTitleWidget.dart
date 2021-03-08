@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
+import 'package:forutonafront/Components/UserProfileImageWidget/UserProfileImageWidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReduceSizeBallTitleWidget extends StatelessWidget {
@@ -13,23 +14,16 @@ class ReduceSizeBallTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Container(
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    issueBallDisPlayUseCase
-                        .profilePictureUrl()))),
-        width: 33,
+      UserProfileImageWidget(
         height: 33,
+        width: 33,
+        imageUrl: issueBallDisPlayUseCase.profilePictureUrl(),
       ),
       SizedBox(width: 7),
       Expanded(
           child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                  issueBallDisPlayUseCase.ballName(),
+              child: Text(issueBallDisPlayUseCase.ballName(),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.notoSans(

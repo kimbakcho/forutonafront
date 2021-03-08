@@ -91,7 +91,7 @@ class MainPageViewModel extends ChangeNotifier
         _pageController.jumpToPage(1);
         break;
       case BottomNavigationNavType.MakeBall:
-        _showMakePanel();
+        _actionMakeBall();
         break;
       case BottomNavigationNavType.SEARCH:
         break;
@@ -116,7 +116,7 @@ class MainPageViewModel extends ChangeNotifier
     }
   }
 
-  _showMakePanel() async {
+  _actionMakeBall() async {
     await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,

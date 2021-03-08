@@ -15,7 +15,8 @@ class J013View extends StatelessWidget {
         create: (_) => J013ViewModel(
           context: context,
           email: email,
-          pwFindEmailUseCaseInputPort: sl()
+          pwFindEmailUseCaseInputPort: sl(),
+          fluttertoastAdapter: sl()
         ),
         child: Consumer<J013ViewModel>(builder: (_, model, child) {
           return Stack(

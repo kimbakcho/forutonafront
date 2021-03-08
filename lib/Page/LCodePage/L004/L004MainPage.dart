@@ -74,8 +74,7 @@ class L004MainPage extends StatelessWidget {
                               child: DatePickerWidget(
                                 dateFormat: "MM월-dd일-yyyy년",
                                 locale: DateTimePickerLocale.ko,
-                                initialDate: DateTime.now()
-                                    .add(Duration(days: -365 * 14)),
+                                initialDate: model.initDateTime,
                                 datePickerWidgetController:
                                     model._datePickerWidgetController,
                                 onChange: model.onDateTimeChange,
@@ -99,14 +98,16 @@ class L004MainPageViewModel extends ChangeNotifier {
   DatePickerWidgetController _datePickerWidgetController;
   final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
 
+  DateTime initDateTime;
+
   L004MainPageViewModel(this._fUserInfoJoinReqDto){
     _datePickerWidgetController = new DatePickerWidgetController();
+    initDateTime = DateTime(DateTime.now().year-14,DateTime.now().month,DateTime.now().day);
   }
 
   onDateTimeChange(DateTime dateTime, List<int> selectedIndex) {
-    var nowYear = DateTime.now().year;
-    int limitYear = nowYear - 14;
-    if (dateTime.year > limitYear) {
+
+    if (dateTime.isAfter(initDateTime)) {
       this.enableTailButton = false;
     } else {
       this.enableTailButton = true;
