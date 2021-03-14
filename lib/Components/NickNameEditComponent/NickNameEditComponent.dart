@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/ModifiedLengthLimitingTextInputFormatter/ModifiedLengthLimitingTextInputFormatter.dart';
 import 'package:forutonafront/Common/SignValid/BasicUseCase/NickNameValidImpl.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -43,6 +44,7 @@ class NickNameEditComponent extends StatelessWidget {
                 TextField(
                     controller: model._nickNameEditController,
                     maxLength: 20,
+                    inputFormatters: [ModifiedLengthLimitingTextInputFormatter(20)],
                     decoration: InputDecoration(
                         errorText: model.currentIsError
                             ? model.currentErrorText
@@ -75,6 +77,8 @@ class NickNameEditComponentViewModel extends ChangeNotifier {
 
   NickNameEditComponentController nickNameEditComponentController;
 
+  bool isDisposeFlag = false;
+
   NickNameEditComponentViewModel(
       {this.userNickName, this.nickNameEditComponentController,this.initNickName})
       : _nickNameValid = NickNameValidImpl(fUserRepository: sl()) {
@@ -99,7 +103,9 @@ class NickNameEditComponentViewModel extends ChangeNotifier {
         userNickName != _nickNameEditController.text) {
       await _nickNameValid.valid(_nickNameEditController.text);
     }
-    notifyListeners();
+    if(!isDisposeFlag){
+      notifyListeners();
+    }
   }
 
   bool get currentIsError {
@@ -108,6 +114,12 @@ class NickNameEditComponentViewModel extends ChangeNotifier {
 
   String get currentErrorText {
     return _nickNameValid.errorText();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    isDisposeFlag = true;
   }
 }
 

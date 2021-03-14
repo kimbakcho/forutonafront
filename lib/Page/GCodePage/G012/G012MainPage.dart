@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/FUserPwChangeUseCase/FUserPwChangeUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
@@ -202,11 +203,11 @@ class G012MainPageViewModel extends ChangeNotifier {
     var result = await _pwInputAndCheckComponentController.valid();
 
     if (result) {
+      Fluttertoast.showToast(msg: "패스워드를 변경하였습니다.");
       await _fUserPwChangeUseCaseInputPort.pwChange(newPassword);
       _fireBaseAuthAdapterForUseCase.logout();
       _mainPageViewModelController.moveToMainPage(BottomNavigationNavType.HOME);
       Navigator.of(context).popUntil((route) => route.settings.name == 'MAIN');
-
     }
 
   }

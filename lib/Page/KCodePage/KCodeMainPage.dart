@@ -28,7 +28,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 4, initialIndex: 0);
+    _tabController = TabController(vsync: this, length: 1, initialIndex: 0);
   }
 
   @override
@@ -62,7 +62,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                               flexibleSpace: TopSearchDisPlayBar(
                                 initText: widget.searchText,
                               ),
-                              expandedHeight: 124,
+                              expandedHeight: 56,
                               bottom:
                               KCodeTopTabBar(tabController: _tabController),
                             ),
@@ -72,35 +72,36 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                       controller: model.scrollController,
                       body: Container(
                           color: Color(0xffF2F0F1),
-                          padding: EdgeInsets.only(top: 68),
+
                           child:
                           TabBarView(controller: _tabController, children: [
-                            K00100MainPage(
-                              searchText: widget.searchText,
-                              simpleUserInfoCollectListener: model,
-                              tagContainBallCollectListener: model,
-                              simpleBallNameCollectListener: model,
-                              mainScroller: model.scrollController,
-                              tabController: _tabController,
-                            ),
-                            K00101MainPage(
-                              searchText: widget.searchText,
-                              mainScroller: model.scrollController,
-                              tabController: _tabController,
-                              kCodeNestedScrollViewKey: model.kCodeNestedScrollViewKey,
-                            ),
                             K00102MainPage(
                               searchText: widget.searchText,
                               mainScroller: model.scrollController,
                               tabController: _tabController,
                               kCodeNestedScrollViewKey: model.kCodeNestedScrollViewKey,
                             ),
-                            K00103MainPage(
-                              searchText: widget.searchText,
-                              mainScroller: model.scrollController,
-                              tabController: _tabController,
-                              kCodeNestedScrollViewKey: model.kCodeNestedScrollViewKey
-                            )
+                            // K00100MainPage(
+                            //   searchText: widget.searchText,
+                            //   simpleUserInfoCollectListener: model,
+                            //   tagContainBallCollectListener: model,
+                            //   simpleBallNameCollectListener: model,
+                            //   mainScroller: model.scrollController,
+                            //   tabController: _tabController,
+                            // ),
+                            // K00101MainPage(
+                            //   searchText: widget.searchText,
+                            //   mainScroller: model.scrollController,
+                            //   tabController: _tabController,
+                            //   kCodeNestedScrollViewKey: model.kCodeNestedScrollViewKey,
+                            // ),
+                            //
+                            // K00103MainPage(
+                            //   searchText: widget.searchText,
+                            //   mainScroller: model.scrollController,
+                            //   tabController: _tabController,
+                            //   kCodeNestedScrollViewKey: model.kCodeNestedScrollViewKey
+                            // )
                           ])))));
         }));
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
@@ -71,7 +72,9 @@ class G009MainPage extends StatelessWidget {
                           size: 30,
                         ),
                         text: "공개범위",
-                        onTap: () {},
+                        onTap: () {
+                          Fluttertoast.showToast(msg: "준비중입니다");
+                        },
                       ),
                       GCodeLineButtonComponent(
                         icon: Icon(
@@ -81,9 +84,10 @@ class G009MainPage extends StatelessWidget {
                         ),
                         text: "알림",
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (_){
-                            return G015MainPage();
-                          }));
+                          Fluttertoast.showToast(msg: "준비중입니다");
+                          // Navigator.of(context).push(MaterialPageRoute(builder: (_){
+                          //   return G015MainPage();
+                          // }));
                         },
                       ),
                       Divider(color: Color(0xffE4E7E8)),
@@ -134,7 +138,9 @@ class G009MainPage extends StatelessWidget {
                       ),
                       Material(
                         child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Fluttertoast.showToast(msg: "준비중입니다");
+                            },
                             child: Container(
                                 padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
                                 child: Column(children: [

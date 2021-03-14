@@ -20,48 +20,53 @@ class KCodeTopTabBar extends StatelessWidget  implements PreferredSizeWidget{
       child: Consumer<KCodeTopTabBarViewModel>(
         builder: (_, model, __) {
           return Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(52, 16, 52, 0),
-              child: TabBar(
-                  onTap: model.onTab,
-                  labelStyle: GoogleFonts.notoSans(
-                    fontSize: 14,
-                    color: const Color(0xff3497fd),
-                    letterSpacing: -0.28,
-                    height: 1.4285714285714286,
-                  ),
-                  unselectedLabelStyle: GoogleFonts.notoSans(
-                    fontSize: 14,
-                    color: const Color(0xff454f63),
-                    letterSpacing: -0.28,
-                    height: 1.4285714285714286,
-                  ),
-                  indicatorWeight: 6,
-                  labelColor: Color(0xff3497fd),
-                  unselectedLabelColor: Color(0xff454f63),
-                  controller: tabController,
-                  labelPadding: EdgeInsets.all(0),
-                  tabs: [
-                    Tab(
-                      text: "전체",
-                    ),
-                    Tab(
-                      text: "닉네임",
-                    ),
-                    Tab(
-                      text: "제목",
-                    ),
-                    Tab(
-                      text: "태그",
-                    )
-                  ]));
+            height: 0,width: 0,
+          );
+
+
+            // Container(
+            //   color: Colors.white,
+            //   padding: EdgeInsets.fromLTRB(52, 16, 52, 0),
+            //   child: TabBar(
+            //       onTap: model.onTab,
+            //       labelStyle: GoogleFonts.notoSans(
+            //         fontSize: 14,
+            //         color: const Color(0xff3497fd),
+            //         letterSpacing: -0.28,
+            //         height: 1.4285714285714286,
+            //       ),
+            //       unselectedLabelStyle: GoogleFonts.notoSans(
+            //         fontSize: 14,
+            //         color: const Color(0xff454f63),
+            //         letterSpacing: -0.28,
+            //         height: 1.4285714285714286,
+            //       ),
+            //       indicatorWeight: 6,
+            //       labelColor: Color(0xff3497fd),
+            //       unselectedLabelColor: Color(0xff454f63),
+            //       controller: tabController,
+            //       labelPadding: EdgeInsets.all(0),
+            //       tabs: [
+            //         Tab(
+            //           text: "전체",
+            //         ),
+            //         Tab(
+            //           text: "닉네임",
+            //         ),
+            //         Tab(
+            //           text: "제목",
+            //         ),
+            //         Tab(
+            //           text: "태그",
+            //         )
+            //       ]));
         },
       ),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(68);
+  Size get preferredSize => Size.fromHeight(0);
 
 
 }

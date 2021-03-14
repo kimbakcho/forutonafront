@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/ModifiedLengthLimitingTextInputFormatter/ModifiedLengthLimitingTextInputFormatter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +43,7 @@ class SelfIntroduceEditComponent extends StatelessWidget {
                         fontWeight: FontWeight.w300,
                         height: 1.2142857142857142,
                       )),
+                  inputFormatters: [ModifiedLengthLimitingTextInputFormatter(100)],
                   controller: model._selfIntroduceEditController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,

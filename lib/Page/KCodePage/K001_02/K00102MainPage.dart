@@ -58,7 +58,7 @@ class K00102MainPage extends StatelessWidget {
                 children: [
                   KCodeTopFilterBar(
                     searchText: searchText,
-                    descriptionText: "관련 닉네임",
+                    descriptionText: "관련 제목",
                     searchResultCountText: "${model.totalItemCount}",
                     kCodeTopFilterBarListener: model,
                   ),
@@ -158,7 +158,7 @@ class K00102MainPageViewModel
         ballListMediator.sort = "ballHits,DESC";
         break;
       case K00102DrawerItem.Distance:
-        ballListMediator.sort = "distance,DESC";
+        ballListMediator.sort = "distance,ASC";
         break;
     }
     ballListMediator.searchFirst();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/Page/GCodePage/Component/GCodeLineButtonComponent.dart';
 import 'package:forutonafront/Page/LCodePage/L003/L003MainPage.dart';
@@ -85,7 +86,7 @@ class G019MainPage extends StatelessWidget {
                         Divider(color: Color(0xff3A3E3F)),
                         GCodeLineButtonComponent(
                           onTap: (){
-
+                            Fluttertoast.showToast(msg: "준비중입니다.");
                           },
                           text: "회사 소개",
                           icon: Icon(Icons.apartment),

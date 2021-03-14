@@ -27,7 +27,7 @@ class HomeMainPage extends StatefulWidget {
 class _HomeMainPageState extends State<HomeMainPage>
     with AutomaticKeepAliveClientMixin {
   TopNavBtnMediator _topNavBtnMediator =
-      TopNavBtnMediatorImpl(currentTopNavRouter: CodeState.H001CODE);
+      TopNavBtnMediatorImpl(currentTopNavRouter: CodeState.H001CODE,isCanNavOpen: false);
 
   SwipeGestureRecognizerController _swipeGestureRecognizerController =
       SwipeGestureRecognizerController();
@@ -115,10 +115,10 @@ class _HomeMainPageState extends State<HomeMainPage>
                     swipeGestureRecognizerController:
                         _swipeGestureRecognizerController,
                     onSwipeRight: () {
-                      model.swipeRight();
+                      // model.swipeRight();
                     },
                     onSwipeLeft: () {
-                      model.swipeLeft();
+                      // model.swipeLeft();
                     },
                     child: PageView(
                         physics: NeverScrollableScrollPhysics(),

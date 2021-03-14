@@ -9,6 +9,8 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'UserSelfIntroduceWidget.dart';
+
 class UserProfileComponent extends StatelessWidget {
   final String userUid;
 
@@ -83,103 +85,96 @@ class UserProfileComponent extends StatelessWidget {
                           SizedBox(
                             height: 10,
                           ),
-                          Container(
-                              width: MediaQuery.of(context).size.width,
-                              alignment: Alignment.center,
-                              child: Text(
-                                model.userSelfIntroduce,
-                                style: GoogleFonts.notoSans(
-                                  fontSize: 12,
-                                  color: const Color(0xff3a3e3f),
-                                ),
-                                textAlign: TextAlign.center,
-                              )),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Divider(
-                            color: Color(0xffE4E7E8),
+                          UserSelfIntroduceWidget(
+                            userProfileMode: userProfileMode,
+                            userSelfIntroduce: model.userSelfIntroduce,
                           ),
                           SizedBox(
                             height: 16,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              SizedBox(
-                                height: 64,
-                              ),
-                              Container(
-                                child: Column(
-                                  children: [
-                                    Text(model.followerCount,
-                                        style: GoogleFonts.notoSans(
-                                          fontSize: 13,
-                                          color: const Color(0xff000000),
-                                          fontWeight: FontWeight.w700,
-                                        )),
-                                    Text(
-                                      '팔로워',
-                                      style: GoogleFonts.notoSans(
-                                        fontSize: 12,
-                                        color: const Color(0xff5b5b5b),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Column(
-                                  children: [
-                                    Text(model.userLevel,
-                                        style: GoogleFonts.notoSans(
-                                          fontSize: 13,
-                                          color: const Color(0xff000000),
-                                          fontWeight: FontWeight.w700,
-                                        )),
-                                    Text(
-                                      'U 레벨',
-                                      style: GoogleFonts.notoSans(
-                                        fontSize: 12,
-                                        color: const Color(0xff5b5b5b),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Column(
-                                  children: [
-                                    Text(model.followingCount,
-                                        style: GoogleFonts.notoSans(
-                                          fontSize: 13,
-                                          color: const Color(0xff000000),
-                                          fontWeight: FontWeight.w700,
-                                        )),
-                                    Text(
-                                      '팔로잉',
-                                      style: GoogleFonts.notoSans(
-                                        fontSize: 12,
-                                        color: const Color(0xff5b5b5b),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 64,
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
+                          // Divider(
+                          //   color: Color(0xffE4E7E8),
+                          // ),
+                          // SizedBox(
+                          //   height: 16,
+                          // ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          //   children: [
+                          //     SizedBox(
+                          //       height: 64,
+                          //     ),
+                          //     Container(
+                          //       child: Column(
+                          //         children: [
+                          //           Text(model.followerCount,
+                          //               style: GoogleFonts.notoSans(
+                          //                 fontSize: 13,
+                          //                 color: const Color(0xff000000),
+                          //                 fontWeight: FontWeight.w700,
+                          //               )),
+                          //           Text(
+                          //             '팔로워',
+                          //             style: GoogleFonts.notoSans(
+                          //               fontSize: 12,
+                          //               color: const Color(0xff5b5b5b),
+                          //               fontWeight: FontWeight.w500,
+                          //             ),
+                          //             textAlign: TextAlign.center,
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //     Container(
+                          //       child: Column(
+                          //         children: [
+                          //           Text(model.userLevel,
+                          //               style: GoogleFonts.notoSans(
+                          //                 fontSize: 13,
+                          //                 color: const Color(0xff000000),
+                          //                 fontWeight: FontWeight.w700,
+                          //               )),
+                          //           Text(
+                          //             'U 레벨',
+                          //             style: GoogleFonts.notoSans(
+                          //               fontSize: 12,
+                          //               color: const Color(0xff5b5b5b),
+                          //               fontWeight: FontWeight.w500,
+                          //             ),
+                          //             textAlign: TextAlign.center,
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //     Container(
+                          //       child: Column(
+                          //         children: [
+                          //           Text(model.followingCount,
+                          //               style: GoogleFonts.notoSans(
+                          //                 fontSize: 13,
+                          //                 color: const Color(0xff000000),
+                          //                 fontWeight: FontWeight.w700,
+                          //               )),
+                          //           Text(
+                          //             '팔로잉',
+                          //             style: GoogleFonts.notoSans(
+                          //               fontSize: 12,
+                          //               color: const Color(0xff5b5b5b),
+                          //               fontWeight: FontWeight.w500,
+                          //             ),
+                          //             textAlign: TextAlign.center,
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //     SizedBox(
+                          //       height: 64,
+                          //     )
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: 16,
+                          // ),
                         ],
                       ),
                     ),
@@ -246,7 +241,11 @@ class UserProfileComponentViewModel extends ChangeNotifier {
   }
 
   String get userSelfIntroduce {
-    return _userProfileComponentInfoDto.selfIntroduce;
+    if (_userProfileComponentInfoDto.selfIntroduce != null) {
+      return _userProfileComponentInfoDto.selfIntroduce;
+    } else {
+      return "";
+    }
   }
 
   String get followerCount {

@@ -50,12 +50,14 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
 
   CodeState currentTopNavRouter;
 
+  final bool isCanNavOpen;
+
   @override
   NavBtnMediatorState aniState;
 
   INavBtnGroup _iNavBtnGroup;
 
-  TopNavBtnMediatorImpl({this.currentTopNavRouter}) {
+  TopNavBtnMediatorImpl({this.currentTopNavRouter,this.isCanNavOpen = true}) {
     aniState = NavBtnMediatorState.Close;
   }
 
@@ -74,9 +76,12 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   }
 
   openNavList({@required CodeState navRouterType}) async {
-    topNavBtnForwardAnimation();
-    closeExpendComponent();
-    await Future.delayed(Duration(milliseconds: animationDuration.inMilliseconds + 100));
+    if(isCanNavOpen){
+      topNavBtnForwardAnimation();
+      closeExpendComponent();
+      await Future.delayed(Duration(milliseconds: animationDuration.inMilliseconds + 100));
+    }
+
   }
 
   void closeExpendComponent() {

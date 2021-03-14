@@ -21,7 +21,8 @@ class _GCodeMainPageState extends State<GCodeMainPage>
 
   TopNavBtnMediator _topNavBtnMediator =
   TopNavBtnMediatorImpl(
-      currentTopNavRouter: CodeState.G001CODE
+      currentTopNavRouter: CodeState.G001CODE,
+    isCanNavOpen: false
   );
 
   SwipeGestureRecognizerController _swipeGestureRecognizerController =
@@ -72,10 +73,10 @@ class _GCodeMainPageState extends State<GCodeMainPage>
                       swipeGestureRecognizerController:
                       _swipeGestureRecognizerController,
                       onSwipeRight: () {
-                        model.swipeRight();
+                        // model.swipeRight();
                       },
                       onSwipeLeft: () {
-                        model.swipeLeft();
+                        // model.swipeLeft();
                       },
                       child: PageView(
                           physics: NeverScrollableScrollPhysics(),

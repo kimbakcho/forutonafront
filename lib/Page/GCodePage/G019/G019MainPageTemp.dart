@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Page/GCodePage/G019/G019MainPageViewTempModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -165,7 +166,9 @@ class G019MainPageTemp extends StatelessWidget {
       height: 48.00,
       child: FlatButton(
           padding: EdgeInsets.all(0),
-          onPressed: () {},
+          onPressed: () {
+            Fluttertoast.showToast(msg: "준비중입니다.");
+          },
           child: Container(
               height: 48.00,
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
