@@ -7,7 +7,7 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:forutonafront/Splash/SplashPage.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:provider/provider.dart';
-//flutter pub run build_runner watch --use-polling-watcher
+//flutter pub run build_runner watch --use-polling-watcher --delete-conflicting-outputs
 
 void main() {
   configureDependencies();

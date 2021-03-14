@@ -149,7 +149,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                                               image: DecorationImage(
                                                   image: AssetImage(
                                                       "assets/MarkesImages/issueballicon2.png")))))),
-                              Positioned(
+                              widget.im001mode == IM001Mode.create ? Positioned(
                                   right: 16,
                                   top: 16,
                                   child: Material(
@@ -169,7 +169,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                                         ),
                                       ),
                                     ),
-                                  ))
+                                  )): Container(width: 0,height: 0)
                             ],
                           ),
                           margin: EdgeInsets.only(bottom: 71),
@@ -343,6 +343,7 @@ class IM001MainPageViewModel extends ChangeNotifier
         },
         im001mode: im001mode,
         preSetBallResDto: preSetBallResDto,
+        preSetFBallTagResDtos: preSetFBallTagResDtos,
       ),
     );
   }
@@ -495,11 +496,12 @@ class IM001MainPageViewModel extends ChangeNotifier
       fBallInsertReqDto.tags.add(tagInsertReqDto);
     }
 
-    await insertBallUseCaseInputPort.insertBall(fBallInsertReqDto);
+    var fBallResDto = await insertBallUseCaseInputPort.insertBall(fBallInsertReqDto);
 
     Navigator.of(context).pop();
     Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(fBallResDto);
+
 
     notifyListeners();
   }

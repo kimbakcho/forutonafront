@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 abstract class  SelectBallUseCaseInputPort {
   Future<FBallResDto> selectBall(String ballUuid,{SelectBallUseCaseOutputPort outputPort});
+  Future<List<FBallResDto>> selectBalls(List<String> ballUuids);
 }
 abstract class SelectBallUseCaseOutputPort {
   onSelectBall(FBallResDto fBallResDto);
@@ -23,6 +24,12 @@ class SelectBallUseCase implements SelectBallUseCaseInputPort{
       outputPort.onSelectBall(fBallResDto);
     }
     return fBallResDto;
+  }
+
+  @override
+  Future<List<FBallResDto>> selectBalls(List<String> ballUuids) async {
+    var list = await _fBallRepository.selectBalls(ballUuids);
+    return list;
   }
 
 }

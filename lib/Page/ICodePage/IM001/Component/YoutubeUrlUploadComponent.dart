@@ -114,6 +114,7 @@ class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
           fBallResDto: preSetBallResDto, geoLocatorAdapter: sl());
       if (_issueBallDisPlayUseCase.getYoutubeId() != "") {
         youtubeId = _issueBallDisPlayUseCase.getYoutubeId();
+        youtubeLink = "https://youtu.be/"+youtubeId;
         isShow = true;
       }
     }

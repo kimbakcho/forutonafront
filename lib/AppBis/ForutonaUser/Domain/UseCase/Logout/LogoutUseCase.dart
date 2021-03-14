@@ -34,5 +34,6 @@ class LogoutUseCase implements LogoutUseCaseInputPort {
         .getInstance(reqSignInUserInfoFromMemory.snsService);
 
     snsLoginModuleAdapter.logout();
+    _signInUserInfoUseCaseInputPort.clearUserInfo();
   }
 }

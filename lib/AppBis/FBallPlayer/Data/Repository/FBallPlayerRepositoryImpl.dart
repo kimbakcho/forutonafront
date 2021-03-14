@@ -16,6 +16,7 @@ class FBallPlayerRepositoryImpl implements FBallPlayerRepository {
       {@required FBallPlayerRemoteDataSource fBallPlayerRemoteDataSource})
       : _fBallPlayerRemoteDataSource = fBallPlayerRemoteDataSource;
 
+
   @override
   Future<PageWrap<FBallPlayerResDto>> getUserPlayBallList(
       String playerUid, Pageable pageable) async {

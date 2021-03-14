@@ -100,8 +100,10 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier implements Val
   }
 
   syncUserInfo() async {
-    await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
-    notifyListeners();
+    if(_signInUserInfoUseCaseInputPort.isLogin){
+      await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
+      notifyListeners();
+    }
   }
 
   showVotePopupDialog(BuildContext context) {

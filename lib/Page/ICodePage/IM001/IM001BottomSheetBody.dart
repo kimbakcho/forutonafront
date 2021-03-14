@@ -5,6 +5,7 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/Iss
 import 'package:forutonafront/AppBis/FBall/Domain/Value/IssueBallDescription.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
+import 'package:forutonafront/Common/ModifiedLengthLimitingTextInputFormatter/ModifiedLengthLimitingTextInputFormatter.dart';
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Components/ProfileImageEditComponent/ImageSelectModalBottomSheet.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/YoutubeUrlUploadComponent.dart';
@@ -107,6 +108,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                             focusNode: model.titleFocus,
                             controller: model._titleTextController,
                             maxLength: 20,
+                            inputFormatters: [ModifiedLengthLimitingTextInputFormatter(20)],
                             decoration: InputDecoration(
                                 hintText: "제목을 지어주세요!",
                                 hintStyle: GoogleFonts.notoSans(
@@ -140,6 +142,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                             focusNode: model.contentFocus,
                             controller: model._contentTextController,
                             maxLength: 2000,
+                            inputFormatters: [ModifiedLengthLimitingTextInputFormatter(2000)],
                             maxLines: null,
                             decoration: InputDecoration(
                                 hintText: "어떤 이슈인가요?",
@@ -164,6 +167,8 @@ class IM001BottomSheetBody extends StatelessWidget {
                       preSetBallResDto: preSetBallResDto,
                     ),
                     BallTagEditComponent(
+                      im001mode: im001mode,
+                      preSetFBallTagResDtos: preSetFBallTagResDtos,
                       ballTagEditComponentController:
                           model.ballTagEditComponentController,
                       margin: EdgeInsets.only(left: 16, right: 16, top: 32),

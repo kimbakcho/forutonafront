@@ -11,14 +11,15 @@ class G001MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => G001MainPageViewModel(sl(),sl()),
+        create: (_) => G001MainPageViewModel(sl(), sl()),
         child: Consumer<G001MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
               body: Container(
                   child: SingleChildScrollView(
                       child: Column(children: [
             UserProfileComponent(
-              userProfileComponentViewModelController: model._userProfileComponentViewModelController,
+              userProfileComponentViewModelController:
+                  model._userProfileComponentViewModelController,
               userUid: model.userUid,
               userProfileMode: UserProfileMode.ME,
             ),
@@ -36,31 +37,37 @@ class G001MainPage extends StatelessWidget {
 class G001MainPageViewModel extends ChangeNotifier {
   SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
-  UserProfileComponentViewModelController _userProfileComponentViewModelController;
+  UserProfileComponentViewModelController
+      _userProfileComponentViewModelController;
 
   G001MainPageViewModelController _g001mainPageViewModelController;
 
-  G001MainPageViewModel(this._signInUserInfoUseCaseInputPort,this._g001mainPageViewModelController){
-    _userProfileComponentViewModelController = UserProfileComponentViewModelController();
-    if(_g001mainPageViewModelController != null){
+  G001MainPageViewModel(this._signInUserInfoUseCaseInputPort,
+      this._g001mainPageViewModelController) {
+    _userProfileComponentViewModelController =
+        UserProfileComponentViewModelController();
+    if (_g001mainPageViewModelController != null) {
       _g001mainPageViewModelController._g001mainPageViewModel = this;
     }
   }
 
   String get userUid {
-    var reqSignInUserInfoFromMemory =
-        this._signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-    return reqSignInUserInfoFromMemory.uid;
+    if (_signInUserInfoUseCaseInputPort.isLogin) {
+      var reqSignInUserInfoFromMemory =
+          this._signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      return reqSignInUserInfoFromMemory.uid;
+    } else {
+      return "";
+    }
   }
-
-
 }
+
 @lazySingleton
 class G001MainPageViewModelController {
   G001MainPageViewModel _g001mainPageViewModel;
 
-  reloadUserProfile(){
-    _g001mainPageViewModel._userProfileComponentViewModelController.reloadUserInfo();
+  reloadUserProfile() {
+    _g001mainPageViewModel._userProfileComponentViewModelController
+        .reloadUserInfo();
   }
-
 }

@@ -39,28 +39,11 @@ class I001MainPage extends StatefulWidget {
 }
 
 class _I001MainPageState extends State<I001MainPage>
-    with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<I001MainPage> {
+    with  AutomaticKeepAliveClientMixin<I001MainPage> {
   _I001MainPageState();
 
-  @override
-  void initState() {
-    super.initState();
 
-    WidgetsBinding.instance.addObserver(this);
-  }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    var model = Provider.of<I001MainPageViewModel>(context);
-    model.refreshMapKey();
-    setState(() {});
-  }
 
   @override
   // ignore: must_call_super

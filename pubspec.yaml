@@ -43,7 +43,11 @@ dependencies:
   #비동기 처리에 필요
   async: ^2.3.0
   #GoogleMap
-  google_maps_flutter: ^1.0.6
+  google_maps_flutter:
+    git:
+      url: git://github.com/kimbakcho/plugins.git
+      path: packages/google_maps_flutter/google_maps_flutter
+      ref: 9983ae9
   #GPS 지도 정보를 사용하기 위해서 사용
   geolocator: ^5.3.1
   #태그 랭킹등에서 사용

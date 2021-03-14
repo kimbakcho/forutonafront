@@ -24,29 +24,11 @@ class H007MainPage extends StatefulWidget {
 }
 
 class _H007MainPageState extends State<H007MainPage>
-    with WidgetsBindingObserver {
+     {
   Position initPosition;
   String address;
 
-  UniqueKey googleMapKey = UniqueKey();
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    googleMapKey = UniqueKey();
-    setState(() {});
-  }
 
   _H007MainPageState(this.initPosition, this.address);
 
@@ -63,7 +45,7 @@ class _H007MainPageState extends State<H007MainPage>
           return Scaffold(
               body: Stack(children: <Widget>[
             GoogleMap(
-              key: googleMapKey,
+
               initialCameraPosition: model.initCameraPosition,
               myLocationEnabled: true,
               myLocationButtonEnabled: false,

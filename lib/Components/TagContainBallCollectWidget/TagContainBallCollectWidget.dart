@@ -22,7 +22,7 @@ class TagContainBallCollectWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => TagContainBallCollectWidgetViewModel(
-            ballListMediator: TagContainBallCollectMediator(),
+            ballListMediator: TagContainBallCollectMediator(sl()),
             searchText: searchText,
             geoLocationUtilForeGroundUseCase: sl(),
             tagContainBallCollectListener: tagContainBallCollectListener),

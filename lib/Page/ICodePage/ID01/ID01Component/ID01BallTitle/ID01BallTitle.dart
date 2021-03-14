@@ -80,7 +80,7 @@ class ID01BallTitleViewModel extends ChangeNotifier {
   ID01BallTitleViewModel(this.fBallResDto);
 
   String get ballInfo{
-    return '조회수 ${fBallResDto.ballHits} • 등록일자 ${TimeDisplayUtil.getCalcToStrFromNow(fBallResDto.makeTime)}$isEditText';
+    return '조회수 ${fBallResDto.ballHits} • ${TimeDisplayUtil.getCalcToStrFromNow(fBallResDto.makeTime)}$isEditText';
   }
 
   String get isEditText {

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/Page/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/Page/HCodePage/H002/BottomMakeComponent/BottomMakeComponent.dart';
 import 'package:forutonafront/Page/HomePage/HomeMainPage.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
 import 'package:forutonafront/Page/LCodePage/L010/L010MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L011/L011MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -117,7 +120,7 @@ class MainPageViewModel extends ChangeNotifier
   }
 
   _actionMakeBall() async {
-    await showModalBottomSheet(
+    var result = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         builder: (_) {
@@ -128,6 +131,15 @@ class MainPageViewModel extends ChangeNotifier
             },
           );
         });
+    if(result is FBallResDto){
+      Navigator.of(context).push(MaterialPageRoute(builder: (_){
+        return ID01MainPage(
+          id01Mode: ID01Mode.publish,
+          fBallResDto: result,
+          ballUuid: result.ballUuid
+        );
+      }));
+    }
   }
 }
 

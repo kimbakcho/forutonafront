@@ -1,3 +1,5 @@
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
@@ -8,7 +10,9 @@ import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 
 class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCaseInputPort>{
 
-  TagContainBallCollectMediator(){
+  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
+
+  TagContainBallCollectMediator(this._selectBallUseCaseInputPort){
     pageLimit =5;
   }
 
@@ -19,10 +23,24 @@ class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCas
         .fBallListUpUseCaseInputPort
         .search(pageable);
 
-    var content = response.content;
-    //TODO 추후에 여기서 BALL들을 조회 하는 API를 BackEnd 에서 만들고 가져와서 리턴해주기 지금은 임시로 null 로 리턴
+    var ballUuidList = response.content.map((e) => e.ballUuid).toList();
 
-    return null;
+    var fBallResDtoList = await this._selectBallUseCaseInputPort.selectBalls(ballUuidList);
+    PageWrap<FBallResDto> ballsResponse2 = PageWrap<FBallResDto>(
+      content: fBallResDtoList,
+      size: response.size,
+      empty: response.empty,
+      first: response.first,
+      last: response.last,
+      number: response.number,
+      numberOfElements: response.numberOfElements,
+      pageable: response.pageable,
+      sort: response.sort,
+      totalElements: response.totalElements,
+      totalPages: response.totalPages
+    );
+
+    return ballsResponse2;
   }
 
   @override

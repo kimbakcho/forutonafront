@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+
 import 'package:forutonafront/Common/Page/Dto/PageWrap.dart';
 import 'package:forutonafront/Common/PageableDto/Pageable.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallImageUpload.dart';
@@ -43,6 +44,8 @@ abstract class FBallRepository {
   Future<int> ballHit(String ballUuid);
 
   Future<FBallImageUpload> ballImageUpload({@required List<Uint8List> images});
+
+  Future<List<FBallResDto>> selectBalls(List<String> ballUuids);
 
 
 

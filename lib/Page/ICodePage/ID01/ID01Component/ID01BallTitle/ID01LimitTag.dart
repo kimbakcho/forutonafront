@@ -36,8 +36,10 @@ class ID01LimitTag extends StatelessWidget {
       child: Consumer<ID01LimitTagViewModel>(
         builder: (_, model, child) {
           return Container(
+            alignment: Alignment.centerLeft,
             child: model.isLoaded ?
-            Row(
+            Wrap(
+              spacing: 5.0,
               children: model._buildTagWidget(),
             ) : Container(),
           );

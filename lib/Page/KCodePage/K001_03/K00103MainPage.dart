@@ -38,7 +38,7 @@ class K00103MainPage extends StatelessWidget {
           searchText: searchText,
           context: context,
           mainScroller: mainScroller,
-          ballListMediator: TagContainBallCollectMediator(),
+          ballListMediator: TagContainBallCollectMediator(sl()),
           tabController: tabController,
           geoLocationUtilForeGroundUseCase: sl(),
           kCodeScrollerController: KCodeScrollerController(),

@@ -8,6 +8,7 @@ import 'package:forutonafront/Components/UserProfileBar/UserProfileBar.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001Mode.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/BallPowerDisplay/BallPowerState.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01BallTitle/ID01BallTitle.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01BallTitle/ID01LimitTag.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01Pictures/ID01Pictures.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01RemainTimeWidget.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01TextContent.dart';
@@ -86,6 +87,14 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                       ID01TextContent(
                         content: model.getBallTextContent(),
                       ),
+                      Container(
+                        margin: EdgeInsets.all(16),
+                        child: ID01LimitTag(
+                        ballUuid: model.fBallResDto.ballUuid,
+                        limitCount: 10,
+                        id01Mode: model.id01Mode,
+                      ),)
+                      ,
                       ID01Pictures(
                         desImages: model.getBallDesImages(),
                       ),

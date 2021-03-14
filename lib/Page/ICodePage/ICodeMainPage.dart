@@ -17,30 +17,7 @@ class ICodeMainPage extends StatefulWidget {
   _ICodeMainPageState createState() => _ICodeMainPageState();
 }
 
-class _ICodeMainPageState extends State<ICodeMainPage>
-    with WidgetsBindingObserver {
-
-  UniqueKey googleMapKey = UniqueKey();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    googleMapKey = UniqueKey();
-    setState(() {
-
-    });
-  }
+class _ICodeMainPageState extends State<ICodeMainPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +46,6 @@ class _ICodeMainPageState extends State<ICodeMainPage>
                             ],
                           )),
                       GoogleMap(
-                        key: googleMapKey,
                         initialCameraPosition: model.currentMapPosition,
                         onMapCreated: model.onCreateMap,
                         myLocationEnabled: true,

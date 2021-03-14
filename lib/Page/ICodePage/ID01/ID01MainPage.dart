@@ -12,21 +12,24 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
+import 'package:forutonafront/Components/BallOption/BallDeletePopup/BallDeletePopup.dart';
+import 'package:forutonafront/Components/BallOption/MyBallPopup/MyBallPopup.dart';
+import 'package:forutonafront/Components/BallOption/OtherUserBallPopup/OtherUserBallPopup.dart';
+
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
-import 'package:forutonafront/Components/ReportActionAlertDialog/ReportActionAlertDialog.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
+import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:uuid/uuid.dart';
 
-import 'ID01Component/ID01Option/BallDeletePopup/BallDeletePopup.dart';
-import 'ID01Component/ID01Option/MyBallPopup/MyBallPopup.dart';
 import 'ID01MainBottomSheet/ID01MainBottomSheetHeader.dart';
 import 'ID01MainBottomSheet/ID01MainBottomSheetBody.dart';
 import 'ID01MainBottomSheet/ID01MainScaffoldBottomSheet.dart';
@@ -360,8 +363,20 @@ class ID01MainPageViewModel extends ChangeNotifier {
   }
 
   showPopup(BuildContext context) async {
+    if (!_signInUserInfoUseCaseInputPort.isLogin) {
+      showMaterialModalBottomSheet(
+          context: context,
+          expand: false,
+          backgroundColor: Colors.transparent,
+          enableDrag: true,
+          builder: (context) {
+            return L001BottomSheet();
+          });
+    }
+
     var reqSignInUserInfoFromMemory =
         _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+
     if (fBallResDto.uid.uid == reqSignInUserInfoFromMemory.uid) {
       showDialog(
           context: context,
@@ -372,18 +387,20 @@ class ID01MainPageViewModel extends ChangeNotifier {
     } else {
       await showDialog(
           context: context,
-          child: MaliciousReportActionAlertDialog(
+          child: OtherUserBallPopup(
             onReportMalicious: onReportMalicious,
           ));
     }
   }
 
   onDeleteBall(BuildContext context) async {
-    await showDialog(context: context, child: BallDeletePopup(
-      actionDelete:onActionDelete,
-    ));
-
+    await showDialog(
+        context: context,
+        child: BallDeletePopup(
+          actionDelete: onActionDelete,
+        ));
   }
+
   onActionDelete() async {
     await _deleteBallUseCaseInputPort.deleteBall(fBallResDto.ballUuid);
     Navigator.of(_context).pop();
@@ -407,7 +424,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  onReportMalicious(MaliciousType maliciousType) async {
+  onReportMalicious(BuildContext context, MaliciousType maliciousType) async {
     await this
         ._maliciousBallUseCaseInputPort
         .reportMaliciousReply(maliciousType, ballUuid);

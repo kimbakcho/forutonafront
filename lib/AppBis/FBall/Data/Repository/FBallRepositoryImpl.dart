@@ -125,5 +125,15 @@ class FBallRepositoryImpl implements FBallRepository {
     return FBallImageUpload.fromJson(response.data);
   }
 
+  @override
+  Future<List<FBallResDto>> selectBalls(List<String> ballUuids) async {
+    var fDio = FDio.noneToken();
+    var response = await fDio.get("/v1/FBalls",queryParameters: {
+      "ballUuids" : ballUuids.toString()
+    });
+    return List<FBallResDto>.from(
+        response.data.map((x) => FBallResDto.fromJson(x)));
+  }
+
 
 }

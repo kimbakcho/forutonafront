@@ -9,8 +9,9 @@ import 'package:forutonafront/AppBis/FBallReply/Domain/UseCase/FBallReply/FBallR
 import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyReqDto.dart';
 import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Components/BallOption/OtherUserBallPopup/OtherUserBallPopup.dart';
 import 'package:forutonafront/Components/FBallReply2/ReplyOptionAction/ReplyOptionActionAlertDialogSheet.dart';
-import 'package:forutonafront/Components/ReportActionAlertDialog/ReportActionAlertDialog.dart';
+
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -427,7 +428,7 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier
       } else {
         await showDialog(
             context: context,
-            child: MaliciousReportActionAlertDialog(
+            child: OtherUserBallPopup(
               onReportMalicious: onReportMalicious,
             ));
       }
@@ -458,7 +459,7 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier
     }
   }
 
-  onReportMalicious(MaliciousType replyMaliciousType) async {
+  onReportMalicious(BuildContext context,MaliciousType replyMaliciousType) async {
     await _maliciousReplyUseCase.reportMaliciousReply(replyMaliciousType,fBallReplyResDto.replyUuid);
 
   }

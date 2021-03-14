@@ -22,7 +22,6 @@ class IssueBallWidgetFactory {
           key: Key(searchCollectMediator.itemList[index].ballUuid),
           index: index,
           ballListMediator: searchCollectMediator,
-          ballOptionWidgetFactory: sl(),
           boxDecoration: boxDecoration,
         );
       } else {
@@ -30,7 +29,6 @@ class IssueBallWidgetFactory {
             key: Key(searchCollectMediator.itemList[index].ballUuid),
             index: index,
             ballListMediator: searchCollectMediator,
-            ballOptionWidgetFactory: sl(),
             boxDecoration: boxDecoration);
       }
     } else if (ballStyle == BallStyle.Style2) {
@@ -46,7 +44,6 @@ class IssueBallWidgetFactory {
           key: Key(searchCollectMediator.itemList[index].ballUuid),
           index: index,
           ballListMediator: searchCollectMediator,
-          ballOptionWidgetFactory: sl(),
           boxDecoration: boxDecoration);
     } else {
       return Container(child: Text("지원되지 않는 Style"));

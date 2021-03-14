@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
+import 'package:forutonafront/Common/ModifiedLengthLimitingTextInputFormatter/ModifiedLengthLimitingTextInputFormatter.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallTageEdit/BallEditTagChip.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallTageEdit/TagEditDto.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
@@ -54,11 +56,18 @@ class BallTagEditComponent extends StatelessWidget {
                           ),
                         ),
                         TextField(
-                          controller: model._textEditingController,
+                          controller: model._tagTextEditingController,
+                          maxLength: 10,
+                          maxLengthEnforced: true,
+                          onChanged: model._onTagTextChange,
                           focusNode: model.editFocus,
                           onSubmitted: (value) {
                             model.addTag(value);
                           },
+                          inputFormatters: [
+                            ModifiedLengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.deny(RegExp(r'''[\{\}\[\]\/?.;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"\s]''''')),
+                          ],
                           decoration: InputDecoration(
                               hintStyle: GoogleFonts.notoSans(
                                 fontSize: 14,
@@ -85,7 +94,7 @@ class BallTagEditComponent extends StatelessWidget {
 }
 
 class BallTagEditComponentViewModel extends ChangeNotifier {
-  TextEditingController _textEditingController;
+  TextEditingController _tagTextEditingController;
 
   final BallTagEditComponentController ballTagEditComponentController;
 
@@ -101,7 +110,9 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
 
   BallTagEditComponentViewModel(this.ballTagEditComponentController,
       this.im001mode, this.preSetFBallTagResDtos) {
-    _textEditingController = TextEditingController();
+    _tagTextEditingController = TextEditingController();
+
+
     if (ballTagEditComponentController != null) {
       ballTagEditComponentController._viewModel = this;
     }
@@ -119,6 +130,20 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
     }
   }
 
+  _onTagTextChange(String tagValue){
+    print(tagValue);
+    if(tagValue.isNotEmpty){
+      print(tagValue.indexOf(","));
+      if(tagValue.indexOf(",")>0){
+        _tagTextEditingController.clear();
+        var tagText = tagValue.replaceAll(",","");
+        addTag(tagText);
+      }
+    }
+
+  }
+
+
   get isEditFocus {
     return editFocus.hasFocus;
   }
@@ -129,14 +154,27 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
   }
 
   void addTag(String value) {
-    if (ballEditTagChips.length > 10) {
+    if (ballEditTagChips.length >= 10) {
       Fluttertoast.showToast(msg: "태그가 10를 초과 하였습니다.");
+      return;
+    }
+
+    bool hasTagFlag =false;
+
+    ballEditTagChips.forEach((element) {
+      if(element.tagEditItemDto.text==value){
+        hasTagFlag = true;
+      }
+    });
+
+    if(hasTagFlag){
+      Fluttertoast.showToast(msg: "이미 입력된 태그입니다.");
       return;
     }
 
     ballEditTagChips.add(BallEditTagChip(
         tagEditItemDto: TagEditItemDto(value), onDeleteTap: _onDeleteTagChip));
-    _textEditingController.clear();
+    _tagTextEditingController.clear();
     notifyListeners();
   }
 

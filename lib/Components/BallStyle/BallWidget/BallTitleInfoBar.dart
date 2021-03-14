@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionPopup.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/Components/UserProfileImageWidget/UserProfileImageWidget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -14,7 +13,7 @@ class BallTitleInfoBar extends StatelessWidget {
   }) : super(key: key);
   final BallDisPlayUseCase ballDisPlayUseCase;
   final Function gotoDetailPage;
-  final BallOptionPopup showOptionPopUp;
+  final Function showOptionPopUp;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,7 @@ class BallTitleInfoBar extends StatelessWidget {
                                 Container(
                                   child: Text(
                                       '• 조회수 '
-                                      '${ballDisPlayUseCase.ballHits()}회  •  ${ballDisPlayUseCase.remainTime()}',
+                                      '${ballDisPlayUseCase.ballHits()}회  •  ${ballDisPlayUseCase.displayMakeTime()}',
                                       maxLines: 1,
                                       style: GoogleFonts.notoSans(
                                         fontSize: 10,
@@ -80,7 +79,7 @@ class BallTitleInfoBar extends StatelessWidget {
               color: Colors.white,
               child: InkWell(
                 onTap: () {
-                  showOptionPopUp.showPopup(context);
+                  showOptionPopUp();
                 },
                 child: Icon(
                   ForutonaIcon.dots,

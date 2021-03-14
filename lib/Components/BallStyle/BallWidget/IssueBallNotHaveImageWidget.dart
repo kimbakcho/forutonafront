@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
-import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionPopup.dart';
-import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionWidgetFactory.dart';
 import 'package:forutonafront/Components/BallStyle/BallWidget/IssueBallTopBar.dart';
-import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
+import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -17,21 +18,19 @@ import 'ListUpBallWidgetItem.dart';
 class IssueBallNotHaveImageWidget extends StatelessWidget {
   final int index;
   final BallListMediator ballListMediator;
-  final BallOptionWidgetFactory ballOptionWidgetFactory;
   final BoxDecoration boxDecoration;
 
   IssueBallNotHaveImageWidget(
       {Key key,
       this.index,
       this.ballListMediator,
-      this.ballOptionWidgetFactory,
       this.boxDecoration})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => IssueBallNotHaveImageWidgetViewModel(sl(),
+      create: (_) => IssueBallNotHaveImageWidgetViewModel(sl(),sl(),
           context: context, ballListMediator: ballListMediator, index: index),
       child: Consumer<IssueBallNotHaveImageWidgetViewModel>(
         builder: (_, model, __) {
@@ -54,12 +53,7 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
                       BallTitleInfoBar(
                         ballDisPlayUseCase: model.issueBallDisPlayUseCase,
                         gotoDetailPage: model.moveToDetailPage,
-                        showOptionPopUp: BasicBallOptionPopup(
-                            ballOptionWidgetFactory.getBallOptionWidget(
-                                BallOptionWidgetFactoryParams(
-                                    fBallResDto: model
-                                        .issueBallDisPlayUseCase.fBallResDto,
-                                    ballListMediator: ballListMediator))),
+                        showOptionPopUp: model.showOptionPopUp,
                       ),
                       BallTextWidget(
                         gotoDetailPage: model.moveToDetailPage,
@@ -78,9 +72,11 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   IssueBallDisPlayUseCase issueBallDisPlayUseCase;
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
 
-  IssueBallNotHaveImageWidgetViewModel(this._selectBallUseCaseInputPort,
+  final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
+
+  IssueBallNotHaveImageWidgetViewModel(this._selectBallUseCaseInputPort,this._tagFromBallUuidUseCaseInputPort,
       {BuildContext context, BallListMediator ballListMediator, int index})
-      : super(context, ballListMediator, index,sl()) {
+      : super(context, ballListMediator, index,sl(),sl(),sl(),sl(),sl()) {
     issueBallDisPlayUseCase =
         IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
   }
@@ -93,5 +89,26 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
         IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
     ballWidgetKey = Uuid().v4();
     notifyListeners();
+  }
+
+  @override
+  Widget detailPage() {
+    return ID01MainPage(
+      ballUuid: ballListMediator.itemList[index].ballUuid,
+      fBallResDto: ballListMediator.itemList[index],
+    );
+  }
+
+  @override
+  Future<void> onModifyBall(BuildContext context) async {
+    var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
+        ballUuid: ballListMediator.itemList[index].ballUuid);
+    await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return IM001MainPage(
+        preSetBallResDto: ballListMediator.itemList[index],
+        im001mode: IM001Mode.modify,
+        preSetFBallTagResDtos: tags,
+      );
+    }));
   }
 }

@@ -36,7 +36,6 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
   String ballUuid;
   IM001MainPageEnterMode mode;
   IM001MainPageViewModelTemp childModel;
-  UniqueKey googleMapKey = UniqueKey();
 
   _IM001MainPageTempState(
       this.setUpPosition, this.address, this.ballUuid, this.mode);
@@ -55,7 +54,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    googleMapKey = UniqueKey();
+
     if (childModel != null) {
       await childModel.copyClipBoard();
     }
@@ -605,7 +604,6 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
         height: 233,
         child: Stack(children: <Widget>[
           GoogleMap(
-            key: googleMapKey,
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
               new Factory<OneSequenceGestureRecognizer>(
                 () => new EagerGestureRecognizer(),

@@ -2,11 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyBallPopup extends StatelessWidget {
+  final Function(BuildContext context) onShare;
+
   final Function(BuildContext context) onModify;
 
   final Function(BuildContext context) onDelete;
 
-  const MyBallPopup({Key key, this.onModify, this.onDelete}) : super(key: key);
+  final isShowShareBtn;
+  final isShowModifyBtn;
+  final isShowDeleteBtn;
+  final isShowCloseBtn;
+
+  const MyBallPopup(
+      {Key key,
+      this.onModify,
+      this.onDelete,
+      this.onShare,
+      this.isShowShareBtn = false,
+      this.isShowModifyBtn = true,
+      this.isShowDeleteBtn = true,
+      this.isShowCloseBtn=true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +35,35 @@ class MyBallPopup extends StatelessWidget {
             body: Center(
               child: Container(
                 width: 221,
-                height: 152,
+                height: widgetHeight,
                 child: Column(
                   children: [
-                    Row(
+                    isShowShareBtn ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                            child: Material(
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: Colors.white,
+                              child: InkWell(
+                                onTap: () {
+                                  onShare(context);
+                                },
+                                child: Container(
+                                  height: 50,
+                                  child: Center(
+                                    child: Text("공유하기"),
+                                  ),
+                                ),
+                              ),
+                            ))
+                      ],
+                    ): Container(),
+                    isShowShareBtn ? Divider(
+                      color: Color(0xffE4E7E8),
+                      height: 1,
+                    ): Container(),
+                    isShowModifyBtn ? Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
@@ -42,12 +83,12 @@ class MyBallPopup extends StatelessWidget {
                           ),
                         ))
                       ],
-                    ),
-                    Divider(
+                    ): Container(),
+                    isShowModifyBtn? Divider(
                       color: Color(0xffE4E7E8),
                       height: 1,
-                    ),
-                    Row(
+                    ): Container(),
+                    isShowDeleteBtn ? Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
@@ -68,12 +109,12 @@ class MyBallPopup extends StatelessWidget {
                           ),
                         ))
                       ],
-                    ),
-                    Divider(
+                    ): Container(),
+                    isShowDeleteBtn ? Divider(
                       color: Color(0xffE4E7E8),
                       height: 1,
-                    ),
-                    Row(
+                    ): Container(),
+                    isShowCloseBtn ? Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
@@ -93,7 +134,7 @@ class MyBallPopup extends StatelessWidget {
                           ),
                         ))
                       ],
-                    )
+                    ): Container()
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -106,6 +147,26 @@ class MyBallPopup extends StatelessWidget {
       ),
     );
   }
+
+  get widgetHeight {
+    double height = 0;
+    if(isShowShareBtn){
+      height += 51;
+    }
+    if(isShowModifyBtn){
+      height += 51;
+    }
+    if(isShowDeleteBtn){
+      height += 51;
+    }
+    if(isShowCloseBtn){
+      height += 51;
+    }
+    return height;
+  }
 }
 
-class MyBallPopupViewModel extends ChangeNotifier {}
+class MyBallPopupViewModel extends ChangeNotifier {
+
+
+}

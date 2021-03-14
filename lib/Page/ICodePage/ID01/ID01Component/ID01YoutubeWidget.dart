@@ -25,64 +25,72 @@ class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
       create: (_) => ID001YoutubeWidgetViewModel(widget.youtubeVideoId),
       child: Consumer<ID001YoutubeWidgetViewModel>(builder: (_, model, __) {
         return model.canDisplayYoutube()
-            ? Container(
-                height: 162,
-                child: Row(children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.fromLTRB(16, 30, 16, 20),
-                      child: Row(children: <Widget>[
-                        Container(
-                          width: 124.0,
-                          height: 102.0,
-                          child: youtubeImageBox(model),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 16),
-                          width:
-                              MediaQuery.of(context).size.width - 124 - 32 - 16,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Text(
-                                    model.currentYoutubeTitle,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.notoSans(
-                                      fontSize: 14,
-                                      color: const Color(0xff454f63),
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
+            ? youtubeWidget(model, context)
+            : Container();
+      }),
+    );
+  }
+
+  Container youtubeWidget(
+      ID001YoutubeWidgetViewModel model, BuildContext context) {
+    return model.isLoaded
+        ? Container(
+            height: 162,
+            child: Row(children: <Widget>[
+              Container(
+                  padding: EdgeInsets.fromLTRB(16, 30, 16, 20),
+                  child: Row(children: <Widget>[
+                    Container(
+                      width: 124.0,
+                      height: 102.0,
+                      child: youtubeImageBox(model),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: MediaQuery.of(context).size.width - 124 - 32 - 16,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Text(
+                                model.currentYoutubeTitle,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 14,
+                                  color: const Color(0xff454f63),
+                                  fontWeight: FontWeight.w700,
                                 ),
-                                Container(
-                                    margin: EdgeInsets.only(top: 11),
-                                    child: Text(
-                                      model.currentYoutubeAuthor,
-                                      style: GoogleFonts.notoSans(
-                                        fontSize: 12,
-                                        color: const Color(0xff78849e),
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    )),
-                                Container(
-                                    child: Text(
-                                  model.etc,
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(top: 11),
+                                child: Text(
+                                  model.currentYoutubeAuthor,
                                   style: GoogleFonts.notoSans(
                                     fontSize: 12,
                                     color: const Color(0xff78849e),
                                   ),
                                   textAlign: TextAlign.left,
-                                ))
-                              ]),
-                        )
-                      ]))
-                ]),
-              )
-            : Container();
-      }),
-    );
+                                )),
+                            Container(
+                                child: Text(
+                              model.etc,
+                              style: GoogleFonts.notoSans(
+                                fontSize: 12,
+                                color: const Color(0xff78849e),
+                              ),
+                              textAlign: TextAlign.left,
+                            ))
+                          ]),
+                    )
+                  ]))
+            ]),
+          )
+        : Container(
+            child: Text("Youtube Loading..."),
+          );
   }
 
   Widget youtubeImageBox(ID001YoutubeWidgetViewModel model) {
@@ -186,7 +194,7 @@ class ID001YoutubeWidgetViewModel extends ChangeNotifier {
   }
 
   bool canDisplayYoutube() {
-    if (youtubeVideoId != null && youtubeVideoId.length > 0 && isLoaded) {
+    if (youtubeVideoId != null && youtubeVideoId.length > 0) {
       return true;
     } else {
       return false;

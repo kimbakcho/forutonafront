@@ -41,13 +41,10 @@ class ID001Map extends StatefulWidget {
 }
 
 class _ID001MapState extends State<ID001Map>
-    with WidgetsBindingObserver
     implements GeoLocationUtilUseForeGroundCaseOutputPort {
   String userProfileImageUrl;
   Position userPosition;
-
   CameraPosition initCameraPosition;
-  Key mapKey = UniqueKey();
   Set<Marker> markers = Set<Marker>();
   String ballDistanceFromUser = "";
 
@@ -55,12 +52,10 @@ class _ID001MapState extends State<ID001Map>
   void initState() {
     super.initState();
     userProfileImageUrl = Preference.basicProfileImageUrl;
-
     initCameraPosition = CameraPosition(
         target: LatLng(
             widget._ballPosition.latitude, widget._ballPosition.longitude),
         zoom: 14.56);
-    WidgetsBinding.instance.addObserver(this);
     init();
   }
 
@@ -85,16 +80,7 @@ class _ID001MapState extends State<ID001Map>
     ));
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-//    reRenderGoogleMap();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +101,6 @@ class _ID001MapState extends State<ID001Map>
               height: 185,
               child: IgnorePointer(
                 child: GoogleMap(
-                  key: mapKey,
                   initialCameraPosition: initCameraPosition,
                   markers: markers,
                   zoomControlsEnabled: false,

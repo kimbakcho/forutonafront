@@ -42,7 +42,6 @@ import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMo
 import 'package:forutonafront/Common/Notification/NotiSelectAction/Domain/PageMoveAction/PageMoveActionUseCaseInputPort.dart';
 import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
-import 'package:forutonafront/Components/BallStyle/BallOptionPopup/BallOptionWidgetFactory.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 
 import 'package:forutonafront/Components/DetailPageViewer/DetailPageItemFactory.dart';
@@ -449,7 +448,4 @@ init2() {
   sl.registerSingleton<TopNavBtnMediator>(TopNavBtnMediatorImpl());
 
 
-  sl.registerSingleton<BallOptionWidgetFactory>(BallOptionWidgetFactory(
-    signInUserInfoUseCaseInputPort: sl()
-  ));
 }
