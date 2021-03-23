@@ -119,7 +119,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> {
             model.onRefreshBall();
           },
           child: Icon(
-            ForutonaIcon.repost,
+            Icons.refresh,
             color: Color(0xff454F63),
             size: model.reFreshBtnActive ? 10 : 0,
           ),
@@ -143,7 +143,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> {
       width: 52.00,
       child: FlatButton(
         onPressed: model.onMyLocation,
-        child: Icon(ForutonaIcon.gps, color: Color(0xff454F63), size: 22),
+        child: Icon(ForutonaIcon.location, color: Color(0xff454F63), size: 22),
       ),
       decoration: BoxDecoration(
         color: Color(0xffffffff).withOpacity(0.8),
@@ -195,7 +195,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> {
         Positioned(
           right: 32,
           top: 16,
-          child: Icon(ForutonaIcon.search, color: Color(0xff454F63)),
+          child: Icon(Icons.search, color: Color(0xff454F63)),
         )
       ],
     );

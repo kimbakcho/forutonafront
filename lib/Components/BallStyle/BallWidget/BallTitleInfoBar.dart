@@ -82,7 +82,7 @@ class BallTitleInfoBar extends StatelessWidget {
                   showOptionPopUp();
                 },
                 child: Icon(
-                  ForutonaIcon.dots,
+                  ForutonaIcon.dots_vertical_rounded,
                   color: Color(0xffB8B8B8),
                   size: 15,
                 ),

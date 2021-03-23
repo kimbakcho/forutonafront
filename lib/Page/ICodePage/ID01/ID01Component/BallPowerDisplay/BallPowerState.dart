@@ -26,7 +26,6 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
             padding: EdgeInsets.all(16),
             child: Column(
               children: [
-
                 Row(children: <Widget>[
                   Icon(Icons.people, color: Color(0xffCCCCCC)),
                   Container(
@@ -67,7 +66,7 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
                       Container(
                         margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
                         child: Icon(
-                          ForutonaIcon.thumbsup,
+                          ForutonaIcon.like,
                           color: Colors.grey,
                           size: 15,
                         ),
@@ -104,7 +103,7 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
                       Container(
                         margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
                         child: Icon(
-                          ForutonaIcon.thumbsdown,
+                          Icons.thumb_down,
                           color: Colors.grey,
                           size: 15,
                         ),

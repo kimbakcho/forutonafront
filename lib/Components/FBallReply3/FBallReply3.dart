@@ -41,7 +41,7 @@ class FBallReply3 extends StatelessWidget {
                         child: ReviewTextActionRow(
                           autoFocus: false,
                           padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          userProfileImage: model.userProfileImage,
+                          userProfileImageUrl: model.userProfileImage,
                         ))),
                 Divider(
                   color: Color(0xffE4E7E8),
@@ -108,6 +108,7 @@ class FBallReply3ViewModel extends ChangeNotifier {
                 reviewCountMediator: _reviewCountMediator,
                 reviewInertMediator: _reviewInertMediator);
           });
+      notifyListeners();
     } else {
 
       showMaterialModalBottomSheet(
@@ -121,13 +122,9 @@ class FBallReply3ViewModel extends ChangeNotifier {
     }
   }
 
-  ImageProvider get userProfileImage {
+  String get userProfileImage {
     if(signInUserInfoUseCaseInputPort.isLogin){
-      var profilePictureUrl = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().profilePictureUrl;
-      return NetworkImage(profilePictureUrl);
-    }else {
-      return AssetImage("assets/basicprofileimage.png");
+      return signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().profilePictureUrl;
     }
-
   }
 }

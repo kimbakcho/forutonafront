@@ -60,7 +60,7 @@ class IMB001FullScreenMap extends StatelessWidget {
                               width: 52,
                               height: 52,
                               child: Icon(
-                                ForutonaIcon.gps,
+                                ForutonaIcon.location,
                                 color: Color(0xff454F63),
                               ),
                               decoration: BoxDecoration(

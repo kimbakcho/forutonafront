@@ -11,7 +11,9 @@ class ID01MainBottomSheetHeader extends StatefulWidget {
 
   final FBallResDto fBallResDto;
 
-  const ID01MainBottomSheetHeader({Key key, this.fBallResDto}) : super(key: key);
+  final Function(Position) onTapAddress;
+
+  const ID01MainBottomSheetHeader({Key key, this.fBallResDto, this.onTapAddress}) : super(key: key);
 
   @override
   _ID01MainBottomSheetHeaderState createState() => _ID01MainBottomSheetHeaderState();
@@ -53,7 +55,10 @@ class _ID01MainBottomSheetHeaderState extends State<ID01MainBottomSheetHeader> {
                             children: [
                               Expanded(child: Container(
                                 margin: EdgeInsets.only(left: 16,right: 16),
-                                child: ID01AddressWidget(fBallResDto: model.fBallResDto),
+                                child: ID01AddressWidget(fBallResDto: model.fBallResDto,onTabAddress: (Position position){
+                                  widget.onTapAddress(position);
+                                },)
+                                ,
                               ))
                             ],
                           ),
@@ -88,6 +93,7 @@ class ID01MainBottomSheetHeaderViewModel extends ChangeNotifier{
 
   Position _ballPosition;
 
+
   ID01MainBottomSheetHeaderViewModel(this.fBallResDto){
 
     _ballPosition = Position(
@@ -95,7 +101,5 @@ class ID01MainBottomSheetHeaderViewModel extends ChangeNotifier{
       longitude: fBallResDto.longitude
     );
   }
-
-
 
 }

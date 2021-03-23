@@ -41,13 +41,13 @@ class PwValidImpl implements PwValid {
     int match4 = regExp4.hasMatch(currentPw) ? 1 : 0;
     if (currentPw.length < 8) {
       _isTextError = true;
-      _errorText = "패스워드가 8자리 이하 입니다.";
+      _errorText = "패스워드는 8~16자리로 설정해주세요.";
     } else if (currentPw.length > 16) {
       _isTextError = true;
-      _errorText = "패스워드가 16자리 이상 입니다.";
+      _errorText = "패스워드는 8~16자리로 설정해주세요.";
     } else if ((match1 + match2 + match3 + match4) < 3) {
       _isTextError = true;
-      _errorText = "영문, 소문자, 대문자, 특수문자 중 3개 이상 조합";
+      _errorText = "패스워드는 영어 대문자,소문자,숫자,특수문자 중 3 종류 이상 조합해 주세요.";
     } else {
       _isTextError = false;
       _errorText = "";

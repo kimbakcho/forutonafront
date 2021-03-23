@@ -119,7 +119,7 @@ class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
           model.goYoutubeIntent(model.youtubeVideoId);
         },
         child: Icon(
-          ForutonaIcon.yplay,
+          ForutonaIcon.youtube_r_,
           color: Colors.white,
         ),
         shape: CircleBorder(),

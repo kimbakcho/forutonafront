@@ -224,7 +224,7 @@ class OtherUserBallPopupViewModel extends ChangeNotifier {
                 ListTile(
                   title: Text("기타"),
                   onTap: () {
-                    reportMaliciousReply(context, MaliciousType.etc);
+                    reportMaliciousWithLoading(context, MaliciousType.etc);
                   },
                 )
               ],

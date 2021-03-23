@@ -9,7 +9,7 @@ class IssueBallStyle1MarkerWidget {
         child: Container(
           padding: EdgeInsets.only(left: 7,bottom: 22),
           child: Icon(
-            ForutonaIcon.issue,
+            ForutonaIcon.issue_ball,
             color: Colors.white,
             size: 50,
           ),
@@ -24,7 +24,7 @@ class IssueBallStyle1MarkerWidget {
     return Container(
         height: 60,
         width: 60,
-        child: Icon(ForutonaIcon.issue, color: Colors.white, size: 30),
+        child: Icon(ForutonaIcon.issue_ball, color: Colors.white, size: 30),
         decoration: BoxDecoration(
           color: Color(0xffdc3e57),
           border: Border.all(

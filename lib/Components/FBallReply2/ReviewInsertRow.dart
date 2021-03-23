@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/UserProfileImageWidget/UserProfileImageWidget.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class ReviewTextActionRow extends StatelessWidget {
-  final ImageProvider userProfileImage;
+  final String userProfileImageUrl;
   final bool autoFocus;
   final ReviewTextActionRowController reviewTextActionRowController;
   final Function(String) actionReply;
@@ -14,7 +15,7 @@ class ReviewTextActionRow extends StatelessWidget {
 
   const ReviewTextActionRow(
       {Key key,
-      this.userProfileImage,
+      this.userProfileImageUrl,
       this.autoFocus,
       this.reviewTextActionRowController,
       this.actionReply,
@@ -31,13 +32,12 @@ class ReviewTextActionRow extends StatelessWidget {
               color: Colors.white,
               padding: padding,
               child: Row(children: <Widget>[
-                Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        image: DecorationImage(image: userProfileImage))),
+
+                UserProfileImageWidget(
+                  imageUrl: userProfileImageUrl,
+                  height: 24.0,
+                  width: 24.0,
+                ),
                 Expanded(
                   child: Container(
                     width: 300,
@@ -81,7 +81,7 @@ class ReviewTextActionRow extends StatelessWidget {
                         actionReply(ballUuid);
                       },
                       child: Icon(
-                        ForutonaIcon.replysendicon,
+                        ForutonaIcon.telegram,
                         color: Colors.white,
                         size: 14,
                       ),

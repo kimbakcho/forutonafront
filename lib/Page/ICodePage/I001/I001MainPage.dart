@@ -39,11 +39,8 @@ class I001MainPage extends StatefulWidget {
 }
 
 class _I001MainPageState extends State<I001MainPage>
-    with  AutomaticKeepAliveClientMixin<I001MainPage> {
+    with AutomaticKeepAliveClientMixin<I001MainPage> {
   _I001MainPageState();
-
-
-
 
   @override
   // ignore: must_call_super
@@ -56,7 +53,8 @@ class _I001MainPageState extends State<I001MainPage>
             mapBallMarkerFactory: sl(),
             geolocatorAdapter: sl(),
             geoLocationUtilForeGroundUseCaseInputPort: sl(),
-            topH_I_001NavExpendAniContentController: widget.topH_I_001NavExpendAniContentController,
+            topH_I_001NavExpendAniContentController:
+                widget.topH_I_001NavExpendAniContentController,
             fluttertoastAdapter: sl(),
             context: context),
         child: Consumer<I001MainPageViewModel>(builder: (_, model, __) {
@@ -166,15 +164,15 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   _onMovetoMyLocation() async {
-    await geoLocationUtilForeGroundUseCaseInputPort.useGpsReq();
+    // await geoLocationUtilForeGroundUseCaseInputPort.useGpsReq(context);
 
     final GoogleMapController controller = await _googleMapController.future;
 
     var position = await geoLocationUtilForeGroundUseCaseInputPort
         .getCurrentWithLastPosition();
 
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(position.latitude, position.longitude), zoom: 14.4746)));
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(position.latitude, position.longitude),zoom: _googleMapCurrentPosition.zoom)));
 
     notifyListeners();
   }
@@ -184,7 +182,6 @@ class I001MainPageViewModel extends ChangeNotifier
     topH_I_001NavExpendAniContentController.loadPosition(
         Position(latitude: target.latitude, longitude: target.longitude));
     notifyListeners();
-
   }
 
   _onCameraIdle() async {
@@ -192,15 +189,13 @@ class I001MainPageViewModel extends ChangeNotifier
     //
     // await Future.delayed(Duration(seconds: 1));
 
-    Future.delayed(Duration(seconds: 1),()async{
+    Future.delayed(Duration(seconds: 1), () async {
       await viewButtonControl();
 
       await searchLoadQueue();
 
       notifyListeners();
     });
-
-
   }
 
   Future searchLoadQueue() async {
@@ -263,7 +258,7 @@ class I001MainPageViewModel extends ChangeNotifier
     final GoogleMapController controller = await _googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(loadPosition.latitude, loadPosition.longitude),
-        zoom: zoomLevel)));
+        zoom: _googleMapCurrentPosition.zoom)));
   }
 
   void firstBallSelect() {

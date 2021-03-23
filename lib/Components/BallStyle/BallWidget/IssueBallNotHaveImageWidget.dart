@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallStyle/BallWidget/IssueBallTopBar.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import 'BallPositionInfoBar.dart';
 import 'BallTextWidget.dart';
 import 'BallTitleInfoBar.dart';
 import 'ListUpBallWidgetItem.dart';
@@ -58,6 +61,11 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
                       BallTextWidget(
                         gotoDetailPage: model.moveToDetailPage,
                         ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                      ),
+                      BallPositionInfoBar(
+                        gotoDetailPage: model.moveToDetailPage,
+                        ballSearchPosition: ballListMediator.searchPosition(),
+                        ballDisPlayUseCase: model.issueBallDisPlayUseCase,
                       )
                     ],
                   ),
@@ -78,7 +86,7 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
       {BuildContext context, BallListMediator ballListMediator, int index})
       : super(context, ballListMediator, index,sl(),sl(),sl(),sl(),sl()) {
     issueBallDisPlayUseCase =
-        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
+        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index],geoLocatorAdapter: sl());
   }
 
   @override
@@ -86,7 +94,7 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
     ballListMediator.itemList[index] = await _selectBallUseCaseInputPort
         .selectBall(ballListMediator.itemList[index].ballUuid);
     issueBallDisPlayUseCase =
-        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
+        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index],geoLocatorAdapter: sl());
     ballWidgetKey = Uuid().v4();
     notifyListeners();
   }
@@ -103,12 +111,13 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   Future<void> onModifyBall(BuildContext context) async {
     var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
         ballUuid: ballListMediator.itemList[index].ballUuid);
-    await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    var result = await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
         preSetBallResDto: ballListMediator.itemList[index],
         im001mode: IM001Mode.modify,
         preSetFBallTagResDtos: tags,
       );
     }));
+
   }
 }

@@ -73,7 +73,7 @@ class FullReviewPage extends StatelessWidget {
                         child: IgnorePointer(
                             child: ReviewTextActionRow(
                           autoFocus: false,
-                          userProfileImage: NetworkImage(model.userProfileImage),
+                          userProfileImageUrl: model.userProfileImage,
                               padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
                         )))
                   ])));
@@ -139,7 +139,7 @@ class FullReviewPageViewModel extends ChangeNotifier
 
   get userProfileImage {
     if (_fUserInfoResDto == null) {
-      return Preference.basicProfileImageUrl;
+      return null;
     } else {
       return this._fUserInfoResDto.profilePictureUrl;
     }

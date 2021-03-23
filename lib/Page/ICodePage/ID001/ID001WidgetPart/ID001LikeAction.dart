@@ -30,7 +30,7 @@ class ID001LikeAction extends StatelessWidget {
                   model.likeAction();
                 },
                 constraints: BoxConstraints(minHeight: 35, minWidth: 35),
-                child: Icon(ForutonaIcon.thumbsup,
+                child: Icon(ForutonaIcon.like,
                     color: model.ballLikeState == BallLikeState.Up
                         ? Colors.lightBlueAccent
                         : Colors.grey),
@@ -40,7 +40,7 @@ class ID001LikeAction extends StatelessWidget {
                   model.disLikeAction();
                 },
                 constraints: BoxConstraints(minHeight: 35, minWidth: 35),
-                child: Icon(ForutonaIcon.thumbsdown,
+                child: Icon(Icons.thumb_down,
                     color: model.ballLikeState == BallLikeState.Down
                         ? Colors.lightBlueAccent
                         : Colors.grey),

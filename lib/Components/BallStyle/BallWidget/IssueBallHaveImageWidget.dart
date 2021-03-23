@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -101,7 +103,7 @@ class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   onModifyBall(BuildContext context) async {
     var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
         ballUuid: ballListMediator.itemList[index].ballUuid);
-    await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    var result = await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
         preSetBallResDto: ballListMediator.itemList[index],
         im001mode: IM001Mode.modify,
@@ -109,6 +111,8 @@ class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
       );
     }));
     Navigator.of(context).pop();
+
+
   }
 
   @override

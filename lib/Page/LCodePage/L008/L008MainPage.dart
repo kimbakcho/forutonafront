@@ -259,6 +259,6 @@ class L008MainPageViewModel extends ChangeNotifier {
       await fireBaseAuthAdapterForUseCase.signInWithEmailAndPassword(_fUserInfoJoinReqDto.email,_fUserInfoJoinReqDto.password);
     }
 
-    Navigator.of(context).popUntil((route) => route.settings.name == "MAIN");
+    Navigator.of(context).popUntil((route) => route.settings.name == "/");
   }
 }

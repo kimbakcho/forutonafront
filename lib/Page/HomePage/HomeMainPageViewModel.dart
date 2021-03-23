@@ -64,7 +64,7 @@ class HomeMainPageViewModel
     topNavBtnMediator.codeMainViewModelInputPort = this;
     await globalInitMutex.geoRequestMutex.acquire();
 
-    await geoLocationUtilUseCaseInputPort.useGpsReq();
+    // await geoLocationUtilUseCaseInputPort.useGpsReq(context);
 
     this.lastKnownPosition =
         await geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();

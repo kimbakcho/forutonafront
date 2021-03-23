@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/MainPageViewModelInputPort.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtn.dart';
@@ -9,15 +12,18 @@ import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/G001/TopG001Na
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/G003/TopG003NavExpandComponent.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/Page/GCodePage/G001/G001MainPage.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class GCodeMainPage extends StatefulWidget {
+
+  GCodeMainPage({Key key}) : super(key: key);
   @override
   _GCodeMainPageState createState() => _GCodeMainPageState();
 }
 
-class _GCodeMainPageState extends State<GCodeMainPage>
-    with AutomaticKeepAliveClientMixin {
+class _GCodeMainPageState extends State<GCodeMainPage> {
 
   TopNavBtnMediator _topNavBtnMediator =
   TopNavBtnMediatorImpl(
@@ -38,6 +44,7 @@ class _GCodeMainPageState extends State<GCodeMainPage>
         topNavBtnMediator: _topNavBtnMediator,
         swipeGestureRecognizerController: _swipeGestureRecognizerController,
         currentState: CodeState.G001CODE);
+
   }
 
   Map<CodeState, CodeMainPageLinkDto> getMapCodeMainPageLink() {
@@ -53,7 +60,7 @@ class _GCodeMainPageState extends State<GCodeMainPage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_)=>GCodeMainPageViewModel(_codeMainPageController,_topNavBtnMediator),
+      create: (_)=>GCodeMainPageViewModel(_codeMainPageController,_topNavBtnMediator,sl()),
       child: Consumer<GCodeMainPageViewModel>(
         builder: (_,model,child){
           return Scaffold(
@@ -96,8 +103,9 @@ class _GCodeMainPageState extends State<GCodeMainPage>
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+
+
+
 }
 
 class GCodeMainPageViewModel extends ChangeNotifier implements CodeMainPageChangeListener,MainPageViewModelInputPort{
@@ -105,11 +113,13 @@ class GCodeMainPageViewModel extends ChangeNotifier implements CodeMainPageChang
 
   TopNavBtnMediator _topNavBtnMediator;
 
-  GCodeMainPageViewModel(this._codeMainPageController,this._topNavBtnMediator){
+
+  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+
+  GCodeMainPageViewModel(this._codeMainPageController,this._topNavBtnMediator,this._signInUserInfoUseCaseInputPort){
     _codeMainPageController.addListener(this);
     _topNavBtnMediator.codeMainViewModelInputPort = this;
   }
-
 
   Map<CodeState, Widget> getCodeStateExpendWidgetMap() {
     Map<CodeState, Widget> codeStateExpendWidgetMap = Map();

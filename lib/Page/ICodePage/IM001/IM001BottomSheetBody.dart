@@ -107,8 +107,8 @@ class IM001BottomSheetBody extends StatelessWidget {
                         child: TextField(
                             focusNode: model.titleFocus,
                             controller: model._titleTextController,
-                            maxLength: 20,
-                            inputFormatters: [ModifiedLengthLimitingTextInputFormatter(20)],
+                            maxLength: 25,
+                            inputFormatters: [ModifiedLengthLimitingTextInputFormatter(50)],
                             decoration: InputDecoration(
                                 hintText: "제목을 지어주세요!",
                                 hintStyle: GoogleFonts.notoSans(
@@ -141,8 +141,8 @@ class IM001BottomSheetBody extends StatelessWidget {
                         child: TextField(
                             focusNode: model.contentFocus,
                             controller: model._contentTextController,
-                            maxLength: 2000,
-                            inputFormatters: [ModifiedLengthLimitingTextInputFormatter(2000)],
+                            maxLength: 2500,
+                            inputFormatters: [ModifiedLengthLimitingTextInputFormatter(2500)],
                             maxLines: null,
                             decoration: InputDecoration(
                                 hintText: "어떤 이슈인가요?",

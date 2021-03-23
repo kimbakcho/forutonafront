@@ -51,18 +51,23 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   }
 
   bool checkMaliciousPopup() {
-    var fUserInfoResDto = reqSignInUserInfoFromMemory();
-    if (isLogin) {
-      if (fUserInfoResDto.maliciousCount > 0 &&
-          fUserInfoResDto.maliciousMessageCheck == false &&
-          fUserInfoResDto.stopPeriod == null) {
-        return true;
+    try{
+      var fUserInfoResDto = reqSignInUserInfoFromMemory();
+      if (isLogin) {
+        if (fUserInfoResDto.maliciousCount > 0 &&
+            fUserInfoResDto.maliciousMessageCheck == false &&
+            fUserInfoResDto.stopPeriod == null) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
-    } else {
+    }catch(ex) {
       return false;
     }
+
   }
 
   @override

@@ -467,7 +467,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
                   shape: CircleBorder(),
                   onPressed: model.youtubeAttachVisibilityToggle,
-                  child: Icon(ForutonaIcon.videoattach, color: Colors.white),
+                  child: Icon(ForutonaIcon.youtube, color: Colors.white),
                 ),
                 decoration: BoxDecoration(
                   color: Color(0xff8382F2),
@@ -489,7 +489,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
                     shape: CircleBorder(),
                     onPressed: model.tagBarToggle,
-                    child: Icon(ForutonaIcon.tagadd, color: Colors.white),
+                    child: Icon(ForutonaIcon.tag, color: Colors.white),
                   ),
                   decoration: BoxDecoration(
                       color: Color(0xff88D4F1),

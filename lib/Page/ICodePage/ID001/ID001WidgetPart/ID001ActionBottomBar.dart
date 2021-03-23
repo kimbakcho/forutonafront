@@ -71,7 +71,7 @@ class ID001ActionBottomBar extends StatelessWidget {
                   child: Stack(
                     children: <Widget>[
                       Container(
-                        child: Icon(ForutonaIcon.comment),
+                        child: Icon(ForutonaIcon.chat),
                         width: 42,
                         alignment: AlignmentDirectional.centerStart,
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -144,6 +145,7 @@ class L017MainPageViewModel extends ChangeNotifier {
 
   _sendPwResetEmail(BuildContext context) async {
     await this._fireBaseAuthAdapterForUseCase.sendPasswordResetEmail(email);
+    Fluttertoast.showToast(msg: "재전송하였습니다.");
     Navigator.of(context).pop();
   }
 

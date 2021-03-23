@@ -61,7 +61,7 @@ class FBallReply {
 
   String get userProfilePictureUrl {
     if(deleteFlag){
-      return Preference.basicProfileImageUrl;
+      return null;
     }else {
       return _userProfilePictureUrl;
     }

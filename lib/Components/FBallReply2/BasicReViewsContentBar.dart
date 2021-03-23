@@ -11,6 +11,7 @@ import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Components/BallOption/OtherUserBallPopup/OtherUserBallPopup.dart';
 import 'package:forutonafront/Components/FBallReply2/ReplyOptionAction/ReplyOptionActionAlertDialogSheet.dart';
+import 'package:forutonafront/Components/UserProfileImageWidget/UserProfileImageWidget.dart';
 
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
@@ -71,8 +72,7 @@ class BasicReViewsContentBar extends StatelessWidget {
             reviewInertMediator: _reviewInertMediator,
             reviewUpdateMediator: _reviewUpdateMediator,
             fBallReplyResDto: _fBallReplyResDto,
-            maliciousReplyUseCase: sl()
-        ),
+            maliciousReplyUseCase: sl()),
         child:
             Consumer<BasicReViewsContentBarViewModel>(builder: (_, model, __) {
           return Material(
@@ -95,15 +95,13 @@ class BasicReViewsContentBar extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.fromLTRB(
                               model.isRootReply() ? 16 : 65, 0, 8, 0),
-                          width: model.isRootReply() ? 38 : 24,
-                          height: model.isRootReply() ? 38 : 24,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image:
-                                      NetworkImage(model.userProfilePictureUrl),
-                                  fit: BoxFit.cover)),
-                        ),
+                          child: UserProfileImageWidget(
+                            imageUrl: model.userProfilePictureUrl,
+                            height: model.isRootReply() ? 38.0 : 24.0,
+                            width: model.isRootReply() ? 38.0 : 24.0,
+                          ),
+                        )
+                        ,
                         Expanded(
                             child: Column(children: <Widget>[
                           Row(
@@ -176,7 +174,7 @@ class BasicReViewsContentBar extends StatelessWidget {
                                       alignment: Alignment(0.0, -1.0),
                                       height: 52,
                                       width: 52,
-                                      child: Icon(ForutonaIcon.pointdash,
+                                      child: Icon(ForutonaIcon.dots_vertical_rounded,
                                           size: 20, color: Colors.black),
                                     )))
                             : Container()
@@ -252,6 +250,7 @@ class BasicReViewsContentBar extends StatelessWidget {
       ],
     );
   }
+
 }
 
 class BasicReViewsContentBarViewModel extends ChangeNotifier
@@ -382,9 +381,6 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier
   }
 
   String getDisplayWriteTime() {
-    if (fBallReplyResDto.deleteFlag) {
-      return "";
-    }
     return TimeDisplayUtil.getCalcToStrFromNow(
         fBallReplyResDto.replyUploadDateTime);
   }
@@ -459,9 +455,10 @@ class BasicReViewsContentBarViewModel extends ChangeNotifier
     }
   }
 
-  onReportMalicious(BuildContext context,MaliciousType replyMaliciousType) async {
-    await _maliciousReplyUseCase.reportMaliciousReply(replyMaliciousType,fBallReplyResDto.replyUuid);
-
+  onReportMalicious(
+      BuildContext context, MaliciousType replyMaliciousType) async {
+    await _maliciousReplyUseCase.reportMaliciousReply(
+        replyMaliciousType, fBallReplyResDto.replyUuid);
   }
 
   @override

@@ -135,15 +135,8 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   }
 
   init() async {
-    await globalInitMutex.geoRequestMutex.acquire();
-    bool serviceCheck = await this.locationAdapter.serviceEnabled();
-    if (!serviceCheck) {
-      searchAddress = "위치정보를 사용수가 없습니다.";
-      fluttertoastAdapter.showToast(msg: searchAddress);
-      return;
-    }
     try {
-      await geoLocationUtilForeGroundUseCaseInputPort.useGpsReq();
+      // await geoLocationUtilForeGroundUseCaseInputPort.useGpsReq(context);
       fluttertoastAdapter.showToast(msg: "위치를 확인 중입니다.");
       await loadPosition(await geoLocationUtilForeGroundUseCaseInputPort
           .getCurrentWithLastPosition());
@@ -151,7 +144,6 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
       this.searchAddress = e.message;
       fluttertoastAdapter.showToast(msg: e.message);
     }
-    globalInitMutex.geoRequestMutex.release();
     notifyListeners();
   }
 

@@ -34,7 +34,9 @@ class MainPageView extends StatelessWidget {
                             HomeMainPage(
                               key: model.homepageWidgetKey,
                             ),
-                            GCodeMainPage(),
+                            GCodeMainPage(
+                              key: model.gCodeMainKey
+                            ),
                             Container(
                               child: Text("tet"),
                             )
@@ -60,6 +62,8 @@ class MainPageViewModel extends ChangeNotifier
 
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
+  Key gCodeMainKey = UniqueKey();
+
   MainPageViewModel(this._signInUserInfoUseCaseInputPort, this.context,
       this._mainPageViewModelController) {
     homepageWidgetKey = Key(Uuid().v4());
@@ -74,6 +78,10 @@ class MainPageViewModel extends ChangeNotifier
         onLoginStateChange(fUserInfoResDto);
       });
     }
+
+    _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) {
+      gCodeMainKey = UniqueKey();
+    });
   }
 
   Future<void> onLoginStateChange(FUserInfoResDto fUserInfoResDto) async {

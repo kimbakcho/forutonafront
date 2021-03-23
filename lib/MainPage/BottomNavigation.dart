@@ -73,7 +73,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                 }
                               },
                               child: Icon(
-                                ForutonaIcon.officialchannel,
+                                ForutonaIcon.chat,
                               ))),
                       Expanded(
                         flex: 1,

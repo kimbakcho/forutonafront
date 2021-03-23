@@ -39,7 +39,7 @@ class BasicReViewUpdate extends StatelessWidget {
           child: ReviewTextActionRow(
             ballUuid: model.ballUuid,
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-            userProfileImage: NetworkImage(model.userProfileImage),
+            userProfileImageUrl: model.userProfileImage,
             autoFocus: true,
             actionReply: model.updateReply,
             reviewTextActionRowController: model.reviewTextActionRowController,

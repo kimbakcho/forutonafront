@@ -14,22 +14,23 @@ class G001MainPage extends StatelessWidget {
         create: (_) => G001MainPageViewModel(sl(), sl()),
         child: Consumer<G001MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
+
               body: Container(
                   child: SingleChildScrollView(
                       child: Column(children: [
-            UserProfileComponent(
-              userProfileComponentViewModelController:
-                  model._userProfileComponentViewModelController,
-              userUid: model.userUid,
-              userProfileMode: UserProfileMode.ME,
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            UserMakeBallList(
-              userUid: model.userUid,
-            )
-          ]))));
+                UserProfileComponent(
+                  userProfileComponentViewModelController:
+                      model._userProfileComponentViewModelController,
+                  userUid: model.userUid,
+                  userProfileMode: UserProfileMode.ME,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                UserMakeBallList(
+                  userUid: model.userUid,
+                )
+              ]))));
         }));
   }
 }
@@ -42,6 +43,8 @@ class G001MainPageViewModel extends ChangeNotifier {
 
   G001MainPageViewModelController _g001mainPageViewModelController;
 
+  Key gCodeMainKey = new UniqueKey();
+
   G001MainPageViewModel(this._signInUserInfoUseCaseInputPort,
       this._g001mainPageViewModelController) {
     _userProfileComponentViewModelController =
@@ -49,6 +52,8 @@ class G001MainPageViewModel extends ChangeNotifier {
     if (_g001mainPageViewModelController != null) {
       _g001mainPageViewModelController._g001mainPageViewModel = this;
     }
+
+
   }
 
   String get userUid {

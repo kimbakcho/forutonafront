@@ -68,9 +68,8 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
 
 
     BitmapDescriptor userAvatarIcon =
-    await _mapBitmapDescriptorUseCaseInputPort
-        .urlPathToAvatarBitmapDescriptor(
-        Preference.basicProfileImageUrl);
+    await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
+        "assets/MainImage/empty_user.png", Size(100, 100));
     container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
     container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) async {
@@ -82,15 +81,23 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
     if (await _fireBaseAuthBaseAdapter.isLogin()) {
       FUserInfoResDto userInfo =
           _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-      BitmapDescriptor userAvatarIcon =
-          await _mapBitmapDescriptorUseCaseInputPort
-              .urlPathToAvatarBitmapDescriptor(userInfo.profilePictureUrl);
-      container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
-      container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
+      if(userInfo.profilePictureUrl != null && userInfo.profilePictureUrl.isNotEmpty){
+        BitmapDescriptor userAvatarIcon =
+        await _mapBitmapDescriptorUseCaseInputPort
+            .urlPathToAvatarBitmapDescriptor(userInfo.profilePictureUrl);
+        container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
+        container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
+      }else {
+        BitmapDescriptor userAvatarIcon =
+        await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
+            "assets/MainImage/empty_user.png", Size(100, 100));
+        container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
+        container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
+      }
     }else {
       BitmapDescriptor noneAvatarIcon =
       await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
-          "assets/MainImage/emptyuserimage.png", Size(100, 100));
+          "assets/MainImage/empty_user.png", Size(100, 100));
       container[MapMakerDescriptorType.UserAvatarIcon] = noneAvatarIcon ;
       container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => noneAvatarIcon);
     }

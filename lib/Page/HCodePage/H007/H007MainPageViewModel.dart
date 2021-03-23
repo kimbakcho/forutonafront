@@ -78,7 +78,7 @@ class H007MainPageViewModel extends ChangeNotifier
 
   onMyLocation() async {
     final GoogleMapController controller = await _googleMapController.future;
-    await _geoLocationUtilUseCaseInputPort.useGpsReq();
+    // await _geoLocationUtilUseCaseInputPort.useGpsReq(context);
     var currentLocation =
         await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(

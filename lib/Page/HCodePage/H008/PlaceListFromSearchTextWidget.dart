@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/GeoPlaceAdapter/GeoPlaceAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilBasicUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_place/google_place.dart';
@@ -31,6 +32,9 @@ class PlaceListFromSearchTextWidget extends StatelessWidget {
                 placeListFromSearchTextWidgetListener),
         child: Consumer<PlaceListFromSearchTextWidgetViewModel>(
             builder: (_, model, __) {
+          if (!model.isLoaded) {
+            return CommonLoadingComponent();
+          }
           return model.hasPlaceList()
               ? ListView.builder(
                   padding: EdgeInsets.all(0),
@@ -91,8 +95,6 @@ class PlaceListFromSearchTextWidget extends StatelessWidget {
   }
 }
 
-
-
 class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
   final String searchText;
 
@@ -108,6 +110,8 @@ class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
 
   String _sessionToken = Uuid().v4();
 
+  bool isLoaded = false;
+
   PlaceListFromSearchTextWidgetViewModel(
       {this.geoLocationUtilBasicUseCaseInputPort,
       this.searchText,
@@ -120,7 +124,7 @@ class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
     Component kr = Component("country", "kr");
     var position =
         await geoLocationUtilBasicUseCaseInputPort.getCurrentWithLastPosition();
-
+    isLoaded = false;
     var autocompleteGet = await geoPlaceAdapter.autocompleteGet(searchText,
         sessionToken: _sessionToken,
         language: "ko",
@@ -129,7 +133,7 @@ class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
         origin: LatLon(position.latitude, position.longitude));
 
     await _getDetailFromPredictions(autocompleteGet.predictions);
-
+    isLoaded = true;
     notifyListeners();
   }
 
@@ -139,11 +143,10 @@ class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
 
   _getDetailFromPredictions(List<AutocompletePrediction> predictions) async {
     detailsResponse.clear();
-    predictions.forEach((element) async {
+    for(int i=0;i<predictions.length;i++) {
       detailsResponse.add(
-          await geoPlaceAdapter.detailGet(element.placeId, language: "ko"));
-      notifyListeners();
-    });
+          await geoPlaceAdapter.detailGet(predictions[i].placeId, language: "ko"));
+    }
   }
 
   void onPlaceTab(DetailsResponse detailsResponse) {

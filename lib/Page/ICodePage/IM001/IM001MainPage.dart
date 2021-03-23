@@ -126,7 +126,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                                     height: 36,
                                     padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                                     alignment: Alignment.centerLeft,
-                                    child: Text(model.headBarAddress),
+                                    child: Text("주소 검색"),
                                   ),
                                 ),
                               )),
@@ -141,6 +141,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                                 onCameraMove: model.onCameraMove,
                                 onMapCreated: model.onCreateMap,
                                 onCameraIdle: model.onCameraIdle,
+                                zoomControlsEnabled: false,
                               ),
                               Center(
                                   child: IgnorePointer(
@@ -363,7 +364,13 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   void onCreateMap(GoogleMapController controller) async {
     _googleMapController.complete(controller);
-    var position = await moveToMyPosition();
+    Position position;
+    if(im001mode == IM001Mode.create){
+      position = await moveToMyPosition();
+    }else {
+      position = Position(latitude: preSetBallResDto.latitude,longitude: preSetBallResDto.longitude);
+    }
+
 
     String address =
         await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
@@ -545,11 +552,11 @@ class IM001MainPageViewModel extends ChangeNotifier
       fBallUpdateReqDto.tags.add(tagInsertReqDto);
     }
 
-    await updateBallUseCaseInputPort.updateBall(fBallUpdateReqDto);
+    var fBallResDto = await updateBallUseCaseInputPort.updateBall(fBallUpdateReqDto);
 
     Navigator.of(context).pop();
     Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(fBallResDto);
 
     notifyListeners();
   }

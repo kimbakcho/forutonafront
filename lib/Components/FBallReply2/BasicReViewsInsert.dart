@@ -64,7 +64,7 @@ class BasicReViewsInsert extends StatelessWidget {
                 autoFocus: this.autoFocus,
                 ballUuid: model.ballUuid,
                 padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                userProfileImage: NetworkImage(model.userProfileImage),
+                userProfileImageUrl: model.userProfileImage,
                 actionReply: model.insertReply,
                 reviewTextActionRowController: model.reviewTextActionRowController,
               )
@@ -126,13 +126,13 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
     keyBoardSubscription.cancel();
     keyBoardSubscription = null;
 
-    Navigator.of(context).pop();
-
-    showGeneralDialog(context: context,
+    await showGeneralDialog(context: context,
         pageBuilder: (context, animation, secondaryAnimation) {
           _insertReplyInLoading(context);
       return CommonLoadingComponent();
     });
+
+    Navigator.of(context).pop();
 
   }
 

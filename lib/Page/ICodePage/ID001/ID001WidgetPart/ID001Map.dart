@@ -51,7 +51,7 @@ class _ID001MapState extends State<ID001Map>
   @override
   void initState() {
     super.initState();
-    userProfileImageUrl = Preference.basicProfileImageUrl;
+    userProfileImageUrl = null;
     initCameraPosition = CameraPosition(
         target: LatLng(
             widget._ballPosition.latitude, widget._ballPosition.longitude),

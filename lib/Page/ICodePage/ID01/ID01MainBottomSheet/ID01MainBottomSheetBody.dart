@@ -33,6 +33,8 @@ class ID01MainBottomSheetBody extends StatefulWidget {
 
   final ID01MainBottomSheetBodyController id01mainBottomSheetBodyController;
 
+  final double currentStateProgress;
+
   const ID01MainBottomSheetBody(
       {Key key,
       this.fBallResDto,
@@ -40,7 +42,7 @@ class ID01MainBottomSheetBody extends StatefulWidget {
       this.id01Mode,
       this.preViewBallImage,
       this.preViewfBallTagResDtos,
-      this.id01mainBottomSheetBodyController})
+      this.id01mainBottomSheetBodyController, this.currentStateProgress})
       : super(key: key);
 
   @override
@@ -101,12 +103,17 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                       ID01YoutubeWidget(
                         youtubeVideoId: model.getBallYoutubeId(),
                       ),
-                      ID01BallPowerState(
-                        fBallResDto: model.fBallResDto,
-                      ),
-                      FBallReply3(
-                        ballUuid: model.fBallResDto.ballUuid,
+                      // ID01BallPowerState(
+                      //   fBallResDto: model.fBallResDto,
+                      // ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: widget.currentStateProgress < 0.6 ? widget.topPosition*0.7 : 150),
+
+                        child: FBallReply3(
+                          ballUuid: model.fBallResDto.ballUuid,
+                        ),
                       )
+
                     ],
                   ),
                 ],
@@ -132,6 +139,8 @@ class ID01MainBottomSheetBodyViewModel extends ChangeNotifier {
       {this.id01mainBottomSheetBodyController}) {
     _init();
   }
+
+
 
   void _init() {
     if (id01mainBottomSheetBodyController != null) {

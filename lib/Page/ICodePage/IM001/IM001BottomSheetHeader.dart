@@ -144,7 +144,12 @@ class IM001BottomSheetHeaderViewModel extends ChangeNotifier {
   }
 
   changeDisplayAddress(String value) {
-    displayAddress = value;
+    if(value.isEmpty){
+      displayAddress = "주소정보 없음";
+    }else {
+      displayAddress = value;
+    }
+
     notifyListeners();
   }
 }

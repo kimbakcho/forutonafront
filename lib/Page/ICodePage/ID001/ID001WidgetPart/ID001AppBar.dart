@@ -44,7 +44,7 @@ class ID001AppBar extends StatelessWidget {
                           )
                         : Container(),
                     IconButton(
-                      icon: Icon(ForutonaIcon.pointdash),
+                      icon: Icon(ForutonaIcon.dots_vertical_rounded),
                       iconSize: 13.0,
                       onPressed: () {},
                     )

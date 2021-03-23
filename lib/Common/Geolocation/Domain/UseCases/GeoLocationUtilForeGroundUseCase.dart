@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/LocationAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart';
@@ -7,11 +8,14 @@ import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/DistanceDisplayUtil.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
+import 'package:forutonafront/Page/ZCodePage/Z004/Z004CodeMainPage.dart';
+import 'package:forutonafront/Page/ZCodePage/Z005/Z005CodeMainPage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import 'GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart' as Adapter;
 
 @LazySingleton(as: GeoLocationUtilForeGroundUseCaseInputPort)
 class GeoLocationUtilForeGroundUseCase
@@ -40,10 +44,11 @@ class GeoLocationUtilForeGroundUseCase
 
   @override
   Future<Position> getCurrentWithLastPosition()async {
-    bool _serviceEnabled;
-    _serviceEnabled = await locationAdapter.serviceEnabled();
+    await _geoRequestMutex.acquire();
+    Adapter.PermissionStatus _hasPermisstion;
+    _hasPermisstion = await locationAdapter.hasPermission();
     Position resultPosition;
-    if (!_serviceEnabled) {
+    if (_hasPermisstion != PermissionStatus.granted) {
       resultPosition = await getLastKnowPonePosition();
     } else {
       resultPosition = await geolocatorAdapter.getCurrentPosition();
@@ -57,7 +62,7 @@ class GeoLocationUtilForeGroundUseCase
     } catch (ex){
       currentWithLastAddress = "";
     }
-
+    _geoRequestMutex.release();
     return resultPosition;
   }
 
@@ -98,15 +103,16 @@ class GeoLocationUtilForeGroundUseCase
   @override
   Future<bool> useGpsReq() async {
     await _geoRequestMutex.acquire();
-
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
 
     _permissionGranted = await locationAdapter.hasPermission();
-
-    if (_permissionGranted == PermissionStatus.denied) {
+    if (_permissionGranted == PermissionStatus.denied || _permissionGranted == PermissionStatus.deniedForever) {
       _permissionGranted = await locationAdapter.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+      if (_permissionGranted == PermissionStatus.denied) {
+        _geoRequestMutex.release();
+        return false;
+      }else if(_permissionGranted == PermissionStatus.deniedForever){
         _geoRequestMutex.release();
         return false;
       }
@@ -120,6 +126,7 @@ class GeoLocationUtilForeGroundUseCase
         return false;
       }
     }
+
     _geoRequestMutex.release();
     return true;
   }

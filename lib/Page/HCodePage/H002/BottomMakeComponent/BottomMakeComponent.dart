@@ -26,7 +26,7 @@ class BottomMakeComponent extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 8),
                   height: 87,
                   child: BallMakeButton(
-                    icon: Icon(ForutonaIcon.issue,color: Colors.white,size: 10,),
+                    icon: Icon(ForutonaIcon.issue_ball,color: Colors.white,size: 10,),
                     text: "당신 주변에서 일어나는 크고 작은 소식들을 지도 위에 표시하고 공유해 보세요.",
                     ballName: "이슈볼",
                     leftImage: AssetImage("assets/BallMakeImage/issubalImakeimage.png"),
@@ -43,7 +43,7 @@ class BottomMakeComponent extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                   height: 87,
                   child: BallMakeButton(
-                    icon: Icon(ForutonaIcon.issue,color: Colors.white,size: 10,),
+                    icon: Icon(ForutonaIcon.issue_ball,color: Colors.white,size: 10,),
                     text: "해결해야할 일이 있으신가요? 보상을 건 퀘스트를 만들어 도움을 청해보세요.",
                     ballName: "퀘스트볼",
                     leftImage: AssetImage("assets/BallMakeImage/questBallMakeImage.png"),

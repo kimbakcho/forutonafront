@@ -6,7 +6,7 @@ class IssueBallStyle2MarkerWidget {
     return Container(
       width: 60,
       height: 60,
-      child: Icon(ForutonaIcon.issue, color: Colors.white, size: 30),
+      child: Icon(ForutonaIcon.issue_ball, color: Colors.white, size: 30),
       decoration: BoxDecoration(
         color: Color(0xffDC3E57),
         shape: BoxShape.circle

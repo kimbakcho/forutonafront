@@ -8,6 +8,7 @@ import 'package:forutonafront/AppBis/MaliciousBall/Domain/UseCase/MaliciousBallU
 import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCase.dart';
 import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
@@ -141,11 +142,26 @@ class ID01MainPage extends StatelessWidget {
                             right: 16,
                             child: CircleIconBtn(
                               icon: Icon(
-                                ForutonaIcon.dots,
+                                ForutonaIcon.dots_vertical_rounded,
                                 size: 14,
                               ),
                               onTap: () {
                                 model.showPopup(context);
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            height: 36,
+                            width: 36,
+                            top: MediaQuery.of(context).padding.top + 60,
+                            right: 16,
+                            child: CircleIconBtn(
+                              icon: Icon(
+                                ForutonaIcon.target_lock,
+                                size: 14,
+                              ),
+                              onTap: () {
+                                model.moveToMyLocation();
                               },
                             ),
                           ),
@@ -163,6 +179,7 @@ class ID01MainPage extends StatelessWidget {
                       builder: (context, state) {
                         return ID01MainBottomSheetBody(
                           topPosition: model.topSnapPosition,
+                          currentStateProgress: model.currentStateProgress,
                           fBallResDto: model.fBallResDto,
                           id01Mode: id01Mode,
                           preViewBallImage: preViewBallImage,
@@ -171,7 +188,10 @@ class ID01MainPage extends StatelessWidget {
                       },
                       headerBuilder: (context, state) {
                         return ID01MainBottomSheetHeader(
-                            fBallResDto: model.fBallResDto);
+                            fBallResDto: model.fBallResDto,
+                        onTapAddress: (Position position){
+                              model.moveToBallLocation(position);
+                        },);
                       },
                     )
                   : CommonLoadingComponent());
@@ -235,6 +255,10 @@ class ID01MainPageViewModel extends ChangeNotifier {
 
   String mainkey;
 
+  double currentStateProgress = 0.5;
+
+  bool syncLoadingFlag = false;
+
   ID01MainPageViewModel(
     this._context,
     this.ballUuid,
@@ -260,6 +284,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
 
   _loadBall() async {
     isBallLoaded = false;
+    await syncUserInfo();
 
     if (id01Mode == ID01Mode.preview) {
       this.fBallResDto = preViewResDto;
@@ -275,6 +300,16 @@ class ID01MainPageViewModel extends ChangeNotifier {
     await _init();
     isBallLoaded = true;
     notifyListeners();
+  }
+
+  syncUserInfo() async {
+    syncLoadingFlag = true;
+    if (_signInUserInfoUseCaseInputPort.isLogin) {
+      await _signInUserInfoUseCaseInputPort
+          .saveSignInInfoInMemoryFromAPiServer();
+      notifyListeners();
+    }
+    syncLoadingFlag = false;
   }
 
   _init() async {
@@ -341,6 +376,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
   }
 
   void listenerState(SheetState state) {
+    currentStateProgress = state.progress;
     if (state.isCollapsed) {
       _currentCollapsed = true;
       notifyListeners();
@@ -428,5 +464,21 @@ class ID01MainPageViewModel extends ChangeNotifier {
     await this
         ._maliciousBallUseCaseInputPort
         .reportMaliciousReply(maliciousType, ballUuid);
+  }
+
+  void moveToMyLocation() async {
+    var position = await _geoLocationUtilForeGroundUseCaseInputPort
+        .getCurrentWithLastPosition();
+    googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 14.56)));
+  }
+
+  void moveToBallLocation(Position position) async {
+    googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 14.56)));
   }
 }

@@ -86,7 +86,7 @@ class SearchHistoryView extends StatelessWidget {
                                                   .histories[index].searchText);
                                             },
                                             child: Icon(
-                                              ForutonaIcon.removepath,
+                                              ForutonaIcon.x,
                                               size: 15,
                                             ),
                                           )))

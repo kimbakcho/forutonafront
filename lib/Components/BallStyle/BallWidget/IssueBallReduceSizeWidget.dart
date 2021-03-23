@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseInputPort.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
+import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -37,7 +39,8 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => IssueBallReduceSizeWidgetViewModel(
-              sl(),sl(),
+              sl(),
+              sl(),
               context: context,
               ballListMediator: ballListMediator,
               index: index,
@@ -45,6 +48,9 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
             ),
         child: Consumer<IssueBallReduceSizeWidgetViewModel>(
             builder: (_, model, __) {
+          if (model.isBallDelete) {
+            return Container(width: 0, height: 0);
+          }
           return Material(
               color: boxDecoration != null ? boxDecoration.color : Colors.white,
               borderRadius:
@@ -121,22 +127,28 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
   final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
   final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
 
-  IssueBallReduceSizeWidgetViewModel(this._selectBallUseCaseInputPort,this._tagFromBallUuidUseCaseInputPort,
+  IssueBallReduceSizeWidgetViewModel(
+      this._selectBallUseCaseInputPort, this._tagFromBallUuidUseCaseInputPort,
       {this.issueBallDisPlayUseCase,
       BuildContext context,
       BallListMediator ballListMediator,
       int index})
-      : super(context, ballListMediator, index,sl(),sl(),sl(),sl(),sl());
+      : super(context, ballListMediator, index, sl(), sl(), sl(), sl(), sl());
 
   bool get isFinishBall {
     return ballListMediator.itemList[index].activationTime
         .isBefore(DateTime.now());
   }
 
+  bool get isBallDelete {
+    return ballListMediator.itemList[index].ballDeleteFlag;
+  }
+
   @override
   onReFreshBall() async {
     ballListMediator.itemList[index] = await _selectBallUseCaseInputPort
         .selectBall(ballListMediator.itemList[index].ballUuid);
+
     issueBallDisPlayUseCase =
         IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
     ballWidgetKey = Uuid().v4();
@@ -155,7 +167,8 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
   Future<void> onModifyBall(BuildContext context) async {
     var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
         ballUuid: ballListMediator.itemList[index].ballUuid);
-    await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    var result =
+        await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
         preSetBallResDto: ballListMediator.itemList[index],
         im001mode: IM001Mode.modify,

@@ -47,7 +47,7 @@ class ID01LikeState extends StatelessWidget {
           Container(
             margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
             child: Icon(
-              ForutonaIcon.thumbsdown,
+              ForutonaIcon.like,
               color: Colors.grey,
               size: 15,
             ),
@@ -87,7 +87,7 @@ class ID01LikeState extends StatelessWidget {
           Container(
             margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
             child: Icon(
-              ForutonaIcon.thumbsup,
+              ForutonaIcon.like,
               color: Colors.grey,
               size: 15,
             ),
