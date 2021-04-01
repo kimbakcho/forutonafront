@@ -7,6 +7,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUs
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/BottomNavigation.dart';
 import 'package:forutonafront/MainPage/MainPageView.dart';
 import 'package:forutonafront/Page/GCodePage/Component/GCodeLineButtonComponent.dart';
@@ -41,7 +42,7 @@ class G009MainPage extends StatelessWidget {
                             child: Column(children: [
                       GCodeLineButtonComponent(
                         icon: Icon(
-                          Icons.person,
+                          ForutonaIcon.user,
                           color: Colors.black,
                           size: 30,
                         ),
@@ -54,7 +55,7 @@ class G009MainPage extends StatelessWidget {
                       ),
                       GCodeLineButtonComponent(
                         icon: Icon(
-                          Icons.lock,
+                          ForutonaIcon.lock,
                           color: Colors.black,
                           size: 30,
                         ),
@@ -67,7 +68,7 @@ class G009MainPage extends StatelessWidget {
                       ),
                       GCodeLineButtonComponent(
                         icon: Icon(
-                          Icons.lock_open_rounded,
+                          ForutonaIcon.door_open,
                           color: Colors.black,
                           size: 30,
                         ),
@@ -78,7 +79,7 @@ class G009MainPage extends StatelessWidget {
                       ),
                       GCodeLineButtonComponent(
                         icon: Icon(
-                          Icons.notifications,
+                          ForutonaIcon.bell_g009,
                           color: Colors.black,
                           size: 30,
                         ),
@@ -106,7 +107,7 @@ class G009MainPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.warning_amber_sharp,
+                                      Icon(ForutonaIcon.info_circle,
                                           color: Colors.black, size: 30),
                                       SizedBox(
                                         width: 8,
@@ -125,7 +126,7 @@ class G009MainPage extends StatelessWidget {
                       ),
                       GCodeLineButtonComponent(
                         icon: Icon(
-                          Icons.question_answer,
+                          ForutonaIcon.help_circle,
                           color: Colors.black,
                           size: 30,
                         ),
@@ -148,7 +149,7 @@ class G009MainPage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Icon(Icons.warning_amber_sharp,
+                                        Icon(Icons.save_outlined,
                                             color: Colors.black, size: 30),
                                         SizedBox(
                                           width: 8,

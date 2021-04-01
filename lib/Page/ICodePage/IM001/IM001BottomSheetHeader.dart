@@ -37,7 +37,15 @@ class IM001BottomSheetHeader extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15.0),
-                    topRight: Radius.circular(15.0))),
+                    topRight: Radius.circular(15.0)),
+               boxShadow: [
+                 BoxShadow(
+                   color: Colors.black,
+                   offset: Offset(0,3),
+                   blurRadius: 6
+                 )
+               ]
+            ),
             height: model._currentMode == IM001BottomSheetHeaderMode.hide
                 ? 114
                 : 40,

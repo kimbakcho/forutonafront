@@ -38,7 +38,12 @@ class LoginButton extends StatelessWidget {
                       decoration: BoxDecoration(
                           image: DecorationImage(image: AssetImage(imagePath))),
                     ),
-                    Text(label)
+                    Expanded(child: Container(
+                      padding: EdgeInsets.only(right: 32),
+                      alignment: Alignment.center,
+                      child: Text(label),
+                    ))
+
                   ],
                 ),
                 onTap: () {

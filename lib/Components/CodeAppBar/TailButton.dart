@@ -37,12 +37,22 @@ class TailButton extends StatelessWidget {
             ),
           ),
           decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: enable ? Colors.white : Color(0xffF6F6F6),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              border: Border.all(
-                  width: enable ? 1: 0,
-                  color: enable ? Color(0xff000000) : Color(0xffF6F6F6))),
+            shape: BoxShape.rectangle,
+            color: enable ? Colors.white : Color(0xffF6F6F6),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            border: Border.all(
+                width: enable ? 1 : 0,
+                color: enable ? Color(0xff000000) : Color(0xffF6F6F6)),
+            boxShadow: enable
+                ? [
+                    BoxShadow(
+                      color: const Color(0x14455b63),
+                      offset: Offset(0, 12),
+                      blurRadius: 16,
+                    ),
+                  ]
+                : [],
+          ),
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/BPVoetePopupDialog/BPVotePopupDialog.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
@@ -55,7 +56,10 @@ class _ID01MainScaffoldBottomSheetState
             builder: (_, model, child) {
           return Container(
               height: 50,
-              color: Colors.white.withOpacity(0.7),
+
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(top: BorderSide(color: Color(0xffE4E7E8)))),
               child: Row(children: [
                 Material(
                   color: Colors.transparent,
@@ -65,7 +69,7 @@ class _ID01MainScaffoldBottomSheetState
                     },
                     child: Container(
                       padding: EdgeInsets.fromLTRB(16, 16, 8, 16),
-                      child: Icon(Icons.card_giftcard),
+                      child: Icon(ForutonaIcon.gift),
                     ),
                   ),
                 ),
@@ -77,7 +81,7 @@ class _ID01MainScaffoldBottomSheetState
                     },
                     child: Container(
                       padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
-                      child: Icon(Icons.share),
+                      child: Icon(ForutonaIcon.share),
                     ),
                   ),
                 ),
@@ -97,6 +101,7 @@ class _ID01MainScaffoldBottomSheetState
                         alignment: Alignment.center,
                         children: [
                           Container(
+                            width: 60,
                             margin: EdgeInsets.only(right: 16),
                             padding: EdgeInsets.fromLTRB(6, 3, 6, 3),
                             decoration: BoxDecoration(
@@ -108,9 +113,13 @@ class _ID01MainScaffoldBottomSheetState
                                 border: Border.all(
                                     color: Color(0xff3A3E3F), width: 1)),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  child: Icon(Icons.how_to_vote),
+                                  child: Icon(
+                                    ForutonaIcon.vote_yea,
+                                    size: 10,
+                                  ),
                                   margin: EdgeInsets.only(right: 8),
                                 ),
                                 Text('${model.userInfluenceTicketCount}')
@@ -227,6 +236,7 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
           context: context,
           expand: false,
           backgroundColor: Colors.transparent,
+          barrierColor: Colors.black,
           enableDrag: true,
           builder: (context) {
             return L001BottomSheet();

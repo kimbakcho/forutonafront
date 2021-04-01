@@ -19,6 +19,7 @@ class G012MainPage extends StatelessWidget {
         child: Consumer<G012MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
               body: Container(
+                  color: Colors.white,
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
                     CodeAppBar(
@@ -37,12 +38,11 @@ class G012MainPage extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      
                       Container(
                           margin: EdgeInsets.only(left: 16, right: 16),
                           padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                           constraints: BoxConstraints.tightForFinite(),
-                          height: 137,
+
                           decoration: BoxDecoration(
                               color: Color(0xffF2F3F5),
                               borderRadius:
@@ -70,7 +70,7 @@ class G012MainPage extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                 )
                               ])),
-                      SizedBox(height: 34),
+                      SizedBox(height: 36),
                       Container(
                         margin: EdgeInsets.all(16),
                         child: Column(
@@ -120,6 +120,7 @@ class G012MainPage extends StatelessWidget {
                                 ))
                               ],
                             ),
+                            SizedBox(height: 30),
                             PwInputAndCheckComponent(
                                 pwInputAndCheckComponentController:
                                     model._pwInputAndCheckComponentController,
@@ -209,6 +210,5 @@ class G012MainPageViewModel extends ChangeNotifier {
       _mainPageViewModelController.moveToMainPage(BottomNavigationNavType.HOME);
       Navigator.of(context).popUntil((route) => route.settings.name == 'MAIN');
     }
-
   }
 }

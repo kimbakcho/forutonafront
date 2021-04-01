@@ -22,6 +22,7 @@ class L004MainPage extends StatelessWidget {
         builder: (_, model, child) {
           return Material(
               child: Container(
+                color: Colors.white,
                   padding: MediaQuery.of(context).padding,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

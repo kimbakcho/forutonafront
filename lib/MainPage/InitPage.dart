@@ -44,15 +44,22 @@ class InitPageViewModel extends ChangeNotifier {
       return;
     }
     var hasPermission = await locationAdapter.hasPermission();
+    var positionServiceEnabled =  await locationAdapter.serviceEnabled();
     if (hasPermission != PermissionStatus.granted) {
-        await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-          return Z004CodeMainPage();
-        }));
-    }else {
+      await Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) {
+        return Z004CodeMainPage();
+      }));
+    } else if (!positionServiceEnabled){
+      await locationAdapter.requestService();
       await Navigator.of(context).pushReplacement(MaterialPageRoute(
-        settings: RouteSettings(
-          name: "/"
-        ),
+          settings: RouteSettings(name: "/"),
+          builder: (_) {
+            return MainPageView();
+          }));
+    } else {
+      await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          settings: RouteSettings(name: "/"),
           builder: (_) {
             return MainPageView();
           }));

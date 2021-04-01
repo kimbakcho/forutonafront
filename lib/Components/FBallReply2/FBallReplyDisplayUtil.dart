@@ -8,7 +8,7 @@ class FBallReplyDisplayUtil {
 
   String get replyText {
     if (fBallReplyResDto.deleteFlag) {
-      return "삭제됨";
+      return "삭제된 메시지 입니다";
     } else {
       return fBallReplyResDto.replyText;
     }

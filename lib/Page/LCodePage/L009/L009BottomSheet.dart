@@ -197,7 +197,7 @@ class L009BottomSheetViewModel extends ChangeNotifier {
     );
     try{
       await loginUseCaseInputPort.tryLogin();
-      Navigator.of(context).popUntil((route) => route.settings.name == 'MAIN');
+      Navigator.of(context).popUntil((route) => route.settings.name == '/');
     }catch (ex) {
         FireBaseValidErrorUtil fireBaseValidErrorUtil = FireBaseValidErrorUtil();
        var errorText = fireBaseValidErrorUtil.getErrorText(ex);

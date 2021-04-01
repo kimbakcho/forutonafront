@@ -191,6 +191,10 @@ class BallTagEditComponentController {
     _viewModel._toggle();
   }
 
+  isShow(){
+    return _viewModel.isShow;
+  }
+
   List<TagEditItemDto> getTags() {
     var list =
         _viewModel.ballEditTagChips.map((e) => e.tagEditItemDto).toList();

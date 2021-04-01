@@ -36,12 +36,15 @@ class ID01LimitTag extends StatelessWidget {
       child: Consumer<ID01LimitTagViewModel>(
         builder: (_, model, child) {
           return Container(
+            height: 18,
             alignment: Alignment.centerLeft,
             child: model.isLoaded ?
             Wrap(
               spacing: 5.0,
               children: model._buildTagWidget(),
-            ) : Container(),
+            ) : Container(
+
+            ),
           );
         },
       ),
@@ -92,7 +95,7 @@ class ID01LimitTagViewModel extends ChangeNotifier {
       widgets.add(Text(
         '#${this.tags[i].tagItem}',
         style: GoogleFonts.notoSans(
-          fontSize: 12,
+          fontSize: 14,
           color: const Color(0xff007eff),
           fontWeight: FontWeight.w300,
         ),

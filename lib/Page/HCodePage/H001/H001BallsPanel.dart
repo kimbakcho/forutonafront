@@ -29,6 +29,7 @@ class H001BallsPanel extends StatelessWidget {
       child: Consumer<H001BallsPanelViewModel>(
         builder: (_, model, __) {
           return Container(
+            color: Colors.white,
             child: ListView(
               controller: PageScrollController(
                       scrollController: ScrollController(),

@@ -39,7 +39,6 @@ class TermsTextLink extends StatelessWidget {
                           fontSize: 14,
                           color: const Color(0xff000000),
                           letterSpacing: 0.28,
-                          decoration: TextDecoration.underline,
                         ),
                         textAlign: TextAlign.left,
                       ))));

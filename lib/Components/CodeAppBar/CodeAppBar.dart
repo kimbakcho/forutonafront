@@ -35,13 +35,18 @@ class CodeAppBar extends StatelessWidget {
         color: Colors.white,
         child: Column(
           children: [
-            Row(children: [
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
               Container(
-                margin: EdgeInsets.only(left: 16, right: 16, top: 8),
+                margin: EdgeInsets.only(left: 16, right: 16),
                 child: BorderCircleBackButton(),
               ),
               Container(
-                margin: EdgeInsets.only(top: 8),
+
                 child: Text(
                   title,
                   style: GoogleFonts.notoSans(

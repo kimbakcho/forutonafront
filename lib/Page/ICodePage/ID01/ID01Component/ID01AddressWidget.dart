@@ -34,7 +34,7 @@ class ID01AddressWidget extends StatelessWidget {
                 },
                 child: Row(
                   children: [
-                    Icon(Icons.location_on),
+                    Icon(Icons.location_on,color: Color(0xff454F63),),
                     Expanded(
                         child: Container(
                           margin: EdgeInsets.only(left: 6),
@@ -42,7 +42,7 @@ class ID01AddressWidget extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.notoSans(
                                 fontSize: 14,
-                                color: const Color(0xff454f63),
+                                color: const Color(0xff454F63),
                                 letterSpacing: -0.28,
                                 fontWeight: FontWeight.w500,
                               )),

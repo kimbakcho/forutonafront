@@ -177,6 +177,13 @@ class YoutubeUrlUploadComponentController {
     _viewModel._toggle();
   }
 
+  bool isShow(){
+    if(_viewModel == null){
+      return false;
+    }
+    return _viewModel.isShow;
+  }
+
   String getYoutubeId() {
     return _viewModel.youtubeId;
   }

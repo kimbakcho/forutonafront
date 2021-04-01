@@ -119,6 +119,7 @@ class CountrySimpleSelectButton extends StatelessWidget {
                               model.moveToCountrySelectPage(context);
                             },
                             child: Container(
+                              color: Colors.white,
                                 constraints: BoxConstraints(
                                     maxHeight: 33,
                                     maxWidth:
@@ -128,7 +129,7 @@ class CountrySimpleSelectButton extends StatelessWidget {
                                   model.currentCountryName,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.notoSans(
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     color: const Color(0xff3a3e3f),
                                     letterSpacing: -0.24,
                                     fontWeight: FontWeight.w500,

@@ -15,7 +15,8 @@ import 'package:mutex/mutex.dart';
 
 import 'GeoLocationUtilBasicUseCaseInputPort.dart';
 import 'GeoLocationUtilForeGroundUseCaseInputPort.dart';
-import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart' as Adapter;
+import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart'
+    as Adapter;
 
 @LazySingleton(as: GeoLocationUtilForeGroundUseCaseInputPort)
 class GeoLocationUtilForeGroundUseCase
@@ -32,10 +33,9 @@ class GeoLocationUtilForeGroundUseCase
 
   GeoLocationUtilForeGroundUseCase(
       {@required this.basicUseCaseInputPort,
-        @required this.geolocatorAdapter,
-        @required this.sharedPreferencesAdapter,
-        @required this.locationAdapter
-      });
+      @required this.geolocatorAdapter,
+      @required this.sharedPreferencesAdapter,
+      @required this.locationAdapter});
 
   @override
   String getCurrentWithLastAddressInMemory() {
@@ -43,23 +43,27 @@ class GeoLocationUtilForeGroundUseCase
   }
 
   @override
-  Future<Position> getCurrentWithLastPosition()async {
+  Future<Position> getCurrentWithLastPosition() async {
     await _geoRequestMutex.acquire();
     Adapter.PermissionStatus _hasPermisstion;
     _hasPermisstion = await locationAdapter.hasPermission();
+    bool positionServiceEnabled = await locationAdapter.serviceEnabled();
     Position resultPosition;
-    if (_hasPermisstion != PermissionStatus.granted) {
+    if (_hasPermisstion != PermissionStatus.granted ||
+        !positionServiceEnabled) {
       resultPosition = await getLastKnowPonePosition();
     } else {
       resultPosition = await geolocatorAdapter.getCurrentPosition();
-      await sharedPreferencesAdapter.setDouble("currentlong", resultPosition.longitude);
-      await sharedPreferencesAdapter.setDouble("currentlat", resultPosition.latitude);
+      await sharedPreferencesAdapter.setDouble(
+          "currentlong", resultPosition.longitude);
+      await sharedPreferencesAdapter.setDouble(
+          "currentlat", resultPosition.latitude);
     }
     currentWithLastPosition = resultPosition;
-    try{
+    try {
       currentWithLastAddress =
           await getPositionAddress(currentWithLastPosition);
-    } catch (ex){
+    } catch (ex) {
       currentWithLastAddress = "";
     }
     _geoRequestMutex.release();
@@ -87,13 +91,17 @@ class GeoLocationUtilForeGroundUseCase
   }
 
   @override
-  Future<String> reqBallDistanceDisplayText({@required Position ballLatLng,
-    @required GeoLocationUtilUseForeGroundCaseOutputPort geoLocationUtilUseCaseOp}) async {
+  Future<String> reqBallDistanceDisplayText(
+      {@required
+          Position ballLatLng,
+      @required
+          GeoLocationUtilUseForeGroundCaseOutputPort
+              geoLocationUtilUseCaseOp}) async {
     var position = await getLastKnowPonePosition();
     var distance = await geolocatorAdapter.distanceBetween(ballLatLng.latitude,
         ballLatLng.longitude, position.latitude, position.longitude);
     var changeDisplayStr = DistanceDisplayUtil.changeDisplayStr(distance);
-    if(geoLocationUtilUseCaseOp != null){
+    if (geoLocationUtilUseCaseOp != null) {
       geoLocationUtilUseCaseOp.onBallDistanceDisplayText(
           displayDistanceText: changeDisplayStr);
     }
@@ -107,12 +115,13 @@ class GeoLocationUtilForeGroundUseCase
     PermissionStatus _permissionGranted;
 
     _permissionGranted = await locationAdapter.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied || _permissionGranted == PermissionStatus.deniedForever) {
+    if (_permissionGranted == PermissionStatus.denied ||
+        _permissionGranted == PermissionStatus.deniedForever) {
       _permissionGranted = await locationAdapter.requestPermission();
       if (_permissionGranted == PermissionStatus.denied) {
         _geoRequestMutex.release();
         return false;
-      }else if(_permissionGranted == PermissionStatus.deniedForever){
+      } else if (_permissionGranted == PermissionStatus.deniedForever) {
         _geoRequestMutex.release();
         return false;
       }
@@ -127,6 +136,26 @@ class GeoLocationUtilForeGroundUseCase
       }
     }
 
+    _geoRequestMutex.release();
+    return true;
+  }
+
+  Future<bool> hasAllPositionPermission() async {
+    await _geoRequestMutex.acquire();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _permissionGranted = await locationAdapter.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _geoRequestMutex.release();
+      return false;
+    }
+
+    _serviceEnabled = await locationAdapter.serviceEnabled();
+    if (!_serviceEnabled) {
+      _geoRequestMutex.release();
+      return false;
+    }
     _geoRequestMutex.release();
     return true;
   }

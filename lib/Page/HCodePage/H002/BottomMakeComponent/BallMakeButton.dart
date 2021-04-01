@@ -36,7 +36,7 @@ class BallMakeButton extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
 
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
                 ),
                 child: Row(
                   children: [

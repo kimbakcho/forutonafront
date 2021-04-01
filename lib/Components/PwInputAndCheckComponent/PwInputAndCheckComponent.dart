@@ -89,6 +89,7 @@ class PwInputAndCheckComponent extends StatelessWidget {
                           height: 1.2142857142857142,
                         ))
                     : Container(),
+                SizedBox(height: 30),
                 Row(
                   children: [
                     Expanded(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -70,18 +71,22 @@ class GenderSelectComponent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      "남성",
-                      style: GoogleFonts.notoSans(
-                        fontSize: 14,
-                        color: model._currentGenderType == GenderType.Male
-                            ? Color(0xff668FF7)
-                            : Color(0xffb1b1b1),
-                        letterSpacing: -0.28,
-                        fontWeight: FontWeight.w300,
-                        height: 1.2142857142857142,
+                    Container(
+                      margin: EdgeInsets.only(left: 8),
+                      child: Text(
+                        "남성",
+                        style: GoogleFonts.notoSans(
+                          fontSize: 14,
+                          color: model._currentGenderType == GenderType.Male
+                              ? Color(0xff668FF7)
+                              : Color(0xffb1b1b1),
+                          letterSpacing: -0.28,
+                          fontWeight: FontWeight.w300,
+                          height: 1.2142857142857142,
+                        ),
                       ),
-                    ),
+                    )
+                    ,
                     SizedBox(width: 27),
                     Material(
                       child: InkWell(
@@ -113,18 +118,22 @@ class GenderSelectComponent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      "여성",
-                      style: GoogleFonts.notoSans(
-                        fontSize: 14,
-                        color: model._currentGenderType == GenderType.FeMale
-                            ? Color(0xffF68D9A)
-                            : Color(0xffb1b1b1),
-                        letterSpacing: -0.28,
-                        fontWeight: FontWeight.w300,
-                        height: 1.2142857142857142,
+                    Container(
+                      margin: EdgeInsets.only(left: 8),
+                      child: Text(
+                        "여성",
+                        style: GoogleFonts.notoSans(
+                          fontSize: 14,
+                          color: model._currentGenderType == GenderType.FeMale
+                              ? Color(0xffF68D9A)
+                              : Color(0xffb1b1b1),
+                          letterSpacing: -0.28,
+                          fontWeight: FontWeight.w300,
+                          height: 1.2142857142857142,
+                        ),
                       ),
                     )
+
                   ],
                 )
               ],

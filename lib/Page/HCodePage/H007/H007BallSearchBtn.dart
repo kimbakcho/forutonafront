@@ -10,7 +10,7 @@ class H007BallSearchBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48,
+      height: 56,
       width: MediaQuery.of(context).size.width - 32,
       child: FlatButton(
           onPressed: () {
@@ -27,7 +27,15 @@ class H007BallSearchBtn extends StatelessWidget {
       decoration: BoxDecoration(
           color: Color(0xff3497FD),
           border: Border.all(color: Color(0xff4F72FF)),
-          borderRadius: BorderRadius.all(Radius.circular(30.0))),
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.16),
+            offset: Offset(0,3),
+            blurRadius: 6
+          )
+        ]
+      ),
     );
   }
 }

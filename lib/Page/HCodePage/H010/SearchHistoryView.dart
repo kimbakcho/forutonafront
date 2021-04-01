@@ -10,8 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-
-
 class SearchHistoryView extends StatelessWidget {
   final SearchHistoryViewController searchHistoryViewController;
   final InputSearchBarListener inputSearchBarListener;
@@ -41,56 +39,66 @@ class SearchHistoryView extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: model.histories.length,
                   itemBuilder: (_, index) {
-                    return Material(
-                        color: Colors.white,
-                        child: InkWell(
-                            onTap: () {
-                              inputSearchBarListener.onSearch(
-                                  model.histories[index].searchText,
-                                  context: context);
-                            },
-                            child: Container(
-                                padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
-                                child: Row(children: [
-                                  Expanded(
-                                      child: Container(
-                                          child: Text(
-                                              model.histories[index].searchText,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.notoSans(
-                                                fontSize: 14,
-                                                color: const Color(0xff454f63),
-                                                letterSpacing: -0.28,
-                                                height: 1.4285714285714286,
-                                              )))),
-                                  Container(
-                                      margin:
-                                          EdgeInsets.only(left: 16, right: 16),
-                                      child: Text(
-                                          DateFormat("yy.MM.dd").format(model
-                                              .histories[index].searchTime),
-                                          style: GoogleFonts.notoSans(
-                                            fontSize: 14,
-                                            color: const Color(0xff3497fd),
-                                            letterSpacing: -0.28,
-                                            height: 1.4285714285714286,
-                                          ))),
-                                  Container(
-                                      width: 36,
-                                      height: 36,
-                                      child: Material(
-                                          color: Colors.white,
-                                          child: InkWell(
-                                            onTap: () {
-                                              model.removeHistory(model
-                                                  .histories[index].searchText);
-                                            },
-                                            child: Icon(
-                                              ForutonaIcon.x,
-                                              size: 15,
-                                            ),
-                                          )))
-                                ]))));
+                    return Container(
+                      child: Material(
+                          color: Colors.white,
+                          child: InkWell(
+                              onTap: () {
+                                inputSearchBarListener.onSearch(
+                                    model.histories[index].searchText,
+                                    context: context);
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                                  child: Row(children: [
+                                    Expanded(
+                                        child: Container(
+                                            child: Text(
+                                                model.histories[index]
+                                                    .searchText,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.notoSans(
+                                                  fontSize: 14,
+                                                  color:
+                                                      const Color(0xff454f63),
+                                                  letterSpacing: -0.28,
+                                                  height: 1.4285714285714286,
+                                                )))),
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                            left: 16, right: 16),
+                                        child: Text(
+                                            DateFormat("yy.MM.dd").format(model
+                                                .histories[index].searchTime),
+                                            style: GoogleFonts.notoSans(
+                                              fontSize: 14,
+                                              color: const Color(0xff3497fd),
+                                              letterSpacing: -0.28,
+                                              height: 1.4285714285714286,
+                                            ))),
+                                    Container(
+                                        width: 36,
+                                        height: 36,
+
+                                        child: Material(
+                                            color: Colors.white,
+                                            child: InkWell(
+                                              onTap: () {
+                                                model.removeHistory(model
+                                                    .histories[index]
+                                                    .searchText);
+                                              },
+                                              child: Icon(
+                                                ForutonaIcon.x_circle,
+                                                size: 22,
+                                              ),
+                                            )))
+                                  ])))),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Color(0xffE4E7E8), width: 1))),
+                    );
                   })
               : Column(children: [
                   Row(

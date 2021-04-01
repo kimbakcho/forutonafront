@@ -22,6 +22,9 @@ class G011MainPage extends StatelessWidget {
               child: Column(
                 children: [
                   CodeAppBar(title: "설정", visibleTailButton: false,progressValue: 0),
+                  SizedBox(
+                    height: 16,
+                  ),
                   GCodeLineButtonComponent(
                     icon: Icon(Icons.vpn_key),
                     text: "패스워드 재설정",

@@ -94,105 +94,121 @@ class ID01MainPage extends StatelessWidget {
                       width: 0,
                     ),
               body: model.isBallLoaded
-                  ? SlidingSheet(
-                      listener: model.listenerState,
-                      controller: model.sheetController,
-                      cornerRadius: 16,
-                      isBackdropInteractable: true,
-                      snapSpec: SnapSpec(
-                        snap: true,
-                        snappings: [
-                          88,
-                          model.middleSnapPosition,
-                          model.topSnapPosition
-                        ],
-                        initialSnap: model.middleSnapPosition,
-                        positioning: SnapPositioning.pixelOffset,
-                        onSnap: (state, snap) {
-                          print(state);
-                        },
-                      ),
-                      body: Stack(
-                        children: [
-                          Container(
-                            key: model.mapContainerGlobalKey,
-                            child: GoogleMap(
-                              initialCameraPosition:
-                                  model._googleMapInitPosition,
-                              markers: model.mapMarkers,
-                              onMapCreated: model.onMapCreated,
-                            ),
+                  ? Stack(
+                      children: [
+                        SlidingSheet(
+                          listener: model.listenerState,
+                          controller: model.sheetController,
+                          cornerRadius: 16,
+                          isBackdropInteractable: true,
+                          shadowColor: Colors.black,
+                          elevation: 1,
+                          snapSpec: SnapSpec(
+                            snap: true,
+                            snappings: [
+                              88,
+                              model.middleSnapPosition,
+                              model.topSnapPosition
+                            ],
+                            initialSnap: model.middleSnapPosition,
+                            positioning: SnapPositioning.pixelOffset,
+                            onSnap: (state, snap) {
+                              print(state);
+                            },
                           ),
-                          Positioned(
-                            height: 36,
-                            width: 36,
-                            top: MediaQuery.of(context).padding.top + 12,
-                            left: 16,
-                            child: CircleIconBtn(
-                              icon: Icon(Icons.arrow_back_rounded),
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ),
-                          Positioned(
-                            height: 36,
-                            width: 36,
-                            top: MediaQuery.of(context).padding.top + 12,
-                            right: 16,
-                            child: CircleIconBtn(
-                              icon: Icon(
-                                ForutonaIcon.dots_vertical_rounded,
-                                size: 14,
+                          body: Stack(
+                            children: [
+                              Container(
+                                key: model.mapContainerGlobalKey,
+                                child: GoogleMap(
+                                  initialCameraPosition:
+                                      model._googleMapInitPosition,
+                                  markers: model.mapMarkers,
+                                  onMapCreated: model.onMapCreated,
+                                ),
                               ),
-                              onTap: () {
-                                model.showPopup(context);
-                              },
-                            ),
+                              Positioned(
+                                height: 36,
+                                width: 36,
+                                top: MediaQuery.of(context).padding.top + 60,
+                                right: 16,
+                                child: CircleIconBtn(
+                                  color: Colors.white,
+                                  width: 36,
+                                  height: 36,
+                                  icon: Icon(
+                                    ForutonaIcon.target_lock,
+                                    size: 22,
+                                  ),
+                                  onTap: () {
+                                    model.moveToMyLocation();
+                                  },
+                                ),
+                              ),
+                              model._currentExpanded
+                                  ? Container(
+                                      color: Colors.black.withOpacity(0.4),
+                                    )
+                                  : Container(
+                                      width: 0,
+                                      height: 0,
+                                    )
+                            ],
                           ),
-                          Positioned(
+                          minHeight: 100,
+                          builder: (context, state) {
+                            return ID01MainBottomSheetBody(
+                              topPosition: model.topSnapPosition,
+                              currentStateProgress: model.currentStateProgress,
+                              fBallResDto: model.fBallResDto,
+                              id01Mode: id01Mode,
+                              preViewBallImage: preViewBallImage,
+                              preViewfBallTagResDtos: preViewfBallTagResDtos,
+                            );
+                          },
+                          headerBuilder: (context, state) {
+                            return ID01MainBottomSheetHeader(
+                              fBallResDto: model.fBallResDto,
+                              onTapAddress: (Position position) {
+                                model.moveToBallLocation(position);
+                              },
+                            );
+                          },
+                        ),
+                        Positioned(
+                          height: 36,
+                          width: 36,
+                          top: MediaQuery.of(context).padding.top + 12,
+                          left: 16,
+                          child: CircleIconBtn(
                             height: 36,
                             width: 36,
-                            top: MediaQuery.of(context).padding.top + 60,
-                            right: 16,
-                            child: CircleIconBtn(
-                              icon: Icon(
-                                ForutonaIcon.target_lock,
-                                size: 14,
-                              ),
-                              onTap: () {
-                                model.moveToMyLocation();
-                              },
-                            ),
+                            color: Colors.white,
+                            icon: Icon(Icons.arrow_back_rounded),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
                           ),
-                          model._currentExpanded
-                              ? Container(
-                                  color: Colors.black.withOpacity(0.4),
-                                )
-                              : Container(
-                                  width: 0,
-                                  height: 0,
-                                )
-                        ],
-                      ),
-                      minHeight: 100,
-                      builder: (context, state) {
-                        return ID01MainBottomSheetBody(
-                          topPosition: model.topSnapPosition,
-                          currentStateProgress: model.currentStateProgress,
-                          fBallResDto: model.fBallResDto,
-                          id01Mode: id01Mode,
-                          preViewBallImage: preViewBallImage,
-                          preViewfBallTagResDtos: preViewfBallTagResDtos,
-                        );
-                      },
-                      headerBuilder: (context, state) {
-                        return ID01MainBottomSheetHeader(
-                            fBallResDto: model.fBallResDto,
-                        onTapAddress: (Position position){
-                              model.moveToBallLocation(position);
-                        },);
-                      },
+                        ),
+                        Positioned(
+                          height: 36,
+                          width: 36,
+                          top: MediaQuery.of(context).padding.top + 12,
+                          right: 16,
+                          child: CircleIconBtn(
+                            color: Colors.white,
+                            width: 36,
+                            height: 36,
+                            icon: Icon(
+                              ForutonaIcon.dots_vertical_rounded,
+                              size: 28,
+                            ),
+                            onTap: () {
+                              model.showPopup(context);
+                            },
+                          ),
+                        )
+                      ],
                     )
                   : CommonLoadingComponent());
         },
@@ -349,7 +365,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
   }
 
   get middleSnapPosition {
-    return MediaQuery.of(_context).size.height * 0.45;
+    return 310.0;
   }
 
   get topSnapPosition {

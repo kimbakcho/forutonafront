@@ -38,7 +38,12 @@ class SignButton extends StatelessWidget {
                       decoration: BoxDecoration(
                           image: DecorationImage(image: AssetImage(imagePath))),
                     ),
-                    Text(label)
+                    Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(right: 32),
+                      child: Text(label),
+                      alignment: Alignment.center
+                    ))
                   ],
                 ),
                 onTap: () {

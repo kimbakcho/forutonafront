@@ -3,6 +3,7 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/FBallValuation/Domain/UseCase/FBallValuationUseCase/FBallValuationUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBallValuation/Dto/FBallVoteResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -62,7 +63,7 @@ class BPVotePopupDialog extends StatelessWidget {
                   child: Text("현재 영향력",
                       style: GoogleFonts.notoSans(
                         fontSize: 14,
-                        color: const Color(0xff2f3035),
+                        color: const Color(0xff78849E),
                       )),
                 ),
                 Container(
@@ -85,7 +86,7 @@ class BPVotePopupDialog extends StatelessWidget {
                   child: Text("내가 행사한 영향력",
                       style: GoogleFonts.notoSans(
                         fontSize: 14,
-                        color: const Color(0xff2f3035),
+                        color: const Color(0xff78849E),
                       )),
                 ),
                 Container(
@@ -136,7 +137,7 @@ class BPVotePopupDialog extends StatelessWidget {
                       borderLineColor: Color(0xff007EFF),
                       labelColor: Color(0xff007EFF),
                       onClick: () {},
-                      mainIcon: Icons.upload_outlined,
+                      mainIcon: ForutonaIcon.icon_awesome_angle_double_down,
                       mainIconColor: Color(0xff007EFF),
                       labelText: "영향력 Up",
                       voteButtonViewController: model.plusVoteButtonViewController,
@@ -147,7 +148,7 @@ class BPVotePopupDialog extends StatelessWidget {
                       borderLineColor: Color(0xffFF4F9A),
                       labelColor: Color(0xffFF4F9A),
                       onClick: () {},
-                      mainIcon: Icons.download_outlined,
+                      mainIcon: ForutonaIcon.icon_awesome_angle_double_down2,
                       mainIconColor: Color(0xffFF4F9A),
                       labelText: "영향력 Down",
                       voteButtonViewController: model.minusVoteButtonViewController,
@@ -155,7 +156,7 @@ class BPVotePopupDialog extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(height: 33),
+                SizedBox(height: 30),
                 Divider(
                   height: 1,
                 ),
@@ -292,6 +293,7 @@ class BPVotePopupDialogViewModel extends ChangeNotifier {
   updateBP(BuildContext context){
     showMaterialModalBottomSheet(
         context: context,
+        barrierColor: Colors.black.withOpacity(0.7),
         builder: (context) {
           return VoteResultDialog(
             initPoint: fBallResDto.ballPower,

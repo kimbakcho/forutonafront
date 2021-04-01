@@ -39,7 +39,7 @@ class MapBitmapDescriptorUseCase
   Future<BitmapDescriptor> urlPathToAvatarBitmapDescriptor(String url) async {
     var iconByte = await fileDownLoaderUseCaseInputPort.downloadToByte(url);
     List<int> bytes = await imageBorderAvatarUtil.exportReSizeImageToByte(
-        iconByte, Size(150, 150));
+        iconByte, Size(70, 70));
     return BitmapDescriptor.fromBytes(bytes);
   }
 }

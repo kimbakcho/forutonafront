@@ -20,14 +20,14 @@ class RankingTagChip extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: GoogleFonts.notoSans(
             fontSize: 14,
-            color: const Color(0xff454f63),
-            fontWeight: FontWeight.w700,
+            color: const Color(0xff5c5d5f),
+            fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.left,
         ),
       ),
       decoration: BoxDecoration(
-          color: Color(0xffE4E7E8),
+          color: Color(0xffF4F2F6),
 
           borderRadius: BorderRadius.all(Radius.circular(12))),
     );

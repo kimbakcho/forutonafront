@@ -47,7 +47,21 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                     BottomNavigationNavType.HOME);
                               }
                             },
-                            child: Icon(Icons.home),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(ForutonaIcon.home_b__circle),
+                                Text(
+                                  '리스트',
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 9,
+                                    color: const Color(0xff000000),
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
                           )),
                       Expanded(flex: 1, child: KPageNavBtn()),
                       Expanded(
@@ -61,7 +75,21 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             }else {
                               model.showL001BottomSheet();
                             }
-                          } , child: Icon(Icons.add))),
+                          } , child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(ForutonaIcon.make_b_),
+                              Text(
+                                '만들기',
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 9,
+                                  color: const Color(0xff000000),
+                                  fontWeight: FontWeight.w300,
+                                ),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ))),
                       Expanded(
                           flex: 1,
                           child: FlatButton(
@@ -72,8 +100,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                       BottomNavigationNavType.SNS);
                                 }
                               },
-                              child: Icon(
-                                ForutonaIcon.chat,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(ForutonaIcon.chat),
+                                  Text(
+                                    '소셜',
+                                    style: GoogleFonts.notoSans(
+                                      fontSize: 9,
+                                      color: const Color(0xff000000),
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )
+                                ],
                               ))),
                       Expanded(
                         flex: 1,
@@ -114,7 +154,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         color: Color(0xffffffff), boxShadow: [
                       BoxShadow(
                         offset: Offset(0.00, 3.00),
-                        color: Color(0xff000000).withOpacity(0.16),
+                        color: Color(0xff2F3035),
                         blurRadius: 6,
                       )
                     ]));

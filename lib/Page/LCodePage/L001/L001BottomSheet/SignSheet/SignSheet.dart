@@ -84,7 +84,7 @@ class SignSheet extends StatelessWidget {
                 SignButton(
                     snsSupportService: SnsSupportService.Forutona,
                     signButtonOutputPort: model,
-                    label: "등록된 이메일주소 사용",
+                    label: "이메일주소로 가입",
                     imagePath: "assets/LoginIcon/EmailLogo.png"),
                 Spacer(),
                 Container(

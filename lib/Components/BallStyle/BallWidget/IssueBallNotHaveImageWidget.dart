@@ -24,52 +24,70 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
   final BoxDecoration boxDecoration;
 
   IssueBallNotHaveImageWidget(
-      {Key key,
-      this.index,
-      this.ballListMediator,
-      this.boxDecoration})
+      {Key key, this.index, this.ballListMediator, this.boxDecoration})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => IssueBallNotHaveImageWidgetViewModel(sl(),sl(),
-          context: context, ballListMediator: ballListMediator, index: index),
+      create: (_) =>
+          IssueBallNotHaveImageWidgetViewModel(sl(), sl(),
+              context: context,
+              ballListMediator: ballListMediator,
+              index: index),
       child: Consumer<IssueBallNotHaveImageWidgetViewModel>(
         builder: (_, model, __) {
           return model.issueBallDisPlayUseCase.fBallResDto.ballDeleteFlag
               ? Container(
-                  width: 0,
-                  height: 0,
-                )
+            width: 0,
+            height: 0,
+          )
               : Container(
-                  child: Column(
-                    key: Key(model.ballWidgetKey),
-                    children: <Widget>[
-                      IssueBallTopBar(
-                          ballDisPlayUseCase: model.issueBallDisPlayUseCase),
-                      Divider(
-                        color: Color(0xffF4F4F6).withOpacity(0.9),
-                        height: 1,
-                        thickness: 1,
-                      ),
-                      BallTitleInfoBar(
-                        ballDisPlayUseCase: model.issueBallDisPlayUseCase,
-                        gotoDetailPage: model.moveToDetailPage,
-                        showOptionPopUp: model.showOptionPopUp,
-                      ),
-                      BallTextWidget(
-                        gotoDetailPage: model.moveToDetailPage,
-                        ballDisPlayUseCase: model.issueBallDisPlayUseCase,
-                      ),
-                      BallPositionInfoBar(
-                        gotoDetailPage: model.moveToDetailPage,
-                        ballSearchPosition: ballListMediator.searchPosition(),
-                        ballDisPlayUseCase: model.issueBallDisPlayUseCase,
-                      )
-                    ],
-                  ),
-                  decoration: boxDecoration);
+            child: Material(
+              color: Colors.white,
+              borderRadius: boxDecoration.borderRadius,
+              child: InkWell(
+                onTap: () {
+                  model.moveToDetailPage();
+                },
+                child: Container(
+                    child: Column(
+                      key: Key(model.ballWidgetKey),
+                      children: <Widget>[
+                        IssueBallTopBar(
+                            ballDisPlayUseCase:
+                            model.issueBallDisPlayUseCase),
+                        Divider(
+                          color: Color(0xffF4F4F6).withOpacity(0.9),
+                          height: 1,
+                          thickness: 1,
+                        ),
+                        BallTitleInfoBar(
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                        ),
+                        BallTextWidget(
+                          gotoDetailPage: model.moveToDetailPage,
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                        ),
+                        BallPositionInfoBar(
+                          ballSearchPosition:
+                          ballListMediator.searchPosition(),
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                        )
+                      ],
+                    ),
+                    decoration: boxDecoration),
+              ),
+            ),
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.16),
+                      offset: Offset(0, 4),
+                      blurRadius: 16)
+                ]
+            ),
+          ) ;
         },
       ),
     );
@@ -82,19 +100,28 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
 
   final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
 
-  IssueBallNotHaveImageWidgetViewModel(this._selectBallUseCaseInputPort,this._tagFromBallUuidUseCaseInputPort,
+  IssueBallNotHaveImageWidgetViewModel(this._selectBallUseCaseInputPort,
+      this._tagFromBallUuidUseCaseInputPort,
       {BuildContext context, BallListMediator ballListMediator, int index})
-      : super(context, ballListMediator, index,sl(),sl(),sl(),sl(),sl()) {
-    issueBallDisPlayUseCase =
-        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index],geoLocatorAdapter: sl());
+      : super(
+      context,
+      ballListMediator,
+      index,
+      sl(),
+      sl(),
+      sl(),
+      sl(),
+      sl()) {
+    issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
   }
 
   @override
   onReFreshBall() async {
     ballListMediator.itemList[index] = await _selectBallUseCaseInputPort
         .selectBall(ballListMediator.itemList[index].ballUuid);
-    issueBallDisPlayUseCase =
-        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index],geoLocatorAdapter: sl());
+    issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
     ballWidgetKey = Uuid().v4();
     notifyListeners();
   }
@@ -111,13 +138,13 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   Future<void> onModifyBall(BuildContext context) async {
     var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
         ballUuid: ballListMediator.itemList[index].ballUuid);
-    var result = await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    var result =
+    await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
         preSetBallResDto: ballListMediator.itemList[index],
         im001mode: IM001Mode.modify,
         preSetFBallTagResDtos: tags,
       );
     }));
-
   }
 }

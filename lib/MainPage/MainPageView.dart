@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
@@ -34,9 +35,7 @@ class MainPageView extends StatelessWidget {
                             HomeMainPage(
                               key: model.homepageWidgetKey,
                             ),
-                            GCodeMainPage(
-                              key: model.gCodeMainKey
-                            ),
+                            GCodeMainPage(key: model.gCodeMainKey),
                             Container(
                               child: Text("tet"),
                             )
@@ -82,6 +81,7 @@ class MainPageViewModel extends ChangeNotifier
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) {
       gCodeMainKey = UniqueKey();
     });
+    initStatueBar();
   }
 
   Future<void> onLoginStateChange(FUserInfoResDto fUserInfoResDto) async {
@@ -139,15 +139,24 @@ class MainPageViewModel extends ChangeNotifier
             },
           );
         });
-    if(result is FBallResDto){
-      Navigator.of(context).push(MaterialPageRoute(builder: (_){
+    if (result is FBallResDto) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) {
         return ID01MainPage(
-          id01Mode: ID01Mode.publish,
-          fBallResDto: result,
-          ballUuid: result.ballUuid
-        );
+            id01Mode: ID01Mode.publish,
+            fBallResDto: result,
+            ballUuid: result.ballUuid);
       }));
     }
+  }
+
+  void initStatueBar() async {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.white,
+        // Color for Android
+        statusBarBrightness: Brightness.dark,
+        // Dark ,== white status bar -- for IOS.
+        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.white));
   }
 }
 

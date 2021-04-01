@@ -158,8 +158,9 @@ class _SolidBottomSheetState extends State<SolidBottomSheet> {
           decoration: widget.elevation > 0
               ? BoxDecoration(boxShadow: [
                   BoxShadow(
-                    color: Colors.black54,
+                    color: Colors.black,
                     blurRadius: widget.elevation,
+                    offset: Offset(0,3)
                   ),
                 ])
               : null,

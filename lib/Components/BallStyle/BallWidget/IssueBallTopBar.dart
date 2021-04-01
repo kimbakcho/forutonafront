@@ -19,7 +19,7 @@ class IssueBallTopBar extends StatelessWidget {
         children: <Widget>[
           IssueBallIconWidget(
             size: Size(18.0, 18.0),
-            iconSize: 12,
+            iconSize: 18,
           ),
           SizedBox(
             width: 7,

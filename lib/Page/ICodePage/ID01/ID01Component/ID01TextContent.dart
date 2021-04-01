@@ -26,7 +26,7 @@ class ID01TextContent extends StatelessWidget {
               ),
               onTap: (url) => launch(url, forceSafariVC: false),
               style: GoogleFonts.notoSans(
-                fontSize: 16,
+                fontSize: 14,
                 color: const Color(0xff000000),
                 letterSpacing: -0.32,
                 height: 1.5625,

@@ -42,7 +42,8 @@ class _ID01MainBottomSheetHeaderState extends State<ID01MainBottomSheetHeader> {
                             height: 2,
                             decoration: BoxDecoration(
                                 color: Color(0xffE4E7E8),
-                                borderRadius: BorderRadius.all(Radius.circular(20))
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+
                             ),
                           )
                         ],
@@ -79,7 +80,7 @@ class _ID01MainBottomSheetHeaderState extends State<ID01MainBottomSheetHeader> {
                     ),
 
                   ],
-                )
+                ),
             );
           }
       ),

@@ -26,6 +26,7 @@ class _RankingTagListState extends State<RankingTagList>
             rankingTagListMediator: widget.rankingTagListMediator),
         child: Consumer<RankingTagListViewModel>(builder: (_, model, __) {
           return Container(
+
               margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
               height: model.tagRankingResDtos.length == 0 ? 0 : 30,
               child: ListView.builder(

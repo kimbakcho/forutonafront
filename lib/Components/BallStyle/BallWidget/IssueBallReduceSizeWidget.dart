@@ -51,73 +51,86 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
           if (model.isBallDelete) {
             return Container(width: 0, height: 0);
           }
-          return Material(
-              color: boxDecoration != null ? boxDecoration.color : Colors.white,
-              borderRadius:
-                  boxDecoration != null ? boxDecoration.borderRadius : null,
-              child: InkWell(
-                  onTap: () {
-                    model.moveToDetailPage();
-                  },
-                  child: Stack(
-                    children: [
-                      Container(
-                          padding: EdgeInsets.fromLTRB(14, 16, 14, 16),
-                          child: Column(children: [
-                            ReduceSizeTopBar(
-                                issueBallDisPlayUseCase:
-                                    model.issueBallDisPlayUseCase),
-                            SizedBox(
-                              height: 11,
-                            ),
-                            Row(children: [
-                              Expanded(
-                                  child: Column(children: [
-                                ReduceSizeBallTitleWidget(
-                                    issueBallDisPlayUseCase:
-                                        model.issueBallDisPlayUseCase),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                ReduceSizeAddressBar(
-                                    issueBallDisPlayUseCase:
-                                        model.issueBallDisPlayUseCase)
-                              ])),
-                              Container(
-                                width: 70,
-                                height: 53,
-                                child: model.issueBallDisPlayUseCase
-                                        .isMainPicture()
-                                    ? ReduceSizeImageWidget(
-                                        issueBallDisPlayUseCase:
-                                            model.issueBallDisPlayUseCase)
-                                    : Container(),
-                              )
-                            ]),
-                          ])),
-                      model.isFinishBall
-                          ? Positioned.fill(
-                              child: Container(
-                              child: Center(
-                                child: Text(
-                                  '종료된',
-                                  style: GoogleFonts.notoSans(
-                                    fontSize: 18,
-                                    color: const Color(0xffffffff),
-                                    height: 0.7777777777777778,
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: boxDecoration.borderRadius,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.16),
+                    offset: Offset(0,4),
+                    blurRadius: 16
+                )
+              ]
+            ),
+            child: Material(
+                color:
+                    boxDecoration != null ? boxDecoration.color : Colors.white,
+                borderRadius:
+                    boxDecoration != null ? boxDecoration.borderRadius : null,
+                child: InkWell(
+                    onTap: () {
+                      model.moveToDetailPage();
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.fromLTRB(14, 16, 14, 16),
+                            child: Column(children: [
+                              ReduceSizeTopBar(
+                                  issueBallDisPlayUseCase:
+                                      model.issueBallDisPlayUseCase),
+                              SizedBox(
+                                height: 11,
+                              ),
+                              Row(children: [
+                                Expanded(
+                                    child: Column(children: [
+                                  ReduceSizeBallTitleWidget(
+                                      issueBallDisPlayUseCase:
+                                          model.issueBallDisPlayUseCase),
+                                  SizedBox(
+                                    height: 3,
                                   ),
-                                  textAlign: TextAlign.center,
+                                  ReduceSizeAddressBar(
+                                      issueBallDisPlayUseCase:
+                                          model.issueBallDisPlayUseCase)
+                                ])),
+                                Container(
+                                  width: 70,
+                                  height: 53,
+                                  child: model.issueBallDisPlayUseCase
+                                          .isMainPicture()
+                                      ? ReduceSizeImageWidget(
+                                          issueBallDisPlayUseCase:
+                                              model.issueBallDisPlayUseCase)
+                                      : Container(),
+                                )
+                              ]),
+                            ])),
+                        model.isFinishBall
+                            ? Positioned.fill(
+                                child: Container(
+                                child: Center(
+                                  child: Text(
+                                    '종료된',
+                                    style: GoogleFonts.notoSans(
+                                      fontSize: 18,
+                                      color: const Color(0xffffffff),
+                                      height: 0.7777777777777778,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                                color: Colors.black.withOpacity(0.4),
-                              ),
-                            ))
-                          : Container()
-                    ],
-                  )));
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  color: Colors.black.withOpacity(0.4),
+                                ),
+                              ))
+                            : Container()
+                      ],
+                    ))),
+          );
         }));
   }
 }

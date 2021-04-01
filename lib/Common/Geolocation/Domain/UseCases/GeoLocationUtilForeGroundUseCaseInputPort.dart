@@ -6,5 +6,6 @@ import 'GeoLocationUtilUseForeGroundCaseOutputPort.dart';
 
 abstract class GeoLocationUtilForeGroundUseCaseInputPort extends GeoLocationUtilBasicUseCaseInputPort{
   Future<bool> useGpsReq();
+  Future<bool> hasAllPositionPermission();
   Future<String> reqBallDistanceDisplayText({@required Position ballLatLng,@required  GeoLocationUtilUseForeGroundCaseOutputPort geoLocationUtilUseCaseOp});
 }

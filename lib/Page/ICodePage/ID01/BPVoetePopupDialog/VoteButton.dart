@@ -24,7 +24,9 @@ class VoteButton extends StatefulWidget {
       this.labelText,
       this.labelColor,
       this.onClick,
-      this.mainIconColor, this.voteButtonViewController, this.isCanPlus})
+      this.mainIconColor,
+      this.voteButtonViewController,
+      this.isCanPlus})
       : super(key: key);
 
   @override
@@ -44,7 +46,8 @@ class _VoteButtonState extends State<VoteButton>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => VoteButtonViewModel(widget.voteButtonViewController,widget.isCanPlus),
+        create: (_) => VoteButtonViewModel(
+            widget.voteButtonViewController, widget.isCanPlus),
         child: Consumer<VoteButtonViewModel>(builder: (_, model, child) {
           return Container(
               child: AnimatedBuilder(
@@ -56,36 +59,48 @@ class _VoteButtonState extends State<VoteButton>
                         Container(
                             child: Column(
                           children: [
-                            Material(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0)),
-                              color: widget.backGroundColor.withOpacity(colorOpacityValue()),
-                              child: InkWell(
-                                  onTap: () {
-                                    model.setNextPoint();
-                                    controller.forward().whenComplete(() {
-                                      model.plusCurrentPoint();
-                                      controller.reset();
-                                    });
-                                    if (widget.onClick != null) {
-                                      widget.onClick();
-                                    }
-                                  },
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: widget.borderLineColor
+                                          .withOpacity(colorOpacityValue()),
+                                      width: 2),
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(15.0)),
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0)),
-                                      ),
-                                      height: 60,
-                                      width: 60,
-                                      child: Center(
-                                        child: Icon(
-                                          widget.mainIcon,
-                                          color: widget.mainIconColor.withOpacity(colorOpacityValue()),
+                                      BorderRadius.all(Radius.circular(15.0))),
+                              child: Material(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0)),
+                                color: widget.backGroundColor
+                                    .withOpacity(colorOpacityValue()),
+                                child: InkWell(
+                                    onTap: () {
+                                      model.setNextPoint();
+                                      controller.forward().whenComplete(() {
+                                        model.plusCurrentPoint();
+                                        controller.reset();
+                                      });
+                                      if (widget.onClick != null) {
+                                        widget.onClick();
+                                      }
+                                    },
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15.0)),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15.0)),
                                         ),
-                                      ))),
+                                        height: 60,
+                                        width: 60,
+                                        child: Center(
+                                          child: Icon(
+                                            widget.mainIcon,
+                                            color: widget.mainIconColor
+                                                .withOpacity(
+                                                    colorOpacityValue()),
+                                          ),
+                                        ))),
+                              ),
                             ),
                             SizedBox(
                               height: 8,
@@ -95,49 +110,55 @@ class _VoteButtonState extends State<VoteButton>
                                     child: Text(widget.labelText,
                                         style: GoogleFonts.notoSans(
                                           fontSize: 12,
-                                          color: widget.labelColor.withOpacity(colorOpacityValue()),
+                                          color: widget.labelColor
+                                              .withOpacity(colorOpacityValue()),
                                           fontWeight: FontWeight.w500,
                                         )))),
                           ],
                         )),
                         Positioned(
-                          right: -15,
-                            child: Container(
-                          child: Text('${model.currentPoint}',
-                            style: GoogleFonts.notoSans(
-                              fontSize: 15,
-                              color: widget.labelColor,
-                              fontWeight: FontWeight.w500,
-                              height: 1.3333333333333333,
-                            ),
-                          ),
-                        )),
-                        animation.status == AnimationStatus.forward ?
-                        Positioned(
                             right: -15,
-                            top: 18-(18*processAniValue()),
-                            child: Text(
-                          '${model.nextPoint}',
-                              style: GoogleFonts.notoSans(
-                                fontSize: 15,
-                                color: widget.labelColor.withOpacity(colorOpacityValue()),
-                                fontWeight: FontWeight.w500,
-                                height: 1.3333333333333333,
+                            child: Container(
+                              child: Text(
+                                '${model.currentPoint}',
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 15,
+                                  color: widget.labelColor,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.3333333333333333,
+                                ),
                               ),
-
-                        )): Container(width: 0,height: 0,)
+                            )),
+                        animation.status == AnimationStatus.forward
+                            ? Positioned(
+                                right: -15,
+                                top: 18 - (18 * processAniValue()),
+                                child: Text(
+                                  '${model.nextPoint}',
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 15,
+                                    color: widget.labelColor
+                                        .withOpacity(colorOpacityValue()),
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.3333333333333333,
+                                  ),
+                                ))
+                            : Container(
+                                width: 0,
+                                height: 0,
+                              )
                       ],
                     );
                   }));
         }));
   }
 
-  double colorOpacityValue(){
-    return max(0.3,1-sin(radians(animation.value)));
+  double colorOpacityValue() {
+    return max(0.3, 1 - sin(radians(animation.value)));
   }
 
-  double processAniValue(){
-    return animation.value/180.0;
+  double processAniValue() {
+    return animation.value / 180.0;
   }
 
   @override
@@ -147,7 +168,6 @@ class _VoteButtonState extends State<VoteButton>
     animation = controller.drive(
       Tween<double>(begin: 0.0, end: 180.0),
     );
-
   }
 
   @override
@@ -158,7 +178,6 @@ class _VoteButtonState extends State<VoteButton>
 }
 
 class VoteButtonViewModel extends ChangeNotifier {
-
   final VoteButtonViewController _voteButtonViewController;
 
   int currentPoint = 0;
@@ -167,41 +186,38 @@ class VoteButtonViewModel extends ChangeNotifier {
 
   final bool Function() isCanPlus;
 
-  VoteButtonViewModel(this._voteButtonViewController, this.isCanPlus){
-    if(_voteButtonViewController != null){
+  VoteButtonViewModel(this._voteButtonViewController, this.isCanPlus) {
+    if (_voteButtonViewController != null) {
       _voteButtonViewController._viewModel = this;
     }
   }
 
-  plusCurrentPoint(){
+  plusCurrentPoint() {
     currentPoint = nextPoint;
-    if(_voteButtonViewController != null && _voteButtonViewController.onCurrentPointChange != null){
+    if (_voteButtonViewController != null &&
+        _voteButtonViewController.onCurrentPointChange != null) {
       _voteButtonViewController.onCurrentPointChange(currentPoint);
     }
   }
 
-  setNextPoint(){
-    if(isCanPlus()){
+  setNextPoint() {
+    if (isCanPlus()) {
       nextPoint = currentPoint + 1;
     }
-
   }
-
 }
 
 class VoteButtonViewController {
-
   VoteButtonViewModel _viewModel;
 
   final Function(int) onCurrentPointChange;
 
   VoteButtonViewController({this.onCurrentPointChange});
 
-  int getCurrentPoint(){
-    if(_viewModel == null){
+  int getCurrentPoint() {
+    if (_viewModel == null) {
       return 0;
     }
     return _viewModel.currentPoint;
   }
-
 }

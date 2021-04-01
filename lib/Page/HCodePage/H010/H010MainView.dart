@@ -29,6 +29,7 @@ class H010MainView extends StatelessWidget {
             ),
             child: Consumer<H010MainViewModel>(builder: (_, model, __) {
               return Container(
+                color: Colors.white,
                 margin:
                     EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 child: Column(

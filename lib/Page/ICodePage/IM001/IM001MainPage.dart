@@ -21,6 +21,7 @@ import 'package:forutonafront/Common/GoogleMapSupport/MapBallMarkerFactory.dart'
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Components/BackButton/BorderCircleBackButton.dart';
+import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 import 'package:forutonafront/Components/SolidBottomSheet/src/solidBottomSheet.dart';
 import 'package:forutonafront/Components/SolidBottomSheet/src/solidController.dart';
@@ -90,6 +91,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                     Column(
                       children: [
                         Container(
+                            color: Colors.white,
                             padding: EdgeInsets.only(top: 10, bottom: 10),
                             child: Row(children: [
                               SizedBox(width: 16),
@@ -150,27 +152,24 @@ class _IM001MainPageState extends State<IM001MainPage>
                                               image: DecorationImage(
                                                   image: AssetImage(
                                                       "assets/MarkesImages/issueballicon2.png")))))),
-                              widget.im001mode == IM001Mode.create ? Positioned(
-                                  right: 16,
-                                  top: 16,
-                                  child: Material(
-                                    color: Colors.white,
-                                    shape: CircleBorder(),
-                                    child: InkWell(
-                                      customBorder: CircleBorder(),
-                                      onTap: () {
-                                        model.moveToMyPosition();
-                                      },
-                                      child: Container(
+                              widget.im001mode == IM001Mode.create
+                                  ? Positioned(
+                                      right: 16,
+                                      top: 16,
+                                      child: CircleIconBtn(
+                                        color: Colors.white,
                                         width: 36,
                                         height: 36,
-                                        child: Icon(
+                                        onTap: () {
+                                          model.moveToMyPosition();
+                                        },
+                                        icon: Icon(
                                           Icons.my_location,
                                           color: Colors.black,
                                         ),
                                       ),
-                                    ),
-                                  )): Container(width: 0,height: 0)
+                                    )
+                                  : Container(width: 0, height: 0)
                             ],
                           ),
                           margin: EdgeInsets.only(bottom: 71),
@@ -184,7 +183,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                           )
                         : Container(),
                     Positioned(
-                        top: (60 * animation.value) - 60,
+                        top: (80 * animation.value) - 70,
                         width: MediaQuery.of(context).size.width,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -316,6 +315,7 @@ class IM001MainPageViewModel extends ChangeNotifier
       draggableBody: false,
       controller: _solidController,
       bodyColor: Colors.white,
+      elevation: 6.0,
       onShow: () {
         aniController.forward();
         _im001bottomSheetHeaderController
@@ -365,12 +365,13 @@ class IM001MainPageViewModel extends ChangeNotifier
   void onCreateMap(GoogleMapController controller) async {
     _googleMapController.complete(controller);
     Position position;
-    if(im001mode == IM001Mode.create){
+    if (im001mode == IM001Mode.create) {
       position = await moveToMyPosition();
-    }else {
-      position = Position(latitude: preSetBallResDto.latitude,longitude: preSetBallResDto.longitude);
+    } else {
+      position = Position(
+          latitude: preSetBallResDto.latitude,
+          longitude: preSetBallResDto.longitude);
     }
-
 
     String address =
         await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
@@ -503,12 +504,12 @@ class IM001MainPageViewModel extends ChangeNotifier
       fBallInsertReqDto.tags.add(tagInsertReqDto);
     }
 
-    var fBallResDto = await insertBallUseCaseInputPort.insertBall(fBallInsertReqDto);
+    var fBallResDto =
+        await insertBallUseCaseInputPort.insertBall(fBallInsertReqDto);
 
     Navigator.of(context).pop();
     Navigator.of(context).pop();
     Navigator.of(context).pop(fBallResDto);
-
 
     notifyListeners();
   }
@@ -552,7 +553,8 @@ class IM001MainPageViewModel extends ChangeNotifier
       fBallUpdateReqDto.tags.add(tagInsertReqDto);
     }
 
-    var fBallResDto = await updateBallUseCaseInputPort.updateBall(fBallUpdateReqDto);
+    var fBallResDto =
+        await updateBallUseCaseInputPort.updateBall(fBallUpdateReqDto);
 
     Navigator.of(context).pop();
     Navigator.of(context).pop();

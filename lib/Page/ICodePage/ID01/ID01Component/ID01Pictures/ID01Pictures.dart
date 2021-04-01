@@ -44,7 +44,7 @@ class ID01Pictures extends StatelessWidget {
                         child: Container(
                           padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                           child: Text(
-                            '사진 더 불러오기',
+                            '사진 모두 보기(${desImages.length})',
                             style: GoogleFonts.notoSans(
                               fontSize: 16,
                               color: const Color(0xff000000),
@@ -57,17 +57,10 @@ class ID01Pictures extends StatelessWidget {
                         ),
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.0),
+                        borderRadius: BorderRadius.circular(30),
                         color: const Color(0xffffffff),
                         border: Border.all(
                             width: 1.0, color: const Color(0xff000000)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x29000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          ),
-                        ],
                       ),
                     ),
                   )

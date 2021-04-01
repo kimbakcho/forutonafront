@@ -27,9 +27,12 @@ class TopNavBar extends StatelessWidget {
         create: (_) => TopNavBarViewModel(),
         child: Consumer<TopNavBarViewModel>(builder: (_, model, __) {
           return Container(
-              height: 50,
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 3, 16, 10),
+              height: 58,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(bottom: BorderSide(color: Color(0xffE4E7E8)))
+              ),
+              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
               child: Stack(children: <Widget>[
                 TopNavExpendGroup(
                   topNavBtnMediator: topNavBtnMediator,

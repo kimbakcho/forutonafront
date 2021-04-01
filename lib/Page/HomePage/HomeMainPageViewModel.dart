@@ -16,6 +16,7 @@ import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/X001/TopX001Na
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/X002/TopX002NavExpandComponent.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 
@@ -114,7 +115,7 @@ class HomeMainPageViewModel
       navBtnMediator: topNavBtnMediator,
       navBtnSetDto: NavBtnSetDto(
           btnColor: Color(0xffF6F6F6),
-          btnIcon: Icon(Icons.account_balance),
+          btnIcon: Icon(ForutonaIcon.list_ol),
           topOnMoveMainPage: CodeState.X002CODE,
           btnSize: 36,
           startOffset: 0,
@@ -153,7 +154,7 @@ class HomeMainPageViewModel
       navBtnMediator: topNavBtnMediator,
       navBtnSetDto: NavBtnSetDto(
           btnColor: Color(0xff88D4F1),
-          btnIcon: Icon(Icons.sort),
+          btnIcon: Icon(ForutonaIcon.list_ol),
           topOnMoveMainPage: CodeState.H001CODE,
           btnSize: 36,
           startOffset: 0,

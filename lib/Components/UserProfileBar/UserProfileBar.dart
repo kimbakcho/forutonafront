@@ -42,7 +42,7 @@ class UserProfileBar extends StatelessWidget {
             text: TextSpan(
                 text: "영향력 ${fUserInfoSimpleResDto.playerPower.toInt()} PP",
                 style: GoogleFonts.notoSans(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: const Color(0xff78849e),
                 ),
                 children: [
@@ -66,7 +66,7 @@ class UserProfileBar extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(fUserInfoSimpleResDto.nickName,
           style: GoogleFonts.notoSans(
-            fontSize: 12,
+            fontSize: 14,
             color: const Color(0xff2f3035),
             fontWeight: FontWeight.w500,
           )),
@@ -79,8 +79,8 @@ class UserProfileBar extends StatelessWidget {
           fit: BoxFit.fitWidth,
           imageUrl: fUserInfoSimpleResDto.profilePictureUrl,
           imageBuilder: (context, imageProvider) => Container(
-            width: 34,
-            height: 34,
+            width: 45,
+            height: 45,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(

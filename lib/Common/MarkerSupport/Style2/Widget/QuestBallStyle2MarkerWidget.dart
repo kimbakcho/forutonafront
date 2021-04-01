@@ -6,7 +6,7 @@ class QuestBallStyle2MarkerWidget {
     return Container(
       width: 60,
       height: 60,
-      child: Icon(ForutonaIcon.quest_ball, color: Colors.white, size: 30),
+      child: Icon(ForutonaIcon.quest, color: Colors.white, size: 30),
       decoration: BoxDecoration(
           color: Colors.lightBlue,
           shape: BoxShape.circle

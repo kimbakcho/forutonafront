@@ -10,7 +10,7 @@ class IssueBallIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Icon(ForutonaIcon.issue_ball,color: Colors.white,size: iconSize),
+      child: Icon(ForutonaIcon.issue1,color: Colors.white,size: iconSize),
       width: size.width,
       height: size.height,
       decoration: BoxDecoration(

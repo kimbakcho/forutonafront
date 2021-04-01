@@ -12,6 +12,16 @@ class BallListRefreshBtn extends StatelessWidget {
     return Container(
         width: 145,
         height: 36,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.16),
+              offset: Offset(0,3),
+              blurRadius: 6
+            )
+          ]
+        ),
         child: Material(
             color: Colors.white.withOpacity(0.9),
             borderRadius: BorderRadius.all(Radius.circular(15.0)),

@@ -14,7 +14,7 @@ class TopSearchDisPlayBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
-          border: Border(bottom: BorderSide(color: Color(0xffF2F0F1)))
+          border: Border(bottom: BorderSide(color: Color(0xffE4E7E8)))
       ),
       padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
       child: Row(

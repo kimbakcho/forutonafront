@@ -34,12 +34,14 @@ class FullBallListUp extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
                   key: Key(ballListMediator.itemList[index].ballUuid),
                   child: ListUpBallWidgetFactory.getBallWidget(
-                      index, ballListMediator, BallStyle.Style1,
-                      boxDecoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Color(0xff454F63)),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(15.0)))),
+                    index,
+                    ballListMediator,
+                    BallStyle.Style1,
+                    boxDecoration: BoxDecoration(
+                        border: Border.all(color: Color(0xff454F63)),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        ),
+                  ),
                 );
               });
         }));

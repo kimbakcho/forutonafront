@@ -46,7 +46,15 @@ class UserProfileComponent extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(15)),
-                          border: Border.all(color: Color(0xffE4E7E8))),
+                          border: Border.all(color: Color(0xffE4E7E8)),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0,4),
+                              blurRadius: 16,
+                              color: Color(0xff455B63).withOpacity(0.08)
+                            )
+                          ]
+                      ),
                       margin: EdgeInsets.only(top: 214, left: 16, right: 16),
                       child: Column(
                         children: [
@@ -285,6 +293,13 @@ class UserProfileComponentViewModel extends ChangeNotifier {
           image: DecorationImage(
               image: NetworkImage(_userProfileComponentInfoDto.profileImageUrl),
               fit: BoxFit.cover),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.16),
+              offset: Offset(0,4),
+              blurRadius: 16
+            )
+          ]
         ),
       );
     } else {

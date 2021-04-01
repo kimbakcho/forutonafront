@@ -57,19 +57,19 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
 
     var issueBallIconSelectNormal =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
-        "assets/MarkesImages/issueselectballmaker.png", Size(140, 140));
+        "assets/MarkesImages/issueselectballmaker.png", Size(140,107));
     container.putIfAbsent(MapMakerDescriptorType.IssueBallIconSelectNormal, () => issueBallIconSelectNormal);
 
     var issueBallIconSelectSmall =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
-        "assets/MarkesImages/issueselectballmaker.png", Size(100, 100));
+        "assets/MarkesImages/issueselectballmaker.png", Size(140,107));
     container.putIfAbsent(MapMakerDescriptorType.IssueBallIconSelectSmall, () => issueBallIconSelectSmall);
 
 
 
     BitmapDescriptor userAvatarIcon =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
-        "assets/MainImage/empty_user.png", Size(100, 100));
+        "assets/MainImage/empty_user.png", Size(70, 70));
     container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
     container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) async {
@@ -90,14 +90,14 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
       }else {
         BitmapDescriptor userAvatarIcon =
         await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
-            "assets/MainImage/empty_user.png", Size(100, 100));
+            "assets/MainImage/empty_user.png", Size(70, 70));
         container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
         container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
       }
     }else {
       BitmapDescriptor noneAvatarIcon =
       await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
-          "assets/MainImage/empty_user.png", Size(100, 100));
+          "assets/MainImage/empty_user.png", Size(70, 70));
       container[MapMakerDescriptorType.UserAvatarIcon] = noneAvatarIcon ;
       container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => noneAvatarIcon);
     }

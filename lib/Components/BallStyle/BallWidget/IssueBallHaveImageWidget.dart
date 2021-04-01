@@ -25,10 +25,7 @@ class IssueBallHaveImageWidget extends StatelessWidget {
   final BoxDecoration boxDecoration;
 
   IssueBallHaveImageWidget(
-      {Key key,
-      this.index,
-      this.ballListMediator,
-      this.boxDecoration})
+      {Key key, this.index, this.ballListMediator, this.boxDecoration})
       : super(key: key);
 
   @override
@@ -44,31 +41,48 @@ class IssueBallHaveImageWidget extends StatelessWidget {
                   height: 0,
                 )
               : Container(
-                  child: Column(
-                    key: Key(model.ballWidgetKey),
-                    children: <Widget>[
-                      IssueBallTopBar(
-                          ballDisPlayUseCase: model.issueBallDisPlayUseCase),
-                      BallBigImagePanelWidget(
-                          ballDisPlayUseCase: model.issueBallDisPlayUseCase),
-                      BallTitleInfoBar(
-                        ballDisPlayUseCase: model.issueBallDisPlayUseCase,
-                        gotoDetailPage: model.moveToDetailPage,
-                        showOptionPopUp: model.showOptionPopUp,
+                  child: Material(
+                    color: Colors.white,
+                    borderRadius: boxDecoration.borderRadius,
+                    child: InkWell(
+                      onTap: () {
+                        model.moveToDetailPage();
+                      },
+                      child: Container(
+                        child: Column(
+                          key: Key(model.ballWidgetKey),
+                          children: <Widget>[
+                            IssueBallTopBar(
+                                ballDisPlayUseCase:
+                                    model.issueBallDisPlayUseCase),
+                            BallBigImagePanelWidget(
+                                ballDisPlayUseCase:
+                                    model.issueBallDisPlayUseCase),
+                            BallTitleInfoBar(
+                              ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                            ),
+                            Divider(
+                              color: Color(0xffF4F4F6).withOpacity(0.9),
+                              height: 1,
+                              thickness: 1,
+                            ),
+                            BallPositionInfoBar(
+                              ballSearchPosition:
+                                  ballListMediator.searchPosition(),
+                              ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                            )
+                          ],
+                        ),
+                        decoration: boxDecoration,
                       ),
-                      Divider(
-                        color: Color(0xffF4F4F6).withOpacity(0.9),
-                        height: 1,
-                        thickness: 1,
-                      ),
-                      BallPositionInfoBar(
-                        gotoDetailPage: model.moveToDetailPage,
-                        ballSearchPosition: ballListMediator.searchPosition(),
-                        ballDisPlayUseCase: model.issueBallDisPlayUseCase,
-                      )
-                    ],
+                    ),
                   ),
-                  decoration: boxDecoration,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.16),
+                        offset: Offset(0, 4),
+                        blurRadius: 16)
+                  ]),
                 );
         },
       ),
@@ -85,7 +99,7 @@ class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   IssueBallHaveImageWidgetViewModel(
       this._selectBallUseCaseInputPort, this._tagFromBallUuidUseCaseInputPort,
       {BuildContext context, BallListMediator ballListMediator, int index})
-      : super(context, ballListMediator, index, sl(), sl(), sl(), sl(),sl()) {
+      : super(context, ballListMediator, index, sl(), sl(), sl(), sl(), sl()) {
     issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
         fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
   }
@@ -103,7 +117,8 @@ class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   onModifyBall(BuildContext context) async {
     var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
         ballUuid: ballListMediator.itemList[index].ballUuid);
-    var result = await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    var result =
+        await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
         preSetBallResDto: ballListMediator.itemList[index],
         im001mode: IM001Mode.modify,
@@ -111,8 +126,6 @@ class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
       );
     }));
     Navigator.of(context).pop();
-
-
   }
 
   @override

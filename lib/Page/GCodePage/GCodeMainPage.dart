@@ -10,6 +10,7 @@ import 'package:forutonafront/Components/TopNav/TopNavBar.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/G001/TopG001NavExpandComponent.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/G003/TopG003NavExpandComponent.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/Page/GCodePage/G001/G001MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -155,7 +156,7 @@ class GCodeMainPageViewModel extends ChangeNotifier implements CodeMainPageChang
       navBtnMediator: _topNavBtnMediator,
       navBtnSetDto: NavBtnSetDto(
           btnColor: Color(0xff45E193),
-          btnIcon: Icon(Icons.person_pin_outlined),
+          btnIcon: Icon(ForutonaIcon.user),
           topOnMoveMainPage: CodeState.G001CODE,
           btnSize: 36,
           startOffset: 0,

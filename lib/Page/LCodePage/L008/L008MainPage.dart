@@ -25,6 +25,7 @@ class L008MainPage extends StatelessWidget {
         builder: (_, model, child) {
           return Scaffold(
               body: Container(
+                color: Colors.white,
                   padding: MediaQuery.of(context).padding,
                   child: Column(children: [
                     CodeAppBar(

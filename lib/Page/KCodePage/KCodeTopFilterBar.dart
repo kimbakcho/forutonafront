@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +60,8 @@ class KCodeTopFilterBar extends StatelessWidget {
                 onPressed: () {
                   kCodeTopFilterBarListener.openFilter();
                 },
-                child: Icon(Icons.filter),
+                child: Icon(ForutonaIcon.filter),
+
               )
             ]);
           },

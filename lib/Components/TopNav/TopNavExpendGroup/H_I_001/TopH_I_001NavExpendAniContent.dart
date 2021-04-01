@@ -224,14 +224,14 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
 
   @override
   onH007SearchPosition(Position position, BuildContext context) {
-    Navigator.popUntil(context, (route) => route.settings.name == "MAIN");
+    Navigator.popUntil(context, (route) => route.settings.name == "/");
     loadPosition(position);
   }
 
   //FROM H010
   @override
   onPlaceListTabPosition(Position position) {
-    Navigator.popUntil(context, (route) => route.settings.name == "MAIN");
+    Navigator.popUntil(context, (route) => route.settings.name == "/");
     loadPosition(position);
   }
 }

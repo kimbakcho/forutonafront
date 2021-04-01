@@ -33,8 +33,8 @@ class H007AddressWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     settings: RouteSettings(name: "H010"),
-                    builder: (_) =>
-                        H010MainView(inputSearchBarListener: model,
+                    builder: (_) => H010MainView(
+                          inputSearchBarListener: model,
                           searchHistoryDataSourceKey: SearchHistoryDataSourceKey
                               .AddressSearchHistoryDataSource,
                         )));
@@ -51,7 +51,13 @@ class H007AddressWidget extends StatelessWidget {
             ),
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.16),
+                      offset: Offset(0, 3),
+                      blurRadius: 6)
+                ]),
           );
         }));
   }

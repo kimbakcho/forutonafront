@@ -62,6 +62,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                               flexibleSpace: TopSearchDisPlayBar(
                                 initText: widget.searchText,
                               ),
+
                               expandedHeight: 56,
                               bottom:
                               KCodeTopTabBar(tabController: _tabController),
@@ -71,7 +72,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
                       },
                       controller: model.scrollController,
                       body: Container(
-                          color: Color(0xffF2F0F1),
+                          color: Colors.white,
 
                           child:
                           TabBarView(controller: _tabController, children: [

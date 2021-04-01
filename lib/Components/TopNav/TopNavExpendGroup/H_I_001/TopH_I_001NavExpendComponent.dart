@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
 import '../TopNavExpendComponent.dart';
@@ -143,7 +144,7 @@ class _TopH_I_001NavExpendComponentState
               },
               padding: EdgeInsets.all(0),
               icon: Icon(
-                Icons.map,
+                ForutonaIcon.map_alt,
                 size: 17,
               ),
             ),

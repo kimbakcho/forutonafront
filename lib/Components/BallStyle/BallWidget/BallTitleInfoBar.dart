@@ -10,11 +10,12 @@ class BallTitleInfoBar extends StatelessWidget {
     @required this.ballDisPlayUseCase,
     @required this.gotoDetailPage,
     this.showOptionPopUp,
+    this.hasPopupButton = false
   }) : super(key: key);
   final BallDisPlayUseCase ballDisPlayUseCase;
   final Function gotoDetailPage;
   final Function showOptionPopUp;
-
+  final bool hasPopupButton;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,58 +29,54 @@ class BallTitleInfoBar extends StatelessWidget {
           ),
           SizedBox(width: 8),
           Expanded(
-              child: Material(
-                  color: Colors.white,
-                  child: InkWell(
-                      onTap: () {
-                        gotoDetailPage();
-                      },
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                                child: Text(ballDisPlayUseCase.ballName(),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.notoSans(
-                                      fontSize: 14,
-                                      color: const Color(0xff000000),
-                                      fontWeight: FontWeight.w700,
-                                      height: 1.4285714285714286,
-                                    ))),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  child: Text(
-                                      ' ${ballDisPlayUseCase.makerNickName(maxLength: 10)} ',
-                                      maxLines: 1,
-                                      style: GoogleFonts.notoSans(
-                                        fontSize: 10,
-                                        color: const Color(0xff78849e),
-                                        fontWeight: FontWeight.w700,
-                                      )),
-                                ),
-                                Container(
-                                  child: Text(
-                                      '• 조회수 '
-                                      '${ballDisPlayUseCase.ballHits()}회  •  ${ballDisPlayUseCase.displayMakeTime()}',
-                                      maxLines: 1,
-                                      style: GoogleFonts.notoSans(
-                                        fontSize: 10,
-                                        color: const Color(0xff78849e),
-                                      )),
-                                )
-                              ],
-                            )
-                          ])))),
-          Container(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                        child: Text(ballDisPlayUseCase.ballName(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.notoSans(
+                              fontSize: 14,
+                              color: const Color(0xff000000),
+                              fontWeight: FontWeight.w700,
+                              height: 1.4285714285714286,
+                            ))),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                              ' ${ballDisPlayUseCase.makerNickName(maxLength: 10)} ',
+                              maxLines: 1,
+                              style: GoogleFonts.notoSans(
+                                fontSize: 10,
+                                color: const Color(0xff78849e),
+                                fontWeight: FontWeight.w700,
+                              )),
+                        ),
+                        Container(
+                          child: Text(
+                              '• 조회수 '
+                                  '${ballDisPlayUseCase.ballHits()}회  •  ${ballDisPlayUseCase.displayMakeTime()}',
+                              maxLines: 1,
+                              style: GoogleFonts.notoSans(
+                                fontSize: 10,
+                                color: const Color(0xff78849e),
+                              )),
+                        )
+                      ],
+                    )
+                  ])),
+          hasPopupButton ? Container(
             width: 30,
             height: 30,
             child: Material(
               color: Colors.white,
               child: InkWell(
                 onTap: () {
-                  showOptionPopUp();
+                  if(showOptionPopUp != null){
+                    showOptionPopUp();
+                  }
                 },
                 child: Icon(
                   ForutonaIcon.dots_vertical_rounded,
@@ -88,7 +85,7 @@ class BallTitleInfoBar extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ): Container()
         ],
       ),
     );

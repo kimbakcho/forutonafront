@@ -47,7 +47,7 @@ class PwValidImpl implements PwValid {
       _errorText = "패스워드는 8~16자리로 설정해주세요.";
     } else if ((match1 + match2 + match3 + match4) < 3) {
       _isTextError = true;
-      _errorText = "패스워드는 영어 대문자,소문자,숫자,특수문자 중 3 종류 이상 조합해 주세요.";
+      _errorText = "패스워드는 영어 대문자,소문자,숫자,\n특수문자 중 3 종류 이상 조합해 주세요.";
     } else {
       _isTextError = false;
       _errorText = "";

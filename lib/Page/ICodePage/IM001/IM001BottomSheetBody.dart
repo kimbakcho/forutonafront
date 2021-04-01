@@ -8,6 +8,7 @@ import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/ModifiedLengthLimitingTextInputFormatter/ModifiedLengthLimitingTextInputFormatter.dart';
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Components/ProfileImageEditComponent/ImageSelectModalBottomSheet.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/YoutubeUrlUploadComponent.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -85,7 +86,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 24,
+                      height: 30,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 16),
@@ -107,8 +108,10 @@ class IM001BottomSheetBody extends StatelessWidget {
                         child: TextField(
                             focusNode: model.titleFocus,
                             controller: model._titleTextController,
-                            maxLength: 25,
-                            inputFormatters: [ModifiedLengthLimitingTextInputFormatter(50)],
+                            maxLength: 50,
+                            inputFormatters: [
+                              ModifiedLengthLimitingTextInputFormatter(50)
+                            ],
                             decoration: InputDecoration(
                                 hintText: "제목을 지어주세요!",
                                 hintStyle: GoogleFonts.notoSans(
@@ -119,7 +122,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                                   height: 1.2142857142857142,
                                 )))),
                     SizedBox(
-                      height: 24,
+                      height: 30,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 16),
@@ -142,7 +145,9 @@ class IM001BottomSheetBody extends StatelessWidget {
                             focusNode: model.contentFocus,
                             controller: model._contentTextController,
                             maxLength: 2500,
-                            inputFormatters: [ModifiedLengthLimitingTextInputFormatter(2500)],
+                            inputFormatters: [
+                              ModifiedLengthLimitingTextInputFormatter(2500)
+                            ],
                             maxLines: null,
                             decoration: InputDecoration(
                                 hintText: "어떤 이슈인가요?",
@@ -153,6 +158,9 @@ class IM001BottomSheetBody extends StatelessWidget {
                                   fontWeight: FontWeight.w300,
                                   height: 1.2142857142857142,
                                 )))),
+                    SizedBox(
+                      height: 30,
+                    ),
                     BallImageEditComponent(
                         margin: EdgeInsets.only(top: 32),
                         ballImageEditComponentController:
@@ -188,8 +196,11 @@ class IM001BottomSheetBody extends StatelessWidget {
                     CircleIconBtn(
                       width: 42,
                       height: 42,
+                      color: Color(0xffF6F6F6),
+                      isBoxShadow: false,
                       icon: Icon(
-                        Icons.camera_alt_outlined,
+                        ForutonaIcon.camera1,
+                        size: 20,
                         color: Color(0xff3A3E3F),
                       ),
                       onTap: () {
@@ -202,8 +213,11 @@ class IM001BottomSheetBody extends StatelessWidget {
                     CircleIconBtn(
                       width: 42,
                       height: 42,
+                      color: Color(0xffF6F6F6),
+                      isBoxShadow: false,
                       icon: Icon(
-                        Icons.picture_in_picture,
+                        ForutonaIcon.gallary2,
+                        size: 20,
                         color: Color(0xff3A3E3F),
                       ),
                       onTap: () {
@@ -216,12 +230,21 @@ class IM001BottomSheetBody extends StatelessWidget {
                     CircleIconBtn(
                       width: 42,
                       height: 42,
-                      icon: Icon(
-                        Icons.play_circle_fill,
-                        color: Color(0xff3A3E3F),
-                      ),
+                      color: Color(0xffF6F6F6),
+                      isBoxShadow: false,
+                      icon: model.youtubeUrlUploadComponentController.isShow()
+                          ? Icon(
+                              ForutonaIcon.youtube_1,
+                              size: 20,
+                              color: Colors.red,
+                            )
+                          : Icon(
+                              ForutonaIcon.youtube1,
+                              size: 20,
+                              color: Color(0xff3A3E3F),
+                            ),
                       onTap: () {
-                        model.youtubeUrlUploadComponentController.toggle();
+                        model.youtubeBtnToggle();
                       },
                     ),
                     SizedBox(
@@ -230,8 +253,10 @@ class IM001BottomSheetBody extends StatelessWidget {
                     CircleIconBtn(
                       width: 42,
                       height: 42,
+                      color: Color(0xffF6F6F6),
+                      isBoxShadow: false,
                       icon: Icon(
-                        Icons.tag,
+                        ForutonaIcon.tag,
                         color: Color(0xff3A3E3F),
                       ),
                       onTap: () {
@@ -384,6 +409,11 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
       var _image = File(pickedFile.path);
       _onSelectBallImage(FileImage(_image));
     }
+  }
+
+  void youtubeBtnToggle() {
+    youtubeUrlUploadComponentController.toggle();
+    notifyListeners();
   }
 }
 

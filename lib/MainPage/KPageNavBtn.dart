@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/HCodePage/H010/H010MainView.dart';
 import 'package:forutonafront/Page/KCodePage/KCodeMainPage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class KPageNavBtn extends StatelessWidget {
@@ -16,9 +18,20 @@ class KPageNavBtn extends StatelessWidget {
             onPressed: () {
               model.jumpToSearchPage();
             },
-            child: Icon(
-              Icons.search,
-              color: Color(0xffE4E7E8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(ForutonaIcon.compass),
+                Text(
+                  '탐색',
+                  style: GoogleFonts.notoSans(
+                    fontSize: 9,
+                    color: const Color(0xff000000),
+                    fontWeight: FontWeight.w300,
+                  ),
+                  textAlign: TextAlign.center,
+                )
+              ],
             ),
           ));
         }));
@@ -42,7 +55,7 @@ class KPageNavBtnViewModel extends ChangeNotifier
 
   @override
   Future<void> onSearch(String search, {BuildContext context}) async {
-    Navigator.popUntil(context, (route) => route.settings.name == "MAIN");
+    Navigator.popUntil(context, (route) => route.settings.name == "/");
 
     Navigator.of(context).push(MaterialPageRoute(
         settings: RouteSettings(name: "K001"),

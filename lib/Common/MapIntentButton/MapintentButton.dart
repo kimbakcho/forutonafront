@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/MapIntentButton/MapIntent.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 class MapIntentButton extends StatelessWidget {
@@ -43,8 +44,9 @@ class MapIntentButton extends StatelessWidget {
         },
         padding: EdgeInsets.all(0),
         child: Icon(
-          Icons.arrow_forward,
+          ForutonaIcon.get_directions,
           color: Colors.white,
+          size: 18,
         ),
         shape: CircleBorder(),
       ),

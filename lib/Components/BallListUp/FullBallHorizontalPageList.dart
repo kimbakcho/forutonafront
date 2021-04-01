@@ -49,7 +49,6 @@ class FullBallHorizontalPageList extends StatelessWidget {
                       child: ListUpBallWidgetFactory.getBallWidget(
                           index, ballListMediator, BallStyle.Style2,
                           boxDecoration: BoxDecoration(
-                              color: Colors.white,
                               border: Border.all(color: Color(0xff454F63)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15.0)))),

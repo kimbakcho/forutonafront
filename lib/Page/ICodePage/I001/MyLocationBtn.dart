@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 
 class MyLocationBtn extends StatelessWidget {
 
@@ -8,18 +10,13 @@ class MyLocationBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return CircleIconBtn(
       width: 36,
       height: 36,
-      child: Material(
-        shape: CircleBorder(),
-        child: InkWell(
-          onTap: (){
-            onMovetoMyLocation();
-          },
-          child: Icon(Icons.my_location,color: Color(0xff454F63),size: 15),
-        ),
-      ),
+      icon: Icon(Icons.my_location,size: 18),
+      onTap: (){
+        onMovetoMyLocation();
+      },
     );
   }
 }
