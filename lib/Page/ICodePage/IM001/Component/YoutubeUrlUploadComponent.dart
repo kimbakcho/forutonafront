@@ -75,7 +75,7 @@ class YoutubeUrlUploadComponent extends StatelessWidget {
                                   child: Text(
                                       model.youtubeLink.isNotEmpty
                                           ? "삭제하기"
-                                          : "붙혀넣기",
+                                          : "붙여넣기",
                                       style: GoogleFonts.notoSans(
                                         fontSize: 11,
                                         color: const Color(0xffffffff),

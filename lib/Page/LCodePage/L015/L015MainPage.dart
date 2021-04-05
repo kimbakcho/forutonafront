@@ -165,7 +165,7 @@ class L015MainPageViewModel extends ChangeNotifier {
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(15))),
                                         onPressed: () {
-                                          Navigator.of(context).popUntil((route) => route.settings.name == 'MAIN');
+                                          Navigator.of(context).popUntil((route) => route.settings.name == '/');
                                         },
                                         child: Container(
                                           child: Text(

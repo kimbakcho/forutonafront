@@ -30,6 +30,7 @@ class UserProfileBar extends StatelessWidget {
                         Expanded(
                             child: Column(children: [
                           nickName(),
+                          SizedBox(height: 4),
                           Row(children: [userInfo()])
                         ]))
                       ]))));
@@ -40,23 +41,23 @@ class UserProfileBar extends StatelessWidget {
     return Container(
         child: RichText(
             text: TextSpan(
-                text: "영향력 ${fUserInfoSimpleResDto.playerPower.toInt()} PP",
+                text: "영향력 ${fUserInfoSimpleResDto.playerPower.toInt()} BP",
                 style: GoogleFonts.notoSans(
-                  fontSize: 12,
-                  color: const Color(0xff78849e),
+                  fontSize: 13,
+                  color: const Color(0xff5B5B5B),
                 ),
                 children: [
           TextSpan(
-              text: "•",
+              text: " • ",
               style: GoogleFonts.notoSans(
-                fontSize: 10,
-                color: const Color(0xff78849e),
+                fontSize: 13,
+                color: const Color(0xff5B5B5B),
               )),
           TextSpan(
               text: "팔로워 ${fUserInfoSimpleResDto.followerCount.toInt()} 명",
               style: GoogleFonts.notoSans(
-                fontSize: 10,
-                color: const Color(0xff78849e),
+                fontSize: 13,
+                color: const Color(0xff5B5B5B),
               ))
         ])));
   }

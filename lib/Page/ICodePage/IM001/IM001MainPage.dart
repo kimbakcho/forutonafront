@@ -35,6 +35,7 @@ import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001BottomSheetBody.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001BottomSheetHeader.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -128,7 +129,9 @@ class _IM001MainPageState extends State<IM001MainPage>
                                     height: 36,
                                     padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                                     alignment: Alignment.centerLeft,
-                                    child: Text("주소 검색"),
+                                    child: Text("주소 검색",style: GoogleFonts.notoSans(
+                                      color: Color(0xffB1B1B1)
+                                    ),),
                                   ),
                                 ),
                               )),
@@ -148,10 +151,12 @@ class _IM001MainPageState extends State<IM001MainPage>
                               Center(
                                   child: IgnorePointer(
                                       child: Container(
+                                        height: 60,
+                                          width: 43,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: AssetImage(
-                                                      "assets/MarkesImages/issueballicon2.png")))))),
+                                                      "assets/MarkesImages/issueselectballmaker.png")))))),
                               widget.im001mode == IM001Mode.create
                                   ? Positioned(
                                       right: 16,

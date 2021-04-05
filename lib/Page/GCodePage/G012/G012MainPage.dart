@@ -208,7 +208,7 @@ class G012MainPageViewModel extends ChangeNotifier {
       await _fUserPwChangeUseCaseInputPort.pwChange(newPassword);
       _fireBaseAuthAdapterForUseCase.logout();
       _mainPageViewModelController.moveToMainPage(BottomNavigationNavType.HOME);
-      Navigator.of(context).popUntil((route) => route.settings.name == 'MAIN');
+      Navigator.of(context).popUntil((route) => route.settings.name == '/');
     }
   }
 }

@@ -74,8 +74,9 @@ class K00102MainPage extends StatelessWidget {
                         return ListUpBallWidgetFactory.getBallWidget(
                             index, model.ballListMediator, BallStyle.Style2,
                             boxDecoration: BoxDecoration(
+                                border: Border.all(color: Color(0xffE4E7E8)),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15))));
+                                BorderRadius.all(Radius.circular(15.0))));
                       })
                 ],
               ),

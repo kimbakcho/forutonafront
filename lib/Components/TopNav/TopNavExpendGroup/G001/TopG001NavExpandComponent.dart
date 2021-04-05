@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendComponent.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:forutonafront/Page/GCodePage/G009/G009MainPage.dart';
 
@@ -111,7 +112,7 @@ class TopG001NavExpendContent extends StatelessWidget {
             }));
           },
             child: Icon(
-            Icons.settings,
+            ForutonaIcon.cog_g001_1,
             size: 25,
               color: Color(0xffB1B1B1),
             ),

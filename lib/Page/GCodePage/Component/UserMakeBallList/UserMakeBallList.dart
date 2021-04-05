@@ -35,7 +35,7 @@ class UserMakeBallList extends StatelessWidget {
                         index, model.ballListMediator, BallStyle.Style2,
                         boxDecoration: BoxDecoration(
                             color: Colors.white,
-                            border: Border.all(color: Color(0xff454F63)),
+                            border: Border.all(color: Color(0xffE4E7E8)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(15.0)))),
                   );

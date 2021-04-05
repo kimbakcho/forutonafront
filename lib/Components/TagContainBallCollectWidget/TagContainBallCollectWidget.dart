@@ -68,7 +68,11 @@ class TagContainBallCollectWidgetViewModel extends ChangeNotifier
     return (_, index) {
       return ListUpBallWidgetFactory.getBallWidget(
           index, ballListMediator, BallStyle.Style3,
-          boxDecoration: BoxDecoration(color: Colors.white));
+          boxDecoration: BoxDecoration(
+            color: Colors.white,
+              border: Border.all(color: Color(0xffE4E7E8)),
+              borderRadius:
+              BorderRadius.all(Radius.circular(15.0))));
     };
   }
 

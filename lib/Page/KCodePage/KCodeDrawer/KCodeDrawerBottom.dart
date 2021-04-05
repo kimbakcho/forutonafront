@@ -16,6 +16,7 @@ class KCodeDrawerBottom extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 16),
               color: Colors.white,
               child: RawMaterialButton(
+                elevation: 0,
                 constraints: BoxConstraints(minWidth: 72,minHeight: 42),
                 fillColor: Color(0xffE4E7E8),
                 onPressed: (){

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="client_id">KIEXPcsTX9qdtQyWtFjA</string>
-    <string name="client_secret">Fj1GigXLMa</string>
-    <string name="client_name">ForutonaTest</string>
-    <string name="app_name">TestApp</string>
+    <string name="client_id">uf8FTMfYg1_9kkjSfuYj</string>
+    <string name="client_secret">kJpOQicdaF</string>
+    <string name="client_name">Forutona</string>
+    <string name="app_name">Forutona</string>
     <string name="facebook_app_id">554571248627000</string>
     <string name="fb_login_protocol_scheme">fb554571248627000</string>
 </resources>

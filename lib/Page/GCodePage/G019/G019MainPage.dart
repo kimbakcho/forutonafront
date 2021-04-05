@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Components/CodeAppBar/CodeAppBar.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/GCodePage/Component/GCodeLineButtonComponent.dart';
 import 'package:forutonafront/Page/LCodePage/L003/L003MainPage.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class G019MainPage extends StatelessWidget {
 
                           },
                           text: "Q&A",
-                          icon: Icon(Icons.question_answer),
+                          icon: Icon(ForutonaIcon.help_circle),
                         ),
                         SizedBox(height: 8),
                         Divider(color: Color(0xff3A3E3F)),
@@ -43,7 +44,7 @@ class G019MainPage extends StatelessWidget {
                             }));
                           },
                           text: "포루투나 이용약관",
-                          icon: Icon(Icons.article),
+                          icon: Icon(ForutonaIcon.file),
                         ),
                         GCodeLineButtonComponent(
                           onTap: (){
@@ -52,7 +53,7 @@ class G019MainPage extends StatelessWidget {
                             }));
                           },
                           text: "포루투나 운영정책",
-                          icon: Icon(Icons.article),
+                          icon: Icon(ForutonaIcon.file),
                         ),
                         GCodeLineButtonComponent(
                           onTap: (){
@@ -61,7 +62,7 @@ class G019MainPage extends StatelessWidget {
                             }));
                           },
                           text: "개인정보 보호정책",
-                          icon: Icon(Icons.article),
+                          icon: Icon(ForutonaIcon.file),
                         ),
                         GCodeLineButtonComponent(
                           onTap: (){
@@ -70,7 +71,7 @@ class G019MainPage extends StatelessWidget {
                             }));
                           },
                           text: "위치정보 보호정책",
-                          icon: Icon(Icons.article),
+                          icon: Icon(ForutonaIcon.file),
                         ),
                         GCodeLineButtonComponent(
                           onTap: (){
@@ -80,7 +81,7 @@ class G019MainPage extends StatelessWidget {
                           },
                           text: "오픈소스 라이센스",
 
-                          icon: Icon(Icons.article),
+                          icon: Icon(ForutonaIcon.file),
                         ),
                         SizedBox(height: 4),
                         Divider(color: Color(0xff3A3E3F)),
@@ -89,7 +90,7 @@ class G019MainPage extends StatelessWidget {
                             Fluttertoast.showToast(msg: "준비중입니다.");
                           },
                           text: "회사 소개",
-                          icon: Icon(Icons.apartment),
+                          icon: Icon(ForutonaIcon.buildings),
                         ),
                         SizedBox(height: 8),
                         Divider(color: Color(0xff3A3E3F)),

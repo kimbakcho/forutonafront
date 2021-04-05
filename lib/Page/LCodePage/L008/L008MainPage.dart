@@ -6,6 +6,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAu
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart';
+import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Components/CountrySelect/CountrySelectButton.dart';
 import 'package:forutonafront/Components/GenderSelectComponent/GenderSelectComponent.dart';
 import 'package:forutonafront/Components/NickNameEditComponent/NickNameEditComponent.dart';
@@ -33,7 +34,12 @@ class L008MainPage extends StatelessWidget {
                       progressValue: 1,
                       onTailButtonClick: () {
                         if (model.isCanNext) {
-                          model._validWithNextPage(context);
+                          showGeneralDialog(
+                              context: context,
+                              pageBuilder: (context, animation, secondaryAnimation) {
+                                model._validWithNextPage(context);
+                                return CommonLoadingComponent();
+                              });
                         }
                       },
                       visibleTailButton: true,
@@ -198,9 +204,12 @@ class L008MainPageViewModel extends ChangeNotifier {
   }
 
   _validWithNextPage(BuildContext context) async {
+
+
     var nickNameResult = await _nickNameEditComponentController.valid();
 
     if (nickNameResult) {
+      Navigator.of(context).pop();
       return;
     }
 

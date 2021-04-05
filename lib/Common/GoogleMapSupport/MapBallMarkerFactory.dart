@@ -52,8 +52,9 @@ class MapBallMarkerFactory {
               onTap: onTap,
               zIndex: 1,
               position: LatLng(position.latitude, position.longitude),
-              anchor: Offset(0.5, 0.5));
+              anchor: Offset(0.5, 1));
         } else if (ballMarkerSize == BallMarkerSize.Small) {
+
           return Marker(
               markerId: MarkerId("IssueBall" + ballUuid),
               icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
@@ -61,7 +62,7 @@ class MapBallMarkerFactory {
               onTap: onTap,
               zIndex: 1,
               position: LatLng(position.latitude, position.longitude),
-              anchor: Offset(0.5, 0.5));
+              anchor: Offset(0.5, 1));
         }
       }
     } else {

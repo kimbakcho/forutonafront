@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Page/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/Page/HCodePage/H002/BottomMakeComponent/BottomMakeComponent.dart';
 import 'package:forutonafront/Page/HomePage/HomeMainPage.dart';
@@ -12,6 +13,7 @@ import 'package:forutonafront/Page/LCodePage/L010/L010MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L011/L011MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
+import 'package:key_hash/key_hash.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,25 +23,29 @@ class MainPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => MainPageViewModel(sl(), context, sl()),
+        create: (_) => MainPageViewModel(sl(), context, sl(), sl()),
         child: Consumer<MainPageViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: model.isNotLockMaliciousUser
                   ? Container(
                       child: Column(children: [
                       Expanded(
-                          child: PageView(
-                              physics: NeverScrollableScrollPhysics(),
-                              controller: model._pageController,
-                              children: [
-                            HomeMainPage(
-                              key: model.homepageWidgetKey,
-                            ),
-                            GCodeMainPage(key: model.gCodeMainKey),
-                            Container(
-                              child: Text("tet"),
-                            )
-                          ])),
+                          child: model.isCheckPositionPermission
+                              ? Container(
+                                  color: Colors.white,
+                                )
+                              : PageView(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  controller: model._pageController,
+                                  children: [
+                                      HomeMainPage(
+                                        key: model.homepageWidgetKey,
+                                      ),
+                                      GCodeMainPage(key: model.gCodeMainKey),
+                                      Container(
+                                        child: Text("tet"),
+                                      )
+                                    ])),
                       BottomNavigation(
                         bottomNavigationListener: model,
                       )
@@ -61,14 +67,27 @@ class MainPageViewModel extends ChangeNotifier
 
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
+  final GeoLocationUtilForeGroundUseCaseInputPort
+      _geoLocationUtilForeGroundUseCaseInputPort;
+
   Key gCodeMainKey = UniqueKey();
 
-  MainPageViewModel(this._signInUserInfoUseCaseInputPort, this.context,
-      this._mainPageViewModelController) {
+  bool isCheckPositionPermission = true;
+
+  MainPageViewModel(
+      this._signInUserInfoUseCaseInputPort,
+      this.context,
+      this._mainPageViewModelController,
+      this._geoLocationUtilForeGroundUseCaseInputPort) {
+
+    initSignKey();
+
     homepageWidgetKey = Key(Uuid().v4());
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen(onLoginStateChange);
 
     this._mainPageViewModelController._mainPageViewModel = this;
+
+    checkPositionPermission();
 
     if (_signInUserInfoUseCaseInputPort.isLogin) {
       var fUserInfoResDto =
@@ -82,6 +101,19 @@ class MainPageViewModel extends ChangeNotifier
       gCodeMainKey = UniqueKey();
     });
     initStatueBar();
+  }
+
+
+
+  checkPositionPermission() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    var isCanUseGps =
+        await _geoLocationUtilForeGroundUseCaseInputPort.useGpsReq();
+    if (!isCanUseGps) {
+      SystemNavigator.pop();
+    }
+    isCheckPositionPermission = false;
+    notifyListeners();
   }
 
   Future<void> onLoginStateChange(FUserInfoResDto fUserInfoResDto) async {
@@ -158,6 +190,17 @@ class MainPageViewModel extends ChangeNotifier
         systemNavigationBarIconBrightness: Brightness.dark,
         systemNavigationBarColor: Colors.white));
   }
+
+  void initSignKey() async {
+    String yourKeyHash;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      yourKeyHash = await KeyHash.getKeyHash;
+      print("yourKeyHash = $yourKeyHash");
+    } on PlatformException {
+      yourKeyHash = 'Failed to get platform version.';
+    }
+  }
 }
 
 @lazySingleton
@@ -166,5 +209,25 @@ class MainPageViewModelController {
 
   moveToMainPage(BottomNavigationNavType bottomNavigationNavType) {
     _mainPageViewModel.onBottomNavClick(bottomNavigationNavType);
+  }
+
+  BottomNavigationNavType getMainPageCurrentPage() {
+    if (_mainPageViewModel == null || _mainPageViewModel._pageController.positions.isEmpty) {
+      return BottomNavigationNavType.HOME;
+    }
+    double current = _mainPageViewModel._pageController.page;
+    if (current == 0) {
+      return BottomNavigationNavType.HOME;
+    } else if (current == 1) {
+      return BottomNavigationNavType.SEARCH;
+    } else if (current == 2) {
+      return BottomNavigationNavType.MakeBall;
+    } else if (current == 3) {
+      return BottomNavigationNavType.SNS;
+    } else if (current == 4) {
+      return BottomNavigationNavType.Profile;
+    } else {
+      return BottomNavigationNavType.HOME;
+    }
   }
 }

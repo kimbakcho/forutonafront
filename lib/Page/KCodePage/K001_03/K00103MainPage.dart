@@ -73,8 +73,9 @@ class K00103MainPage extends StatelessWidget {
                               index, model.ballListMediator, BallStyle.Style3,
                               boxDecoration: BoxDecoration(
                                 color: Colors.white,
+                                  border: Border.all(color: Color(0xffE4E7E8)),
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(15))));
+                                  BorderRadius.all(Radius.circular(15.0))));
                         })
                   ],
                 ),

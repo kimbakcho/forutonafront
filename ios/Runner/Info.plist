@@ -44,7 +44,7 @@
 	<key>LSApplicationQueriesSchemes</key>
      <array>
           <!-- common -->
-          <string>kakao	2e77dd42e5b6e1e79b8a0ec21e242e05</string>
+          <string>kakao2015f6758833a937d29f1189220831f7</string>
           <!-- KakaoTalk login -->
           <string>kakaokompassauth</string>
           <string>storykompassauth</string>

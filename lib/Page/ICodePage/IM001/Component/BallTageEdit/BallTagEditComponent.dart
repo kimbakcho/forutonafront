@@ -55,6 +55,22 @@ class BallTagEditComponent extends StatelessWidget {
                             ),
                           ),
                         ),
+                        model.ballEditTagChips.length > 0 ? SizedBox(
+                          height: 12,
+                        ): SizedBox(
+                          height: 0,
+                        ),
+                        Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Wrap(
+                                spacing: 10,
+                                crossAxisAlignment: WrapCrossAlignment.start,
+                                children: model.ballEditTagChips)),
+                        model.ballEditTagChips.length > 0 ? SizedBox(
+                          height: 12,
+                        ): SizedBox(
+                          height: 0,
+                        ),
                         TextField(
                           controller: model._tagTextEditingController,
                           maxLength: 10,
@@ -78,15 +94,8 @@ class BallTagEditComponent extends StatelessWidget {
                               ),
                               hintText: "태그를 입력해주세요."),
                         ),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Wrap(
-                                spacing: 10,
-                                crossAxisAlignment: WrapCrossAlignment.start,
-                                children: model.ballEditTagChips))
+
+
                       ]))
               : Container();
         }));
@@ -189,9 +198,13 @@ class BallTagEditComponentController {
 
   toggle() {
     _viewModel._toggle();
+
   }
 
   isShow(){
+    if(_viewModel == null){
+      return false;
+    }
     return _viewModel.isShow;
   }
 

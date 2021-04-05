@@ -445,7 +445,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
                   shape: CircleBorder(),
                   onPressed: model.onShowSelectPictureDialog,
-                  child: Icon(ForutonaIcon.camera, color: Colors.white),
+                  child: Icon(ForutonaIcon.camera1, color: Colors.white),
                 ),
                 decoration: BoxDecoration(
                   color: Color(0xffee9acf),

@@ -255,12 +255,17 @@ class IM001BottomSheetBody extends StatelessWidget {
                       height: 42,
                       color: Color(0xffF6F6F6),
                       isBoxShadow: false,
-                      icon: Icon(
+                      icon: model.ballTagEditComponentController.isShow() ?  Icon(
+                        ForutonaIcon.tag_im01,
+                        color: Color(0xff3497FD),
+                      ): Icon(
                         ForutonaIcon.tag,
                         color: Color(0xff3A3E3F),
                       ),
                       onTap: () {
-                        model.ballTagEditComponentController.toggle();
+                        model.ballTagEditComponentToggle();
+
+
                       },
                     )
                   ],
@@ -413,6 +418,11 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   void youtubeBtnToggle() {
     youtubeUrlUploadComponentController.toggle();
+    notifyListeners();
+  }
+
+  void ballTagEditComponentToggle() {
+    ballTagEditComponentController.toggle();
     notifyListeners();
   }
 }

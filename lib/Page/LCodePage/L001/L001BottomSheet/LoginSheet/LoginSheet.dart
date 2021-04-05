@@ -21,14 +21,12 @@ import 'LoginSheetOutputPort.dart';
 class LoginSheet extends StatelessWidget {
   final LoginSheetOutputPort loginSheetOutputPort;
 
-
-
   LoginSheet({this.loginSheetOutputPort});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => LoginSheetViewModel(sl(), sl(),sl()),
+      create: (_) => LoginSheetViewModel(sl(), sl(), sl()),
       child: Consumer<LoginSheetViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -155,18 +153,23 @@ class LoginSheetViewModel extends ChangeNotifier
           singUpUseCaseInputPort: this._singUpUseCaseInputPort,
           snsLoginModuleAdapter:
               _snsLoginModuleAdapterFactory.getInstance(snsSupportService));
-      try{
-        await loginUseCaseInputPort.tryLogin();
-        Navigator.of(context).pop();
-      }on NotJoinException catch(ex) {
-        showGeneralDialog(context: context,
+
+      var loginResult = await showGeneralDialog(
+          context: context,
+          pageBuilder: (context, animation, secondaryAnimation) {
+            _tryLoginFunc(loginUseCaseInputPort, context);
+            return CommonLoadingComponent();
+          });
+      if (loginResult is NotJoinException) {
+        await showGeneralDialog(
+            context: context,
             pageBuilder: (context, animation, secondaryAnimation) {
-              trySignSns(context,ex.fUserSnSLoginReqDto.snsService);
+              trySignSns(context, loginResult.fUserSnSLoginReqDto.snsService);
               return CommonLoadingComponent();
             });
-
-
       }
+      Navigator.of(context).popUntil((route) => route.settings.name=="/");
+
       notifyListeners();
     } else {
       showMaterialModalBottomSheet(
@@ -189,7 +192,17 @@ class LoginSheetViewModel extends ChangeNotifier
     }
   }
 
-  trySignSns(BuildContext context,SnsSupportService snsSupportService) async{
+  Future<void> _tryLoginFunc(
+      LoginUseCaseInputPort loginUseCaseInputPort, BuildContext context) async {
+    try {
+      await loginUseCaseInputPort.tryLogin();
+      Navigator.of(context).pop();
+    } on NotJoinException catch (ex) {
+      Navigator.of(context).pop(ex);
+    }
+  }
+
+  trySignSns(BuildContext context, SnsSupportService snsSupportService) async {
     await _singUpUseCaseInputPort.trySignSns(snsSupportService, context);
   }
 }

@@ -21,7 +21,8 @@ class KPageNavBtn extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(ForutonaIcon.compass),
+                Icon(ForutonaIcon.compass,size: 22,),
+                SizedBox(height: 6,),
                 Text(
                   '탐색',
                   style: GoogleFonts.notoSans(

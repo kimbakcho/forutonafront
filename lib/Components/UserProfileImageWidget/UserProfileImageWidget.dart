@@ -17,6 +17,7 @@ class UserProfileImageWidget extends StatelessWidget {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           image: DecorationImage(
+            fit: BoxFit.cover,
               image: NetworkImage(
                   imageUrl))),
     ) : _basicProfileImageWidget();

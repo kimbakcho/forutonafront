@@ -387,7 +387,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
             MediaQuery.of(_context).size.width / 2,
             MediaQuery.of(_context).size.height * 0.7);
 
-    googleMapController.moveCamera(CameraUpdate.newCameraPosition(
+    googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: latLng, zoom: 14)));
   }
 

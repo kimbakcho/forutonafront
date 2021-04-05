@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
                       backgroundColor: Colors.black.withOpacity(0)),
                   primaryColor: Color(0xff3497FD),
                   unselectedWidgetColor: Colors.grey),
-              home: InitPage());
+              home: MainPageView());
         }));
   }
 }

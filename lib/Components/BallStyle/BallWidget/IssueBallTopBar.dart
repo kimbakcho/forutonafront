@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/BallIconWidget/IssueBallIconWidget.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class IssueBallTopBar extends StatelessWidget {
@@ -34,7 +35,7 @@ class IssueBallTopBar extends StatelessWidget {
             textAlign: TextAlign.left,
           ),
           Spacer(),
-          Icon(Icons.swap_calls, color: Color(0xffF841D9), size: 10),
+          Icon(ForutonaIcon.influence_i001, color: Color(0xffF841D9), size: 10),
           SizedBox(
             width: 7,
           ),

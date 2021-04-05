@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
@@ -11,6 +12,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import 'KPageNavBtn.dart';
+import 'MainPageView.dart';
 
 enum BottomNavigationNavType { HOME, SEARCH, MakeBall, SNS, Profile }
 
@@ -30,7 +32,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return ChangeNotifierProvider(
         create: (_) =>
             BottomNavigationViewModel(
-                context: context, signInUserInfoUseCaseInputPort: sl()),
+                context: context, signInUserInfoUseCaseInputPort: sl(),mainPageViewModelController: sl()),
         child: Consumer<BottomNavigationViewModel>(builder: (_, model, __) {
           return Consumer<BottomNavigationViewModel>(
               builder: (_, model, child) {
@@ -41,16 +43,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           flex: 1,
                           child: FlatButton(
                             onPressed: () {
-                              if (widget.bottomNavigationListener != null) {
-                                widget.bottomNavigationListener
-                                    .onBottomNavClick(
-                                    BottomNavigationNavType.HOME);
-                              }
+
+                              model.gotoHomePage(widget.bottomNavigationListener);
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(ForutonaIcon.home_b__circle),
+                                model.getMainCurrentPage() == BottomNavigationNavType.HOME ?
+                                Icon(ForutonaIcon.home_b__circle,size: 22,) : Icon(ForutonaIcon.home_circle,size: 22),
+                                SizedBox(height: 6,),
                                 Text(
                                   '리스트',
                                   style: GoogleFonts.notoSans(
@@ -78,7 +79,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           } , child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(ForutonaIcon.make_b_),
+                              Icon(ForutonaIcon.makecircle2,size: 20),
+                              SizedBox(height: 6,),
                               Text(
                                 '만들기',
                                 style: GoogleFonts.notoSans(
@@ -103,7 +105,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(ForutonaIcon.chat),
+                                  Icon(ForutonaIcon.chat,size: 22),
+                                  SizedBox(height: 6,),
                                   Text(
                                     '소셜',
                                     style: GoogleFonts.notoSans(
@@ -166,9 +169,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
 class BottomNavigationViewModel extends ChangeNotifier {
   final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
   final BuildContext context;
+  final MainPageViewModelController mainPageViewModelController;
 
   BottomNavigationViewModel(
-      {this.context, this.signInUserInfoUseCaseInputPort}) {
+      {this.context, this.signInUserInfoUseCaseInputPort,@required this.mainPageViewModelController}) {
     signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) {
       notifyListeners();
     });
@@ -185,6 +189,10 @@ class BottomNavigationViewModel extends ChangeNotifier {
         .profilePictureUrl;
   }
 
+  BottomNavigationNavType getMainCurrentPage(){
+    var mainPageCurrentPage = mainPageViewModelController.getMainPageCurrentPage();
+    return mainPageCurrentPage;
+  }
 
   Widget _getEmptyProfileImage() {
     return Container(
@@ -231,6 +239,15 @@ class BottomNavigationViewModel extends ChangeNotifier {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return GCodeMainPage();
     }));
+  }
+
+  void gotoHomePage(BottomNavigationListener bottomNavigationListener) {
+    if (bottomNavigationListener != null) {
+      bottomNavigationListener
+          .onBottomNavClick(
+          BottomNavigationNavType.HOME);
+    }
+    notifyListeners();
   }
 
 }

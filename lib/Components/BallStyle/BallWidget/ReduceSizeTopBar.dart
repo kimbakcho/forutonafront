@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReduceSizeTopBar extends StatelessWidget {
@@ -33,7 +34,7 @@ class ReduceSizeTopBar extends StatelessWidget {
         ),
       ),
       Container(
-        child: Icon(Icons.swap_calls, color: Color(0xffF841D9), size: 15),
+        child: Icon(ForutonaIcon.influence_i001, color: Color(0xffF841D9), size: 15),
       ),
       SizedBox(
         width: 10,

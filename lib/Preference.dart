@@ -8,17 +8,16 @@ class Preference {
    static final String kGoogleApiKey = "AIzaSyAyyDPdP91f5RgxKjXbAPZr0lBVSyeZbGU";
    static final Position initPosition = Position(latitude: 37.508797,longitude: 126.890605);
    static final String initAddress = "신도림";
-   static final String kaKaoNativeApiKey = "2e77dd42e5b6e1e79b8a0ec21e242e05";
+   static final String kaKaoNativeApiKey = "2015f6758833a937d29f1189220831f7";
    static final String officialSite="http://neoforutona.cafe24.com/official-channel/";
 
   //testDebug
   //  static final String baseBackEndUrl = "http://210.223.46.212:8443";
 
-
 //  // relese
-//    String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
+   static final String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonabeta";
 
    //realtestRelese
-  static final String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonatest";
+  // static final String baseBackEndUrl = "https://forutona.thkomeet.com:8443/forutonatest";
 
 }

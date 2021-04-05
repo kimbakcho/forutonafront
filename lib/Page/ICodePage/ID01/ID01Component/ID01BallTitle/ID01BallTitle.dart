@@ -45,6 +45,7 @@ class ID01BallTitle extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               height: 1.25,
                             )),
+                        SizedBox(height: 6),
                         Row(
                           children: [
                             Text(
