@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
+import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
+import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -11,39 +15,49 @@ class KT001Page extends StatefulWidget {
 }
 
 class _KT001PageState extends State<KT001Page> {
-
   KT001PageViewModel k001pageViewModel;
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-        value: k001pageViewModel,
-        child: Scaffold(
-            backgroundColor: Colors.white,
-            body: Column(children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: inquireAboutAnythingComponent(context),
-              ),
-              Divider(
-                thickness: 2,
-                color: Color(0xffE4E7E8),
-              ),
-              Expanded(
-                flex: 1,
-                child: googleErrorReportSurveyComponent(context),
-              ),
-              Divider(
-                thickness: 2,
-                color: Color(0xffE4E7E8),
-              ),
-              Expanded(
-                flex: 1,
-                child: proposalOnServiceComponent(context),
+    return ChangeNotifierProvider(
+        create: (_) => KT001PageViewModel(
+            androidIntentAdapter: sl(),
+            errorReportSurvey: GoogleSurveyErrorReportUseCase(),
+            inquireAboutAnythingUseCase: InquireAboutAnythingUseCase(),
+            proposalOnServiceSurvey: GoogleProposalOnServiceSurveyUseCase()),
+        child: Consumer<KT001PageViewModel>(builder: (_, model, __) {
+          return Scaffold(
+              backgroundColor: Colors.white,
+              body: Container(
+                padding: MediaQuery.of(context).padding,
+                child: Column(children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: inquireAboutAnythingComponent(model),
+                  ),
+                  Divider(
+                    thickness: 2,
+                    color: Color(0xffE4E7E8),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: googleErrorReportSurveyComponent(context,model),
+                  ),
+                  Divider(
+                    thickness: 2,
+                    color: Color(0xffE4E7E8),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: proposalOnServiceComponent(context,model),
+                  )
+                ]),
               )
-            ])));
+              );
+        }));
   }
 
-  Stack proposalOnServiceComponent(BuildContext context) {
+  Stack proposalOnServiceComponent(BuildContext context,KT001PageViewModel model) {
     return Stack(
       children: <Widget>[
         Positioned(
@@ -76,7 +90,7 @@ class _KT001PageState extends State<KT001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<KT001PageViewModel>().proposalOnServiceMaxDraw}",
+                      "${model.proposalOnServiceMaxDraw}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -92,8 +106,8 @@ class _KT001PageState extends State<KT001Page> {
                   ),
                 ),
                 TextSpan(
-                  text:
-                  context.watch<KT001PageViewModel>().proposalOnServicePrize,
+                  text: model
+                      .proposalOnServicePrize,
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -104,7 +118,7 @@ class _KT001PageState extends State<KT001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<KT001PageViewModel>().proposalOnServiceLotteryMonth}",
+                      "${model.proposalOnServiceLotteryMonth}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -115,7 +129,7 @@ class _KT001PageState extends State<KT001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<KT001PageViewModel>().proposalOnServiceLotteryDay}",
+                      "${model.proposalOnServiceLotteryDay}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -137,8 +151,7 @@ class _KT001PageState extends State<KT001Page> {
             height: 36.0,
             child: FlatButton(
                 onPressed: () {
-                  context.read<KT001PageViewModel>().proposalOnServiceClick();
-
+                  model.proposalOnServiceClick();
                 },
                 child: Text(
                   '제안하기',
@@ -167,7 +180,7 @@ class _KT001PageState extends State<KT001Page> {
     );
   }
 
-  Stack googleErrorReportSurveyComponent(BuildContext context) {
+  Stack googleErrorReportSurveyComponent(BuildContext context,KT001PageViewModel model) {
     return Stack(
       children: <Widget>[
         Positioned(
@@ -199,7 +212,7 @@ class _KT001PageState extends State<KT001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<KT001PageViewModel>().errorReportMaxDraw}",
+                      "${model.errorReportMaxDraw}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -213,7 +226,7 @@ class _KT001PageState extends State<KT001Page> {
                   ),
                 ),
                 TextSpan(
-                  text: context.watch<KT001PageViewModel>().errorReportPrize,
+                  text: model.errorReportPrize,
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -228,7 +241,7 @@ class _KT001PageState extends State<KT001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<KT001PageViewModel>().errorReportLotteryMonth}",
+                      "${model.errorReportLotteryMonth}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -243,7 +256,7 @@ class _KT001PageState extends State<KT001Page> {
                 ),
                 TextSpan(
                   text:
-                  "${context.watch<KT001PageViewModel>().errorReportLotteryDay}",
+                      "${model.errorReportLotteryDay}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -269,7 +282,7 @@ class _KT001PageState extends State<KT001Page> {
                 height: 36.0,
                 child: FlatButton(
                   onPressed: () {
-                    context.read<KT001PageViewModel>().errorReportSurveyClick();
+                    model.errorReportSurveyClick();
                   },
                   child: Text(
                     '오류신고',
@@ -285,7 +298,7 @@ class _KT001PageState extends State<KT001Page> {
                   borderRadius: BorderRadius.circular(5.0),
                   color: const Color(0xffffffff),
                   border:
-                  Border.all(width: 1.0, color: const Color(0xff454f63)),
+                      Border.all(width: 1.0, color: const Color(0xff454f63)),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0x14455b63),
@@ -298,7 +311,7 @@ class _KT001PageState extends State<KT001Page> {
     );
   }
 
-  Container inquireAboutAnythingComponent(BuildContext context) {
+  Container inquireAboutAnythingComponent(KT001PageViewModel model) {
     return Container(
       child: Stack(children: <Widget>[
         Positioned(
@@ -324,8 +337,7 @@ class _KT001PageState extends State<KT001Page> {
               height: 36.0,
               child: FlatButton(
                   onPressed: () {
-                    context
-                        .read<KT001PageViewModel>()
+                    model
                         .inquireAboutAnythingClick();
                   },
                   child: SizedBox(
@@ -343,7 +355,7 @@ class _KT001PageState extends State<KT001Page> {
                   borderRadius: BorderRadius.circular(5.0),
                   color: const Color(0xffffffff),
                   border:
-                  Border.all(width: 1.0, color: const Color(0xff454f63)),
+                      Border.all(width: 1.0, color: const Color(0xff454f63)),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0x14455b63),
@@ -356,4 +368,3 @@ class _KT001PageState extends State<KT001Page> {
     );
   }
 }
-

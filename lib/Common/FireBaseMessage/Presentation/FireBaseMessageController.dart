@@ -1,31 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/Common/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
-import 'package:forutonafront/Common/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart';
 
-import 'package:forutonafront/Common/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
-import 'package:forutonafront/Common/FireBaseMessage/UseCase/LaunchMessageUseCase/LaunchMessageUseCase.dart';
-import 'package:forutonafront/Common/FireBaseMessage/UseCase/ResumeMessageUseCase/ResumeMessageUseCase.dart';
+import 'package:forutonafront/Common/FireBaseMessage/UseCase/FCMMessageUseCaseInputPort.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton()
 class FireBaseMessageController {
   final FireBaseMessageAdapter fireBaseMessageAdapter;
-  final BaseMessageUseCaseInputPort launchMessageUseCase;
-  final BaseMessageUseCaseInputPort baseMessageUseCase;
-  final BaseMessageUseCaseInputPort resumeMessageUseCase;
 
   FireBaseMessageController(
-      {@required this.fireBaseMessageAdapter,
-      @required @Named.from(LaunchMessageUseCase) this.launchMessageUseCase,
-      @required @Named.from(BaseMessageUseCase) this.baseMessageUseCase,
-      @required @Named.from(ResumeMessageUseCase) this.resumeMessageUseCase});
+      {@required this.fireBaseMessageAdapter});
 
 
   controllerStartService(){
     fireBaseMessageAdapter.configure(
-        onLaunch: launchMessageUseCase.message,
-        onMessage: baseMessageUseCase.message,
-        onResume: resumeMessageUseCase.message);
+        onLaunch: sl.get<FCMMessageUseCaseInputPort>(instanceName: "LaunchMessageUseCase").message,
+        onMessage: sl.get<FCMMessageUseCaseInputPort>(instanceName: "BaseMessageUseCase").message,
+        onResume: sl.get<FCMMessageUseCaseInputPort>(instanceName: "ResumeMessageUseCase").message);
   }
 
 }

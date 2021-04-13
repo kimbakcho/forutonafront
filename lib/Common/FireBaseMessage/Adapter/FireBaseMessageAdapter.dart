@@ -1,11 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:forutonafront/Common/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
 
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateFCMTokenUseCase/UpdateFCMTokenUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthBaseAdapter.dart';
+import 'package:forutonafront/Common/FireBaseMessage/UseCase/FCMMessageUseCaseInputPort.dart';
+import 'package:forutonafront/Common/FireBaseMessage/Value/FireBaseMessageType.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
 
@@ -23,8 +24,9 @@ Future<dynamic> firebaseBackgroundMessage(Map<String, dynamic> message) async {
         await loginUserInfoDataSaveForMemory(fireBaseAuthAdapterForUseCase);
   } finally {
     if (await fireBaseAuthAdapterForUseCase.isLogin()) {
-      BaseMessageUseCaseInputPort backGroundMessageUseCase =
-          sl.get(instanceName: "BackGroundMessageUseCase");
+      FCMMessageUseCaseInputPort backGroundMessageUseCase =
+          sl.get<FCMMessageUseCaseInputPort>(
+              instanceName: "BackGroundMessageUseCase");
       backGroundMessageUseCase.message(message);
     }
   }
@@ -49,6 +51,7 @@ abstract class FireBaseMessageAdapter {
 
   Future<String> getCurrentToken();
 }
+
 @LazySingleton(as: FireBaseMessageAdapter)
 class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
   FirebaseMessaging _firebaseMessaging;
@@ -60,13 +63,9 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
   final UpdateFCMTokenUseCaseInputPort _updateFCMTokenUseCaseInputPort;
 
   FireBaseMessageAdapterImpl(
-      {
-        @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required
-          FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
-      @required
-      UpdateFCMTokenUseCaseInputPort updateFCMTokenUseCaseInputPort
-      })
+      {@required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
+      @required UpdateFCMTokenUseCaseInputPort updateFCMTokenUseCaseInputPort})
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _updateFCMTokenUseCaseInputPort = updateFCMTokenUseCaseInputPort,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter {
@@ -88,7 +87,7 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
   void _onTokenRefresh(String token) async {
     if (await _fireBaseAuthBaseAdapter.isLogin()) {
       var uid = await _fireBaseAuthBaseAdapter.userUid();
-     await _signInUserInfoUseCaseInputPort
+      await _signInUserInfoUseCaseInputPort
           .saveSignInInfoInMemoryFromAPiServer();
       _updateFCMTokenUseCaseInputPort.updateFCMToken(token);
     }

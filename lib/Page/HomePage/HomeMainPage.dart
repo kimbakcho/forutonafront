@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
-import 'package:forutonafront/Common/Notification/NotiSelectAction/Dto/ActionPayloadDto.dart';
-import 'package:forutonafront/Common/Notification/NotiSelectAction/NotiSelectActionBaseInputPort.dart';
 import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBar.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
@@ -44,7 +42,6 @@ class _HomeMainPageState extends State<HomeMainPage>
         swipeGestureRecognizerController: _swipeGestureRecognizerController,
         currentState: CodeState.H001CODE);
 
-    _configureSelectNotificationSubject();
   }
 
   Map<CodeState, CodeMainPageLinkDto> getMapCodeMainPageLink() {
@@ -62,18 +59,7 @@ class _HomeMainPageState extends State<HomeMainPage>
     return mapCodeMainPageLink;
   }
 
-  void _configureSelectNotificationSubject() async {
-    if(await selectNotificationSubject.isEmpty){
-      selectNotificationSubject.listen((String payload) async {
-        var actionPayloadDto = ActionPayloadDto.fromJson(json.decode(payload));
-        NotiSelectActionBaseInputPort notiSelectActionBaseInputPort = sl.get(
-            instanceName: "NotiSelectActionBaseInputPortFactory",
-            param1: actionPayloadDto.commandKey);
-        notiSelectActionBaseInputPort.action(actionPayloadDto, context);
-      });
-    }
 
-  }
 
   @override
   // ignore: must_call_super

@@ -42,7 +42,8 @@ class ID01MainBottomSheetBody extends StatefulWidget {
       this.id01Mode,
       this.preViewBallImage,
       this.preViewfBallTagResDtos,
-      this.id01mainBottomSheetBodyController, this.currentStateProgress})
+      this.id01mainBottomSheetBodyController,
+      this.currentStateProgress})
       : super(key: key);
 
   @override
@@ -92,11 +93,11 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                       Container(
                         margin: EdgeInsets.all(16),
                         child: ID01LimitTag(
-                        ballUuid: model.fBallResDto.ballUuid,
-                        limitCount: 10,
-                        id01Mode: model.id01Mode,
-                      ),)
-                      ,
+                          ballUuid: model.fBallResDto.ballUuid,
+                          limitCount: 10,
+                          id01Mode: model.id01Mode,
+                        ),
+                      ),
                       ID01Pictures(
                         desImages: model.getBallDesImages(),
                       ),
@@ -107,13 +108,14 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                       //   fBallResDto: model.fBallResDto,
                       // ),
                       Container(
-                        margin: EdgeInsets.only(bottom: widget.currentStateProgress < 0.6 ? widget.topPosition*0.7 : 150),
-
+                        margin: EdgeInsets.only(
+                            bottom: widget.currentStateProgress < 0.6
+                                ? widget.topPosition * 0.7
+                                : 150),
                         child: FBallReply3(
                           ballUuid: model.fBallResDto.ballUuid,
                         ),
                       )
-
                     ],
                   ),
                 ],
@@ -129,7 +131,6 @@ class ID01MainBottomSheetBodyViewModel extends ChangeNotifier {
   IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
   final GeolocatorAdapter geolocatorAdapter;
   final ID01Mode id01Mode;
-
   final List<BallImageItem> preViewBallImage;
 
   final ID01MainBottomSheetBodyController id01mainBottomSheetBodyController;
@@ -139,8 +140,6 @@ class ID01MainBottomSheetBodyViewModel extends ChangeNotifier {
       {this.id01mainBottomSheetBodyController}) {
     _init();
   }
-
-
 
   void _init() {
     if (id01mainBottomSheetBodyController != null) {

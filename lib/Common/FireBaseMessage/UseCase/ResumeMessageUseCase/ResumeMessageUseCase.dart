@@ -1,12 +1,14 @@
-import 'package:forutonafront/Common/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCaseInputPort.dart';
+
 import 'package:injectable/injectable.dart';
 
+import '../FCMMessageUseCaseInputPort.dart';
 
-@named
-@LazySingleton(as: BaseMessageUseCaseInputPort)
-class ResumeMessageUseCase implements BaseMessageUseCaseInputPort {
+
+@Named("ResumeMessageUseCase")
+@LazySingleton(as: FCMMessageUseCaseInputPort)
+class ResumeMessageUseCase implements FCMMessageUseCaseInputPort {
   @override
-  Future<dynamic> message(Map<String, dynamic> message) {
+  Future<dynamic> message(Map<String, dynamic> message) async {
     print("ResumeMessageUseCase");
     print(message.toString());
     throw UnimplementedError();

@@ -1,28 +1,27 @@
-import 'package:forutonafront/Common/Notification/NotiChannel/NotificationChannelBaseInputPort.dart';
-import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
+import 'package:enum_to_string/enum_to_string.dart';
+import 'package:forutonafront/AppBis/Notification/Domain/NotificationUseCase/NotificationUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/Notification/Domain/NotificationUseCaseFactory.dart';
+import 'package:forutonafront/AppBis/Notification/Value/NotificationServiceType.dart';
 import 'package:injectable/injectable.dart';
 
-import 'BaseMessageUseCaseInputPort.dart';
+import '../FCMMessageUseCaseInputPort.dart';
 
-@named
-@LazySingleton(as: BaseMessageUseCaseInputPort)
-class BaseMessageUseCase implements BaseMessageUseCaseInputPort {
-  @override
-  // ignore: missing_return
-  Future message(Map<String, dynamic> message) {
+@Named("BaseMessageUseCase")
+@LazySingleton(as: FCMMessageUseCaseInputPort)
+class BaseMessageUseCase implements FCMMessageUseCaseInputPort {
+
+  Future message(Map<String, dynamic> message) async {
     if (hasNotificationAction(message)) {
-      if (message["data"].containsKey("commandKey")) {
+      if (message["data"].containsKey("serviceKey")) {
         _notificationAction(message);
       }
     }
   }
 
   void _notificationAction(Map<String, dynamic> message) {
-    NotificationChannelBaseInputPort notificationChannelBaseInputPort =
-        sl.get<NotificationChannelBaseInputPort>(
-            instanceName: "NotificationChannelBaseInputPortFactory",
-            param1:  message["data"]["commandKey"]);
-    notificationChannelBaseInputPort.reqNotification(message);
+    NotificationServiceType notificationServiceType = EnumToString.fromString(NotificationServiceType.values, message["data"]["serviceKey"]);
+    NotificationUseCaseInputPort notificationUseCaseInputPort = NotificationUseCaseFactory.create(notificationServiceType);
+    notificationUseCaseInputPort.resNotification(message);
   }
 
   bool hasNotificationAction(Map<String, dynamic> message) {

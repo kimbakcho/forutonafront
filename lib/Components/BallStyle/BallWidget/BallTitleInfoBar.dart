@@ -50,7 +50,7 @@ class BallTitleInfoBar extends StatelessWidget {
                               maxLines: 1,
                               style: GoogleFonts.notoSans(
                                 fontSize: 10,
-                                color: const Color(0xff78849e),
+                                color: const Color(0xff5B5B5B),
                                 fontWeight: FontWeight.w700,
                               )),
                         ),
@@ -61,7 +61,7 @@ class BallTitleInfoBar extends StatelessWidget {
                               maxLines: 1,
                               style: GoogleFonts.notoSans(
                                 fontSize: 10,
-                                color: const Color(0xff78849e),
+                                color: const Color(0xff5B5B5B),
                               )),
                         )
                       ],

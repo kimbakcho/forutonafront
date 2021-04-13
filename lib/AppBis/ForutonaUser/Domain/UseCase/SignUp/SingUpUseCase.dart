@@ -28,7 +28,6 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
   SingUpUseCase(
       {@required
           FUserRepository fUserRepository,
-
         FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,this.snsLoginModuleAdapterFactory,this.fUserInfoJoinReqDto})
       : _fUserRepository = fUserRepository,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;

@@ -1,20 +1,30 @@
+import 'dart:convert';
+
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
+import 'package:forutonafront/AppBis/Notification/Domain/NotificationUseCase/NotificationUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/Notification/Domain/NotificationUseCaseFactory.dart';
+import 'package:forutonafront/AppBis/Notification/Value/NotificationServiceType.dart';
+import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Page/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/Page/HCodePage/H002/BottomMakeComponent/BottomMakeComponent.dart';
 import 'package:forutonafront/Page/HomePage/HomeMainPage.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
+import 'package:forutonafront/Page/KTCodePage/KT001/KT001Page.dart';
 import 'package:forutonafront/Page/LCodePage/L010/L010MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L011/L011MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:key_hash/key_hash.dart';
 import 'package:provider/provider.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 import 'package:uuid/uuid.dart';
 
 import 'BottomNavigation.dart';
@@ -23,7 +33,7 @@ class MainPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => MainPageViewModel(sl(), context, sl(), sl()),
+        create: (_) => MainPageViewModel(sl(), context, sl(), sl(),sl()),
         child: Consumer<MainPageViewModel>(builder: (_, model, __) {
           return Scaffold(
               body: model.isNotLockMaliciousUser
@@ -41,6 +51,7 @@ class MainPageView extends StatelessWidget {
                                       HomeMainPage(
                                         key: model.homepageWidgetKey,
                                       ),
+                                      KT001Page(),
                                       GCodeMainPage(key: model.gCodeMainKey),
                                       Container(
                                         child: Text("tet"),
@@ -74,11 +85,14 @@ class MainPageViewModel extends ChangeNotifier
 
   bool isCheckPositionPermission = true;
 
+  final UserPositionForegroundMonitoringUseCaseInputPort userPositionForegroundMonitoringUseCaseInputPort;
+
   MainPageViewModel(
       this._signInUserInfoUseCaseInputPort,
       this.context,
       this._mainPageViewModelController,
-      this._geoLocationUtilForeGroundUseCaseInputPort) {
+      this._geoLocationUtilForeGroundUseCaseInputPort,
+      this.userPositionForegroundMonitoringUseCaseInputPort) {
 
     initSignKey();
 
@@ -97,12 +111,25 @@ class MainPageViewModel extends ChangeNotifier
       });
     }
 
+    userPositionForegroundMonitoringUseCaseInputPort
+        .startUserPositionMonitoringAndUpdateToServer();
+
     _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) {
       gCodeMainKey = UniqueKey();
     });
     initStatueBar();
+    _configureSelectNotificationSubject();
   }
+  void _configureSelectNotificationSubject() async {
 
+      selectNotificationSubject.listen((String payload) async {
+        Map<String, dynamic> message = json.decoder.convert(payload);
+        NotificationServiceType notificationServiceType = EnumToString.fromString(NotificationServiceType.values, message["serviceKey"]);
+        NotificationUseCaseInputPort notificationUseCaseInputPort = NotificationUseCaseFactory.create(notificationServiceType);
+        notificationUseCaseInputPort.selectAction(context, message['payload']);
+      });
+
+  }
 
 
   checkPositionPermission() async {
@@ -139,9 +166,10 @@ class MainPageViewModel extends ChangeNotifier
       case BottomNavigationNavType.SEARCH:
         break;
       case BottomNavigationNavType.Profile:
-        _pageController.jumpToPage(1);
+        _pageController.jumpToPage(2);
         break;
     }
+    notifyListeners();
   }
 
   get isNotLockMaliciousUser {
@@ -200,6 +228,8 @@ class MainPageViewModel extends ChangeNotifier
     } on PlatformException {
       yourKeyHash = 'Failed to get platform version.';
     }
+    String signature = await SmsRetrieved.getAppSignature();
+    print("sms KeyHash = $signature");
   }
 }
 

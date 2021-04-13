@@ -25,6 +25,7 @@ class ID01AddressWidget extends StatelessWidget {
           return Container(
             height: 37,
             child: Material(
+              color: Colors.transparent,
               child: InkWell(
                 onTap: (){
                   if(onTabAddress != null){

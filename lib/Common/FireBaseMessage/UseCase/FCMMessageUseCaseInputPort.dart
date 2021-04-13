@@ -1,5 +1,5 @@
 
-abstract class BaseMessageUseCaseInputPort {
+abstract class FCMMessageUseCaseInputPort {
   Future<dynamic> message(Map<String, dynamic> message);
 }
 

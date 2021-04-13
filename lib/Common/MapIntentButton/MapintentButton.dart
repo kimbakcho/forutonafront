@@ -1,4 +1,6 @@
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_package_manager/flutter_package_manager.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/MapIntentButton/MapIntent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
@@ -23,6 +25,7 @@ class MapIntentButton extends StatelessWidget {
           BoxDecoration(color: Color(0xff007EFF), shape: BoxShape.circle),
       child: FlatButton(
         onPressed: () async {
+
           List<MapIntent> mapIntents = List<MapIntent>();
           mapIntents.add(MapIntentKakaoImpl(
               dstPosition: _dstPosition,

@@ -2,7 +2,6 @@ import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/Base
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/BaseOpenTalk/BaseOpenTalkOutputPort.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: BaseOpenTalkInputPort)
 class InquireAboutAnythingUseCase implements BaseOpenTalkInputPort {
   @override
   void reqOpenLinkTalk(BaseOpenTalkOutputPort outputPort) {

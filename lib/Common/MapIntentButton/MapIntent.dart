@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_package_manager/flutter_package_manager.dart';
 import 'package:forutonafront/Common/AndroidIntentAdapter/AndroidIntentAdapter.dart';
@@ -53,14 +54,8 @@ class MapIntentNaverImpl implements MapIntent {
 
   @override
   Future<bool> canLunch() async {
-    final PackageInfo info =
-        await FlutterPackageManager.getPackageInfo('com.nhn.android.nmap');
-
-    if (info != null) {
-      return true;
-    } else {
-      return false;
-    }
+    bool result = await DeviceApps.isAppInstalled('com.nhn.android.nmap');
+    return result;
   }
 }
 
@@ -97,13 +92,8 @@ class MapIntentKakaoImpl implements MapIntent {
 
   @override
   Future<bool> canLunch() async {
-    final PackageInfo info =
-    await FlutterPackageManager.getPackageInfo('net.daum.android.map');
-    if (info != null) {
-      return true;
-    } else {
-      return false;
-    }
+    bool result = await DeviceApps.isAppInstalled('net.daum.android.map');
+    return result;
   }
 }
 
@@ -140,13 +130,7 @@ class MapIntentGoogleImpl implements MapIntent {
 
   @override
   Future<bool> canLunch() async {
-    final PackageInfo info =
-    await FlutterPackageManager.getPackageInfo('com.google.android.apps.maps');
-
-    if (info != null) {
-      return true;
-    } else {
-      return false;
-    }
+    bool result = await DeviceApps.isAppInstalled('com.google.android.apps.maps');
+    return result;
   }
 }
