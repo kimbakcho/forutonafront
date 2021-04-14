@@ -31,7 +31,7 @@ class NearBallCreateUseCase implements NotificationUseCaseInputPort{
   }
 
   @override
-  Future<void> selectAction(BuildContext context, String payload) {
+  Future<void> selectAction(BuildContext context, String payload) async {
     var decodePayload = json.decoder.convert(payload);
     var fcmfBallMakeDto = FCMFBallMakeDto.fromJson(decodePayload);
     if(fcmfBallMakeDto.fBallType == FBallType.IssueBall){
@@ -39,7 +39,6 @@ class NearBallCreateUseCase implements NotificationUseCaseInputPort{
         return ID01MainPage(ballUuid: fcmfBallMakeDto.ballUuid);
       }));
     }
-
   }
 
 }

@@ -1,4 +1,5 @@
 
+import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'FCMReplyDto.g.dart';
@@ -11,6 +12,7 @@ class FCMReplyDto {
   String userProfileImageUrl;
   String ballUuid;
   String replyTitleType;
+  FBallType fBallType;
 
   FCMReplyDto();
 
