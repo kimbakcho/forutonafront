@@ -33,6 +33,7 @@ class BallTitleInfoBar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
+                      padding: EdgeInsets.only(left: 2),
                         child: Text(ballDisPlayUseCase.ballName(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -44,16 +45,15 @@ class BallTitleInfoBar extends StatelessWidget {
                             ))),
                     Row(
                       children: <Widget>[
-                        Container(
-                          child: Text(
-                              ' ${ballDisPlayUseCase.makerNickName(maxLength: 10)} ',
-                              maxLines: 1,
-                              style: GoogleFonts.notoSans(
-                                fontSize: 10,
-                                color: const Color(0xff5B5B5B),
-                                fontWeight: FontWeight.w700,
-                              )),
-                        ),
+                        Text(
+                            ' ${ballDisPlayUseCase.makerNickName(maxLength: 10)} ',
+                            maxLines: 1,
+                            style: GoogleFonts.notoSans(
+                              fontSize: 10,
+                              color: const Color(0xff5B5B5B),
+                              fontWeight: FontWeight.w700,
+
+                            )),
                         Container(
                           child: Text(
                               '• 조회수 '

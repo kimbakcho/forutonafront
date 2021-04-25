@@ -9,5 +9,6 @@ abstract class SignInUserInfoUseCaseInputPort {
   Future<FUserInfoResDto> saveSignInInfoInMemoryFromAPiServer({SignInUserInfoUseCaseOutputPort outputPort});
   void clearUserInfo();
   bool isLogin;
+  Future<bool> isLoginFromPreference();
   checkMaliciousPopup();
 }

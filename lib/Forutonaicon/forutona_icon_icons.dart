@@ -37,8 +37,12 @@ class ForutonaIcon {
   static const IconData image_add = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData tag = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData pencil = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData chat2 = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData x = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData location = IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData edit = IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData squareq = IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData support_1 = IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData youtube = IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData youtube_r_ = IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData share = IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);

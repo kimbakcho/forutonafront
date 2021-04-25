@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCase.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/Common/SearchHistory/Data/Repository/SearchHistoryRepositoryImpl.dart';
 import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHistoryRepository.dart';
 import 'package:forutonafront/Common/SearchHistory/Domain/UseCase/SearchHistoryUseCaseInputPort.dart';
@@ -30,7 +32,8 @@ class SearchHistoryView extends StatelessWidget {
           searchHistoryUseCaseInputPort: SearchHistoryUseCase(
               searchHistoryRepository: SearchHistoryRepositoryImpl(
                   sharedPreferencesAdapter: sl(),
-                  searchHistoryDataSourceKey: searchHistoryDataSourceKey))),
+                  searchHistoryDataSourceKey: searchHistoryDataSourceKey)),
+      signInUserInfoUseCaseInputPort: sl()),
       child: Consumer<SearchHistoryViewModel>(
         builder: (_, model, __) {
           return model.histories.length > 0
@@ -132,28 +135,42 @@ class SearchHistoryViewModel extends ChangeNotifier {
 
   final SearchHistoryViewController searchHistoryViewController;
 
+  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
+
   List<SearchHistoryDto> histories = [];
 
   SearchHistoryViewModel(
-      {this.searchHistoryUseCaseInputPort, this.searchHistoryViewController}) {
+      {this.searchHistoryUseCaseInputPort, this.searchHistoryViewController,this.signInUserInfoUseCaseInputPort}) {
     searchHistoryViewController.addressSearchHistoryViewModel = this;
     init();
   }
 
   Future<void> init() async {
-    histories = await searchHistoryUseCaseInputPort.findByAll();
+    String uid = "";
+    if(signInUserInfoUseCaseInputPort.isLogin){
+      uid = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    }
+    histories = await searchHistoryUseCaseInputPort.findByAll(uid);
     notifyListeners();
   }
 
   Future<void> addHistory(String search) async {
-    await searchHistoryUseCaseInputPort.save(search);
-    histories = await searchHistoryUseCaseInputPort.findByAll();
+    String uid = "";
+    if(signInUserInfoUseCaseInputPort.isLogin){
+      uid = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    }
+    await searchHistoryUseCaseInputPort.save(search,uid);
+    histories = await searchHistoryUseCaseInputPort.findByAll(uid);
     notifyListeners();
   }
 
   Future<void> removeHistory(String search) async {
-    await searchHistoryUseCaseInputPort.delete(search);
-    histories = await searchHistoryUseCaseInputPort.findByAll();
+    String uid = "";
+    if(signInUserInfoUseCaseInputPort.isLogin){
+      uid = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    }
+    await searchHistoryUseCaseInputPort.delete(search,uid);
+    histories = await searchHistoryUseCaseInputPort.findByAll(uid);
     notifyListeners();
   }
 }

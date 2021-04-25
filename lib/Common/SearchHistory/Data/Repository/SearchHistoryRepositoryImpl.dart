@@ -19,19 +19,19 @@ class SearchHistoryRepositoryImpl
       {@required this.sharedPreferencesAdapter,this.searchHistoryDataSourceKey});
 
   @override
-  Future<void> delete(String search) async {
-    var list = await this.findByAll();
+  Future<void> delete(String search,String uid) async {
+    var list = await this.findByAll(uid);
     list.removeWhere((element) => element.searchText == search);
     await this
         .sharedPreferencesAdapter
-        .setString(EnumToString.convertToString(searchHistoryDataSourceKey), json.encode(list));
+        .setString(EnumToString.convertToString(searchHistoryDataSourceKey)+uid, json.encode(list));
   }
 
   @override
-  Future<List<SearchHistory>> findByAll() async {
+  Future<List<SearchHistory>> findByAll(String uid) async {
     String value = await this
         .sharedPreferencesAdapter
-        .getString(EnumToString.convertToString(searchHistoryDataSourceKey));
+        .getString(EnumToString.convertToString(searchHistoryDataSourceKey)+uid);
     if (value == null) {
       return [];
     } else {
@@ -49,8 +49,8 @@ class SearchHistoryRepositoryImpl
   }
 
   @override
-  Future<SearchHistory> save(String search) async {
-    var list = await this.findByAll();
+  Future<SearchHistory> save(String search,String uid) async {
+    var list = await this.findByAll(uid);
     if (list.length == 0) {
       list = [];
     }
@@ -68,7 +68,7 @@ class SearchHistoryRepositoryImpl
 
     await this
         .sharedPreferencesAdapter
-        .setString(EnumToString.convertToString(searchHistoryDataSourceKey), json.encode(list));
+        .setString(EnumToString.convertToString(searchHistoryDataSourceKey)+uid, json.encode(list));
     return addressSearchHistory;
   }
 }

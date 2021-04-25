@@ -8,7 +8,7 @@ enum SearchHistoryDataSourceKey {
 }
 
 abstract class SearchHistoryRepository {
-  Future<SearchHistory> save(String search);
-  Future<void> delete(String search);
-  Future<List<SearchHistory>> findByAll();
+  Future<SearchHistory> save(String search,String uid);
+  Future<void> delete(String search,String uid);
+  Future<List<SearchHistory>> findByAll(String uid);
 }

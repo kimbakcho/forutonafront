@@ -50,7 +50,7 @@ class BasicReViewsContentBar extends StatelessWidget {
       this.showEditBtn,
       this.canSubReplyInsert,
       this.hasBoardLine,
-      this.hasBottomPadding})
+      this.hasBottomPadding,})
       : _fBallReplyResDto = fBallReplyResDto,
         _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
@@ -209,7 +209,7 @@ class BasicReViewsContentBar extends StatelessWidget {
                     border: Border(
                         bottom: BorderSide(
                             color:
-                                hasBoardLine ? Color(0xffF4F4F6) : Colors.white,
+                                hasBoardLine ? Color(0xfff5f5f5) : Colors.white,
                             width: hasBoardLine ? 1 : 0))),
               ),
             ),

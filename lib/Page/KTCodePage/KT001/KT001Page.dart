@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleProposalOnServiceSurvey/GoogleProposalOnServiceSurveyUseCase.dart';
 import 'package:forutonafront/Common/GoogleServey/UseCase/GoogleSurveyErrorReport/GoogleSurveyErrorReportUseCase.dart';
 import 'package:forutonafront/Common/KakaoTalkOpenTalk/UseCase/InquireAboutAnything/InquireAboutAnythingUseCase.dart';
+import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -31,33 +32,262 @@ class _KT001PageState extends State<KT001Page> {
               body: Container(
                 padding: MediaQuery.of(context).padding,
                 child: Column(children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: inquireAboutAnythingComponent(model),
-                  ),
-                  Divider(
-                    thickness: 2,
+                  Container(
+                    height: 26,
+                    width: MediaQuery.of(context).size.width,
                     color: Color(0xffE4E7E8),
+                    padding: EdgeInsets.only(left: 16),
+                    child: Text(
+                      '정식버전에서 채팅, 팔로우 기능의 소셜페이지로 변경됩니다.',
+                      style: GoogleFonts.notoSans(
+                        fontSize: 11,
+                        color: const Color(0xff5b5b5b),
+                        height: 1.45,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: googleErrorReportSurveyComponent(context,model),
+                  Container(
+                    height: 146,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              child: Icon(ForutonaIcon.support),
+                              margin: EdgeInsets.only(right: 6),
+                            ),
+                            Text(
+                              '고객센터',
+                              style: GoogleFonts.notoSans(
+                                fontSize: 14,
+                                color: const Color(0xff000000),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.left,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Expanded(
+                            child: Container(
+                              child: Text(
+                                '무엇이든지 물어보세요!',
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 12,
+                                  color: const Color(0xff000000),
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.33,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            )),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: FlatButton(
+                            onPressed: (){
+                              model.openKakaoOpenTalk("https://open.kakao.com/o/sZJ1uUwb");
+                            },
+                            child: Text(
+                              '문의하기',
+                              style: GoogleFonts.notoSans(
+                                fontSize: 13,
+                                color: const Color(0xff3a3e3f),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(20)),
+                                side: BorderSide(
+                                    color: Color(0xff3A3E3F), width: 1)),
+                          ),
+                        )
+                      ],
+                    ),
+                    margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffffffff),
+                      border: Border.all(
+                          width: 1.0, color: const Color(0xffe4e7e8)),
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0x14455b63),
+                          offset: Offset(0, 4),
+                          blurRadius: 16,
+                        ),
+                      ],
+                    ),
                   ),
-                  Divider(
-                    thickness: 2,
-                    color: Color(0xffE4E7E8),
+                  Container(
+                    height: 146,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              child: Icon(ForutonaIcon.squareq),
+                              margin: EdgeInsets.only(right: 6),
+                            ),
+                            Text(
+                              '서비스 개선',
+                              style: GoogleFonts.notoSans(
+                                fontSize: 14,
+                                color: const Color(0xff000000),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.left,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Expanded(
+                            child: Container(
+                              child: Text(
+                                '오류 또는 개선사항 환영합니다.',
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 12,
+                                  color: const Color(0xff000000),
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.33,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            )),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: FlatButton(
+                            onPressed: (){
+                              model.openKakaoOpenTalk("https://open.kakao.com/o/sUFJMxqb");
+                            },
+                            child: Text(
+                              '오류 접수',
+                              style: GoogleFonts.notoSans(
+                                fontSize: 13,
+                                color: const Color(0xff3a3e3f),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(20)),
+                                side: BorderSide(
+                                    color: Color(0xff3A3E3F), width: 1)),
+                          ),
+                        )
+                      ],
+                    ),
+                    margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffffffff),
+                      border: Border.all(
+                          width: 1.0, color: const Color(0xffe4e7e8)),
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0x14455b63),
+                          offset: Offset(0, 4),
+                          blurRadius: 16,
+                        ),
+                      ],
+                    ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: proposalOnServiceComponent(context,model),
+                  Container(
+                    height: 146,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              child: Icon(ForutonaIcon.edit),
+                              margin: EdgeInsets.only(right: 6),
+                            ),
+                            Text(
+                              '설문조사 참여',
+                              style: GoogleFonts.notoSans(
+                                fontSize: 14,
+                                color: const Color(0xff000000),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.left,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Expanded(
+                            child: Container(
+                              child: Text(
+                                '여러분의 의견을 들려주세요!',
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 12,
+                                  color: const Color(0xff000000),
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.33,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            )),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: FlatButton(
+                            onPressed: (){
+                              model.openGoogleSurvey("https://docs.google.com/forms/d/15a4_D4KaD7emtrBnKoVpZA-eZbczcl7B4qIUn_I7yzc/edit");
+                            },
+                            child: Text(
+                              '설문조사 참여',
+                              style: GoogleFonts.notoSans(
+                                fontSize: 13,
+                                color: const Color(0xff3a3e3f),
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(20)),
+                                side: BorderSide(
+                                    color: Color(0xff3A3E3F), width: 1)),
+                          ),
+                        )
+                      ],
+                    ),
+                    margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffffffff),
+                      border: Border.all(
+                          width: 1.0, color: const Color(0xffe4e7e8)),
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0x14455b63),
+                          offset: Offset(0, 4),
+                          blurRadius: 16,
+                        ),
+                      ],
+                    ),
                   )
                 ]),
-              )
-              );
+              ));
         }));
   }
 
-  Stack proposalOnServiceComponent(BuildContext context,KT001PageViewModel model) {
+  Stack proposalOnServiceComponent(
+      BuildContext context, KT001PageViewModel model) {
     return Stack(
       children: <Widget>[
         Positioned(
@@ -89,8 +319,7 @@ class _KT001PageState extends State<KT001Page> {
                   text: '좋은 제안을 주신 유저 분 중 추첨을 통해 ',
                 ),
                 TextSpan(
-                  text:
-                      "${model.proposalOnServiceMaxDraw}",
+                  text: "${model.proposalOnServiceMaxDraw}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -106,8 +335,7 @@ class _KT001PageState extends State<KT001Page> {
                   ),
                 ),
                 TextSpan(
-                  text: model
-                      .proposalOnServicePrize,
+                  text: model.proposalOnServicePrize,
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -117,8 +345,7 @@ class _KT001PageState extends State<KT001Page> {
                   text: '을 드릴 예정입니다.(당첨일 ',
                 ),
                 TextSpan(
-                  text:
-                      "${model.proposalOnServiceLotteryMonth}",
+                  text: "${model.proposalOnServiceLotteryMonth}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -128,8 +355,7 @@ class _KT001PageState extends State<KT001Page> {
                   text: '월 ',
                 ),
                 TextSpan(
-                  text:
-                      "${model.proposalOnServiceLotteryDay}",
+                  text: "${model.proposalOnServiceLotteryDay}",
                   style: GoogleFonts.notoSans(
                     color: const Color(0xff3497fd),
                     fontWeight: FontWeight.w700,
@@ -180,7 +406,8 @@ class _KT001PageState extends State<KT001Page> {
     );
   }
 
-  Stack googleErrorReportSurveyComponent(BuildContext context,KT001PageViewModel model) {
+  Stack googleErrorReportSurveyComponent(
+      BuildContext context, KT001PageViewModel model) {
     return Stack(
       children: <Widget>[
         Positioned(
@@ -211,8 +438,7 @@ class _KT001PageState extends State<KT001Page> {
                   ),
                 ),
                 TextSpan(
-                  text:
-                      "${model.errorReportMaxDraw}",
+                  text: "${model.errorReportMaxDraw}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -240,8 +466,7 @@ class _KT001PageState extends State<KT001Page> {
                   ),
                 ),
                 TextSpan(
-                  text:
-                      "${model.errorReportLotteryMonth}",
+                  text: "${model.errorReportLotteryMonth}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -255,8 +480,7 @@ class _KT001PageState extends State<KT001Page> {
                   ),
                 ),
                 TextSpan(
-                  text:
-                      "${model.errorReportLotteryDay}",
+                  text: "${model.errorReportLotteryDay}",
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3497fd),
@@ -337,8 +561,7 @@ class _KT001PageState extends State<KT001Page> {
               height: 36.0,
               child: FlatButton(
                   onPressed: () {
-                    model
-                        .inquireAboutAnythingClick();
+                    model.inquireAboutAnythingClick();
                   },
                   child: SizedBox(
                       width: 62.0,

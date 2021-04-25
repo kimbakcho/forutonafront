@@ -38,11 +38,6 @@ class ReplyEditActionBtn extends StatelessWidget {
             height: 50,
             child: Text(
               "수정 하기",
-              style: GoogleFonts.notoSans(
-                fontSize: 14,
-                color: const Color(0xff3a3e3f),
-                fontWeight: FontWeight.w700,
-              ),
             ),
             decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xffE4E7E8)))),
           )))

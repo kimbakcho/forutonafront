@@ -5,6 +5,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Domain/Repository/FUserReposit
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'SignInUserInfoUseCaseOutputPort.dart';
 
@@ -25,6 +26,8 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
     fUserInfoStream = _fUserInfoStreamController.stream;
   }
 
+
+
   @override
   FUserInfoResDto reqSignInUserInfoFromMemory(
       {SignInUserInfoUseCaseOutputPort outputPort}) {
@@ -41,6 +44,8 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   @override
   Future<FUserInfoResDto> saveSignInInfoInMemoryFromAPiServer(
       {SignInUserInfoUseCaseOutputPort outputPort}) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("isLogin", true);
     _fUserInfo = await _fUserRepository.findByMe();
     isLogin = true;
     _fUserInfoStreamController.add(_fUserInfo);
@@ -71,13 +76,25 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   }
 
   @override
-  void clearUserInfo() {
+  void clearUserInfo() async {
     _fUserInfo = null;
     isLogin = false;
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("isLogin", false);
     _fUserInfoStreamController.add(null);
   }
 
   void dispose() {
     _fUserInfoStreamController.close();
+  }
+
+  @override
+  Future<bool> isLoginFromPreference() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    if(!sharedPreferences.getKeys().contains("isLogin")){
+      return false;
+    }
+    bool result = sharedPreferences.getBool("isLogin");
+    return result;
   }
 }

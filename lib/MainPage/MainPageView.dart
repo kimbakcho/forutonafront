@@ -133,7 +133,7 @@ class MainPageViewModel extends ChangeNotifier
 
 
   checkPositionPermission() async {
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 500));
     var isCanUseGps =
         await _geoLocationUtilForeGroundUseCaseInputPort.useGpsReq();
     if (!isCanUseGps) {
@@ -249,11 +249,11 @@ class MainPageViewModelController {
     if (current == 0) {
       return BottomNavigationNavType.HOME;
     } else if (current == 1) {
-      return BottomNavigationNavType.SEARCH;
+      return  BottomNavigationNavType.SNS;
     } else if (current == 2) {
       return BottomNavigationNavType.MakeBall;
     } else if (current == 3) {
-      return BottomNavigationNavType.SNS;
+      return BottomNavigationNavType.SEARCH;
     } else if (current == 4) {
       return BottomNavigationNavType.Profile;
     } else {

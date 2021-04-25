@@ -68,14 +68,14 @@ class LoginSheet extends StatelessWidget {
                 SizedBox(
                   height: 12,
                 ),
-                LoginButton(
-                    snsSupportService: SnsSupportService.FaceBook,
-                    loginButtonOutputPort: model,
-                    label: "FaceBook ID로 진행",
-                    imagePath: "assets/LoginIcon/FacebookLogo.png"),
-                SizedBox(
-                  height: 12,
-                ),
+                // LoginButton(
+                //     snsSupportService: SnsSupportService.FaceBook,
+                //     loginButtonOutputPort: model,
+                //     label: "FaceBook ID로 진행",
+                //     imagePath: "assets/LoginIcon/FacebookLogo.png"),
+                // SizedBox(
+                //   height: 12,
+                // ),
                 LoginButton(
                     snsSupportService: SnsSupportService.Kakao,
                     loginButtonOutputPort: model,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/Notification/Domain/Channel/NotificationChannel.dart';
 import 'package:forutonafront/Common/FireBaseMessage/Adapter/FireBaseMessageAdapter.dart';
 import 'package:forutonafront/Common/FireBaseMessage/PlayloadDto/FCMFBallMakeDto.dart';
@@ -20,10 +21,13 @@ class NearBallCreateUseCase implements NotificationUseCaseInputPort{
 
   final FlutterLocalNotificationsPluginAdapter flutterLocalNotificationsPluginAdapter;
 
-  NearBallCreateUseCase(this.flutterLocalNotificationsPluginAdapter);
+  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
+
+  NearBallCreateUseCase(this.flutterLocalNotificationsPluginAdapter,this.signInUserInfoUseCaseInputPort);
 
   @override
   Future<void> resNotification(Map<String, dynamic> message) async {
+
     NotificationChannel notificationChannel = sl.get<NotificationChannel>(instanceName: "NotificationRadarChannel");
     NotificationDetails channel = notificationChannel.getChannel();
     var payload = json.encode(message['data']) ;

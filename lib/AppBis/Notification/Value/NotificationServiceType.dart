@@ -1,4 +1,4 @@
 
 enum NotificationServiceType {
-  NearBallCreate,FBallReply
+  NearBallCreate,FBallReply,FullTicketCharge
 }

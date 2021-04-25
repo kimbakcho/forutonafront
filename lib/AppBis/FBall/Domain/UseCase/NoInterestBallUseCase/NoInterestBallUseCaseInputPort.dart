@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Repository/NoInterestBallRepository.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class NoInterestBallUseCaseInputPort {
@@ -12,27 +13,44 @@ abstract class NoInterestBallUseCaseInputPort {
 @LazySingleton(as: NoInterestBallUseCaseInputPort)
 class NoInterestBallUseCase extends NoInterestBallUseCaseInputPort {
   final NoInterestBallRepository noInterestBallRepository;
+  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
 
-  NoInterestBallUseCase({@required this.noInterestBallRepository});
+  NoInterestBallUseCase({@required this.noInterestBallRepository,@required this.signInUserInfoUseCaseInputPort});
 
   @override
   deleteByBallUuid(String s) async {
-    return await noInterestBallRepository.deleteByBallUuid(s);
+    String uid = "";
+    if(signInUserInfoUseCaseInputPort.isLogin){
+      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    }
+    return await noInterestBallRepository.deleteByBallUuid(s,uid);
   }
 
   @override
   Future<bool> existsByBallUuid(String ballUuid) async {
-    return await noInterestBallRepository.existsByBallUuid(ballUuid);
+    String uid = "";
+    if(signInUserInfoUseCaseInputPort.isLogin){
+      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    }
+    return await noInterestBallRepository.existsByBallUuid(ballUuid,uid);
   }
 
   @override
   Future<List<String>> findByAll() async {
-    return await noInterestBallRepository.findByAll();
+    String uid = "";
+    if(signInUserInfoUseCaseInputPort.isLogin){
+      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    }
+    return await noInterestBallRepository.findByAll(uid);
   }
 
   @override
   save(String ballUuid) async {
-    return await noInterestBallRepository.save(ballUuid);
+    String uid = "";
+    if(signInUserInfoUseCaseInputPort.isLogin){
+      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    }
+    return await noInterestBallRepository.save(ballUuid,uid);
   }
 
 }

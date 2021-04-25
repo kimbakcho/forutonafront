@@ -105,10 +105,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(ForutonaIcon.chat,size: 22),
+                                  model.getMainCurrentPage() == BottomNavigationNavType.SNS ?
+                                  Container(
+                                    height: 22,
+                                      child:Icon(ForutonaIcon.chat2,size: 19)
+                                  )  :
+                                  Container(
+                                      height: 22,
+                                      child:Icon(ForutonaIcon.chat,size: 22)
+                                  )  ,
                                   SizedBox(height: 6,),
                                   Text(
-                                    '소셜',
+                                    '피드백',
                                     style: GoogleFonts.notoSans(
                                       fontSize: 9,
                                       color: const Color(0xff000000),

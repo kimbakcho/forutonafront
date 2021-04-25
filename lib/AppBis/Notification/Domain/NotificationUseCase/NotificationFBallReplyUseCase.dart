@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/Common/FireBaseMessage/PlayloadDto/FCMReplyDto.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
@@ -17,10 +18,17 @@ class NotificationFBallReplyUseCase implements NotificationUseCaseInputPort {
   final FlutterLocalNotificationsPluginAdapter
       flutterLocalNotificationsPluginAdapter;
 
-  NotificationFBallReplyUseCase(this.flutterLocalNotificationsPluginAdapter);
+  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
+
+  NotificationFBallReplyUseCase(this.flutterLocalNotificationsPluginAdapter,this.signInUserInfoUseCaseInputPort);
 
   @override
   Future<void> resNotification(Map<String, dynamic> message) async {
+    bool isLogin = await signInUserInfoUseCaseInputPort.isLoginFromPreference();
+    if(!isLogin){
+      return ;
+    }
+
     String payload = message['data']['payload'];
 
     var convert = json.decoder.convert(payload);

@@ -65,14 +65,14 @@ class SignSheet extends StatelessWidget {
                 SizedBox(
                   height: 12,
                 ),
-                SignButton(
-                    snsSupportService: SnsSupportService.FaceBook,
-                    signButtonOutputPort: model,
-                    label: "FaceBook ID로 진행",
-                    imagePath: "assets/LoginIcon/FacebookLogo.png"),
-                SizedBox(
-                  height: 12,
-                ),
+                // SignButton(
+                //     snsSupportService: SnsSupportService.FaceBook,
+                //     signButtonOutputPort: model,
+                //     label: "FaceBook ID로 진행",
+                //     imagePath: "assets/LoginIcon/FacebookLogo.png"),
+                // SizedBox(
+                //   height: 12,
+                // ),
                 SignButton(
                     snsSupportService: SnsSupportService.Kakao,
                     signButtonOutputPort: model,
@@ -147,6 +147,7 @@ class SignSheetViewModel extends ChangeNotifier
   trySign(SnsSupportService snsSupportService) async {
     fUserInfoJoinReqDto.snsSupportService = snsSupportService;
     if (snsSupportService == SnsSupportService.Forutona) {
+      fUserInfoJoinReqDto.nickName = "";
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) {
             return L002MainPage();

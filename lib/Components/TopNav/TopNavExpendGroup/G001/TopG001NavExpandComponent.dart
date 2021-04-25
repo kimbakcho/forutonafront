@@ -73,7 +73,7 @@ class _TopG001NavExpandComponentState extends State<TopG001NavExpandComponent>
 
   @override
   getAnimation(BuildContext context) {
-    return Tween<double>(begin: 0, end: 52).animate(_controller);
+    return Tween<double>(begin: 0, end: 30).animate(_controller);
   }
 
   @override
@@ -105,17 +105,22 @@ class TopG001NavExpendContent extends StatelessWidget {
         shape: CircleBorder(),
         color: Color(0xffF6F6F6),
         child: InkWell(
+          
           customBorder: CircleBorder(),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (_){
               return G009MainPage();
             }));
           },
-            child: Icon(
-            ForutonaIcon.cog_g001_1,
-            size: 25,
-              color: Color(0xffB1B1B1),
-            ),
+            child: Container(
+              child: Icon(
+                ForutonaIcon.cog_g001_1,
+                size: 25,
+                color: Color(0xffB1B1B1),
+              ),
+            )
+
+            ,
         ),
       ),
     );

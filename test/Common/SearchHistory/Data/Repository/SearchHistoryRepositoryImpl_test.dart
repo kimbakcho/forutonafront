@@ -20,14 +20,14 @@ void main() {
     //given
 
     //when
-    await addressSearchHistoryRepository.save("1");
-    await addressSearchHistoryRepository.save("2");
-    await addressSearchHistoryRepository.save("3");
-    await addressSearchHistoryRepository.save("4");
-    await addressSearchHistoryRepository.save("5");
-    await addressSearchHistoryRepository.save("6");
+    await addressSearchHistoryRepository.save("1","");
+    await addressSearchHistoryRepository.save("2","");
+    await addressSearchHistoryRepository.save("3","");
+    await addressSearchHistoryRepository.save("4","");
+    await addressSearchHistoryRepository.save("5","");
+    await addressSearchHistoryRepository.save("6","");
     //then
-    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll();
+    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll("");
 
     expect(histories[0].searchText, "6");
     expect(histories[1].searchText, "5");
@@ -42,13 +42,13 @@ void main() {
     //given
 
     //when
-    await addressSearchHistoryRepository.save("1");
-    await addressSearchHistoryRepository.save("2");
-    await addressSearchHistoryRepository.save("3");
+    await addressSearchHistoryRepository.save("1","");
+    await addressSearchHistoryRepository.save("2","");
+    await addressSearchHistoryRepository.save("3","");
 
 
     //then
-    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll();
+    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll("");
 
     expect(histories[0].searchText, "3");
     expect(histories[1].searchText, "2");
@@ -60,16 +60,16 @@ void main() {
 
   test('should 같은 이름 저장 ', () async {
     //given
-    await addressSearchHistoryRepository.save("1");
-    await addressSearchHistoryRepository.save("2");
-    await addressSearchHistoryRepository.save("3");
+    await addressSearchHistoryRepository.save("1","");
+    await addressSearchHistoryRepository.save("2","");
+    await addressSearchHistoryRepository.save("3","");
 
     //when
-    await addressSearchHistoryRepository.save("1");
+    await addressSearchHistoryRepository.save("1","");
 
 
     //then
-    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll();
+    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll("");
 
     expect(histories[0].searchText, "1");
     expect(histories[1].searchText, "3");
@@ -80,13 +80,13 @@ void main() {
 
   test('delete test ', () async {
     //given
-    await addressSearchHistoryRepository.save("1");
-    await addressSearchHistoryRepository.save("2");
-    await addressSearchHistoryRepository.save("3");
+    await addressSearchHistoryRepository.save("1","");
+    await addressSearchHistoryRepository.save("2","");
+    await addressSearchHistoryRepository.save("3","");
     //when
-    await addressSearchHistoryRepository.delete("3");
+    await addressSearchHistoryRepository.delete("3","");
     //then
-    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll();
+    List<SearchHistory> histories = await addressSearchHistoryRepository.findByAll("");
     expect(histories[0].searchText, "2");
     expect(histories[1].searchText, "1");
 

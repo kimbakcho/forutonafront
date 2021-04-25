@@ -54,6 +54,7 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(
               borderRadius: boxDecoration.borderRadius,
+              border: boxDecoration.border,
               boxShadow: [
                 BoxShadow(
                     color: Colors.black.withOpacity(0.16),
@@ -74,7 +75,7 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
                     child: Stack(
                       children: [
                         Container(
-                            padding: EdgeInsets.fromLTRB(14, 16, 14, 16),
+                            padding: EdgeInsets.fromLTRB(14, 16, 14, 15),
                             child: Column(children: [
                               ReduceSizeTopBar(
                                   issueBallDisPlayUseCase:

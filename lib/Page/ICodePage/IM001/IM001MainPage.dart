@@ -309,6 +309,7 @@ class IM001MainPageViewModel extends ChangeNotifier
           zoom: 14.56,
           target:
               LatLng(preSetBallResDto.latitude, preSetBallResDto.longitude));
+      currentPosition = initCameraPosition;
     }
 
     _solidController = SolidController();
@@ -541,6 +542,7 @@ class IM001MainPageViewModel extends ChangeNotifier
         _im001bottomSheetBodyController.getYoutubeId();
 
     fBallUpdateReqDto.ballName = _im001bottomSheetBodyController.getBallName();
+    print(fBallUpdateReqDto.ballName);
     fBallUpdateReqDto.description = json.encode(issueBallDescription);
     fBallUpdateReqDto.ballType = FBallType.IssueBall;
     fBallUpdateReqDto.placeAddress =

@@ -58,7 +58,12 @@ class GeoLocationUtilBasicUseCase
       print(Ex);
       resultPosition = await getLastKnowPonePosition();
     }
-    await _saveUserPositionClient(resultPosition);
+    try{
+      await _saveUserPositionClient(resultPosition);
+    }catch (Ex){
+      print(Ex);
+    }
+
 
     return resultPosition;
   }

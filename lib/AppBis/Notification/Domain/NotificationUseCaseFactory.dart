@@ -15,7 +15,9 @@ class NotificationUseCaseFactory {
       return sl.get<NotificationUseCaseInputPort>(instanceName: "NearBallCreateUseCase");
     } else if(notificationServiceType == NotificationServiceType.FBallReply){
       return sl.get<NotificationUseCaseInputPort>(instanceName: "NotificationFBallReplyUseCase");
-    } else {
+    } else if(notificationServiceType == NotificationServiceType.FullTicketCharge){
+      return sl.get<NotificationUseCaseInputPort>(instanceName: "FullTicketChargeUseCase");
+    }else  {
       throw FlutterError("Not support NotificationServiceType");
     }
 

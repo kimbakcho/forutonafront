@@ -10,8 +10,8 @@ class NoInterestBallRepositoryImpl implements NoInterestBallRepository {
 
   String _noInterestBallKey = "NoInterestBall";
   @override
-  Future<bool> existsByBallUuid(String ballUuid) async {
-    var stringList = await sharedPreferencesAdapter.getStringList(_noInterestBallKey);
+  Future<bool> existsByBallUuid(String ballUuid,String uid) async {
+    var stringList = await sharedPreferencesAdapter.getStringList(_noInterestBallKey+"_"+uid);
     if(stringList != null && stringList.contains(ballUuid)){
       return true;
     }else {
@@ -20,8 +20,8 @@ class NoInterestBallRepositoryImpl implements NoInterestBallRepository {
   }
 
   @override
-  Future<List<String>> findByAll() async {
-    var list = await sharedPreferencesAdapter.getStringList(_noInterestBallKey);
+  Future<List<String>> findByAll(String uid) async {
+    var list = await sharedPreferencesAdapter.getStringList(_noInterestBallKey+"_"+uid);
     if(list == null ){
       return [];
     }else {
@@ -31,8 +31,8 @@ class NoInterestBallRepositoryImpl implements NoInterestBallRepository {
   }
 
   @override
-  save(String ballUuid) async {
-    var stringList = await sharedPreferencesAdapter.getStringList(_noInterestBallKey);
+  save(String ballUuid,uid) async {
+    var stringList = await sharedPreferencesAdapter.getStringList(_noInterestBallKey+"_"+uid);
     if(stringList == null){
       stringList = [];
     }
@@ -43,8 +43,8 @@ class NoInterestBallRepositoryImpl implements NoInterestBallRepository {
   }
 
   @override
-  deleteByBallUuid(String ballUuid) async {
-    var stringList = await sharedPreferencesAdapter.getStringList(_noInterestBallKey);
+  deleteByBallUuid(String ballUuid,uid) async {
+    var stringList = await sharedPreferencesAdapter.getStringList(_noInterestBallKey+"_"+uid);
     if(stringList != null){
       stringList.remove(ballUuid);
     }

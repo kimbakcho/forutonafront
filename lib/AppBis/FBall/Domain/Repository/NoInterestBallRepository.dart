@@ -1,7 +1,7 @@
 
 abstract class NoInterestBallRepository {
-  save(String ballUuid);
-  Future<List<String>> findByAll();
-  Future<bool>  existsByBallUuid(String ballUuid);
-  deleteByBallUuid(String s);
+  save(String ballUuid,String uid);
+  Future<List<String>> findByAll(String uid);
+  Future<bool>  existsByBallUuid(String ballUuid,String uid);
+  deleteByBallUuid(String s,String uid);
 }
