@@ -13,6 +13,7 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/InsertBall/InsertBallU
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/Common/YoutubeParser/youtubeParser.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001MainPage2.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPageEnterMode.dart';
 import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromBallUuidUseCaseOutputPort.dart';
@@ -22,7 +23,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:uuid/uuid.dart';
-import 'package:youtube_parser/youtube_parser.dart';
 
 import 'Component/BallImageEdit/BallImageItem.dart';
 
@@ -33,30 +33,30 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
         InsertBallUseCaseOutputPort,
         SelectBallUseCaseOutputPort,
         TagFromBallUuidUseCaseOutputPort {
-  final BuildContext context;
-  final LatLng setUpPosition;
+  final BuildContext? context;
+  final LatLng? setUpPosition;
 
-  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
+  final SelectBallUseCaseInputPort? _selectBallUseCaseInputPort;
 
-  final BallImageListUpLoadUseCaseInputPort
+  final BallImageListUpLoadUseCaseInputPort?
       _ballImageListUpLoadUseCaseInputPort;
 
-  String ballUuid;
+  String? ballUuid;
 
-  final String address;
+  final String? address;
 
   bool _isDispose = false;
 
-  String currentClipBoardData;
-  String validYoutubeLink;
+  String? currentClipBoardData;
+  String? validYoutubeLink;
   GlobalKey makerAnimationKey = new GlobalKey();
 
   String topNameTitle = "이슈볼 만들기";
 
-  FBallResDto _issueBall;
+  FBallResDto? _issueBall;
 
   //googleMap
-  CameraPosition initCameraPosition;
+  CameraPosition? initCameraPosition;
   Completer<GoogleMapController> _googleMapController = Completer();
 
   //Focus
@@ -73,7 +73,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
   //WidgetList
   List<BallImageItem> ballImageList = [];
   List<Chip> tagChips = [];
-  List<FBallResForMarkerStyle2Dto> ballList;
+  List<FBallResForMarkerStyle2Dto>? ballList;
 
   //Flag
   bool keyboardVisibility = false;
@@ -83,7 +83,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
   //Loading
   bool _isLoading = false;
 
-  get isLoading {
+  bool get isLoading {
     return _isLoading;
   }
 
@@ -92,7 +92,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
     notifyListeners();
   }
 
-  IM001MainPageEnterMode mode;
+  IM001MainPageEnterMode? mode;
 
   IM001MainPageViewModelTemp(
       {this.context,
@@ -100,9 +100,9 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
       this.address,
       this.ballUuid,
       this.mode,
-      @required
+      required
           SelectBallUseCaseInputPort selectBallUseCaseInputPort,
-      @required
+      required
           BallImageListUpLoadUseCaseInputPort
               ballImageListUpLoadUseCaseInputPort})
       : _selectBallUseCaseInputPort = selectBallUseCaseInputPort,
@@ -117,11 +117,12 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
     tagEditFocusNode.addListener(onTagEditFocusNode);
     textContentEditController.addListener(onTextContentEditController);
     titleEditController.addListener(onTitleEditController);
-    KeyboardVisibility.onChange.listen((bool visible) {
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardVisibilityController.onChange.listen((bool visible) {
       keyboardVisibility = visible;
     });
     initCameraPosition =
-        new CameraPosition(target: setUpPosition, zoom: 14.4746);
+        new CameraPosition(target: setUpPosition!, zoom: 14.4746);
     if (mode == IM001MainPageEnterMode.Insert) {
       insertInit();
     } else if (mode == IM001MainPageEnterMode.Update) {
@@ -135,21 +136,21 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
   void insertInit() {
 //    _issueBall = IssueBall();
 
-    _issueBall.longitude = setUpPosition.longitude;
-    _issueBall.latitude = setUpPosition.latitude;
-    _issueBall.placeAddress = address;
-    _issueBall.ballDeleteFlag = false;
+    _issueBall!.longitude = setUpPosition!.longitude;
+    _issueBall!.latitude = setUpPosition!.latitude;
+    _issueBall!.placeAddress = address;
+    _issueBall!.ballDeleteFlag = false;
     this.topNameTitle = "이슈볼 만들기";
     notifyListeners();
-    _issueBall.ballUuid = Uuid().v4();
-    ballUuid = _issueBall.ballUuid;
+    _issueBall!.ballUuid = Uuid().v4();
+    ballUuid = _issueBall!.ballUuid;
   }
 
   Future updateActionInit() async {
     this.topNameTitle = "이슈볼 수정하기";
     notifyListeners();
     isLoading = true;
-    await _selectBallUseCaseInputPort.selectBall(ballUuid, outputPort: this);
+    await _selectBallUseCaseInputPort!.selectBall(ballUuid!, outputPort: this);
 
     isLoading = false;
   }
@@ -175,7 +176,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
 //    _issueBall.tags.forEach((element) {
 //      addTagChips(element.tagItem);
 //    });
-    titleEditController.text = _issueBall.ballName;
+    titleEditController.text = _issueBall!.ballName!;
 //    textContentEditController.text = _issueBall.getDisplayDescriptionText();
 //    ballImageList = _issueBall
 //        .getDesImages()
@@ -193,7 +194,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
   }
 
   void onTitleEditController() {
-    _issueBall.ballName = titleEditController.text;
+    _issueBall!.ballName = titleEditController.text;
     notifyListeners();
   }
 
@@ -208,7 +209,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
   }
 
   void onBackBtnTap() {
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
   }
 
   isValidComplete() {
@@ -246,9 +247,9 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
 
   @override
   void onInsertBall(FBallResDto resDto) {
-    Navigator.of(context).pushAndRemoveUntil(
+    Navigator.of(context!).pushAndRemoveUntil(
         MaterialPageRoute(
-            builder: (_) => ID001MainPage2(ballUuid: _issueBall.ballUuid)),
+            builder: (_) => ID001MainPage2(ballUuid: _issueBall!.ballUuid)),
         ModalRoute.withName('/'));
   }
 
@@ -261,11 +262,11 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
           msg: "이미지 20장을 모두 첨부하였습니다.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
-      Navigator.of(context).pop();
+      Navigator.of(context!).pop();
       notifyListeners();
       return;
     }
@@ -287,31 +288,31 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
         // ballImageList.add(itemDto);
       }
     }
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
     moveToBottomScroller();
     notifyListeners();
   }
 
   onCameraPick() async {
-    File image = await ImagePicker.pickImage(source: ImageSource.camera);
-    Uint8List imageData = await image.readAsBytes();
+    PickedFile? image = await ImagePicker.platform.pickImage(source: ImageSource.camera);
+    Uint8List imageData = await image!.readAsBytes();
     // BallImageItem itemDto = new BallImageItem();
     // itemDto.imageByte = imageData.buffer.asUint8List();
     // ballImageList.add(itemDto);
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
     moveToBottomScroller();
     notifyListeners();
   }
 
   void onShowSelectPictureDialog() async {
     var result = await showGeneralDialog(
-        context: context,
+        context: context!,
         barrierDismissible: true,
         transitionDuration: Duration(milliseconds: 300),
         //This is time
         barrierColor: Colors.black.withOpacity(0.3),
         barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            MaterialLocalizations.of(context!).modalBarrierDismissLabel,
         pageBuilder:
             (_context, Animation animation, Animation secondaryAnimation) {
           return Stack(children: <Widget>[
@@ -367,9 +368,9 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
     notifyListeners();
   }
 
-  Future<String> copyClipBoard() async {
-    ClipboardData clipBoardData = await Clipboard.getData("text/plain");
-    currentClipBoardData = clipBoardData.text.trim();
+  Future<String?> copyClipBoard() async {
+    ClipboardData? clipBoardData = await Clipboard.getData("text/plain");
+    currentClipBoardData = clipBoardData!.text!.trim();
     return currentClipBoardData;
   }
 
@@ -390,13 +391,13 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
 
   validYoutubeLinkCheck() async {
     await copyClipBoard();
-    String idFromUrl = getIdFromUrl(currentClipBoardData);
+    String? idFromUrl = getIdFromUrl(currentClipBoardData!);
     if (idFromUrl == null) {
       Fluttertoast.showToast(
           msg: "유효한 유튜브 링크가 아닙니다.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
@@ -452,7 +453,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
           msg: "태그에 특수문자는 사용할 수 없습니다",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
@@ -468,7 +469,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
           msg: "태그에 띄어쓰기는 사용할 수 없습니다",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
@@ -484,7 +485,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
           msg: "태그는 최대 10글자만 입력가능합니다",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
@@ -498,7 +499,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
           msg: "태그 내용을 입력해주세요.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
@@ -520,7 +521,7 @@ class IM001MainPageViewModelTemp extends ChangeNotifier
           msg: "태그는 최대 10개까지 입력가능합니다",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);

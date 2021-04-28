@@ -8,73 +8,74 @@ part of 'FUserInfoResDto.dart';
 
 FUserInfoResDto _$FUserInfoResDtoFromJson(Map<String, dynamic> json) {
   return FUserInfoResDto()
-    ..uid = json['uid'] as String
-    ..nickName = json['nickName'] as String
-    ..profilePictureUrl = json['profilePictureUrl'] as String
-    ..backGroundImageUrl = json['backGroundImageUrl'] as String
+    ..uid = json['uid'] as String?
+    ..nickName = json['nickName'] as String?
+    ..profilePictureUrl = json['profilePictureUrl'] as String?
+    ..backGroundImageUrl = json['backGroundImageUrl'] as String?
     ..gender = _$enumDecodeNullable(_$GenderTypeEnumMap, json['gender'])
     ..ageDate = json['ageDate'] == null
         ? null
         : DateTime.parse(json['ageDate'] as String)
-    ..email = json['email'] as String
-    ..forutonaAgree = json['forutonaAgree'] as bool
-    ..privateAgree = json['privateAgree'] as bool
-    ..positionAgree = json['positionAgree'] as bool
-    ..martketingAgree = json['martketingAgree'] as bool
-    ..ageLimitAgree = json['ageLimitAgree'] as bool
+    ..email = json['email'] as String?
+    ..forutonaAgree = json['forutonaAgree'] as bool?
+    ..privateAgree = json['privateAgree'] as bool?
+    ..positionAgree = json['positionAgree'] as bool?
+    ..martketingAgree = json['martketingAgree'] as bool?
+    ..ageLimitAgree = json['ageLimitAgree'] as bool?
     ..snsService =
         _$enumDecodeNullable(_$SnsSupportServiceEnumMap, json['snsService'])
-    ..phoneNumber = json['phoneNumber'] as String
-    ..isoCode = json['isoCode'] as String
-    ..latitude = (json['latitude'] as num)?.toDouble()
-    ..longitude = (json['longitude'] as num)?.toDouble()
+    ..phoneNumber = json['phoneNumber'] as String?
+    ..isoCode = json['isoCode'] as String?
+    ..latitude = (json['latitude'] as num?)?.toDouble()
+    ..longitude = (json['longitude'] as num?)?.toDouble()
     ..positionUpdateTime = json['positionUpdateTime'] == null
         ? null
         : DateTime.parse(json['positionUpdateTime'] as String)
-    ..userLevel = (json['userLevel'] as num)?.toDouble()
-    ..expPoint = (json['expPoint'] as num)?.toDouble()
-    ..fCMtoken = json['fCMtoken'] as String
+    ..userLevel = (json['userLevel'] as num?)?.toDouble()
+    ..expPoint = (json['expPoint'] as num?)?.toDouble()
+    ..fCMtoken = json['fCMtoken'] as String?
     ..joinTime = json['joinTime'] == null
         ? null
         : DateTime.parse(json['joinTime'] as String)
-    ..followerCount = json['followerCount'] as int
-    ..followingCount = json['followingCount'] as int
-    ..backOut = json['backOut'] as int
+    ..followerCount = json['followerCount'] as int?
+    ..followingCount = json['followingCount'] as int?
+    ..backOut = json['backOut'] as int?
     ..lastBackOutTime = json['lastBackOutTime'] == null
         ? null
         : DateTime.parse(json['lastBackOutTime'] as String)
-    ..selfIntroduction = json['selfIntroduction'] as String
-    ..cumulativeInfluence = (json['cumulativeInfluence'] as num)?.toDouble()
-    ..uPoint = (json['uPoint'] as num)?.toDouble()
-    ..naPoint = (json['naPoint'] as num)?.toDouble()
-    ..historyOpenAll = json['historyOpenAll'] as int
-    ..historyOpenFollowSponsor = json['historyOpenFollowSponsor'] as int
-    ..historyOpenNoOpen = json['historyOpenNoOpen'] as int
-    ..sponsorHistoryOpenAll = json['sponsorHistoryOpenAll'] as int
+    ..selfIntroduction = json['selfIntroduction'] as String?
+    ..cumulativeInfluence = (json['cumulativeInfluence'] as num?)?.toDouble()
+    ..uPoint = (json['uPoint'] as num?)?.toDouble()
+    ..naPoint = (json['naPoint'] as num?)?.toDouble()
+    ..historyOpenAll = json['historyOpenAll'] as int?
+    ..historyOpenFollowSponsor = json['historyOpenFollowSponsor'] as int?
+    ..historyOpenNoOpen = json['historyOpenNoOpen'] as int?
+    ..sponsorHistoryOpenAll = json['sponsorHistoryOpenAll'] as int?
     ..sponsorHistoryOpenSponAndFollowFromMe =
-        json['sponsorHistoryOpenSponAndFollowFromMe'] as int
-    ..sponsorHistoryOpenSponNoOpen = json['sponsorHistoryOpenSponNoOpen'] as int
-    ..alarmChatMessage = json['alarmChatMessage'] as bool
-    ..alarmContentReply = json['alarmContentReply'] as bool
-    ..alarmReplyAndReply = json['alarmReplyAndReply'] as bool
-    ..alarmFollowNewContent = json['alarmFollowNewContent'] as bool
-    ..alarmSponNewContent = json['alarmSponNewContent'] as bool
-    ..deactivation = json['deactivation'] as int
+        json['sponsorHistoryOpenSponAndFollowFromMe'] as int?
+    ..sponsorHistoryOpenSponNoOpen =
+        json['sponsorHistoryOpenSponNoOpen'] as int?
+    ..alarmChatMessage = json['alarmChatMessage'] as bool?
+    ..alarmContentReply = json['alarmContentReply'] as bool?
+    ..alarmReplyAndReply = json['alarmReplyAndReply'] as bool?
+    ..alarmFollowNewContent = json['alarmFollowNewContent'] as bool?
+    ..alarmSponNewContent = json['alarmSponNewContent'] as bool?
+    ..deactivation = json['deactivation'] as int?
     ..maliciousCount = json['maliciousCount'] as int
     ..stopPeriod = json['stopPeriod'] == null
         ? null
         : DateTime.parse(json['stopPeriod'] as String)
-    ..maliciousMessageCheck = json['maliciousMessageCheck'] as bool
-    ..maliciousCause = json['maliciousCause'] as String
-    ..influenceTicket = json['influenceTicket'] as int
-    ..maxInfluenceTicket = json['maxInfluenceTicket'] as int
+    ..maliciousMessageCheck = json['maliciousMessageCheck'] as bool?
+    ..maliciousCause = json['maliciousCause'] as String?
+    ..influenceTicket = json['influenceTicket'] as int?
+    ..maxInfluenceTicket = json['maxInfluenceTicket'] as int?
     ..influenceTicketReceiveTime = json['influenceTicketReceiveTime'] == null
         ? null
         : DateTime.parse(json['influenceTicketReceiveTime'] as String)
     ..nextGiveInfluenceTicketTime = json['nextGiveInfluenceTicketTime'] == null
         ? null
         : DateTime.parse(json['nextGiveInfluenceTicketTime'] as String)
-    ..playerPower = (json['playerPower'] as num)?.toDouble();
+    ..playerPower = (json['playerPower'] as num?)?.toDouble();
 }
 
 Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
@@ -135,36 +136,41 @@ Map<String, dynamic> _$FUserInfoResDtoToJson(FUserInfoResDto instance) =>
       'playerPower': instance.playerPower,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$GenderTypeEnumMap = {

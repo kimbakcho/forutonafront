@@ -16,7 +16,7 @@ abstract class GeoViewSearchManagerInputPort {
 
   search(Position loadPosition,double zoomLevel);
 
-  Position currentSearchPosition;
+  Position? currentSearchPosition;
 }
 
 class GeoViewSearchManager implements GeoViewSearchManagerInputPort {
@@ -42,5 +42,5 @@ class GeoViewSearchManager implements GeoViewSearchManagerInputPort {
     });
   }
 
-  Position currentSearchPosition;
+  Position? currentSearchPosition;
 }

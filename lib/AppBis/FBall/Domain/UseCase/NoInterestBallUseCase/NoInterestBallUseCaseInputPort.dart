@@ -15,13 +15,13 @@ class NoInterestBallUseCase extends NoInterestBallUseCaseInputPort {
   final NoInterestBallRepository noInterestBallRepository;
   final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
 
-  NoInterestBallUseCase({@required this.noInterestBallRepository,@required this.signInUserInfoUseCaseInputPort});
+  NoInterestBallUseCase({required this.noInterestBallRepository,required this.signInUserInfoUseCaseInputPort});
 
   @override
   deleteByBallUuid(String s) async {
     String uid = "";
-    if(signInUserInfoUseCaseInputPort.isLogin){
-      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    if(signInUserInfoUseCaseInputPort.isLogin!){
+      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory()!.uid!;
     }
     return await noInterestBallRepository.deleteByBallUuid(s,uid);
   }
@@ -29,8 +29,8 @@ class NoInterestBallUseCase extends NoInterestBallUseCaseInputPort {
   @override
   Future<bool> existsByBallUuid(String ballUuid) async {
     String uid = "";
-    if(signInUserInfoUseCaseInputPort.isLogin){
-      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    if(signInUserInfoUseCaseInputPort.isLogin!){
+      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory()!.uid!;
     }
     return await noInterestBallRepository.existsByBallUuid(ballUuid,uid);
   }
@@ -38,8 +38,8 @@ class NoInterestBallUseCase extends NoInterestBallUseCaseInputPort {
   @override
   Future<List<String>> findByAll() async {
     String uid = "";
-    if(signInUserInfoUseCaseInputPort.isLogin){
-      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    if(signInUserInfoUseCaseInputPort.isLogin!){
+      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory()!.uid!;
     }
     return await noInterestBallRepository.findByAll(uid);
   }
@@ -47,8 +47,8 @@ class NoInterestBallUseCase extends NoInterestBallUseCaseInputPort {
   @override
   save(String ballUuid) async {
     String uid = "";
-    if(signInUserInfoUseCaseInputPort.isLogin){
-      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    if(signInUserInfoUseCaseInputPort.isLogin!){
+      uid=signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory()!.uid!;
     }
     return await noInterestBallRepository.save(ballUuid,uid);
   }

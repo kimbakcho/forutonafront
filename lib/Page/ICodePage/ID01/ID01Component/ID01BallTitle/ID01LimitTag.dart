@@ -12,14 +12,14 @@ import '../../ID01Mode.dart';
 class ID01LimitTag extends StatelessWidget {
   final int limitCount;
 
-  final String ballUuid;
+  final String? ballUuid;
 
-  final ID01Mode id01Mode;
+  final ID01Mode? id01Mode;
 
-  final List<FBallTagResDto> preViewfBallTagResDtos;
+  final List<FBallTagResDto>? preViewfBallTagResDtos;
 
   const ID01LimitTag(
-      {Key key, this.limitCount = 3, this.ballUuid, this.id01Mode, this.preViewfBallTagResDtos})
+      {Key? key, this.limitCount = 3, this.ballUuid, this.id01Mode, this.preViewfBallTagResDtos})
       : super(key: key);
 
   @override
@@ -55,17 +55,17 @@ class ID01LimitTag extends StatelessWidget {
 class ID01LimitTagViewModel extends ChangeNotifier {
   bool isLoaded = false;
 
-  final int limitCount;
+  final int? limitCount;
 
-  final String ballUuid;
+  final String? ballUuid;
 
-  final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
+  final TagFromBallUuidUseCaseInputPort? _tagFromBallUuidUseCaseInputPort;
 
-  final ID01Mode id01Mode;
+  final ID01Mode? id01Mode;
 
-  final List<FBallTagResDto> preViewfBallTagResDtos;
+  final List<FBallTagResDto>? preViewfBallTagResDtos;
 
-  List<FBallTagResDto> tags;
+  List<FBallTagResDto>? tags;
 
   ID01LimitTagViewModel(this.ballUuid,
       this.limitCount,
@@ -78,8 +78,8 @@ class ID01LimitTagViewModel extends ChangeNotifier {
     if (id01Mode == ID01Mode.preview){
       this.tags = preViewfBallTagResDtos;
     }else {
-      this.tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-          ballUuid: ballUuid);
+      this.tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
+          ballUuid: ballUuid!);
     }
 
     isLoaded = true;
@@ -88,12 +88,12 @@ class ID01LimitTagViewModel extends ChangeNotifier {
 
   _buildTagWidget() {
     List<Widget> widgets = [];
-    if (this.tags.isEmpty) {
+    if (this.tags!.isEmpty) {
       return [Container()];
     }
-    for (int i = 0; i < min(limitCount,this.tags.length); i++) {
+    for (int i = 0; i < min(limitCount!,this.tags!.length); i++) {
       widgets.add(Text(
-        '#${this.tags[i].tagItem}',
+        '#${this.tags![i].tagItem}',
         style: GoogleFonts.notoSans(
           fontSize: 14,
           color: const Color(0xff007eff),

@@ -6,9 +6,9 @@ import 'package:forutonafront/Common/Country/CountryItem.dart';
 // 해당 View의 역활의 목적은 ISO 코드를 Navigtor로 Return 해주는것.
 class CountrySelectPageViewModel extends ChangeNotifier{
   final BuildContext _context;
-  String initCountryCode;
+  String? initCountryCode;
   CodeCountry _codeCountry = new CodeCountry();
-  List<CountryItem> countryList;
+  List<CountryItem> countryList = List.empty();
   int selectCountryIndex = 0;
   ScrollController listViewScroller  = new ScrollController();
 

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class H007BallSearchBtn extends StatelessWidget {
-  final Function onSearch;
+  final Function? onSearch;
   const H007BallSearchBtn({
-    Key key, this.onSearch,
+    Key? key, this.onSearch,
   }) : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class H007BallSearchBtn extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 32,
       child: FlatButton(
           onPressed: () {
-            this.onSearch();
+            this.onSearch!();
           },
           child: Text(
             '이 근처의 볼을 검색합니다.',

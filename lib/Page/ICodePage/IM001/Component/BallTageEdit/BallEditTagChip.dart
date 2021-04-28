@@ -9,9 +9,9 @@ class BallEditTagChip extends StatelessWidget {
 
   final TagEditItemDto tagEditItemDto;
 
-  final Function(BallEditTagChip) onDeleteTap;
+  final Function(BallEditTagChip)? onDeleteTap;
 
-  const BallEditTagChip({Key key, this.onDeleteTap, this.tagEditItemDto}) : super(key: key);
+  const BallEditTagChip({Key? key, this.onDeleteTap,required this.tagEditItemDto}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +29,11 @@ class BallEditTagChip extends StatelessWidget {
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Text(tagEditItemDto.text),
+                Text(tagEditItemDto!.text),
                 SizedBox(width: 16,),
                 CircleIconBtn(
                   onTap: (){
-                    onDeleteTap(this);
+                    onDeleteTap!(this);
                   },
                   height: 14,
                   width: 14,

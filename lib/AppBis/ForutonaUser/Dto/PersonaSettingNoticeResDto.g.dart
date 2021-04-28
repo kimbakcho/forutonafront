@@ -9,13 +9,13 @@ part of 'PersonaSettingNoticeResDto.dart';
 PersonaSettingNoticeResDto _$PersonaSettingNoticeResDtoFromJson(
     Map<String, dynamic> json) {
   return PersonaSettingNoticeResDto()
-    ..idx = json['idx'] as int
-    ..noticeName = json['noticeName'] as String
+    ..idx = json['idx'] as int?
+    ..noticeName = json['noticeName'] as String?
     ..noticeWriteDateTime = json['noticeWriteDateTime'] == null
         ? null
         : DateTime.parse(json['noticeWriteDateTime'] as String)
-    ..noticeContent = json['noticeContent'] as String
-    ..lang = json['lang'] as String;
+    ..noticeContent = json['noticeContent'] as String?
+    ..lang = json['lang'] as String?;
 }
 
 Map<String, dynamic> _$PersonaSettingNoticeResDtoToJson(

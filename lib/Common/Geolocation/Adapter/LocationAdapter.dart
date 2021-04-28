@@ -15,7 +15,7 @@ abstract class LocationAdapter {
 
 @LazySingleton(as: LocationAdapter)
 class LocationAdapterImpl implements LocationAdapter {
-  Location.Location location;
+  Location.Location? location;
   LocationAdapterImpl(){
     location = new Location.Location();
   }
@@ -24,13 +24,13 @@ class LocationAdapterImpl implements LocationAdapter {
 
   @override
   Future<Adapter.PermissionStatus>  hasPermission() async {
-    return changeAdapterPermissionStatusStatue(await location.hasPermission());
+    return changeAdapterPermissionStatusStatue(await location!.hasPermission());
   }
 
   @override
   Future<Adapter.PermissionStatus> requestPermission()async {
     //Release 모드에서 Location Lib 의 requestPermissions API에 문제가 있는것으로 확인
-    var permissionStatus = await location.requestPermission();
+    var permissionStatus = await location!.requestPermission();
     return changeAdapterPermissionStatusStatue(permissionStatus);
   }
 
@@ -48,12 +48,12 @@ class LocationAdapterImpl implements LocationAdapter {
 
   @override
   Future<bool> serviceEnabled() async {
-    return await location.serviceEnabled();
+    return await location!.serviceEnabled();
   }
 
   @override
   Future<bool> requestService() async{
-    return await location.requestService();
+    return await location!.requestService();
   }
 
 

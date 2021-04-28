@@ -3,20 +3,20 @@ import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/PersonaSettingN
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/PersonaSettingNoticeResDto.dart';
 
 class G017MainPageTempViewModel extends ChangeNotifier {
-  final BuildContext context;
-  final int idx;
+  final BuildContext? context;
+  final int? idx;
 
-  final PersonaSettingNoticeUseCaseInputPort
+  final PersonaSettingNoticeUseCaseInputPort?
       _personaSettingNoticeUseCaseInputPort;
 
-  PersonaSettingNoticeResDto personaSettingNoticeResDto;
+  PersonaSettingNoticeResDto? personaSettingNoticeResDto;
 
   String htmlUrl = "";
 
   G017MainPageTempViewModel(
       {this.context,
       this.idx,
-      @required
+      required
           PersonaSettingNoticeUseCaseInputPort
               personaSettingNoticeUseCaseInputPort})
       : _personaSettingNoticeUseCaseInputPort =
@@ -25,10 +25,10 @@ class G017MainPageTempViewModel extends ChangeNotifier {
   }
 
   void init() async {
-    personaSettingNoticeResDto = await _personaSettingNoticeUseCaseInputPort
-        .getPersonaSettingNoticePage(idx);
+    personaSettingNoticeResDto = await _personaSettingNoticeUseCaseInputPort!
+        .getPersonaSettingNoticePage(idx!);
 
-    _loadHtml(personaSettingNoticeResDto.noticeContent);
+    _loadHtml(personaSettingNoticeResDto!.noticeContent!);
     notifyListeners();
   }
 
@@ -40,6 +40,6 @@ class G017MainPageTempViewModel extends ChangeNotifier {
   getNoticeName() {}
 
   void onBackTap() {
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
   }
 }

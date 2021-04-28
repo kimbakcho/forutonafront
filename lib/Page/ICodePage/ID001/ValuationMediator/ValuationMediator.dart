@@ -12,7 +12,7 @@ import 'package:injectable/injectable.dart';
 abstract class ValuationMediatorComponent {
   valuationReqNotification();
 
-  String ballUuid;
+  String? ballUuid;
 }
 
 abstract class ValuationMediator {
@@ -22,17 +22,17 @@ abstract class ValuationMediator {
 
   Future<FBallVoteResDto> voteAction(FBallVoteReqDto fBallVoteReqDto);
 
-  Future<FBallVoteResDto> getBallLikeState(String ballUuid, {String uid});
+  Future<FBallVoteResDto?> getBallLikeState(String ballUuid, {String? uid});
 
   int componentCount();
 
-  int ballPower;
+  int? ballPower;
 
-  int ballLikeCount;
+  int? ballLikeCount;
 
-  int ballDisLikeCount;
+  int? ballDisLikeCount;
 
-  int likeServiceUseUserCount;
+  int? likeServiceUseUserCount;
 }
 
 class ValuationMediatorImpl implements ValuationMediator {
@@ -40,18 +40,18 @@ class ValuationMediatorImpl implements ValuationMediator {
   @override
   BallLikeState ballLikeState = BallLikeState.None;
   @override
-  int ballDisLikeCount = 0;
+  int? ballDisLikeCount = 0;
   @override
-  int ballLikeCount = 0;
+  int? ballLikeCount = 0;
   @override
-  int ballPower = 0;
+  int? ballPower = 0;
   @override
-  int likeServiceUseUserCount = 0;
+  int? likeServiceUseUserCount = 0;
 
   List<ValuationMediatorComponent> components = [];
 
   ValuationMediatorImpl(
-      {@required FBallValuationUseCaseInputPort fBallValuationUseCaseInputPort})
+      {required FBallValuationUseCaseInputPort fBallValuationUseCaseInputPort})
       : _fBallValuationUseCaseInputPort = fBallValuationUseCaseInputPort;
 
   @override
@@ -81,5 +81,7 @@ class ValuationMediatorImpl implements ValuationMediator {
   }
 
   @override
-  Future<FBallVoteResDto> getBallLikeState(String ballUuid, {String uid}) {}
+  Future<FBallVoteResDto?> getBallLikeState(String ballUuid, {String? uid}) async {
+    return null;
+  }
 }

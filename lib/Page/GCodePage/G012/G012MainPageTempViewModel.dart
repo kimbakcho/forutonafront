@@ -41,16 +41,16 @@ class G012MainPageTempViewModel extends ChangeNotifier {
   }
 
   G012MainPageTempViewModel(
-      {@required this.context,
-      @required this.currentPwController,
-      @required this.newPwController,
-      @required this.checkPwController,
-      @required SignValid pwValid,
-      @required SignValid pwCheckValid,
-      @required SignValid currentPwValid,
-      @required CodeMainPageController codeMainPageController,
-      @required LogoutUseCaseInputPort logoutUseCaseInputPort,
-      @required FUserPwChangeUseCaseInputPort fUserPwChangeUseCaseInputPort})
+      {required this.context,
+      required this.currentPwController,
+      required this.newPwController,
+      required this.checkPwController,
+      required SignValid pwValid,
+      required SignValid pwCheckValid,
+      required SignValid currentPwValid,
+      required CodeMainPageController codeMainPageController,
+      required LogoutUseCaseInputPort logoutUseCaseInputPort,
+      required FUserPwChangeUseCaseInputPort fUserPwChangeUseCaseInputPort})
       : _pwValid = pwValid,
         _pwCheckValid = pwCheckValid,
         _currentPwValid = currentPwValid,
@@ -180,7 +180,7 @@ class G012MainPageTempViewModel extends ChangeNotifier {
           msg: ex.toString(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
@@ -193,11 +193,11 @@ class G012MainPageTempViewModel extends ChangeNotifier {
         barrierDismissible: false,
         context: context,
         useRootNavigator: true,
-        child: AlertDialog(
+        builder: (context) => AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
-              Radius.circular(12),
-            )),
+                  Radius.circular(12),
+                )),
             contentPadding: EdgeInsets.all(0),
             content: Container(
                 height: 182.00,
@@ -252,6 +252,6 @@ class G012MainPageTempViewModel extends ChangeNotifier {
                         ],
                         borderRadius: BorderRadius.circular(5.00),
                       ))
-                ]))));
+                ]))), );
   }
 }

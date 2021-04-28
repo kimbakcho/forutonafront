@@ -3,10 +3,10 @@ part 'PwChangeFromPhoneAuthResDto.g.dart';
 
 @JsonSerializable()
 class PwChangeFromPhoneAuthResDto {
-  String email;
-  String internationalizedPhoneNumber;
-  bool errorFlag;
-  String cause;
+  String? email;
+  String? internationalizedPhoneNumber;
+  bool? errorFlag;
+  String? cause;
 
   PwChangeFromPhoneAuthResDto();
   factory PwChangeFromPhoneAuthResDto.fromJson(Map<String, dynamic> json) => _$PwChangeFromPhoneAuthResDtoFromJson(json);

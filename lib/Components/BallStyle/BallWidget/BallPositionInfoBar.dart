@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 
 class BallPositionInfoBar extends StatelessWidget {
   const BallPositionInfoBar({
-    Key key,
-    @required this.ballDisPlayUseCase,
-    @required this.ballSearchPosition,
-    @required this.gotoDetailPage,
+    Key? key,
+    required this.ballDisPlayUseCase,
+    required this.ballSearchPosition,
+    this.gotoDetailPage,
   }) : super(key: key);
   final Position ballSearchPosition;
   final BallDisPlayUseCase ballDisPlayUseCase;
-  final Function gotoDetailPage;
+  final Function? gotoDetailPage;
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +71,13 @@ class BallPositionInfoBar extends StatelessWidget {
 class BallPositionInfoBarViewModel extends ChangeNotifier
     implements BallDisPlayUseCaseOutputPort {
   String ballDistanceFromSearchPositionToText = "";
-  final Position ballSearchPosition;
-  final BallDisPlayUseCase issueBallDisPlayUseCase;
+  final Position? ballSearchPosition;
+  final BallDisPlayUseCase? issueBallDisPlayUseCase;
 
   BallPositionInfoBarViewModel(
       {this.ballSearchPosition, this.issueBallDisPlayUseCase}) {
-    issueBallDisPlayUseCase.getDistanceFromSearchPositionToText(
-        ballSearchPosition, this);
+    issueBallDisPlayUseCase!.getDistanceFromSearchPositionToText(
+        ballSearchPosition!, this);
   }
 
   @override

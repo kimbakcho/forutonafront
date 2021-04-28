@@ -7,12 +7,12 @@ part 'FBallListUpFromSearchTitleReqDto.g.dart';
 class FBallListUpFromSearchTitleReqDto {
   final String searchText;
 
-  final double latitude;
-  final double longitude;
+  final double? latitude;
+  final double? longitude;
 
 
   FBallListUpFromSearchTitleReqDto(
-      {@required this.searchText,
+      {required this.searchText,
         this.latitude = 37.508797,
       this.longitude = 126.890605});
 

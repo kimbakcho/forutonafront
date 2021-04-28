@@ -29,7 +29,7 @@ class NearBallCreateUseCase implements NotificationUseCaseInputPort{
   Future<void> resNotification(Map<String, dynamic> message) async {
 
     NotificationChannel notificationChannel = sl.get<NotificationChannel>(instanceName: "NotificationRadarChannel");
-    NotificationDetails channel = notificationChannel.getChannel();
+    NotificationDetails channel = notificationChannel.getChannel()!;
     var payload = json.encode(message['data']) ;
     flutterLocalNotificationsPluginAdapter.show(0, "새로운 Ball", "내 근처에서 새로운 Ball이 설치되었습니다!", channel,payload: payload);
   }
@@ -40,7 +40,7 @@ class NearBallCreateUseCase implements NotificationUseCaseInputPort{
     var fcmfBallMakeDto = FCMFBallMakeDto.fromJson(decodePayload);
     if(fcmfBallMakeDto.fBallType == FBallType.IssueBall){
       Navigator.of(context).push(MaterialPageRoute(builder: (_){
-        return ID01MainPage(ballUuid: fcmfBallMakeDto.ballUuid);
+        return ID01MainPage(ballUuid: fcmfBallMakeDto.ballUuid!);
       }));
     }
   }

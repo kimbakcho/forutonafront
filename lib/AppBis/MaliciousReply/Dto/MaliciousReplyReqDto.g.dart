@@ -8,13 +8,13 @@ part of 'MaliciousReplyReqDto.dart';
 
 MaliciousReplyReqDto _$MaliciousReplyReqDtoFromJson(Map<String, dynamic> json) {
   return MaliciousReplyReqDto()
-    ..replyUuid = json['replyUuid'] as String
-    ..crime = json['crime'] as int
-    ..abuse = json['abuse'] as int
-    ..privacy = json['privacy'] as int
-    ..sexual = json['sexual'] as int
-    ..advertising = json['advertising'] as int
-    ..etc = json['etc'] as int;
+    ..replyUuid = json['replyUuid'] as String?
+    ..crime = json['crime'] as int?
+    ..abuse = json['abuse'] as int?
+    ..privacy = json['privacy'] as int?
+    ..sexual = json['sexual'] as int?
+    ..advertising = json['advertising'] as int?
+    ..etc = json['etc'] as int?;
 }
 
 Map<String, dynamic> _$MaliciousReplyReqDtoToJson(

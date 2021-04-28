@@ -5,7 +5,7 @@ import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
 abstract class INavBtnGroup {
 
-  List<NavBtn> navBtnList;
+  List<NavBtn>? navBtnList;
 
-  arrangeBtnIndexStack({@required CodeState top});
+  arrangeBtnIndexStack({required CodeState top});
 }

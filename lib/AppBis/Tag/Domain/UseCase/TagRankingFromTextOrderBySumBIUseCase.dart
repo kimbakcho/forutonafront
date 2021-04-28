@@ -10,7 +10,7 @@ class TagRankingFromTextOrderBySumBIUseCase
   final TagRepository tagRepository;
   final TagRankingFromTextReqDto reqDto;
 
-  TagRankingFromTextOrderBySumBIUseCase({this.tagRepository, this.reqDto});
+  TagRankingFromTextOrderBySumBIUseCase({required this.tagRepository, required this.reqDto});
 
   @override
   Future<List<TagRankingResDto>> search() async {

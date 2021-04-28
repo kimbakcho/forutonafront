@@ -10,13 +10,13 @@ class IssueBallModifyService implements BallModifyService {
   final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   IssueBallModifyService(
-      {@required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+      {required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
       : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
 
   @override
-  Future<CommonBallModifyWidgetResultType> showModifySelectDialog(
-      {@required BuildContext context}) async {
-    CommonBallModifyWidgetResultType commandResult = await showGeneralDialog(
+  Future<CommonBallModifyWidgetResultType?> showModifySelectDialog(
+      {required BuildContext context}) async {
+    CommonBallModifyWidgetResultType? commandResult = await showGeneralDialog(
         context: context,
         barrierDismissible: true,
         transitionDuration: Duration(milliseconds: 300),
@@ -31,7 +31,7 @@ class IssueBallModifyService implements BallModifyService {
   }
 
   @override
-  Future<bool> isCanModify({@required String ballMakeUid}) async {
+  Future<bool> isCanModify({required String ballMakeUid}) async {
     if (ballMakeUid == await _fireBaseAuthAdapterForUseCase.userUid()) {
       return true;
     } else {

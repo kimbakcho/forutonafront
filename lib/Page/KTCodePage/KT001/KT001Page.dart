@@ -16,7 +16,7 @@ class KT001Page extends StatefulWidget {
 }
 
 class _KT001PageState extends State<KT001Page> {
-  KT001PageViewModel k001pageViewModel;
+  KT001PageViewModel? k001pageViewModel;
 
   @override
   Widget build(BuildContext context) {

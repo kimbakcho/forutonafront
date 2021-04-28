@@ -8,7 +8,7 @@ part of 'FBallValuationResDto.dart';
 
 FBallValuationResDto _$FBallValuationResDtoFromJson(Map<String, dynamic> json) {
   return FBallValuationResDto()
-    ..valueUuid = json['valueUuid'] as String
+    ..valueUuid = json['valueUuid'] as String?
     ..ballUuid = json['ballUuid'] == null
         ? null
         : FBallResDto.fromJson(json['ballUuid'] as Map<String, dynamic>)

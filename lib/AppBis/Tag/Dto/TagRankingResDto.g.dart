@@ -8,8 +8,8 @@ part of 'TagRankingResDto.dart';
 
 TagRankingResDto _$TagRankingResDtoFromJson(Map<String, dynamic> json) {
   return TagRankingResDto()
-    ..tagName = json['tagName'] as String
-    ..tagPower = (json['tagPower'] as num)?.toDouble();
+    ..tagName = json['tagName'] as String?
+    ..tagPower = (json['tagPower'] as num?)?.toDouble();
 }
 
 Map<String, dynamic> _$TagRankingResDtoToJson(TagRankingResDto instance) =>

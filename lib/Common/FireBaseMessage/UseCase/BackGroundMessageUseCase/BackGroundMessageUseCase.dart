@@ -14,7 +14,7 @@ class BackGroundMessageUseCase implements FCMMessageUseCaseInputPort {
 
   @override
   Future<dynamic> message(Map<String, dynamic> message) async {
-    NotificationServiceType notificationServiceType = EnumToString.fromString(NotificationServiceType.values, message["data"]["serviceKey"]);
+    NotificationServiceType notificationServiceType = EnumToString.fromString(NotificationServiceType.values, message["data"]["serviceKey"])!;
     NotificationUseCaseInputPort notificationUseCaseInputPort = NotificationUseCaseFactory.create(notificationServiceType);
     notificationUseCaseInputPort.resNotification(message);
   }

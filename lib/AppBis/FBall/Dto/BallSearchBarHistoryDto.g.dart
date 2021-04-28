@@ -9,7 +9,7 @@ part of 'BallSearchBarHistoryDto.dart';
 BallSearchBarHistoryDto _$BallSearchBarHistoryDtoFromJson(
     Map<String, dynamic> json) {
   return BallSearchBarHistoryDto(
-    json['searchText'] as String,
+    json['searchText'] as String?,
     json['searchTime'] == null
         ? null
         : DateTime.parse(json['searchTime'] as String),

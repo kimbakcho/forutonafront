@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class IMB001TopAppBar extends StatelessWidget {
   const IMB001TopAppBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -31,11 +31,11 @@ class IM001MainPageTemp extends StatefulWidget {
 class _IM001MainPageTempState extends State<IM001MainPageTemp>
     with WidgetsBindingObserver {
 
-  LatLng setUpPosition;
-  String address;
-  String ballUuid;
-  IM001MainPageEnterMode mode;
-  IM001MainPageViewModelTemp childModel;
+  LatLng? setUpPosition;
+  String? address;
+  String? ballUuid;
+  IM001MainPageEnterMode? mode;
+  IM001MainPageViewModelTemp? childModel;
 
   _IM001MainPageTempState(
       this.setUpPosition, this.address, this.ballUuid, this.mode);
@@ -43,12 +43,12 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -56,7 +56,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
 
     if (childModel != null) {
-      await childModel.copyClipBoard();
+      await childModel!.copyClipBoard();
     }
     setState(() {
 
@@ -222,7 +222,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
                                   fontSize: 13,
                                   color: Color(0xff78849e),
                                 ))
-                            : Text(model.validYoutubeLink,
+                            : Text(model.validYoutubeLink!,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.notoSans(
                                   fontSize: 14,
@@ -422,7 +422,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
         decoration: BoxDecoration(
           image: DecorationImage(
               image: MemoryImage(
-                imageItem.imageByte,
+                imageItem.imageByte!,
               ),
               fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(12.00),
@@ -611,7 +611,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
             ].toSet(),
             mapType: MapType.normal,
             onMapCreated: model.onMapCreated,
-            initialCameraPosition: model.initCameraPosition,
+            initialCameraPosition: model.initCameraPosition!,
             myLocationEnabled: false,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
@@ -625,7 +625,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(Icons.location_on, color: Color(0xff78849E), size: 15),
-                    Text(model.address,
+                    Text(model.address!,
                         style: GoogleFonts.notoSans(
                           fontSize: 14,
                           color: Color(0xff454f63),

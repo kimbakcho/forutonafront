@@ -9,11 +9,11 @@ part of 'PwFindPhoneAuthNumberReqDto.dart';
 PwFindPhoneAuthNumberReqDto _$PwFindPhoneAuthNumberReqDtoFromJson(
     Map<String, dynamic> json) {
   return PwFindPhoneAuthNumberReqDto()
-    ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedDialCode = json['internationalizedDialCode'] as String
-    ..isoCode = json['isoCode'] as String
-    ..authNumber = json['authNumber'] as String
-    ..email = json['email'] as String;
+    ..phoneNumber = json['phoneNumber'] as String?
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String?
+    ..isoCode = json['isoCode'] as String?
+    ..authNumber = json['authNumber'] as String?
+    ..email = json['email'] as String?;
 }
 
 Map<String, dynamic> _$PwFindPhoneAuthNumberReqDtoToJson(

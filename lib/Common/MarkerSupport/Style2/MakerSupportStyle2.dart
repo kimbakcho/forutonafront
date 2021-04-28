@@ -17,18 +17,18 @@ import 'MarkerStyle2Util.dart';
 /// 해당 객체는 BallList FBallResForMarkerDto 를 받고 결과로 GoogleMapMaker Completer 통해 리턴함
 class MakerSupportStyle2 {
 //  final Function(List<Uint8List>) callback;
-  final List<FBallResForMarkerStyle2Dto> ballList;
-  final Completer completer;
+  final List<FBallResForMarkerStyle2Dto>? ballList;
+  final Completer? completer;
 
   MakerSupportStyle2(this.ballList, this.completer,);
 
   Future<void> generate(BuildContext context) {
-    WidgetsBinding.instance
+    WidgetsBinding.instance!
         .addPostFrameCallback((_) => afterFirstLayout(context));
-    return completer.future;
+    return completer!.future;
   }
 
-  MarkerHelper helper;
+  MarkerHelper? helper;
 
   void afterFirstLayout(BuildContext context) {
     addOverlay(context);
@@ -37,14 +37,14 @@ class MakerSupportStyle2 {
   void addOverlay(BuildContext context) {
     print("context");
     print(context);
-    OverlayState overlayState = Overlay.of(context);
+    OverlayState overlayState = Overlay.of(context)!;
     helper = MarkerHelper(
       ballList: ballList,
       completer: completer,
     );
     OverlayEntry entry = OverlayEntry(
         builder: (context) {
-          return helper;
+          return helper!;
         },
         maintainState: true);
 
@@ -64,16 +64,16 @@ class MakerSupportStyle2 {
 /// 2) After painted access the repaint boundary with global key and converts it to uInt8List
 /// 3) Returns set of Uint8List (bitmaps) through callback
 class MarkerHelper extends StatefulWidget {
-  final List<FBallResForMarkerStyle2Dto> ballList;
+  final List<FBallResForMarkerStyle2Dto>? ballList;
 
-  final Completer completer;
+  final Completer? completer;
 
-  final RenderRepaintBoundary widgetAnimation;
+  final RenderRepaintBoundary? widgetAnimation;
 
-  final LatLng widgetAnimationLatlng;
+  final LatLng? widgetAnimationLatlng;
 
 
-  const MarkerHelper({Key key, this.ballList, this.completer,this.widgetAnimation,this.widgetAnimationLatlng})
+  const MarkerHelper({Key? key, this.ballList, this.completer,this.widgetAnimation,this.widgetAnimationLatlng})
       : super(key: key);
 
 
@@ -84,7 +84,7 @@ class MarkerHelper extends StatefulWidget {
 }
 
 class _MarkerHelperState extends State<MarkerHelper> with AfterLayoutMixin {
-  List<GlobalKey> globalKeys = List<GlobalKey>();
+  List<GlobalKey> globalKeys =  List.empty();
   @override
   void dispose() {
 
@@ -99,21 +99,21 @@ class _MarkerHelperState extends State<MarkerHelper> with AfterLayoutMixin {
     int ballMarkerLength =  bitMapFromWidget.length;
     for(int i=0;i<ballMarkerLength;i++){
       markers.add(Marker(
-        markerId: MarkerId(widget.ballList[i].ballUuid),
+        markerId: MarkerId(widget.ballList![i].ballUuid),
         anchor: Offset(0.5,0.5),
         icon: BitmapDescriptor.fromBytes(bitMapFromWidget[i]),
-        position: widget.ballList[i].target,
+        position: widget.ballList![i].target,
         zIndex: 1
       ));
     }
-    widget.completer.complete(markers);
+    widget.completer!.complete(markers);
 
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetBalls = [];
-    for (var ball in widget.ballList) {
+    for (var ball in widget.ballList!) {
       widgetBalls.add(MarkerStyle1Uti2.ballWidgetSelect(
           ball.ballType));
     }
@@ -143,9 +143,9 @@ class _MarkerHelperState extends State<MarkerHelper> with AfterLayoutMixin {
 
   Future<Uint8List> _getUint8List(GlobalKey markerKey) async {
     RenderRepaintBoundary boundary =
-    markerKey.currentContext.findRenderObject();
+    markerKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     var image = await boundary.toImage(pixelRatio: 1.0);
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    ByteData byteData = (await image.toByteData(format: ui.ImageByteFormat.png))!;
     return byteData.buffer.asUint8List();
   }
 }
@@ -155,7 +155,7 @@ mixin AfterLayoutMixin<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
+    WidgetsBinding.instance!
         .addPostFrameCallback((_) => afterFirstLayout(context));
   }
 

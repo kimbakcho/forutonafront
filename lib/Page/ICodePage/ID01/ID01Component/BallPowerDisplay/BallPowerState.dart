@@ -7,9 +7,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ID01BallPowerState extends StatefulWidget {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  const ID01BallPowerState({Key key, this.fBallResDto}) : super(key: key);
+  const ID01BallPowerState({Key? key, this.fBallResDto}) : super(key: key);
 
   @override
   _ID01BallPowerStateState createState() => _ID01BallPowerStateState();
@@ -31,7 +31,7 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
                   Container(
                     margin: EdgeInsets.fromLTRB(8, 0, 13, 0),
                     child: Text(
-                      "${widget.fBallResDto.contributor}",
+                      "${widget.fBallResDto!.contributor}",
                       style: GoogleFonts.notoSans(
                         fontSize: 16,
                         color: const Color(0xffcccccc),
@@ -51,7 +51,7 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
                         Icon(Icons.access_time, color: Color(0xffcccccc)),
                         Container(
                             margin: EdgeInsets.only(left: 10),
-                            child: Text(TimeDisplayUtil.getCalcToStrFromNow(widget.fBallResDto.activationTime),
+                            child: Text(TimeDisplayUtil.getCalcToStrFromNow(widget.fBallResDto!.activationTime!),
                                 style: GoogleFonts.notoSans(
                                   fontSize: 16,
                                   color: const Color(0xffcccccc),
@@ -84,7 +84,7 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
                       Container(
                         margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Text(
-                            "${widget.fBallResDto.ballLikes} (${(model.ballLikePercent * 100).toStringAsFixed(0)}%)",
+                            "${widget.fBallResDto!.ballLikes} (${(model.ballLikePercent * 100).toStringAsFixed(0)}%)",
                             style: GoogleFonts.notoSans(
                               fontSize: 14,
                               color: const Color(0xff000000),
@@ -121,7 +121,7 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
                       Container(
                         margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Text(
-                            "${widget.fBallResDto.ballDisLikes} (${(model.ballDisLikePercent * 100).toStringAsFixed(0)}%)",
+                            "${widget.fBallResDto!.ballDisLikes} (${(model.ballDisLikePercent * 100).toStringAsFixed(0)}%)",
                             style: GoogleFonts.notoSans(
                               fontSize: 14,
                               color: const Color(0xff000000),
@@ -143,28 +143,28 @@ class _ID01BallPowerStateState extends State<ID01BallPowerState> {
 }
 
 class ID01BallPowerStateViewModel extends ChangeNotifier {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
   ID01BallPowerStateViewModel(this.fBallResDto);
 
   double get ballLikePercent {
-    if ((fBallResDto.ballLikes +
-        fBallResDto.ballDisLikes) ==
+    if ((fBallResDto!.ballLikes! +
+        fBallResDto!.ballDisLikes!) ==
         0) {
       return 0;
     }
-    return fBallResDto.ballLikes /
-        (fBallResDto.ballLikes +
-            fBallResDto.ballDisLikes);
+    return fBallResDto!.ballLikes! /
+        (fBallResDto!.ballLikes! +
+            fBallResDto!.ballDisLikes!);
   }
   double get ballDisLikePercent {
-    if ((fBallResDto.ballLikes +
-        fBallResDto.ballDisLikes) ==
+    if ((fBallResDto!.ballLikes! +
+        fBallResDto!.ballDisLikes!) ==
         0) {
       return 0;
     }
-    return fBallResDto.ballDisLikes /
-        (fBallResDto.ballLikes +
-            fBallResDto.ballDisLikes);
+    return fBallResDto!.ballDisLikes! /
+        (fBallResDto!.ballLikes! +
+            fBallResDto!.ballDisLikes!);
   }
 }

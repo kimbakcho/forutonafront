@@ -6,12 +6,12 @@ import 'package:provider/provider.dart';
 import 'UserProfileMode.dart';
 
 class UserSelfIntroduceWidget extends StatelessWidget {
-  final UserProfileMode userProfileMode;
+  final UserProfileMode? userProfileMode;
 
-  final String userSelfIntroduce;
+  final String? userSelfIntroduce;
 
   const UserSelfIntroduceWidget(
-      {Key key, this.userProfileMode, this.userSelfIntroduce})
+      {Key? key, this.userProfileMode, this.userSelfIntroduce})
       : super(key: key);
 
   @override
@@ -20,12 +20,12 @@ class UserSelfIntroduceWidget extends StatelessWidget {
         create: (_) => UserSelfIntroduceWidgetViewModel(),
         child: Consumer<UserSelfIntroduceWidgetViewModel>(
             builder: (_, model, child) {
-          if (userSelfIntroduce.isNotEmpty) {
+          if (userSelfIntroduce!.isNotEmpty) {
             return Container(
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,
                 child: Text(
-                  userSelfIntroduce,
+                  userSelfIntroduce!,
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff3a3e3f),

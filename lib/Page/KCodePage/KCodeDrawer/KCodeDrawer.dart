@@ -5,9 +5,9 @@ import 'KCodeDrawerBottom.dart';
 import 'KCodeDrawerTopBar.dart';
 
 class KCodeDrawer extends StatelessWidget {
-  final Widget drawerBody;
+  final Widget? drawerBody;
 
-  const KCodeDrawer({Key key, this.drawerBody}) : super(key: key);
+  const KCodeDrawer({Key? key, this.drawerBody}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,7 @@ class KCodeDrawer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               KCodeDrawerTopBar(),
-             drawerBody,
-
+              drawerBody!,
               KCodeDrawerBottom()
             ],
           ),

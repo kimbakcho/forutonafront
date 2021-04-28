@@ -18,21 +18,21 @@ abstract class TopNavBtnMediator {
 
   topNavExpendUnRegisterComponent(TopNavExpendComponent component);
 
-  openNavList({@required CodeState navRouterType});
+  openNavList({required CodeState navRouterType});
 
-  closeNavList({@required CodeState navRouterType});
+  closeNavList({required CodeState navRouterType});
 
   set iNavBtnGroup(INavBtnGroup value);
 
-  NavBtnMediatorState aniState;
+  NavBtnMediatorState? aniState;
 
-  CodeState currentTopNavRouter;
+  CodeState? currentTopNavRouter;
 
-  TopNavExpendGroupViewModel topNavExpendGroupViewModel;
+  TopNavExpendGroupViewModel? topNavExpendGroupViewModel;
 
-  Duration animationDuration;
+  Duration? animationDuration;
 
-  MainPageViewModelInputPort codeMainViewModelInputPort;
+  MainPageViewModelInputPort? codeMainViewModelInputPort;
 
   void onNavBtnAniStatusListener(AnimationStatus status, CodeState routerType);
 
@@ -40,22 +40,22 @@ abstract class TopNavBtnMediator {
 }
 
 class TopNavBtnMediatorImpl implements TopNavBtnMediator {
-  List<TopNavBtnComponent> topNavBtnComponents = [];
+  List<TopNavBtnComponent> topNavBtnComponents = List.empty();
 
-  List<TopNavExpendComponent> topNavExpendComponents = [];
+  List<TopNavExpendComponent> topNavExpendComponents = List.empty();
 
-  Duration animationDuration = Duration(milliseconds: 300);
+  Duration? animationDuration = Duration(milliseconds: 300);
 
-  TopNavExpendGroupViewModel topNavExpendGroupViewModel;
+  TopNavExpendGroupViewModel? topNavExpendGroupViewModel;
 
-  CodeState currentTopNavRouter;
+  CodeState? currentTopNavRouter;
 
-  final bool isCanNavOpen;
+  final bool? isCanNavOpen;
 
   @override
-  NavBtnMediatorState aniState;
+  NavBtnMediatorState? aniState;
 
-  INavBtnGroup _iNavBtnGroup;
+  INavBtnGroup? _iNavBtnGroup;
 
   TopNavBtnMediatorImpl({this.currentTopNavRouter,this.isCanNavOpen = true}) {
     aniState = NavBtnMediatorState.Close;
@@ -75,11 +75,11 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
     this.topNavBtnComponents.remove(component);
   }
 
-  openNavList({@required CodeState navRouterType}) async {
-    if(isCanNavOpen){
+  openNavList({required CodeState navRouterType}) async {
+    if(isCanNavOpen!){
       topNavBtnForwardAnimation();
       closeExpendComponent();
-      await Future.delayed(Duration(milliseconds: animationDuration.inMilliseconds + 100));
+      await Future.delayed(Duration(milliseconds: animationDuration!.inMilliseconds + 100));
     }
 
   }
@@ -104,13 +104,13 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   }
 
   @override
-  closeNavList({@required CodeState navRouterType}) {
+  closeNavList({required CodeState navRouterType}) {
     this.topNavBtnReverseAnimation();
     if (_iNavBtnGroup != null) {
-      _iNavBtnGroup.arrangeBtnIndexStack(top: navRouterType);
+      _iNavBtnGroup!.arrangeBtnIndexStack(top: navRouterType);
     }
     currentTopNavRouter = navRouterType;
-    topNavExpendGroupViewModel.changeExpendWidget();
+    topNavExpendGroupViewModel!.changeExpendWidget();
     openExpendComponent();
   }
 
@@ -120,7 +120,7 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
     }
     var closeExpendComponent = topNavExpendComponents.firstWhere(
         (element) => element.getTopNavRouterType() == currentTopNavRouter,
-        orElse: () => null);
+    );
 
     if (closeExpendComponent != null) {
       closeExpendComponent.openExpandNav();
@@ -152,12 +152,12 @@ class TopNavBtnMediatorImpl implements TopNavBtnMediator {
   @override
   void changeMainPage(CodeState topOnMoveMainPage) {
     if(codeMainViewModelInputPort != null){
-      codeMainViewModelInputPort.jumpToPage(topOnMoveMainPage);
+      codeMainViewModelInputPort!.jumpToPage(topOnMoveMainPage);
     }
   }
 
   @override
-  MainPageViewModelInputPort codeMainViewModelInputPort;
+  MainPageViewModelInputPort? codeMainViewModelInputPort;
 
 }
 

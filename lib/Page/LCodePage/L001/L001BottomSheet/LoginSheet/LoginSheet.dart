@@ -19,7 +19,7 @@ import 'LoginButton/LoginButtonOutputPort.dart';
 import 'LoginSheetOutputPort.dart';
 
 class LoginSheet extends StatelessWidget {
-  final LoginSheetOutputPort loginSheetOutputPort;
+  final LoginSheetOutputPort? loginSheetOutputPort;
 
   LoginSheet({this.loginSheetOutputPort});
 
@@ -108,7 +108,7 @@ class LoginSheet extends StatelessWidget {
                           color: Colors.transparent,
                           child: InkWell(
                               onTap: () {
-                                loginSheetOutputPort.moveToSignPage();
+                                loginSheetOutputPort!.moveToSignPage();
                               },
                               child: Text(
                                 "가입하기",
@@ -136,7 +136,7 @@ class LoginSheetViewModel extends ChangeNotifier
     implements LoginButtonOutputPort {
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
   final SnsLoginModuleAdapterFactory _snsLoginModuleAdapterFactory;
-  final LoginSheetOutputPort loginSheetOutputPort;
+  final LoginSheetOutputPort? loginSheetOutputPort;
 
   final FUserInfoJoinReqDto fUserInfoJoinReqDto;
 
@@ -164,7 +164,7 @@ class LoginSheetViewModel extends ChangeNotifier
         await showGeneralDialog(
             context: context,
             pageBuilder: (context, animation, secondaryAnimation) {
-              trySignSns(context, loginResult.fUserSnSLoginReqDto.snsService);
+              trySignSns(context, loginResult.fUserSnSLoginReqDto.snsService!);
               return CommonLoadingComponent();
             });
       }

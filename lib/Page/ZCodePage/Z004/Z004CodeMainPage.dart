@@ -17,7 +17,7 @@ class Z004CodeMainPage extends StatefulWidget {
 
 class _Z004CodeMainPageState extends State<Z004CodeMainPage>
     with WidgetsBindingObserver {
-  Z004CodeMainPageViewModel model;
+  Z004CodeMainPageViewModel? model;
 
   @override
   Widget build(BuildContext context) {
@@ -276,19 +276,19 @@ class _Z004CodeMainPageState extends State<Z004CodeMainPage>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (this.model != null) {
-      model.checkPermission();
+      model!.checkPermission();
     }
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 }

@@ -23,17 +23,17 @@ import 'ID001WidgetPart/ID001Title.dart';
 import '../ID01/ID01Component/ID01YoutubeWidget.dart';
 
 class ID001MainPage2 extends StatefulWidget {
-  final String _ballUuid;
+  final String? _ballUuid;
 
-  final ID001Mode id001mode;
+  final ID001Mode? id001mode;
 
-  final FBallResDto preViewResDto;
-  final List<BallImageItem> preViewBallImage;
+  final FBallResDto? preViewResDto;
+  final List<BallImageItem>? preViewBallImage;
 
-  final Function onCreateBall;
+  final Function? onCreateBall;
 
   ID001MainPage2(
-      {String ballUuid,
+      {String? ballUuid,
       this.id001mode = ID001Mode.publish,
       this.preViewBallImage,
       this.preViewResDto,
@@ -42,18 +42,18 @@ class ID001MainPage2 extends StatefulWidget {
 
   @override
   _ID001MainPage2State createState() =>
-      _ID001MainPage2State(ballUuid: _ballUuid);
+      _ID001MainPage2State(ballUuid: _ballUuid!);
 }
 
 class _ID001MainPage2State extends State<ID001MainPage2> {
-  final String _ballUuid;
+  final String? _ballUuid;
 
-  _ID001MainPage2State({String ballUuid}) : _ballUuid = ballUuid;
+  _ID001MainPage2State({String? ballUuid}) : _ballUuid = ballUuid;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        key: Key(_ballUuid),
+        key: Key(_ballUuid!),
         create: (_) {
           var id001mainPage2ViewModel = ID001MainPage2ViewModel(
               ballUuid: _ballUuid,
@@ -155,7 +155,7 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                                 borderRadius: BorderRadius.circular(30)),
                             onPressed: () {
                               if (widget.onCreateBall != null) {
-                                widget.onCreateBall();
+                                widget.onCreateBall!();
                               }
                             },
                             color: Color(0xff3497FD),

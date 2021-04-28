@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SimpleCollectionTopTitleWidget extends StatelessWidget {
-  final String searchText;
-  final SimpleCollectionTopNextPageListener simpleCollectionTopNextPageListener;
-  final String titleDescription;
+  final String? searchText;
+  final SimpleCollectionTopNextPageListener? simpleCollectionTopNextPageListener;
+  final String? titleDescription;
 
   const SimpleCollectionTopTitleWidget(
-      {Key key,
+      {Key? key,
       this.searchText,
       this.simpleCollectionTopNextPageListener,
       this.titleDescription})
@@ -21,7 +21,7 @@ class SimpleCollectionTopTitleWidget extends StatelessWidget {
           topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0)),
       child: InkWell(
         onTap: () {
-          simpleCollectionTopNextPageListener.onNextPage(searchText);
+          simpleCollectionTopNextPageListener!.onNextPage(searchText!);
         },
         child: Container(
           padding: EdgeInsets.fromLTRB(12, 5, 12, 5),

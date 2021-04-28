@@ -15,8 +15,8 @@ class AvatarImageMakerUseCase implements AvatarImageMakerUseCaseInputPort {
   final ImageUtilInputPort _imageUtilInputPort;
 
   AvatarImageMakerUseCase(
-      {@required FileDownLoaderUseCaseInputPort fileDownLoaderUseCaseInputPort,
-      @required ImageUtilInputPort imageUtilInputPort})
+      {required FileDownLoaderUseCaseInputPort fileDownLoaderUseCaseInputPort,
+      required ImageUtilInputPort imageUtilInputPort})
       : _fileDownLoaderUseCaseInputPort = fileDownLoaderUseCaseInputPort,
         _imageUtilInputPort = imageUtilInputPort;
 
@@ -25,7 +25,7 @@ class AvatarImageMakerUseCase implements AvatarImageMakerUseCaseInputPort {
     var largeIconByte =
         await _fileDownLoaderUseCaseInputPort.downloadToByte(userImageUrl);
     var largeIconFilePath = await _imageUtilInputPort
-        .saveResizeMemoryImageToFile(largeIconByte, imageFileName, size);
+        .saveResizeMemoryImageToFile(largeIconByte!, imageFileName, size);
     return largeIconFilePath;
   }
 
@@ -34,7 +34,7 @@ class AvatarImageMakerUseCase implements AvatarImageMakerUseCaseInputPort {
     var largeIconByte =
         await _fileDownLoaderUseCaseInputPort.downloadToByte(userImageUrl);
     List<int> bytes =
-        await _imageUtilInputPort.exportReSizeImageToByte(largeIconByte, size);
+        await _imageUtilInputPort.exportReSizeImageToByte(largeIconByte!, size);
     return bytes;
   }
 }

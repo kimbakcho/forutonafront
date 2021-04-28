@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ReduceSizeBallTitleWidget extends StatelessWidget {
   const ReduceSizeBallTitleWidget({
-    Key key,
-    @required this.issueBallDisPlayUseCase,
+    Key? key,
+    required this.issueBallDisPlayUseCase,
   }) : super(key: key);
 
   final BallDisPlayUseCase issueBallDisPlayUseCase;
@@ -17,7 +17,7 @@ class ReduceSizeBallTitleWidget extends StatelessWidget {
       UserProfileImageWidget(
         height: 33,
         width: 33,
-        imageUrl: issueBallDisPlayUseCase.profilePictureUrl(),
+        imageUrl: issueBallDisPlayUseCase.profilePictureUrl()!,
       ),
       SizedBox(width: 7),
       Expanded(

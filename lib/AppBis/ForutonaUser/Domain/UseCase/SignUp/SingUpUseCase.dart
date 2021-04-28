@@ -26,24 +26,24 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
   FUserInfoJoinReqDto fUserInfoJoinReqDto;
 
   SingUpUseCase(
-      {@required
+      {required
           FUserRepository fUserRepository,
-        FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,this.snsLoginModuleAdapterFactory,this.fUserInfoJoinReqDto})
+        required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,required this.snsLoginModuleAdapterFactory,required this.fUserInfoJoinReqDto})
       : _fUserRepository = fUserRepository,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
 
   @override
   Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(
-      SnsSupportService snsService, String accessToken) async {
+      SnsSupportService? snsService, String? accessToken) async {
     FUserSnsCheckJoinResDto fUserSnsCheckJoin =
-        await _fUserRepository.getSnsUserJoinCheckInfo(snsService,accessToken);
+        await _fUserRepository.getSnsUserJoinCheckInfo(snsService!,accessToken!);
     return fUserSnsCheckJoin;
   }
 
   @override
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto fUserInfoJoinReqDto,List<int> profileImage,List<int> backgroundImage) async {
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto fUserInfoJoinReqDto,List<int>? profileImage,List<int>? backgroundImage) async {
     FUserInfoJoinResDto fUserInfoJoinResDto = await _fUserRepository.joinUser(fUserInfoJoinReqDto,profileImage,backgroundImage);
-    await _fireBaseAuthAdapterForUseCase.signInWithCustomToken(fUserInfoJoinResDto.customToken);
+    await _fireBaseAuthAdapterForUseCase.signInWithCustomToken(fUserInfoJoinResDto.customToken!);
     return fUserInfoJoinResDto;
   }
 
@@ -55,10 +55,10 @@ class SingUpUseCase implements SingUpUseCaseInputPort {
         snsSupportService);
 
     LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(singUpUseCaseInputPort: sl(),
-        snsLoginModuleAdapter: instance);
+        snsLoginModuleAdapter: instance, signInUserInfoUseCaseInputPort: null);
 
     var snsLoginModuleResDto = await instance.getSnsModuleUserInfo();
-    var fUserSnsCheckJoinResDto = await snsUidJoinCheck(snsSupportService, snsLoginModuleResDto.accessToken);
+    var fUserSnsCheckJoinResDto = await snsUidJoinCheck(snsSupportService, snsLoginModuleResDto!.accessToken);
 
     if (fUserSnsCheckJoinResDto.join) {
       await loginUseCaseInputPort.tryLogin();

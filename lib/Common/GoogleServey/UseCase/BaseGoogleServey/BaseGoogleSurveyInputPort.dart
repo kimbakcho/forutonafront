@@ -4,12 +4,12 @@ import 'package:forutonafront/Common/GoogleServey/UseCase/BaseGoogleServey/BaseG
 
 abstract class BaseGoogleSurveyInputPort {
   void reqOpenGoogleSurvey(BaseGoogleSurveyOutput baseGoogleSurveyOutput);
-  int maxDraw;
+  int? maxDraw;
 
-  String prize;
+  String? prize;
 
-  DateTime lottery;
+  DateTime? lottery;
 
-  String surveyUrl;
+  String? surveyUrl;
 
 }

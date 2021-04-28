@@ -9,9 +9,9 @@ part of 'TagRankingFromTextReqDto.dart';
 TagRankingFromTextReqDto _$TagRankingFromTextReqDtoFromJson(
     Map<String, dynamic> json) {
   return TagRankingFromTextReqDto()
-    ..searchTagText = json['searchTagText'] as String
-    ..mapCenterLatitude = (json['mapCenterLatitude'] as num)?.toDouble()
-    ..mapCenterLongitude = (json['mapCenterLongitude'] as num)?.toDouble();
+    ..searchTagText = json['searchTagText'] as String?
+    ..mapCenterLatitude = (json['mapCenterLatitude'] as num?)?.toDouble()
+    ..mapCenterLongitude = (json['mapCenterLongitude'] as num?)?.toDouble();
 }
 
 Map<String, dynamic> _$TagRankingFromTextReqDtoToJson(

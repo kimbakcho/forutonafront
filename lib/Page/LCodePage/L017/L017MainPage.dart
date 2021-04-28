@@ -8,14 +8,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class L017MainPage extends StatelessWidget {
-  final String email;
+  final String? email;
 
-  const L017MainPage({Key key, this.email}) : super(key: key);
+  const L017MainPage({Key? key, this.email}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => L017MainPageViewModel(email, sl()),
+        create: (_) => L017MainPageViewModel(email!, sl()),
         child: Consumer<L017MainPageViewModel>(builder: (_, model, child) {
           return Scaffold(
               body: Container(

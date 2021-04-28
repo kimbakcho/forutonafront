@@ -8,8 +8,8 @@ part of 'FUserInfoJoinResDto.dart';
 
 FUserInfoJoinResDto _$FUserInfoJoinResDtoFromJson(Map<String, dynamic> json) {
   return FUserInfoJoinResDto()
-    ..customToken = json['customToken'] as String
-    ..joinComplete = json['joinComplete'] as bool;
+    ..customToken = json['customToken'] as String?
+    ..joinComplete = json['joinComplete'] as bool?;
 }
 
 Map<String, dynamic> _$FUserInfoJoinResDtoToJson(

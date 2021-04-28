@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TestView extends StatefulWidget {
-  TestView({Key key}) : super(key: key);
+  TestView({Key? key}) : super(key: key);
 
   @override
   _TestViewState createState() => _TestViewState();

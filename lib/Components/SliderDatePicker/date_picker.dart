@@ -89,24 +89,24 @@ class DatePicker {
   /// titleText: [String] text of the dialog's title
   /// confirmText: [String] text of the dialog's confirm button
   /// cancelText: [String] text of the dialog's  cancel button
-  static Future<DateTime> showSimpleDatePicker(
+  static Future<DateTime?>? showSimpleDatePicker(
     BuildContext context, {
-    DateTime firstDate,
-    DateTime lastDate,
-    DateTime initialDate,
-    String dateFormat,
+    DateTime? firstDate,
+    DateTime? lastDate,
+    DateTime? initialDate,
+    String? dateFormat,
     DateTimePickerLocale locale: DATETIME_PICKER_LOCALE_DEFAULT,
     DateTimePickerMode pickerMode: DateTimePickerMode.date,
-    Color backgroundColor,
-    Color textColor,
+    Color? backgroundColor,
+    Color? textColor,
     //TextStyle itemTextStyle,
-    String titleText,
-    String confirmText,
-    String cancelText,
+    String? titleText,
+    String? confirmText,
+    String? cancelText,
     bool looping: false,
     bool reverse: false,
   }) {
-    DateTime _selectedDate = initialDate;
+    DateTime _selectedDate = initialDate!;
     final List<Widget> listButtonActions = [
       FlatButton(
         textColor: textColor,
@@ -156,7 +156,7 @@ class DatePicker {
           firstDate: firstDate,
           lastDate: lastDate,
           initialDate: initialDate,
-          dateFormat: dateFormat,
+          dateFormat: dateFormat!,
           locale: locale,
           pickerTheme: DateTimePickerTheme(
             backgroundColor: backgroundColor,
@@ -189,19 +189,19 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
     this.onConfirm,
     this.theme,
     this.barrierLabel,
-    RouteSettings settings,
+    RouteSettings? settings,
   }) : super(settings: settings);
 
-  final DateTime minDateTime, maxDateTime, initialDateTime;
-  final String dateFormat;
-  final DateTimePickerLocale locale;
-  final DateTimePickerMode pickerMode;
-  final DateTimePickerTheme pickerTheme;
-  final VoidCallback onCancel;
-  final DateValueCallback onChange;
-  final DateValueCallback onConfirm;
+  final DateTime? minDateTime, maxDateTime, initialDateTime;
+  final String? dateFormat;
+  final DateTimePickerLocale? locale;
+  final DateTimePickerMode? pickerMode;
+  final DateTimePickerTheme? pickerTheme;
+  final VoidCallback? onCancel;
+  final DateValueCallback? onChange;
+  final DateValueCallback? onConfirm;
 
-  final ThemeData theme;
+  final ThemeData? theme;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -210,26 +210,26 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
   bool get barrierDismissible => true;
 
   @override
-  final String barrierLabel;
+  final String? barrierLabel;
 
   @override
   Color get barrierColor => Colors.black54;
 
-  AnimationController _animationController;
+  AnimationController? _animationController;
 
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController = BottomSheet.createAnimationController(navigator.overlay);
-    return _animationController;
+    _animationController = BottomSheet.createAnimationController(navigator!.overlay!);
+    return _animationController!;
   }
 
   @override
   Widget buildPage(
       BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-    double height = pickerTheme.pickerHeight;
-    if (pickerTheme.title != null || pickerTheme.showTitle) {
-      height += pickerTheme.titleHeight;
+    double height = pickerTheme!.pickerHeight;
+    if (pickerTheme!.title != null || pickerTheme!.showTitle) {
+      height += pickerTheme!.titleHeight;
     }
 
     Widget bottomSheet = MediaQuery.removePadding(
@@ -239,7 +239,7 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
     );
 
     if (theme != null) {
-      bottomSheet = Theme(data: theme, child: bottomSheet);
+      bottomSheet = Theme(data: theme!, child: bottomSheet);
     }
     return bottomSheet;
   }
@@ -249,29 +249,29 @@ class _DatePickerComponent extends StatelessWidget {
   final _DatePickerRoute route;
   final double _pickerHeight;
 
-  _DatePickerComponent({Key key, @required this.route, @required pickerHeight})
+  _DatePickerComponent({Key? key, required this.route, required pickerHeight})
       : this._pickerHeight = pickerHeight;
 
   @override
   Widget build(BuildContext context) {
     Widget pickerWidget = DatePickerWidget(
-      firstDate: route.minDateTime,
-      lastDate: route.maxDateTime,
-      initialDate: route.initialDateTime,
-      dateFormat: route.dateFormat,
-      locale: route.locale,
-      pickerTheme: route.pickerTheme,
+      firstDate: route.minDateTime!,
+      lastDate: route.maxDateTime!,
+      initialDate: route.initialDateTime!,
+      dateFormat: route.dateFormat!,
+      locale: route.locale!,
+      pickerTheme: route.pickerTheme!,
       onCancel: route.onCancel,
       onChange: route.onChange,
       onConfirm: route.onConfirm,
     );
     return GestureDetector(
       child: AnimatedBuilder(
-        animation: route.animation,
-        builder: (BuildContext context, Widget child) {
+        animation: route.animation!,
+        builder: (context, child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(route.animation.value, contentHeight: _pickerHeight),
+              delegate: _BottomPickerLayout(route.animation!.value, contentHeight: _pickerHeight),
               child: pickerWidget,
             ),
           );
@@ -285,7 +285,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
   _BottomPickerLayout(this.progress, {this.contentHeight});
 
   final double progress;
-  final double contentHeight;
+  final double? contentHeight;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
@@ -293,7 +293,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
       minWidth: constraints.maxWidth,
       maxWidth: constraints.maxWidth,
       minHeight: 0.0,
-      maxHeight: contentHeight,
+      maxHeight: contentHeight!,
     );
   }
 

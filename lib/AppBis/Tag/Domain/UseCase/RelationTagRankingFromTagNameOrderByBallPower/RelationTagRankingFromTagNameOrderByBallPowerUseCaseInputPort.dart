@@ -6,7 +6,7 @@ import 'RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort.dart';
 abstract class RelationTagRankingFromTagNameOrderByBallPowerUseCaseInputPort {
   Future<List<TagRankingResDto>>
       searchRelationTagRankingFromTagNameOrderByBallPower(
-          {@required String searchTag,
+          {required String searchTag,
           RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort
               outputPort});
 }

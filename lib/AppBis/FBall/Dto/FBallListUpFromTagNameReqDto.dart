@@ -12,9 +12,9 @@ class FBallListUpFromTagNameReqDto {
   double longitude;
 
   FBallListUpFromTagNameReqDto(
-      {@required this.searchTag,
-      @required this.latitude,
-      @required this.longitude});
+      {required this.searchTag,
+      required this.latitude,
+      required this.longitude});
 
   factory FBallListUpFromTagNameReqDto.fromJson(Map<String, dynamic> json) =>
       _$FBallListUpFromTagNameReqDtoFromJson(json);

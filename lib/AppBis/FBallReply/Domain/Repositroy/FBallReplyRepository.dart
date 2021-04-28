@@ -11,5 +11,5 @@ abstract class FBallReplyRepository {
   Future<PageWrap<FBallReplyResDto>> getFBallReply(FBallReplyReqDto reqDto,Pageable pageable);
   Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto);
   Future<FBallReplyResDto> deleteFBallReply(String replyUuid);
-  Future<int> getBallReviewCount(String ballUuid);
+  Future<int?> getBallReviewCount(String ballUuid);
 }

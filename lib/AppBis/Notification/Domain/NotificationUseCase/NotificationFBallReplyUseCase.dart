@@ -35,13 +35,13 @@ class NotificationFBallReplyUseCase implements NotificationUseCaseInputPort {
 
     var fcmReplyDto = FCMReplyDto.fromJson(convert);
 
-    AndroidBitmap largeIcon = null;
+    AndroidBitmap? largeIcon = null;
 
-    if(fcmReplyDto.userProfileImageUrl != null && fcmReplyDto.userProfileImageUrl.isNotEmpty){
+    if(fcmReplyDto.userProfileImageUrl != null && fcmReplyDto.userProfileImageUrl!.isNotEmpty){
       String imageFilePath = await this
           .flutterLocalNotificationsPluginAdapter
           .downloadAndSaveFile(
-          fcmReplyDto.userProfileImageUrl, "tempReplyNotiImage.png");
+          fcmReplyDto.userProfileImageUrl!, "tempReplyNotiImage.png");
       largeIcon = FilePathAndroidBitmap(imageFilePath);
     }else {
       largeIcon = DrawableResourceAndroidBitmap("app_icon");
@@ -49,14 +49,14 @@ class NotificationFBallReplyUseCase implements NotificationUseCaseInputPort {
 
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails('1', 'Comment', '댓글 답글에 관한 알림',
-            importance: Importance.Max,
-            priority: Priority.High,
+            importance: Importance.max,
+            priority: Priority.high,
             onlyAlertOnce: true,
             showWhen: false,
             largeIcon: largeIcon);
 
     NotificationDetails platformChannelSpecifics =
-        NotificationDetails(androidPlatformChannelSpecifics, null);
+        NotificationDetails(android:androidPlatformChannelSpecifics,iOS: null,macOS: null);
 
     var sendPayload = json.encode(message['data']);
 
@@ -76,7 +76,7 @@ class NotificationFBallReplyUseCase implements NotificationUseCaseInputPort {
     var fcmReplyDto = FCMReplyDto.fromJson(decodePayload);
     if(fcmReplyDto.fBallType == FBallType.IssueBall){
       Navigator.of(context).push(MaterialPageRoute(builder: (_){
-        return ID01MainPage(ballUuid: fcmReplyDto.ballUuid);
+        return ID01MainPage(ballUuid: fcmReplyDto.ballUuid!);
       }));
     }
   }

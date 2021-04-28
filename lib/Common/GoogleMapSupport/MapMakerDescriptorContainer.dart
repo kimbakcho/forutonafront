@@ -8,7 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class MapMakerDescriptorContainer {
-  Map<MapMakerDescriptorType, BitmapDescriptor> container;
+  Map<MapMakerDescriptorType, BitmapDescriptor>? container;
 
   getBitmapDescriptor(MapMakerDescriptorType key);
 
@@ -22,7 +22,7 @@ enum MapMakerDescriptorType {
 @LazySingleton(as: MapMakerDescriptorContainer)
 class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
   @override
-  Map<MapMakerDescriptorType, BitmapDescriptor> container;
+  Map<MapMakerDescriptorType, BitmapDescriptor>? container;
 
   final MapBitmapDescriptorUseCaseInputPort
       _mapBitmapDescriptorUseCaseInputPort;
@@ -30,12 +30,12 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
   MapMakerDescriptorContainerImpl(
-      {@required
+      {required
           MapBitmapDescriptorUseCaseInputPort
               mapBitmapDescriptorUseCaseInputPort,
-      @required
+      required
           FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
-      @required
+      required
           SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
       : _mapBitmapDescriptorUseCaseInputPort =
             mapBitmapDescriptorUseCaseInputPort,
@@ -48,31 +48,31 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
     var issueBallIconUnSelectNormal =
         await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
             "assets/MarkesImages/issueballicon.png", Size(140, 140));
-    container.putIfAbsent(MapMakerDescriptorType.IssueBallIconUnSelectNormal, () => issueBallIconUnSelectNormal);
+    container!.putIfAbsent(MapMakerDescriptorType.IssueBallIconUnSelectNormal, () => issueBallIconUnSelectNormal);
 
     var issueBallIconUnSelectSmall =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
         "assets/MarkesImages/issueballicon.png", Size(90, 90));
-    container.putIfAbsent(MapMakerDescriptorType.IssueBallIconUnSelectSmall, () => issueBallIconUnSelectSmall);
+    container!.putIfAbsent(MapMakerDescriptorType.IssueBallIconUnSelectSmall, () => issueBallIconUnSelectSmall);
 
     var issueBallIconSelectNormal =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
         "assets/MarkesImages/issueselectballmaker.png", Size(140,107));
-    container.putIfAbsent(MapMakerDescriptorType.IssueBallIconSelectNormal, () => issueBallIconSelectNormal);
+    container!.putIfAbsent(MapMakerDescriptorType.IssueBallIconSelectNormal, () => issueBallIconSelectNormal);
 
     var issueBallIconSelectSmall =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
         "assets/MarkesImages/issueselectballmaker.png", Size(140,107));
-    container.putIfAbsent(MapMakerDescriptorType.IssueBallIconSelectSmall, () => issueBallIconSelectSmall);
+    container!.putIfAbsent(MapMakerDescriptorType.IssueBallIconSelectSmall, () => issueBallIconSelectSmall);
 
 
 
     BitmapDescriptor userAvatarIcon =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
         "assets/MainImage/empty_user.png", Size(70, 70));
-    container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
-    container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
-    _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) async {
+    container![MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
+    container!.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
+    _signInUserInfoUseCaseInputPort.fUserInfoStream!.listen((event) async {
       await mapPutUserAvatarIcon();
     });
   }
@@ -80,33 +80,33 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
   Future mapPutUserAvatarIcon() async {
     if (await _fireBaseAuthBaseAdapter.isLogin()) {
       FUserInfoResDto userInfo =
-          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-      if(userInfo.profilePictureUrl != null && userInfo.profilePictureUrl.isNotEmpty){
+          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory()!;
+      if(userInfo.profilePictureUrl != null && userInfo.profilePictureUrl!.isNotEmpty){
         BitmapDescriptor userAvatarIcon =
         await _mapBitmapDescriptorUseCaseInputPort
-            .urlPathToAvatarBitmapDescriptor(userInfo.profilePictureUrl);
-        container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
-        container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
+            .urlPathToAvatarBitmapDescriptor(userInfo.profilePictureUrl!);
+        container![MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
+        container!.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
       }else {
         BitmapDescriptor userAvatarIcon =
         await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
             "assets/MainImage/empty_user.png", Size(70, 70));
-        container[MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
-        container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
+        container![MapMakerDescriptorType.UserAvatarIcon] = userAvatarIcon ;
+        container!.update(MapMakerDescriptorType.UserAvatarIcon, (value) => userAvatarIcon);
       }
     }else {
       BitmapDescriptor noneAvatarIcon =
       await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
           "assets/MainImage/empty_user.png", Size(70, 70));
-      container[MapMakerDescriptorType.UserAvatarIcon] = noneAvatarIcon ;
-      container.update(MapMakerDescriptorType.UserAvatarIcon, (value) => noneAvatarIcon);
+      container![MapMakerDescriptorType.UserAvatarIcon] = noneAvatarIcon ;
+      container!.update(MapMakerDescriptorType.UserAvatarIcon, (value) => noneAvatarIcon);
     }
   }
 
   getBitmapDescriptor(MapMakerDescriptorType key) {
-    if (!container.containsKey(key)) {
+    if (!container!.containsKey(key)) {
       throw Exception("don't have BitmapDescriptor in container");
     }
-    return container[key];
+    return container![key];
   }
 }

@@ -9,18 +9,18 @@ import 'package:uuid/uuid.dart';
 import 'MapSearchGeoDto.dart';
 
 class MapGeoSearchPageViewModel extends ChangeNotifier {
-  final BuildContext _context;
-  final String _initAddress;
-  final Position _initPosition;
+  final BuildContext? _context;
+  final String? _initAddress;
+  final Position? _initPosition;
 
   FocusNode searchFocusNode = FocusNode();
   TextEditingController searchTextController = new TextEditingController();
   bool hasSearchTextFocus = true;
   bool searchClearButtonActive = false;
   bool searchClearButtonShow = true;
-  String sessionToken;
+  String? sessionToken;
 
-  GooglePlace _googlePlace;
+  GooglePlace? _googlePlace;
   List<AutocompletePrediction> predictions = [];
 
   MapGeoSearchPageViewModel(
@@ -33,20 +33,20 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
 
   init() async {
     searchTextController.addListener(onSearchTextListener);
-    searchTextController.text = _initAddress;
+    searchTextController.text = _initAddress!;
   }
 
   onPredictionTab(AutocompletePrediction prediction) async {
-    DetailsResponse detailsResponse = await _googlePlace.details
-        .get(prediction.placeId, language: "ko", sessionToken: sessionToken);
+    DetailsResponse? detailsResponse = await _googlePlace!.details
+        .get(prediction.placeId!, language: "ko", sessionToken: sessionToken);
     MapSearchGeoDto mapSearchGeoDto = MapSearchGeoDto();
-    mapSearchGeoDto.descriptionAddress = prediction.description;
+    mapSearchGeoDto.descriptionAddress = prediction.description!;
     mapSearchGeoDto.latLng = LatLng(
-        detailsResponse.result.geometry.location.lat,
-        detailsResponse.result.geometry.location.lng);
-    mapSearchGeoDto.address = detailsResponse.result.adrAddress;
+        detailsResponse!.result!.geometry!.location!.lat!,
+        detailsResponse.result!.geometry!.location!.lng!);
+    mapSearchGeoDto.address = detailsResponse.result!.adrAddress!;
     searchTextController.removeListener(onSearchTextListener);
-    Navigator.of(_context).pop(mapSearchGeoDto);
+    Navigator.of(_context!).pop(mapSearchGeoDto);
   }
 
   onSearchTextListener() async {
@@ -54,13 +54,13 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
       predictions = [];
     } else {
       Component kr = Component("country", "kr");
-      AutocompleteResponse response = await _googlePlace.autocomplete.get(
+      AutocompleteResponse? response = await _googlePlace!.autocomplete.get(
           searchTextController.text,
           language: "ko",
           components: [kr],
-          origin: LatLon(_initPosition.latitude, _initPosition.longitude),
-          location: LatLon(_initPosition.latitude, _initPosition.longitude));
-      predictions = response.predictions;
+          origin: LatLon(_initPosition!.latitude!, _initPosition!.longitude!),
+          location: LatLon(_initPosition!.latitude!, _initPosition!.longitude!));
+      predictions = response!.predictions!;
     }
     notifyListeners();
   }
@@ -111,7 +111,7 @@ class MapGeoSearchPageViewModel extends ChangeNotifier {
           msg: "검색결과가 없습니다.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);

@@ -8,8 +8,8 @@ abstract class GeoLocationUtilBasicUseCaseInputPort {
   Future<Position> getLastKnowPonePosition();
   Future<String> getPositionAddress(Position searchPosition);
   String replacePlacemarkToAddresStr(Placemark placemark);
-  Position getCurrentWithLastPositionInMemory();
-  String getCurrentWithLastAddressInMemory();
+  Position? getCurrentWithLastPositionInMemory();
+  String? getCurrentWithLastAddressInMemory();
   Stream<Position> getUserPositionStream();
   startStreamCurrentPosition();
 }

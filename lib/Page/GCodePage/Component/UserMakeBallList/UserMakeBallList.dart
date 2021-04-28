@@ -8,29 +8,29 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class UserMakeBallList extends StatelessWidget {
-  final String userUid;
+  final String? userUid;
 
-  const UserMakeBallList({Key key, this.userUid}) : super(key: key);
+  const UserMakeBallList({Key? key, this.userUid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => MakeBallListViewModel(BallListMediatorImpl(),userUid),
+      create: (_) => MakeBallListViewModel(BallListMediatorImpl(),userUid!),
       child: Consumer<MakeBallListViewModel>(
         builder: (_, model, child) {
           return Container(
             child: ListView.builder(
               controller: PageScrollController(
-                  scrollController: ScrollController(),
+                  scrollController: PageController(),
                   onNextPage: model.onNextPage,
                   onRefreshFirst: model.onRefreshFirst).scrollController,
                 shrinkWrap: true,
-                itemCount: model.ballListMediator.itemList.length,
+                itemCount: model.ballListMediator.itemList!.length,
                 padding: EdgeInsets.all(0),
                 itemBuilder: (_, index) {
                   return Container(
                     margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
-                    key: Key(model.ballListMediator.itemList[index].ballUuid),
+                    key: Key(model.ballListMediator.itemList![index].ballUuid!),
                     child: ListUpBallWidgetFactory.getBallWidget(
                         index, model.ballListMediator, BallStyle.Style2,
                         boxDecoration: BoxDecoration(

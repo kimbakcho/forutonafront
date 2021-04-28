@@ -3,10 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class ID001Title extends StatelessWidget {
-  final String ballTitle;
-  final String hits;
-  final String makeTime;
-  const ID001Title({Key key,
+  final String? ballTitle;
+  final String? hits;
+  final String? makeTime;
+  const ID001Title({Key? key,
     this.ballTitle,
     this.hits,
     this.makeTime,
@@ -34,7 +34,7 @@ class ID001Title extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width,
             child: Text(
-              ballTitle,
+              ballTitle!,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.notoSans(
@@ -48,7 +48,7 @@ class ID001Title extends StatelessWidget {
           ),
           Container(
             child: Text(
-              "조회수 "+hits+"회 • 등록일자 "+makeTime,
+              "조회수 "+hits!+"회 • 등록일자 "+makeTime!,
               style: GoogleFonts.notoSans(
                 fontSize: 12,
                 color: const Color(0xff78849e),

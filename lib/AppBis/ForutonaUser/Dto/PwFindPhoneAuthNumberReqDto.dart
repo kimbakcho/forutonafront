@@ -6,7 +6,7 @@ part 'PwFindPhoneAuthNumberReqDto.g.dart';
 
 @JsonSerializable()
 class PwFindPhoneAuthNumberReqDto extends PhoneAuthNumberReqDto{
-  String email;
+  String? email;
 
   PwFindPhoneAuthNumberReqDto();
   factory PwFindPhoneAuthNumberReqDto.fromJson(Map<String, dynamic> json) => _$PwFindPhoneAuthNumberReqDtoFromJson(json);

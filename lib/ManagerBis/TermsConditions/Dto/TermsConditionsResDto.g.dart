@@ -9,9 +9,9 @@ part of 'TermsConditionsResDto.dart';
 TermsConditionsResDto _$TermsConditionsResDtoFromJson(
     Map<String, dynamic> json) {
   return TermsConditionsResDto()
-    ..idx = json['idx'] as int
-    ..termsName = json['termsName'] as String
-    ..termsContent = json['termsContent'] as String
+    ..idx = json['idx'] as int?
+    ..termsName = json['termsName'] as String?
+    ..termsContent = json['termsContent'] as String?
     ..modifyDate = json['modifyDate'] == null
         ? null
         : DateTime.parse(json['modifyDate'] as String)

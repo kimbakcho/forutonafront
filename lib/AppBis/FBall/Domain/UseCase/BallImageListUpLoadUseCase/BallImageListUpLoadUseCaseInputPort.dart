@@ -13,7 +13,7 @@ class BallImageListUpLoadUseCase implements BallImageListUpLoadUseCaseInputPort 
 
   final FBallRepository _fBallRepository;
 
-  BallImageListUpLoadUseCase({FBallRepository fBallRepository})
+  BallImageListUpLoadUseCase({required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override
@@ -23,8 +23,8 @@ class BallImageListUpLoadUseCase implements BallImageListUpLoadUseCaseInputPort 
     var fBallImageUploadResDto =
         await _fBallRepository.ballImageUpload(images: list);
 
-    for (int i = 0; i < fBallImageUploadResDto.urls.length; i++) {
-      refSrcList[i].imageUrl = fBallImageUploadResDto.urls[i];
+    for (int i = 0; i < fBallImageUploadResDto.urls!.length; i++) {
+      refSrcList[i].imageUrl = fBallImageUploadResDto.urls![i];
     }
 
     return refSrcList;

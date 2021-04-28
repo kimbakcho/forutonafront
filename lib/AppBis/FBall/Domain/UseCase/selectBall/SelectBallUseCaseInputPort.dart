@@ -14,11 +14,11 @@ class SelectBallUseCase implements SelectBallUseCaseInputPort{
 
   final FBallRepository _fBallRepository;
 
-  SelectBallUseCase({FBallRepository fBallRepository})
+  SelectBallUseCase({required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override
-  Future<FBallResDto> selectBall(String ballUuid,{SelectBallUseCaseOutputPort outputPort}) async {
+  Future<FBallResDto> selectBall(String ballUuid,{SelectBallUseCaseOutputPort? outputPort}) async {
     FBallResDto fBallResDto = await _fBallRepository.selectBall(ballUuid);
     if (outputPort != null) {
       outputPort.onSelectBall(fBallResDto);

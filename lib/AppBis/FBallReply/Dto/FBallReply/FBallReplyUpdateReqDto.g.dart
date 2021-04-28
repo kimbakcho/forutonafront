@@ -9,8 +9,8 @@ part of 'FBallReplyUpdateReqDto.dart';
 FBallReplyUpdateReqDto _$FBallReplyUpdateReqDtoFromJson(
     Map<String, dynamic> json) {
   return FBallReplyUpdateReqDto()
-    ..replyUuid = json['replyUuid'] as String
-    ..replyText = json['replyText'] as String;
+    ..replyUuid = json['replyUuid'] as String?
+    ..replyText = json['replyText'] as String?;
 }
 
 Map<String, dynamic> _$FBallReplyUpdateReqDtoToJson(

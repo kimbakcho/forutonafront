@@ -8,7 +8,7 @@ part of 'SearchHistory.dart';
 
 SearchHistory _$SearchHistoryFromJson(Map<String, dynamic> json) {
   return SearchHistory(
-    searchText: json['searchText'] as String,
+    searchText: json['searchText'] as String?,
     searchTime: json['searchTime'] == null
         ? null
         : DateTime.parse(json['searchTime'] as String),

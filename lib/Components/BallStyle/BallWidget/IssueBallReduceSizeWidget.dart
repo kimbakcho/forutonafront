@@ -22,13 +22,13 @@ import 'ReduceSizeImageWidget.dart';
 import 'ReduceSizeTopBar.dart';
 
 class IssueBallReduceSizeWidget extends StatelessWidget {
-  final BallDisPlayUseCase issueBallDisPlayUseCase;
-  final BallListMediator ballListMediator;
-  final int index;
-  final BoxDecoration boxDecoration;
+  final BallDisPlayUseCase? issueBallDisPlayUseCase;
+  final BallListMediator? ballListMediator;
+  final int? index;
+  final BoxDecoration? boxDecoration;
 
   const IssueBallReduceSizeWidget(
-      {Key key,
+      {Key? key,
       this.ballListMediator,
       this.index,
       this.issueBallDisPlayUseCase,
@@ -42,9 +42,9 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
               sl(),
               sl(),
               context: context,
-              ballListMediator: ballListMediator,
-              index: index,
-              issueBallDisPlayUseCase: issueBallDisPlayUseCase,
+              ballListMediator: ballListMediator!,
+              index: index!,
+              issueBallDisPlayUseCase: issueBallDisPlayUseCase!,
             ),
         child: Consumer<IssueBallReduceSizeWidgetViewModel>(
             builder: (_, model, __) {
@@ -53,21 +53,19 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
           }
           return Container(
             decoration: BoxDecoration(
-              borderRadius: boxDecoration.borderRadius,
-              border: boxDecoration.border,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.16),
-                    offset: Offset(0,4),
-                    blurRadius: 16
-                )
-              ]
-            ),
+                borderRadius: boxDecoration!.borderRadius,
+                border: boxDecoration!.border,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.16),
+                      offset: Offset(0, 4),
+                      blurRadius: 16)
+                ]),
             child: Material(
                 color:
-                    boxDecoration != null ? boxDecoration.color : Colors.white,
+                    boxDecoration != null ? boxDecoration!.color : Colors.white,
                 borderRadius:
-                    boxDecoration != null ? boxDecoration.borderRadius : null,
+                    boxDecoration != null ? boxDecoration!.borderRadius : null,
                 child: InkWell(
                     onTap: () {
                       model.moveToDetailPage();
@@ -79,7 +77,7 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
                             child: Column(children: [
                               ReduceSizeTopBar(
                                   issueBallDisPlayUseCase:
-                                      model.issueBallDisPlayUseCase),
+                                      model.issueBallDisPlayUseCase!),
                               SizedBox(
                                 height: 11,
                               ),
@@ -88,22 +86,22 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
                                     child: Column(children: [
                                   ReduceSizeBallTitleWidget(
                                       issueBallDisPlayUseCase:
-                                          model.issueBallDisPlayUseCase),
+                                          model.issueBallDisPlayUseCase!),
                                   SizedBox(
                                     height: 3,
                                   ),
                                   ReduceSizeAddressBar(
                                       issueBallDisPlayUseCase:
-                                          model.issueBallDisPlayUseCase)
+                                          model.issueBallDisPlayUseCase!)
                                 ])),
                                 Container(
                                   width: 70,
                                   height: 53,
-                                  child: model.issueBallDisPlayUseCase
+                                  child: model.issueBallDisPlayUseCase!
                                           .isMainPicture()
                                       ? ReduceSizeImageWidget(
                                           issueBallDisPlayUseCase:
-                                              model.issueBallDisPlayUseCase)
+                                              model.issueBallDisPlayUseCase!)
                                       : Container(),
                                 )
                               ]),
@@ -137,34 +135,34 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
 }
 
 class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
-  BallDisPlayUseCase issueBallDisPlayUseCase;
-  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
-  final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
+  BallDisPlayUseCase? issueBallDisPlayUseCase;
+  final SelectBallUseCaseInputPort? _selectBallUseCaseInputPort;
+  final TagFromBallUuidUseCaseInputPort? _tagFromBallUuidUseCaseInputPort;
 
   IssueBallReduceSizeWidgetViewModel(
       this._selectBallUseCaseInputPort, this._tagFromBallUuidUseCaseInputPort,
       {this.issueBallDisPlayUseCase,
-      BuildContext context,
-      BallListMediator ballListMediator,
-      int index})
+      required BuildContext context,
+      required BallListMediator ballListMediator,
+      required int index})
       : super(context, ballListMediator, index, sl(), sl(), sl(), sl(), sl());
 
   bool get isFinishBall {
-    return ballListMediator.itemList[index].activationTime
+    return ballListMediator!.itemList![index!].activationTime!
         .isBefore(DateTime.now());
   }
 
   bool get isBallDelete {
-    return ballListMediator.itemList[index].ballDeleteFlag;
+    return ballListMediator!.itemList![index!].ballDeleteFlag;
   }
 
   @override
   onReFreshBall() async {
-    ballListMediator.itemList[index] = await _selectBallUseCaseInputPort
-        .selectBall(ballListMediator.itemList[index].ballUuid);
+    ballListMediator!.itemList![index!] = await _selectBallUseCaseInputPort!
+        .selectBall(ballListMediator!.itemList![index!].ballUuid!);
 
     issueBallDisPlayUseCase =
-        IssueBallDisPlayUseCase(fBallResDto: ballListMediator.itemList[index]);
+        IssueBallDisPlayUseCase(fBallResDto: ballListMediator!.itemList![index!]);
     ballWidgetKey = Uuid().v4();
     notifyListeners();
   }
@@ -172,19 +170,19 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
   @override
   Widget detailPage() {
     return ID01MainPage(
-      ballUuid: ballListMediator.itemList[index].ballUuid,
-      fBallResDto: ballListMediator.itemList[index],
+      ballUuid: ballListMediator!.itemList![index!].ballUuid!,
+      fBallResDto: ballListMediator!.itemList![index!],
     );
   }
 
   @override
   Future<void> onModifyBall(BuildContext context) async {
-    var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-        ballUuid: ballListMediator.itemList[index].ballUuid);
+    var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
+        ballUuid: ballListMediator!.itemList![index!].ballUuid!);
     var result =
         await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
-        preSetBallResDto: ballListMediator.itemList[index],
+        preSetBallResDto: ballListMediator!.itemList![index!],
         im001mode: IM001Mode.modify,
         preSetFBallTagResDtos: tags,
       );

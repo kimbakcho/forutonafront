@@ -5,9 +5,9 @@ import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReduceSizeTopBar extends StatelessWidget {
-  final BallDisPlayUseCase issueBallDisPlayUseCase;
+  final BallDisPlayUseCase? issueBallDisPlayUseCase;
 
-  const ReduceSizeTopBar({Key key, this.issueBallDisPlayUseCase})
+  const ReduceSizeTopBar({Key? key, this.issueBallDisPlayUseCase})
       : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class ReduceSizeTopBar extends StatelessWidget {
       ),
       Expanded(
         child: Container(
-          child: Text(issueBallDisPlayUseCase.displayMakeTime(),
+          child: Text(issueBallDisPlayUseCase!.displayMakeTime(),
               style: GoogleFonts.notoSans(
                 fontSize: 12,
                 color: const Color(0xff78849e),
@@ -40,7 +40,7 @@ class ReduceSizeTopBar extends StatelessWidget {
         width: 10,
       ),
       Container(
-          child: Text(issueBallDisPlayUseCase.ballPower()+" BP",
+          child: Text(issueBallDisPlayUseCase!.ballPower()+" BP",
               style: GoogleFonts.notoSans(
                 fontSize: 12,
                 color: const Color(0xfff841d9),

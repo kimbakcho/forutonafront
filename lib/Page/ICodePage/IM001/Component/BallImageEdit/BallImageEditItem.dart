@@ -9,11 +9,11 @@ import 'BallImageItem.dart';
 
 class BallImageEditItem extends StatelessWidget {
 
-  final BallImageItem ballImageItem;
+  final BallImageItem? ballImageItem;
 
-  final Function(BallImageItem ballImageItem) onCloseTap;
+  final Function(BallImageItem ballImageItem)? onCloseTap;
 
-  const BallImageEditItem({Key key, this.ballImageItem, this.onCloseTap}) : super(key: key);
+  const BallImageEditItem({Key? key, this.ballImageItem, this.onCloseTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class BallImageEditItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     image: DecorationImage(
-                      image: ballImageItem.imageProvider,
+                      image: ballImageItem!.imageProvider!,
                       fit: BoxFit.cover
                     )
                   ),
@@ -48,7 +48,7 @@ class BallImageEditItem extends StatelessWidget {
                       height: 14,
                       border: Border.all(color: Colors.black,width: 1.0),
                       onTap: (){
-                        onCloseTap(ballImageItem);
+                        onCloseTap!(ballImageItem!);
                       },
                       icon: Icon(Icons.close,color: Colors.black,size: 10,),
                     ))

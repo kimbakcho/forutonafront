@@ -9,11 +9,11 @@ part of 'UserAlarmConfigUpdateReqDto.dart';
 UserAlarmConfigUpdateReqDto _$UserAlarmConfigUpdateReqDtoFromJson(
     Map<String, dynamic> json) {
   return UserAlarmConfigUpdateReqDto()
-    ..alarmChatMessage = json['alarmChatMessage'] as bool
-    ..alarmContentReply = json['alarmContentReply'] as bool
-    ..alarmReplyAndReply = json['alarmReplyAndReply'] as bool
-    ..alarmFollowNewContent = json['alarmFollowNewContent'] as bool
-    ..alarmSponNewContent = json['alarmSponNewContent'] as bool;
+    ..alarmChatMessage = json['alarmChatMessage'] as bool?
+    ..alarmContentReply = json['alarmContentReply'] as bool?
+    ..alarmReplyAndReply = json['alarmReplyAndReply'] as bool?
+    ..alarmFollowNewContent = json['alarmFollowNewContent'] as bool?
+    ..alarmSponNewContent = json['alarmSponNewContent'] as bool?;
 }
 
 Map<String, dynamic> _$UserAlarmConfigUpdateReqDtoToJson(

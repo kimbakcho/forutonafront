@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
@@ -15,15 +14,15 @@ import 'package:forutonafront/Page/MapGeoPage/MapSearchGeoDto.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ICodeMainPageViewModel extends ChangeNotifier {
-  final BuildContext context;
-  final GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCase;
-  final MapScreenPositionUseCaseInputPort _mapScreenPositionUseCaseInputPort;
+  final BuildContext? context;
+  final GeoLocationUtilForeGroundUseCaseInputPort? _geoLocationUtilUseCase;
+  final MapScreenPositionUseCaseInputPort? _mapScreenPositionUseCaseInputPort;
 
   bool _flagIdleIgnore = true;
   int _pageCount = 0;
   int _ballPageLimitSize = 20;
   bool _moveFromMapBallSelect = false;
-  CameraPosition currentMapPosition;
+  CameraPosition? currentMapPosition;
 
   String currentAddress = "";
   final Set<Marker> markers = {};
@@ -38,7 +37,7 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   bool _isLoading = false;
 
-  get isLoading {
+  bool get isLoading {
     return _isLoading;
   }
 
@@ -51,45 +50,44 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   ICodeMainPageViewModel({
     this.context,
-    @required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCase,
-    @required
+    required GeoLocationUtilForeGroundUseCaseInputPort geoLocationUtilUseCase,
+    required
         MapScreenPositionUseCaseInputPort mapScreenPositionUseCaseInputPort,
   })  : _geoLocationUtilUseCase = geoLocationUtilUseCase,
         _mapScreenPositionUseCaseInputPort = mapScreenPositionUseCaseInputPort {
     setGoogleInitCameraPosition();
     bottomPageController.addListener(onPageControllerListener);
     currentAddress =
-        _geoLocationUtilUseCase.getCurrentWithLastAddressInMemory();
-    FlutterStatusbarcolor.setStatusBarColor(Colors.white.withOpacity(0.6));
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+        _geoLocationUtilUseCase!.getCurrentWithLastAddressInMemory()!;
+
   }
 
   CameraPosition setGoogleInitCameraPosition() {
     return currentMapPosition = CameraPosition(
         target: LatLng(
-            _geoLocationUtilUseCase
-                .getCurrentWithLastPositionInMemory()
-                .latitude,
-            _geoLocationUtilUseCase
-                .getCurrentWithLastPositionInMemory()
-                .longitude),
+            _geoLocationUtilUseCase!
+                .getCurrentWithLastPositionInMemory()!
+                .latitude!,
+            _geoLocationUtilUseCase!
+                .getCurrentWithLastPositionInMemory()!
+                .longitude!),
         zoom: initMapZoom);
   }
 
   onPlaceSearchTap() async {
-    MapSearchGeoDto mapSearchGeoDto = await Navigator.of(context).push(
+    MapSearchGeoDto mapSearchGeoDto = await Navigator.of(context!).push(
         MaterialPageRoute(
             settings: RouteSettings(name: "MapGeoSearchPage"),
             builder: (_) => MapGeoSearchPage(
                 currentAddress,
                 Position(
-                    latitude: currentMapPosition.target.latitude,
-                    longitude: currentMapPosition.target.longitude))));
+                    latitude: currentMapPosition!.target.latitude,
+                    longitude: currentMapPosition!.target.longitude))));
     final GoogleMapController controller = await _googleMapController.future;
     _flagIdleIgnore = true;
-    currentAddress = mapSearchGeoDto.descriptionAddress;
+    currentAddress = mapSearchGeoDto.descriptionAddress!;
     await controller.moveCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: mapSearchGeoDto.latLng, zoom: 14)));
+        CameraPosition(target: mapSearchGeoDto.latLng!, zoom: 14)));
     _flagIdleIgnore = false;
     Future.delayed(Duration(seconds: 1), () async {
       await onRefreshBall();
@@ -108,8 +106,8 @@ class ICodeMainPageViewModel extends ChangeNotifier {
       notifyListeners();
       var zoomLevel = 14.0;
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(listUpBalls[index].ballResDto.latitude,
-              listUpBalls[index].ballResDto.longitude),
+          target: LatLng(listUpBalls[index].ballResDto.latitude!,
+              listUpBalls[index].ballResDto.longitude!),
           zoom: zoomLevel)));
     }
   }
@@ -144,10 +142,10 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   onMapIdle() async {
     if (!_flagIdleIgnore) {
-      currentAddress = await _geoLocationUtilUseCase.getPositionAddress(
+      currentAddress = await _geoLocationUtilUseCase!.getPositionAddress(
           Position(
-              latitude: currentMapPosition.target.latitude,
-              longitude: currentMapPosition.target.longitude));
+              latitude: currentMapPosition!.target.latitude,
+              longitude: currentMapPosition!.target.longitude));
       notifyListeners();
     }
   }
@@ -157,9 +155,9 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
     // await _geoLocationUtilUseCase.useGpsReq(context);
     var currentLocation =
-        await _geoLocationUtilUseCase.getCurrentWithLastPosition();
+        await _geoLocationUtilUseCase!.getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
         zoom: 14.4746)));
   }
 
@@ -192,20 +190,20 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
     final GoogleMapController controller = await _googleMapController.future;
 
-    final RenderBox mapRenderBoxRed =
-        mapContainerGlobalKey.currentContext.findRenderObject();
+    final RenderBox? mapRenderBoxRed =
+        mapContainerGlobalKey.currentContext!.findRenderObject() as RenderBox?;
 
     LatLng southwestPoint =
-        await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
-            mapRenderBoxRed,
+        await _mapScreenPositionUseCaseInputPort!.mapScreenOffsetToLatLng(
+            mapRenderBoxRed!,
             controller,
             16,
-            MediaQuery.of(context).size.height - 180);
+            MediaQuery.of(context!).size.height - 180);
     LatLng northeastPoint =
-        await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
+        await _mapScreenPositionUseCaseInputPort!.mapScreenOffsetToLatLng(
             mapRenderBoxRed,
             controller,
-            MediaQuery.of(context).size.width - 16,
+            MediaQuery.of(context!).size.width - 16,
             108);
 
     FSorts fSort = FSorts();
@@ -244,7 +242,7 @@ class ICodeMainPageViewModel extends ChangeNotifier {
 
   drawBallMarker(List<FBallResForMarker> listUpBalls) async {
     Completer<Set<Marker>> _markerCompleter = Completer();
-    MakerSupportStyle1(listUpBalls, _markerCompleter).generate(context);
+    MakerSupportStyle1(listUpBalls, _markerCompleter).generate(context!);
     Set<Marker> markers = await _markerCompleter.future;
     this.markers.clear();
     this.markers.addAll(markers);
@@ -291,7 +289,5 @@ class ICodeMainPageViewModel extends ChangeNotifier {
   @override
   void dispose() {
     super.dispose();
-    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
   }
 }

@@ -7,35 +7,33 @@ part 'FBallReply.g.dart';
 
 @JsonSerializable()
 class FBallReply {
-
-
-  String replyUuid;
-  String ballUuid;
-  String uid;
-  int replyNumber;
-  int replySort;
-  int replyDepth;
-  String _replyText;
-  DateTime replyUploadDateTime;
-  DateTime replyUpdateDateTime;
-  String _userNickName;
-  String _userProfilePictureUrl;
-  bool deleteFlag;
-  int subReplyCount;
+  String? replyUuid;
+  String? ballUuid;
+  String? uid;
+  int? replyNumber;
+  int? replySort;
+  int? replyDepth;
+  String? _replyText;
+  DateTime? replyUploadDateTime;
+  DateTime? replyUpdateDateTime;
+  String? _userNickName;
+  String? _userProfilePictureUrl;
+  bool? deleteFlag;
+  int? subReplyCount;
 
   String get replyText{
-    if(deleteFlag){
+    if(deleteFlag!){
       return "삭제됨";
     }else {
-      return _replyText;
+      return _replyText!;
     }
   }
 
   get replyUploadDateTimeString {
-    if(deleteFlag){
+    if(deleteFlag!){
       return "";
     }else {
-      return TimeDisplayUtil.getCalcToStrFromNow(replyUploadDateTime);
+      return TimeDisplayUtil.getCalcToStrFromNow(replyUploadDateTime!);
     }
 
 
@@ -47,10 +45,10 @@ class FBallReply {
 
 
   String get userNickName {
-    if(deleteFlag){
+    if(deleteFlag!){
       return "";
     }else {
-      return _userNickName;
+      return _userNickName!;
     }
   }
 
@@ -59,15 +57,15 @@ class FBallReply {
   }
 
 
-  String get userProfilePictureUrl {
-    if(deleteFlag){
+  String? get userProfilePictureUrl {
+    if(deleteFlag!){
       return null;
     }else {
       return _userProfilePictureUrl;
     }
   }
 
-  set userProfilePictureUrl(String value) {
+  set userProfilePictureUrl(String? value) {
     _userProfilePictureUrl = value;
   }
 

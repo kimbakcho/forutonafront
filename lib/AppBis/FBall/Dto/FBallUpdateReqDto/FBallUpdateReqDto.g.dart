@@ -8,18 +8,16 @@ part of 'FBallUpdateReqDto.dart';
 
 FBallUpdateReqDto _$FBallUpdateReqDtoFromJson(Map<String, dynamic> json) {
   return FBallUpdateReqDto()
-    ..ballUuid = json['ballUuid'] as String
-    ..longitude = (json['longitude'] as num)?.toDouble()
-    ..latitude = (json['latitude'] as num)?.toDouble()
-    ..ballName = json['ballName'] as String
+    ..ballUuid = json['ballUuid'] as String?
+    ..longitude = (json['longitude'] as num?)?.toDouble()
+    ..latitude = (json['latitude'] as num?)?.toDouble()
+    ..ballName = json['ballName'] as String?
     ..ballType = _$enumDecodeNullable(_$FBallTypeEnumMap, json['ballType'])
-    ..placeAddress = json['placeAddress'] as String
-    ..description = json['description'] as String
-    ..tags = (json['tags'] as List)
-        ?.map((e) => e == null
-            ? null
-            : TagInsertReqDto.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..placeAddress = json['placeAddress'] as String?
+    ..description = json['description'] as String?
+    ..tags = (json['tags'] as List<dynamic>?)
+        ?.map((e) => TagInsertReqDto.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$FBallUpdateReqDtoToJson(FBallUpdateReqDto instance) =>
@@ -34,36 +32,41 @@ Map<String, dynamic> _$FBallUpdateReqDtoToJson(FBallUpdateReqDto instance) =>
       'tags': instance.tags,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$FBallTypeEnumMap = {

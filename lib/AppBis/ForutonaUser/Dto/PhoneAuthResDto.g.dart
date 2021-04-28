@@ -8,9 +8,9 @@ part of 'PhoneAuthResDto.dart';
 
 PhoneAuthResDto _$PhoneAuthResDtoFromJson(Map<String, dynamic> json) {
   return PhoneAuthResDto()
-    ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedDialCode = json['internationalizedDialCode'] as String
-    ..isoCode = json['isoCode'] as String
+    ..phoneNumber = json['phoneNumber'] as String?
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String?
+    ..isoCode = json['isoCode'] as String?
     ..authTime = json['authTime'] == null
         ? null
         : DateTime.parse(json['authTime'] as String)

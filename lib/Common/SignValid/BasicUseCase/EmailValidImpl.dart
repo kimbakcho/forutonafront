@@ -1,11 +1,11 @@
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 
-class EmailValidImpl implements SignValid{
+class EmailValidImpl implements SignValid {
   bool _isTextError = false;
   String _errorText = "";
 
   @override
-  bool hasValidTry = false;
+  bool? hasValidTry = false;
 
   @override
   String errorText() {
@@ -18,9 +18,9 @@ class EmailValidImpl implements SignValid{
   }
 
   @override
-  Future<void> valid(String email,{String optionValidText}) async {
+  Future<void> valid(String email, {String? optionValidText}) async {
     hasValidTry = true;
-     _isTextError = true;
+    _isTextError = true;
     _errorText = "";
     if (!_isEmailTypeValid(email)) {
       _isTextError = true;
@@ -32,14 +32,11 @@ class EmailValidImpl implements SignValid{
   }
 
   bool _isEmailTypeValid(String emailId) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = new RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
     if (!regex.hasMatch(emailId))
       return false;
     else
       return true;
   }
-
-
 }

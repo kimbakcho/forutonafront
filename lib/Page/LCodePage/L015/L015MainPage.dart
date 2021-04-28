@@ -87,15 +87,15 @@ class L015MainPage extends StatelessWidget {
 }
 
 class L015MainPageViewModel extends ChangeNotifier {
-  PwInputAndCheckComponentController _pwInputAndCheckComponentController;
+  PwInputAndCheckComponentController? _pwInputAndCheckComponentController;
 
   String currentPw = "";
 
   String currentPwCheck = "";
 
-  final PwFindPhoneUseCaseInputPort _pwFindPhoneUseCaseInputPort;
+  final PwFindPhoneUseCaseInputPort? _pwFindPhoneUseCaseInputPort;
 
-  final PwChangeFromPhoneAuthReqDto _pwChangeFromPhoneAuthReqDto;
+  final PwChangeFromPhoneAuthReqDto? _pwChangeFromPhoneAuthReqDto;
 
   L015MainPageViewModel(
       this._pwFindPhoneUseCaseInputPort, this._pwChangeFromPhoneAuthReqDto) {
@@ -112,13 +112,13 @@ class L015MainPageViewModel extends ChangeNotifier {
   }
 
   void _tryPwChange(BuildContext context) async {
-    bool result = await _pwInputAndCheckComponentController.valid();
+    bool result = await _pwInputAndCheckComponentController!.valid();
     if (result) {
-      _pwChangeFromPhoneAuthReqDto.password =
-          _pwInputAndCheckComponentController.getPwValue();
-      var pwChangeFromPhoneAuthResDto = await _pwFindPhoneUseCaseInputPort
-          .phonePwChange(_pwChangeFromPhoneAuthReqDto);
-      if (!pwChangeFromPhoneAuthResDto.errorFlag) {
+      _pwChangeFromPhoneAuthReqDto!.password =
+          _pwInputAndCheckComponentController!.getPwValue();
+      var pwChangeFromPhoneAuthResDto = await _pwFindPhoneUseCaseInputPort!
+          .phonePwChange(_pwChangeFromPhoneAuthReqDto!);
+      if (!pwChangeFromPhoneAuthResDto.errorFlag!) {
         showGeneralDialog(
             context: context,
             pageBuilder: (context, animation, secondaryAnimation) {

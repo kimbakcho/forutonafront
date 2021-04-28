@@ -11,19 +11,19 @@ class RelationTagRankingFromTagNameOrderByBallPowerUseCase
   TagRepository _tagRepository;
 
   RelationTagRankingFromTagNameOrderByBallPowerUseCase(
-      {@required TagRepository tagRepository})
+      {required TagRepository tagRepository})
       : _tagRepository = tagRepository;
 
   @override
   Future<List<TagRankingResDto>>
       searchRelationTagRankingFromTagNameOrderByBallPower(
-          {@required String searchTag,
-          RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort
+          {required String searchTag,
+          RelationTagRankingFromTagNameOrderByBallPowerUseCaseOutputPort?
               outputPort}) async {
     List<TagRankingResDto> tagRankingResDots = await _tagRepository
         .getRelationTagRankingFromTagNameOrderByBallPower(searchTag);
 
-    outputPort.onRelationTagRankingFromTagNameOrderByBallPower(tagRankingResDots);
+    outputPort!.onRelationTagRankingFromTagNameOrderByBallPower(tagRankingResDots);
     return tagRankingResDots;
   }
 }

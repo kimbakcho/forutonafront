@@ -9,15 +9,15 @@ import '../KCodeScrollerControllerBtn.dart';
 import '../KRankingTagListWidget.dart';
 
 class K00100MainPage extends StatelessWidget {
-  final String searchText;
-  final SimpleUserInfoCollectListener simpleUserInfoCollectListener;
-  final SimpleBallNameCollectListener simpleBallNameCollectListener;
-  final TagContainBallCollectListener tagContainBallCollectListener;
-  final ScrollController mainScroller;
-  final TabController tabController;
+  final String? searchText;
+  final SimpleUserInfoCollectListener? simpleUserInfoCollectListener;
+  final SimpleBallNameCollectListener? simpleBallNameCollectListener;
+  final TagContainBallCollectListener? tagContainBallCollectListener;
+  final ScrollController? mainScroller;
+  final TabController? tabController;
 
   const K00100MainPage(
-      {Key key,
+      {Key? key,
       this.searchText,
       this.simpleUserInfoCollectListener,
       this.simpleBallNameCollectListener,
@@ -38,7 +38,7 @@ class K00100MainPage extends StatelessWidget {
                       shrinkWrap: true,
                       padding: EdgeInsets.all(0),
                       children: [
-                        KRankingTagListWidget(searchText: searchText),
+                        KRankingTagListWidget(searchText: searchText!),
                         SizedBox(height: 16),
                         SimpleUserInfoCollectWidget(
                           searchText: searchText,
@@ -47,9 +47,9 @@ class K00100MainPage extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                         SimpleBallNameCollectWidget(
-                          searchText: searchText,
+                          searchText: searchText!,
                           simpleBallNameCollectListener:
-                              simpleBallNameCollectListener,
+                              simpleBallNameCollectListener!,
                         ),
                         SizedBox(height: 16),
                         TagContainBallCollectWidget(
@@ -62,11 +62,11 @@ class K00100MainPage extends StatelessWidget {
                 ),
                 KCodeScrollerControllerBtn(
                   kCodeScrollerController: model.kCodeScrollerController,
-                  mainScroller: model.mainScroller,
+                  mainScroller: model.mainScroller!,
                 )
               ]),
               onNotification: (scrollNotification) {
-                if (tabController.index == 0) {
+                if (tabController!.index == 0) {
                   if (scrollNotification is ScrollEndNotification) {
                     model.onEndScroller(scrollNotification);
                   }
@@ -78,13 +78,13 @@ class K00100MainPage extends StatelessWidget {
 }
 
 class K00100MainPageViewModel extends ChangeNotifier {
-  ScrollController controller;
+  ScrollController? controller;
 
   KCodeScrollerController kCodeScrollerController = KCodeScrollerController();
 
-  final ScrollController mainScroller;
+  final ScrollController? mainScroller;
 
-  K00100MainPageViewModel({@required this.mainScroller});
+  K00100MainPageViewModel({required this.mainScroller});
 
   onEndScroller(ScrollEndNotification scrollNotification) {
     if (scrollNotification.metrics.pixels >= 10.0) {

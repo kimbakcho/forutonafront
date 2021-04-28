@@ -8,14 +8,17 @@ import 'package:provider/provider.dart';
 
 class NickNameEditComponent extends StatelessWidget {
   //기존 유저 닉네임 -> 만약 valid 할때 자기 닉네임과 같으면 valid 하지 않기 위해서
-  final String userNickName;
+  final String? userNickName;
 
-  final String initNickName;
+  final String? initNickName;
 
-  final NickNameEditComponentController nickNameEditComponentController;
+  final NickNameEditComponentController? nickNameEditComponentController;
 
   const NickNameEditComponent(
-      {Key key, this.userNickName, this.nickNameEditComponentController,this.initNickName})
+      {Key? key,
+      this.userNickName,
+      this.nickNameEditComponentController,
+      this.initNickName})
       : super(key: key);
 
   @override
@@ -23,7 +26,8 @@ class NickNameEditComponent extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => NickNameEditComponentViewModel(
             userNickName: userNickName,
-            nickNameEditComponentController: nickNameEditComponentController,initNickName: initNickName),
+            nickNameEditComponentController: nickNameEditComponentController,
+            initNickName: initNickName),
         child: Consumer<NickNameEditComponentViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -44,7 +48,9 @@ class NickNameEditComponent extends StatelessWidget {
                 TextField(
                     controller: model._nickNameEditController,
                     maxLength: 20,
-                    inputFormatters: [ModifiedLengthLimitingTextInputFormatter(20)],
+                    inputFormatters: [
+                      ModifiedLengthLimitingTextInputFormatter(20)
+                    ],
                     decoration: InputDecoration(
                         errorText: model.currentIsError
                             ? model.currentErrorText
@@ -67,53 +73,55 @@ class NickNameEditComponent extends StatelessWidget {
 }
 
 class NickNameEditComponentViewModel extends ChangeNotifier {
-  final String userNickName;
+  final String? userNickName;
 
-  String initNickName;
+  String? initNickName;
 
-  SignValid _nickNameValid;
+  SignValid? _nickNameValid;
 
-  TextEditingController _nickNameEditController;
+  TextEditingController? _nickNameEditController;
 
-  NickNameEditComponentController nickNameEditComponentController;
+  NickNameEditComponentController? nickNameEditComponentController;
 
-  bool isDisposeFlag = false;
+  bool? isDisposeFlag = false;
 
   NickNameEditComponentViewModel(
-      {this.userNickName, this.nickNameEditComponentController,this.initNickName})
+      {this.userNickName,
+      this.nickNameEditComponentController,
+      this.initNickName})
       : _nickNameValid = NickNameValidImpl(fUserRepository: sl()) {
     _nickNameEditController = TextEditingController();
-    _nickNameEditController.text  = initNickName;
+    _nickNameEditController!.text = initNickName!;
     if (nickNameEditComponentController != null) {
-      nickNameEditComponentController._nickNameEditComponentViewModel = this;
+      nickNameEditComponentController!._nickNameEditComponentViewModel = this;
     }
     if (nickNameEditComponentController != null &&
-        nickNameEditComponentController.onChangeNickNameText != null) {
-      _nickNameEditController.addListener(() {
-        nickNameEditComponentController
-            .onChangeNickNameText(_nickNameEditController.text);
+        nickNameEditComponentController!.onChangeNickNameText != null) {
+      _nickNameEditController!.addListener(() {
+        nickNameEditComponentController!
+            .onChangeNickNameText!(_nickNameEditController!.text);
       });
     }
   }
 
   _valid() async {
     if (userNickName == null) {
-      await _nickNameValid.valid(_nickNameEditController.text);
+      await _nickNameValid!.valid(_nickNameEditController!.text);
     } else if (userNickName != null &&
-        userNickName != _nickNameEditController.text) {
-      await _nickNameValid.valid(_nickNameEditController.text);
+        userNickName != _nickNameEditController!.text) {
+      await _nickNameValid!.valid(_nickNameEditController!.text);
     }
-    if(!isDisposeFlag){
+    if (!(isDisposeFlag!)) {
       notifyListeners();
     }
   }
 
   bool get currentIsError {
-    return _nickNameValid.hasValidTry && _nickNameValid.hasError();
+    return _nickNameValid!.hasValidTry! && _nickNameValid!.hasError();
   }
 
   String get currentErrorText {
-    return _nickNameValid.errorText();
+    return _nickNameValid!.errorText();
   }
 
   @override
@@ -124,27 +132,26 @@ class NickNameEditComponentViewModel extends ChangeNotifier {
 }
 
 class NickNameEditComponentController {
-  NickNameEditComponentViewModel _nickNameEditComponentViewModel;
+  NickNameEditComponentViewModel? _nickNameEditComponentViewModel;
 
-  final Function(String) onChangeNickNameText;
+  final Function(String)? onChangeNickNameText;
 
   NickNameEditComponentController({this.onChangeNickNameText});
 
-
   String get nickNameValue {
-    if(_nickNameEditComponentViewModel == null){
+    if (_nickNameEditComponentViewModel == null) {
       return "";
-    }else {
-      return _nickNameEditComponentViewModel._nickNameEditController.text;
+    } else {
+      return _nickNameEditComponentViewModel!._nickNameEditController!.text;
     }
   }
 
   set nickNameValue(String value) {
-    _nickNameEditComponentViewModel._nickNameEditController.text = value;
+    _nickNameEditComponentViewModel!._nickNameEditController!.text = value;
   }
 
   Future<bool> valid() async {
-    await _nickNameEditComponentViewModel._valid();
-    return _nickNameEditComponentViewModel.currentIsError;
+    await _nickNameEditComponentViewModel!._valid();
+    return _nickNameEditComponentViewModel!.currentIsError;
   }
 }

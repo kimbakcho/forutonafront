@@ -48,7 +48,7 @@ class G011MainPageViewModel extends ChangeNotifier {
 
   moveToReSettingPw(BuildContext context){
     var fUserInfo = _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-    if(fUserInfo.snsService == SnsSupportService.Forutona){
+    if(fUserInfo!.snsService == SnsSupportService.Forutona){
       Navigator.of(context).push(MaterialPageRoute(builder: (_){
         return G012MainPage();
       }));

@@ -15,20 +15,20 @@ abstract class ReviewDeleteMediator {
   unregisterComponent(
       ReviewDeleteMediatorComponent reviewDeleteMediatorComponent);
   int componentCount();
-  deleteReview(FBallReplyResDto fBallReplyResDto);
+  deleteReview(FBallReplyResDto? fBallReplyResDto);
 }
 
 class ReviewDeleteMediatorImpl implements ReviewDeleteMediator {
   List<ReviewDeleteMediatorComponent> components = [];
-  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
+  final FBallReplyUseCaseInputPort? _fBallReplyUseCaseInputPort;
 
   ReviewDeleteMediatorImpl(
-      {FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort})
+      {FBallReplyUseCaseInputPort? fBallReplyUseCaseInputPort})
       : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort;
 
   @override
-  deleteReview(FBallReplyResDto fBallReplyResDto) async {
-    FBallReplyResDto tempFBallReplyResDto = await this._fBallReplyUseCaseInputPort.deleteFBallReply(fBallReplyResDto.replyUuid);
+  deleteReview(FBallReplyResDto? fBallReplyResDto) async {
+    FBallReplyResDto tempFBallReplyResDto = await this._fBallReplyUseCaseInputPort!.deleteFBallReply(fBallReplyResDto!.replyUuid!);
     fBallReplyResDto.deleteFlag = tempFBallReplyResDto.deleteFlag;
     fBallReplyResDto.replyText = tempFBallReplyResDto.replyText;
     onAllDeleteSignal(fBallReplyResDto);

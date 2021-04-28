@@ -8,12 +8,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class H007AddressWidget extends StatelessWidget {
-  final String address;
-  final PlaceListFromSearchTextWidgetListener
+  final String? address;
+  final PlaceListFromSearchTextWidgetListener?
       placeListFromSearchTextWidgetListener;
 
   const H007AddressWidget({
-    Key key,
+    Key? key,
     this.address,
     this.placeListFromSearchTextWidgetListener,
   }) : super(key: key);
@@ -40,7 +40,7 @@ class H007AddressWidget extends StatelessWidget {
                         )));
               },
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Text(address,
+              child: Text(address!,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.notoSans(
@@ -65,16 +65,16 @@ class H007AddressWidget extends StatelessWidget {
 
 class H007AddressWidgetViewModel extends ChangeNotifier
     implements InputSearchBarListener {
-  final BuildContext context;
-  final PlaceListFromSearchTextWidgetListener
+  final BuildContext? context;
+  final PlaceListFromSearchTextWidgetListener?
       placeListFromSearchTextWidgetListener;
 
   H007AddressWidgetViewModel(
       {this.context, this.placeListFromSearchTextWidgetListener});
 
   @override
-  Future<void> onSearch(String search, {BuildContext context}) async {
-    Navigator.of(context).push(MaterialPageRoute(
+  Future<void> onSearch(String search, {BuildContext? context}) async {
+    Navigator.of(context!).push(MaterialPageRoute(
         settings: RouteSettings(name: "/H008"),
         builder: (_) => H008MainView(
             initSearchText: search,

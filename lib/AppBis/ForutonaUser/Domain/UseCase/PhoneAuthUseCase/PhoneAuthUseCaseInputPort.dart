@@ -19,7 +19,7 @@ abstract class PhoneAuthUseCaseInputPort {
 class PhoneAuthUseCase implements PhoneAuthUseCaseInputPort {
   PhoneAuthRepository _phoneAuthRepository;
 
-  PhoneAuthUseCase({@required PhoneAuthRepository phoneAuthRepository})
+  PhoneAuthUseCase({required PhoneAuthRepository phoneAuthRepository})
       : _phoneAuthRepository = phoneAuthRepository;
 
   @override

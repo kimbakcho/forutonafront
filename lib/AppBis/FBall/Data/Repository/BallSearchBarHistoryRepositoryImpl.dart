@@ -13,7 +13,7 @@ class BallSearchBarHistoryRepositoryImpl
   BallSearchHistoryLocalDataSource _localDataSource;
 
   BallSearchBarHistoryRepositoryImpl(
-      {@required BallSearchHistoryLocalDataSource localDataSource })
+      {required BallSearchHistoryLocalDataSource localDataSource })
       :_localDataSource = localDataSource;
 
   @override

@@ -93,11 +93,11 @@ class L016MainPage extends StatelessWidget {
 }
 
 class L016MainPageViewModel extends ChangeNotifier {
-  EmailCheckComponentController _emailCheckComponentController;
+  EmailCheckComponentController? _emailCheckComponentController;
 
   String currentEmail = "";
 
-  FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  FireBaseAuthAdapterForUseCase? _fireBaseAuthAdapterForUseCase;
 
   L016MainPageViewModel(this._fireBaseAuthAdapterForUseCase) {
     _emailCheckComponentController =
@@ -112,9 +112,9 @@ class L016MainPageViewModel extends ChangeNotifier {
   }
 
   _nextPage(BuildContext context) async {
-    var result = await _emailCheckComponentController.valid();
+    var result = await _emailCheckComponentController!.valid();
     if (result) {
-      await this._fireBaseAuthAdapterForUseCase.sendPasswordResetEmail(currentEmail);
+      await this._fireBaseAuthAdapterForUseCase!.sendPasswordResetEmail(currentEmail);
       Navigator.of(context).push(MaterialPageRoute(builder: (_) {
         return L017MainPage(email: currentEmail);
       }));

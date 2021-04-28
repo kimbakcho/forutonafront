@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class SmallBallPowerDisplay extends StatelessWidget {
-  final int ballPower;
+  final int? ballPower;
 
-  const SmallBallPowerDisplay({Key key, this.ballPower}) : super(key: key);
+  const SmallBallPowerDisplay({Key? key, this.ballPower}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

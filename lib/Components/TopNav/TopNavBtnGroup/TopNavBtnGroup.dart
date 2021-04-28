@@ -8,10 +8,10 @@ import 'TopNavBtnGroupViewModel.dart';
 
 
 class NavBtnGroup extends StatelessWidget {
-  final List<NavBtn> navBtnList;
-  final TopNavBtnMediator topNavBtnMediator;
+  final List<NavBtn>? navBtnList;
+  final TopNavBtnMediator? topNavBtnMediator;
 
-  const NavBtnGroup({Key key, this.navBtnList,this.topNavBtnMediator}) : super(key: key);
+  const NavBtnGroup({Key? key, this.navBtnList,this.topNavBtnMediator}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -23,7 +23,7 @@ class NavBtnGroup extends StatelessWidget {
         builder: (_,model,child){
           return Container(
             child: Stack(
-              children: model.navBtnList,
+              children: model.navBtnList!,
             ),
           );
         }

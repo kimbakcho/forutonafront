@@ -8,7 +8,6 @@ import 'package:forutonafront/Components/FBallReply2/ReviewDeleteMediator.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewInertMediator.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewInsertRow.dart';
 import 'package:forutonafront/Components/FBallReply2/ReviewUpdateMediator.dart';
-import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -16,9 +15,9 @@ import 'package:provider/provider.dart';
 
 class FBallReply3 extends StatelessWidget {
 
-  final String ballUuid;
+  final String? ballUuid;
 
-  const FBallReply3({Key key, this.ballUuid}) : super(key: key);
+  const FBallReply3({Key? key, this.ballUuid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +72,12 @@ class FBallReply3ViewModel extends ChangeNotifier {
 
   final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
   final FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
-  final String ballUuid;
+  final String? ballUuid;
 
-  ReviewInertMediator _reviewInertMediator;
-  ReviewCountMediator _reviewCountMediator;
-  ReviewUpdateMediator _reviewUpdateMediator;
-  ReviewDeleteMediator _reviewDeleteMediator;
+  ReviewInertMediator? _reviewInertMediator;
+  ReviewCountMediator? _reviewCountMediator;
+  ReviewUpdateMediator? _reviewUpdateMediator;
+  ReviewDeleteMediator? _reviewDeleteMediator;
 
   FBallReply3ViewModel(this.signInUserInfoUseCaseInputPort, this.fireBaseAuthAdapterForUseCase,this.ballUuid){
     _reviewInertMediator = ReviewInertMediatorImpl(
@@ -122,9 +121,9 @@ class FBallReply3ViewModel extends ChangeNotifier {
     }
   }
 
-  String get userProfileImage {
-    if(signInUserInfoUseCaseInputPort.isLogin){
-      return signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().profilePictureUrl;
+  String? get userProfileImage {
+    if(signInUserInfoUseCaseInputPort.isLogin!){
+      return signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory()!.profilePictureUrl;
     }
   }
 }

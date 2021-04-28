@@ -19,16 +19,16 @@ import '../KCodeTopFilterBar.dart';
 import 'K00102DrawerBody.dart';
 
 class K00102MainPage extends StatelessWidget {
-  final String searchText;
+  final String? searchText;
 
-  final ScrollController mainScroller;
+  final ScrollController? mainScroller;
 
-  final TabController tabController;
+  final TabController? tabController;
 
-  final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
+  final GlobalKey<NestedScrollViewState>? kCodeNestedScrollViewKey;
 
   const K00102MainPage(
-      {Key key,
+      {Key? key,
       this.searchText,
       this.mainScroller,
       this.tabController,
@@ -57,7 +57,7 @@ class K00102MainPage extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                   KCodeTopFilterBar(
-                    searchText: searchText,
+                    searchText: searchText!,
                     descriptionText: "관련 제목",
                     searchResultCountText: "${model.totalItemCount}",
                     kCodeTopFilterBarListener: model,
@@ -72,7 +72,7 @@ class K00102MainPage extends StatelessWidget {
                       },
                       itemBuilder: (context, index) {
                         return ListUpBallWidgetFactory.getBallWidget(
-                            index, model.ballListMediator, BallStyle.Style2,
+                            index, model.ballListMediator!, BallStyle.Style2,
                             boxDecoration: BoxDecoration(
                                 border: Border.all(color: Color(0xffE4E7E8)),
                                 borderRadius:
@@ -85,8 +85,8 @@ class K00102MainPage extends StatelessWidget {
                 ? Center(child: Container(child: Text("조회된 결과가 없습니다.")))
                 : Container(),
             KCodeScrollerControllerBtn(
-              kCodeScrollerController: model.kCodeScrollerController,
-              mainScroller: model.mainScroller,
+              kCodeScrollerController: model.kCodeScrollerController!,
+              mainScroller: model.mainScroller!,
             ),
             model.isLoading ? CommonLoadingComponent() : Container()
           ]);
@@ -99,17 +99,17 @@ class K00102MainPageViewModel
     implements
         KCodeTopFilterBarListener,
         K00102DrawerBodyListener {
-  final String searchText;
-  final BuildContext context;
-  final KCodeScrollerController kCodeScrollerController;
-  final ScrollController mainScroller;
-  final TabController tabController;
-  final BallListMediator ballListMediator;
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final String? searchText;
+  final BuildContext? context;
+  final KCodeScrollerController? kCodeScrollerController;
+  final ScrollController? mainScroller;
+  final TabController? tabController;
+  final BallListMediator? ballListMediator;
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       geoLocationUtilForeGroundUseCase;
-  final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
-  K00102DrawerItem _selectedK00102DrawerItem = K00102DrawerItem.BallPower;
-  ScrollController kCodeNestedScrollInnerScrollController;
+  final GlobalKey<NestedScrollViewState>? kCodeNestedScrollViewKey;
+  K00102DrawerItem? _selectedK00102DrawerItem = K00102DrawerItem.BallPower;
+  ScrollController? kCodeNestedScrollInnerScrollController;
 
   K00102MainPageViewModel(
       {this.searchText,
@@ -134,7 +134,7 @@ class K00102MainPageViewModel
   void openFilter() {
     showMaterialModalBottomSheet(
         expand: false,
-        context: context,
+        context: context!,
         backgroundColor: Colors.transparent,
         builder: (context) {
           return KCodeDrawer(
@@ -150,32 +150,32 @@ class K00102MainPageViewModel
     _selectedK00102DrawerItem = item;
     switch (_selectedK00102DrawerItem) {
       case K00102DrawerItem.BallPower:
-        ballListMediator.sort = "ballPower,DESC";
+        ballListMediator!.sort = "ballPower,DESC";
         break;
       case K00102DrawerItem.MakeTime:
-        ballListMediator.sort = "makeTime,DESC";
+        ballListMediator!.sort = "makeTime,DESC";
         break;
       case K00102DrawerItem.Hit:
-        ballListMediator.sort = "ballHits,DESC";
+        ballListMediator!.sort = "ballHits,DESC";
         break;
       case K00102DrawerItem.Distance:
-        ballListMediator.sort = "distance,ASC";
+        ballListMediator!.sort = "distance,ASC";
         break;
     }
-    ballListMediator.searchFirst();
+    ballListMediator!.searchFirst();
   }
 
   @override
   settingCollectMediator() {
     var currentWithLastPositionInMemory =
-    geoLocationUtilForeGroundUseCase.getCurrentWithLastPositionInMemory();
+    geoLocationUtilForeGroundUseCase!.getCurrentWithLastPositionInMemory();
 
-    ballListMediator.fBallListUpUseCaseInputPort = FBallListUpFromSearchTitle(
+    ballListMediator!.fBallListUpUseCaseInputPort = FBallListUpFromSearchTitle(
         FBallListUpFromSearchTitleReqDto(
-            searchText: searchText,
-            longitude: currentWithLastPositionInMemory.longitude,
-            latitude: currentWithLastPositionInMemory.latitude),
+            searchText: searchText!,
+            longitude: currentWithLastPositionInMemory!.longitude,
+            latitude: currentWithLastPositionInMemory!.latitude),
         fBallRepository: sl());
-    ballListMediator.sort = "ballPower,DESC";
+    ballListMediator!.sort = "ballPower,DESC";
   }
 }

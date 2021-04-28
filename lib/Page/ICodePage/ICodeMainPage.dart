@@ -46,7 +46,7 @@ class _ICodeMainPageState extends State<ICodeMainPage> {
                             ],
                           )),
                       GoogleMap(
-                        initialCameraPosition: model.currentMapPosition,
+                        initialCameraPosition: model.currentMapPosition!,
                         onMapCreated: model.onCreateMap,
                         myLocationEnabled: true,
                         myLocationButtonEnabled: false,

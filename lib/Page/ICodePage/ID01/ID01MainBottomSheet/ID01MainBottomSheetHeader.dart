@@ -9,11 +9,11 @@ import 'package:provider/provider.dart';
 
 class ID01MainBottomSheetHeader extends StatefulWidget {
 
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final Function(Position) onTapAddress;
+  final Function(Position)? onTapAddress;
 
-  const ID01MainBottomSheetHeader({Key key, this.fBallResDto, this.onTapAddress}) : super(key: key);
+  const ID01MainBottomSheetHeader({Key? key, this.fBallResDto, this.onTapAddress}) : super(key: key);
 
   @override
   _ID01MainBottomSheetHeaderState createState() => _ID01MainBottomSheetHeaderState();
@@ -57,7 +57,7 @@ class _ID01MainBottomSheetHeaderState extends State<ID01MainBottomSheetHeader> {
                               Expanded(child: Container(
                                 margin: EdgeInsets.only(left: 16,right: 16),
                                 child: ID01AddressWidget(fBallResDto: model.fBallResDto,onTabAddress: (Position position){
-                                  widget.onTapAddress(position);
+                                  widget.onTapAddress!(position);
                                 },)
                                 ,
                               ))
@@ -66,8 +66,8 @@ class _ID01MainBottomSheetHeaderState extends State<ID01MainBottomSheetHeader> {
                           Positioned(
                             right: 16,
                             child: MapIntentButton(
-                              dstPosition: model._ballPosition,
-                              dstAddress: model.fBallResDto.placeAddress,
+                              dstPosition: model._ballPosition!,
+                              dstAddress: model.fBallResDto!.placeAddress!,
                             ),
                           )
                         ],
@@ -75,8 +75,8 @@ class _ID01MainBottomSheetHeaderState extends State<ID01MainBottomSheetHeader> {
                     ),
                     SizedBox(height: 17,),
                     ID01RemainTimeProgress(
-                      createTime: model.fBallResDto.makeTime,
-                      limitTime: model.fBallResDto.activationTime,
+                      createTime: model.fBallResDto!.makeTime,
+                      limitTime: model.fBallResDto!.activationTime,
                     ),
 
                   ],
@@ -90,16 +90,16 @@ class _ID01MainBottomSheetHeaderState extends State<ID01MainBottomSheetHeader> {
 
 class ID01MainBottomSheetHeaderViewModel extends ChangeNotifier{
 
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  Position _ballPosition;
+  Position? _ballPosition;
 
 
   ID01MainBottomSheetHeaderViewModel(this.fBallResDto){
 
     _ballPosition = Position(
-      latitude: fBallResDto.latitude,
-      longitude: fBallResDto.longitude
+      latitude: fBallResDto!.latitude,
+      longitude: fBallResDto!.longitude
     );
   }
 

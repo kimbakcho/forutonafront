@@ -8,13 +8,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class ID01AddressWidget extends StatelessWidget {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
   final EdgeInsets padding;
 
-  final Function(Position) onTabAddress;
+  final Function(Position)? onTabAddress;
 
-  const ID01AddressWidget({Key key, this.fBallResDto, this.padding = const EdgeInsets.fromLTRB(8, 0, 62, 0), this.onTabAddress}) : super(key: key);
+  const ID01AddressWidget({Key? key, this.fBallResDto, this.padding = const EdgeInsets.fromLTRB(8, 0, 62, 0), this.onTabAddress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ID01AddressWidget extends StatelessWidget {
               child: InkWell(
                 onTap: (){
                   if(onTabAddress != null){
-                    onTabAddress(Position(longitude: fBallResDto.longitude,latitude: fBallResDto.latitude));
+                    onTabAddress!(Position(longitude: fBallResDto!.longitude,latitude: fBallResDto!.latitude));
                   }
 
                 },
@@ -39,7 +39,7 @@ class ID01AddressWidget extends StatelessWidget {
                     Expanded(
                         child: Container(
                           margin: EdgeInsets.only(left: 6),
-                          child: Text(fBallResDto.placeAddress,
+                          child: Text(fBallResDto!.placeAddress!,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.notoSans(
                                 fontSize: 14,
@@ -60,7 +60,7 @@ class ID01AddressWidget extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(left: 8),
                       child:
-                      Text(model.loaded ? model.displayDistanceWithUser : "계산중",
+                      Text(model.loaded ? model.displayDistanceWithUser! : "계산중",
                           style: GoogleFonts.notoSans(
                             fontSize: 14,
                             color: const Color(0xffff5d76),
@@ -85,14 +85,14 @@ class ID01AddressWidget extends StatelessWidget {
 }
 
 class ID01AddressWidgetViewModel extends ChangeNotifier {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       _geoLocationUtilForeGroundUseCaseInputPort;
 
   bool loaded = false;
 
-  String displayDistanceWithUser;
+  String? displayDistanceWithUser;
 
   ID01AddressWidgetViewModel(
       this.fBallResDto, this._geoLocationUtilForeGroundUseCaseInputPort) {
@@ -103,9 +103,9 @@ class ID01AddressWidgetViewModel extends ChangeNotifier {
     loaded = false;
     notifyListeners();
     Position ballPosition = new Position(
-        longitude: fBallResDto.longitude, latitude: fBallResDto.latitude);
+        longitude: fBallResDto!.longitude, latitude: fBallResDto!.latitude);
     this.displayDistanceWithUser =
-        await _geoLocationUtilForeGroundUseCaseInputPort
+        await _geoLocationUtilForeGroundUseCaseInputPort!
             .reqBallDistanceDisplayText(ballLatLng: ballPosition);
     loaded = true;
     notifyListeners();

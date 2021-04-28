@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Components/TopNav/NavBtn/NavBtnSetDto.dart';
 
-
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
-
 
 import 'package:provider/provider.dart';
 
@@ -13,55 +11,62 @@ import 'NavBtnAction.dart';
 import 'TopNavBtnComponent.dart';
 
 class NavBtnComponent extends StatefulWidget {
-  final NavBtnSetDto navBtnSetDto;
-  final TopNavBtnMediator navBtnMediator;
-  final CodeMainPageController codeMainPageController;
+  final NavBtnSetDto? navBtnSetDto;
+  final TopNavBtnMediator? navBtnMediator;
+  final CodeMainPageController? codeMainPageController;
 
-  NavBtnComponent({Key key,
-    @required this.navBtnSetDto,@required this.navBtnMediator,@required this.codeMainPageController}) : super(key: key);
+  NavBtnComponent(
+      {Key? key,
+      required this.navBtnSetDto,
+      required this.navBtnMediator,
+      required this.codeMainPageController})
+      : super(key: key);
 
   @override
-  _NavBtnComponentState createState() =>
-      _NavBtnComponentState(navBtnSetDto: navBtnSetDto, navBtnMediator: navBtnMediator,codeMainPageController: codeMainPageController);
+  _NavBtnComponentState createState() => _NavBtnComponentState(
+      navBtnSetDto: navBtnSetDto,
+      navBtnMediator: navBtnMediator,
+      codeMainPageController: codeMainPageController);
 }
 
 class _NavBtnComponentState extends State<NavBtnComponent>
     with SingleTickerProviderStateMixin
     implements TopNavBtnComponent {
-  final NavBtnSetDto navBtnSetDto;
-  final CodeMainPageController codeMainPageController;
-  AnimationController _controller;
+  final NavBtnSetDto? navBtnSetDto;
+  final CodeMainPageController? codeMainPageController;
+  AnimationController? _controller;
 
-  final TopNavBtnMediator navBtnMediator;
+  final TopNavBtnMediator? navBtnMediator;
 
-  _NavBtnComponentState({this.navBtnSetDto,this.codeMainPageController ,this.navBtnMediator});
+  _NavBtnComponentState(
+      {this.navBtnSetDto, this.codeMainPageController, this.navBtnMediator});
 
   @override
   void initState() {
     initAnimation();
     super.initState();
-    navBtnMediator.topNavBtnRegisterComponent(this);
+    navBtnMediator!.topNavBtnRegisterComponent(this);
   }
 
   initAnimation() {
     _controller = AnimationController(
-        duration: navBtnMediator.animationDuration,vsync: this);
-    _controller.addStatusListener((status) {
-      navBtnMediator.onNavBtnAniStatusListener(
-          status, navBtnSetDto.topOnMoveMainPage);
+        duration: navBtnMediator!.animationDuration, vsync: this);
+    _controller!.addStatusListener((status) {
+      navBtnMediator!
+          .onNavBtnAniStatusListener(status, navBtnSetDto!.topOnMoveMainPage!);
     });
   }
 
   Animation<double> getAnimation() {
     return Tween<double>(
-            begin: navBtnSetDto.startOffset, end: navBtnSetDto.endOffset)
-        .animate(_controller);
+            begin: navBtnSetDto!.startOffset, end: navBtnSetDto!.endOffset)
+        .animate(_controller!);
   }
 
   @override
   void dispose() {
-    navBtnMediator.topNavBtnUnRegisterComponent(this);
-    _controller.dispose();
+    navBtnMediator!.topNavBtnUnRegisterComponent(this);
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -71,54 +76,56 @@ class _NavBtnComponentState extends State<NavBtnComponent>
       child: NavBtnContent(
         codeMainPageController: codeMainPageController,
         navBtnMediator: navBtnMediator,
-        btnColor: navBtnSetDto.btnColor,
-        btnIcon: navBtnSetDto.btnIcon,
-        topOnMoveMainPage: navBtnSetDto.topOnMoveMainPage,
-        navBtnAction: navBtnSetDto.navBtnAction,
+        btnColor: navBtnSetDto!.btnColor,
+        btnIcon: navBtnSetDto!.btnIcon,
+        topOnMoveMainPage: navBtnSetDto!.topOnMoveMainPage,
+        navBtnAction: navBtnSetDto!.navBtnAction,
       ),
       animation: getAnimation(),
-      btnSize: navBtnSetDto.btnSize,
+      btnSize: navBtnSetDto!.btnSize,
     );
   }
 
   @override
   aniForward() {
-    _controller.forward();
+    _controller!.forward();
   }
 
   @override
   aniReverse() {
-    _controller.reverse();
+    _controller!.reverse();
   }
 
   @override
   getTopNavRouterType() {
-    return navBtnSetDto.topOnMoveMainPage;
+    return navBtnSetDto!.topOnMoveMainPage;
   }
 }
 
 class NavBtnContent extends StatelessWidget implements NavBtnContentInputPort {
-  final Color btnColor;
-  final Icon btnIcon;
-  final CodeState topOnMoveMainPage;
-  final TopNavBtnMediator navBtnMediator;
-  final NavBtnAction navBtnAction;
-  final CodeMainPageController codeMainPageController;
+  final Color? btnColor;
+  final Icon? btnIcon;
+  final CodeState? topOnMoveMainPage;
+  final TopNavBtnMediator? navBtnMediator;
+  final NavBtnAction? navBtnAction;
+  final CodeMainPageController? codeMainPageController;
 
   NavBtnContent(
-      {Key key,
+      {Key? key,
       this.btnColor,
       this.btnIcon,
       this.topOnMoveMainPage,
-      @required this.navBtnMediator,
-      this.navBtnAction, @required this.codeMainPageController})
+      required this.navBtnMediator,
+      this.navBtnAction,
+      required this.codeMainPageController})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => NavBtnContentViewModel(
-          codeMainPageController: codeMainPageController, topOnMoveMainPage: topOnMoveMainPage),
+          codeMainPageController: codeMainPageController,
+          topOnMoveMainPage: topOnMoveMainPage),
       child: Consumer<NavBtnContentViewModel>(builder: (_, model, __) {
         return Container(
             decoration: BoxDecoration(
@@ -133,7 +140,7 @@ class NavBtnContent extends StatelessWidget implements NavBtnContentInputPort {
               onPressed: () {
                 onNavTopBtnTop();
               },
-              child: btnIcon,
+              child: btnIcon!,
             ));
       }),
     );
@@ -147,41 +154,41 @@ class NavBtnContent extends StatelessWidget implements NavBtnContentInputPort {
   }
 
   void _btnAction() {
-    if (navBtnMediator.aniState == NavBtnMediatorState.Close) {
+    if (navBtnMediator!.aniState == NavBtnMediatorState.Close) {
       if (navBtnAction != null) {
-        navBtnAction.onCloseClick();
+        navBtnAction!.onCloseClick();
       }
     } else {
       if (navBtnAction != null) {
-        navBtnAction.onOpenClick();
+        navBtnAction!.onOpenClick();
       }
     }
   }
 
   void _changePageAction() {
-    if (navBtnMediator.aniState == NavBtnMediatorState.Close) {
-      navBtnMediator.changeMainPage(topOnMoveMainPage);
+    if (navBtnMediator!.aniState == NavBtnMediatorState.Close) {
+      navBtnMediator!.changeMainPage(topOnMoveMainPage!);
     } else {}
   }
 
   void _navListControl() {
-    if (navBtnMediator.aniState == NavBtnMediatorState.Close) {
-      navBtnMediator.openNavList(navRouterType: topOnMoveMainPage);
+    if (navBtnMediator!.aniState == NavBtnMediatorState.Close) {
+      navBtnMediator!.openNavList(navRouterType: topOnMoveMainPage!);
     } else {
-      navBtnMediator.closeNavList(navRouterType: topOnMoveMainPage);
+      navBtnMediator!.closeNavList(navRouterType: topOnMoveMainPage!);
     }
   }
 }
 
 class NavBtnContentViewModel extends ChangeNotifier {
-  final CodeMainPageController codeMainPageController;
-  final CodeState topOnMoveMainPage;
+  final CodeMainPageController? codeMainPageController;
+  final CodeState? topOnMoveMainPage;
 
   NavBtnContentViewModel(
       {this.codeMainPageController, this.topOnMoveMainPage}) {
     this
-        .codeMainPageController
-        .pageController
+        .codeMainPageController!
+        .pageController!
         .addListener(_onCodeMainPageChange);
   }
 
@@ -190,7 +197,7 @@ class NavBtnContentViewModel extends ChangeNotifier {
   }
 
   bool isMyPage() {
-    return codeMainPageController.currentState == topOnMoveMainPage;
+    return codeMainPageController!.currentState == topOnMoveMainPage;
   }
 }
 
@@ -199,22 +206,22 @@ abstract class NavBtnContentInputPort {
 }
 
 class NavBtnAniComponent extends StatelessWidget {
-  final Widget child;
-  final Animation<double> animation;
-  final double btnSize;
+  final Widget? child;
+  final Animation<double>? animation;
+  final double? btnSize;
 
-  const NavBtnAniComponent({Key key, this.animation, this.child, this.btnSize})
+  const NavBtnAniComponent({Key? key, this.animation, this.child, this.btnSize})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animation,
+      animation: animation!,
       builder: (context, child) => Positioned(
-        left: animation.value,
+        left: animation!.value,
         width: btnSize,
         height: btnSize,
-        child: child,
+        child: child!,
       ),
       child: child,
     );

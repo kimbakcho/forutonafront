@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'HomeMainPageViewModel.dart';
 
 class HomeMainPage extends StatefulWidget {
-  HomeMainPage({Key key}) : super(key: key);
+  HomeMainPage({Key? key}) : super(key: key);
 
   @override
   _HomeMainPageState createState() => _HomeMainPageState();
@@ -30,7 +30,7 @@ class _HomeMainPageState extends State<HomeMainPage>
   SwipeGestureRecognizerController _swipeGestureRecognizerController =
       SwipeGestureRecognizerController();
 
-  CodeMainPageController _codeMainPageController;
+  CodeMainPageController? _codeMainPageController;
 
   @override
   void initState() {
@@ -118,9 +118,9 @@ class _HomeMainPageState extends State<HomeMainPage>
                           Container(child: Text("X002")),
                           I001MainPage(
                             geoViewSearchManagerInputPort:
-                                model.geoViewSearchManagerInputPort,
+                                model.geoViewSearchManagerInputPort!,
                             topH_I_001NavExpendAniContentController:
-                                model.topH_I_001NavExpendAniContentController,
+                                model.topH_I_001NavExpendAniContentController!,
                           )
                         ]),
                   ),

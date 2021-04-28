@@ -63,7 +63,7 @@ class L002MainPage extends StatelessWidget {
                             ],
                           ),
                           LCodeCheckBox(
-                            controller: model.allCheckBoxController,
+                            controller: model.allCheckBoxController!,
                           )
                         ],
                       ),
@@ -86,7 +86,7 @@ class L002MainPage extends StatelessWidget {
                               ),
                               LCodeCheckBox(
                                 controller:
-                                    model.serviceAgreeCheckBoxController,
+                                    model.serviceAgreeCheckBoxController!,
                                 size: 30,
                               )
                             ])),
@@ -104,7 +104,7 @@ class L002MainPage extends StatelessWidget {
                               ),
                               LCodeCheckBox(
                                 controller: model
-                                    .operationalPoliciesAgreeCheckBoxController,
+                                    .operationalPoliciesAgreeCheckBoxController!,
                                 size: 30,
                               )
                             ])),
@@ -122,7 +122,7 @@ class L002MainPage extends StatelessWidget {
                               ),
                               LCodeCheckBox(
                                 controller: model
-                                    .positionPrivacyAgreeCheckBoxController,
+                                    .positionPrivacyAgreeCheckBoxController!,
                                 size: 30,
                               )
                             ])),
@@ -140,7 +140,7 @@ class L002MainPage extends StatelessWidget {
                               ),
                               LCodeCheckBox(
                                 controller:
-                                    model.privacyAgreeCheckBoxController,
+                                    model.privacyAgreeCheckBoxController!,
                                 size: 30,
                               )
                             ])),
@@ -159,7 +159,7 @@ class L002MainPage extends StatelessWidget {
                               ),
                               LCodeCheckBox(
                                 controller:
-                                    model.marketingAgreeCheckBoxController,
+                                    model.marketingAgreeCheckBoxController!,
                                 size: 30,
                               )
                             ]))
@@ -169,13 +169,13 @@ class L002MainPage extends StatelessWidget {
 }
 
 class L002MainPageViewModel extends ChangeNotifier {
-  LCodeCheckBoxController allCheckBoxController;
-  LCodeCheckBoxController serviceAgreeCheckBoxController;
-  LCodeCheckBoxController privacyAgreeCheckBoxController;
-  LCodeCheckBoxController positionPrivacyAgreeCheckBoxController;
-  LCodeCheckBoxController marketingAgreeCheckBoxController;
-  LCodeCheckBoxController operationalPoliciesAgreeCheckBoxController;
-  final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
+  LCodeCheckBoxController? allCheckBoxController;
+  LCodeCheckBoxController? serviceAgreeCheckBoxController;
+  LCodeCheckBoxController? privacyAgreeCheckBoxController;
+  LCodeCheckBoxController? positionPrivacyAgreeCheckBoxController;
+  LCodeCheckBoxController? marketingAgreeCheckBoxController;
+  LCodeCheckBoxController? operationalPoliciesAgreeCheckBoxController;
+  final FUserInfoJoinReqDto? _fUserInfoJoinReqDto;
 
   L002MainPageViewModel(this._fUserInfoJoinReqDto) {
     allCheckBoxController = LCodeCheckBoxController(
@@ -193,11 +193,11 @@ class L002MainPageViewModel extends ChangeNotifier {
   }
 
   _allCheckBoxControllerStateChange(bool value) {
-    serviceAgreeCheckBoxController.setValue(value);
-    privacyAgreeCheckBoxController.setValue(value);
-    positionPrivacyAgreeCheckBoxController.setValue(value);
-    marketingAgreeCheckBoxController.setValue(value);
-    operationalPoliciesAgreeCheckBoxController.setValue(value);
+    serviceAgreeCheckBoxController!.setValue(value);
+    privacyAgreeCheckBoxController!.setValue(value);
+    positionPrivacyAgreeCheckBoxController!.setValue(value);
+    marketingAgreeCheckBoxController!.setValue(value);
+    operationalPoliciesAgreeCheckBoxController!.setValue(value);
     notifyListeners();
   }
 
@@ -208,18 +208,18 @@ class L002MainPageViewModel extends ChangeNotifier {
   //TODO 여기서 시작 하는데 _fUserInfoJoinReq 가입에 필요한 정보 넣어 주는것 부터
   _checkBoxStateChange(bool value) {
     if (isAllCheck()) {
-      allCheckBoxController.setValue(true);
+      allCheckBoxController!.setValue(true);
     } else {
-      allCheckBoxController.setValue(false);
+      allCheckBoxController!.setValue(false);
     }
     notifyListeners();
   }
 
   bool isCheckSatisfied() {
-    if (serviceAgreeCheckBoxController.getValue() &&
-        privacyAgreeCheckBoxController.getValue() &&
-        positionPrivacyAgreeCheckBoxController.getValue() &&
-        operationalPoliciesAgreeCheckBoxController.getValue()) {
+    if (serviceAgreeCheckBoxController!.getValue() &&
+        privacyAgreeCheckBoxController!.getValue() &&
+        positionPrivacyAgreeCheckBoxController!.getValue() &&
+        operationalPoliciesAgreeCheckBoxController!.getValue()) {
       return true;
     } else {
       return false;
@@ -227,11 +227,11 @@ class L002MainPageViewModel extends ChangeNotifier {
   }
 
   bool isAllCheck() {
-    if (serviceAgreeCheckBoxController.getValue() &&
-        privacyAgreeCheckBoxController.getValue() &&
-        positionPrivacyAgreeCheckBoxController.getValue() &&
-        operationalPoliciesAgreeCheckBoxController.getValue() &&
-        marketingAgreeCheckBoxController.getValue()) {
+    if (serviceAgreeCheckBoxController!.getValue() &&
+        privacyAgreeCheckBoxController!.getValue() &&
+        positionPrivacyAgreeCheckBoxController!.getValue() &&
+        operationalPoliciesAgreeCheckBoxController!.getValue() &&
+        marketingAgreeCheckBoxController!.getValue()) {
       return true;
     } else {
       return false;
@@ -239,16 +239,16 @@ class L002MainPageViewModel extends ChangeNotifier {
   }
 
   void nextPage(BuildContext context) {
-    _fUserInfoJoinReqDto.martketingAgree =
-        marketingAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReqDto.forutonaAgree =
-        serviceAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReqDto.privateAgree =
-        privacyAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReqDto.positionAgree =
-        positionPrivacyAgreeCheckBoxController.getValue();
-    _fUserInfoJoinReqDto.forutonaManagementAgree =
-        operationalPoliciesAgreeCheckBoxController.getValue();
+    _fUserInfoJoinReqDto!.martketingAgree =
+        marketingAgreeCheckBoxController!.getValue();
+    _fUserInfoJoinReqDto!.forutonaAgree =
+        serviceAgreeCheckBoxController!.getValue();
+    _fUserInfoJoinReqDto!.privateAgree =
+        privacyAgreeCheckBoxController!.getValue();
+    _fUserInfoJoinReqDto!.positionAgree =
+        positionPrivacyAgreeCheckBoxController!.getValue();
+    _fUserInfoJoinReqDto!.forutonaManagementAgree =
+        operationalPoliciesAgreeCheckBoxController!.getValue();
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return L004MainPage();
     }));

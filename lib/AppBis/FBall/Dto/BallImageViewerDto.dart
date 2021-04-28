@@ -1,4 +1,4 @@
 class BallImageViewerDto {
-  int index;
-  String desImage;
+  int? index;
+  String? desImage;
 }

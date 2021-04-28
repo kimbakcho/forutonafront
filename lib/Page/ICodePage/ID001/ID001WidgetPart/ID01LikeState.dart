@@ -8,9 +8,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ID01LikeState extends StatelessWidget {
-  final String ballUuid;
-  final DateTime ballActivationTime;
-  final ValuationMediator valuationMediator;
+  final String? ballUuid;
+  final DateTime? ballActivationTime;
+  final ValuationMediator? valuationMediator;
 
   ID01LikeState(
       {this.ballUuid, this.ballActivationTime, this.valuationMediator}) {
@@ -189,51 +189,51 @@ class ID01LikeState extends StatelessWidget {
 
 class ID01LikeStateViewModel extends ChangeNotifier
     implements ValuationMediatorComponent {
-  String ballUuid;
-  DateTime _ballActivationTime;
-  final ValuationMediator _valuationMediator;
+  String? ballUuid;
+  DateTime? _ballActivationTime;
+  final ValuationMediator? _valuationMediator;
 
   ID01LikeStateViewModel(
-      {String ballUuid,
-      DateTime ballActivationTime,
-      @required ValuationMediator valuationMediator})
+      {String? ballUuid,
+      DateTime? ballActivationTime,
+      required ValuationMediator? valuationMediator})
       : _valuationMediator = valuationMediator,
         _ballActivationTime = ballActivationTime {
-    _valuationMediator.registerComponent(this);
+    _valuationMediator!.registerComponent(this);
   }
 
-  get ballDisLikeCount => _valuationMediator.ballDisLikeCount;
+  get ballDisLikeCount => _valuationMediator!.ballDisLikeCount;
 
-  get ballLikeCount => _valuationMediator.ballLikeCount;
+  get ballLikeCount => _valuationMediator!.ballLikeCount;
 
-  get likeServiceUseUserCount => _valuationMediator.likeServiceUseUserCount;
+  get likeServiceUseUserCount => _valuationMediator!.likeServiceUseUserCount;
 
-  get ballPower => _valuationMediator.ballPower;
+  get ballPower => _valuationMediator!.ballPower;
 
   double get ballLikePercent {
-    if ((_valuationMediator.ballLikeCount +
-            _valuationMediator.ballDisLikeCount) ==
+    if ((_valuationMediator!.ballLikeCount! +
+            _valuationMediator!.ballDisLikeCount!) ==
         0) {
       return 0;
     }
-    return _valuationMediator.ballLikeCount /
-        (_valuationMediator.ballLikeCount +
-            _valuationMediator.ballDisLikeCount);
+    return _valuationMediator!.ballLikeCount! /
+        (_valuationMediator!.ballLikeCount! +
+            _valuationMediator!.ballDisLikeCount!);
   }
 
   double get ballDisLikePercent {
-    if ((_valuationMediator.ballLikeCount +
-            _valuationMediator.ballDisLikeCount) ==
+    if ((_valuationMediator!.ballLikeCount! +
+            _valuationMediator!.ballDisLikeCount!) ==
         0) {
       return 0;
     }
-    return _valuationMediator.ballDisLikeCount /
-        (_valuationMediator.ballLikeCount +
-            _valuationMediator.ballDisLikeCount);
+    return _valuationMediator!.ballDisLikeCount! /
+        (_valuationMediator!.ballLikeCount! +
+            _valuationMediator!.ballDisLikeCount!);
   }
 
   String get ballRemindTime {
-    return TimeDisplayUtil.getCalcToStrFromNow(_ballActivationTime);
+    return TimeDisplayUtil.getCalcToStrFromNow(_ballActivationTime!);
   }
 
   @override
@@ -243,7 +243,7 @@ class ID01LikeStateViewModel extends ChangeNotifier
 
   @override
   void dispose() {
-    _valuationMediator.unregisterComponent(this);
+    _valuationMediator!.unregisterComponent(this);
     super.dispose();
   }
 }

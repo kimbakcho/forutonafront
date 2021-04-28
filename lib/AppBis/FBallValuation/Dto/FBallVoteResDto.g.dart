@@ -8,15 +8,13 @@ part of 'FBallVoteResDto.dart';
 
 FBallVoteResDto _$FBallVoteResDtoFromJson(Map<String, dynamic> json) {
   return FBallVoteResDto()
-    ..ballLike = json['ballLike'] as int
-    ..ballDislike = json['ballDislike'] as int
-    ..likeServiceUseUserCount = json['likeServiceUseUserCount'] as int
-    ..ballPower = json['ballPower'] as int
-    ..fballValuationResDto = (json['fballValuationResDto'] as List)
-        ?.map((e) => e == null
-            ? null
-            : FBallValuationResDto.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..ballLike = json['ballLike'] as int?
+    ..ballDislike = json['ballDislike'] as int?
+    ..likeServiceUseUserCount = json['likeServiceUseUserCount'] as int?
+    ..ballPower = json['ballPower'] as int?
+    ..fballValuationResDto = (json['fballValuationResDto'] as List<dynamic>?)
+        ?.map((e) => FBallValuationResDto.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$FBallVoteResDtoToJson(FBallVoteResDto instance) =>
@@ -26,5 +24,5 @@ Map<String, dynamic> _$FBallVoteResDtoToJson(FBallVoteResDto instance) =>
       'likeServiceUseUserCount': instance.likeServiceUseUserCount,
       'ballPower': instance.ballPower,
       'fballValuationResDto':
-          instance.fballValuationResDto?.map((e) => e?.toJson())?.toList(),
+          instance.fballValuationResDto?.map((e) => e.toJson()).toList(),
     };

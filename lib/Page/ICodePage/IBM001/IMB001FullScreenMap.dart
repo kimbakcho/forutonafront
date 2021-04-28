@@ -16,9 +16,9 @@ import 'package:provider/provider.dart';
 import 'IMB001WidgetPart/IMB001TopAppBar.dart';
 
 class IMB001FullScreenMap extends StatelessWidget {
-  final Position initPosition;
-  final String ballUuid;
-  final String initAddress;
+  final Position? initPosition;
+  final String? ballUuid;
+  final String? initAddress;
 
   IMB001FullScreenMap({this.initPosition, this.ballUuid, this.initAddress});
 
@@ -46,8 +46,8 @@ class IMB001FullScreenMap extends StatelessWidget {
                         onMapCreated: model.onCreateMap,
                         onCameraMove: model.onCameraMove,
                         onCameraIdle: model.onCameraIdle,
-                        initialCameraPosition: model.initCameraPosition,
-                        markers: model.markers,
+                        initialCameraPosition: model.initCameraPosition!,
+                        markers: model.markers!,
                       ),
                       Positioned(
                         top: 16,
@@ -98,7 +98,7 @@ class IMB001FullScreenMap extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              initAddress,
+                              initAddress!,
                               style: GoogleFonts.notoSans(
                                 fontSize: 12,
                                 color: const Color(0xff454f63),
@@ -127,27 +127,27 @@ class IMB001FullScreenMap extends StatelessWidget {
 }
 
 class IMB001FullScreenMapViewModel extends ChangeNotifier {
-  final Position initPosition;
-  CameraPosition initCameraPosition;
-  final MapBallMarkerFactory _mapBallMarkerFactory;
-  final MapMakerDescriptorContainer _mapMakerDescriptorContainer;
-  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final Position? initPosition;
+  CameraPosition? initCameraPosition;
+  final MapBallMarkerFactory? _mapBallMarkerFactory;
+  final MapMakerDescriptorContainer? _mapMakerDescriptorContainer;
+  final SelectBallUseCaseInputPort? _selectBallUseCaseInputPort;
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       _geoLocationUtilForeGroundUseCase;
-  final String ballUuid;
+  final String? ballUuid;
   Completer<GoogleMapController> _googleMapController = Completer();
-  Set<Marker> markers;
-  Position userPosition;
+  Set<Marker>? markers;
+  Position? userPosition;
   bool isBallPosition = true;
-  CameraPosition currentPosition;
+  CameraPosition? currentPosition;
 
   IMB001FullScreenMapViewModel(
       {this.initPosition,
       this.ballUuid,
-      MapBallMarkerFactory mapBallMarkerFactory,
-      MapMakerDescriptorContainer mapMakerDescriptorContainer,
-      SelectBallUseCaseInputPort selectBallUseCaseInputPort,
-      GeoLocationUtilForeGroundUseCaseInputPort
+      MapBallMarkerFactory? mapBallMarkerFactory,
+      MapMakerDescriptorContainer? mapMakerDescriptorContainer,
+      SelectBallUseCaseInputPort? selectBallUseCaseInputPort,
+      GeoLocationUtilForeGroundUseCaseInputPort?
           geoLocationUtilForeGroundUseCase})
       : _mapBallMarkerFactory = mapBallMarkerFactory,
         _mapMakerDescriptorContainer = mapMakerDescriptorContainer,
@@ -156,7 +156,7 @@ class IMB001FullScreenMapViewModel extends ChangeNotifier {
 
     initCameraPosition = new CameraPosition(
         zoom: 14.56,
-        target: LatLng(initPosition.latitude, initPosition.longitude));
+        target: LatLng(initPosition!.latitude!, initPosition!.longitude!));
     markers = Set<Marker>();
     currentPosition = initCameraPosition;
     this.initMap();
@@ -164,18 +164,21 @@ class IMB001FullScreenMapViewModel extends ChangeNotifier {
 
   initMap() async {
     userPosition =
-        _geoLocationUtilForeGroundUseCase.getCurrentWithLastPositionInMemory();
+        _geoLocationUtilForeGroundUseCase!.getCurrentWithLastPositionInMemory();
     FBallResDto fBallResDto =
-        await _selectBallUseCaseInputPort.selectBall(ballUuid);
+        await _selectBallUseCaseInputPort!.selectBall(ballUuid!);
     Position ballPosition = Position(
         latitude: fBallResDto.latitude, longitude: fBallResDto.longitude);
-    markers.add(_mapBallMarkerFactory.getBallMaker(
-        fBallResDto.ballType, ballUuid, ballPosition));
-    markers.add(Marker(
+    var bm = _mapBallMarkerFactory!.getBallMaker(
+        fBallResDto.ballType!, ballUuid!, ballPosition);
+    if(bm != null){
+      markers!.add(bm);
+    }
+    markers!.add(Marker(
       markerId: MarkerId("UserProfileImage"),
-      icon: _mapMakerDescriptorContainer.getBitmapDescriptor(MapMakerDescriptorType.UserAvatarIcon),
+      icon: _mapMakerDescriptorContainer!.getBitmapDescriptor(MapMakerDescriptorType.UserAvatarIcon),
       anchor: Offset(0.5, 0.5),
-      position: LatLng(userPosition.latitude, userPosition.longitude),
+      position: LatLng(userPosition!.latitude!, userPosition!.longitude!),
     ));
     notifyListeners();
   }
@@ -188,14 +191,14 @@ class IMB001FullScreenMapViewModel extends ChangeNotifier {
     GoogleMapController googleMapController = await _googleMapController.future;
     googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-            target: LatLng(initPosition.latitude, initPosition.longitude),
+            target: LatLng(initPosition!.latitude!, initPosition!.longitude!),
             zoom: 14.56)));
   }
 
 
   void onCameraIdle() async{
     bool tempIsBallPosition = isBallPosition;
-    if(currentPosition.target == LatLng(initPosition.latitude, initPosition.longitude)){
+    if(currentPosition!.target == LatLng(initPosition!.latitude!, initPosition!.longitude!)){
       isBallPosition = true;
     }else {
       isBallPosition = false;

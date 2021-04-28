@@ -16,18 +16,18 @@ import 'ReviewInertMediator.dart';
 import 'ReviewInsertRow.dart';
 
 class BasicReViewsInsert extends StatelessWidget {
-  final String ballUuid;
-  final ReviewInertMediator _reviewInertMediator;
-  final ReviewCountMediator _reviewCountMediator;
-  final FBallReplyResDto parentFBallReplyResDto;
-  final bool autoFocus;
+  final String? ballUuid;
+  final ReviewInertMediator? _reviewInertMediator;
+  final ReviewCountMediator? _reviewCountMediator;
+  final FBallReplyResDto? parentFBallReplyResDto;
+  final bool? autoFocus;
 
   const BasicReViewsInsert(
-      {Key key,
+      {Key? key,
       this.ballUuid,
       this.autoFocus,
-      ReviewCountMediator reviewCountMediator,
-      ReviewInertMediator reviewInertMediator,
+      ReviewCountMediator? reviewCountMediator,
+      ReviewInertMediator? reviewInertMediator,
       this.parentFBallReplyResDto})
       : _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator,
@@ -77,43 +77,44 @@ class BasicReViewsInsert extends StatelessWidget {
 }
 
 class ID001ReplyInsertViewModel extends ChangeNotifier {
-  final String ballUuid;
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
-  final BuildContext context;
-  final ReviewInertMediator _reviewInertMediator;
-  final ReviewCountMediator _reviewCountMediator;
-  final FBallReplyResDto parentFBallReplyResDto;
-  String userProfileImage;
-  ReviewTextActionRowController reviewTextActionRowController;
-  StreamSubscription keyBoardSubscription;
+  final String? ballUuid;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
+  final BuildContext? context;
+  final ReviewInertMediator? _reviewInertMediator;
+  final ReviewCountMediator? _reviewCountMediator;
+  final FBallReplyResDto? parentFBallReplyResDto;
+  String? userProfileImage;
+  ReviewTextActionRowController? reviewTextActionRowController;
+  StreamSubscription? keyBoardSubscription;
 
   ID001ReplyInsertViewModel(
       {this.ballUuid,
       this.context,
       this.parentFBallReplyResDto,
-      ReviewInertMediator reviewInertMediator,
-      ReviewCountMediator reviewCountMediator,
-      SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
+      ReviewInertMediator? reviewInertMediator,
+      ReviewCountMediator? reviewCountMediator,
+      SignInUserInfoUseCaseInputPort? signInUserInfoUseCaseInputPort})
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator {
     reviewTextActionRowController = ReviewTextActionRowController();
     FUserInfoResDto fUserInfoResDto =
-        this._signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-    userProfileImage = fUserInfoResDto.profilePictureUrl;
-    keyBoardSubscription = KeyboardVisibility.onChange.listen(keyBoardListen);
+        this._signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory()!;
+    userProfileImage = fUserInfoResDto.profilePictureUrl!;
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    keyBoardSubscription = keyboardVisibilityController.onChange.listen(keyBoardListen);
   }
 
   keyBoardListen(bool value) {
     if (!value) {
-      Navigator.of(context).pop();
+      Navigator.of(context!).pop();
     }
   }
 
   @override
   void dispose() {
     if (keyBoardSubscription != null) {
-      keyBoardSubscription.cancel();
+      keyBoardSubscription!.cancel();
     }
     super.dispose();
   }
@@ -122,17 +123,17 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
 
   void insertReply(String ballUuid) async {
 
-    reviewTextActionRowController.textFieldUnFocus();
-    keyBoardSubscription.cancel();
+    reviewTextActionRowController!.textFieldUnFocus();
+    keyBoardSubscription!.cancel();
     keyBoardSubscription = null;
 
-    await showGeneralDialog(context: context,
+    await showGeneralDialog(context: context!,
         pageBuilder: (context, animation, secondaryAnimation) {
           _insertReplyInLoading(context);
       return CommonLoadingComponent();
     });
 
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
 
   }
 
@@ -140,11 +141,11 @@ class ID001ReplyInsertViewModel extends ChangeNotifier {
     FBallReplyInsertReqDto reqDto = FBallReplyInsertReqDto();
     reqDto.ballUuid = ballUuid;
     if (parentFBallReplyResDto != null) {
-      reqDto.replyUuid = parentFBallReplyResDto.replyUuid;
+      reqDto.replyUuid = parentFBallReplyResDto!.replyUuid;
     }
-    reqDto.replyText = reviewTextActionRowController.replyText;
-    await this._reviewInertMediator.insertReview(reqDto);
-    await this._reviewCountMediator.reqReviewCount(ballUuid);
+    reqDto.replyText = reviewTextActionRowController!.replyText;
+    await this._reviewInertMediator!.insertReview(reqDto);
+    await this._reviewCountMediator!.reqReviewCount(ballUuid!);
     Navigator.of(context).pop();
   }
 

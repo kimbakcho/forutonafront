@@ -7,10 +7,10 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 abstract class FBallListUpUseCaseInputPort {
 
-  Position searchPosition;
+  Position? searchPosition;
 
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
-      {FBallListUpUseCaseOutputPort outputPort});
+      {FBallListUpUseCaseOutputPort? outputPort});
 }
 
 abstract class FBallListUpUseCaseOutputPort {

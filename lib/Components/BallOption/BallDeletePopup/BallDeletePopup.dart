@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 
 class BallDeletePopup extends StatelessWidget {
 
-  final Function actionDelete;
+  final Function? actionDelete;
 
-  const BallDeletePopup({Key key, this.actionDelete}) : super(key: key);
+  const BallDeletePopup({Key? key, this.actionDelete}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class BallDeletePopup extends StatelessWidget {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              actionDelete();
+                              actionDelete!();
                             },
                             child: Container(
                               height: 50,

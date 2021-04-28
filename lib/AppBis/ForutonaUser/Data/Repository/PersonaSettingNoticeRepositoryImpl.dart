@@ -13,7 +13,7 @@ class PersonaSettingNoticeRepositoryImpl
   PersonaSettingNoticeRemoteDataSource _personaSettingNoticeRemoteDataSource;
 
   PersonaSettingNoticeRepositoryImpl(
-      {@required
+      {required
           PersonaSettingNoticeRemoteDataSource
               personaSettingNoticeRemoteDataSource})
       : _personaSettingNoticeRemoteDataSource =

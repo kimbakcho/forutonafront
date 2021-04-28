@@ -17,9 +17,9 @@ import 'MainPageView.dart';
 enum BottomNavigationNavType { HOME, SEARCH, MakeBall, SNS, Profile }
 
 class BottomNavigation extends StatefulWidget {
-  final BottomNavigationListener bottomNavigationListener;
+  final BottomNavigationListener? bottomNavigationListener;
 
-  const BottomNavigation({Key key, this.bottomNavigationListener})
+  const BottomNavigation({Key? key, this.bottomNavigationListener})
       : super(key: key);
 
   @override
@@ -43,7 +43,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           flex: 1,
                           child: FlatButton(
                             onPressed: () {
-
                               model.gotoHomePage(widget.bottomNavigationListener);
                             },
                             child: Column(
@@ -70,7 +69,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           child:
                           FlatButton(onPressed: () {
                             if (model.isLogin) {
-                              widget.bottomNavigationListener
+                              widget.bottomNavigationListener!
                                   .onBottomNavClick(
                                   BottomNavigationNavType.MakeBall);
                             }else {
@@ -97,7 +96,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           child: FlatButton(
                               onPressed: () {
                                 if (widget.bottomNavigationListener != null) {
-                                  widget.bottomNavigationListener
+                                  widget.bottomNavigationListener!
                                       .onBottomNavClick(
                                       BottomNavigationNavType.SNS);
                                 }
@@ -134,7 +133,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             onTap: () {
                               if (model.isLogin) {
                                 if (widget.bottomNavigationListener != null) {
-                                  widget.bottomNavigationListener
+                                  widget.bottomNavigationListener!
                                       .onBottomNavClick(
                                       BottomNavigationNavType.Profile);
                                 }
@@ -175,30 +174,30 @@ class _BottomNavigationState extends State<BottomNavigation> {
 }
 
 class BottomNavigationViewModel extends ChangeNotifier {
-  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
-  final BuildContext context;
-  final MainPageViewModelController mainPageViewModelController;
+  final SignInUserInfoUseCaseInputPort? signInUserInfoUseCaseInputPort;
+  final BuildContext? context;
+  final MainPageViewModelController? mainPageViewModelController;
 
   BottomNavigationViewModel(
-      {this.context, this.signInUserInfoUseCaseInputPort,@required this.mainPageViewModelController}) {
-    signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) {
+      {this.context, this.signInUserInfoUseCaseInputPort,required this.mainPageViewModelController}) {
+    signInUserInfoUseCaseInputPort!.fUserInfoStream!.listen((event) {
       notifyListeners();
     });
   }
 
   bool get isLogin {
-    return this.signInUserInfoUseCaseInputPort.isLogin;
+    return this.signInUserInfoUseCaseInputPort!.isLogin!;
   }
 
   String get profileImageUrl {
     return this
-        .signInUserInfoUseCaseInputPort
-        .reqSignInUserInfoFromMemory()
-        .profilePictureUrl;
+        .signInUserInfoUseCaseInputPort!
+        .reqSignInUserInfoFromMemory()!
+        .profilePictureUrl!;
   }
 
   BottomNavigationNavType getMainCurrentPage(){
-    var mainPageCurrentPage = mainPageViewModelController.getMainPageCurrentPage();
+    var mainPageCurrentPage = mainPageViewModelController!.getMainPageCurrentPage();
     return mainPageCurrentPage;
   }
 
@@ -234,7 +233,7 @@ class BottomNavigationViewModel extends ChangeNotifier {
 
   showL001BottomSheet() {
     showMaterialModalBottomSheet(
-        context: context,
+        context: context!,
         expand: false,
         backgroundColor: Colors.transparent,
         enableDrag: true,
@@ -244,12 +243,12 @@ class BottomNavigationViewModel extends ChangeNotifier {
   }
 
   jumpToPersona() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
       return GCodeMainPage();
     }));
   }
 
-  void gotoHomePage(BottomNavigationListener bottomNavigationListener) {
+  void gotoHomePage(BottomNavigationListener? bottomNavigationListener) {
     if (bottomNavigationListener != null) {
       bottomNavigationListener
           .onBottomNavClick(

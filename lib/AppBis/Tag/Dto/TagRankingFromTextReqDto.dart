@@ -5,9 +5,9 @@ part 'TagRankingFromTextReqDto.g.dart';
 
 @JsonSerializable()
 class TagRankingFromTextReqDto {
-  String searchTagText;
-  double mapCenterLatitude;
-  double mapCenterLongitude;
+  String? searchTagText;
+  double? mapCenterLatitude;
+  double? mapCenterLongitude;
 
   TagRankingFromTextReqDto();
 

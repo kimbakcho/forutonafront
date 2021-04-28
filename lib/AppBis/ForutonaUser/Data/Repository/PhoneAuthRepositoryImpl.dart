@@ -19,7 +19,7 @@ class PhoneAuthRepositoryImpl implements PhoneAuthRepository {
   PhoneAuthRemoteSource _phoneAuthRemoteSource;
 
   PhoneAuthRepositoryImpl(
-      {@required PhoneAuthRemoteSource phoneAuthRemoteSource})
+      {required PhoneAuthRemoteSource phoneAuthRemoteSource})
       : _phoneAuthRemoteSource = phoneAuthRemoteSource;
 
   @override

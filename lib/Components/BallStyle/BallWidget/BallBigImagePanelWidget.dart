@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 class BallBigImagePanelWidget extends StatelessWidget {
   final BallDisPlayUseCase ballDisPlayUseCase;
 
-  const BallBigImagePanelWidget({Key key, this.ballDisPlayUseCase})
+  const BallBigImagePanelWidget({Key? key,required this.ballDisPlayUseCase})
       : super(key: key);
 
   @override
@@ -15,7 +15,7 @@ class BallBigImagePanelWidget extends StatelessWidget {
       children: <Widget>[
         CachedNetworkImage(
           height: 215,
-          imageUrl: ballDisPlayUseCase.mainPictureSrc(),
+          imageUrl: ballDisPlayUseCase.mainPictureSrc()!,
           imageBuilder: (context, imageProvider) => Container(
             height: 215,
             decoration: BoxDecoration(

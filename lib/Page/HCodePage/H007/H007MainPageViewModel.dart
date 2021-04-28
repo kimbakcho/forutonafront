@@ -12,77 +12,77 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class H007MainPageViewModel extends ChangeNotifier
     implements PlaceListFromSearchTextWidgetListener {
-  final BuildContext context;
+  final BuildContext? context;
 
-  Position initPosition;
+  Position? initPosition;
 
-  String address;
-  CameraPosition initCameraPosition;
-  CameraPosition currentCameraPosition;
-  bool cameraMoveFlag = false;
+  String? address;
+  CameraPosition? initCameraPosition;
+  CameraPosition? currentCameraPosition;
+  bool? cameraMoveFlag = false;
 
-  Completer<GoogleMapController> _googleMapController = Completer();
-  GeoLocationUtilForeGroundUseCaseInputPort _geoLocationUtilUseCaseInputPort;
-  H007Listener h007listener;
+  Completer<GoogleMapController>? _googleMapController = Completer();
+  GeoLocationUtilForeGroundUseCaseInputPort? _geoLocationUtilUseCaseInputPort;
+  H007Listener? h007listener;
 
   H007MainPageViewModel(
       {this.initPosition,
       this.address,
       this.context,
       this.h007listener,
-      GeoLocationUtilForeGroundUseCaseInputPort
+      GeoLocationUtilForeGroundUseCaseInputPort?
           geoLocationUtilUseCaseInputPort})
       : _geoLocationUtilUseCaseInputPort = geoLocationUtilUseCaseInputPort {
     initCameraPosition = CameraPosition(
-        target: LatLng(initPosition.latitude, initPosition.longitude),
+        target: LatLng(initPosition!.latitude!, initPosition!.longitude!),
         zoom: 14.4746);
     currentCameraPosition = initCameraPosition;
   }
 
   onSearch() {
     if(this.h007listener != null ){
-      this.h007listener.onH007SearchPosition(
+      this.h007listener!.onH007SearchPosition(
           Position(
-              longitude: currentCameraPosition.target.longitude,
-              latitude: currentCameraPosition.target.latitude),context);
+              longitude: currentCameraPosition!.target.longitude,
+              latitude: currentCameraPosition!.target.latitude),context!);
     }
   }
 
   onPlaceSearchTap() async {
-    MapSearchGeoDto mapSearchGeoDto = await Navigator.of(context).push(
+    MapSearchGeoDto mapSearchGeoDto = await Navigator.of(context!).push(
         MaterialPageRoute(
             settings: RouteSettings(name: "MapGeoSearchPage"),
             builder: (_) => MapGeoSearchPage(
-                address,
+                address!,
                 Position(
-                    latitude: currentCameraPosition.target.latitude,
-                    longitude: currentCameraPosition.target.longitude))));
+                    latitude: currentCameraPosition!.target.latitude,
+                    longitude: currentCameraPosition!.target.longitude))));
     if (mapSearchGeoDto != null) {
-      Navigator.of(context).pop(mapSearchGeoDto);
+      Navigator.of(context!).pop(mapSearchGeoDto);
     }
   }
 
   onMapCreate(GoogleMapController controller) async {
-    _googleMapController.complete(controller);
+    _googleMapController!.complete(controller);
     await controller
-        .moveCamera(CameraUpdate.newCameraPosition(initCameraPosition));
+        .moveCamera(CameraUpdate.newCameraPosition(initCameraPosition!));
   }
 
   onMapIdle() async {
-    this.address = await _geoLocationUtilUseCaseInputPort.getPositionAddress(
+    this.address = await _geoLocationUtilUseCaseInputPort!.getPositionAddress(
         Position(
-            latitude: currentCameraPosition.target.latitude,
-            longitude: currentCameraPosition.target.longitude));
+            latitude: currentCameraPosition!.target.latitude,
+            longitude: currentCameraPosition!.target.longitude));
     notifyListeners();
   }
 
   onMyLocation() async {
-    final GoogleMapController controller = await _googleMapController.future;
+    final GoogleMapController controller = await _googleMapController!.future;
     // await _geoLocationUtilUseCaseInputPort.useGpsReq(context);
     var currentLocation =
-        await _geoLocationUtilUseCaseInputPort.getCurrentWithLastPosition();
+        await _geoLocationUtilUseCaseInputPort!.getCurrentWithLastPosition();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
         zoom: 14.4746)));
   }
 
@@ -95,22 +95,22 @@ class H007MainPageViewModel extends ChangeNotifier
   onMapBallSearch(LatLng searchPosition) {
     MapSearchGeoDto mapSearchGeoDto = MapSearchGeoDto();
     mapSearchGeoDto.latLng = searchPosition;
-    mapSearchGeoDto.address = address;
-    mapSearchGeoDto.descriptionAddress = address;
-    Navigator.of(context).pop(mapSearchGeoDto);
+    mapSearchGeoDto.address = address!;
+    mapSearchGeoDto.descriptionAddress = address!;
+    Navigator.of(context!).pop(mapSearchGeoDto);
   }
 
   onBackBtnClick() {
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
   }
 
   //FROM H008
   @override
   onPlaceListTabPosition(Position position ) async {
-    Navigator.popUntil(context, (route) => route.settings.name == "H007");
-    final GoogleMapController controller = await _googleMapController.future;
+    Navigator.popUntil(context!, (route) => route.settings.name == "H007");
+    final GoogleMapController controller = await _googleMapController!.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(position.latitude, position.longitude), zoom: 14.4746)));
+        target: LatLng(position.latitude!, position.longitude!), zoom: 14.4746)));
     notifyListeners();
   }
 }

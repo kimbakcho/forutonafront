@@ -13,25 +13,25 @@ import 'FBallListUpUseCaseInputPort.dart';
 
 class NoInterestedBallDecorator implements FBallListUpUseCaseInputPort {
 
-  final FBallListUpUseCaseInputPort fBallListUpUseCaseInputPort;
-  final NoInterestBallUseCaseInputPort noInterestBallUseCaseInputPort;
+  final FBallListUpUseCaseInputPort? fBallListUpUseCaseInputPort;
+  final NoInterestBallUseCaseInputPort? noInterestBallUseCaseInputPort;
 
   NoInterestedBallDecorator(
-      {@required this.fBallListUpUseCaseInputPort, @required this.noInterestBallUseCaseInputPort});
+      {required this.fBallListUpUseCaseInputPort, required this.noInterestBallUseCaseInputPort});
 
   @override
   get searchPosition {
-    return fBallListUpUseCaseInputPort.searchPosition;
+    return fBallListUpUseCaseInputPort!.searchPosition;
   }
 
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
-      {FBallListUpUseCaseOutputPort outputPort}) async {
+      {FBallListUpUseCaseOutputPort? outputPort}) async {
 
-    var noInterRestBallList = await noInterestBallUseCaseInputPort.findByAll();
-    var result = await fBallListUpUseCaseInputPort.search(pageable);
+    var noInterRestBallList = await noInterestBallUseCaseInputPort!.findByAll();
+    var result = await fBallListUpUseCaseInputPort!.search(pageable);
     noInterRestBallList.forEach((element) {
-      result.content.removeWhere((ball) => ball.ballUuid == element);
+      result.content!.removeWhere((ball) => ball!.ballUuid == element);
     });
     if(outputPort != null){
       outputPort.searchResult(result);
@@ -40,7 +40,7 @@ class NoInterestedBallDecorator implements FBallListUpUseCaseInputPort {
   }
 
   @override
-  set searchPosition(Position _searchPosition) {
+  set searchPosition(Position? _searchPosition) {
     throw UnimplementedError();
   }
 

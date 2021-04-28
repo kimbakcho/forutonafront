@@ -23,15 +23,15 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class ListUpBallWidgetItem extends ChangeNotifier {
-  final BuildContext context;
-  final BallListMediator ballListMediator;
-  final int index;
-  final HitBallUseCaseInputPort hitBallUseCaseInputPort;
-  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
-  final DeleteBallUseCaseInputPort _deleteBallUseCaseInputPort;
-  final MaliciousBallUseCaseInputPort _maliciousBallUseCaseInputPort;
-  final NoInterestBallUseCaseInputPort _noInterestBallUseCaseInputPort;
-  String ballWidgetKey;
+  final BuildContext? context;
+  final BallListMediator? ballListMediator;
+  final int? index;
+  final HitBallUseCaseInputPort? hitBallUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? signInUserInfoUseCaseInputPort;
+  final DeleteBallUseCaseInputPort? _deleteBallUseCaseInputPort;
+  final MaliciousBallUseCaseInputPort? _maliciousBallUseCaseInputPort;
+  final NoInterestBallUseCaseInputPort? _noInterestBallUseCaseInputPort;
+  String? ballWidgetKey;
 
   ListUpBallWidgetItem(
       this.context,
@@ -50,10 +50,10 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
   Future<void> onModifyBall(BuildContext context);
 
   moveToDetailPage() async {
-    var hits = await hitBallUseCaseInputPort
-        .hit(ballListMediator.itemList[index].ballUuid);
-    ballListMediator.itemList[index].ballHits = hits;
-    await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    var hits = await hitBallUseCaseInputPort!
+        .hit(ballListMediator!.itemList![index!].ballUuid!);
+    ballListMediator!.itemList![index!].ballHits = hits;
+    await Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
       return detailPage();
     }));
     onReFreshBall();
@@ -62,9 +62,9 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
   onReFreshBall();
 
   showOptionPopUp() async {
-    if (!signInUserInfoUseCaseInputPort.isLogin) {
+    if (!(signInUserInfoUseCaseInputPort!.isLogin!)) {
       showMaterialModalBottomSheet(
-          context: context,
+          context: context!,
           expand: false,
           backgroundColor: Colors.transparent,
           enableDrag: true,
@@ -73,46 +73,44 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
           });
     } else {
       var reqSignInUserInfoFromMemory =
-          signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+          signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
 
-      if (ballListMediator.itemList[index].uid.uid ==
-          reqSignInUserInfoFromMemory.uid) {
+      if (ballListMediator!.itemList![index!].uid!.uid ==
+          reqSignInUserInfoFromMemory!.uid) {
         var result = await showDialog(
-            context: context,
-            child: MyBallPopup(
-              isShowCloseBtn: false,
-              isShowShareBtn: true,
-              onShare: onShare,
-              onDelete: onDeleteBall,
-              onModify: (context) async {
-                await onModifyBall(context);
-                onReFreshBall();
-              },
-            ));
-        if(result is FBallResDto){
-          Navigator.of(context).push(MaterialPageRoute(builder: (_){
+            context: context!,
+            builder: (context) => MyBallPopup(
+                  isShowCloseBtn: false,
+                  isShowShareBtn: true,
+                  onShare: onShare,
+                  onDelete: onDeleteBall,
+                  onModify: (context) async {
+                    await onModifyBall(context);
+                    onReFreshBall();
+                  },
+                ));
+        if (result is FBallResDto) {
+          Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
             return ID01MainPage(
                 id01Mode: ID01Mode.publish,
                 fBallResDto: result,
-                ballUuid: result.ballUuid
-            );
+                ballUuid: result.ballUuid!);
           }));
         }
-
       } else {
         await showDialog(
-            context: context,
-            child: OtherUserBallPopup(
-              onReportMalicious: onReportMalicious,
-              isShowFavourite: true,
-              isShowNotInterestBtn: true,
-              isShowShareBtn: true,
-              isShowCloseBtn: false,
-              isShowReportMalicious: true,
-              onShare: onShare,
-              onFavourite: onFavourite,
-              onNotInterest: onNotInterest,
-            ));
+            context: context!,
+            builder: (context) => OtherUserBallPopup(
+                  onReportMalicious: onReportMalicious,
+                  isShowFavourite: true,
+                  isShowNotInterestBtn: true,
+                  isShowShareBtn: true,
+                  isShowCloseBtn: false,
+                  isShowReportMalicious: true,
+                  onShare: onShare,
+                  onFavourite: onFavourite,
+                  onNotInterest: onNotInterest,
+                ));
       }
     }
   }
@@ -122,7 +120,7 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
         msg: "준비중 입니다.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
+        timeInSecForIosWeb: 1,
         backgroundColor: Color(0xff454F63),
         textColor: Colors.white,
         fontSize: 12.0);
@@ -133,35 +131,36 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
         msg: "준비중 입니다.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
+        timeInSecForIosWeb: 1,
         backgroundColor: Color(0xff454F63),
         textColor: Colors.white,
         fontSize: 12.0);
   }
 
   onNotInterest(BuildContext context) async {
-    await _noInterestBallUseCaseInputPort
-        .save(ballListMediator.itemList[index].ballUuid);
-    await ballListMediator.hideBall(ballListMediator.itemList[index].ballUuid);
+    await _noInterestBallUseCaseInputPort!
+        .save(ballListMediator!.itemList![index!].ballUuid!);
+    await ballListMediator!
+        .hideBall(ballListMediator!.itemList![index!].ballUuid!);
   }
 
   onDeleteBall(BuildContext context) async {
     await showDialog(
         context: context,
-        child: BallDeletePopup(
-          actionDelete: onActionDelete,
-        ));
+        builder: (context) => BallDeletePopup(
+              actionDelete: onActionDelete,
+            ));
   }
 
   onReportMalicious(BuildContext context, MaliciousType maliciousType) async {
-    await this._maliciousBallUseCaseInputPort.reportMaliciousReply(
-        maliciousType, ballListMediator.itemList[index].ballUuid);
+    await this._maliciousBallUseCaseInputPort!.reportMaliciousReply(
+        maliciousType, ballListMediator!.itemList![index!].ballUuid!);
   }
 
   onActionDelete() async {
-    await _deleteBallUseCaseInputPort
-        .deleteBall(ballListMediator.itemList[index].ballUuid);
-    Navigator.of(context).pop();
+    await _deleteBallUseCaseInputPort!
+        .deleteBall(ballListMediator!.itemList![index!].ballUuid!);
+    Navigator.of(context!).pop();
     onReFreshBall();
   }
 }

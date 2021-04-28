@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
 class ID01YoutubeWidget extends StatefulWidget {
-  final String youtubeVideoId;
+  final String? youtubeVideoId;
 
   ID01YoutubeWidget({this.youtubeVideoId});
 
@@ -22,7 +22,7 @@ class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
   Widget build(BuildContext context) {
     super.build(context);
     return ChangeNotifierProvider(
-      create: (_) => ID001YoutubeWidgetViewModel(widget.youtubeVideoId),
+      create: (_) => ID001YoutubeWidgetViewModel(widget.youtubeVideoId!),
       child: Consumer<ID001YoutubeWidgetViewModel>(builder: (_, model, __) {
         return model.canDisplayYoutube()
             ? youtubeWidget(model, context)
@@ -53,7 +53,7 @@ class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
                           children: <Widget>[
                             Container(
                               child: Text(
-                                model.currentYoutubeTitle,
+                                model.currentYoutubeTitle!,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.notoSans(
@@ -67,7 +67,7 @@ class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
                             Container(
                                 margin: EdgeInsets.only(top: 11),
                                 child: Text(
-                                  model.currentYoutubeAuthor,
+                                  model.currentYoutubeAuthor!,
                                   style: GoogleFonts.notoSans(
                                     fontSize: 12,
                                     color: const Color(0xff78849e),
@@ -99,7 +99,7 @@ class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
           image: DecorationImage(
-            image: NetworkImage(model.currentYoutubeImage),
+            image: NetworkImage(model.currentYoutubeImage!),
             fit: BoxFit.cover,
           ),
         ),
@@ -116,7 +116,7 @@ class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
       height: 50,
       child: FlatButton(
         onPressed: () {
-          model.goYoutubeIntent(model.youtubeVideoId);
+          model.goYoutubeIntent(model.youtubeVideoId!);
         },
         child: Icon(
           ForutonaIcon.youtube_r_,
@@ -134,20 +134,20 @@ class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
 }
 
 class ID001YoutubeWidgetViewModel extends ChangeNotifier {
-  final String youtubeVideoId;
+  final String? youtubeVideoId;
 
   bool isLoaded = false;
-  String currentYoutubeImage;
-  String currentYoutubeTitle;
-  String currentYoutubeAuthor;
-  int currentYoutubeView;
-  DateTime currentYoutubeUploadDate;
+  String? currentYoutubeImage;
+  String? currentYoutubeTitle;
+  String? currentYoutubeAuthor;
+  int? currentYoutubeView;
+  DateTime? currentYoutubeUploadDate;
 
   Youtube.YoutubeExplode _youtubeExplode = Youtube.YoutubeExplode();
 
   ID001YoutubeWidgetViewModel(this.youtubeVideoId) {
     if (this.canDisplayYoutube()) {
-      youtubeLoad(youtubeVideoId);
+      youtubeLoad(youtubeVideoId!);
     }
   }
 
@@ -173,7 +173,8 @@ class ID001YoutubeWidgetViewModel extends ChangeNotifier {
       try {
         AndroidIntentAdapter intent = AndroidIntentAdapterImpl();
         intent.createIntent(
-            action: "action_view", data: "vnd.youtube:$youtubeVideoId");
+            action: "action_view", data: "vnd.youtube:$youtubeVideoId",
+        );
         await intent.launch();
       } catch (ex) {
         AndroidIntentAdapter intent = AndroidIntentAdapterImpl();
@@ -186,7 +187,7 @@ class ID001YoutubeWidgetViewModel extends ChangeNotifier {
   }
 
   String get youtubeUploadDate {
-    return TimeDisplayUtil.getCalcToStrFromNow(currentYoutubeUploadDate);
+    return TimeDisplayUtil.getCalcToStrFromNow(currentYoutubeUploadDate!);
   }
 
   String get etc {
@@ -194,7 +195,7 @@ class ID001YoutubeWidgetViewModel extends ChangeNotifier {
   }
 
   bool canDisplayYoutube() {
-    if (youtubeVideoId != null && youtubeVideoId.length > 0) {
+    if (youtubeVideoId != null && youtubeVideoId!.length > 0) {
       return true;
     } else {
       return false;

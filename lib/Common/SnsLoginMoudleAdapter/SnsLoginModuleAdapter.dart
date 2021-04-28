@@ -37,18 +37,18 @@ class SnsLoginModuleAdapterFactory {
 
 
 abstract class SnsLoginModuleAdapter {
-  Future<SnsLoginModuleResDto> getSnsModuleUserInfo();
-  SnsSupportService snsSupportService;
-  Future<void> login(FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto);
+  Future<SnsLoginModuleResDto?> getSnsModuleUserInfo();
+  SnsSupportService? snsSupportService;
+  Future<void> login(FUserSnsCheckJoinResDto? fUserSnsCheckJoinResDto);
   Future<void> logout();
 }
 
 class SnsLoginModuleResDto {
-  String uid;
-  String accessToken;
-  String userNickName;
-  String email;
-  String userProfileImageUrl;
-  String appUid;
+  String? uid;
+  String? accessToken;
+  String? userNickName;
+  String? email;
+  String? userProfileImageUrl;
+  String? appUid;
   SnsLoginModuleResDto(this.uid, this.accessToken,{this.userNickName,this.email,this.userProfileImageUrl,this.appUid});
 }

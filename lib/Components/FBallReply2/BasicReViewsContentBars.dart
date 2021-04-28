@@ -14,27 +14,27 @@ import 'ReviewInertMediator.dart';
 import 'ReviewUpdateMediator.dart';
 
 class BasicReViewsContentBars extends StatelessWidget {
-  final String ballUuid;
-  final int pageLimit;
-  final bool listable;
-  final bool showChildReply;
-  final bool showEditBtn;
-  final ReviewInertMediator _reviewInertMediator;
-  final ReviewCountMediator _reviewCountMediator;
-  final ReviewDeleteMediator _reviewDeleteMediator;
-  final ReviewUpdateMediator _reviewUpdateMediator;
-  final bool canSubReplyInsert;
+  final String? ballUuid;
+  final int? pageLimit;
+  final bool? listable;
+  final bool? showChildReply;
+  final bool? showEditBtn;
+  final ReviewInertMediator? _reviewInertMediator;
+  final ReviewCountMediator? _reviewCountMediator;
+  final ReviewDeleteMediator? _reviewDeleteMediator;
+  final ReviewUpdateMediator? _reviewUpdateMediator;
+  final bool? canSubReplyInsert;
 
   const BasicReViewsContentBars(
-      {Key key,
+      {Key? key,
       this.ballUuid,
       this.pageLimit,
       this.listable,
       this.showChildReply,
-      ReviewInertMediator reviewInertMediator,
-      ReviewCountMediator reviewCountMediator,
-      ReviewDeleteMediator reviewDeleteMediator,
-      ReviewUpdateMediator reviewUpdateMediator,
+      ReviewInertMediator? reviewInertMediator,
+      ReviewCountMediator? reviewCountMediator,
+      ReviewDeleteMediator? reviewDeleteMediator,
+      ReviewUpdateMediator? reviewUpdateMediator,
       this.showEditBtn,
       this.canSubReplyInsert})
       : _reviewInertMediator = reviewInertMediator,
@@ -62,7 +62,7 @@ class BasicReViewsContentBars extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 itemBuilder: (_, index) {
                   return BasicReViewsContentBar(
-                      key: Key(model.replys[index].replyUuid + "_barId"),
+                      key: Key(model.replys[index].replyUuid! + "_barId"),
                       fBallReplyResDto: model.replys[index],
                       canSubReplyInsert: canSubReplyInsert,
                       hasBottomPadding: true,
@@ -82,28 +82,28 @@ class BasicReViewsContentBars extends StatelessWidget {
 
 class BasicReViewsContentBarsViewModel extends ChangeNotifier
     implements ReviewInertMediatorComponent {
-  final String ballUuid;
-  final int pageLimit;
+  final String? ballUuid;
+  final int? pageLimit;
   int page = 0;
-  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
-  final ReviewInertMediator _reviewInertMediator;
+  final FBallReplyUseCaseInputPort? _fBallReplyUseCaseInputPort;
+  final ReviewInertMediator? _reviewInertMediator;
 
   bool isLoaded = false;
   bool loadedLatPage = false;
-  List<FBallReplyResDto> replys = [];
-  ScrollController scrollController;
+  List<FBallReplyResDto> replys = List.empty();
+  ScrollController? scrollController;
 
   BasicReViewsContentBarsViewModel({
     this.ballUuid,
-    FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
-    ReviewInertMediator reviewInertMediator,
+    FBallReplyUseCaseInputPort? fBallReplyUseCaseInputPort,
+    ReviewInertMediator? reviewInertMediator,
     this.pageLimit,
   })  : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort,
         _reviewInertMediator = reviewInertMediator {
-    _reviewInertMediator.registerComponent(this);
+    _reviewInertMediator!.registerComponent(this);
     scrollController = ScrollController();
     loadReply();
-    scrollController.addListener(scrollListener);
+    scrollController!.addListener(scrollListener);
   }
 
   Future<void> loadReply() async {
@@ -112,14 +112,14 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
     reqDto.reqOnlySubReply = false;
     if (!loadedLatPage) {
       PageWrap<FBallReplyResDto> replysTemp =
-          await _fBallReplyUseCaseInputPort.reqFBallReply(reqDto,
+          await _fBallReplyUseCaseInputPort!.reqFBallReply(reqDto,
               Pageable(page: page, size: pageLimit, sort: "replyNumber,ASC"));
-      if (replysTemp.first) {
+      if (replysTemp.first!) {
         replys.clear();
-      } else if (replysTemp.last) {
+      } else if (replysTemp.last!) {
         loadedLatPage = true;
       }
-      replys.addAll(replysTemp.content);
+      replys.addAll(replysTemp.content!);
       isLoaded = true;
       notifyListeners();
     }
@@ -132,9 +132,9 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
   }
 
   bool _isScrollerBottomOver() {
-    return scrollController.offset >=
-            scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange;
+    return scrollController!.offset >=
+            scrollController!.position.maxScrollExtent &&
+        !(scrollController!).position.outOfRange;
   }
 
   void _scrollerOver() async {
@@ -153,7 +153,7 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
 
   @override
   void dispose() {
-    _reviewInertMediator.unregisterComponent(this);
+    _reviewInertMediator!.unregisterComponent(this);
     super.dispose();
   }
 

@@ -7,7 +7,7 @@ import '../LoginSheet/LoginSheet.dart';
 import '../LoginSheet/LoginSheetOutputPort.dart';
 
 class L001BottomSheetPageSlider extends StatelessWidget {
-  const L001BottomSheetPageSlider({Key key}) : super(key: key);
+  const L001BottomSheetPageSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

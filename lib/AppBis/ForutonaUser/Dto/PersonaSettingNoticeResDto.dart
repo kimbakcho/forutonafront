@@ -5,11 +5,11 @@ part 'PersonaSettingNoticeResDto.g.dart';
 
 @JsonSerializable()
 class PersonaSettingNoticeResDto {
-  int idx;
-  String noticeName ;
-  DateTime noticeWriteDateTime ;
-  String noticeContent ;
-  String lang ;
+  int? idx;
+  String? noticeName ;
+  DateTime? noticeWriteDateTime ;
+  String? noticeContent ;
+  String? lang ;
 
   PersonaSettingNoticeResDto();
 

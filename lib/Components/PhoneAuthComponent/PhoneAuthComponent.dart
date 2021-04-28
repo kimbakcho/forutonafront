@@ -14,20 +14,20 @@ import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthMode/PhoneA
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:otp_autofill/otp_autofill.dart';
 import 'package:provider/provider.dart';
-import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 import 'PhoneAuthMode/PhoneAuthModeUseCase.dart';
 
 class PhoneAuthComponent extends StatefulWidget {
-  final PhoneAuthComponentController phoneAuthComponentController;
+  final PhoneAuthComponentController? phoneAuthComponentController;
 
-  final PhoneAuthMode phoneAuthMode;
+  final PhoneAuthMode? phoneAuthMode;
 
-  final String email;
+  final String? email;
 
   const PhoneAuthComponent(
-      {Key key,
+      {Key? key,
       this.phoneAuthComponentController,
       this.phoneAuthMode,
       this.email})
@@ -42,11 +42,11 @@ class PhoneAuthComponent extends StatefulWidget {
 
 class _PhoneAuthComponentState extends State<PhoneAuthComponent>
     with SingleTickerProviderStateMixin {
-  final PhoneAuthComponentController phoneAuthComponentController;
+  final PhoneAuthComponentController? phoneAuthComponentController;
 
   _PhoneAuthComponentState({this.phoneAuthComponentController});
 
-  Ticker _ticker;
+  Ticker? _ticker;
 
   @override
   void initState() {
@@ -54,13 +54,12 @@ class _PhoneAuthComponentState extends State<PhoneAuthComponent>
     _ticker = createTicker((Duration elapsed) {
       setState(() {});
     });
-    _ticker.start();
+    _ticker!.start();
   }
 
   @override
   void dispose() {
-    _ticker.dispose();
-    SmsRetrieved.stopListening();
+    _ticker!.dispose();
     super.dispose();
   }
 
@@ -171,9 +170,9 @@ class _PhoneAuthComponentState extends State<PhoneAuthComponent>
 }
 
 class PhoneAuthComponentViewModel extends ChangeNotifier {
-  CountrySelectButtonController _countrySelectButtonController;
+  CountrySelectButtonController? _countrySelectButtonController;
 
-  PhoneAuthComponentController phoneAuthComponentController;
+  PhoneAuthComponentController? phoneAuthComponentController;
 
   final TextEditingController _currentPhoneNumberController;
 
@@ -181,11 +180,11 @@ class PhoneAuthComponentViewModel extends ChangeNotifier {
 
   final PhoneAuthModeFactory phoneAuthModeFactory;
 
-  final PhoneAuthMode phoneAuthMode;
+  final PhoneAuthMode? phoneAuthMode;
 
-  DateTime authRemindTime;
+  DateTime? authRemindTime;
 
-  PhoneAuthUseCaseInputPort phoneAuthUseCaseInputPort;
+  PhoneAuthUseCaseInputPort? phoneAuthUseCaseInputPort;
 
   bool _isAuthNumberError = false;
 
@@ -197,20 +196,22 @@ class PhoneAuthComponentViewModel extends ChangeNotifier {
 
   String phoneErrorText = "";
 
-  PhoneAuthModeUseCase _phoneAuthModeUseCase;
+  PhoneAuthModeUseCase? _phoneAuthModeUseCase;
 
-  String email;
+  String? email;
+
+  OTPTextEditController? otpTextEditController;
 
   PhoneAuthComponentViewModel(
       {this.phoneAuthComponentController,
-      @required this.phoneAuthUseCaseInputPort,
-      @required this.phoneAuthModeFactory,
+      required this.phoneAuthUseCaseInputPort,
+      required this.phoneAuthModeFactory,
       this.phoneAuthMode,
       this.email})
       : _currentPhoneNumberController = TextEditingController(),
         _currentAuthNumberController = TextEditingController() {
     if (phoneAuthComponentController != null) {
-      phoneAuthComponentController._phoneAuthComponentViewModel = this;
+      phoneAuthComponentController!._phoneAuthComponentViewModel = this;
     }
 
     _countrySelectButtonController = CountrySelectButtonController(
@@ -222,26 +223,38 @@ class PhoneAuthComponentViewModel extends ChangeNotifier {
       notifyListeners();
     });
 
-    _phoneAuthModeUseCase = phoneAuthModeFactory
-        .getInstance(phoneAuthMode, phoneAuthComponentController, email: email);
+    _phoneAuthModeUseCase = phoneAuthModeFactory.getInstance(
+        phoneAuthMode!, phoneAuthComponentController!,
+        email: email);
   }
 
   sendAuthSms() async {
-    await _phoneAuthModeUseCase.sendAuthSms();
+    await _phoneAuthModeUseCase!.sendAuthSms();
   }
 
   waitSmsRetrieved() async {
-    var authCode = await SmsRetrieved.startListeningSms();
-    var indexOf = authCode.indexOf("인증번호:");
-    var indexOf2 = authCode.indexOf("]", indexOf);
-    var authNumber = authCode.substring(indexOf + 5, indexOf2);
-    _currentAuthNumberController.text = authNumber;
+    otpTextEditController =
+        OTPTextEditController(codeLength: 6, onCodeReceive: (value) {});
+    otpTextEditController!.startListenRetriever((value) {
+      var indexOf = value!.indexOf("인증번호:");
+      var indexOf2 = value.indexOf("]", indexOf);
+      var authNumber = value.substring(indexOf + 5, indexOf2);
+      _currentAuthNumberController.text = authNumber;
+      return "";
+    });
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    this.otpTextEditController!.stopListen();
   }
 
   get isActiveAuthButton {
     if (_currentPhoneNumberController.text.length >= 9 &&
         _currentPhoneNumberController.text.length <= 11) {
-      if (authRemindTime == null || DateTime.now().isAfter(authRemindTime)) {
+      if (authRemindTime == null || DateTime.now().isAfter(authRemindTime!)) {
         return true;
       } else {
         return false;
@@ -254,8 +267,8 @@ class PhoneAuthComponentViewModel extends ChangeNotifier {
   String get reActiveTime {
     if (authRemindTime == null) {
       return "02:00";
-    } else if (authRemindTime.isAfter(DateTime.now())) {
-      var difference = authRemindTime.difference(DateTime.now());
+    } else if (authRemindTime!.isAfter(DateTime.now())) {
+      var difference = authRemindTime!.difference(DateTime.now());
       if (difference.inSeconds > 120) {
         return "02:00";
       }
@@ -265,32 +278,30 @@ class PhoneAuthComponentViewModel extends ChangeNotifier {
     }
   }
 
-  DateTime _canAuthNumberTime;
+  DateTime? _canAuthNumberTime;
 
   _checkAuthCheckNumber() async {
-    await _phoneAuthModeUseCase.checkAuthCheckNumber();
+    await _phoneAuthModeUseCase!.checkAuthCheckNumber();
   }
 
-  void onNumberAuthReq(PhoneAuthNumberResDto phoneAuthNumberResDto) {
-    if (phoneAuthNumberResDto.errorFlag) {
+  void onNumberAuthReq(PhoneAuthNumberResDto? phoneAuthNumberResDto) {
+    if (phoneAuthNumberResDto!.errorFlag!) {
       _isAuthNumberError = true;
-      _authCheckErrorText = phoneAuthNumberResDto.errorCause;
+      _authCheckErrorText = phoneAuthNumberResDto.errorCause!;
     } else {
-      if (phoneAuthComponentController != null &&
-          phoneAuthComponentController.onPhoneAuthCheckSuccess != null) {
-        phoneAuthComponentController
-            .onPhoneAuthCheckSuccess(phoneAuthNumberResDto);
+      if (phoneAuthComponentController != null) {
+        phoneAuthComponentController!
+            .onPhoneAuthCheckSuccess!(phoneAuthNumberResDto);
       }
     }
   }
 
   void onPhoneAuth(PhoneAuthResDto resDto) {
-    authRemindTime = resDto.authRetryAvailableTime;
-    _canAuthNumberTime = resDto.authTime;
+    authRemindTime = resDto.authRetryAvailableTime!;
+    _canAuthNumberTime = resDto.authTime!;
     _isTryReqAuthNumber = true;
-    if (phoneAuthComponentController != null &&
-        phoneAuthComponentController.onTryAuthReqSuccess != null) {
-      phoneAuthComponentController.onTryAuthReqSuccess();
+    if (phoneAuthComponentController != null) {
+      phoneAuthComponentController!.onTryAuthReqSuccess!();
     }
     notifyListeners();
   }
@@ -298,7 +309,7 @@ class PhoneAuthComponentViewModel extends ChangeNotifier {
   bool get _isDisplayCanAuthNumberTime {
     if (_canAuthNumberTime != null &&
         _isTryReqAuthNumber &&
-        _canAuthNumberTime.isAfter(DateTime.now())) {
+        _canAuthNumberTime!.isAfter(DateTime.now())) {
       return true;
     } else {
       return false;
@@ -307,7 +318,7 @@ class PhoneAuthComponentViewModel extends ChangeNotifier {
 
   String get _authNumberRemindTime {
     if (_canAuthNumberTime != null) {
-      var difference = _canAuthNumberTime.difference(DateTime.now());
+      var difference = _canAuthNumberTime!.difference(DateTime.now());
       return "${difference.inMinutes.toString().padLeft(2, '0')}:${(difference.inSeconds % 60).toString().padLeft(2, '0')}";
     } else {
       return "";
@@ -339,49 +350,49 @@ class PhoneAuthComponentViewModel extends ChangeNotifier {
 }
 
 class PhoneAuthComponentController {
-  PhoneAuthComponentViewModel _phoneAuthComponentViewModel;
+  PhoneAuthComponentViewModel? _phoneAuthComponentViewModel;
 
-  final Function(PhoneAuthNumberResDto) onPhoneAuthCheckSuccess;
+  final Function(PhoneAuthNumberResDto)? onPhoneAuthCheckSuccess;
 
-  final Function onTryAuthReqSuccess;
+  final Function? onTryAuthReqSuccess;
 
   PhoneAuthComponentController(
       {this.onPhoneAuthCheckSuccess, this.onTryAuthReqSuccess});
 
   checkAuthCheckNumber() {
-    _phoneAuthComponentViewModel._checkAuthCheckNumber();
+    _phoneAuthComponentViewModel!._checkAuthCheckNumber();
   }
 
   CountryItem getCountrySelectItem() {
-    return _phoneAuthComponentViewModel._countrySelectButtonController
+    return _phoneAuthComponentViewModel!._countrySelectButtonController!
         .getCurrentCountryItem();
   }
 
   String getPhoneNumber() {
-    return _phoneAuthComponentViewModel._currentPhoneNumberController.text;
+    return _phoneAuthComponentViewModel!._currentPhoneNumberController.text;
   }
 
   Future<void> waitSmsRetrieved() async {
-    await _phoneAuthComponentViewModel.waitSmsRetrieved();
+    await _phoneAuthComponentViewModel!.waitSmsRetrieved();
   }
 
   resPhoneAuth(PhoneAuthResDto resDto) {
-    _phoneAuthComponentViewModel.onPhoneAuth(resDto);
+    _phoneAuthComponentViewModel!.onPhoneAuth(resDto);
   }
 
   String getAuthNumber() {
-    return _phoneAuthComponentViewModel._currentAuthNumberController.text;
+    return _phoneAuthComponentViewModel!._currentAuthNumberController.text;
   }
 
-  resNumberAuthReq(PhoneAuthNumberResDto phoneAuthNumberResDto) {
-    _phoneAuthComponentViewModel.onNumberAuthReq(phoneAuthNumberResDto);
+  resNumberAuthReq(PhoneAuthNumberResDto? phoneAuthNumberResDto) {
+    _phoneAuthComponentViewModel!.onNumberAuthReq(phoneAuthNumberResDto);
   }
 
   setPhoneError(String phoneError) {
-    _phoneAuthComponentViewModel.setPhoneError(phoneError);
+    _phoneAuthComponentViewModel!.setPhoneError(phoneError);
   }
 
   phoneErrorClear() {
-    _phoneAuthComponentViewModel.phoneErrorClear();
+    _phoneAuthComponentViewModel!.phoneErrorClear();
   }
 }

@@ -20,13 +20,13 @@ class ProfileModeUseCaseForMe implements ProfileModeUseCaseInputPort {
   Future<UserProfileComponentInfoDto> getUserInfo() async {
      var fUserInfoResDto = await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
      UserProfileComponentInfoDto userProfileComponentInfoDto = UserProfileComponentInfoDto();
-     userProfileComponentInfoDto.profileImageUrl = fUserInfoResDto.profilePictureUrl;
+     userProfileComponentInfoDto.profileImageUrl = fUserInfoResDto!.profilePictureUrl;
      userProfileComponentInfoDto.countryCode = fUserInfoResDto.isoCode;
      userProfileComponentInfoDto.userNickName = fUserInfoResDto.nickName;
      userProfileComponentInfoDto.followerCount = fUserInfoResDto.followerCount;
      userProfileComponentInfoDto.followingCount = fUserInfoResDto.followingCount;
      userProfileComponentInfoDto.selfIntroduce = fUserInfoResDto.selfIntroduction;
-     userProfileComponentInfoDto.uLevel = fUserInfoResDto.userLevel.toInt();
+     userProfileComponentInfoDto.uLevel = fUserInfoResDto.userLevel!.toInt();
      userProfileComponentInfoDto.backgroundUrl = fUserInfoResDto.backGroundImageUrl;
      userProfileComponentInfoDto.uid = fUserInfoResDto.uid;
      return userProfileComponentInfoDto;
@@ -51,7 +51,7 @@ class ProfileModeUseCaseForOtherUser implements ProfileModeUseCaseInputPort {
     userProfileComponentInfoDto.followerCount = fUserInfoSimpleResDto.followerCount;
     userProfileComponentInfoDto.followingCount = fUserInfoSimpleResDto.followingCount;
     userProfileComponentInfoDto.selfIntroduce = fUserInfoSimpleResDto.selfIntroduction;
-    userProfileComponentInfoDto.uLevel = fUserInfoSimpleResDto.userLevel.toInt();
+    userProfileComponentInfoDto.uLevel = fUserInfoSimpleResDto.userLevel!.toInt();
     userProfileComponentInfoDto.backgroundUrl = fUserInfoSimpleResDto.backGroundImageUrl;
     userProfileComponentInfoDto.uid = fUserInfoSimpleResDto.uid;
     return userProfileComponentInfoDto;
@@ -60,12 +60,12 @@ class ProfileModeUseCaseForOtherUser implements ProfileModeUseCaseInputPort {
 
 @lazySingleton
 class ProfileModeUseCaseFactory {
-  getInstance(UserProfileMode userProfileMode,{String userUid}){
+  getInstance(UserProfileMode userProfileMode,{String? userUid}){
     switch(userProfileMode){
       case UserProfileMode.ME:
         return ProfileModeUseCaseForMe(sl());
       case UserProfileMode.OtherUser:
-        return ProfileModeUseCaseForOtherUser(sl(),userUid);
+        return ProfileModeUseCaseForOtherUser(sl(),userUid!);
     }
   }
 }

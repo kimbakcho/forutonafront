@@ -11,13 +11,13 @@ import 'package:provider/provider.dart';
 import '../../ID01Mode.dart';
 
 class ID01BallTitle extends StatelessWidget {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final ID01Mode id01Mode;
+  final ID01Mode? id01Mode;
 
-  final List<FBallTagResDto> preViewfBallTagResDtos;
+  final List<FBallTagResDto>? preViewfBallTagResDtos;
 
-  const ID01BallTitle({Key key, this.fBallResDto, this.id01Mode, this.preViewfBallTagResDtos}) : super(key: key);
+  const ID01BallTitle({Key? key, this.fBallResDto, this.id01Mode, this.preViewfBallTagResDtos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ID01BallTitle extends StatelessWidget {
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: Column(
               children: [
-                ID01LimitTag(ballUuid: model.fBallResDto.ballUuid,id01Mode: id01Mode,preViewfBallTagResDtos: preViewfBallTagResDtos),
+                ID01LimitTag(ballUuid: model.fBallResDto!.ballUuid,id01Mode: id01Mode,preViewfBallTagResDtos: preViewfBallTagResDtos),
                 Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Expanded(
                       child: Container(
@@ -37,7 +37,7 @@ class ID01BallTitle extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(model.fBallResDto.ballName,
+                        Text(model.fBallResDto!.ballName!,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.notoSans(
                               fontSize: 16,
@@ -63,7 +63,7 @@ class ID01BallTitle extends StatelessWidget {
                     ),
                   )),
                   SmallBallPowerDisplay(
-                    ballPower: model.fBallResDto.ballPower,
+                    ballPower: model.fBallResDto!.ballPower,
                   )
                 ])
               ],
@@ -76,16 +76,16 @@ class ID01BallTitle extends StatelessWidget {
 }
 
 class ID01BallTitleViewModel extends ChangeNotifier {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
   ID01BallTitleViewModel(this.fBallResDto);
 
   String get ballInfo{
-    return '조회수 ${fBallResDto.ballHits} • ${TimeDisplayUtil.getCalcToStrFromNow(fBallResDto.makeTime)}$isEditText';
+    return '조회수 ${fBallResDto!.ballHits} • ${TimeDisplayUtil.getCalcToStrFromNow(fBallResDto!.makeTime!)}$isEditText';
   }
 
   String get isEditText {
-    if(fBallResDto.isEditContent){
+    if(fBallResDto!.isEditContent!){
       return "(edited)";
     }else {
       return "";

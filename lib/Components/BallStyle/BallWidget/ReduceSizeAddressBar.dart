@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ReduceSizeAddressBar extends StatelessWidget {
   const ReduceSizeAddressBar({
-    Key key,
-    @required this.issueBallDisPlayUseCase,
+    Key? key,
+    required this.issueBallDisPlayUseCase,
   }) : super(key: key);
 
   final BallDisPlayUseCase issueBallDisPlayUseCase;

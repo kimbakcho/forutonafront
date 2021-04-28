@@ -6,8 +6,8 @@ part 'FBallDesImagesDto.g.dart';
 
 @JsonSerializable()
 class FBallDesImages {
-  int index;
-  String src;
+  int? index;
+  String? src;
 
   factory FBallDesImages.fromUrl(index,src){
      var fBallDesImagesDto = FBallDesImages();

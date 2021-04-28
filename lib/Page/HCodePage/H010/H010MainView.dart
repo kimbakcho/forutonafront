@@ -15,7 +15,7 @@ class H010MainView extends StatelessWidget {
 
   final InputSearchBarListener inputSearchBarListener;
 
-  const H010MainView({Key key,@required this.inputSearchBarListener,@required this.searchHistoryDataSourceKey })
+  const H010MainView({Key? key,required this.inputSearchBarListener,required this.searchHistoryDataSourceKey })
       : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class H010MainView extends StatelessWidget {
                 child: Column(
                   children: [
                     H010TopSearchBar(
-                      searchHistoryViewController: model.searchHistoryViewController,
+                      searchHistoryViewController: model.searchHistoryViewController!,
                       inputSearchBarListener: inputSearchBarListener,
                     ),
                     Expanded(
@@ -43,7 +43,7 @@ class H010MainView extends StatelessWidget {
                         searchHistoryDataSourceKey: searchHistoryDataSourceKey,
                         inputSearchBarListener: inputSearchBarListener,
                         searchHistoryViewController:
-                            model.searchHistoryViewController,
+                            model.searchHistoryViewController!,
                       ),
                     )
                   ],
@@ -54,7 +54,7 @@ class H010MainView extends StatelessWidget {
 }
 
 class H010MainViewModel extends ChangeNotifier{
-  final SearchHistoryViewController searchHistoryViewController;
+  final SearchHistoryViewController? searchHistoryViewController;
   H010MainViewModel({this.searchHistoryViewController});
 
 }

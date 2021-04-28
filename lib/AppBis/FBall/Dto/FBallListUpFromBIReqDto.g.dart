@@ -9,8 +9,8 @@ part of 'FBallListUpFromBIReqDto.dart';
 FBallListUpFromBIReqDto _$FBallListUpFromBIReqDtoFromJson(
     Map<String, dynamic> json) {
   return FBallListUpFromBIReqDto(
-    mapCenterLatitude: (json['mapCenterLatitude'] as num)?.toDouble(),
-    mapCenterLongitude: (json['mapCenterLongitude'] as num)?.toDouble(),
+    mapCenterLatitude: (json['mapCenterLatitude'] as num).toDouble(),
+    mapCenterLongitude: (json['mapCenterLongitude'] as num).toDouble(),
   );
 }
 

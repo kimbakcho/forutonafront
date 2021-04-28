@@ -5,5 +5,5 @@ import 'TagFromBallUuidUseCaseOutputPort.dart';
 
 abstract class TagFromBallUuidUseCaseInputPort {
   Future<List<FBallTagResDto>> getTagFromBallUuid(
-      {@required String ballUuid, TagFromBallUuidUseCaseOutputPort outputPort});
+      {required String ballUuid, TagFromBallUuidUseCaseOutputPort outputPort});
 }

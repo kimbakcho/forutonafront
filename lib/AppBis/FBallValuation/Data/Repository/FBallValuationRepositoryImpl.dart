@@ -11,7 +11,7 @@ class FBallValuationRepositoryImpl implements FBallValuationRepository {
   final FireBaseAuthAdapterForUseCase _fireBaseAuthBaseAdapter;
 
   FBallValuationRepositoryImpl(
-      {@required FireBaseAuthAdapterForUseCase fireBaseAuthBaseAdapter})
+      {required FireBaseAuthAdapterForUseCase fireBaseAuthBaseAdapter})
       : _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter;
 
   @override

@@ -5,11 +5,11 @@ part 'TermsConditionsResDto.g.dart';
 
 @JsonSerializable()
 class TermsConditionsResDto {
-  int idx;
-  String termsName;
-  String termsContent;
-  DateTime modifyDate;
-  MUserInfoResDto modifyUser;
+  int? idx;
+  String? termsName;
+  String? termsContent;
+  DateTime? modifyDate;
+  MUserInfoResDto? modifyUser;
 
   TermsConditionsResDto();
 

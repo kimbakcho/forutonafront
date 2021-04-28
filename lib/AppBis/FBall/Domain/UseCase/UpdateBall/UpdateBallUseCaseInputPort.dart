@@ -15,12 +15,12 @@ abstract class UpdateBallUseCaseOutputPort {
 class UpdateBallUseCase implements UpdateBallUseCaseInputPort {
   final FBallRepository _fBallRepository;
 
-  UpdateBallUseCase({FBallRepository fBallRepository})
+  UpdateBallUseCase({required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override
   Future<FBallResDto> updateBall(FBallUpdateReqDto reqDto,
-      {UpdateBallUseCaseOutputPort outputPort}) async {
+      {UpdateBallUseCaseOutputPort? outputPort}) async {
     var fBallResDto = await _fBallRepository.updateBall(reqDto);
     if (outputPort != null) {
       outputPort.onUpdateBall(fBallResDto);

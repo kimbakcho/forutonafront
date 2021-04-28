@@ -5,9 +5,9 @@ part 'FBallReplyInsertReqDto.g.dart';
 
 @JsonSerializable()
 class FBallReplyInsertReqDto {
-  String replyUuid;
-  String ballUuid;
-  String replyText;
+  String? replyUuid;
+  String? ballUuid;
+  String? replyText;
 
   FBallReplyInsertReqDto();
   factory FBallReplyInsertReqDto.fromJson(Map<String, dynamic> json) =>

@@ -9,11 +9,11 @@ part of 'PhoneAuthNumberResDto.dart';
 PhoneAuthNumberResDto _$PhoneAuthNumberResDtoFromJson(
     Map<String, dynamic> json) {
   return PhoneAuthNumberResDto()
-    ..phoneAuthToken = json['phoneAuthToken'] as String
-    ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedDialCode = json['internationalizedDialCode'] as String
-    ..errorFlag = json['errorFlag'] as bool
-    ..errorCause = json['errorCause'] as String;
+    ..phoneAuthToken = json['phoneAuthToken'] as String?
+    ..phoneNumber = json['phoneNumber'] as String?
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String?
+    ..errorFlag = json['errorFlag'] as bool?
+    ..errorCause = json['errorCause'] as String?;
 }
 
 Map<String, dynamic> _$PhoneAuthNumberResDtoToJson(

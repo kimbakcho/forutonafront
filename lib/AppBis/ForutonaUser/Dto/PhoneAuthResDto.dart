@@ -4,12 +4,12 @@ part 'PhoneAuthResDto.g.dart';
 
 @JsonSerializable()
 class PhoneAuthResDto {
-  String phoneNumber;
-  String internationalizedDialCode;
-  String isoCode;
-  DateTime authTime;
-  DateTime authRetryAvailableTime;
-  DateTime makeTime;
+  String? phoneNumber;
+  String? internationalizedDialCode;
+  String? isoCode;
+  DateTime? authTime;
+  DateTime? authRetryAvailableTime;
+  DateTime? makeTime;
 
   PhoneAuthResDto();
 

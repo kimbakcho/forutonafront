@@ -14,12 +14,12 @@ class MapBallMarkerFactory {
   final MapMakerDescriptorContainer _mapMakerDescriptorContainer;
 
   MapBallMarkerFactory(
-      {@required MapMakerDescriptorContainer mapMakerDescriptorContainer})
+      {required MapMakerDescriptorContainer mapMakerDescriptorContainer})
       : _mapMakerDescriptorContainer = mapMakerDescriptorContainer;
 
   // ignore: missing_return
-  Marker getBallMaker(FBallType fBallType, String ballUuid, Position position,
-      {Function onTap,
+  Marker? getBallMaker(FBallType fBallType, String ballUuid, Position position,
+      {Function? onTap,
       bool select = false,
       BallMarkerSize ballMarkerSize = BallMarkerSize.Normal}) {
     if (fBallType == FBallType.IssueBall) {
@@ -29,18 +29,18 @@ class MapBallMarkerFactory {
               markerId: MarkerId("IssueBall" + ballUuid),
               icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
                   MapMakerDescriptorType.IssueBallIconUnSelectNormal),
-              onTap: onTap,
+              onTap: () => onTap!(),
               zIndex: 0,
-              position: LatLng(position.latitude, position.longitude),
+              position: LatLng(position.latitude!, position.longitude!),
               anchor: Offset(0.5, 0.5));
         } else if (ballMarkerSize == BallMarkerSize.Small) {
           return Marker(
               markerId: MarkerId("IssueBall" + ballUuid),
               icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
                   MapMakerDescriptorType.IssueBallIconUnSelectSmall),
-              onTap: onTap,
+              onTap: () => onTap!(),
               zIndex: 0,
-              position: LatLng(position.latitude, position.longitude),
+              position: LatLng(position.latitude!, position.longitude!),
               anchor: Offset(0.5, 0.5));
         }
       } else {
@@ -49,9 +49,9 @@ class MapBallMarkerFactory {
               markerId: MarkerId("IssueBall" + ballUuid),
               icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
                   MapMakerDescriptorType.IssueBallIconSelectNormal),
-              onTap: onTap,
+              onTap: () => onTap!(),
               zIndex: 1,
-              position: LatLng(position.latitude, position.longitude),
+              position: LatLng(position.latitude!, position.longitude!),
               anchor: Offset(0.5, 1));
         } else if (ballMarkerSize == BallMarkerSize.Small) {
 
@@ -59,9 +59,9 @@ class MapBallMarkerFactory {
               markerId: MarkerId("IssueBall" + ballUuid),
               icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
                   MapMakerDescriptorType.IssueBallIconSelectSmall),
-              onTap: onTap,
+              onTap: () => onTap!(),
               zIndex: 1,
-              position: LatLng(position.latitude, position.longitude),
+              position: LatLng(position.latitude!, position.longitude!),
               anchor: Offset(0.5, 1));
         }
       }

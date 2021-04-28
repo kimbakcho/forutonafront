@@ -7,13 +7,13 @@ import 'package:provider/provider.dart';
 import '../ID001MainPage2ViewModel.dart';
 
 class ID001AppBar extends StatelessWidget {
-  final ScrollController listViewScrollerController;
-  final String ballName;
+  final ScrollController? listViewScrollerController;
+  final String? ballName;
 
   const ID001AppBar(
-      {Key key, this.model, this.ballName, this.listViewScrollerController})
+      {Key? key, this.model, this.ballName, this.listViewScrollerController})
       : super(key: key);
-  final ID001MainPage2ViewModel model;
+  final ID001MainPage2ViewModel? model;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class ID001AppBar extends StatelessWidget {
                     model.showBallName
                         ? Expanded(
                             child: Container(
-                              child: Text(ballName,style: GoogleFonts.notoSans(
+                              child: Text(ballName!,style: GoogleFonts.notoSans(
                                 fontSize: 16,
                                 color: const Color(0xff000000),
                                 fontWeight: FontWeight.w700,
@@ -54,16 +54,16 @@ class ID001AppBar extends StatelessWidget {
 }
 
 class ID001AppBarViewModel extends ChangeNotifier {
-  final ScrollController listViewScrollerController;
+  final ScrollController? listViewScrollerController;
   bool showBallName = false;
 
   ID001AppBarViewModel({this.listViewScrollerController}) {
-    listViewScrollerController.addListener(listViewScrollerListener);
+    listViewScrollerController!.addListener(listViewScrollerListener);
   }
 
   listViewScrollerListener() {
     bool tempShowBallName = showBallName;
-    if (listViewScrollerController.offset > 30.0) {
+    if (listViewScrollerController!.offset > 30.0) {
       showBallName = true;
     } else {
       showBallName = false;

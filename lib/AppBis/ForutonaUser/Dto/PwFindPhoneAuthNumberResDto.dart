@@ -5,9 +5,9 @@ part 'PwFindPhoneAuthNumberResDto.g.dart';
 @JsonSerializable()
 class PwFindPhoneAuthNumberResDto extends PhoneAuthNumberResDto{
 
-  String email;
+  String? email;
   //emial + Phone이 인증된 암호화 토큰
-  String emailPhoneAuthToken;
+  String? emailPhoneAuthToken;
 
   PwFindPhoneAuthNumberResDto();
   factory PwFindPhoneAuthNumberResDto.fromJson(Map<String, dynamic> json) => _$PwFindPhoneAuthNumberResDtoFromJson(json);

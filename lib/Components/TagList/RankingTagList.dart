@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'RankingTagListMediator.dart';
 
 class RankingTagList extends StatefulWidget {
-  final RankingTagListMediator rankingTagListMediator;
+  final RankingTagListMediator? rankingTagListMediator;
 
-  const RankingTagList({Key key, this.rankingTagListMediator})
+  const RankingTagList({Key? key,required this.rankingTagListMediator})
       : super(key: key);
 
   @override
@@ -37,7 +37,7 @@ class _RankingTagListState extends State<RankingTagList>
                   itemBuilder: (_, index) {
                     return RankingTagChip(
                         key: UniqueKey(),
-                        tagName: model.tagRankingResDtos[index].tagName);
+                        tagName: model.tagRankingResDtos[index].tagName!);
                   }));
         }));
   }
@@ -49,25 +49,25 @@ class _RankingTagListState extends State<RankingTagList>
 class RankingTagListViewModel extends ChangeNotifier
     implements
         SearchCollectMediatorComponent {
-  final RankingTagListMediator rankingTagListMediator;
+  final RankingTagListMediator? rankingTagListMediator;
 
   RankingTagListViewModel(
-      {@required this.rankingTagListMediator}) {
-    if (rankingTagListMediator != null) {
-      rankingTagListMediator.registerComponent(this);
-    }
+      {required this.rankingTagListMediator}) {
+
+      rankingTagListMediator!.registerComponent(this);
+
   }
 
   @override
   void dispose() {
-    if (rankingTagListMediator != null) {
-      rankingTagListMediator.unregisterComponent(this);
-    }
+
+      rankingTagListMediator!.unregisterComponent(this);
+
     super.dispose();
   }
 
   List<TagRankingResDto>  get tagRankingResDtos {
-    return rankingTagListMediator.itemList;
+    return rankingTagListMediator!.itemList!;
   }
 
 

@@ -8,9 +8,9 @@ part of 'PhoneAuthReqDto.dart';
 
 PhoneAuthReqDto _$PhoneAuthReqDtoFromJson(Map<String, dynamic> json) {
   return PhoneAuthReqDto()
-    ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedDialCode = json['internationalizedDialCode'] as String
-    ..isoCode = json['isoCode'] as String;
+    ..phoneNumber = json['phoneNumber'] as String?
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String?
+    ..isoCode = json['isoCode'] as String?;
 }
 
 Map<String, dynamic> _$PhoneAuthReqDtoToJson(PhoneAuthReqDto instance) =>

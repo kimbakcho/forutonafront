@@ -23,7 +23,7 @@ class ForutonaIcon {
   ForutonaIcon._();
 
   static const _kFontFam = 'ForutonaIcon';
-  static const String _kFontPkg = null;
+  static const String? _kFontPkg = null;
 
   static const IconData chevron_up = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData filter = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);

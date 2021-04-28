@@ -7,13 +7,13 @@ part 'BallSearchBarHistory.g.dart';
 
 @JsonSerializable()
 class BallSearchBarHistory {
-  String searchText;
-  DateTime searchTime;
+  String? searchText;
+  DateTime? searchTime;
 
-  BallSearchBarHistory({@required this.searchText,@required this.searchTime});
+  BallSearchBarHistory({required this.searchText,required this.searchTime});
   factory BallSearchBarHistory.fromJson(Map<String, dynamic> json) => _$BallSearchBarHistoryFromJson(json);
   Map<String, dynamic> toJson() => _$BallSearchBarHistoryToJson(this);
-  factory BallSearchBarHistory.fromBallSearchBarHistoryDto(BallSearchBarHistoryDto ballSearchBarHistoryDto){
-    return BallSearchBarHistory(searchText: ballSearchBarHistoryDto.searchText, searchTime: ballSearchBarHistoryDto.searchTime);
+  factory BallSearchBarHistory.fromBallSearchBarHistoryDto(BallSearchBarHistoryDto? ballSearchBarHistoryDto){
+    return BallSearchBarHistory(searchText: ballSearchBarHistoryDto?.searchText, searchTime: ballSearchBarHistoryDto?.searchTime);
   }
 }

@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class IssueBallTopBar extends StatelessWidget {
   const IssueBallTopBar({
-    Key key,
-    @required this.ballDisPlayUseCase,
+    Key? key,
+    required this.ballDisPlayUseCase,
   }) : super(key: key);
 
   final IssueBallDisPlayUseCase ballDisPlayUseCase;

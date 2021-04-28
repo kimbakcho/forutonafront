@@ -10,16 +10,16 @@ class FBallListUpFromMapArea implements FBallListUpUseCaseInputPort {
   final FBallRepository _fBallRepository;
   BallFromMapAreaReqDto reqDto;
 
-  FBallListUpFromMapArea(this.reqDto, {FBallRepository fBallRepository})
+  FBallListUpFromMapArea(this.reqDto, {required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
-      {FBallListUpUseCaseOutputPort outputPort}) async {
+      {FBallListUpUseCaseOutputPort? outputPort}) async {
     searchPosition = Position(longitude: reqDto.centerPointLng,latitude: reqDto.centerPointLat);
     PageWrap<FBallResDto> pageWrap = await _fBallRepository
         .ballListUpFromMapArea(reqDto: reqDto, pageable: pageable);
-    executeOutPort(outputPort, pageWrap);
+    executeOutPort(outputPort!, pageWrap);
     return pageWrap;
   }
 
@@ -31,5 +31,5 @@ class FBallListUpFromMapArea implements FBallListUpUseCaseInputPort {
   }
 
   @override
-  Position searchPosition;
+  Position? searchPosition;
 }

@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 //Mixin 목적으로 사용
 class FireBaseValidErrorUtil {
 
-  String getErrorText(PlatformException e) {
+  String? getErrorText(PlatformException e) {
     if (e.code == "ERROR_INVALID_EMAIL") {
       return "아이디가 이메일 형식이 아닙니다";
     }else if(e.code == "ERROR_WRONG_PASSWORD"){

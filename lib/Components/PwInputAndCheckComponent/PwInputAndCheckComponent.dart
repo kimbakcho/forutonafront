@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class PwInputAndCheckComponent extends StatelessWidget {
-  final PwInputAndCheckComponentController pwInputAndCheckComponentController;
+  final PwInputAndCheckComponentController? pwInputAndCheckComponentController;
 
   final bool visibleTitleLabel;
 
@@ -15,7 +15,7 @@ class PwInputAndCheckComponent extends StatelessWidget {
   final String passwordCheckHintLabel;
 
   const PwInputAndCheckComponent(
-      {Key key,
+      {Key? key,
       this.pwInputAndCheckComponentController,
       this.visibleTitleLabel = true,
       this.passwordHintLabel = "패스워드 입력",
@@ -127,14 +127,14 @@ class PwInputAndCheckComponent extends StatelessWidget {
 }
 
 class PwInputAndCheckComponentViewModel extends ChangeNotifier {
-  final PwInputAndCheckComponentController pwInputAndCheckComponentController;
+  final PwInputAndCheckComponentController? pwInputAndCheckComponentController;
 
   TextEditingController _pwEditController;
   TextEditingController _pwCheckEditController;
 
   PwValid _pwValid = PwValidImpl();
 
-  SignValid _pwCheckValid;
+  SignValid? _pwCheckValid;
 
   bool _tryValid = false;
 
@@ -150,7 +150,7 @@ class PwInputAndCheckComponentViewModel extends ChangeNotifier {
       : _pwEditController = TextEditingController(),
         _pwCheckEditController = TextEditingController() {
     if (pwInputAndCheckComponentController != null) {
-      pwInputAndCheckComponentController._pwInputAndCheckComponentViewModel =
+      pwInputAndCheckComponentController!._pwInputAndCheckComponentViewModel =
           this;
     }
     _pwEditController.addListener(() {
@@ -164,8 +164,8 @@ class PwInputAndCheckComponentViewModel extends ChangeNotifier {
 
   _onChangeEditValue(String pw, String pwCheck) {
     if (pwInputAndCheckComponentController != null &&
-        pwInputAndCheckComponentController.onChangeEditValue != null) {
-      pwInputAndCheckComponentController.onChangeEditValue(pw, pwCheck);
+        pwInputAndCheckComponentController!.onChangeEditValue != null) {
+      pwInputAndCheckComponentController!.onChangeEditValue!(pw, pwCheck);
     }
   }
 
@@ -181,9 +181,9 @@ class PwInputAndCheckComponentViewModel extends ChangeNotifier {
       return false;
     }
 
-    await _pwCheckValid.valid(_pwCheckEditController.text);
-    _isPwCheckError = _pwCheckValid.hasError();
-    _pwCheckErrorText = _pwCheckValid.errorText();
+    await _pwCheckValid!.valid(_pwCheckEditController.text);
+    _isPwCheckError = _pwCheckValid!.hasError();
+    _pwCheckErrorText = _pwCheckValid!.errorText();
 
     if (_isPwCheckError) {
       return false;
@@ -209,21 +209,21 @@ class PwInputAndCheckComponentViewModel extends ChangeNotifier {
 }
 
 class PwInputAndCheckComponentController {
-  PwInputAndCheckComponentViewModel _pwInputAndCheckComponentViewModel;
+  PwInputAndCheckComponentViewModel? _pwInputAndCheckComponentViewModel;
 
-  Function(String, String) onChangeEditValue;
+  Function(String, String)? onChangeEditValue;
 
   PwInputAndCheckComponentController({this.onChangeEditValue});
 
   Future<bool> valid() async {
-    var result = await _pwInputAndCheckComponentViewModel._valid();
+    var result = await _pwInputAndCheckComponentViewModel!._valid();
 
-    _pwInputAndCheckComponentViewModel.notifyListeners();
+    _pwInputAndCheckComponentViewModel!.notifyListeners();
 
     return result;
   }
 
   String getPwValue() {
-    return _pwInputAndCheckComponentViewModel._pwEditController.text;
+    return _pwInputAndCheckComponentViewModel!._pwEditController.text;
   }
 }

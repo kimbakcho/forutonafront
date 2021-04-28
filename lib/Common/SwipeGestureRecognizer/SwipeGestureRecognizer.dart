@@ -2,14 +2,14 @@ import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 
 class SwipeGestureRecognizer extends StatefulWidget {
-  final Function() onSwipeLeft;
-  final Function() onSwipeRight;
-  final Function() onSwipeUp;
-  final Function() onSwipeDown;
-  final Widget child;
-  final SwipeGestureRecognizerController swipeGestureRecognizerController;
+  final Function()? onSwipeLeft;
+  final Function()? onSwipeRight;
+  final Function()? onSwipeUp;
+  final Function()? onSwipeDown;
+  final Widget? child;
+  final SwipeGestureRecognizerController? swipeGestureRecognizerController;
   SwipeGestureRecognizer({
-    Key key,
+    Key? key,
     this.child,
     this.onSwipeDown,
     this.onSwipeLeft,
@@ -22,20 +22,20 @@ class SwipeGestureRecognizer extends StatefulWidget {
 }
 
 class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
-  Offset _horizontalSwipeStartingOffset;
-  Offset _verticalSwipeStartingOffset;
+  Offset? _horizontalSwipeStartingOffset;
+  Offset? _verticalSwipeStartingOffset;
   bool _enableGesture = true;
-  bool _isSwipeLeft;
-  bool _isSwipeRight;
-  bool _isSwipeUp;
-  bool _isSwipeDown;
+  bool? _isSwipeLeft;
+  bool? _isSwipeRight;
+  bool? _isSwipeUp;
+  bool? _isSwipeDown;
 
   _SwipeGestureRecognizerState();
 
   @override
   void initState() {
     super.initState();
-    widget.swipeGestureRecognizerController.swipeGestureRecognizer = this;
+    widget.swipeGestureRecognizerController!.swipeGestureRecognizer = this;
     _horizontalSwipeStartingOffset =
         _horizontalSwipeStartingOffset = Offset(0, 0);
     _isSwipeDown = _isSwipeUp = _isSwipeRight = _isSwipeLeft = false;
@@ -72,7 +72,7 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
         _horizontalSwipeStartingOffset = details.localPosition;
       },
       onHorizontalDragUpdate: (details) {
-        if (_horizontalSwipeStartingOffset.dx >
+        if (_horizontalSwipeStartingOffset!.dx >
             details.localPosition.dx) {
           _isSwipeLeft = true;
           _isSwipeRight = false;
@@ -82,13 +82,13 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
         }
       },
       onHorizontalDragEnd: (details) {
-        if (_isSwipeLeft) {
+        if (_isSwipeLeft!) {
           if (widget.onSwipeLeft != null) {
-            widget.onSwipeLeft();
+            widget.onSwipeLeft!();
           }
-        } else if (_isSwipeRight) {
+        } else if (_isSwipeRight!) {
           if (widget.onSwipeRight != null) {
-            widget.onSwipeRight();
+            widget.onSwipeRight!();
           }
         }
       },
@@ -96,7 +96,7 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
         _verticalSwipeStartingOffset = details.localPosition;
       },
       onVerticalDragUpdate: (details) {
-        if (_verticalSwipeStartingOffset.dy > details.localPosition.dy) {
+        if (_verticalSwipeStartingOffset!.dy > details.localPosition.dy) {
           _isSwipeUp = true;
           _isSwipeDown = false;
         } else {
@@ -105,10 +105,10 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
         }
       },
       onVerticalDragEnd: (details) {
-        if (_isSwipeUp && widget.onSwipeUp != null) {
-          widget.onSwipeUp();
-        } else if (_isSwipeDown && widget.onSwipeDown != null) {
-          widget.onSwipeDown();
+        if (_isSwipeUp! && widget.onSwipeUp != null) {
+          widget.onSwipeUp!();
+        } else if (_isSwipeDown! && widget.onSwipeDown != null) {
+          widget.onSwipeDown!();
         }
       },
     )
@@ -119,7 +119,7 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
         _horizontalSwipeStartingOffset = details.localPosition;
       },
       onHorizontalDragUpdate: (details) {
-        if (_horizontalSwipeStartingOffset.dx >
+        if (_horizontalSwipeStartingOffset!.dx >
             details.localPosition.dx) {
           _isSwipeLeft = true;
           _isSwipeRight = false;
@@ -129,10 +129,10 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
         }
       },
       onHorizontalDragEnd: (details) {
-        if (_isSwipeLeft && widget.onSwipeLeft != null) {
-          widget.onSwipeLeft();
-        } else if (_isSwipeRight && widget.onSwipeRight != null) {
-          widget.onSwipeRight();
+        if (_isSwipeLeft! && widget.onSwipeLeft != null) {
+          widget.onSwipeLeft!();
+        } else if (_isSwipeRight! && widget.onSwipeRight != null) {
+          widget.onSwipeRight!();
         }
       },
     )
@@ -143,7 +143,7 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
         _verticalSwipeStartingOffset = details.localPosition;
       },
       onVerticalDragUpdate: (details) {
-        if (_verticalSwipeStartingOffset.dy >
+        if (_verticalSwipeStartingOffset!.dy >
             details.localPosition.dy) {
           _isSwipeUp = true;
           _isSwipeDown = false;
@@ -153,10 +153,10 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
         }
       },
       onVerticalDragEnd: (details) {
-        if (_isSwipeUp && widget.onSwipeUp != null) {
-          widget.onSwipeUp();
-        } else if (_isSwipeDown && widget.onSwipeDown != null) {
-          widget.onSwipeDown();
+        if (_isSwipeUp! && widget.onSwipeUp != null) {
+          widget.onSwipeUp!();
+        } else if (_isSwipeDown! && widget.onSwipeDown != null) {
+          widget.onSwipeDown!();
         }
       },
     )
@@ -166,15 +166,15 @@ class _SwipeGestureRecognizerState extends State<SwipeGestureRecognizer> {
 
 @Injectable()
 class SwipeGestureRecognizerController {
-  _SwipeGestureRecognizerState swipeGestureRecognizer;
+  _SwipeGestureRecognizerState? swipeGestureRecognizer;
   gestureOff(){
     if(swipeGestureRecognizer != null){
-      swipeGestureRecognizer._gestureOff();
+      swipeGestureRecognizer!._gestureOff();
     }
   }
   gestureOn(){
     if(swipeGestureRecognizer != null){
-      swipeGestureRecognizer._gestureOn();
+      swipeGestureRecognizer!._gestureOn();
     }
   }
 }

@@ -6,7 +6,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserSnsCheckJoinResDto.da
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 
 abstract class SingUpUseCaseInputPort {
-  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(SnsSupportService snsService, String accessToken);
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto fUserInfoJoinReq,List<int> profileImage,List<int> backgroundImage);
+  Future<FUserSnsCheckJoinResDto> snsUidJoinCheck(SnsSupportService? snsService, String? accessToken);
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto fUserInfoJoinReq,List<int>? profileImage,List<int>? backgroundImage);
   trySignSns(SnsSupportService snsSupportService,BuildContext context);
 }

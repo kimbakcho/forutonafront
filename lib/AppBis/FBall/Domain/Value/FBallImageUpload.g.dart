@@ -8,8 +8,8 @@ part of 'FBallImageUpload.dart';
 
 FBallImageUpload _$FBallImageUploadFromJson(Map<String, dynamic> json) {
   return FBallImageUpload()
-    ..count = json['count'] as int
-    ..urls = (json['urls'] as List)?.map((e) => e as String)?.toList();
+    ..count = json['count'] as int?
+    ..urls = (json['urls'] as List<dynamic>?)?.map((e) => e as String).toList();
 }
 
 Map<String, dynamic> _$FBallImageUploadToJson(FBallImageUpload instance) =>

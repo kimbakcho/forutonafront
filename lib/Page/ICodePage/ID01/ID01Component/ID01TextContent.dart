@@ -5,9 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ID01TextContent extends StatelessWidget {
   final String content;
-  final String makeTime;
+  final String? makeTime;
 
-  ID01TextContent({@required this.content, @required this.makeTime});
+  ID01TextContent({required this.content, this.makeTime});
 
   @override
   Widget build(BuildContext context) {

@@ -6,15 +6,15 @@ import 'ReplyDeleteActionBtn.dart';
 import 'ReplyEditActionBtn.dart';
 
 class ReplyOptionActionBottomSheet extends StatelessWidget {
-  final FBallReplyResDto _fBallReplyResDto;
-  final ReviewDeleteMediator _reviewDeleteMediator;
-  final ReviewUpdateMediator _reviewUpdateMediator;
+  final FBallReplyResDto? _fBallReplyResDto;
+  final ReviewDeleteMediator? _reviewDeleteMediator;
+  final ReviewUpdateMediator? _reviewUpdateMediator;
 
   const ReplyOptionActionBottomSheet(
-      {Key key,
-      FBallReplyResDto fBallReplyResDto,
-        ReviewUpdateMediator reviewUpdateMediator,
-      ReviewDeleteMediator reviewDeleteMediator})
+      {Key? key,
+      FBallReplyResDto? fBallReplyResDto,
+        ReviewUpdateMediator? reviewUpdateMediator,
+      ReviewDeleteMediator? reviewDeleteMediator})
       : _fBallReplyResDto = fBallReplyResDto,
         _reviewDeleteMediator = reviewDeleteMediator,
         _reviewUpdateMediator = reviewUpdateMediator,

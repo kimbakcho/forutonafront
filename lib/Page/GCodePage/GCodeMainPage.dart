@@ -19,7 +19,7 @@ import 'package:uuid/uuid.dart';
 
 class GCodeMainPage extends StatefulWidget {
 
-  GCodeMainPage({Key key}) : super(key: key);
+  GCodeMainPage({Key? key}) : super(key: key);
   @override
   _GCodeMainPageState createState() => _GCodeMainPageState();
 }
@@ -35,7 +35,7 @@ class _GCodeMainPageState extends State<GCodeMainPage> {
   SwipeGestureRecognizerController _swipeGestureRecognizerController =
     SwipeGestureRecognizerController();
 
-  CodeMainPageController _codeMainPageController;
+  CodeMainPageController? _codeMainPageController;
 
   @override
   void initState() {
@@ -110,16 +110,16 @@ class _GCodeMainPageState extends State<GCodeMainPage> {
 }
 
 class GCodeMainPageViewModel extends ChangeNotifier implements CodeMainPageChangeListener,MainPageViewModelInputPort{
-  CodeMainPageController _codeMainPageController;
+  CodeMainPageController? _codeMainPageController;
 
-  TopNavBtnMediator _topNavBtnMediator;
+  TopNavBtnMediator? _topNavBtnMediator;
 
 
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
   GCodeMainPageViewModel(this._codeMainPageController,this._topNavBtnMediator,this._signInUserInfoUseCaseInputPort){
-    _codeMainPageController.addListener(this);
-    _topNavBtnMediator.codeMainViewModelInputPort = this;
+    _codeMainPageController!.addListener(this);
+    _topNavBtnMediator!.codeMainViewModelInputPort = this;
   }
 
   Map<CodeState, Widget> getCodeStateExpendWidgetMap() {
@@ -167,8 +167,8 @@ class GCodeMainPageViewModel extends ChangeNotifier implements CodeMainPageChang
   }
 
   void swipeRight() {
-    if (_codeMainPageController.currentState == CodeState.G003CODE) {
-      _codeMainPageController.movePageFromTo(
+    if (_codeMainPageController!.currentState == CodeState.G003CODE) {
+      _codeMainPageController!.movePageFromTo(
           mainTo: CodeState.G001CODE,
           topFrom: CodeState.G003CODE,
           topTo: CodeState.G001CODE);
@@ -176,8 +176,8 @@ class GCodeMainPageViewModel extends ChangeNotifier implements CodeMainPageChang
   }
 
   void swipeLeft() {
-    if (_codeMainPageController.currentState == CodeState.G001CODE) {
-      _codeMainPageController.movePageFromTo(
+    if (_codeMainPageController!.currentState == CodeState.G001CODE) {
+      _codeMainPageController!.movePageFromTo(
           mainTo: CodeState.G003CODE,
           topFrom: CodeState.G001CODE,
           topTo: CodeState.G003CODE);
@@ -185,11 +185,11 @@ class GCodeMainPageViewModel extends ChangeNotifier implements CodeMainPageChang
   }
 
   get pageController {
-    return _codeMainPageController.pageController;
+    return _codeMainPageController!.pageController;
   }
 
   get currentState {
-    return _codeMainPageController.currentState;
+    return _codeMainPageController!.currentState;
   }
 
   @override
@@ -199,7 +199,7 @@ class GCodeMainPageViewModel extends ChangeNotifier implements CodeMainPageChang
 
   @override
   jumpToPage(CodeState pageCode) {
-    _codeMainPageController.moveToPage(pageCode);
+    _codeMainPageController!.moveToPage(pageCode);
     notifyListeners();
   }
 

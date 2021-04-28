@@ -20,10 +20,10 @@ class ReviewInertMediatorImpl implements ReviewInertMediator {
 
   List<ReviewInertMediatorComponent> components = [];
 
-  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
+  final FBallReplyUseCaseInputPort? _fBallReplyUseCaseInputPort;
 
   ReviewInertMediatorImpl(
-      {FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort})
+      {FBallReplyUseCaseInputPort? fBallReplyUseCaseInputPort})
       :_fBallReplyUseCaseInputPort=fBallReplyUseCaseInputPort;
 
   @override
@@ -40,7 +40,7 @@ class ReviewInertMediatorImpl implements ReviewInertMediator {
   @override
   Future<FBallReplyResDto> insertReview(FBallReplyInsertReqDto reqDto) async {
     FBallReplyResDto resDto =
-        await _fBallReplyUseCaseInputPort.insertFBallReply(reqDto);
+        await _fBallReplyUseCaseInputPort!.insertFBallReply(reqDto);
     onAllInserted(resDto);
     return resDto;
   }

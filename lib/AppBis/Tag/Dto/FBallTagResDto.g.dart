@@ -8,10 +8,10 @@ part of 'FBallTagResDto.dart';
 
 FBallTagResDto _$FBallTagResDtoFromJson(Map<String, dynamic> json) {
   return FBallTagResDto()
-    ..idx = json['idx'] as int
-    ..tagItem = json['tagItem'] as String
-    ..ballUuid = json['ballUuid'] as String
-    ..tagIndex = json['tagIndex'] as int;
+    ..idx = json['idx'] as int?
+    ..tagItem = json['tagItem'] as String?
+    ..ballUuid = json['ballUuid'] as String?
+    ..tagIndex = json['tagIndex'] as int?;
 }
 
 Map<String, dynamic> _$FBallTagResDtoToJson(FBallTagResDto instance) =>

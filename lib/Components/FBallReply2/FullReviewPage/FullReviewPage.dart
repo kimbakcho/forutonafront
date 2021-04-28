@@ -4,7 +4,6 @@ import 'package:forutonafront/AppBis/FBallReply/Dto/FBallReply/FBallReplyResDto.
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,14 +18,14 @@ import '../ReviewInsertRow.dart';
 import '../ReviewUpdateMediator.dart';
 
 class FullReviewPage extends StatelessWidget {
-  final String ballUuid;
-  final ReviewInertMediator reviewInertMediator;
-  final ReviewCountMediator reviewCountMediator;
-  final ReviewDeleteMediator reviewDeleteMediator;
-  final ReviewUpdateMediator reviewUpdateMediator;
+  final String? ballUuid;
+  final ReviewInertMediator? reviewInertMediator;
+  final ReviewCountMediator? reviewCountMediator;
+  final ReviewDeleteMediator? reviewDeleteMediator;
+  final ReviewUpdateMediator? reviewUpdateMediator;
 
   const FullReviewPage(
-      {Key key,
+      {Key? key,
       this.ballUuid,
       this.reviewInertMediator,
       this.reviewDeleteMediator,
@@ -101,38 +100,38 @@ class FullReviewPage extends StatelessWidget {
 
 class FullReviewPageViewModel extends ChangeNotifier
     implements ReviewCountMediatorComponent, ReviewDeleteMediatorComponent,ReviewUpdateMediatorComponent {
-  final String ballUuid;
-  final ReviewInertMediator reviewInertMediator;
-  final ReviewCountMediator reviewCountMediator;
-  final ReviewDeleteMediator reviewDeleteMediator;
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
-  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final String? ballUuid;
+  final ReviewInertMediator? reviewInertMediator;
+  final ReviewCountMediator? reviewCountMediator;
+  final ReviewDeleteMediator? reviewDeleteMediator;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
+  final FireBaseAuthAdapterForUseCase? _fireBaseAuthAdapterForUseCase;
 
   int page = 0;
   int pageLimit = 10;
   List<FBallReplyResDto> replys = [];
   bool isLastPage = false;
-  FUserInfoResDto _fUserInfoResDto;
+  FUserInfoResDto? _fUserInfoResDto;
 
   FullReviewPageViewModel(
       {this.ballUuid,
       this.reviewInertMediator,
       this.reviewCountMediator,
       this.reviewDeleteMediator,
-      FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
-      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort})
+      FBallReplyUseCaseInputPort? fBallReplyUseCaseInputPort,
+      FireBaseAuthAdapterForUseCase? fireBaseAuthAdapterForUseCase,
+      SignInUserInfoUseCaseInputPort? signInUserInfoUseCaseInputPort})
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
     initPage();
-    reviewCountMediator.registerComponent(this);
-    reviewDeleteMediator.registerComponent(this);
+    reviewCountMediator!.registerComponent(this);
+    reviewDeleteMediator!.registerComponent(this);
   }
 
   initPage() async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase!.isLogin()) {
       this._fUserInfoResDto =
-          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+          _signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory()!;
       notifyListeners();
     }
   }
@@ -141,12 +140,12 @@ class FullReviewPageViewModel extends ChangeNotifier
     if (_fUserInfoResDto == null) {
       return null;
     } else {
-      return this._fUserInfoResDto.profilePictureUrl;
+      return this._fUserInfoResDto!.profilePictureUrl;
     }
   }
 
   showRootReplyInputDialog(BuildContext context) async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase!.isLogin()) {
       await showModalBottomSheet(
           context: context,
           isDismissible: true,
@@ -159,18 +158,18 @@ class FullReviewPageViewModel extends ChangeNotifier
                 reviewInertMediator: reviewInertMediator);
           });
     } else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
+      // Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
     }
   }
 
   get reviewCount {
-    return reviewCountMediator.reviewCount;
+    return reviewCountMediator!.reviewCount;
   }
 
   @override
   void dispose() {
-    reviewCountMediator.unregisterComponent(this);
-    reviewDeleteMediator.unregisterComponent(this);
+    reviewCountMediator!.unregisterComponent(this);
+    reviewDeleteMediator!.unregisterComponent(this);
     super.dispose();
   }
 

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CountrySelectPage extends StatelessWidget {
-  String countryCode;
+  String? countryCode;
 
   CountrySelectPage({this.countryCode});
 
@@ -14,7 +14,7 @@ class CountrySelectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) =>
-            CountrySelectPageViewModel(context, initCountryCode: countryCode),
+            CountrySelectPageViewModel(context, initCountryCode: countryCode!),
         child: Consumer<CountrySelectPageViewModel>(builder: (_, model, child) {
           return Stack(children: <Widget>[
             Scaffold(

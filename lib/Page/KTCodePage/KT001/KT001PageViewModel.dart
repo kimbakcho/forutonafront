@@ -12,10 +12,10 @@ class KT001PageViewModel with ChangeNotifier implements BaseOpenTalkOutputPort,B
   final BaseGoogleSurveyInputPort _proposalOnServiceSurvey;
 
   KT001PageViewModel({
-    @required BaseOpenTalkInputPort inquireAboutAnythingUseCase,
-    @required AndroidIntentAdapter androidIntentAdapter,
-    @required BaseGoogleSurveyInputPort errorReportSurvey,
-    @required BaseGoogleSurveyInputPort proposalOnServiceSurvey,
+    required BaseOpenTalkInputPort inquireAboutAnythingUseCase,
+    required AndroidIntentAdapter androidIntentAdapter,
+    required BaseGoogleSurveyInputPort errorReportSurvey,
+    required BaseGoogleSurveyInputPort proposalOnServiceSurvey,
   })  : _inquireAboutAnythingUseCase = inquireAboutAnythingUseCase,
         _androidIntentAdapter = androidIntentAdapter,
         _errorReportSurvey = errorReportSurvey,
@@ -44,10 +44,10 @@ class KT001PageViewModel with ChangeNotifier implements BaseOpenTalkOutputPort,B
     return _errorReportSurvey.prize;
   }
   get errorReportLotteryMonth{
-    return _errorReportSurvey.lottery.month;
+    return _errorReportSurvey.lottery!.month;
   }
   get errorReportLotteryDay{
-    return _errorReportSurvey.lottery.day;
+    return _errorReportSurvey.lottery!.day;
   }
 
   get proposalOnServiceMaxDraw{
@@ -57,10 +57,10 @@ class KT001PageViewModel with ChangeNotifier implements BaseOpenTalkOutputPort,B
     return _proposalOnServiceSurvey.prize;
   }
   get proposalOnServiceLotteryMonth{
-    return _proposalOnServiceSurvey.lottery.month;
+    return _proposalOnServiceSurvey.lottery!.month;
   }
   get proposalOnServiceLotteryDay{
-    return _proposalOnServiceSurvey.lottery.day;
+    return _proposalOnServiceSurvey.lottery!.day;
   }
 
   @override

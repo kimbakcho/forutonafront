@@ -3,11 +3,11 @@ import 'package:forutonafront/Page/KCodePage/KCodeScrollerControllerAniBuilder.d
 
 class KCodeScrollerControllerBtn extends StatelessWidget {
 
-  final KCodeScrollerController kCodeScrollerController;
-  final ScrollController mainScroller;
+  final KCodeScrollerController? kCodeScrollerController;
+  final ScrollController? mainScroller;
 
   const KCodeScrollerControllerBtn(
-      {Key key, this.mainScroller, this.kCodeScrollerController})
+      {Key? key, this.mainScroller, this.kCodeScrollerController})
       : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class KCodeScrollerControllerBtn extends StatelessWidget {
           shape: CircleBorder(),
           child: InkWell(
             onTap: () {
-              mainScroller.animateTo(0,
+              mainScroller!.animateTo(0,
                   duration: Duration(milliseconds: 500), curve: Curves.easeOut);
             },
             child: Icon(Icons.keyboard_arrow_up),

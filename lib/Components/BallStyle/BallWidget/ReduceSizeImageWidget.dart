@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ReduceSizeImageWidget extends StatelessWidget {
   const ReduceSizeImageWidget({
-    Key key,
-    @required this.issueBallDisPlayUseCase,
+    Key? key,
+    required this.issueBallDisPlayUseCase,
   }) : super(key: key);
 
   final BallDisPlayUseCase issueBallDisPlayUseCase;
@@ -17,7 +17,7 @@ class ReduceSizeImageWidget extends StatelessWidget {
     return Stack(
       children: [
         CachedNetworkImage(
-            imageUrl: issueBallDisPlayUseCase.mainPictureSrc(),
+            imageUrl: issueBallDisPlayUseCase.mainPictureSrc()!,
             fit: BoxFit.cover,
             imageBuilder: (context, imageProvider) => Container(
                   decoration: BoxDecoration(

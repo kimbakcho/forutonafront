@@ -3,13 +3,12 @@ import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAu
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/Value/BallLikeState.dart';
-import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
 class ID001LikeAction extends StatelessWidget {
-  final ValuationMediator valuationMediator;
-  final String ballUuid;
+  final ValuationMediator? valuationMediator;
+  final String? ballUuid;
 
   ID001LikeAction({this.valuationMediator, this.ballUuid});
 
@@ -25,26 +24,7 @@ class ID001LikeAction extends StatelessWidget {
         return Container(
           child: Row(
             children: <Widget>[
-              RawMaterialButton(
-                onPressed: () {
-                  model.likeAction();
-                },
-                constraints: BoxConstraints(minHeight: 35, minWidth: 35),
-                child: Icon(ForutonaIcon.like,
-                    color: model.ballLikeState == BallLikeState.Up
-                        ? Colors.lightBlueAccent
-                        : Colors.grey),
-              ),
-              RawMaterialButton(
-                onPressed: () {
-                  model.disLikeAction();
-                },
-                constraints: BoxConstraints(minHeight: 35, minWidth: 35),
-                child: Icon(Icons.thumb_down,
-                    color: model.ballLikeState == BallLikeState.Down
-                        ? Colors.lightBlueAccent
-                        : Colors.grey),
-              )
+
             ],
           ),
         );
@@ -55,41 +35,39 @@ class ID001LikeAction extends StatelessWidget {
 
 class ID001LikeActionViewModel extends ChangeNotifier
     implements ValuationMediatorComponent {
-  final ValuationMediator valuationMediator;
-  final BuildContext context;
-  final FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
+  final ValuationMediator? valuationMediator;
+  final BuildContext? context;
+  final FireBaseAuthAdapterForUseCase? fireBaseAuthAdapterForUseCase;
 
   ID001LikeActionViewModel(
-      {@required this.valuationMediator,
-      @required this.context,
-      @required this.ballUuid,
-      @required this.fireBaseAuthAdapterForUseCase})
+      {required this.valuationMediator,
+      required this.context,
+      required this.ballUuid,
+      required this.fireBaseAuthAdapterForUseCase})
       {
-    valuationMediator.registerComponent(this);
+    valuationMediator!.registerComponent(this);
   }
 
   likeAction() async {
-    if (await fireBaseAuthAdapterForUseCase.isLogin()) {
+    if (await fireBaseAuthAdapterForUseCase!.isLogin()) {
       // valuationMediator.voteAction(this);
     } else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
+      // Navigator.of(context!).push(MaterialPageRoute(builder: (_) => J001View()));
     }
   }
 
-  BallLikeState get ballLikeState {
-    // return valuationMediator.ballLikeState;
-  }
+
 
   disLikeAction() async {
-    if (await fireBaseAuthAdapterForUseCase.isLogin()) {
+    if (await fireBaseAuthAdapterForUseCase!.isLogin()) {
       // valuationMediator.disLikeAction(this);
     } else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => J001View()));
+      // Navigator.of(context!).push(MaterialPageRoute(builder: (_) => J001View()));
     }
   }
 
   @override
-  String ballUuid;
+  String? ballUuid;
 
   @override
   valuationReqNotification() {
@@ -98,7 +76,7 @@ class ID001LikeActionViewModel extends ChangeNotifier
 
   @override
   void dispose() {
-    valuationMediator.unregisterComponent(this);
+    valuationMediator!.unregisterComponent(this);
     super.dispose();
   }
 }

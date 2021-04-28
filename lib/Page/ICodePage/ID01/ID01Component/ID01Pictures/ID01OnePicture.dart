@@ -5,12 +5,12 @@ import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallI
 import 'ID01ImageContainer.dart';
 
 class ID01OnePicture extends StatelessWidget {
-  final BallImageItem fBallDesImages;
+  final BallImageItem? fBallDesImages;
 
   ID01OnePicture({this.fBallDesImages});
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: ID01ImageContainer([fBallDesImages], 0));
+    return Container(child: ID01ImageContainer([fBallDesImages!], 0));
   }
 }

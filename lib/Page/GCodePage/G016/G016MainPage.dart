@@ -34,7 +34,7 @@ class G016MainPage extends StatelessWidget {
                   child: ListView.builder(
                       itemCount: model.notices.length,
                       controller: PageScrollController(
-                          scrollController: ScrollController(),
+                          scrollController: PageController(),
                           onNextPage: model.onNextPage,
                           onRefreshFirst: model.onRefreshFirst)
                           .scrollController,
@@ -50,8 +50,8 @@ class G016MainPage extends StatelessWidget {
                                       MaterialPageRoute(builder: (_) {
                                         return G017MainPage(
                                             appBarTitle: model.notices[index]
-                                                .title,
-                                            idx: model.notices[index].idx);
+                                                .title!,
+                                            idx: model.notices[index].idx!);
                                       }));
                                 },
                                 child: Container(
@@ -60,7 +60,7 @@ class G016MainPage extends StatelessWidget {
                                     children: [
                                       Row(children: [
                                         Text(
-                                          model.notices[index].title,
+                                          model.notices[index].title!,
                                           style: GoogleFonts.notoSans(
                                             fontSize: 14,
                                             color: const Color(0xff3a3e3f),
@@ -71,7 +71,7 @@ class G016MainPage extends StatelessWidget {
                                       Row(children: [
                                         Text(
                                           TimeDisplayUtil.getCalcToStrFromNow(
-                                              model.notices[index].modifyDate),
+                                              model.notices[index].modifyDate!),
                                           style: GoogleFonts.notoSans(
                                             fontSize: 12,
                                             color: const Color(0xff7a7a7a),
@@ -99,7 +99,7 @@ class G016MainPage extends StatelessWidget {
 
 class G016MainPageViewModel extends ChangeNotifier {
 
-  G016PageCollectMediator _g016pageCollectMediator;
+  G016PageCollectMediator? _g016pageCollectMediator;
 
   bool isLoaded = false;
 
@@ -111,20 +111,20 @@ class G016MainPageViewModel extends ChangeNotifier {
   init() async {
     isLoaded = false;
     notifyListeners();
-    await _g016pageCollectMediator.searchFirst();
+    await _g016pageCollectMediator!.searchFirst();
     isLoaded = true;
     notifyListeners();
   }
 
   List<NoticeResDto> get notices {
-    return _g016pageCollectMediator.itemList;
+    return _g016pageCollectMediator!.itemList!;
   }
 
   onNextPage() {
-    _g016pageCollectMediator.searchNext();
+    _g016pageCollectMediator!.searchNext();
   }
 
   onRefreshFirst() {
-    _g016pageCollectMediator.searchFirst();
+    _g016pageCollectMediator!.searchFirst();
   }
 }

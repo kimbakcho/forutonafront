@@ -3,15 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class BallMakeButton extends StatelessWidget {
-  final ImageProvider leftImage;
-  final String ballName;
-  final Icon icon;
-  final Color mainColor;
-  final String text;
-  final Function onTap;
+  final ImageProvider? leftImage;
+  final String? ballName;
+  final Icon? icon;
+  final Color? mainColor;
+  final String? text;
+  final Function? onTap;
 
   const BallMakeButton(
-      {Key key,
+      {Key? key,
       this.leftImage,
       this.ballName,
       this.icon,
@@ -31,7 +31,7 @@ class BallMakeButton extends StatelessWidget {
             child: InkWell(
               customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
               onTap: (){
-                onTap();
+                onTap!();
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -43,7 +43,7 @@ class BallMakeButton extends StatelessWidget {
                     Container(
                       constraints: BoxConstraints.tightForFinite(width: 50),
                       decoration:
-                      BoxDecoration(image: DecorationImage(image: leftImage)),
+                      BoxDecoration(image: DecorationImage(image: leftImage!)),
                     ),
                     Expanded(
                         child: Container(
@@ -52,7 +52,7 @@ class BallMakeButton extends StatelessWidget {
                             children: [
                               Row(children: [
                                 Expanded(
-                                    child: Text(ballName,
+                                    child: Text(ballName!,
                                         style: GoogleFonts.notoSans(
                                           fontSize: 12,
                                           color: mainColor,
@@ -68,7 +68,7 @@ class BallMakeButton extends StatelessWidget {
                               ]),
                               Expanded(
                                   child: Container(
-                                      child: Text(text,
+                                      child: Text(text!,
                                           style: GoogleFonts.notoSans(
                                             fontSize: 14,
                                             color: const Color(0xff2f3035),

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class KRankingTagListWidget extends StatelessWidget {
   final String searchText;
 
-  const KRankingTagListWidget({Key key, @required this.searchText})
+  const KRankingTagListWidget({Key? key, required this.searchText})
       : super(key: key);
 
   @override
@@ -37,9 +37,9 @@ class KRankingTagListWidgetViewModel extends ChangeNotifier {
   final String searchText;
 
   KRankingTagListWidgetViewModel(
-      {@required this.searchText,
-      @required this.rankingTagListMediator,
-      @required this.geoLocationUtilForeGroundUseCaseInputPort}) {
+      {required this.searchText,
+      required this.rankingTagListMediator,
+      required this.geoLocationUtilForeGroundUseCaseInputPort}) {
     init();
   }
 

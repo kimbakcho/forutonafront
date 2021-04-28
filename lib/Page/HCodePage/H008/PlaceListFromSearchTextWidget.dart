@@ -13,12 +13,12 @@ import 'package:uuid/uuid.dart';
 import 'H008SearchEmptyRow.dart';
 
 class PlaceListFromSearchTextWidget extends StatelessWidget {
-  final String searchText;
-  final PlaceListFromSearchTextWidgetListener
+  final String? searchText;
+  final PlaceListFromSearchTextWidgetListener?
       placeListFromSearchTextWidgetListener;
 
   const PlaceListFromSearchTextWidget(
-      {Key key, this.searchText, this.placeListFromSearchTextWidgetListener})
+      {Key? key, this.searchText, this.placeListFromSearchTextWidgetListener})
       : super(key: key);
 
   @override
@@ -63,7 +63,7 @@ class PlaceListFromSearchTextWidget extends StatelessWidget {
                                           Container(
                                             child: Text(
                                                 model.detailsResponse[index]
-                                                    .result.name,
+                                                    .result!.name!,
                                                 style: GoogleFonts.notoSans(
                                                   fontSize: 14,
                                                   color:
@@ -78,8 +78,8 @@ class PlaceListFromSearchTextWidget extends StatelessWidget {
                                                 model.addressComponentToString(
                                                     model
                                                         .detailsResponse[index]
-                                                        .result
-                                                        .addressComponents),
+                                                        .result!
+                                                        .addressComponents!),
                                                 style: GoogleFonts.notoSans(
                                                   fontSize: 14,
                                                   color:
@@ -96,17 +96,17 @@ class PlaceListFromSearchTextWidget extends StatelessWidget {
 }
 
 class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
-  final String searchText;
+  final String? searchText;
 
-  final GeoPlaceAdapter geoPlaceAdapter;
+  final GeoPlaceAdapter? geoPlaceAdapter;
 
-  final GeoLocationUtilBasicUseCaseInputPort
+  final GeoLocationUtilBasicUseCaseInputPort?
       geoLocationUtilBasicUseCaseInputPort;
 
-  final PlaceListFromSearchTextWidgetListener
+  final PlaceListFromSearchTextWidgetListener?
       placeListFromSearchTextWidgetListener;
 
-  List<DetailsResponse> detailsResponse = [];
+  List<DetailsResponse> detailsResponse = List.empty();
 
   String _sessionToken = Uuid().v4();
 
@@ -123,37 +123,37 @@ class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
   void init() async {
     Component kr = Component("country", "kr");
     var position =
-        await geoLocationUtilBasicUseCaseInputPort.getCurrentWithLastPosition();
+        await geoLocationUtilBasicUseCaseInputPort!.getCurrentWithLastPosition();
     isLoaded = false;
-    var autocompleteGet = await geoPlaceAdapter.autocompleteGet(searchText,
+    var autocompleteGet = await geoPlaceAdapter!.autocompleteGet(searchText,
         sessionToken: _sessionToken,
         language: "ko",
         components: [kr],
-        location: LatLon(position.latitude, position.longitude),
-        origin: LatLon(position.latitude, position.longitude));
+        location: LatLon(position.latitude!, position.longitude!),
+        origin: LatLon(position.latitude!, position.longitude!));
 
-    await _getDetailFromPredictions(autocompleteGet.predictions);
+    await _getDetailFromPredictions(autocompleteGet!.predictions!);
     isLoaded = true;
     notifyListeners();
   }
 
   String addressComponentToString(List<AddressComponent> components) {
-    return geoPlaceAdapter.addressComponentToString(components);
+    return geoPlaceAdapter!.addressComponentToString(components);
   }
 
   _getDetailFromPredictions(List<AutocompletePrediction> predictions) async {
     detailsResponse.clear();
     for(int i=0;i<predictions.length;i++) {
       detailsResponse.add(
-          await geoPlaceAdapter.detailGet(predictions[i].placeId, language: "ko"));
+          (await geoPlaceAdapter!.detailGet(predictions[i].placeId!, language: "ko"))!);
     }
   }
 
   void onPlaceTab(DetailsResponse detailsResponse) {
     if (placeListFromSearchTextWidgetListener != null) {
-      var location = detailsResponse.result.geometry.location;
-      var position = Position(latitude: location.lat, longitude: location.lng);
-      placeListFromSearchTextWidgetListener.onPlaceListTabPosition(position);
+      var location = detailsResponse.result!.geometry!.location;
+      var position = Position(latitude: location!.lat, longitude: location.lng);
+      placeListFromSearchTextWidgetListener!.onPlaceListTabPosition(position);
     }
   }
 

@@ -7,14 +7,14 @@ import 'package:forutonafront/Components/FBallReply2/ReviewUpdateMediator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ID001ReviewsPageBtn extends StatelessWidget {
-  final String ballUuid;
-  final ReviewInertMediator reviewInertMediator;
-  final ReviewCountMediator reviewCountMediator;
-  final ReviewDeleteMediator reviewDeleteMediator;
-  final ReviewUpdateMediator reviewUpdateMediator;
+  final String? ballUuid;
+  final ReviewInertMediator? reviewInertMediator;
+  final ReviewCountMediator? reviewCountMediator;
+  final ReviewDeleteMediator? reviewDeleteMediator;
+  final ReviewUpdateMediator? reviewUpdateMediator;
 
   const ID001ReviewsPageBtn(
-      {Key key,
+      {Key? key,
       this.ballUuid,
       this.reviewInertMediator,
       this.reviewDeleteMediator,

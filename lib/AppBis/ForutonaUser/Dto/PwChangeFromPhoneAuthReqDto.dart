@@ -6,10 +6,10 @@ part 'PwChangeFromPhoneAuthReqDto.g.dart';
 @JsonSerializable()
 @lazySingleton
 class PwChangeFromPhoneAuthReqDto {
-  String password;
-  String email;
-  String internationalizedPhoneNumber;
-  String emailPhoneAuthToken;
+  String? password;
+  String? email;
+  String? internationalizedPhoneNumber;
+  String? emailPhoneAuthToken;
 
   PwChangeFromPhoneAuthReqDto();
 

@@ -14,7 +14,7 @@ class FBallValuationUseCase implements FBallValuationUseCaseInputPort {
 
   final FBallValuationRepository _fBallValuationRepository;
 
-  FBallValuationUseCase({@required FBallValuationRepository fBallValuationRepository})
+  FBallValuationUseCase({required FBallValuationRepository fBallValuationRepository})
       : _fBallValuationRepository = fBallValuationRepository;
 
   @override

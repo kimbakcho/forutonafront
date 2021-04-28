@@ -30,14 +30,14 @@ abstract class FUserRepository {
   Future<FUserSnsCheckJoinResDto> getSnsUserJoinCheckInfo(
       SnsSupportService snsService, String accessToken);
 
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,List<int> profileImage,List<int> backgroundImage);
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,List<int>? profileImage,List<int>? backgroundImage);
 
   Future<PageWrap<FUserInfoSimpleResDto>> findByUserNickNameWithFullTextMatchIndex(
       String searchNickName, Pageable pageable);
 
   Future<void> updateMaliciousMessageCheck();
 
-  Future<FUserInfoSimpleResDto> getFUserInfoSimple(String userUid) {}
+  Future<FUserInfoSimpleResDto> getFUserInfoSimple(String userUid);
 
   Future<FUserInfoResDto> userAlarmConfigUpdate(UserAlarmConfigUpdateReqDto userAlarmConfigUpdateReqDto);
 }

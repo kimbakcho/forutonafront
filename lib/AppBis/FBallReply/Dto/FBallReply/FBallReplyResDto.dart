@@ -8,21 +8,21 @@ part 'FBallReplyResDto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class FBallReplyResDto {
-  String replyUuid;
-  FBallResDto ballUuid;
-  FUserInfoSimpleResDto uid;
-  int replyNumber;
-  int replySort;
-  int replyDepth;
-  String replyText;
-  DateTime replyUploadDateTime;
-  DateTime replyUpdateDateTime;
-  String userNickName;
-  String userProfilePictureUrl;
-  bool deleteFlag;
-  FBallValuationResDto fballValuationResDto;
-  int childCount;
-  List<FBallReplyResDto> childFBallReplyResDto = [];
+  String? replyUuid;
+  FBallResDto? ballUuid;
+  FUserInfoSimpleResDto? uid;
+  int? replyNumber;
+  int? replySort;
+  int? replyDepth;
+  String? replyText;
+  DateTime? replyUploadDateTime;
+  DateTime? replyUpdateDateTime;
+  String? userNickName;
+  String? userProfilePictureUrl;
+  bool? deleteFlag;
+  FBallValuationResDto? fballValuationResDto;
+  int? childCount;
+  List<FBallReplyResDto>? childFBallReplyResDto = [];
 
   FBallReplyResDto();
   static FBallReplyResDto fromJson(Map<String, dynamic> json) =>

@@ -9,15 +9,15 @@ part 'FBallPlayerResDto.g.dart';
 
 @JsonSerializable()
 class FBallPlayerResDto {
-   int idx;
-   FBallResDto ballUuid;
-   FUserInfoSimpleResDto playerUid;
-   bool hasLike;
-   bool hasDisLike;
-   bool hasGiveUp;
-   bool hasExit;
-   DateTime startTime;
-   FBallPlayState playState;
+   int? idx;
+   FBallResDto? ballUuid;
+   FUserInfoSimpleResDto? playerUid;
+   bool? hasLike;
+   bool? hasDisLike;
+   bool? hasGiveUp;
+   bool? hasExit;
+   DateTime? startTime;
+   FBallPlayState? playState;
 
    FBallPlayerResDto();
 

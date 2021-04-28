@@ -1,4 +1,4 @@
 abstract class DuplicationErrorLogin {
-  String errorMessage;
+  String errorMessage="";
   bool valid(int idCount);
 }

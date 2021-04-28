@@ -6,23 +6,23 @@ import 'NotificationChannel.dart';
 @Named("NotificationRadarChannel")
 @LazySingleton(as: NotificationChannel)
 class NotificationRadarChannel implements NotificationChannel {
-  NotificationDetails platformChannelSpecifics;
+  NotificationDetails? platformChannelSpecifics;
 
   NotificationRadarChannel() {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
             '0', 'Rader', '내 주변 Ball에 대한 알림',
-            importance: Importance.Max,
-            priority: Priority.High,
+            importance: Importance.max,
+            priority: Priority.high,
             onlyAlertOnce: true,
             showWhen: false,
             largeIcon: DrawableResourceAndroidBitmap("app_icon"));
     platformChannelSpecifics =
-        NotificationDetails(androidPlatformChannelSpecifics,null);
+        NotificationDetails(android: androidPlatformChannelSpecifics,iOS: null,macOS: null);
   }
 
   @override
-  NotificationDetails getChannel() {
+  NotificationDetails? getChannel() {
     return platformChannelSpecifics;
   }
 }

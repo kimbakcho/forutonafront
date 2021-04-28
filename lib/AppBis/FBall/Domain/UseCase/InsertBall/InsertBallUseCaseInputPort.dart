@@ -14,10 +14,10 @@ class InsertBallUseCase implements InsertBallUseCaseInputPort{
 
   final FBallRepository _fBallRepository;
 
-  InsertBallUseCase({FBallRepository fBallRepository})
+  InsertBallUseCase({required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
   @override
-  insertBall(FBallInsertReqDto reqDto, {InsertBallUseCaseOutputPort outputPort}) async {
+  insertBall(FBallInsertReqDto reqDto, {InsertBallUseCaseOutputPort? outputPort}) async {
     var saveFBall = await _fBallRepository.insertBall(reqDto);
     if (outputPort != null) {
       outputPort.onInsertBall(saveFBall);

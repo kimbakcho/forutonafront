@@ -108,7 +108,7 @@ class G001MainPageTemp extends StatelessWidget {
   }
 
   Row userProfileImage(G001MainPageViewModel model) {
-    if(model._userInfoResDto != null && model._userInfoResDto.profilePictureUrl != null){
+    if(model._userInfoResDto != null && model._userInfoResDto!.profilePictureUrl != null){
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -148,61 +148,61 @@ class G001MainPageTemp extends StatelessWidget {
 
 class G001MainPageViewModel extends ChangeNotifier
     implements SignInUserInfoUseCaseOutputPort {
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  final BuildContext context;
+  final BuildContext? context;
 
-  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final FireBaseAuthAdapterForUseCase? _fireBaseAuthAdapterForUseCase;
 
-  final LogoutUseCaseInputPort logoutUseCaseInputPort;
+  final LogoutUseCaseInputPort? logoutUseCaseInputPort;
 
-  CodeCountry _countryCode = new CodeCountry();
+  CodeCountry? _countryCode = new CodeCountry();
 
-  FUserInfoResDto _userInfoResDto;
+  FUserInfoResDto? _userInfoResDto;
 
   bool isLoading = false;
 
-  StreamSubscription<FUserInfoResDto> _fUserInfoStreamSubscription;
+  StreamSubscription<FUserInfoResDto>? _fUserInfoStreamSubscription;
 
   G001MainPageViewModel(
-      {@required this.context,
-      @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required this.logoutUseCaseInputPort})
+      {required this.context,
+      required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
+      required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      required this.logoutUseCaseInputPort})
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase {
     try {
-      _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory(
+      _signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory(
           outputPort: this);
     } catch (ex) {
       isLoading = true;
     } finally {
       getUserInfoBackEndApi();
     }
-    _fUserInfoStreamSubscription = _signInUserInfoUseCaseInputPort
-        .fUserInfoStream
+    _fUserInfoStreamSubscription = _signInUserInfoUseCaseInputPort!
+        .fUserInfoStream!
         .listen(onSignInUserInfoFromMemory);
   }
 
   ImageProvider getUserProfileImage() {
-    return NetworkImage(_userInfoResDto.profilePictureUrl);
+    return NetworkImage(_userInfoResDto!.profilePictureUrl!);
   }
 
   String getUserNickName() {
-    return _userInfoResDto.nickName;
+    return _userInfoResDto!.nickName!;
   }
 
   String getUserCountry() {
-    return _countryCode.findCountryName(_userInfoResDto.isoCode);
+    return _countryCode!.findCountryName(_userInfoResDto!.isoCode!);
   }
 
   String getUserSelfIntroduction() {
-    return _userInfoResDto.selfIntroduction;
+    return _userInfoResDto!.selfIntroduction!;
   }
 
   bool haveUserSelfIntroduction() {
-    if (_userInfoResDto.selfIntroduction == null ||
-        _userInfoResDto.selfIntroduction.length == 0) {
+    if (_userInfoResDto!.selfIntroduction == null ||
+        _userInfoResDto!.selfIntroduction!.length == 0) {
       return false;
     } else {
       return true;
@@ -210,13 +210,13 @@ class G001MainPageViewModel extends ChangeNotifier
   }
 
   Future<void> _logoutTry() async{
-    await logoutUseCaseInputPort.tryLogout();
-    Navigator.of(context).pop();
+    await logoutUseCaseInputPort!.tryLogout();
+    Navigator.of(context!).pop();
   }
 
   @override
   void dispose() {
-    _fUserInfoStreamSubscription.cancel();
+    _fUserInfoStreamSubscription!.cancel();
     super.dispose();
   }
 
@@ -228,7 +228,7 @@ class G001MainPageViewModel extends ChangeNotifier
   }
 
   void getUserInfoBackEndApi() async {
-    _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer(
+    _signInUserInfoUseCaseInputPort!.saveSignInInfoInMemoryFromAPiServer(
         outputPort: this);
   }
 }

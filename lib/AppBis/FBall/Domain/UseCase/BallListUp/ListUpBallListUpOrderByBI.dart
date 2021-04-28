@@ -9,21 +9,21 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 class ListUpBallListUpOrderByBI implements FBallListUpUseCaseInputPort {
   final FBallRepository _fBallRepository;
 
-  FBallListUpFromBIReqDto listUpReqDto;
+  FBallListUpFromBIReqDto? listUpReqDto;
 
   ListUpBallListUpOrderByBI(
-      {this.listUpReqDto, FBallRepository fBallRepository})
+      {this.listUpReqDto,required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
-      {FBallListUpUseCaseOutputPort outputPort}) async {
+      {FBallListUpUseCaseOutputPort? outputPort}) async {
     searchPosition = Position(
-        latitude: listUpReqDto.mapCenterLatitude,
-        longitude: listUpReqDto.mapCenterLongitude);
+        latitude: listUpReqDto?.mapCenterLatitude,
+        longitude: listUpReqDto?.mapCenterLongitude);
     PageWrap<FBallResDto> pageWrap = await _fBallRepository.findByBallOrderByBI(
-        listUpReqDto: listUpReqDto, pageable: pageable);
-    executeOutPort(outputPort, pageWrap);
+        listUpReqDto: listUpReqDto!, pageable: pageable);
+    executeOutPort(outputPort!, pageWrap);
     return pageWrap;
   }
 
@@ -35,5 +35,5 @@ class ListUpBallListUpOrderByBI implements FBallListUpUseCaseInputPort {
   }
 
   @override
-  Position searchPosition;
+  Position? searchPosition;
 }

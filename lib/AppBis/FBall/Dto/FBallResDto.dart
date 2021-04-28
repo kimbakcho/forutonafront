@@ -8,26 +8,26 @@ part 'FBallResDto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class FBallResDto {
-  double latitude;
-  double longitude;
-  String ballUuid;
-  String ballName;
-  FBallType ballType;
-  FBallState ballState;
-  String placeAddress;
-  int ballHits;
-  int ballLikes;
-  int ballDisLikes;
-  int commentCount;
-  int ballPower;
-  DateTime activationTime;
-  DateTime makeTime;
-  String description;
-  FUserInfoSimpleResDto uid;
-  int contributor;
-  bool ballDeleteFlag;
-  bool isEditContent;
-  DateTime editContentTime;
+  double? latitude;
+  double? longitude;
+  String? ballUuid;
+  String? ballName;
+  FBallType? ballType;
+  FBallState? ballState;
+  String? placeAddress;
+  int? ballHits;
+  int? ballLikes;
+  int? ballDisLikes;
+  int? commentCount;
+  int? ballPower;
+  DateTime? activationTime;
+  DateTime? makeTime;
+  String? description;
+  FUserInfoSimpleResDto? uid;
+  int? contributor;
+  bool ballDeleteFlag = false;
+  bool? isEditContent;
+  DateTime? editContentTime;
 
   FBallResDto();
 

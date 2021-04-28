@@ -41,12 +41,12 @@ class KPageNavBtn extends StatelessWidget {
 
 class KPageNavBtnViewModel extends ChangeNotifier
     implements InputSearchBarListener {
-  final BuildContext context;
+  final BuildContext? context;
 
   KPageNavBtnViewModel({this.context});
 
   jumpToSearchPage() {
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context!).push(MaterialPageRoute(
         builder: (_) => H010MainView(
               inputSearchBarListener: this,
               searchHistoryDataSourceKey:
@@ -55,8 +55,8 @@ class KPageNavBtnViewModel extends ChangeNotifier
   }
 
   @override
-  Future<void> onSearch(String search, {BuildContext context}) async {
-    Navigator.popUntil(context, (route) => route.settings.name == "/");
+  Future<void> onSearch(String search, {BuildContext? context}) async {
+    Navigator.popUntil(context!, (route) => route.settings.name == "/");
 
     Navigator.of(context).push(MaterialPageRoute(
         settings: RouteSettings(name: "K001"),

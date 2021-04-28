@@ -21,22 +21,22 @@ import 'package:provider/provider.dart';
 import '../ID01Mode.dart';
 
 class ID01MainBottomSheetBody extends StatefulWidget {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final double topPosition;
+  final double? topPosition;
 
-  final ID01Mode id01Mode;
+  final ID01Mode? id01Mode;
 
-  final List<BallImageItem> preViewBallImage;
+  final List<BallImageItem>? preViewBallImage;
 
-  final List<FBallTagResDto> preViewfBallTagResDtos;
+  final List<FBallTagResDto>? preViewfBallTagResDtos;
 
-  final ID01MainBottomSheetBodyController id01mainBottomSheetBodyController;
+  final ID01MainBottomSheetBodyController? id01mainBottomSheetBodyController;
 
-  final double currentStateProgress;
+  final double? currentStateProgress;
 
   const ID01MainBottomSheetBody(
-      {Key key,
+      {Key? key,
       this.fBallResDto,
       this.topPosition,
       this.id01Mode,
@@ -56,9 +56,9 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ID01MainBottomSheetBodyViewModel(
-          widget.fBallResDto, sl(), widget.id01Mode, widget.preViewBallImage,
+          widget.fBallResDto!, sl(), widget.id01Mode!, widget.preViewBallImage!,
           id01mainBottomSheetBodyController:
-              widget.id01mainBottomSheetBodyController),
+              widget.id01mainBottomSheetBodyController!),
       child: Consumer<ID01MainBottomSheetBodyViewModel>(
           builder: (_, model, child) {
         return Container(
@@ -69,19 +69,19 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                   Column(
                     children: [
                       ID01RemainTimeWidget(
-                        limitTime: model.fBallResDto.activationTime,
+                        limitTime: model.fBallResDto!.activationTime!,
                       ),
                       ID01BallTitle(
-                          fBallResDto: model.fBallResDto,
-                          id01Mode: widget.id01Mode,
+                          fBallResDto: model.fBallResDto!,
+                          id01Mode: widget.id01Mode!,
                           preViewfBallTagResDtos:
-                              widget.preViewfBallTagResDtos),
+                              widget.preViewfBallTagResDtos!),
                       Divider(
                         color: Color(0xffE4E7E8),
                         height: 1,
                       ),
                       UserProfileBar(
-                        fUserInfoSimpleResDto: model.fBallResDto.uid,
+                        fUserInfoSimpleResDto: model.fBallResDto!.uid,
                       ),
                       Divider(
                         color: Color(0xffE4E7E8),
@@ -93,9 +93,9 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                       Container(
                         margin: EdgeInsets.all(16),
                         child: ID01LimitTag(
-                          ballUuid: model.fBallResDto.ballUuid,
+                          ballUuid: model.fBallResDto!.ballUuid!,
                           limitCount: 10,
-                          id01Mode: model.id01Mode,
+                          id01Mode: model.id01Mode!,
                         ),
                       ),
                       ID01Pictures(
@@ -109,11 +109,11 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                       // ),
                       Container(
                         margin: EdgeInsets.only(
-                            bottom: widget.currentStateProgress < 0.6
-                                ? widget.topPosition * 0.7
+                            bottom: widget.currentStateProgress! < 0.6
+                                ? widget.topPosition! * 0.7
                                 : 150),
                         child: FBallReply3(
-                          ballUuid: model.fBallResDto.ballUuid,
+                          ballUuid: model.fBallResDto!.ballUuid,
                         ),
                       )
                     ],
@@ -127,13 +127,13 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
 }
 
 class ID01MainBottomSheetBodyViewModel extends ChangeNotifier {
-  final FBallResDto fBallResDto;
-  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
-  final GeolocatorAdapter geolocatorAdapter;
-  final ID01Mode id01Mode;
-  final List<BallImageItem> preViewBallImage;
+  final FBallResDto? fBallResDto;
+  IssueBallDisPlayUseCase? _issueBallDisPlayUseCase;
+  final GeolocatorAdapter? geolocatorAdapter;
+  final ID01Mode? id01Mode;
+  final List<BallImageItem>? preViewBallImage;
 
-  final ID01MainBottomSheetBodyController id01mainBottomSheetBodyController;
+  final ID01MainBottomSheetBodyController? id01mainBottomSheetBodyController;
 
   ID01MainBottomSheetBodyViewModel(this.fBallResDto, this.geolocatorAdapter,
       this.id01Mode, this.preViewBallImage,
@@ -143,41 +143,41 @@ class ID01MainBottomSheetBodyViewModel extends ChangeNotifier {
 
   void _init() {
     if (id01mainBottomSheetBodyController != null) {
-      this.id01mainBottomSheetBodyController._viewModel = this;
+      this.id01mainBottomSheetBodyController!._viewModel = this;
     }
     _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: fBallResDto, geoLocatorAdapter: geolocatorAdapter);
+        fBallResDto: fBallResDto!, geoLocatorAdapter: geolocatorAdapter);
   }
 
   refreshWidget() {
     _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: fBallResDto, geoLocatorAdapter: geolocatorAdapter);
+        fBallResDto: fBallResDto!, geoLocatorAdapter: geolocatorAdapter);
     notifyListeners();
   }
 
   getBallTextContent() {
-    return _issueBallDisPlayUseCase.descriptionText();
+    return _issueBallDisPlayUseCase!.descriptionText();
   }
 
   getBallDesImages() {
     if (id01Mode == ID01Mode.preview) {
       return preViewBallImage;
     } else {
-      return _issueBallDisPlayUseCase.getDesImages();
+      return _issueBallDisPlayUseCase!.getDesImages();
     }
   }
 
   getBallYoutubeId() {
-    return _issueBallDisPlayUseCase.getYoutubeId();
+    return _issueBallDisPlayUseCase!.getYoutubeId();
   }
 }
 
 class ID01MainBottomSheetBodyController {
-  ID01MainBottomSheetBodyViewModel _viewModel;
+  ID01MainBottomSheetBodyViewModel? _viewModel;
 
   refreshWidget() {
     if (_viewModel != null) {
-      _viewModel.refreshWidget();
+      _viewModel!.refreshWidget();
     }
   }
 }

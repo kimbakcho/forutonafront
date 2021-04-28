@@ -44,11 +44,11 @@ import 'IM001Mode.dart';
 
 class IM001MainPage extends StatefulWidget {
   final IM001Mode im001mode;
-  final FBallResDto preSetBallResDto;
-  final List<FBallTagResDto> preSetFBallTagResDtos;
+  final FBallResDto? preSetBallResDto;
+  final List<FBallTagResDto>? preSetFBallTagResDtos;
 
   const IM001MainPage(
-      {Key key,
+      {Key? key,
       this.im001mode = IM001Mode.create,
       this.preSetBallResDto,
       this.preSetFBallTagResDtos})
@@ -60,19 +60,19 @@ class IM001MainPage extends StatefulWidget {
 
 class _IM001MainPageState extends State<IM001MainPage>
     with SingleTickerProviderStateMixin {
-  AnimationController _aniController;
-  Animation<double> animation;
+  AnimationController? _aniController;
+  Animation<double>? animation;
 
   @override
   void initState() {
     super.initState();
     _aniController =
         AnimationController(duration: Duration(milliseconds: 500), vsync: this);
-    _aniController.addListener(() {
+    _aniController!.addListener(() {
       setState(() {});
     });
 
-    animation = Tween<double>(begin: 0, end: 1).animate(_aniController);
+    animation = Tween<double>(begin: 0, end: 1).animate(_aniController!);
   }
 
   @override
@@ -142,7 +142,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                           child: Stack(
                             children: [
                               GoogleMap(
-                                initialCameraPosition: model.initCameraPosition,
+                                initialCameraPosition: model.initCameraPosition!,
                                 onCameraMove: model.onCameraMove,
                                 onMapCreated: model.onCreateMap,
                                 onCameraIdle: model.onCameraIdle,
@@ -184,11 +184,11 @@ class _IM001MainPageState extends State<IM001MainPage>
                     model.isBottomOpened
                         ? Container(
                             color: Color(0xff2F3035)
-                                .withOpacity(animation.value.clamp(0, 0.7)),
+                                .withOpacity(animation!.value.clamp(0, 0.7)),
                           )
                         : Container(),
                     Positioned(
-                        top: (80 * animation.value) - 70,
+                        top: (80 * animation!.value) - 70,
                         width: MediaQuery.of(context).size.width,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,7 +202,7 @@ class _IM001MainPageState extends State<IM001MainPage>
                                 shape: CircleBorder(),
                                 child: InkWell(
                                   onTap: () {
-                                    model._solidController.hide();
+                                    model._solidController!.hide();
                                   },
                                   child: Icon(Icons.arrow_back,
                                       color: Color(0xff454F63), size: 20),
@@ -243,46 +243,46 @@ class _IM001MainPageState extends State<IM001MainPage>
 
 class IM001MainPageViewModel extends ChangeNotifier
     implements InputSearchBarListener, PlaceListFromSearchTextWidgetListener {
-  CameraPosition initCameraPosition;
+  CameraPosition? initCameraPosition;
 
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       _geoLocationUtilForeGroundUseCase;
 
-  CameraPosition currentPosition;
+  CameraPosition? currentPosition;
 
   Completer<GoogleMapController> _googleMapController = Completer();
 
   bool isBallPosition = true;
 
-  final BuildContext context;
+  final BuildContext? context;
 
-  SolidController _solidController;
+  SolidController? _solidController;
 
-  Widget bottomWidget;
+  Widget? bottomWidget;
 
-  AnimationController aniController;
+  AnimationController? aniController;
 
-  IM001BottomSheetHeaderController _im001bottomSheetHeaderController;
+  IM001BottomSheetHeaderController? _im001bottomSheetHeaderController;
 
-  MapBallMarkerFactory _mapBallMarkerFactory;
+  MapBallMarkerFactory? _mapBallMarkerFactory;
 
-  String headBarAddress;
+  String? headBarAddress;
 
   bool isCanComplete = false;
 
-  IM001BottomSheetBodyController _im001bottomSheetBodyController;
+  IM001BottomSheetBodyController? _im001bottomSheetBodyController;
 
-  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? signInUserInfoUseCaseInputPort;
 
-  final InsertBallUseCaseInputPort insertBallUseCaseInputPort;
+  final InsertBallUseCaseInputPort? insertBallUseCaseInputPort;
 
-  final UpdateBallUseCaseInputPort updateBallUseCaseInputPort;
+  final UpdateBallUseCaseInputPort? updateBallUseCaseInputPort;
 
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final FBallResDto preSetBallResDto;
+  final FBallResDto? preSetBallResDto;
 
-  final List<FBallTagResDto> preSetFBallTagResDtos;
+  final List<FBallTagResDto>? preSetFBallTagResDtos;
 
   IM001MainPageViewModel(
       this._geoLocationUtilForeGroundUseCase,
@@ -298,17 +298,17 @@ class IM001MainPageViewModel extends ChangeNotifier
     headBarAddress = '로딩중';
     _im001bottomSheetBodyController = IM001BottomSheetBodyController();
     if (im001mode == IM001Mode.create) {
-      var currentWithLastPositionInMemory = _geoLocationUtilForeGroundUseCase
+      var currentWithLastPositionInMemory = _geoLocationUtilForeGroundUseCase!
           .getCurrentWithLastPositionInMemory();
       initCameraPosition = new CameraPosition(
           zoom: 14.56,
-          target: LatLng(currentWithLastPositionInMemory.latitude,
-              currentWithLastPositionInMemory.longitude));
+          target: LatLng(currentWithLastPositionInMemory!.latitude!,
+              currentWithLastPositionInMemory.longitude!));
     } else {
       initCameraPosition = new CameraPosition(
           zoom: 14.56,
           target:
-              LatLng(preSetBallResDto.latitude, preSetBallResDto.longitude));
+              LatLng(preSetBallResDto!.latitude!, preSetBallResDto!.longitude!));
       currentPosition = initCameraPosition;
     }
 
@@ -317,24 +317,24 @@ class IM001MainPageViewModel extends ChangeNotifier
     _im001bottomSheetHeaderController = IM001BottomSheetHeaderController();
 
     bottomWidget = SolidBottomSheet(
-      maxHeight: MediaQuery.of(context).size.height - 150,
+      maxHeight: MediaQuery.of(context!).size.height - 150,
       draggableBody: false,
       controller: _solidController,
       bodyColor: Colors.white,
       elevation: 6.0,
       onShow: () {
-        aniController.forward();
-        _im001bottomSheetHeaderController
+        aniController!.forward();
+        _im001bottomSheetHeaderController!
             .changeHeaderMode(IM001BottomSheetHeaderMode.show);
       },
       onHide: () {
-        aniController.reverse();
-        _im001bottomSheetHeaderController
+        aniController!.reverse();
+        _im001bottomSheetHeaderController!
             .changeHeaderMode(IM001BottomSheetHeaderMode.hide);
       },
       headerBar: IM001BottomSheetHeader(
         onNextBtnTap: () {
-          _solidController.show();
+          _solidController!.show();
         },
         displayAddress: "로딩중",
         im001bottomSheetHeaderController: _im001bottomSheetHeaderController,
@@ -346,7 +346,7 @@ class IM001MainPageViewModel extends ChangeNotifier
         onComplete: onComplete,
         im001bottomSheetBodyController: _im001bottomSheetBodyController,
         onChangeAddress: (value) {
-          _im001bottomSheetHeaderController.changeDisplayAddress(value);
+          _im001bottomSheetHeaderController!.changeDisplayAddress(value);
         },
         im001mode: im001mode,
         preSetBallResDto: preSetBallResDto,
@@ -365,7 +365,7 @@ class IM001MainPageViewModel extends ChangeNotifier
   }
 
   get isBottomOpened {
-    return _solidController.isOpened;
+    return _solidController!.isOpened;
   }
 
   void onCreateMap(GoogleMapController controller) async {
@@ -375,16 +375,16 @@ class IM001MainPageViewModel extends ChangeNotifier
       position = await moveToMyPosition();
     } else {
       position = Position(
-          latitude: preSetBallResDto.latitude,
-          longitude: preSetBallResDto.longitude);
+          latitude: preSetBallResDto!.latitude,
+          longitude: preSetBallResDto!.longitude);
     }
 
     String address =
-        await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
+        await _geoLocationUtilForeGroundUseCase!.getPositionAddress(position);
 
-    _im001bottomSheetBodyController.changeDisplayAddress(address);
+    _im001bottomSheetBodyController!.changeDisplayAddress(address);
 
-    _im001bottomSheetHeaderController.changeDisplayAddress(address);
+    _im001bottomSheetHeaderController!.changeDisplayAddress(address);
 
     headBarAddress = address;
 
@@ -394,21 +394,21 @@ class IM001MainPageViewModel extends ChangeNotifier
   void onCameraIdle() async {
     if (currentPosition != null) {
       var position2 = Position(
-          latitude: currentPosition.target.latitude,
-          longitude: currentPosition.target.longitude);
+          latitude: currentPosition!.target.latitude,
+          longitude: currentPosition!.target.longitude);
       String address =
-          await _geoLocationUtilForeGroundUseCase.getPositionAddress(position2);
-      _im001bottomSheetBodyController.changeDisplayAddress(address);
+          await _geoLocationUtilForeGroundUseCase!.getPositionAddress(position2);
+      _im001bottomSheetBodyController!.changeDisplayAddress(address);
       notifyListeners();
     }
   }
 
   moveToMyPosition() async {
     var position =
-        await _geoLocationUtilForeGroundUseCase.getCurrentWithLastPosition();
+        await _geoLocationUtilForeGroundUseCase!.getCurrentWithLastPosition();
     GoogleMapController mapController = await _googleMapController.future;
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(position.latitude, position.longitude), zoom: 14.5)));
+        target: LatLng(position.latitude!, position.longitude!), zoom: 14.5)));
     return position;
   }
 
@@ -418,29 +418,29 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   showPreViewDetailPage(BuildContext context) async {
     FBallResDto fBallResDto = FBallResDto();
-    fBallResDto.ballName = _im001bottomSheetBodyController.getBallName();
+    fBallResDto.ballName = _im001bottomSheetBodyController!.getBallName();
     fBallResDto.ballDeleteFlag = false;
     fBallResDto.makeTime = DateTime.now();
-    fBallResDto.latitude = currentPosition.target.latitude;
-    fBallResDto.longitude = currentPosition.target.longitude;
+    fBallResDto.latitude = currentPosition!.target.latitude;
+    fBallResDto.longitude = currentPosition!.target.longitude;
     fBallResDto.activationTime = DateTime.now().add(Duration(days: 7));
     fBallResDto.ballHits = 0;
     var reqSignInUserInfoFromMemory =
-        signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+        signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
     fBallResDto.uid =
-        FUserInfoSimpleResDto.fromFUserInfoResDto(reqSignInUserInfoFromMemory);
+        FUserInfoSimpleResDto.fromFUserInfoResDto(reqSignInUserInfoFromMemory!);
     fBallResDto.placeAddress =
-        _im001bottomSheetBodyController.getPlaceAddress();
+        _im001bottomSheetBodyController!.getPlaceAddress();
     fBallResDto.commentCount = 0;
     fBallResDto.ballState = FBallState.Play;
     fBallResDto.ballType = FBallType.IssueBall;
     fBallResDto.contributor = 0;
     fBallResDto.ballPower = 0;
     IssueBallDescription issueBallDescription = IssueBallDescription();
-    issueBallDescription.text = _im001bottomSheetBodyController.getContent();
+    issueBallDescription.text = _im001bottomSheetBodyController!.getContent();
     issueBallDescription.desimages = [];
     issueBallDescription.youtubeVideoId =
-        _im001bottomSheetBodyController.getYoutubeId();
+        _im001bottomSheetBodyController!.getYoutubeId();
     fBallResDto.description = json.encode(issueBallDescription);
     fBallResDto.ballUuid = "TESTUUuid";
     fBallResDto.activationTime = DateTime.now().add(Duration(days: 7));
@@ -448,7 +448,7 @@ class IM001MainPageViewModel extends ChangeNotifier
     fBallResDto.ballLikes = 0;
     fBallResDto.ballDisLikes = 0;
     List<FBallTagResDto> fBallTagResDtos = [];
-    var tags = _im001bottomSheetBodyController.getTags();
+    var tags = _im001bottomSheetBodyController!.getTags();
 
     for (int i = 0; i < tags.length; i++) {
       FBallTagResDto fBallTagResDto = new FBallTagResDto();
@@ -461,26 +461,27 @@ class IM001MainPageViewModel extends ChangeNotifier
 
     showDialog(
         context: context,
-        child: ID01MainPage(
+        builder: (context) => ID01MainPage(
           onCreateBall: _onCreateBall,
           preViewResDto: fBallResDto,
-          preViewBallImage: _im001bottomSheetBodyController.getBallImages(),
+          preViewBallImage: _im001bottomSheetBodyController!.getBallImages(),
           id01Mode: ID01Mode.preview,
           preViewfBallTagResDtos: fBallTagResDtos,
-        ));
+        ),
+       );
   }
 
   _onCreateBall() async {
-    showDialog(context: context, child: CommonLoadingComponent());
+    showDialog(context: context!, builder: (context) => CommonLoadingComponent());
 
     FBallInsertReqDto fBallInsertReqDto = FBallInsertReqDto();
 
     var imageItems =
-        await _im001bottomSheetBodyController.updateImageAndFillImageUrl();
+        await _im001bottomSheetBodyController!.updateImageAndFillImageUrl();
 
     IssueBallDescription issueBallDescription = IssueBallDescription();
 
-    issueBallDescription.text = _im001bottomSheetBodyController.getContent();
+    issueBallDescription.text = _im001bottomSheetBodyController!.getContent();
 
     issueBallDescription.desimages = [];
     for (int i = 0; i < imageItems.length; i++) {
@@ -490,46 +491,46 @@ class IM001MainPageViewModel extends ChangeNotifier
       issueBallDescription.desimages.add(fBallDesImages);
     }
     issueBallDescription.youtubeVideoId =
-        _im001bottomSheetBodyController.getYoutubeId();
+        _im001bottomSheetBodyController!.getYoutubeId();
 
-    fBallInsertReqDto.ballName = _im001bottomSheetBodyController.getBallName();
+    fBallInsertReqDto.ballName = _im001bottomSheetBodyController!.getBallName();
     fBallInsertReqDto.description = json.encode(issueBallDescription);
     fBallInsertReqDto.ballType = FBallType.IssueBall;
     fBallInsertReqDto.placeAddress =
-        _im001bottomSheetBodyController.getPlaceAddress();
-    fBallInsertReqDto.latitude = currentPosition.target.latitude;
-    fBallInsertReqDto.longitude = currentPosition.target.longitude;
+        _im001bottomSheetBodyController!.getPlaceAddress();
+    fBallInsertReqDto.latitude = currentPosition!.target.latitude;
+    fBallInsertReqDto.longitude = currentPosition!.target.longitude;
     fBallInsertReqDto.ballUuid = Uuid().v4();
 
-    var tags = _im001bottomSheetBodyController.getTags();
+    var tags = _im001bottomSheetBodyController!.getTags();
     fBallInsertReqDto.tags = [];
     for (int i = 0; i < tags.length; i++) {
       TagInsertReqDto tagInsertReqDto = TagInsertReqDto();
       tagInsertReqDto.ballUuid = fBallInsertReqDto.ballUuid;
       tagInsertReqDto.tagItem = tags[i].text;
-      fBallInsertReqDto.tags.add(tagInsertReqDto);
+      fBallInsertReqDto.tags!.add(tagInsertReqDto);
     }
 
     var fBallResDto =
-        await insertBallUseCaseInputPort.insertBall(fBallInsertReqDto);
+        await insertBallUseCaseInputPort!.insertBall(fBallInsertReqDto);
 
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop(fBallResDto);
+    Navigator.of(context!).pop();
+    Navigator.of(context!).pop();
+    Navigator.of(context!).pop(fBallResDto);
 
     notifyListeners();
   }
 
   _onModifyBall() async {
-    showDialog(context: context, child: CommonLoadingComponent());
+    showDialog(context: context!, builder: (context) => CommonLoadingComponent());
 
     var imageItems =
-        await _im001bottomSheetBodyController.updateImageAndFillImageUrl();
+        await _im001bottomSheetBodyController!.updateImageAndFillImageUrl();
 
     FBallUpdateReqDto fBallUpdateReqDto = FBallUpdateReqDto();
     IssueBallDescription issueBallDescription = IssueBallDescription();
 
-    issueBallDescription.text = _im001bottomSheetBodyController.getContent();
+    issueBallDescription.text = _im001bottomSheetBodyController!.getContent();
 
     issueBallDescription.desimages = [];
     for (int i = 0; i < imageItems.length; i++) {
@@ -539,39 +540,39 @@ class IM001MainPageViewModel extends ChangeNotifier
       issueBallDescription.desimages.add(fBallDesImages);
     }
     issueBallDescription.youtubeVideoId =
-        _im001bottomSheetBodyController.getYoutubeId();
+        _im001bottomSheetBodyController!.getYoutubeId();
 
-    fBallUpdateReqDto.ballName = _im001bottomSheetBodyController.getBallName();
+    fBallUpdateReqDto.ballName = _im001bottomSheetBodyController!.getBallName();
     print(fBallUpdateReqDto.ballName);
     fBallUpdateReqDto.description = json.encode(issueBallDescription);
     fBallUpdateReqDto.ballType = FBallType.IssueBall;
     fBallUpdateReqDto.placeAddress =
-        _im001bottomSheetBodyController.getPlaceAddress();
-    fBallUpdateReqDto.latitude = currentPosition.target.latitude;
-    fBallUpdateReqDto.longitude = currentPosition.target.longitude;
-    fBallUpdateReqDto.ballUuid = preSetBallResDto.ballUuid;
+        _im001bottomSheetBodyController!.getPlaceAddress();
+    fBallUpdateReqDto.latitude = currentPosition!.target.latitude;
+    fBallUpdateReqDto.longitude = currentPosition!.target.longitude;
+    fBallUpdateReqDto.ballUuid = preSetBallResDto!.ballUuid;
 
-    var tags = _im001bottomSheetBodyController.getTags();
+    var tags = _im001bottomSheetBodyController!.getTags();
     fBallUpdateReqDto.tags = [];
     for (int i = 0; i < tags.length; i++) {
       TagInsertReqDto tagInsertReqDto = TagInsertReqDto();
       tagInsertReqDto.ballUuid = fBallUpdateReqDto.ballUuid;
       tagInsertReqDto.tagItem = tags[i].text;
-      fBallUpdateReqDto.tags.add(tagInsertReqDto);
+      fBallUpdateReqDto.tags!.add(tagInsertReqDto);
     }
 
     var fBallResDto =
-        await updateBallUseCaseInputPort.updateBall(fBallUpdateReqDto);
+        await updateBallUseCaseInputPort!.updateBall(fBallUpdateReqDto);
 
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop(fBallResDto);
+    Navigator.of(context!).pop();
+    Navigator.of(context!).pop();
+    Navigator.of(context!).pop(fBallResDto);
 
     notifyListeners();
   }
 
   void gotoAddressSearchPage() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
       return H010MainView(
           inputSearchBarListener: this,
           searchHistoryDataSourceKey:
@@ -581,9 +582,9 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   //지도 찾기
   @override
-  Future<void> onSearch(String search, {BuildContext context}) async {
-    Navigator.of(this.context).pop();
-    Navigator.of(this.context).push(MaterialPageRoute(builder: (_) {
+  Future<void> onSearch(String search, {BuildContext? context}) async {
+    Navigator.of(this.context!).pop();
+    Navigator.of(this.context!).push(MaterialPageRoute(builder: (_) {
       return H008MainView(
           initSearchText: search, placeListFromSearchTextWidgetListener: this);
     }));
@@ -591,12 +592,12 @@ class IM001MainPageViewModel extends ChangeNotifier
 
   @override
   onPlaceListTabPosition(Position position) async {
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
     GoogleMapController mapController = await _googleMapController.future;
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(position.latitude, position.longitude), zoom: 14.5)));
+        target: LatLng(position.latitude!, position.longitude!), zoom: 14.5)));
 
     headBarAddress =
-        await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
+        await _geoLocationUtilForeGroundUseCase!.getPositionAddress(position);
   }
 }

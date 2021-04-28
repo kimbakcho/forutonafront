@@ -15,16 +15,16 @@ import '../KCodeTopFilterBar.dart';
 import 'K00103DrawerBody.dart';
 
 class K00103MainPage extends StatelessWidget {
-  final String searchText;
+  final String? searchText;
 
-  final ScrollController mainScroller;
+  final ScrollController? mainScroller;
 
-  final TabController tabController;
+  final TabController? tabController;
 
-  final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
+  final GlobalKey<NestedScrollViewState>? kCodeNestedScrollViewKey;
 
   const K00103MainPage(
-      {Key key,
+      {Key? key,
       this.searchText,
       this.mainScroller,
       this.tabController,
@@ -55,7 +55,7 @@ class K00103MainPage extends StatelessWidget {
                   shrinkWrap: true,
                   children: [
                     KCodeTopFilterBar(
-                      searchText: searchText,
+                      searchText: searchText!,
                       descriptionText: "태그와 연관된 컨텐츠",
                       searchResultCountText: "${model.totalItemCount}",
                       kCodeTopFilterBarListener: model,
@@ -70,7 +70,7 @@ class K00103MainPage extends StatelessWidget {
                         },
                         itemBuilder: (context, index) {
                           return ListUpBallWidgetFactory.getBallWidget(
-                              index, model.ballListMediator, BallStyle.Style3,
+                              index, model.ballListMediator!, BallStyle.Style3,
                               boxDecoration: BoxDecoration(
                                 color: Colors.white,
                                   border: Border.all(color: Color(0xffE4E7E8)),
@@ -90,17 +90,17 @@ class K00103MainPage extends StatelessWidget {
 
 class K00103MainPageViewModel extends KCodeSelectViewModel
     implements KCodeTopFilterBarListener, K00103DrawerBodyListener {
-  final String searchText;
-  final BuildContext context;
-  final KCodeScrollerController kCodeScrollerController;
-  final ScrollController mainScroller;
-  final TabController tabController;
-  final TagContainBallCollectMediator ballListMediator;
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final String? searchText;
+  final BuildContext? context;
+  final KCodeScrollerController? kCodeScrollerController;
+  final ScrollController? mainScroller;
+  final TabController? tabController;
+  final TagContainBallCollectMediator? ballListMediator;
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       geoLocationUtilForeGroundUseCase;
-  final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
+  final GlobalKey<NestedScrollViewState>? kCodeNestedScrollViewKey;
   K00103DrawerItem _selectedK00103DrawerItem = K00103DrawerItem.BallPower;
-  ScrollController kCodeNestedScrollInnerScrollController;
+  ScrollController? kCodeNestedScrollInnerScrollController;
 
   K00103MainPageViewModel(
       {this.searchText,
@@ -117,23 +117,23 @@ class K00103MainPageViewModel extends KCodeSelectViewModel
   @override
   settingCollectMediator() {
     var searchPosition =
-        geoLocationUtilForeGroundUseCase.getCurrentWithLastPositionInMemory();
+        geoLocationUtilForeGroundUseCase!.getCurrentWithLastPositionInMemory();
 
-    ballListMediator.fBallListUpUseCaseInputPort = TagNameItemListUpUseCase(
+    ballListMediator!.fBallListUpUseCaseInputPort = TagNameItemListUpUseCase(
         tagRepository: sl(),
         reqDto: TextMatchTagBallReqDto(
             searchText: searchText,
-            mapCenterLongitude: searchPosition.longitude,
-            mapCenterLatitude: searchPosition.latitude));
+            mapCenterLongitude: searchPosition!.longitude,
+            mapCenterLatitude: searchPosition!.latitude));
 
-    ballListMediator.sort = "ballPower,DESC";
+    ballListMediator!.sort = "ballPower,DESC";
   }
 
   @override
   void openFilter() {
     showMaterialModalBottomSheet(
         expand: false,
-        context: context,
+        context: context!,
         backgroundColor: Colors.transparent,
         builder: (context) {
           return KCodeDrawer(
@@ -149,18 +149,18 @@ class K00103MainPageViewModel extends KCodeSelectViewModel
     _selectedK00103DrawerItem = item;
     switch (_selectedK00103DrawerItem) {
       case K00103DrawerItem.BallPower:
-        ballListMediator.sort = "ballPower,DESC";
+        ballListMediator!.sort = "ballPower,DESC";
         break;
       case K00103DrawerItem.MakeTime:
-        ballListMediator.sort = "makeTime,DESC";
+        ballListMediator!.sort = "makeTime,DESC";
         break;
       case K00103DrawerItem.Hit:
-        ballListMediator.sort = "ballHits,DESC";
+        ballListMediator!.sort = "ballHits,DESC";
         break;
       case K00103DrawerItem.Distance:
-        ballListMediator.sort = "distance,DESC";
+        ballListMediator!.sort = "distance,DESC";
         break;
     }
-    ballListMediator.searchFirst();
+    ballListMediator!.searchFirst();
   }
 }

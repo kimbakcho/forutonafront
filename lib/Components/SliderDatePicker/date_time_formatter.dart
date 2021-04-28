@@ -34,14 +34,14 @@ class DateTimeFormatter {
 
   /// Split date format to array.
   static List<String> splitDateFormat(String dateFormat,
-      {DateTimePickerMode mode}) {
+      {DateTimePickerMode? mode}) {
     if (dateFormat == null || dateFormat.length == 0) {
       return [];
     }
     List<String> result = dateFormat.split(RegExp(DATE_FORMAT_SEPARATOR));
     if (mode == DateTimePickerMode.datetime) {
       // datetime mode need join day format
-      List<String> temp = List<String>();
+      List<String> temp = List.empty();
       StringBuffer dayFormat = StringBuffer();
       for (int i = 0; i < result.length; i++) {
         String format = result[i];
@@ -181,12 +181,12 @@ class DateTimeFormatter {
       int value, String format, DateTimePickerLocale locale) {
     if (format.contains('EEEE')) {
       // EEEE: the full name of week, e.g. Monday
-      List<String> weeks = DatePickerI18n.getLocaleWeeks(locale);
-      return format.replaceAll('EEEE', weeks[value - 1]);
+      List<String>? weeks = DatePickerI18n.getLocaleWeeks(locale);
+      return format.replaceAll('EEEE', weeks![value - 1]);
     }
     // EEE: the short name of week, e.g. Mon
-    List<String> weeks = DatePickerI18n.getLocaleWeeks(locale, false);
-    return format.replaceAll(RegExp(r'E+'), weeks[value - 1]);
+    List<String>? weeks = DatePickerI18n.getLocaleWeeks(locale, false);
+    return format.replaceAll(RegExp(r'E+'), weeks![value - 1]);
   }
 
   /// format hour text

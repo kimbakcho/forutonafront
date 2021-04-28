@@ -10,8 +10,8 @@ TagRankingFromBallInfluencePowerReqDto
     _$TagRankingFromBallInfluencePowerReqDtoFromJson(
         Map<String, dynamic> json) {
   return TagRankingFromBallInfluencePowerReqDto(
-    mapCenterLatitude: (json['mapCenterLatitude'] as num)?.toDouble(),
-    mapCenterLongitude: (json['mapCenterLongitude'] as num)?.toDouble(),
+    mapCenterLatitude: (json['mapCenterLatitude'] as num).toDouble(),
+    mapCenterLongitude: (json['mapCenterLongitude'] as num).toDouble(),
   );
 }
 

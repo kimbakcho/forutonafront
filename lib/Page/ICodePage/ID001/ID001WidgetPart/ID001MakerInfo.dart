@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ID001MakerInfo extends StatelessWidget {
-  final String userProfileImageUrl;
-  final String userNickName;
-  final String userInfluencePower;
-  final String userFollower;
+  final String? userProfileImageUrl;
+  final String? userNickName;
+  final String? userInfluencePower;
+  final String? userFollower;
 
   ID001MakerInfo(
-      {@required this.userProfileImageUrl,
-      @required this.userNickName,
+      {required this.userProfileImageUrl,
+      required this.userNickName,
       this.userFollower,
       this.userInfluencePower});
 
@@ -26,7 +26,7 @@ class ID001MakerInfo extends StatelessWidget {
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: NetworkImage(userProfileImageUrl),
+                    image: NetworkImage(userProfileImageUrl!),
                     fit: BoxFit.cover)),
           ),
           Expanded(
@@ -37,7 +37,7 @@ class ID001MakerInfo extends StatelessWidget {
                     Expanded(
                         child: Container(
                             child: Text(
-                      userNickName,
+                      userNickName!,
                       style: GoogleFonts.notoSans(
                         fontSize: 16,
                         color: const Color(0xff000000),

@@ -15,12 +15,12 @@ class PhoneAuthModeFactory {
 
   PhoneAuthModeFactory(this.phoneAuthUseCaseInputPort, this.phoneFindValidUseCase);
 
-  PhoneAuthModeUseCase getInstance(PhoneAuthMode phoneAuthMode,PhoneAuthComponentController phoneAuthComponentController,{String email}) {
+  PhoneAuthModeUseCase getInstance(PhoneAuthMode phoneAuthMode,PhoneAuthComponentController phoneAuthComponentController,{String? email}) {
     switch(phoneAuthMode) {
       case PhoneAuthMode.SignIn:
         return SignPhoneAuthModeUseCase(phoneAuthUseCaseInputPort,phoneAuthComponentController);
       case PhoneAuthMode.PhonePwFind:
-        return PwFindAuthModeUseCase(phoneAuthUseCaseInputPort,phoneAuthComponentController,email,phoneFindValidUseCase);
+        return PwFindAuthModeUseCase(phoneAuthUseCaseInputPort,phoneAuthComponentController,email!,phoneFindValidUseCase);
       default :
         throw new Exception("don't support Type");
     }

@@ -17,13 +17,13 @@ import 'ID001LikeAction.dart';
 
 class ID001ActionBottomBar extends StatelessWidget {
   final String ballUuid;
-  final ReviewInertMediator reviewInertMediator;
-  final ReviewCountMediator reviewCountMediator;
-  final ReviewDeleteMediator reviewDeleteMediator;
-  final ReviewUpdateMediator reviewUpdateMediator;
+  final ReviewInertMediator? reviewInertMediator;
+  final ReviewCountMediator? reviewCountMediator;
+  final ReviewDeleteMediator? reviewDeleteMediator;
+  final ReviewUpdateMediator? reviewUpdateMediator;
 
   ID001ActionBottomBar(
-      {@required this.ballUuid,
+      {required this.ballUuid,
       this.reviewCountMediator,
       this.reviewDeleteMediator,
       this.reviewInertMediator,
@@ -34,7 +34,7 @@ class ID001ActionBottomBar extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => ID001ActionBottomBarViewModel(
             context: context,
-            reviewCountMediator: reviewCountMediator,
+            reviewCountMediator: reviewCountMediator!,
             valuationMediator:
                 Provider.of<ID001MainPage2ViewModel>(context).valuationMediator,
             ballUuid: ballUuid),
@@ -117,31 +117,28 @@ class ID001ActionBottomBar extends StatelessWidget {
 
 class ID001ActionBottomBarViewModel extends ChangeNotifier
     implements ValuationMediatorComponent, ReviewCountMediatorComponent {
-  String ballUuid;
-  final ValuationMediator _valuationMediator;
-  final ReviewCountMediator _reviewCountMediator;
-  final BuildContext context;
+  String? ballUuid;
+  final ValuationMediator? _valuationMediator;
+  final ReviewCountMediator? _reviewCountMediator;
+  final BuildContext? context;
 
   ID001ActionBottomBarViewModel({
     this.ballUuid,
     this.context,
-    @required ValuationMediator valuationMediator,
-    ReviewCountMediator reviewCountMediator,
+    required ValuationMediator? valuationMediator,
+    ReviewCountMediator? reviewCountMediator,
   })  : _valuationMediator = valuationMediator,
         _reviewCountMediator = reviewCountMediator {
-    _valuationMediator.registerComponent(this);
-    _reviewCountMediator.registerComponent(this);
-    _reviewCountMediator.reqReviewCount(ballUuid);
+    _valuationMediator!.registerComponent(this);
+    _reviewCountMediator!.registerComponent(this);
+    _reviewCountMediator!.reqReviewCount(ballUuid!);
   }
 
-  BallLikeState get ballLikeState {
-    // return _valuationMediator.ballLikeState;
-  }
 
   @override
   void dispose() {
-    _reviewCountMediator.unregisterComponent(this);
-    _valuationMediator.unregisterComponent(this);
+    _reviewCountMediator!.unregisterComponent(this);
+    _valuationMediator!.unregisterComponent(this);
     super.dispose();
   }
 
@@ -151,7 +148,7 @@ class ID001ActionBottomBarViewModel extends ChangeNotifier
   }
 
   get reviewCount {
-    return _reviewCountMediator.reviewCount;
+    return _reviewCountMediator!.reviewCount;
   }
 
   @override

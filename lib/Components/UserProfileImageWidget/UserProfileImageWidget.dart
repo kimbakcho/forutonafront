@@ -3,15 +3,15 @@ import 'package:flutter_svg/svg.dart';
 
 class UserProfileImageWidget extends StatelessWidget {
 
-  final String imageUrl;
-  final double width;
-  final double height;
+  final String? imageUrl;
+  final double? width;
+  final double? height;
 
-  const UserProfileImageWidget({Key key, this.imageUrl, this.width=30.0, this.height=30.0}) : super(key: key);
+  const UserProfileImageWidget({Key? key, this.imageUrl, this.width=30.0, this.height=30.0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return imageUrl != null && imageUrl.isNotEmpty ? Container(
+    return imageUrl != null && imageUrl!.isNotEmpty ? Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
@@ -19,7 +19,7 @@ class UserProfileImageWidget extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.cover,
               image: NetworkImage(
-                  imageUrl))),
+                  imageUrl!))),
     ) : _basicProfileImageWidget();
   }
 

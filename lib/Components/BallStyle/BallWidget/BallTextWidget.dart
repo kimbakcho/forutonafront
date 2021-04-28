@@ -6,9 +6,9 @@ import 'BallTextTagListBar.dart';
 
 class BallTextWidget extends StatelessWidget {
   const BallTextWidget(
-      {Key key,
-      @required this.ballDisPlayUseCase,
-      @required this.gotoDetailPage})
+      {Key? key,
+      required this.ballDisPlayUseCase,
+      required this.gotoDetailPage})
       : super(key: key);
   final BallDisPlayUseCase ballDisPlayUseCase;
   final Function gotoDetailPage;

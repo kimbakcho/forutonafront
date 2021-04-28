@@ -3,24 +3,24 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/Common/YoutubeParser/youtubeParser.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:youtube_parser/youtube_parser.dart';
 
 import '../IM001Mode.dart';
 
 class YoutubeUrlUploadComponent extends StatelessWidget {
-  final YoutubeUrlUploadComponentController youtubeUrlUploadComponentController;
+  final YoutubeUrlUploadComponentController? youtubeUrlUploadComponentController;
 
   final EdgeInsets margin;
 
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final FBallResDto preSetBallResDto;
+  final FBallResDto? preSetBallResDto;
 
   const YoutubeUrlUploadComponent(
-      {Key key,
+      {Key? key,
       this.youtubeUrlUploadComponentController,
       this.margin = const EdgeInsets.all(0),
       this.im001mode,
@@ -90,11 +90,11 @@ class YoutubeUrlUploadComponent extends StatelessWidget {
 }
 
 class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
-  final YoutubeUrlUploadComponentController youtubeUrlUploadComponentController;
+  final YoutubeUrlUploadComponentController? youtubeUrlUploadComponentController;
 
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final FBallResDto preSetBallResDto;
+  final FBallResDto? preSetBallResDto;
 
   bool isShow = false;
 
@@ -102,18 +102,18 @@ class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
 
   String youtubeId = "";
 
-  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
+  IssueBallDisPlayUseCase? _issueBallDisPlayUseCase;
 
   YoutubeUrlUploadComponentViewModel(this.youtubeUrlUploadComponentController,
       this.im001mode, this.preSetBallResDto) {
     if (this.youtubeUrlUploadComponentController != null) {
-      this.youtubeUrlUploadComponentController._viewModel = this;
+      this.youtubeUrlUploadComponentController!._viewModel = this;
     }
     if (im001mode == IM001Mode.modify) {
       _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-          fBallResDto: preSetBallResDto, geoLocatorAdapter: sl());
-      if (_issueBallDisPlayUseCase.getYoutubeId() != "") {
-        youtubeId = _issueBallDisPlayUseCase.getYoutubeId();
+          fBallResDto: preSetBallResDto!, geoLocatorAdapter: sl());
+      if (_issueBallDisPlayUseCase!.getYoutubeId() != "") {
+        youtubeId = _issueBallDisPlayUseCase!.getYoutubeId();
         youtubeLink = "https://youtu.be/"+youtubeId;
         isShow = true;
       }
@@ -121,20 +121,20 @@ class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
   }
 
   Future<String> copyClipBoard() async {
-    ClipboardData clipBoardData = await Clipboard.getData("text/plain");
-    var currentClipBoardData = clipBoardData.text.trim();
+    ClipboardData? clipBoardData = await Clipboard.getData("text/plain");
+    var currentClipBoardData = clipBoardData!.text!.trim();
     return currentClipBoardData;
   }
 
   Future<bool> validYoutubeLinkCheck() async {
     var url = await copyClipBoard();
-    String idFromUrl = getIdFromUrl(url);
+    String? idFromUrl = getIdFromUrl(url);
     if (idFromUrl == null) {
       Fluttertoast.showToast(
           msg: "유효한 유튜브 링크가 아닙니다.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Color(0xff454F63),
           textColor: Colors.white,
           fontSize: 12.0);
@@ -154,7 +154,7 @@ class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
     if (result) {
       var url = await copyClipBoard();
       youtubeLink = url;
-      youtubeId = getIdFromUrl(youtubeLink);
+      youtubeId = getIdFromUrl(youtubeLink)!;
       notifyListeners();
     }
   }
@@ -171,28 +171,28 @@ class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
 }
 
 class YoutubeUrlUploadComponentController {
-  YoutubeUrlUploadComponentViewModel _viewModel;
+  YoutubeUrlUploadComponentViewModel? _viewModel;
 
   toggle() {
-    _viewModel._toggle();
+    _viewModel!._toggle();
   }
 
   bool isShow(){
     if(_viewModel == null){
       return false;
     }
-    return _viewModel.isShow;
+    return _viewModel!.isShow;
   }
 
   String getYoutubeId() {
-    return _viewModel.youtubeId;
+    return _viewModel!.youtubeId;
   }
 
   void setYoutubeId(String videoId) {
-    _viewModel.setYoutubeId(videoId);
+    _viewModel!.setYoutubeId(videoId);
   }
 
   deleteYoutubeUrl() {
-    _viewModel._deleteYoutubeUrl();
+    _viewModel!._deleteYoutubeUrl();
   }
 }

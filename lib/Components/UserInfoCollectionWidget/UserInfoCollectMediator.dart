@@ -9,7 +9,7 @@ import 'package:injectable/injectable.dart';
 
 abstract class UserInfoCollectMediator extends SearchCollectMediator<FUserInfoSimpleResDto> {
 
-  UserInfoListUpUseCaseInputPort userInfoListUpUseCaseInputPort;
+  UserInfoListUpUseCaseInputPort? userInfoListUpUseCaseInputPort;
 
 }
 
@@ -17,7 +17,7 @@ abstract class UserInfoCollectMediator extends SearchCollectMediator<FUserInfoSi
 class UserInfoCollectMediatorImpl extends UserInfoCollectMediator{
 
   @override
-  UserInfoListUpUseCaseInputPort userInfoListUpUseCaseInputPort;
+  UserInfoListUpUseCaseInputPort? userInfoListUpUseCaseInputPort;
 
   UserInfoCollectMediatorImpl(){
     sort = "playerPower,DESC";
@@ -35,7 +35,7 @@ class UserInfoCollectMediatorImpl extends UserInfoCollectMediator{
 
   @override
   Future<PageWrap<FUserInfoSimpleResDto>> searchUseCase(Pageable pageable) async {
-    return await userInfoListUpUseCaseInputPort.search(pageable);
+    return await userInfoListUpUseCaseInputPort!.search(pageable);
   }
 
 

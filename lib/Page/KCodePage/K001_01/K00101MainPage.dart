@@ -27,11 +27,11 @@ class K00101MainPage extends StatelessWidget {
   final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
 
   const K00101MainPage(
-      {Key key,
-      @required this.searchText,
-      @required this.mainScroller,
-      @required this.tabController,
-      @required this.kCodeNestedScrollViewKey})
+      {Key? key,
+      required this.searchText,
+      required this.mainScroller,
+      required this.tabController,
+      required this.kCodeNestedScrollViewKey})
       : super(key: key);
 
   @override
@@ -80,8 +80,8 @@ class K00101MainPage extends StatelessWidget {
                       ? Center(child: Container(child: Text("조회된 결과가 없습니다.")))
                       : Container(),
                   KCodeScrollerControllerBtn(
-                    kCodeScrollerController: model.kCodeScrollerController,
-                    mainScroller: model.mainScroller,
+                    kCodeScrollerController: model.kCodeScrollerController!,
+                    mainScroller: model.mainScroller!,
                   ),
                   model.isLoading ? CommonLoadingComponent() : Container()
                 ],
@@ -100,13 +100,13 @@ class K00101MainPage extends StatelessWidget {
 
 class K00101MainPageViewModel extends KCodeSelectViewModel<UserInfoCollectMediator,FUserInfoSimpleResDto>
     implements KCodeTopFilterBarListener, K00101DrawerBodyListener {
-  final String searchText;
-  final BuildContext context;
-  final UserInfoCollectMediator userInfoCollectMediator;
-  final KCodeScrollerController kCodeScrollerController;
-  final ScrollController mainScroller;
-  final TabController tabController;
-  final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey;
+  final String? searchText;
+  final BuildContext? context;
+  final UserInfoCollectMediator? userInfoCollectMediator;
+  final KCodeScrollerController? kCodeScrollerController;
+  final ScrollController? mainScroller;
+  final TabController? tabController;
+  final GlobalKey<NestedScrollViewState>? kCodeNestedScrollViewKey;
   K00101DrawerItem _selectedK00101DrawerItem = K00101DrawerItem.PlayPoint;
 
   K00101MainPageViewModel(
@@ -129,17 +129,17 @@ class K00101MainPageViewModel extends KCodeSelectViewModel<UserInfoCollectMediat
 
   @override
   settingCollectMediator() {
-    userInfoCollectMediator.userInfoListUpUseCaseInputPort =
+    userInfoCollectMediator!.userInfoListUpUseCaseInputPort =
         UserNickNameWithFullTextMatchIndexUseCase(
-            searchText: searchText, fUserRepository: sl());
-    userInfoCollectMediator.sort = "playerPower,DESC";
+            searchText: searchText!, fUserRepository: sl());
+    userInfoCollectMediator!.sort = "playerPower,DESC";
   }
 
   @override
   void openFilter() {
     showMaterialModalBottomSheet(
         expand: false,
-        context: context,
+        context: context!,
         backgroundColor: Colors.transparent,
         builder: (context) {
           return KCodeDrawer(
@@ -155,15 +155,15 @@ class K00101MainPageViewModel extends KCodeSelectViewModel<UserInfoCollectMediat
     _selectedK00101DrawerItem = item;
     switch (_selectedK00101DrawerItem) {
       case K00101DrawerItem.PlayPoint:
-        userInfoCollectMediator.sort = "playerPower,DESC";
+        userInfoCollectMediator!.sort = "playerPower,DESC";
         break;
       case K00101DrawerItem.ABC:
-        userInfoCollectMediator.sort = "nickName,DESC";
+        userInfoCollectMediator!.sort = "nickName,DESC";
         break;
       case K00101DrawerItem.Followers:
-        userInfoCollectMediator.sort = "followCount,DESC";
+        userInfoCollectMediator!.sort = "followCount,DESC";
         break;
     }
-    userInfoCollectMediator.searchFirst();
+    userInfoCollectMediator!.searchFirst();
   }
 }

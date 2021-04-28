@@ -11,20 +11,20 @@ import 'ID01ThreePicture.dart';
 import 'ID01TwoPicture.dart';
 
 class ID01Pictures extends StatelessWidget {
-  final List<BallImageItem> desImages;
+  final List<BallImageItem>? desImages;
 
   ID01Pictures({this.desImages});
 
   @override
   Widget build(BuildContext context) {
-    return desImages.length > 0 ? Container(
+    return desImages!.length > 0 ? Container(
         child: Column(
       children: <Widget>[
         Container(
           height: 240,
-          child: selectPictureWidget(desImages),
+          child: selectPictureWidget(desImages!),
         ),
-        desImages.length > 4
+        desImages!.length > 4
             ? Row(
                 children: <Widget>[
                   Expanded(
@@ -35,7 +35,7 @@ class ID01Pictures extends StatelessWidget {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
                             return BallImageViewer(
-                              desImages,
+                              desImages!,
                               null,
                               initIndex: 0,
                             );
@@ -44,7 +44,7 @@ class ID01Pictures extends StatelessWidget {
                         child: Container(
                           padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                           child: Text(
-                            '사진 모두 보기(${desImages.length})',
+                            '사진 모두 보기(${desImages!.length})',
                             style: GoogleFonts.notoSans(
                               fontSize: 16,
                               color: const Color(0xff000000),

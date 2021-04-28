@@ -8,7 +8,7 @@ class PwCheckValidImpl implements SignValid{
   String _errorText = "";
   PwValid _originPwValid;
   @override
-  bool hasValidTry = false;
+  bool? hasValidTry = false;
 
   PwCheckValidImpl(this._originPwValid);
 

@@ -75,7 +75,7 @@ class L004MainPage extends StatelessWidget {
                               child: DatePickerWidget(
                                 dateFormat: "MM월-dd일-yyyy년",
                                 locale: DateTimePickerLocale.ko,
-                                initialDate: model.initDateTime,
+                                initialDate: model.initDateTime!,
                                 datePickerWidgetController:
                                     model._datePickerWidgetController,
                                 onChange: model.onDateTimeChange,
@@ -96,10 +96,10 @@ class L004MainPage extends StatelessWidget {
 
 class L004MainPageViewModel extends ChangeNotifier {
   bool enableTailButton = true;
-  DatePickerWidgetController _datePickerWidgetController;
-  final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
+  DatePickerWidgetController? _datePickerWidgetController;
+  final FUserInfoJoinReqDto? _fUserInfoJoinReqDto;
 
-  DateTime initDateTime;
+  DateTime? initDateTime;
 
   L004MainPageViewModel(this._fUserInfoJoinReqDto){
     _datePickerWidgetController = new DatePickerWidgetController();
@@ -108,7 +108,7 @@ class L004MainPageViewModel extends ChangeNotifier {
 
   onDateTimeChange(DateTime dateTime, List<int> selectedIndex) {
 
-    if (dateTime.isAfter(initDateTime)) {
+    if (dateTime.isAfter(initDateTime!)) {
       this.enableTailButton = false;
     } else {
       this.enableTailButton = true;
@@ -117,9 +117,9 @@ class L004MainPageViewModel extends ChangeNotifier {
   }
 
   void nextPage(BuildContext context) {
-    this._fUserInfoJoinReqDto.forutonaAgree = true;
-    this._fUserInfoJoinReqDto.ageDate = _datePickerWidgetController.getCurrentDateTime();
-    if(this._fUserInfoJoinReqDto.snsSupportService == SnsSupportService.Forutona){
+    this._fUserInfoJoinReqDto!.forutonaAgree = true;
+    this._fUserInfoJoinReqDto!.ageDate = _datePickerWidgetController!.getCurrentDateTime();
+    if(this._fUserInfoJoinReqDto!.snsSupportService == SnsSupportService.Forutona){
       Navigator.of(context).push(MaterialPageRoute(builder: (_){
         return L005MainPage();
       }));

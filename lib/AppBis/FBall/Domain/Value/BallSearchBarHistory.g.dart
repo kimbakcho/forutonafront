@@ -8,7 +8,7 @@ part of 'BallSearchBarHistory.dart';
 
 BallSearchBarHistory _$BallSearchBarHistoryFromJson(Map<String, dynamic> json) {
   return BallSearchBarHistory(
-    searchText: json['searchText'] as String,
+    searchText: json['searchText'] as String?,
     searchTime: json['searchTime'] == null
         ? null
         : DateTime.parse(json['searchTime'] as String),

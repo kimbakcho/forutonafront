@@ -4,13 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class KCodeTopFilterBar extends StatelessWidget {
-  final String searchText;
-  final String descriptionText;
-  final String searchResultCountText;
-  final KCodeTopFilterBarListener kCodeTopFilterBarListener;
+  final String? searchText;
+  final String? descriptionText;
+  final String? searchResultCountText;
+  final KCodeTopFilterBarListener? kCodeTopFilterBarListener;
 
   const KCodeTopFilterBar(
-      {Key key,
+      {Key? key,
       this.searchText,
       this.descriptionText,
       this.searchResultCountText,
@@ -58,7 +58,7 @@ class KCodeTopFilterBar extends StatelessWidget {
               RawMaterialButton(
                 constraints: BoxConstraints(minWidth: 0, minHeight: 0),
                 onPressed: () {
-                  kCodeTopFilterBarListener.openFilter();
+                  kCodeTopFilterBarListener!.openFilter();
                 },
                 child: Icon(ForutonaIcon.filter),
 

@@ -18,14 +18,14 @@ import 'package:forutonafront/AppBis/Tag/Dto/TagRankingFromBallInfluencePowerReq
 class H001ViewModel
     with ChangeNotifier
     implements GeoViewSearchListener, SearchCollectMediatorComponent {
-  final GeoLocationUtilBasicUseCaseInputPort
+  final GeoLocationUtilBasicUseCaseInputPort?
       geoLocationUtilBasicUseCaseInputPort;
-  final BallListMediator ballListMediator;
-  final GeoViewSearchManagerInputPort geoViewSearchManager;
-  final FBallRepository fBallRepository;
-  final RankingTagListMediator rankingTagListFromBIManager;
-  final NoInterestBallUseCaseInputPort noInterestBallUseCaseInputPort;
-  final TagRepository tagRepository;
+  final BallListMediator? ballListMediator;
+  final GeoViewSearchManagerInputPort? geoViewSearchManager;
+  final FBallRepository? fBallRepository;
+  final RankingTagListMediator? rankingTagListFromBIManager;
+  final NoInterestBallUseCaseInputPort? noInterestBallUseCaseInputPort;
+  final TagRepository? tagRepository;
 
 
   H001ViewModel(
@@ -36,38 +36,38 @@ class H001ViewModel
       this.geoLocationUtilBasicUseCaseInputPort,
       this.noInterestBallUseCaseInputPort,
       this.tagRepository}) {
-    ballListMediator.registerComponent(this);
-    geoViewSearchManager.subscribe(this);
+    ballListMediator!.registerComponent(this);
+    geoViewSearchManager!.subscribe(this);
   }
 
   @override
   void dispose() {
-    ballListMediator.unregisterComponent(this);
-    geoViewSearchManager.unSubscribe(this);
+    ballListMediator!.unregisterComponent(this);
+    geoViewSearchManager!.unSubscribe(this);
     super.dispose();
   }
 
   @override
   Future<void> search(Position loadPosition,double zoomLevel) async {
-    ballListMediator.fBallListUpUseCaseInputPort = NoInterestedBallDecorator(
+    ballListMediator!.fBallListUpUseCaseInputPort = NoInterestedBallDecorator(
         noInterestBallUseCaseInputPort: noInterestBallUseCaseInputPort,
         fBallListUpUseCaseInputPort: ListUpBallListUpOrderByBI(
-            fBallRepository: fBallRepository,
+            fBallRepository: fBallRepository!,
             listUpReqDto: FBallListUpFromBIReqDto(
-              mapCenterLatitude: loadPosition.latitude,
-              mapCenterLongitude: loadPosition.longitude,
+              mapCenterLatitude: loadPosition.latitude!,
+              mapCenterLongitude: loadPosition.longitude!,
             )));
 
-    rankingTagListFromBIManager.tagRankingUseCaseInputPort =
+    rankingTagListFromBIManager!.tagRankingUseCaseInputPort =
         TagRankingFromBallInfluencePowerUseCase(
-            tagRepository: tagRepository,
+            tagRepository: tagRepository!,
             reqDto: TagRankingFromBallInfluencePowerReqDto(
-                mapCenterLongitude: loadPosition.longitude,
-                mapCenterLatitude: loadPosition.latitude));
+                mapCenterLongitude: loadPosition.longitude!,
+                mapCenterLatitude: loadPosition.latitude!));
 
-    await ballListMediator.searchFirst();
+    await ballListMediator!.searchFirst();
 
-    await rankingTagListFromBIManager.searchFirst();
+    await rankingTagListFromBIManager!.searchFirst();
 
   }
   

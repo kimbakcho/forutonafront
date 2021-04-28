@@ -75,7 +75,7 @@ class G022MainPage extends StatelessWidget {
                 child: Icon(Icons.arrow_back)),
             width: 48),
         Container(
-            child: Text(model.policyTitle,
+            child: Text(model.policyTitle!,
                 style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,

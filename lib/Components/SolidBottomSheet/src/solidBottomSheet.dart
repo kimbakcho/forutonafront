@@ -58,24 +58,24 @@ class SolidBottomSheet extends StatefulWidget {
   // from the app and don't depend of user's interaction.
   // can hide and show  methods plus have isOpened variable
   // to check widget visibility on a screen
-  SolidController controller;
+  SolidController? controller;
 
   // This method will be executed when the solid bottom sheet is completely
   // opened.
-  final Function onShow;
+  final Function? onShow;
 
   // This method will be executed when the solid bottom sheet is completely
   // closed.
-  final Function onHide;
+  final Function? onHide;
 
   bool isShow = false;
 
-  Color bodyColor;
+  Color? bodyColor;
 
   SolidBottomSheet({
-    Key key,
-    @required this.headerBar,
-    @required this.body,
+    Key? key,
+    required this.headerBar,
+    required this.body,
     this.controller,
     this.minHeight = 0,
     this.maxHeight = 500,
@@ -95,9 +95,9 @@ class SolidBottomSheet extends StatefulWidget {
     if (controller == null) {
       this.controller = SolidController();
     }
-    this.controller.height =
+    this.controller!.height =
         this.showOnAppear ? this.maxHeight : this.minHeight;
-    this.controller.smoothness = smoothness;
+    this.controller!.smoothness = smoothness;
   }
 
   @override
@@ -105,45 +105,45 @@ class SolidBottomSheet extends StatefulWidget {
 }
 
 class _SolidBottomSheetState extends State<SolidBottomSheet> {
-  bool isDragDirectionUp;
-  int animationDelay;
+  bool? isDragDirectionUp;
+  int? animationDelay;
 
   void _onVerticalDragUpdate(data) {
     _setNativeSmoothness();
-    if (((widget.controller.height - data.delta.dy) > widget.minHeight) &&
-        ((widget.controller.height - data.delta.dy) < widget.maxHeight)) {
+    if (((widget.controller!.height - data.delta.dy) > widget.minHeight) &&
+        ((widget.controller!.height - data.delta.dy) < widget.maxHeight)) {
       isDragDirectionUp = data.delta.dy <= 0;
-      widget.controller.height -= data.delta.dy;
+      widget.controller!.height -= data.delta.dy;
     }
   }
 
   void _onVerticalDragEnd(data) {
     _setUsersSmoothness();
 
-    if (isDragDirectionUp && widget.controller.value)
+    if (isDragDirectionUp! && widget.controller!.value)
       _show();
-    else if (!isDragDirectionUp && !widget.controller.value)
+    else if (!isDragDirectionUp! && !widget.controller!.value)
       _hide();
     else
-      widget.controller.value = isDragDirectionUp;
+      widget.controller!.value = isDragDirectionUp!;
   }
 
   void _onTap() {
-    final bool isOpened = widget.controller.height == widget.maxHeight;
-    widget.controller.value = !isOpened;
+    final bool isOpened = widget.controller!.height == widget.maxHeight;
+    widget.controller!.value = !isOpened;
   }
 
-  Function _controllerListener;
+  Function? _controllerListener;
 
   @override
   void initState() {
     super.initState();
-    widget.controller.value = widget.showOnAppear;
+    widget.controller!.value = widget.showOnAppear;
     _controllerListener = () {
-      widget.controller.value ? _show() : _hide();
+      widget.controller!.value ? _show() : _hide();
     };
-    widget.controller.addListener(_controllerListener);
-    animationDelay = widget.controller.smoothness.value;
+    widget.controller!.addListener(()=>_controllerListener!());
+    animationDelay = widget.controller!.smoothness!.value;
   }
 
   @override
@@ -169,8 +169,8 @@ class _SolidBottomSheetState extends State<SolidBottomSheet> {
         ),
       ),
       StreamBuilder<double>(
-          stream: widget.controller.heightStream,
-          initialData: widget.controller.height,
+          stream: widget.controller!.heightStream,
+          initialData: widget.controller!.height,
           builder: (_, snapshot) {
             return AnimatedContainer(
               color: widget.bodyColor,
@@ -179,38 +179,38 @@ class _SolidBottomSheetState extends State<SolidBottomSheet> {
                   if (snapshot.data == widget.maxHeight) {
                     animationDelay = 0;
                   } else {
-                    animationDelay = widget.controller.smoothness.value;
+                    animationDelay = widget.controller!.smoothness!.value;
                   }
                 },
-                duration: Duration(milliseconds: animationDelay),
+                duration: Duration(milliseconds: animationDelay!),
                 height:
-                  max(snapshot.data - MediaQuery.of(context).viewInsets.bottom,0),
+                  max(snapshot.data! - MediaQuery.of(context).viewInsets.bottom,0),
                 child: widget.body);
           })
     ]);
   }
 
   void _hide() {
-    if (widget.onHide != null) widget.onHide();
-    widget.controller.height = widget.minHeight;
+    if (widget.onHide != null) widget.onHide!();
+    widget.controller!.height = widget.minHeight;
   }
 
   void _show() {
-    if (widget.onShow != null) widget.onShow();
-    widget.controller.height = widget.maxHeight;
+    if (widget.onShow != null) widget.onShow!();
+    widget.controller!.height = widget.maxHeight;
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_controllerListener);
+    widget.controller!.removeListener(()=>_controllerListener!());
     super.dispose();
   }
 
   void _setUsersSmoothness() {
-    widget.controller.smoothness = widget.smoothness;
+    widget.controller!.smoothness = widget.smoothness;
   }
 
   void _setNativeSmoothness() {
-    widget.controller.smoothness = Smoothness.withValue(5);
+    widget.controller!.smoothness = Smoothness.withValue(5);
   }
 }

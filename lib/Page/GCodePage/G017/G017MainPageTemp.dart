@@ -62,14 +62,14 @@ class G017MainPageTemp extends StatelessWidget {
       child: model.personaSettingNoticeResDto != null
           ? Column(
               children: <Widget>[
-                Text(model.personaSettingNoticeResDto.noticeName,
+                Text(model.personaSettingNoticeResDto!.noticeName!,
                     style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                         color: Color(0xff454f63))),
                 Text(
                     DateFormat("yy.MM.dd").format(
-                        model.personaSettingNoticeResDto.noticeWriteDateTime),
+                        model.personaSettingNoticeResDto!.noticeWriteDateTime!),
                     style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w300,
                       fontSize: 10,

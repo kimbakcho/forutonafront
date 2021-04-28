@@ -25,7 +25,7 @@ class G012MainPageTemp extends StatelessWidget {
           context: context,
           pwValid: pwCheckValid,
           fUserPwChangeUseCaseInputPort: sl(),
-          pwCheckValid: PwCheckValidImpl(pwCheckValid),
+          pwCheckValid: PwCheckValidImpl(pwCheckValid as PwValid),
           currentPwValid:
               CurrentPwValidImpl(fireBaseAuthAdapterForUseCase: sl()),
           checkPwController: checkPwController,

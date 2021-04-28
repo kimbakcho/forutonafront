@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class L003MainPage extends StatelessWidget {
-  final int termsIdx;
+  final int? termsIdx;
 
-  const L003MainPage({Key key, this.termsIdx}) : super(key: key);
+  const L003MainPage({Key? key, this.termsIdx}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,24 +46,24 @@ class L003MainPage extends StatelessWidget {
 class L003MainPageViewModel extends ChangeNotifier {
   String termsTitle = "";
 
-  final TermsConditionsUseCaseInputPort _termsConditionsUseCaseInputPort;
-  final int termsIdx;
+  final TermsConditionsUseCaseInputPort? _termsConditionsUseCaseInputPort;
+  final int? termsIdx;
 
-  WebViewController _webViewController;
+  WebViewController? _webViewController;
 
   L003MainPageViewModel(this._termsConditionsUseCaseInputPort, this.termsIdx);
 
   init() async {
     var termsConditionsResDto = await this
-        ._termsConditionsUseCaseInputPort
-        .getTermsConditions(this.termsIdx);
-    termsTitle = termsConditionsResDto.termsName;
+        ._termsConditionsUseCaseInputPort!
+        .getTermsConditions(this.termsIdx!);
+    termsTitle = termsConditionsResDto.termsName!;
     notifyListeners();
     String htmlUrl = new Uri.dataFromString(
         '<html><body>${termsConditionsResDto.termsContent}</body></html>',
         mimeType: 'text/html',
         parameters: {'charset': 'utf-8'}).toString();
-    this._webViewController.loadUrl(htmlUrl);
+    this._webViewController!.loadUrl(htmlUrl);
   }
 
   void onWebViewCreated(WebViewController controller) {

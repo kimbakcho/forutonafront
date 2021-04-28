@@ -6,7 +6,7 @@ import 'BallDesciprtionImageViwer.dart';
 
 
 class OneBallDescriptionImageMode extends BallDescriptionImageViewer{
-  OneBallDescriptionImageMode({@required List<FBallDesImages> desImages,@required BuildContext context})
+  OneBallDescriptionImageMode({required List<FBallDesImages> desImages,required BuildContext context})
       : super(desImages:desImages,context:context);
 
   @override
@@ -25,7 +25,7 @@ class OneBallDescriptionImageMode extends BallDescriptionImageViewer{
             image: DecorationImage(
               fit: BoxFit.cover,
               image:
-              NetworkImage(desImages[0].src),
+              NetworkImage(desImages[0].src!),
             ),
             borderRadius: BorderRadius.circular(12.00)));
   }

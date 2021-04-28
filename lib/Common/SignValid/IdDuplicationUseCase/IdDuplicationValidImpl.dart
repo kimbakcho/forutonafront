@@ -12,12 +12,12 @@ class IdDuplicationValidImpl implements SignValid {
   bool _isTextError = false;
   String _errorText = "";
   @override
-  bool hasValidTry = false;
+  bool? hasValidTry = false;
 
   IdDuplicationValidImpl(
-      {@required SignValid emailValid,
-      @required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      @required DuplicationErrorLogin duplicationErrorLogin
+      {required SignValid emailValid,
+      required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
+      required DuplicationErrorLogin duplicationErrorLogin
       })
       : _emailValid = emailValid,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
@@ -56,7 +56,7 @@ class IdDuplicationValidImpl implements SignValid {
     } on PlatformException catch (e) {
       FireBaseValidErrorUtil error = FireBaseValidErrorUtil();
       _isTextError = true;
-      _errorText = error.getErrorText(e);
+      _errorText = error.getErrorText(e)!;
       return;
     }
     _isTextError = false;

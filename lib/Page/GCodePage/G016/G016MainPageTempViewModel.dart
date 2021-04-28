@@ -17,12 +17,12 @@ class G016MainPageTempViewModel extends ChangeNotifier {
   final ScrollController mainScrollController;
 
   G016MainPageTempViewModel(
-      {@required
+      {required
           this.context,
-      @required
+      required
           PersonaSettingNoticeUseCaseInputPort
               personaSettingNoticeUseCaseInputPort,
-      @required
+      required
           this.mainScrollController})
       : _personaSettingNoticeUseCaseInputPort =
             personaSettingNoticeUseCaseInputPort {
@@ -37,7 +37,7 @@ class G016MainPageTempViewModel extends ChangeNotifier {
     PageWrap<PersonaSettingNoticeResDto> wrapDto =
         await _personaSettingNoticeUseCaseInputPort
             .getPersonaSettingNotice(_pageable);
-    notice = wrapDto.content;
+    notice = wrapDto.content!;
     notifyListeners();
   }
 
@@ -45,15 +45,15 @@ class G016MainPageTempViewModel extends ChangeNotifier {
     if (mainScrollController.offset >=
             mainScrollController.position.maxScrollExtent &&
         !mainScrollController.position.outOfRange) {
-      _pageable.page++;
+      _pageable.page = _pageable.page! + 1;
       var wrapDto = await _personaSettingNoticeUseCaseInputPort
           .getPersonaSettingNotice(_pageable);
-      if (wrapDto.last) {
+      if (wrapDto.last!) {
         return;
-      } else if (wrapDto.first) {
-        notice = wrapDto.content;
+      } else if (wrapDto.first!) {
+        notice = wrapDto.content!;
       } else {
-        notice.addAll(wrapDto.content);
+        notice.addAll(wrapDto.content!);
       }
     }
   }

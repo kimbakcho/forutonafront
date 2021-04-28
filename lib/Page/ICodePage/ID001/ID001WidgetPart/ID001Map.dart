@@ -13,22 +13,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ID001Map extends StatefulWidget {
-  final Position _ballPosition;
-  final String _ballUuid;
-  final String _ballAddress;
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final Position? _ballPosition;
+  final String? _ballUuid;
+  final String? _ballAddress;
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       _geoLocationUtilForeGroundUseCase;
-  final MapMakerDescriptorContainer _mapMakerDescriptorContainer;
-  final MapBallMarkerFactory _mapBallMarkerFactory;
+  final MapMakerDescriptorContainer? _mapMakerDescriptorContainer;
+  final MapBallMarkerFactory? _mapBallMarkerFactory;
 
   ID001Map(
-      {Position ballPosition,
-      String ballAddress,
-      String ballUuid,
-      GeoLocationUtilForeGroundUseCaseInputPort
+      {Position? ballPosition,
+      String? ballAddress,
+      String? ballUuid,
+      GeoLocationUtilForeGroundUseCaseInputPort?
           geoLocationUtilForeGroundUseCase,
-      MapMakerDescriptorContainer mapMakerDescriptorContainer,
-      MapBallMarkerFactory mapBallMarkerFactory})
+      MapMakerDescriptorContainer? mapMakerDescriptorContainer,
+      MapBallMarkerFactory? mapBallMarkerFactory})
       : _ballPosition = ballPosition,
         _ballAddress = ballAddress,
         _ballUuid = ballUuid,
@@ -42,9 +42,9 @@ class ID001Map extends StatefulWidget {
 
 class _ID001MapState extends State<ID001Map>
     implements GeoLocationUtilUseForeGroundCaseOutputPort {
-  String userProfileImageUrl;
-  Position userPosition;
-  CameraPosition initCameraPosition;
+  String? userProfileImageUrl;
+  Position? userPosition;
+  CameraPosition? initCameraPosition;
   Set<Marker> markers = Set<Marker>();
   String ballDistanceFromUser = "";
 
@@ -54,29 +54,32 @@ class _ID001MapState extends State<ID001Map>
     userProfileImageUrl = null;
     initCameraPosition = CameraPosition(
         target: LatLng(
-            widget._ballPosition.latitude, widget._ballPosition.longitude),
+            widget._ballPosition!.latitude!, widget._ballPosition!.longitude!),
         zoom: 14.56);
     init();
   }
 
   init() async {
-    userPosition = widget._geoLocationUtilForeGroundUseCase
+    userPosition = widget._geoLocationUtilForeGroundUseCase!
         .getCurrentWithLastPositionInMemory();
-    widget._geoLocationUtilForeGroundUseCase.reqBallDistanceDisplayText(
-        ballLatLng: widget._ballPosition, geoLocationUtilUseCaseOp: this);
+    widget._geoLocationUtilForeGroundUseCase!.reqBallDistanceDisplayText(
+        ballLatLng: widget._ballPosition!, geoLocationUtilUseCaseOp: this);
     await setMarkers();
     setState(() {});
   }
 
   setMarkers() async {
-    markers.add(widget._mapBallMarkerFactory.getBallMaker(
-        FBallType.IssueBall, widget._ballUuid, widget._ballPosition));
+    var bm = widget._mapBallMarkerFactory!.getBallMaker(
+        FBallType.IssueBall, widget._ballUuid!, widget._ballPosition!);
+    if(bm != null){
+      markers.add(bm);
+    }
     markers.add(Marker(
       markerId: MarkerId("UserProfileImage"),
-      icon: widget._mapMakerDescriptorContainer
+      icon: widget._mapMakerDescriptorContainer!
           .getBitmapDescriptor(MapMakerDescriptorType.UserAvatarIcon),
       anchor: Offset(0.5, 0.5),
-      position: LatLng(userPosition.latitude, userPosition.longitude),
+      position: LatLng(userPosition!.latitude!, userPosition!.longitude!),
     ));
   }
 
@@ -101,7 +104,7 @@ class _ID001MapState extends State<ID001Map>
               height: 185,
               child: IgnorePointer(
                 child: GoogleMap(
-                  initialCameraPosition: initCameraPosition,
+                  initialCameraPosition: initCameraPosition!,
                   markers: markers,
                   zoomControlsEnabled: false,
                   myLocationEnabled: false,
@@ -152,7 +155,7 @@ class _ID001MapState extends State<ID001Map>
     return Container(
         margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
         child: Text(
-          widget._ballAddress,
+          widget._ballAddress!,
           overflow: TextOverflow.ellipsis,
           style: GoogleFonts.notoSans(
             fontSize: 13,
@@ -186,16 +189,16 @@ class _ID001MapState extends State<ID001Map>
       width: 45,
       height: 45,
       child: MapIntentButton(
-        dstPosition: widget._ballPosition,
-        dstAddress: widget._ballAddress,
+        dstPosition: widget._ballPosition!,
+        dstAddress: widget._ballAddress!,
       ),
     );
   }
 
   @override
-  onBallDistanceDisplayText({String displayDistanceText}) {
+  onBallDistanceDisplayText({String? displayDistanceText}) {
     setState(() {
-      this.ballDistanceFromUser = displayDistanceText;
+      this.ballDistanceFromUser = displayDistanceText!;
     });
   }
 }

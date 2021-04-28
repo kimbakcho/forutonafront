@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCaseInputPort.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
@@ -156,31 +157,31 @@ class L009BottomSheet extends StatelessWidget {
 }
 
 class L009BottomSheetViewModel extends ChangeNotifier {
-  TextEditingController _emailEditController;
+  TextEditingController? _emailEditController;
 
-  TextEditingController _pwEditController;
+  TextEditingController? _pwEditController;
 
   String _currentEmailText = "";
 
   String _currentPwText = "";
 
-  FluttertoastAdapter _fluttertoastAdapter;
+  FluttertoastAdapter? _fluttertoastAdapter;
 
-  SnsLoginModuleAdapterFactory _snsLoginModuleAdapterFactory;
+  SnsLoginModuleAdapterFactory? _snsLoginModuleAdapterFactory;
 
   L009BottomSheetViewModel(this._snsLoginModuleAdapterFactory,this._fluttertoastAdapter) {
 
     _emailEditController = TextEditingController();
 
-    _emailEditController.addListener(() {
-      _currentEmailText = _emailEditController.text;
+    _emailEditController!.addListener(() {
+      _currentEmailText = _emailEditController!.text;
       notifyListeners();
     });
 
     _pwEditController = TextEditingController();
 
-    _pwEditController.addListener(() {
-      _currentPwText = _pwEditController.text;
+    _pwEditController!.addListener(() {
+      _currentPwText = _pwEditController!.text;
       notifyListeners();
     });
 
@@ -192,16 +193,16 @@ class L009BottomSheetViewModel extends ChangeNotifier {
 
   Future<void> login(BuildContext context) async{
     LoginUseCaseInputPort loginUseCaseInputPort = LoginUseCase(
-      snsLoginModuleAdapter: _snsLoginModuleAdapterFactory.getForutonaLoginAdapterInstance(_currentEmailText, _currentPwText),
+      snsLoginModuleAdapter: _snsLoginModuleAdapterFactory!.getForutonaLoginAdapterInstance(_currentEmailText, _currentPwText),
       singUpUseCaseInputPort: sl(),
     );
     try{
       await loginUseCaseInputPort.tryLogin();
       Navigator.of(context).popUntil((route) => route.settings.name == '/');
-    }catch (ex) {
+    } on PlatformException catch (ex) {
         FireBaseValidErrorUtil fireBaseValidErrorUtil = FireBaseValidErrorUtil();
        var errorText = fireBaseValidErrorUtil.getErrorText(ex);
-       _fluttertoastAdapter.showToast(msg: errorText);
+       _fluttertoastAdapter!.showToast(msg: errorText!);
     }
   }
 

@@ -10,9 +10,9 @@ import 'H001ViewModel.dart';
 
 class H001Page extends StatelessWidget {
 
-  final GeoViewSearchManagerInputPort geoViewSearchManagerInputPort;
+  final GeoViewSearchManagerInputPort? geoViewSearchManagerInputPort;
 
-  const H001Page({Key key, this.geoViewSearchManagerInputPort}) : super(key: key);
+  const H001Page({Key? key, this.geoViewSearchManagerInputPort}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class H001Page extends StatelessWidget {
                         ),
                       ],
                     ),
-                    model.ballListMediator.isLoading
+                    model.ballListMediator!.isLoading
                         ? CommonLoadingComponent(
                             isTouch: false,
                           )

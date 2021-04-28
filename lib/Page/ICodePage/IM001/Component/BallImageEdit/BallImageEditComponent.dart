@@ -13,14 +13,14 @@ import 'BallImageEditItem.dart';
 import 'BallImageItem.dart';
 
 class BallImageEditComponent extends StatelessWidget {
-  final BallImageEditComponentController ballImageEditComponentController;
+  final BallImageEditComponentController? ballImageEditComponentController;
   final EdgeInsets margin;
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final FBallResDto preSetBallResDto;
+  final FBallResDto? preSetBallResDto;
 
   const BallImageEditComponent(
-      {Key key,
+      {Key? key,
       this.ballImageEditComponentController,
       this.margin = EdgeInsets.zero,
       this.im001mode,
@@ -91,34 +91,34 @@ class BallImageEditComponent extends StatelessWidget {
 
 class BallImageEditComponentViewModel extends ChangeNotifier {
 
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final FBallResDto preSetBallResDto;
+  final FBallResDto? preSetBallResDto;
   List<BallImageItem> images = [];
 
-  final BallImageEditComponentController ballImageEditComponentController;
+  final BallImageEditComponentController? ballImageEditComponentController;
 
-  final BallImageListUpLoadUseCaseInputPort
+  final BallImageListUpLoadUseCaseInputPort?
       _ballImageListUpLoadUseCaseInputPort;
 
-  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
+  IssueBallDisPlayUseCase? _issueBallDisPlayUseCase;
 
   BallImageEditComponentViewModel(this._ballImageListUpLoadUseCaseInputPort, this.im001mode, this.preSetBallResDto,
       {this.ballImageEditComponentController}) {
     if (ballImageEditComponentController != null) {
-      ballImageEditComponentController._ballImageEditComponentViewModel = this;
+      ballImageEditComponentController!._ballImageEditComponentViewModel = this;
     }
     if(im001mode==IM001Mode.modify){
-      _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto: preSetBallResDto,geoLocatorAdapter: sl());
-      images = _issueBallDisPlayUseCase.getDesImages();
+      _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto: preSetBallResDto!,geoLocatorAdapter: sl());
+      images = _issueBallDisPlayUseCase!.getDesImages();
     }
   }
 
   _removeImage(BallImageItem ballImageItem) {
     images.remove(ballImageItem);
     if (ballImageEditComponentController != null &&
-        ballImageEditComponentController.onChangeItemList != null) {
-      ballImageEditComponentController.onChangeItemList(images);
+        ballImageEditComponentController!.onChangeItemList != null) {
+      ballImageEditComponentController!.onChangeItemList!(images);
     }
     notifyListeners();
   }
@@ -128,8 +128,8 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
     await ballImageItem.addImage(imageProvider: imageProvider);
     images.add(ballImageItem);
     if (ballImageEditComponentController != null &&
-        ballImageEditComponentController.onChangeItemList != null) {
-      ballImageEditComponentController.onChangeItemList(images);
+        ballImageEditComponentController!.onChangeItemList != null) {
+      ballImageEditComponentController!.onChangeItemList!(images);
     }
     notifyListeners();
   }
@@ -138,7 +138,7 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
     var hasByteImages =
         images.where((element) => element.imageByte != null).toList();
     if (hasByteImages.isNotEmpty) {
-      await _ballImageListUpLoadUseCaseInputPort
+      await _ballImageListUpLoadUseCaseInputPort!
           .ballImageListUpLoadAndFillUrls(hasByteImages);
     }
   }
@@ -156,20 +156,20 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
 }
 
 class BallImageEditComponentController {
-  BallImageEditComponentViewModel _ballImageEditComponentViewModel;
+  BallImageEditComponentViewModel? _ballImageEditComponentViewModel;
 
-  final Function(List<BallImageItem> ballList) onChangeItemList;
+  final Function(List<BallImageItem> ballList)? onChangeItemList;
 
   final FluttertoastAdapter _fluttertoastAdapter = sl();
 
   BallImageEditComponentController({this.onChangeItemList});
 
   addImage(ImageProvider imageProvider) async {
-    if (_ballImageEditComponentViewModel.images.length > 20) {
+    if (_ballImageEditComponentViewModel!.images.length > 20) {
       _fluttertoastAdapter.showToast(msg: "20개를 초과 하였습니다.");
     }
     if (imageProvider != null) {
-      await _ballImageEditComponentViewModel._addImage(imageProvider);
+      await _ballImageEditComponentViewModel!._addImage(imageProvider);
     }
   }
 
@@ -177,18 +177,18 @@ class BallImageEditComponentController {
     if (_ballImageEditComponentViewModel == null) {
       return 0;
     }
-    return _ballImageEditComponentViewModel.images.length;
+    return _ballImageEditComponentViewModel!.images.length;
   }
 
   getImageItemUrlList() {
-    return _ballImageEditComponentViewModel._getImageItemUrlList();
+    return _ballImageEditComponentViewModel!._getImageItemUrlList();
   }
 
   Future<void> updateImageAndFillImageUrl() async {
-    await _ballImageEditComponentViewModel._updateImageAndFillImageUrl();
+    await _ballImageEditComponentViewModel!._updateImageAndFillImageUrl();
   }
 
   List<BallImageItem> getBallImageItems() {
-    return _ballImageEditComponentViewModel.images;
+    return _ballImageEditComponentViewModel!.images;
   }
 }

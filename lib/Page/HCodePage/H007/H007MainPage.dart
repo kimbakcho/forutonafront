@@ -13,22 +13,19 @@ import 'MapCenterExpendCircle.dart';
 
 // ignore: must_be_immutable
 class H007MainPage extends StatefulWidget {
-  final Position initPosition;
-  String address;
-  H007Listener h007listener;
+  final Position? initPosition;
+  String? address;
+  H007Listener? h007listener;
 
-  H007MainPage({this.initPosition, this.address,this.h007listener});
+  H007MainPage({this.initPosition, this.address, this.h007listener});
 
   @override
   _H007MainPageState createState() => _H007MainPageState(initPosition, address);
 }
 
-class _H007MainPageState extends State<H007MainPage>
-     {
-  Position initPosition;
-  String address;
-
-
+class _H007MainPageState extends State<H007MainPage> {
+  Position? initPosition;
+  String? address;
 
   _H007MainPageState(this.initPosition, this.address);
 
@@ -45,8 +42,7 @@ class _H007MainPageState extends State<H007MainPage>
           return Scaffold(
               body: Stack(children: <Widget>[
             GoogleMap(
-
-              initialCameraPosition: model.initCameraPosition,
+              initialCameraPosition: model.initCameraPosition!,
               myLocationEnabled: true,
               myLocationButtonEnabled: false,
               onMapCreated: model.onMapCreate,
@@ -64,16 +60,16 @@ class _H007MainPageState extends State<H007MainPage>
                 child: H007AddressWidget(
                   address: model.address,
                   placeListFromSearchTextWidgetListener: model,
-                  key: Key(model.address),
+                  key: Key(model.address!),
                 )),
             Positioned(
               top: MediaQuery.of(context).padding.top + 16,
               right: 16,
-              child:
-                  model.cameraMoveFlag ? H007MyLocationMoveBtn(
-                    onGoMyLocation: model.onMyLocation,
-
-                  ) : Container(),
+              child: model.cameraMoveFlag!
+                  ? H007MyLocationMoveBtn(
+                      onGoMyLocation: model.onMyLocation,
+                    )
+                  : Container(),
             ),
             IgnorePointer(
               child: MapCenterExpendCircle(),
@@ -93,7 +89,7 @@ class _H007MainPageState extends State<H007MainPage>
 
 class H007CenterPoint extends StatelessWidget {
   const H007CenterPoint({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -111,5 +107,5 @@ class H007CenterPoint extends StatelessWidget {
 }
 
 abstract class H007Listener {
-  onH007SearchPosition(Position position,BuildContext context);
+  onH007SearchPosition(Position position, BuildContext context);
 }

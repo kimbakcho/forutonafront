@@ -5,7 +5,7 @@ import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 
 abstract class TagItemListUpUseCaseInputPort {
 
-  Position searchPosition;
+  Position? searchPosition;
 
   Future<PageWrap<FBallTagResDto>> search(Pageable pageable);
 }

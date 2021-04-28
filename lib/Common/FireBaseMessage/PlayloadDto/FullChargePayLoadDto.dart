@@ -5,8 +5,8 @@ part 'FullChargePayLoadDto.g.dart';
 
 @JsonSerializable()
 class FullChargePayLoadDto {
-  String userNickName;
-  String userUid;
+  String? userNickName;
+  String? userUid;
   FullChargePayLoadDto();
 
   factory FullChargePayLoadDto.fromJson(Map<String, dynamic> json) => _$FullChargePayLoadDtoFromJson(json);

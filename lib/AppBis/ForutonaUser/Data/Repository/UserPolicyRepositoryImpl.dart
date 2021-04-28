@@ -10,7 +10,7 @@ class UserPolicyRepositoryImpl implements UserPolicyRepository {
   UserPolicyRemoteDataSource _userPolicyRemoteDataSource;
 
   UserPolicyRepositoryImpl(
-      {@required UserPolicyRemoteDataSource userPolicyRemoteDataSource})
+      {required UserPolicyRemoteDataSource userPolicyRemoteDataSource})
       : _userPolicyRemoteDataSource = userPolicyRemoteDataSource;
 
   @override

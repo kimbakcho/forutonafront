@@ -29,10 +29,10 @@ class FireBaseAuthAdapterForUseCaseImpl
 
 
   FireBaseAuthAdapterForUseCaseImpl(
-      {@required FireBaseMessageAdapter fireBaseMessageAdapter,
-      @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
-      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required UpdateFCMTokenUseCaseInputPort updateFCMTokenUseCaseInputPort
+      {required FireBaseMessageAdapter fireBaseMessageAdapter,
+      required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
+      required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      required UpdateFCMTokenUseCaseInputPort updateFCMTokenUseCaseInputPort
       })
       : _fireBaseMessageAdapter = fireBaseMessageAdapter,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
@@ -41,7 +41,7 @@ class FireBaseAuthAdapterForUseCaseImpl
 
 
   startOnAuthStateChangedListen(){
-    FirebaseAuth.instance.onAuthStateChanged.listen(_onAuthStateChange);
+    FirebaseAuth.instance.authStateChanges().listen(_onAuthStateChange);
   }
 
   Future<String> getFireBaseIdToken() async {
@@ -56,10 +56,10 @@ class FireBaseAuthAdapterForUseCaseImpl
     return await _fireBaseAuthBaseAdapter.userUid();
   }
 
-  _onAuthStateChange(FirebaseUser user) async {
+  _onAuthStateChange(User? user) async {
     if(await isLogin()){
       await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
-      await _updateFCMTokenUseCaseInputPort.updateFCMToken(await _fireBaseMessageAdapter.getCurrentToken());
+      await _updateFCMTokenUseCaseInputPort.updateFCMToken((await _fireBaseMessageAdapter.getCurrentToken())!);
     } else {
       _signInUserInfoUseCaseInputPort.clearUserInfo();
     }
@@ -68,7 +68,7 @@ class FireBaseAuthAdapterForUseCaseImpl
 
 
   @override
-  Future<String> userEmail() async {
+  Future<String?> userEmail() async {
     return await _fireBaseAuthBaseAdapter.userEmail();
   }
 

@@ -13,12 +13,12 @@ abstract class DeleteBallUseCaseOutputPort {
 class DeleteBallUseCase implements DeleteBallUseCaseInputPort {
   final FBallRepository _fBallRepository;
 
-  DeleteBallUseCase({FBallRepository fBallRepository})
+  DeleteBallUseCase({required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
 
   @override
-  Future<String> deleteBall(String ballUuid, {DeleteBallUseCaseOutputPort outputPort}) async {
+  Future<String> deleteBall(String ballUuid, {DeleteBallUseCaseOutputPort? outputPort}) async {
      return await _fBallRepository.deleteBall(ballUuid);
   }
 }

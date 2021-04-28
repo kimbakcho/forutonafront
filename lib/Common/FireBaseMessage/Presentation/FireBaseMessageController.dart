@@ -10,14 +10,11 @@ class FireBaseMessageController {
   final FireBaseMessageAdapter fireBaseMessageAdapter;
 
   FireBaseMessageController(
-      {@required this.fireBaseMessageAdapter});
+      {required this.fireBaseMessageAdapter});
 
 
   controllerStartService(){
-    fireBaseMessageAdapter.configure(
-        onLaunch: sl.get<FCMMessageUseCaseInputPort>(instanceName: "LaunchMessageUseCase").message,
-        onMessage: sl.get<FCMMessageUseCaseInputPort>(instanceName: "BaseMessageUseCase").message,
-        onResume: sl.get<FCMMessageUseCaseInputPort>(instanceName: "ResumeMessageUseCase").message);
+    this.fireBaseMessageAdapter.configure();
   }
 
 }

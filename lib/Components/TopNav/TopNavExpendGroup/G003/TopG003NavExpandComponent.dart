@@ -4,11 +4,11 @@ import 'package:forutonafront/Components/TopNav/TopNavExpendGroup/TopNavExpendCo
 import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 
 class TopG003NavExpandComponent extends StatefulWidget {
-  final TopNavBtnMediator topNavBtnMediator;
-  final CodeMainPageController codeMainPageController;
+  final TopNavBtnMediator? topNavBtnMediator;
+  final CodeMainPageController? codeMainPageController;
 
   const TopG003NavExpandComponent(
-      {Key key, this.topNavBtnMediator, this.codeMainPageController})
+      {Key? key, this.topNavBtnMediator, this.codeMainPageController})
       : super(key: key);
 
   @override
@@ -21,36 +21,36 @@ class TopG003NavExpandComponent extends StatefulWidget {
 class _TopG003NavExpandComponentState extends State<TopG003NavExpandComponent>
     with SingleTickerProviderStateMixin
     implements TopNavExpendComponent, CodeMainPageChangeListener {
-  AnimationController _controller;
+  AnimationController? _controller;
 
   @override
-  CodeMainPageController codeMainPageController;
+  CodeMainPageController? codeMainPageController;
 
   @override
-  TopNavBtnMediator topNavBtnMediator;
+  TopNavBtnMediator? topNavBtnMediator;
 
   _TopG003NavExpandComponentState(
-      {@required this.topNavBtnMediator, this.codeMainPageController});
+      {required this.topNavBtnMediator, this.codeMainPageController});
 
   @override
   void initState() {
-    codeMainPageController.addListener(this);
-    topNavBtnMediator.topNavExpendRegisterComponent(this);
+    codeMainPageController!.addListener(this);
+    topNavBtnMediator!.topNavExpendRegisterComponent(this);
     iniAnimation();
     super.initState();
   }
 
   void iniAnimation() {
     _controller = AnimationController(
-        duration: topNavBtnMediator.animationDuration, vsync: this);
-    _controller.forward();
+        duration: topNavBtnMediator!.animationDuration, vsync: this);
+    _controller!.forward();
   }
 
   @override
   void dispose() {
-    codeMainPageController.removeListener(this);
-    topNavBtnMediator.topNavExpendUnRegisterComponent(this);
-    _controller.dispose();
+    codeMainPageController!.removeListener(this);
+    topNavBtnMediator!.topNavExpendUnRegisterComponent(this);
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -65,12 +65,12 @@ class _TopG003NavExpandComponentState extends State<TopG003NavExpandComponent>
 
   @override
   closeExpandNav() {
-    _controller.reverse();
+    _controller!.reverse();
   }
 
   @override
   getAnimation(BuildContext context) {
-    return Tween<double>(begin: 0, end: 280).animate(_controller);
+    return Tween<double>(begin: 0, end: 280).animate(_controller!);
   }
 
   @override
@@ -85,7 +85,7 @@ class _TopG003NavExpandComponentState extends State<TopG003NavExpandComponent>
 
   @override
   openExpandNav() {
-    _controller.forward();
+    _controller!.forward();
   }
 }
 
@@ -99,24 +99,24 @@ class TopG003NavExpendContent extends StatelessWidget {
 }
 
 class TopG003NavExpandAniComponent extends StatelessWidget {
-  final Animation<double> animation;
-  final double btnHeightSize;
-  final Widget child;
+  final Animation<double>? animation;
+  final double? btnHeightSize;
+  final Widget? child;
 
   const TopG003NavExpandAniComponent(
-      {Key key, this.animation, this.btnHeightSize, this.child})
+      {Key? key, this.animation, this.btnHeightSize, this.child})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animation,
+      animation: animation!,
       builder: (context, child) => Positioned(
         right: 0,
         top: 4,
-        width: animation.value,
+        width: animation!.value,
         height: btnHeightSize,
-        child: child,
+        child: child!,
       ),
       child: child,
     );

@@ -1,23 +1,23 @@
 import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:forutonafront/Common/Country/CodeCountry.dart';
 import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Components/CountrySelect/CountrySelectPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sim_info/sim_info.dart';
 
 class CountrySelectButton extends StatelessWidget {
-  final CountrySelectButtonController countrySelectButtonController;
+  final CountrySelectButtonController? countrySelectButtonController;
 
-  const CountrySelectButton({Key key, this.countrySelectButtonController})
+  const CountrySelectButton({Key? key, this.countrySelectButtonController})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => CountrySelectButtonViewModel(
-          countrySelectButtonController: countrySelectButtonController),
+          countrySelectButtonController: countrySelectButtonController!),
       child: Consumer<CountrySelectButtonViewModel>(
         builder: (_, model, child) {
           return Container(
@@ -73,20 +73,20 @@ class CountrySelectButton extends StatelessWidget {
 }
 
 class CountrySimpleSelectButton extends StatelessWidget {
-  final CountrySelectButtonController countrySelectButtonController;
+  final CountrySelectButtonController? countrySelectButtonController;
 
-  final CountryItem initCountryItem;
+  final CountryItem? initCountryItem;
 
   const CountrySimpleSelectButton(
-      {Key key, this.countrySelectButtonController, this.initCountryItem})
+      {Key? key, this.countrySelectButtonController, this.initCountryItem})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => CountrySelectButtonViewModel(
-            countrySelectButtonController: countrySelectButtonController,
-            initCountryItem: initCountryItem),
+            countrySelectButtonController: countrySelectButtonController!,
+            initCountryItem: initCountryItem!),
         child:
             Consumer<CountrySelectButtonViewModel>(builder: (_, model, child) {
           return Container(
@@ -150,24 +150,24 @@ class CountrySimpleSelectButton extends StatelessWidget {
 }
 
 class CountrySelectButtonViewModel extends ChangeNotifier {
-  CountrySelectButtonController countrySelectButtonController;
+  CountrySelectButtonController? countrySelectButtonController;
 
   bool loaded = false;
 
-  CountryItem currentCountryItem;
+  CountryItem? currentCountryItem;
 
-  CodeCountry codeCountry;
+  CodeCountry? codeCountry;
 
-  CountryItem initCountryItem;
+  CountryItem? initCountryItem;
 
   CountrySelectButtonViewModel(
       {this.countrySelectButtonController, this.initCountryItem}) {
     if (this.countrySelectButtonController != null) {
-      countrySelectButtonController._countrySelectButtonViewModel = this;
+      countrySelectButtonController!._countrySelectButtonViewModel = this;
     }
     codeCountry = CodeCountry();
     if (initCountryItem != null) {
-      currentCountryItem = initCountryItem;
+      currentCountryItem = initCountryItem!;
       loaded = true;
     } else {
       this.init();
@@ -177,33 +177,32 @@ class CountrySelectButtonViewModel extends ChangeNotifier {
   init() async {
     var currentCountry = await getMobileCountry();
 
-    this.currentCountryItem = codeCountry
+    this.currentCountryItem = codeCountry!
         .countryList()
         .firstWhere((element) => element.code.toLowerCase() == currentCountry);
-    if (countrySelectButtonController != null &&
-        countrySelectButtonController.onCurrentCountryItem != null) {
-      countrySelectButtonController.onCurrentCountryItem(currentCountryItem);
+    if (countrySelectButtonController != null ) {
+      countrySelectButtonController!.onCurrentCountryItem!(currentCountryItem!);
     }
     loaded = true;
     notifyListeners();
   }
 
   String get currentCountryDialCode {
-    return currentCountryItem.dialCode;
+    return currentCountryItem!.dialCode;
   }
 
   String get currentCountryCode {
-    return currentCountryItem.code.toLowerCase();
+    return currentCountryItem!.code.toLowerCase();
   }
 
   String get currentCountryName {
-    return currentCountryItem.name;
+    return currentCountryItem!.name;
   }
 
   Future<String> getMobileCountry() async {
-    String mobileCountryCode = await SimInfo.getIsoCountryCode;
+    String? mobileCountryCode  = await FlutterSimCountryCode.simCountryCode;
     // String locale = await Devicelocale.currentLocale;
-    var lastIndexOf = mobileCountryCode.lastIndexOf("_");
+    var lastIndexOf = mobileCountryCode!.lastIndexOf("_");
     var countryCode = mobileCountryCode.substring(lastIndexOf + 1);
     return countryCode.toLowerCase();
   }
@@ -217,12 +216,12 @@ class CountrySelectButtonViewModel extends ChangeNotifier {
     }));
 
     if (code != null) {
-      this.currentCountryItem = codeCountry.countryList().firstWhere(
+      this.currentCountryItem = codeCountry!.countryList().firstWhere(
           (element) => element.code.toLowerCase() == code.toLowerCase());
 
       if (countrySelectButtonController != null &&
-          countrySelectButtonController.onCurrentCountryItem != null) {
-        countrySelectButtonController.onCurrentCountryItem(currentCountryItem);
+          countrySelectButtonController!.onCurrentCountryItem != null) {
+        countrySelectButtonController!.onCurrentCountryItem!(currentCountryItem!);
       }
       notifyListeners();
     }
@@ -235,19 +234,19 @@ class CountrySelectButtonViewModel extends ChangeNotifier {
 }
 
 class CountrySelectButtonController {
-  CountrySelectButtonViewModel _countrySelectButtonViewModel;
+  CountrySelectButtonViewModel? _countrySelectButtonViewModel;
 
-  Function(CountryItem countryItem) onCurrentCountryItem;
+  Function(CountryItem countryItem)? onCurrentCountryItem;
 
   CountrySelectButtonController({this.onCurrentCountryItem});
 
   setCurrentCountryItem(CountryItem countryItem) {
-    _countrySelectButtonViewModel._setCurrentCountryItem(countryItem);
+    _countrySelectButtonViewModel!._setCurrentCountryItem(countryItem);
   }
 
   CountryItem getCurrentCountryItem() {
     if (_countrySelectButtonViewModel != null) {
-      return _countrySelectButtonViewModel.currentCountryItem;
+      return _countrySelectButtonViewModel!.currentCountryItem!;
     } else {
       var codeCountry = CodeCountry();
       return codeCountry

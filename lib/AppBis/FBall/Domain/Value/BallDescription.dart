@@ -1,7 +1,7 @@
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 
 abstract class BallDescription {
-  String text;
+  String? text;
   List<FBallDesImages> desimages = [];
-  String youtubeVideoId;
+  String? youtubeVideoId;
 }

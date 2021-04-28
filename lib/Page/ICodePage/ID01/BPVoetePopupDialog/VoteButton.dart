@@ -6,18 +6,18 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class VoteButton extends StatefulWidget {
-  final Color backGroundColor;
-  final Color borderLineColor;
-  final IconData mainIcon;
-  final String labelText;
-  final Color labelColor;
-  final Function onClick;
-  final Color mainIconColor;
-  final VoteButtonViewController voteButtonViewController;
-  final bool Function() isCanPlus;
+  final Color? backGroundColor;
+  final Color? borderLineColor;
+  final IconData? mainIcon;
+  final String? labelText;
+  final Color? labelColor;
+  final Function? onClick;
+  final Color? mainIconColor;
+  final VoteButtonViewController? voteButtonViewController;
+  final bool Function()? isCanPlus;
 
   const VoteButton(
-      {Key key,
+      {Key? key,
       this.backGroundColor,
       this.borderLineColor,
       this.mainIcon,
@@ -37,9 +37,9 @@ class _VoteButtonState extends State<VoteButton>
     with SingleTickerProviderStateMixin {
   static const Duration _duration = Duration(milliseconds: 500);
 
-  AnimationController controller;
+  AnimationController? controller;
 
-  Animation<double> animation;
+  Animation<double>? animation;
 
   _VoteButtonState();
 
@@ -47,11 +47,11 @@ class _VoteButtonState extends State<VoteButton>
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => VoteButtonViewModel(
-            widget.voteButtonViewController, widget.isCanPlus),
+            widget.voteButtonViewController!, widget.isCanPlus!),
         child: Consumer<VoteButtonViewModel>(builder: (_, model, child) {
           return Container(
               child: AnimatedBuilder(
-                  animation: animation,
+                  animation: animation!,
                   builder: (context, child) {
                     return Stack(
                       overflow: Overflow.visible,
@@ -62,7 +62,7 @@ class _VoteButtonState extends State<VoteButton>
                             Container(
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: widget.borderLineColor
+                                      color: widget.borderLineColor!
                                           .withOpacity(colorOpacityValue()),
                                       width: 2),
                                   borderRadius:
@@ -70,17 +70,17 @@ class _VoteButtonState extends State<VoteButton>
                               child: Material(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15.0)),
-                                color: widget.backGroundColor
+                                color: widget.backGroundColor!
                                     .withOpacity(colorOpacityValue()),
                                 child: InkWell(
                                     onTap: () {
                                       model.setNextPoint();
-                                      controller.forward().whenComplete(() {
+                                      controller!.forward().whenComplete(() {
                                         model.plusCurrentPoint();
-                                        controller.reset();
+                                        controller!.reset();
                                       });
                                       if (widget.onClick != null) {
-                                        widget.onClick();
+                                        widget.onClick!();
                                       }
                                     },
                                     borderRadius:
@@ -95,7 +95,7 @@ class _VoteButtonState extends State<VoteButton>
                                         child: Center(
                                           child: Icon(
                                             widget.mainIcon,
-                                            color: widget.mainIconColor
+                                            color: widget.mainIconColor!
                                                 .withOpacity(
                                                     colorOpacityValue()),
                                           ),
@@ -107,10 +107,10 @@ class _VoteButtonState extends State<VoteButton>
                             ),
                             Container(
                                 child: Center(
-                                    child: Text(widget.labelText,
+                                    child: Text(widget.labelText!,
                                         style: GoogleFonts.notoSans(
                                           fontSize: 12,
-                                          color: widget.labelColor
+                                          color: widget.labelColor!
                                               .withOpacity(colorOpacityValue()),
                                           fontWeight: FontWeight.w500,
                                         )))),
@@ -129,7 +129,7 @@ class _VoteButtonState extends State<VoteButton>
                                 ),
                               ),
                             )),
-                        animation.status == AnimationStatus.forward
+                        animation!.status == AnimationStatus.forward
                             ? Positioned(
                                 right: -15,
                                 top: 18 - (18 * processAniValue()),
@@ -137,7 +137,7 @@ class _VoteButtonState extends State<VoteButton>
                                   '${model.nextPoint}',
                                   style: GoogleFonts.notoSans(
                                     fontSize: 15,
-                                    color: widget.labelColor
+                                    color: widget.labelColor!
                                         .withOpacity(colorOpacityValue()),
                                     fontWeight: FontWeight.w500,
                                     height: 1.3333333333333333,
@@ -154,25 +154,25 @@ class _VoteButtonState extends State<VoteButton>
   }
 
   double colorOpacityValue() {
-    return max(0.3, 1 - sin(radians(animation.value)));
+    return max(0.3, 1 - sin(radians(animation!.value)));
   }
 
   double processAniValue() {
-    return animation.value / 180.0;
+    return animation!.value / 180.0;
   }
 
   @override
   void initState() {
     super.initState();
     controller = AnimationController(vsync: this, duration: _duration);
-    animation = controller.drive(
+    animation = controller!.drive(
       Tween<double>(begin: 0.0, end: 180.0),
     );
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    controller!.dispose();
     super.dispose();
   }
 }
@@ -196,7 +196,7 @@ class VoteButtonViewModel extends ChangeNotifier {
     currentPoint = nextPoint;
     if (_voteButtonViewController != null &&
         _voteButtonViewController.onCurrentPointChange != null) {
-      _voteButtonViewController.onCurrentPointChange(currentPoint);
+      _voteButtonViewController.onCurrentPointChange!(currentPoint);
     }
   }
 
@@ -208,9 +208,9 @@ class VoteButtonViewModel extends ChangeNotifier {
 }
 
 class VoteButtonViewController {
-  VoteButtonViewModel _viewModel;
+  VoteButtonViewModel? _viewModel;
 
-  final Function(int) onCurrentPointChange;
+  final Function(int)? onCurrentPointChange;
 
   VoteButtonViewController({this.onCurrentPointChange});
 
@@ -218,6 +218,6 @@ class VoteButtonViewController {
     if (_viewModel == null) {
       return 0;
     }
-    return _viewModel.currentPoint;
+    return _viewModel!.currentPoint;
   }
 }

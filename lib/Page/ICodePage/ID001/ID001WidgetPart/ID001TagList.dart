@@ -8,15 +8,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class ID001TagList extends StatelessWidget {
-  final String ballUuid;
+  final String? ballUuid;
 
-  const ID001TagList({Key key, this.ballUuid}) : super(key: key);
+  const ID001TagList({Key? key, this.ballUuid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (_) {
       var id001tagListViewModel = ID001TagListViewModel(
-          ballUuid: ballUuid, tagFromBallUuidUseCaseInputPort: sl());
+          ballUuid: ballUuid!, tagFromBallUuidUseCaseInputPort: sl());
       id001tagListViewModel.init();
       return id001tagListViewModel;
     }, child: Consumer<ID001TagListViewModel>(builder: (_, tagModel, __) {
@@ -56,8 +56,8 @@ class ID001TagListViewModel extends ChangeNotifier
   List<FBallTagResDto> ballTags = [];
 
   ID001TagListViewModel(
-      {@required this.ballUuid,
-      @required this.tagFromBallUuidUseCaseInputPort});
+      {required this.ballUuid,
+      required this.tagFromBallUuidUseCaseInputPort});
 
   int getBallTagsSize() {
     return ballTags.length;

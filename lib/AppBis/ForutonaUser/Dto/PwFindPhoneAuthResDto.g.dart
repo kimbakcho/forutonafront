@@ -9,9 +9,9 @@ part of 'PwFindPhoneAuthResDto.dart';
 PwFindPhoneAuthResDto _$PwFindPhoneAuthResDtoFromJson(
     Map<String, dynamic> json) {
   return PwFindPhoneAuthResDto()
-    ..phoneNumber = json['phoneNumber'] as String
-    ..internationalizedDialCode = json['internationalizedDialCode'] as String
-    ..isoCode = json['isoCode'] as String
+    ..phoneNumber = json['phoneNumber'] as String?
+    ..internationalizedDialCode = json['internationalizedDialCode'] as String?
+    ..isoCode = json['isoCode'] as String?
     ..authTime = json['authTime'] == null
         ? null
         : DateTime.parse(json['authTime'] as String)
@@ -21,8 +21,8 @@ PwFindPhoneAuthResDto _$PwFindPhoneAuthResDtoFromJson(
     ..makeTime = json['makeTime'] == null
         ? null
         : DateTime.parse(json['makeTime'] as String)
-    ..error = json['error'] as bool
-    ..cause = json['cause'] as String;
+    ..error = json['error'] as bool?
+    ..cause = json['cause'] as String?;
 }
 
 Map<String, dynamic> _$PwFindPhoneAuthResDtoToJson(

@@ -4,11 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class KCodeTopTabBar extends StatelessWidget  implements PreferredSizeWidget{
-  final KCodeTopTabBarListener kCodeTopTabBarListener;
-  final TabController tabController;
+  final KCodeTopTabBarListener? kCodeTopTabBarListener;
+  final TabController? tabController;
 
   const KCodeTopTabBar(
-      {Key key, this.kCodeTopTabBarListener,@required this.tabController})
+      {Key? key, this.kCodeTopTabBarListener,required this.tabController})
       : super(key: key);
 
   @override
@@ -72,25 +72,25 @@ class KCodeTopTabBar extends StatelessWidget  implements PreferredSizeWidget{
 }
 
 class KCodeTopTabBarViewModel extends ChangeNotifier {
-  final TabController tabController;
-  final KCodeTopTabBarListener kCodeTopTabBarListener;
+  final TabController? tabController;
+  final KCodeTopTabBarListener? kCodeTopTabBarListener;
 
   KCodeTopTabBarViewModel(
-      {@required this.tabController, this.kCodeTopTabBarListener});
+      {required this.tabController, this.kCodeTopTabBarListener});
 
   void onTab(int index) {
-    if (tabController.indexIsChanging) {
+    if (tabController!.indexIsChanging) {
       if (kCodeTopTabBarListener == null) {
         return;
       }
       if (index == 0) {
-        kCodeTopTabBarListener.onTabChange(KCodeTabType.ALL);
+        kCodeTopTabBarListener!.onTabChange(KCodeTabType.ALL);
       } else if (index == 1) {
-        kCodeTopTabBarListener.onTabChange(KCodeTabType.NICKNAME);
+        kCodeTopTabBarListener!.onTabChange(KCodeTabType.NICKNAME);
       } else if (index == 2) {
-        kCodeTopTabBarListener.onTabChange(KCodeTabType.SUBJECT);
+        kCodeTopTabBarListener!.onTabChange(KCodeTabType.SUBJECT);
       } else if (index == 3) {
-        kCodeTopTabBarListener.onTabChange(KCodeTabType.TAG);
+        kCodeTopTabBarListener!.onTabChange(KCodeTabType.TAG);
       }
     }
   }

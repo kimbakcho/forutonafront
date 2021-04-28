@@ -8,17 +8,17 @@ part of 'MaliciousReplyResDto.dart';
 
 MaliciousReplyResDto _$MaliciousReplyResDtoFromJson(Map<String, dynamic> json) {
   return MaliciousReplyResDto()
-    ..idx = json['idx'] as int
-    ..replyUuid = json['replyUuid'] as String
-    ..crime = json['crime'] as int
-    ..abuse = json['abuse'] as int
-    ..privacy = json['privacy'] as int
-    ..sexual = json['sexual'] as int
-    ..advertising = json['advertising'] as int
-    ..etc = json['etc'] as int
-    ..totalNumberReports = json['totalNumberReports'] as int
-    ..maliciousContentFlag = json['maliciousContentFlag'] as bool
-    ..falseReportFlag = json['falseReportFlag'] as bool
+    ..idx = json['idx'] as int?
+    ..replyUuid = json['replyUuid'] as String?
+    ..crime = json['crime'] as int?
+    ..abuse = json['abuse'] as int?
+    ..privacy = json['privacy'] as int?
+    ..sexual = json['sexual'] as int?
+    ..advertising = json['advertising'] as int?
+    ..etc = json['etc'] as int?
+    ..totalNumberReports = json['totalNumberReports'] as int?
+    ..maliciousContentFlag = json['maliciousContentFlag'] as bool?
+    ..falseReportFlag = json['falseReportFlag'] as bool?
     ..judgmentTime = json['judgmentTime'] == null
         ? null
         : DateTime.parse(json['judgmentTime'] as String);

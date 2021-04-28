@@ -19,13 +19,13 @@ class FBallPlayerListUpUseCae implements FBallPlayerListUpInputPort {
   FBallPlayerRepository _fBallPlayerRepository;
 
   FBallPlayerListUpUseCae(
-      {@required FBallPlayerRepository fBallPlayerRepository})
+      {required FBallPlayerRepository fBallPlayerRepository})
       : _fBallPlayerRepository = fBallPlayerRepository;
 
   @override
   Future<PageWrap<FBallPlayerResDto>> userPlayBallListUp(
       String playerUid, Pageable pageable,
-      {FBallPlayerListUpOutputPort outputPort}) async {
+      {FBallPlayerListUpOutputPort? outputPort}) async {
     PageWrap<FBallPlayerResDto> userToPlayBallWrap =
         await _fBallPlayerRepository.getUserPlayBallList(playerUid,pageable);
 

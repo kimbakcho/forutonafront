@@ -12,7 +12,7 @@ class TermsConditionsUseCase implements TermsConditionsUseCaseInputPort {
   final TermsConditionsRepository termsConditionsRepository;
 
   TermsConditionsUseCase(
-      {@required this.termsConditionsRepository});
+      {required this.termsConditionsRepository});
 
   @override
   Future<TermsConditionsResDto> getTermsConditions(int idx) async{

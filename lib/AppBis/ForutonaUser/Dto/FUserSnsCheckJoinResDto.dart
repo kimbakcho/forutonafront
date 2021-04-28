@@ -4,14 +4,14 @@ part 'FUserSnsCheckJoinResDto.g.dart';
 
 @JsonSerializable()
 class FUserSnsCheckJoinResDto {
-  String snsUid;
-  String pictureUrl;
-  String email;
-  String userSnsName;
+  String? snsUid;
+  String? pictureUrl;
+  String? email;
+  String? userSnsName;
   //회원 가입 여부
-  bool join;
+  bool join=false;
   //기존 유저시 토큰 부여
-  String firebaseCustomToken;
+  String? firebaseCustomToken;
 
 
   FUserSnsCheckJoinResDto();

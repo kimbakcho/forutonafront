@@ -8,8 +8,8 @@ part of 'FullChargePayLoadDto.dart';
 
 FullChargePayLoadDto _$FullChargePayLoadDtoFromJson(Map<String, dynamic> json) {
   return FullChargePayLoadDto()
-    ..userNickName = json['userNickName'] as String
-    ..userUid = json['userUid'] as String;
+    ..userNickName = json['userNickName'] as String?
+    ..userUid = json['userUid'] as String?;
 }
 
 Map<String, dynamic> _$FullChargePayLoadDtoToJson(

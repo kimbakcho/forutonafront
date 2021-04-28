@@ -8,7 +8,7 @@ abstract class SmsAuthReceiverMessageParser {
     if(lang == SmsAuthSupportLanguage.KoKr){
       return SmsAuthReceiverMessageParserKoKr();
     }else {
-      return null;
+      return SmsAuthReceiverMessageParserKoKr();
     }
   }
 }

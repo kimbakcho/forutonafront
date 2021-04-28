@@ -5,8 +5,8 @@ part 'TagRankingResDto.g.dart';
 
 @JsonSerializable()
 class TagRankingResDto {
-  String tagName;
-  double tagPower;
+  String? tagName;
+  double? tagPower;
 
   TagRankingResDto();
 

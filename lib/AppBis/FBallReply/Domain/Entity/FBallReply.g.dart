@@ -8,27 +8,26 @@ part of 'FBallReply.dart';
 
 FBallReply _$FBallReplyFromJson(Map<String, dynamic> json) {
   return FBallReply()
-    ..replyUuid = json['replyUuid'] as String
-    ..ballUuid = json['ballUuid'] as String
-    ..uid = json['uid'] as String
-    ..replyNumber = json['replyNumber'] as int
-    ..replySort = json['replySort'] as int
-    ..replyDepth = json['replyDepth'] as int
+    ..replyUuid = json['replyUuid'] as String?
+    ..ballUuid = json['ballUuid'] as String?
+    ..uid = json['uid'] as String?
+    ..replyNumber = json['replyNumber'] as int?
+    ..replySort = json['replySort'] as int?
+    ..replyDepth = json['replyDepth'] as int?
     ..replyUploadDateTime = json['replyUploadDateTime'] == null
         ? null
         : DateTime.parse(json['replyUploadDateTime'] as String)
     ..replyUpdateDateTime = json['replyUpdateDateTime'] == null
         ? null
         : DateTime.parse(json['replyUpdateDateTime'] as String)
-    ..deleteFlag = json['deleteFlag'] as bool
-    ..subReplyCount = json['subReplyCount'] as int
+    ..deleteFlag = json['deleteFlag'] as bool?
+    ..subReplyCount = json['subReplyCount'] as int?
     ..replyText = json['replyText'] as String
     ..userNickName = json['userNickName'] as String
-    ..userProfilePictureUrl = json['userProfilePictureUrl'] as String
-    ..fBallSubReplys = (json['fBallSubReplys'] as List)
-        ?.map((e) =>
-            e == null ? null : FBallReply.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..userProfilePictureUrl = json['userProfilePictureUrl'] as String?
+    ..fBallSubReplys = (json['fBallSubReplys'] as List<dynamic>)
+        .map((e) => FBallReply.fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic> _$FBallReplyToJson(FBallReply instance) =>

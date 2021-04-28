@@ -14,7 +14,7 @@ class PersonaSettingNoticeUseCase
   PersonaSettingNoticeRepository _personaSettingNoticeRepository;
 
   PersonaSettingNoticeUseCase(
-      {@required PersonaSettingNoticeRepository personaSettingNoticeRepository}):
+      {required PersonaSettingNoticeRepository personaSettingNoticeRepository}):
         _personaSettingNoticeRepository = personaSettingNoticeRepository;
 
   @override

@@ -8,8 +8,8 @@ part of 'Pageable.dart';
 
 Pageable _$PageableFromJson(Map<String, dynamic> json) {
   return Pageable(
-    page: json['page'] as int,
-    size: json['size'] as int,
+    page: json['page'] as int?,
+    size: json['size'] as int?,
     sort: json['sort'] as String,
   );
 }

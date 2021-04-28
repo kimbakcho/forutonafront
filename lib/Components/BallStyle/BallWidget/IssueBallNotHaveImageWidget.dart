@@ -20,11 +20,11 @@ import 'ListUpBallWidgetItem.dart';
 
 class IssueBallNotHaveImageWidget extends StatelessWidget {
   final int index;
-  final BallListMediator ballListMediator;
-  final BoxDecoration boxDecoration;
+  final BallListMediator? ballListMediator;
+  final BoxDecoration? boxDecoration;
 
   IssueBallNotHaveImageWidget(
-      {Key key, this.index, this.ballListMediator, this.boxDecoration})
+      {Key? key,required this.index, this.ballListMediator, this.boxDecoration})
       : super(key: key);
 
   @override
@@ -33,11 +33,11 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
       create: (_) =>
           IssueBallNotHaveImageWidgetViewModel(sl(), sl(),
               context: context,
-              ballListMediator: ballListMediator,
+              ballListMediator: ballListMediator!,
               index: index),
       child: Consumer<IssueBallNotHaveImageWidgetViewModel>(
         builder: (_, model, __) {
-          return model.issueBallDisPlayUseCase.fBallResDto.ballDeleteFlag
+          return model.issueBallDisPlayUseCase!.fBallResDto!.ballDeleteFlag
               ? Container(
             width: 0,
             height: 0,
@@ -45,34 +45,33 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
               : Container(
             child: Material(
               color: Colors.white,
-              borderRadius: boxDecoration.borderRadius,
+              borderRadius: boxDecoration!.borderRadius,
               child: InkWell(
                 onTap: () {
                   model.moveToDetailPage();
                 },
                 child: Container(
                     child: Column(
-                      key: Key(model.ballWidgetKey),
+                      key: Key(model.ballWidgetKey!),
                       children: <Widget>[
                         IssueBallTopBar(
                             ballDisPlayUseCase:
-                            model.issueBallDisPlayUseCase),
+                            model.issueBallDisPlayUseCase!),
                         Divider(
                           color: Color(0xffF4F4F6).withOpacity(0.9),
                           height: 1,
                           thickness: 1,
                         ),
                         BallTitleInfoBar(
-                          ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase!,
                         ),
                         BallTextWidget(
                           gotoDetailPage: model.moveToDetailPage,
-                          ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase!,
                         ),
                         BallPositionInfoBar(
-                          ballSearchPosition:
-                          ballListMediator.searchPosition(),
-                          ballDisPlayUseCase: model.issueBallDisPlayUseCase,
+                          ballSearchPosition: ballListMediator!.searchPosition()!,
+                          ballDisPlayUseCase: model.issueBallDisPlayUseCase!,
                         )
                       ],
                     ),
@@ -95,14 +94,14 @@ class IssueBallNotHaveImageWidget extends StatelessWidget {
 }
 
 class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
-  IssueBallDisPlayUseCase issueBallDisPlayUseCase;
-  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
+  IssueBallDisPlayUseCase? issueBallDisPlayUseCase;
+  final SelectBallUseCaseInputPort? _selectBallUseCaseInputPort;
 
-  final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
+  final TagFromBallUuidUseCaseInputPort? _tagFromBallUuidUseCaseInputPort;
 
   IssueBallNotHaveImageWidgetViewModel(this._selectBallUseCaseInputPort,
       this._tagFromBallUuidUseCaseInputPort,
-      {BuildContext context, BallListMediator ballListMediator, int index})
+      {required BuildContext context,required BallListMediator ballListMediator,required int index})
       : super(
       context,
       ballListMediator,
@@ -113,15 +112,15 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
       sl(),
       sl()) {
     issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
+        fBallResDto: ballListMediator.itemList![index], geoLocatorAdapter: sl());
   }
 
   @override
   onReFreshBall() async {
-    ballListMediator.itemList[index] = await _selectBallUseCaseInputPort
-        .selectBall(ballListMediator.itemList[index].ballUuid);
+    ballListMediator!.itemList![index!] = await _selectBallUseCaseInputPort!
+        .selectBall(ballListMediator!.itemList![index!].ballUuid!);
     issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
+        fBallResDto: ballListMediator!.itemList![index!], geoLocatorAdapter: sl());
     ballWidgetKey = Uuid().v4();
     notifyListeners();
   }
@@ -129,19 +128,19 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   @override
   Widget detailPage() {
     return ID01MainPage(
-      ballUuid: ballListMediator.itemList[index].ballUuid,
-      fBallResDto: ballListMediator.itemList[index],
+      ballUuid: ballListMediator!.itemList![index!].ballUuid!,
+      fBallResDto: ballListMediator!.itemList![index!],
     );
   }
 
   @override
   Future<void> onModifyBall(BuildContext context) async {
-    var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-        ballUuid: ballListMediator.itemList[index].ballUuid);
+    var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
+        ballUuid: ballListMediator!.itemList![index!].ballUuid!);
     var result =
     await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
-        preSetBallResDto: ballListMediator.itemList[index],
+        preSetBallResDto: ballListMediator!.itemList![index!],
         im001mode: IM001Mode.modify,
         preSetFBallTagResDtos: tags,
       );

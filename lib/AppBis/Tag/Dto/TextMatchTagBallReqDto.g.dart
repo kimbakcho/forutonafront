@@ -9,9 +9,9 @@ part of 'TextMatchTagBallReqDto.dart';
 TextMatchTagBallReqDto _$TextMatchTagBallReqDtoFromJson(
     Map<String, dynamic> json) {
   return TextMatchTagBallReqDto(
-    searchText: json['searchText'] as String,
-    mapCenterLatitude: (json['mapCenterLatitude'] as num)?.toDouble(),
-    mapCenterLongitude: (json['mapCenterLongitude'] as num)?.toDouble(),
+    searchText: json['searchText'] as String?,
+    mapCenterLatitude: (json['mapCenterLatitude'] as num?)?.toDouble(),
+    mapCenterLongitude: (json['mapCenterLongitude'] as num?)?.toDouble(),
   );
 }
 

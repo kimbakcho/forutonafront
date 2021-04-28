@@ -7,14 +7,14 @@ import '../ReviewUpdateMediator.dart';
 import 'BasicReViewUpdate.dart';
 
 class ReplyEditActionBtn extends StatelessWidget {
-  final FBallReplyResDto _fBallReplyResDto;
-  final ReviewUpdateMediator _reviewUpdateMediator;
-  final Function updateFinish;
+  final FBallReplyResDto? _fBallReplyResDto;
+  final ReviewUpdateMediator? _reviewUpdateMediator;
+  final Function? updateFinish;
 
   const ReplyEditActionBtn({
-    FBallReplyResDto fBallReplyResDto,
-    ReviewUpdateMediator reviewUpdateMediator,
-    Key key, this.updateFinish,
+    FBallReplyResDto? fBallReplyResDto,
+    ReviewUpdateMediator? reviewUpdateMediator,
+    Key? key, this.updateFinish,
   })  : _fBallReplyResDto = fBallReplyResDto,
         _reviewUpdateMediator = reviewUpdateMediator,
         super(key: key);

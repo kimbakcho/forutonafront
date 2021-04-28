@@ -9,23 +9,23 @@ import 'NotificationChannel.dart';
 @LazySingleton(as: NotificationChannel)
 class NotificationMyFluenceChannel implements NotificationChannel {
 
-  NotificationDetails platformChannelSpecifics;
+  NotificationDetails? platformChannelSpecifics;
 
   NotificationMyFluenceChannel(){
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
         '2', 'MyFluence', '내 영향력과 관련한 알림',
-        importance: Importance.Default,
-        priority: Priority.Default,
+        importance: Importance.defaultImportance,
+        priority: Priority.defaultPriority,
         onlyAlertOnce: false,
         showWhen: false,
         largeIcon: DrawableResourceAndroidBitmap("app_icon"));
     platformChannelSpecifics =
-        NotificationDetails(androidPlatformChannelSpecifics,null);
+        NotificationDetails(android: androidPlatformChannelSpecifics,iOS: null,macOS: null);
   }
 
   @override
-  NotificationDetails getChannel() {
+  NotificationDetails? getChannel() {
     return platformChannelSpecifics;
   }
 

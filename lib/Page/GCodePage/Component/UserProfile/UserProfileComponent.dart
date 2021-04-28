@@ -12,15 +12,15 @@ import 'package:provider/provider.dart';
 import 'UserSelfIntroduceWidget.dart';
 
 class UserProfileComponent extends StatelessWidget {
-  final String userUid;
+  final String? userUid;
 
-  final UserProfileMode userProfileMode;
+  final UserProfileMode? userProfileMode;
 
-  final UserProfileComponentViewModelController
+  final UserProfileComponentViewModelController?
       userProfileComponentViewModelController;
 
   const UserProfileComponent(
-      {Key key,
+      {Key? key,
       this.userUid,
       this.userProfileMode,
       this.userProfileComponentViewModelController})
@@ -94,7 +94,7 @@ class UserProfileComponent extends StatelessWidget {
                             height: 10,
                           ),
                           UserSelfIntroduceWidget(
-                            userProfileMode: userProfileMode,
+                            userProfileMode: userProfileMode!,
                             userSelfIntroduce: model.userSelfIntroduce,
                           ),
                           SizedBox(
@@ -203,16 +203,16 @@ class UserProfileComponent extends StatelessWidget {
 }
 
 class UserProfileComponentViewModel extends ChangeNotifier {
-  final ProfileModeUseCaseFactory _profileModeUseCaseFactory;
+  final ProfileModeUseCaseFactory? _profileModeUseCaseFactory;
 
-  final UserProfileMode userProfileMode;
+  final UserProfileMode? userProfileMode;
 
-  final UserProfileComponentViewModelController
+  final UserProfileComponentViewModelController?
       userProfileComponentViewModelController;
 
-  ProfileModeUseCaseInputPort _profileModeUseCaseInputPort;
+  ProfileModeUseCaseInputPort? _profileModeUseCaseInputPort;
 
-  UserProfileComponentInfoDto _userProfileComponentInfoDto;
+  UserProfileComponentInfoDto? _userProfileComponentInfoDto;
 
   bool _isLoaded = false;
 
@@ -222,9 +222,9 @@ class UserProfileComponentViewModel extends ChangeNotifier {
       this._profileModeUseCaseFactory, this.userProfileMode,
       {this.userProfileComponentViewModelController}) {
     _profileModeUseCaseInputPort =
-        _profileModeUseCaseFactory.getInstance(userProfileMode);
+        _profileModeUseCaseFactory!.getInstance(userProfileMode!);
     if (userProfileComponentViewModelController != null) {
-      userProfileComponentViewModelController._userProfileComponentViewModel =
+      userProfileComponentViewModelController!._userProfileComponentViewModel =
           this;
     }
     _init();
@@ -234,45 +234,45 @@ class UserProfileComponentViewModel extends ChangeNotifier {
     _isLoaded = false;
     notifyListeners();
     _userProfileComponentInfoDto =
-        await _profileModeUseCaseInputPort.getUserInfo();
+        await _profileModeUseCaseInputPort!.getUserInfo();
     _isLoaded = true;
     notifyListeners();
   }
 
   String get userNickName {
-    return _userProfileComponentInfoDto.userNickName;
+    return _userProfileComponentInfoDto!.userNickName!;
   }
 
   String get countryName {
     return codeCountry
-        .findCountryName(_userProfileComponentInfoDto.countryCode);
+        .findCountryName(_userProfileComponentInfoDto!.countryCode!);
   }
 
   String get userSelfIntroduce {
-    if (_userProfileComponentInfoDto.selfIntroduce != null) {
-      return _userProfileComponentInfoDto.selfIntroduce;
+    if (_userProfileComponentInfoDto!.selfIntroduce != null) {
+      return _userProfileComponentInfoDto!.selfIntroduce!;
     } else {
       return "";
     }
   }
 
   String get followerCount {
-    return _userProfileComponentInfoDto.followerCount.toString();
+    return _userProfileComponentInfoDto!.followerCount.toString();
   }
 
   String get userLevel {
-    return _userProfileComponentInfoDto.uLevel.toString();
+    return _userProfileComponentInfoDto!.uLevel.toString();
   }
 
   String get followingCount {
-    return _userProfileComponentInfoDto.followingCount.toString();
+    return _userProfileComponentInfoDto!.followingCount.toString();
   }
 
   BoxDecoration getBackgroundDecoration() {
-    if (_userProfileComponentInfoDto.backgroundUrl != null) {
+    if (_userProfileComponentInfoDto!.backgroundUrl != null) {
       return BoxDecoration(
         image: DecorationImage(
-            image: NetworkImage(_userProfileComponentInfoDto.backgroundUrl),
+            image: NetworkImage(_userProfileComponentInfoDto!.backgroundUrl!),
             fit: BoxFit.cover),
       );
     } else {
@@ -283,7 +283,7 @@ class UserProfileComponentViewModel extends ChangeNotifier {
   }
 
   Widget getProfileImageBoxWidget() {
-    if (_userProfileComponentInfoDto.profileImageUrl != null) {
+    if (_userProfileComponentInfoDto!.profileImageUrl != null) {
       return Container(
         height: 74,
         width: 74,
@@ -291,7 +291,7 @@ class UserProfileComponentViewModel extends ChangeNotifier {
           shape: BoxShape.circle,
           border: Border.all(color: Colors.white, width: 2),
           image: DecorationImage(
-              image: NetworkImage(_userProfileComponentInfoDto.profileImageUrl),
+              image: NetworkImage(_userProfileComponentInfoDto!.profileImageUrl!),
               fit: BoxFit.cover),
           boxShadow: [
             BoxShadow(
@@ -317,9 +317,9 @@ class UserProfileComponentViewModel extends ChangeNotifier {
 }
 
 class UserProfileComponentViewModelController {
-  UserProfileComponentViewModel _userProfileComponentViewModel;
+  UserProfileComponentViewModel? _userProfileComponentViewModel;
 
   reloadUserInfo() {
-    _userProfileComponentViewModel._init();
+    _userProfileComponentViewModel!._init();
   }
 }

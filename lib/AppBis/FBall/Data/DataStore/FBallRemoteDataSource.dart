@@ -24,38 +24,38 @@ abstract class FBallRemoteDataSource {
       FDio noneTokenFDio);
 
   Future<PageWrap<FBallResDto>> searchUserToMakerBalls(
-      {@required String makerUid,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio});
+      {required String makerUid,
+      required Pageable pageable,
+      required FDio noneTokenFDio});
 
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
-      {@required FBallListUpFromSearchTitleReqDto reqDto,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio});
+      {required FBallListUpFromSearchTitleReqDto reqDto,
+      required Pageable pageable,
+      required FDio noneTokenFDio});
 
   Future<PageWrap<FBallResDto>> listUpFromTagName(
-      {@required FBallListUpFromTagNameReqDto reqDto,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio});
+      {required FBallListUpFromTagNameReqDto reqDto,
+      required Pageable pageable,
+      required FDio noneTokenFDio});
 
   Future<PageWrap<FBallResDto>> listUpBallFromMapArea(
-      {@required BallFromMapAreaReqDto reqDto,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio});
+      {required BallFromMapAreaReqDto reqDto,
+      required Pageable pageable,
+      required FDio noneTokenFDio});
 
-  Future<String> deleteBall({@required String ballUuid, @required FDio fDio});
+  Future<String> deleteBall({required String ballUuid, required FDio fDio});
 
   Future<FBallResDto> insertBall(
-      {@required FBallInsertReqDto reqDto, @required FDio fDio});
+      {required FBallInsertReqDto reqDto, required FDio fDio});
 
   Future<FBallResDto> selectBall(
-      {@required String ballUuid, @required FDio noneTokenFDio});
+      {required String ballUuid, required FDio noneTokenFDio});
 
   Future<FBallResDto> updateBall(
-      {@required FBallUpdateReqDto reqDto, @required FDio fDio});
+      {required FBallUpdateReqDto reqDto, required FDio fDio});
 
   Future<int> ballHit(
-      {@required String ballUuid, @required FDio noneTokenFDio});
+      {required String ballUuid, required FDio noneTokenFDio});
 
 }
 
@@ -75,9 +75,9 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<PageWrap<FBallResDto>> searchUserToMakerBalls(
-      {@required String makerUid,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio}) async {
+      {required String makerUid,
+      required Pageable pageable,
+      required FDio noneTokenFDio}) async {
     Map<String, dynamic> reqJson = Map<String, dynamic>();
     reqJson["makerUid"] = makerUid;
     reqJson.addAll(pageable.toJson());
@@ -88,9 +88,9 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
-      {@required FBallListUpFromSearchTitleReqDto reqDto,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio}) async {
+      {required FBallListUpFromSearchTitleReqDto reqDto,
+      required Pageable pageable,
+      required FDio noneTokenFDio}) async {
     Map<String, dynamic> jsonReq = reqDto.toJson();
     jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromSearchTitle",
@@ -100,9 +100,9 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<PageWrap<FBallResDto>> listUpFromTagName(
-      {@required FBallListUpFromTagNameReqDto reqDto,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio}) async {
+      {required FBallListUpFromTagNameReqDto reqDto,
+      required Pageable pageable,
+      required FDio noneTokenFDio}) async {
     Map<String, dynamic> jsonReq = reqDto.toJson();
     jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromTagName",
@@ -113,9 +113,9 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<PageWrap<FBallResDto>> listUpBallFromMapArea(
-      {@required BallFromMapAreaReqDto reqDto,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio}) async {
+      {required BallFromMapAreaReqDto reqDto,
+      required Pageable pageable,
+      required FDio noneTokenFDio}) async {
     Map<String, dynamic> jsonReq = reqDto.toJson();
     jsonReq.addAll(pageable.toJson());
     var response = await noneTokenFDio.get("/v1/FBall/ListUpFromMapArea",
@@ -125,7 +125,7 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<int> ballHit(
-      {@required String ballUuid, @required FDio noneTokenFDio}) async {
+      {required String ballUuid, required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio
         .post("/v1/FBall/BallHit", queryParameters: {"ballUuid": ballUuid});
     return response.data;
@@ -133,7 +133,7 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<String> deleteBall(
-      {@required String ballUuid, @required FDio fDio}) async {
+      {required String ballUuid, required FDio fDio}) async {
     var response =
         await fDio.delete("/v1/FBall", queryParameters: {"ballUuid": ballUuid});
     return response.data;
@@ -141,14 +141,14 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<FBallResDto> insertBall(
-      {@required FBallInsertReqDto reqDto, @required FDio fDio}) async {
+      {required FBallInsertReqDto reqDto, required FDio fDio}) async {
     var response = await fDio.post("/v1/FBall", data: reqDto.toJson());
     return FBallResDto.fromJson(response.data);
   }
 
   @override
   Future<FBallResDto> selectBall(
-      {@required String ballUuid, @required FDio noneTokenFDio}) async {
+      {required String ballUuid, required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio
         .get("/v1/FBall", queryParameters: {"ballUuid": ballUuid});
     return FBallResDto.fromJson(response.data);
@@ -156,7 +156,7 @@ class FBallRemoteSourceImpl implements FBallRemoteDataSource {
 
   @override
   Future<FBallResDto> updateBall(
-      {@required FBallUpdateReqDto reqDto, @required FDio fDio}) async {
+      {required FBallUpdateReqDto reqDto, required FDio fDio}) async {
     var response = await fDio.put("/v1/FBall", data: reqDto.toJson());
     return FBallResDto.fromJson(response.data);
   }

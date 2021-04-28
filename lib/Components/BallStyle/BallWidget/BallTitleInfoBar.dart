@@ -6,15 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 class BallTitleInfoBar extends StatelessWidget {
   const BallTitleInfoBar({
-    Key key,
-    @required this.ballDisPlayUseCase,
-    @required this.gotoDetailPage,
+    Key? key,
+    required this.ballDisPlayUseCase,
+    this.gotoDetailPage,
     this.showOptionPopUp,
     this.hasPopupButton = false
   }) : super(key: key);
   final BallDisPlayUseCase ballDisPlayUseCase;
-  final Function gotoDetailPage;
-  final Function showOptionPopUp;
+  final Function? gotoDetailPage;
+  final Function? showOptionPopUp;
   final bool hasPopupButton;
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class BallTitleInfoBar extends StatelessWidget {
           UserProfileImageWidget(
             height: 30,
             width: 30,
-            imageUrl: ballDisPlayUseCase.profilePictureUrl(),
+            imageUrl: ballDisPlayUseCase.profilePictureUrl()!,
           ),
           SizedBox(width: 8),
           Expanded(
@@ -75,7 +75,7 @@ class BallTitleInfoBar extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   if(showOptionPopUp != null){
-                    showOptionPopUp();
+                    showOptionPopUp!();
                   }
                 },
                 child: Icon(

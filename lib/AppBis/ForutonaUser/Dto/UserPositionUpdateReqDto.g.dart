@@ -9,8 +9,8 @@ part of 'UserPositionUpdateReqDto.dart';
 UserPositionUpdateReqDto _$UserPositionUpdateReqDtoFromJson(
     Map<String, dynamic> json) {
   return UserPositionUpdateReqDto(
-    lat: (json['lat'] as num)?.toDouble(),
-    lng: (json['lng'] as num)?.toDouble(),
+    lat: (json['lat'] as num?)?.toDouble(),
+    lng: (json['lng'] as num?)?.toDouble(),
   );
 }
 

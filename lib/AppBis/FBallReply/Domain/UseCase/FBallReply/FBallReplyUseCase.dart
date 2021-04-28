@@ -18,11 +18,11 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   final FBallReplyRepository _fBallReplyRepository;
 
 
-  FBallReplyUseCase({@required FBallReplyRepository fBallReplyRepository})
+  FBallReplyUseCase({required FBallReplyRepository fBallReplyRepository})
       : _fBallReplyRepository = fBallReplyRepository;
 
   @override
-  Future<FBallReplyResDto> deleteFBallReply(String replyUuid,{FBallReplyUseCaseOutputPort outputPort}) async {
+  Future<FBallReplyResDto> deleteFBallReply(String replyUuid,{FBallReplyUseCaseOutputPort? outputPort}) async {
     var fBallReplyResDto = await _fBallReplyRepository.deleteFBallReply(replyUuid);
     if(outputPort != null){
       outputPort.onDeleteFBallReply(fBallReplyResDto);
@@ -32,18 +32,18 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
 
   @override
   Future<PageWrap<FBallReplyResDto>> reqFBallReply(FBallReplyReqDto reqDto,Pageable pageable,
-      {FBallReplyUseCaseOutputPort outputPort}) async {
+      {FBallReplyUseCaseOutputPort? outputPort}) async {
     PageWrap<FBallReplyResDto> pageWrapReply = await _fBallReplyRepository.getFBallReply(reqDto,pageable);
     if (outputPort != null) {
       outputPort.onFBallReply(pageWrapReply);
-      outputPort.onFBallReplyTotalCount(pageWrapReply.totalElements);
+      outputPort.onFBallReplyTotalCount(pageWrapReply.totalElements!);
     }
     return pageWrapReply;
   }
 
   @override
   Future<FBallReplyResDto> insertFBallReply(
-      FBallReplyInsertReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
+      FBallReplyInsertReqDto reqDto,{FBallReplyUseCaseOutputPort? outputPort}) async {
     var fBallReplyResDto = await _fBallReplyRepository.insertFBallReply(reqDto);
     if(outputPort != null){
       outputPort.onInsertFBallReply(fBallReplyResDto);
@@ -52,7 +52,7 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
   }
 
   @override
-  Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto,{FBallReplyUseCaseOutputPort outputPort}) async {
+  Future<FBallReplyResDto> updateFBallReply(FBallReplyUpdateReqDto reqDto,{FBallReplyUseCaseOutputPort? outputPort}) async {
     var fBallReplyResDto = await _fBallReplyRepository.updateFBallReply(reqDto);
     if(outputPort != null){
       outputPort.onUpdateFBallReply(fBallReplyResDto);
@@ -60,7 +60,7 @@ class FBallReplyUseCase implements FBallReplyUseCaseInputPort {
     return fBallReplyResDto;
   }
 
-  Future<int> getBallReviewCount(String ballUuid) async{
+  Future<int?> getBallReviewCount(String ballUuid) async{
     return await _fBallReplyRepository.getBallReviewCount(ballUuid);
   }
 

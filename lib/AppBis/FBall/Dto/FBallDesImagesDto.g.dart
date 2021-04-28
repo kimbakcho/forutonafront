@@ -8,8 +8,8 @@ part of 'FBallDesImagesDto.dart';
 
 FBallDesImages _$FBallDesImagesFromJson(Map<String, dynamic> json) {
   return FBallDesImages()
-    ..index = json['index'] as int
-    ..src = json['src'] as String;
+    ..index = json['index'] as int?
+    ..src = json['src'] as String?;
 }
 
 Map<String, dynamic> _$FBallDesImagesToJson(FBallDesImages instance) =>

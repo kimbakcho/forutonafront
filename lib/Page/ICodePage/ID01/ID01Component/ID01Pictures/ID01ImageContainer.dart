@@ -28,7 +28,7 @@ class ID01ImageContainer extends StatelessWidget {
       decoration: BoxDecoration(
           image: DecorationImage(
         fit: BoxFit.cover,
-        image: fBallDesImages[index].imageProvider,
+        image: fBallDesImages[index].imageProvider!,
       )),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateAccountUserInfo/UpdateAccountUserInfoUseCaseInputPort.dart';
@@ -24,15 +26,13 @@ class G010MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => G010MainPageViewModel(sl(), sl(),sl(),sl(),sl()),
+      create: (_) => G010MainPageViewModel(sl(), sl(), sl(), sl(), sl()),
       child: Consumer<G010MainPageViewModel>(
         builder: (_, model, child) {
           return Scaffold(
             body: Container(
               color: Colors.white,
-              padding: MediaQuery
-                  .of(context)
-                  .padding,
+              padding: MediaQuery.of(context).padding,
               child: Column(
                 children: [
                   CodeAppBar(
@@ -46,62 +46,67 @@ class G010MainPage extends StatelessWidget {
                     enableTailButton: model.isCanComplete,
                   ),
                   Expanded(
-                      child:
-                      model._loaded ?
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            ProfileImageEditComponent(
-                              initProfileImageUrl: model.profileImageUrl,
-                              initBackGroundImageUrl: model.backGroundImageUrl,
-                              profileImageEditComponentController:
-                              model._profileImageEditComponentController,
-                            ),
-                            SizedBox(height: 33),
-                            Container(
-                              margin: EdgeInsets.only(left: 16, right: 16),
-                              child: NickNameEditComponent(
-                                initNickName: model.currentNickNameText,
-                                userNickName: model.currentNickNameText,
-                                nickNameEditComponentController: model
-                                    ._nickNameEditComponentController,
-                              ),
-                            ),
-                            Container(
-                                padding: EdgeInsets.only(left: 16, right: 16),
-                                child: Row(children: [
-                                  Expanded(
-                                      child: CountrySimpleSelectButton(
-                                        initCountryItem: model.initCountryItem,
-                                        countrySelectButtonController:
-                                        model._countrySelectButtonController,
-                                      )),
-                                  SizedBox(
-                                    width: 26,
+                      child: model._loaded
+                          ? SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ProfileImageEditComponent(
+                                    initProfileImageUrl: model.profileImageUrl,
+                                    initBackGroundImageUrl:
+                                        model.backGroundImageUrl,
+                                    profileImageEditComponentController: model
+                                        ._profileImageEditComponentController,
                                   ),
-                                  Expanded(
-                                    child: GenderSelectComponent(
-                                      initGender: model.initGender,
-                                      genderSelectComponentController:
-                                      model._genderSelectComponentController,
+                                  SizedBox(height: 33),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(left: 16, right: 16),
+                                    child: NickNameEditComponent(
+                                      initNickName: model.currentNickNameText,
+                                      userNickName: model.currentNickNameText,
+                                      nickNameEditComponentController: model
+                                          ._nickNameEditComponentController,
+                                    ),
+                                  ),
+                                  Container(
+                                      padding:
+                                          EdgeInsets.only(left: 16, right: 16),
+                                      child: Row(children: [
+                                        Expanded(
+                                            child: CountrySimpleSelectButton(
+                                          initCountryItem:
+                                              model.initCountryItem,
+                                          countrySelectButtonController: model
+                                              ._countrySelectButtonController,
+                                        )),
+                                        SizedBox(
+                                          width: 26,
+                                        ),
+                                        Expanded(
+                                          child: GenderSelectComponent(
+                                            initGender: model.initGender,
+                                            genderSelectComponentController: model
+                                                ._genderSelectComponentController,
+                                          ),
+                                        )
+                                      ])),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(left: 16, right: 16),
+                                    child: SelfIntroduceEditComponent(
+                                      initSelfIntroduce:
+                                          model.initSelfIntroduce,
+                                      selfIntroduceEditController:
+                                          model._selfIntroduceEditController,
                                     ),
                                   )
-                                ])),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 16, right: 16),
-                              child: SelfIntroduceEditComponent(
-                                initSelfIntroduce: model.initSelfIntroduce,
-                                selfIntroduceEditController:
-                                model._selfIntroduceEditController,
+                                ],
                               ),
                             )
-                          ],
-                        ),
-                      ) : CommonLoadingComponent()
-                  )
+                          : CommonLoadingComponent())
                 ],
               ),
             ),
@@ -113,91 +118,93 @@ class G010MainPage extends StatelessWidget {
 }
 
 class G010MainPageViewModel extends ChangeNotifier {
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  ProfileImageEditComponentController? _profileImageEditComponentController;
 
-  ProfileImageEditComponentController _profileImageEditComponentController;
+  NickNameEditComponentController? _nickNameEditComponentController;
 
-  NickNameEditComponentController _nickNameEditComponentController;
+  CountrySelectButtonController? _countrySelectButtonController;
 
-  CountrySelectButtonController _countrySelectButtonController;
+  GenderSelectComponentController? _genderSelectComponentController;
 
-  GenderSelectComponentController _genderSelectComponentController;
+  SelfIntroduceEditController? _selfIntroduceEditController;
 
-  SelfIntroduceEditController _selfIntroduceEditController;
+  final FlutterImageCompressAdapter? _flutterImageCompressAdapter;
 
-  final FlutterImageCompressAdapter _flutterImageCompressAdapter;
+  final UpdateAccountUserInfoUseCaseInputPort?
+      _updateAccountUserInfoUseCaseInputPort;
 
-  final UpdateAccountUserInfoUseCaseInputPort _updateAccountUserInfoUseCaseInputPort;
+  final MainPageViewModelController? _mainPageViewModelController;
 
-  final MainPageViewModelController _mainPageViewModelController;
-
-  G001MainPageViewModelController _g001mainPageViewModelController;
+  G001MainPageViewModelController? _g001mainPageViewModelController;
 
   bool _loaded = false;
 
-  String _currentNickName ="";
+  String _currentNickName = "";
 
-  G010MainPageViewModel(this._signInUserInfoUseCaseInputPort,
-      this._flutterImageCompressAdapter,this._updateAccountUserInfoUseCaseInputPort,this._mainPageViewModelController,this._g001mainPageViewModelController) {
+  G010MainPageViewModel(
+      this._signInUserInfoUseCaseInputPort,
+      this._flutterImageCompressAdapter,
+      this._updateAccountUserInfoUseCaseInputPort,
+      this._mainPageViewModelController,
+      this._g001mainPageViewModelController) {
     _profileImageEditComponentController =
         ProfileImageEditComponentController();
-    _nickNameEditComponentController = NickNameEditComponentController(
-        onChangeNickNameText: (value) {
-          _currentNickName = value;
-        }
-    );
-    _countrySelectButtonController = CountrySelectButtonController(
-        onCurrentCountryItem: (value) {
-          notifyListeners();
-        }
-    );
-    _selfIntroduceEditController = SelfIntroduceEditController(
-        onChangesSelfIntroduceText: (value) {
-          notifyListeners();
-        }
-    );
+    _nickNameEditComponentController =
+        NickNameEditComponentController(onChangeNickNameText: (value) {
+      _currentNickName = value;
+    });
+    _countrySelectButtonController =
+        CountrySelectButtonController(onCurrentCountryItem: (value) {
+      notifyListeners();
+    });
+    _selfIntroduceEditController =
+        SelfIntroduceEditController(onChangesSelfIntroduceText: (value) {
+      notifyListeners();
+    });
     _genderSelectComponentController = GenderSelectComponentController();
     _init();
   }
 
-  FUserInfoResDto _fUserInfoResDto;
+  FUserInfoResDto? _fUserInfoResDto;
 
   _init() async {
-    _fUserInfoResDto =
-    await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
-    _currentNickName = _fUserInfoResDto.nickName;
+    _fUserInfoResDto = await _signInUserInfoUseCaseInputPort!
+        .saveSignInInfoInMemoryFromAPiServer();
+    _currentNickName = _fUserInfoResDto!.nickName!;
     _loaded = true;
 
     notifyListeners();
   }
 
   String get currentNickNameText {
-    return _fUserInfoResDto.nickName;
+    return _fUserInfoResDto!.nickName!;
   }
 
   CountryItem get initCountryItem {
-    return CodeCountry().countryList().firstWhere((element) =>
-    element.code == _fUserInfoResDto.isoCode);
+    return CodeCountry()
+        .countryList()
+        .firstWhere((element) => element.code == _fUserInfoResDto!.isoCode);
   }
 
   GenderType get initGender {
-    return _fUserInfoResDto.gender;
+    return _fUserInfoResDto!.gender!;
   }
 
   String get profileImageUrl {
-    return _fUserInfoResDto.profilePictureUrl;
+    return _fUserInfoResDto!.profilePictureUrl!;
   }
 
   String get backGroundImageUrl {
-    return _fUserInfoResDto.backGroundImageUrl;
+    return _fUserInfoResDto!.backGroundImageUrl!;
   }
 
   String get initSelfIntroduce {
-    return _fUserInfoResDto.selfIntroduction;
+    return _fUserInfoResDto!.selfIntroduction!;
   }
 
-   bool get isCanComplete {
+  bool get isCanComplete {
     return _currentNickName.isNotEmpty;
   }
 
@@ -205,54 +212,53 @@ class G010MainPageViewModel extends ChangeNotifier {
     _loaded = false;
     notifyListeners();
 
-    FUserAccountUpdateReqDto fUserAccountUpdateReqDto = FUserAccountUpdateReqDto();
+    FUserAccountUpdateReqDto fUserAccountUpdateReqDto =
+        FUserAccountUpdateReqDto();
 
-    var isError = await _nickNameEditComponentController.valid();
+    var isError = await _nickNameEditComponentController!.valid();
     if (isError) {
       _loaded = false;
       notifyListeners();
-      return ;
+      return;
     } else {
       fUserAccountUpdateReqDto.nickName =
-          _nickNameEditComponentController.nickNameValue;
+          _nickNameEditComponentController!.nickNameValue;
     }
 
-
-    List<int> profileImage;
-    if (_profileImageEditComponentController.getProfileImageProvider() !=
+    List<int>? profileImage;
+    if (_profileImageEditComponentController!.getProfileImageProvider() !=
         null) {
-      profileImage = await _profileImageEditComponentController
+      profileImage = await _profileImageEditComponentController!
           .getProfileImageProvider()
           .file
           .readAsBytes();
       profileImage =
-      await _flutterImageCompressAdapter.compressImage(profileImage, 70);
+          await _flutterImageCompressAdapter!.compressImage(Uint8List.fromList(profileImage) , 70);
     }
 
-    if (_profileImageEditComponentController.getProfileImageProvider() ==
-        null &&
-        _profileImageEditComponentController.getProfileImageUrlProvider() ==
+    if (_profileImageEditComponentController!.getProfileImageProvider() ==
+            null &&
+        _profileImageEditComponentController!.getProfileImageUrlProvider() ==
             null) {
       fUserAccountUpdateReqDto.profileImageIsEmpty = true;
     } else {
       fUserAccountUpdateReqDto.profileImageIsEmpty = false;
     }
 
-
-    List<int> backGroundImage;
-    if (_profileImageEditComponentController.getBackgroundImageProvider() !=
+    List<int>? backGroundImage;
+    if (_profileImageEditComponentController!.getBackgroundImageProvider() !=
         null) {
-      backGroundImage = await _profileImageEditComponentController
+      backGroundImage = await _profileImageEditComponentController!
           .getBackgroundImageProvider()
           .file
           .readAsBytes();
-      backGroundImage =
-      await _flutterImageCompressAdapter.compressImage(backGroundImage, 70);
+      backGroundImage = await _flutterImageCompressAdapter!
+          .compressImage(Uint8List.fromList(backGroundImage), 70);
     }
 
-    if (_profileImageEditComponentController.getBackgroundImageUrlProvider() ==
-        null &&
-        _profileImageEditComponentController.getBackgroundImageProvider() ==
+    if (_profileImageEditComponentController!.getBackgroundImageUrlProvider() ==
+            null &&
+        _profileImageEditComponentController!.getBackgroundImageProvider() ==
             null) {
       fUserAccountUpdateReqDto.backGroundIsEmpty = true;
     } else {
@@ -260,21 +266,21 @@ class G010MainPageViewModel extends ChangeNotifier {
     }
 
     fUserAccountUpdateReqDto.gender =
-        _genderSelectComponentController.currentGenderType;
+        _genderSelectComponentController!.currentGenderType;
 
-    fUserAccountUpdateReqDto.isoCode = _countrySelectButtonController.getCurrentCountryItem().code;
+    fUserAccountUpdateReqDto.isoCode =
+        _countrySelectButtonController!.getCurrentCountryItem().code;
 
-    fUserAccountUpdateReqDto.selfIntroduction = _selfIntroduceEditController.selfIntroduceText;
+    fUserAccountUpdateReqDto.selfIntroduction =
+        _selfIntroduceEditController!.selfIntroduceText;
 
-    await _updateAccountUserInfoUseCaseInputPort.updateAccountUserInfo(fUserAccountUpdateReqDto, profileImage, backGroundImage);
+    await _updateAccountUserInfoUseCaseInputPort!.updateAccountUserInfo(
+        fUserAccountUpdateReqDto, profileImage!, backGroundImage!);
 
     _loaded = true;
 
-    _g001mainPageViewModelController.reloadUserProfile();
+    _g001mainPageViewModelController!.reloadUserProfile();
 
     Navigator.of(context).pop();
-
   }
-
-
 }

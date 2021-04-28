@@ -6,15 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class ReviewTextActionRow extends StatelessWidget {
-  final String userProfileImageUrl;
-  final bool autoFocus;
-  final ReviewTextActionRowController reviewTextActionRowController;
-  final Function(String) actionReply;
-  final String ballUuid;
-  final EdgeInsetsGeometry padding;
+  final String? userProfileImageUrl;
+  final bool? autoFocus;
+  final ReviewTextActionRowController? reviewTextActionRowController;
+  final Function(String)? actionReply;
+  final String? ballUuid;
+  final EdgeInsetsGeometry? padding;
 
   const ReviewTextActionRow(
-      {Key key,
+      {Key? key,
       this.userProfileImageUrl,
       this.autoFocus,
       this.reviewTextActionRowController,
@@ -34,7 +34,7 @@ class ReviewTextActionRow extends StatelessWidget {
               child: Row(children: <Widget>[
 
                 UserProfileImageWidget(
-                  imageUrl: userProfileImageUrl,
+                  imageUrl: userProfileImageUrl!,
                   height: 24.0,
                   width: 24.0,
                 ),
@@ -66,7 +66,7 @@ class ReviewTextActionRow extends StatelessWidget {
                               BorderSide(width: 0, color: Colors.white))
                       ),
                       keyboardType: TextInputType.multiline,
-                      autofocus: autoFocus,
+                      autofocus: autoFocus!,
                       controller: model.replyTextEditController,
                       cursorColor: Color(0xff3497FD),
                     ),
@@ -78,7 +78,7 @@ class ReviewTextActionRow extends StatelessWidget {
                     child: FlatButton(
                       padding: EdgeInsets.all(0).add(EdgeInsets.only(right: 4)),
                       onPressed: () {
-                        actionReply(ballUuid);
+                        actionReply!(ballUuid!);
                       },
                       child: Icon(
                         ForutonaIcon.telegram,
@@ -99,22 +99,22 @@ class ReviewTextActionRow extends StatelessWidget {
 
 class ReviewTextActionRowViewModel extends ChangeNotifier {
 
-  TextEditingController replyTextEditController;
+  TextEditingController? replyTextEditController;
 
   FocusNode replyTextFocusNode = FocusNode();
 
-  final ReviewTextActionRowController reviewTextActionRowController;
+  final ReviewTextActionRowController? reviewTextActionRowController;
 
   ReviewTextActionRowViewModel({this.reviewTextActionRowController}){
     replyTextEditController = TextEditingController();
     if(reviewTextActionRowController != null){
-      reviewTextActionRowController._viewModel = this;
+      reviewTextActionRowController!._viewModel = this;
     }
-    if(reviewTextActionRowController != null && reviewTextActionRowController.initReplyText != null){
-      replyTextEditController.text = reviewTextActionRowController.initReplyText;
+    if(reviewTextActionRowController != null){
+      replyTextEditController!.text = reviewTextActionRowController!.initReplyText!;
     }
 
-    replyTextEditController.addListener(() {
+    replyTextEditController!.addListener(() {
       changeReplyText();
     });
 
@@ -122,17 +122,17 @@ class ReviewTextActionRowViewModel extends ChangeNotifier {
   }
   changeReplyText(){
     notifyListeners();
-    if(reviewTextActionRowController!= null && reviewTextActionRowController.changeText != null){
-      reviewTextActionRowController.changeText(replyTextEditController.text);
+    if(reviewTextActionRowController!= null){
+      reviewTextActionRowController!.changeText!(replyTextEditController!.text);
     }
   }
 
   get isReplyTextEmpty {
-    return replyTextEditController.text.isEmpty;
+    return replyTextEditController!.text.isEmpty;
   }
 
   get _replyText {
-    return replyTextEditController.text;
+    return replyTextEditController!.text;
   }
 
   _textFieldUnFocus(){
@@ -142,22 +142,22 @@ class ReviewTextActionRowViewModel extends ChangeNotifier {
 
 class ReviewTextActionRowController  {
 
-  ReviewTextActionRowViewModel _viewModel;
+  ReviewTextActionRowViewModel? _viewModel;
 
-  Function(String) changeText;
+  Function(String)? changeText;
 
-  final String initReplyText;
+  final String? initReplyText;
 
   ReviewTextActionRowController({this.initReplyText});
 
   get replyText {
     if(_viewModel != null){
-      return _viewModel._replyText;
+      return _viewModel!._replyText;
     }else {
       return "";
     }
   }
   textFieldUnFocus(){
-    _viewModel._textFieldUnFocus();
+    _viewModel!._textFieldUnFocus();
   }
 }

@@ -8,11 +8,11 @@ part of 'MUserInfoResDto.dart';
 
 MUserInfoResDto _$MUserInfoResDtoFromJson(Map<String, dynamic> json) {
   return MUserInfoResDto()
-    ..uid = json['uid'] as String
-    ..userUuid = json['userUuid'] as String
-    ..userName = json['userName'] as String
-    ..groupName = json['groupName'] as String
-    ..hasRole = json['hasRole'] as String;
+    ..uid = json['uid'] as String?
+    ..userUuid = json['userUuid'] as String?
+    ..userName = json['userName'] as String?
+    ..groupName = json['groupName'] as String?
+    ..hasRole = json['hasRole'] as String?;
 }
 
 Map<String, dynamic> _$MUserInfoResDtoToJson(MUserInfoResDto instance) =>

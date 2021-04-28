@@ -39,7 +39,7 @@ class CommonBallModifyWidget extends StatelessWidget {
                       child: FlatButton(
                           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                           onPressed: () async {
-                            CommonBallModifyWidgetResultType commandResult = await showGeneralDialog(
+                            CommonBallModifyWidgetResultType? commandResult = await showGeneralDialog(
                                 context: context,
                                 barrierDismissible: true,
                                 transitionDuration: Duration(milliseconds: 300),

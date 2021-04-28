@@ -18,11 +18,11 @@ class FBallListUpUserPlayBall implements FBallListUpUseCaseInputPort {
 
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
-      {FBallListUpUseCaseOutputPort outputPort}) async {
+      {FBallListUpUseCaseOutputPort? outputPort}) async {
     searchPosition = null;
     PageWrap<FBallPlayerResDto> pageWrap =
         await _fBallPlayerRepository.getUserPlayBallList(playerUid, pageable);
-    var contentList = pageWrap.content.map((e) => e.ballUuid).toList();
+    var contentList = pageWrap.content!.map((e) => e!.ballUuid).toList().cast<FBallResDto>();
     PageWrap<FBallResDto> pageFBallResDto = PageWrap<FBallResDto>(
         pageable: pageWrap.pageable,
         size: pageWrap.size,
@@ -40,5 +40,5 @@ class FBallListUpUserPlayBall implements FBallListUpUseCaseInputPort {
   }
 
   @override
-  Position searchPosition;
+  Position? searchPosition;
 }

@@ -8,12 +8,12 @@ import 'ReplyDeleteActionBtn.dart';
 import 'ReplyEditActionBtn.dart';
 
 class ReplyOptionActionAlertDialogSheet extends StatelessWidget {
-  final FBallReplyResDto fBallReplyResDto;
-  final ReviewDeleteMediator reviewDeleteMediator;
-  final ReviewUpdateMediator reviewUpdateMediator;
+  final FBallReplyResDto? fBallReplyResDto;
+  final ReviewDeleteMediator? reviewDeleteMediator;
+  final ReviewUpdateMediator? reviewUpdateMediator;
 
   const ReplyOptionActionAlertDialogSheet(
-      {Key key,
+      {Key? key,
       this.fBallReplyResDto,
       this.reviewDeleteMediator,
       this.reviewUpdateMediator})

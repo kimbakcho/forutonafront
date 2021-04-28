@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyBallPopup extends StatelessWidget {
-  final Function(BuildContext context) onShare;
+  final Function(BuildContext context)? onShare;
 
-  final Function(BuildContext context) onModify;
+  final Function(BuildContext context)? onModify;
 
-  final Function(BuildContext context) onDelete;
+  final Function(BuildContext context)? onDelete;
 
   final isShowShareBtn;
   final isShowModifyBtn;
@@ -14,7 +14,7 @@ class MyBallPopup extends StatelessWidget {
   final isShowCloseBtn;
 
   const MyBallPopup(
-      {Key key,
+      {Key? key,
       this.onModify,
       this.onDelete,
       this.onShare,
@@ -47,7 +47,7 @@ class MyBallPopup extends StatelessWidget {
                               color: Colors.white,
                               child: InkWell(
                                 onTap: () {
-                                  onShare(context);
+                                  onShare!(context);
                                 },
                                 child: Container(
                                   height: 50,
@@ -72,7 +72,7 @@ class MyBallPopup extends StatelessWidget {
                           color: Colors.white,
                           child: InkWell(
                             onTap: () {
-                              onModify(context);
+                              onModify!(context);
                             },
                             child: Container(
                               height: 50,
@@ -98,7 +98,7 @@ class MyBallPopup extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               Navigator.of(context).pop();
-                              onDelete(context);
+                              onDelete!(context);
                             },
                             child: Container(
                               height: 50,

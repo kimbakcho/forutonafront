@@ -7,13 +7,13 @@ import '../ReviewDeleteMediator.dart';
 import 'ReplyDeleteConfirmDialog.dart';
 
 class ReplyDeleteActionBtn extends StatelessWidget {
-  final FBallReplyResDto fBallReplyResDto;
-  final ReviewDeleteMediator _reviewDeleteMediator;
+  final FBallReplyResDto? fBallReplyResDto;
+  final ReviewDeleteMediator? _reviewDeleteMediator;
 
   const ReplyDeleteActionBtn(
-      {Key key,
+      {Key? key,
       this.fBallReplyResDto,
-      ReviewDeleteMediator reviewDeleteMediator})
+      ReviewDeleteMediator? reviewDeleteMediator})
       : _reviewDeleteMediator = reviewDeleteMediator,
         super(key: key);
 
@@ -51,23 +51,23 @@ class ReplyDeleteActionBtn extends StatelessWidget {
 }
 
 class ReplyDeleteActionBtnViewModel extends ChangeNotifier {
-  final BuildContext context;
-  final FBallReplyResDto fBallReplyResDto;
-  final ReviewDeleteMediator _reviewDeleteMediator;
+  final BuildContext? context;
+  final FBallReplyResDto? fBallReplyResDto;
+  final ReviewDeleteMediator? _reviewDeleteMediator;
 
   ReplyDeleteActionBtnViewModel(
       {this.context,
       this.fBallReplyResDto,
-      ReviewDeleteMediator reviewDeleteMediator})
+      ReviewDeleteMediator? reviewDeleteMediator})
       : _reviewDeleteMediator = reviewDeleteMediator;
 
   showDeleteDialog() async {
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
     await showGeneralDialog(
-        context: context,
+        context: context!,
         barrierDismissible: true,
         barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            MaterialLocalizations.of(context!).modalBarrierDismissLabel,
         pageBuilder:
             (_context, Animation animation, Animation secondaryAnimation) {
           return ReplyDeleteConfirmDialog(

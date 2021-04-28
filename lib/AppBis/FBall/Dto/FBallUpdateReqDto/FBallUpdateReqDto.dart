@@ -7,18 +7,16 @@ part 'FBallUpdateReqDto.g.dart';
 
 @JsonSerializable()
 class FBallUpdateReqDto {
-  String ballUuid;
-  double longitude;
-  double latitude;
-  String ballName;
-  FBallType ballType;
-  String placeAddress;
-  String description;
-  List<TagInsertReqDto> tags;
-
+  String? ballUuid;
+  double? longitude;
+  double? latitude;
+  String? ballName;
+  FBallType? ballType;
+  String? placeAddress;
+  String? description;
+  List<TagInsertReqDto>? tags;
 
   FBallUpdateReqDto();
-
 
   factory FBallUpdateReqDto.fromJson(Map<String, dynamic> json) => _$FBallUpdateReqDtoFromJson(json);
   Map<String, dynamic> toJson() => _$FBallUpdateReqDtoToJson(this);

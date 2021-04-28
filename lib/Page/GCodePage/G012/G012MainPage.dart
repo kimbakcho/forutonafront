@@ -137,9 +137,9 @@ class G012MainPage extends StatelessWidget {
 }
 
 class G012MainPageViewModel extends ChangeNotifier {
-  PwInputAndCheckComponentController _pwInputAndCheckComponentController;
+  PwInputAndCheckComponentController? _pwInputAndCheckComponentController;
 
-  TextEditingController _currentPwFieldController;
+  TextEditingController? _currentPwFieldController;
 
   String currentPw = "";
 
@@ -153,13 +153,13 @@ class G012MainPageViewModel extends ChangeNotifier {
 
   bool currentPwCheckComplete = false;
 
-  FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  FireBaseAuthAdapterForUseCase? _fireBaseAuthAdapterForUseCase;
 
-  SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  FUserPwChangeUseCaseInputPort _fUserPwChangeUseCaseInputPort;
+  FUserPwChangeUseCaseInputPort? _fUserPwChangeUseCaseInputPort;
 
-  MainPageViewModelController _mainPageViewModelController;
+  MainPageViewModelController? _mainPageViewModelController;
 
   G012MainPageViewModel(
       this._fireBaseAuthAdapterForUseCase,
@@ -174,9 +174,9 @@ class G012MainPageViewModel extends ChangeNotifier {
     });
 
     _currentPwFieldController = TextEditingController();
-    _currentPwFieldController.addListener(() {
+    _currentPwFieldController!.addListener(() {
       currentPwCheckComplete = false;
-      currentPw = _currentPwFieldController.text;
+      currentPw = _currentPwFieldController!.text;
       notifyListeners();
     });
   }
@@ -189,10 +189,10 @@ class G012MainPageViewModel extends ChangeNotifier {
 
   _changePw(BuildContext context) async {
     var reqSignInUserInfoFromMemory =
-        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+        _signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
     try {
-      await this._fireBaseAuthAdapterForUseCase.signInWithEmailAndPassword(
-          reqSignInUserInfoFromMemory.email, currentPw);
+      await this._fireBaseAuthAdapterForUseCase!.signInWithEmailAndPassword(
+          reqSignInUserInfoFromMemory!.email!, currentPw);
     } catch (ex) {
       currentPwErrorFlag = true;
       currentPwErrorText = "*현재 패스워드와 일치하지 않습니다.";
@@ -201,13 +201,13 @@ class G012MainPageViewModel extends ChangeNotifier {
     }
     currentPwCheckComplete = true;
     notifyListeners();
-    var result = await _pwInputAndCheckComponentController.valid();
+    var result = await _pwInputAndCheckComponentController!.valid();
 
     if (result) {
       Fluttertoast.showToast(msg: "패스워드를 변경하였습니다.");
-      await _fUserPwChangeUseCaseInputPort.pwChange(newPassword);
-      _fireBaseAuthAdapterForUseCase.logout();
-      _mainPageViewModelController.moveToMainPage(BottomNavigationNavType.HOME);
+      await _fUserPwChangeUseCaseInputPort!.pwChange(newPassword);
+      _fireBaseAuthAdapterForUseCase!.logout();
+      _mainPageViewModelController!.moveToMainPage(BottomNavigationNavType.HOME);
       Navigator.of(context).popUntil((route) => route.settings.name == '/');
     }
   }

@@ -30,7 +30,7 @@ class FDio extends DioForNative {
     return fDio;
   }
 
-  factory FDio.token({@required String idToken}){
+  factory FDio.token({required String? idToken}){
     if(idToken == null){
       FDio fDio = new FDio("");
       return fDio;

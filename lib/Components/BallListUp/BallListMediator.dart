@@ -10,11 +10,11 @@ import 'package:injectable/injectable.dart';
 
 abstract class BallListMediator<T> extends SearchCollectMediator<FBallResDto>{
 
-  T fBallListUpUseCaseInputPort;
+  T? fBallListUpUseCaseInputPort;
 
   hideBall(String ballUuid);
 
-  Position searchPosition();
+  Position? searchPosition();
 
 }
 
@@ -23,7 +23,7 @@ class BallListMediatorImpl extends BallListMediator<FBallListUpUseCaseInputPort>
   @override
   Future<PageWrap<FBallResDto>> searchUseCase(Pageable pageable) async {
     return await this
-        .fBallListUpUseCaseInputPort
+        .fBallListUpUseCaseInputPort!
         .search(pageable);
   }
 
@@ -37,9 +37,9 @@ class BallListMediatorImpl extends BallListMediator<FBallListUpUseCaseInputPort>
   }
 
   @override
-  Position searchPosition(){
+  Position? searchPosition(){
     if(fBallListUpUseCaseInputPort != null){
-      return fBallListUpUseCaseInputPort.searchPosition;
+      return fBallListUpUseCaseInputPort!.searchPosition;
     }else {
       return null;
     }
@@ -47,7 +47,7 @@ class BallListMediatorImpl extends BallListMediator<FBallListUpUseCaseInputPort>
 
   @override
   hideBall(String ballUuid) {
-    this.itemList.removeWhere((element) => element.ballUuid == ballUuid);
+    this.itemList!.removeWhere((element) => element.ballUuid == ballUuid);
     onPageListUpdate();
   }
 

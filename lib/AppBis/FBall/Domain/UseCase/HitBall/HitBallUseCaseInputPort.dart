@@ -9,7 +9,7 @@ class HitBallUseCase implements HitBallUseCaseInputPort{
 
   final FBallRepository _fBallRepository;
 
-  HitBallUseCase({FBallRepository fBallRepository})
+  HitBallUseCase({required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override

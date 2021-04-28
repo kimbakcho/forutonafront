@@ -14,11 +14,11 @@ import 'VoteButton.dart';
 import 'VoteResultDialog.dart';
 
 class BPVotePopupDialog extends StatelessWidget {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final ValuationMediator valuationMediator;
+  final ValuationMediator? valuationMediator;
 
-  const BPVotePopupDialog({Key key, this.fBallResDto, this.valuationMediator})
+  const BPVotePopupDialog({Key? key, this.fBallResDto, this.valuationMediator})
       : super(key: key);
 
   @override
@@ -223,31 +223,31 @@ class BPVotePopupDialog extends StatelessWidget {
 }
 
 class BPVotePopupDialogViewModel extends ChangeNotifier {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  final FBallValuationUseCaseInputPort _fBallValuationUseCaseInputPort;
+  final FBallValuationUseCaseInputPort? _fBallValuationUseCaseInputPort;
 
-  int initPoint;
+  int? initPoint;
 
   int aValidPoint = 0;
 
-  VoteButtonViewController plusVoteButtonViewController;
-  VoteButtonViewController minusVoteButtonViewController;
+  VoteButtonViewController? plusVoteButtonViewController;
+  VoteButtonViewController? minusVoteButtonViewController;
 
-  FBallVoteResDto ballVoteResDto;
+  FBallVoteResDto? ballVoteResDto;
 
   bool isLoaded = false;
 
-  final ValuationMediator valuationMediator;
+  final ValuationMediator? valuationMediator;
 
   BPVotePopupDialogViewModel(
       this.fBallResDto,
       this.valuationMediator,
       this._signInUserInfoUseCaseInputPort,
       this._fBallValuationUseCaseInputPort) {
-    initPoint = fBallResDto.ballPower;
+    initPoint = fBallResDto!.ballPower;
     plusVoteButtonViewController = new VoteButtonViewController(
         onCurrentPointChange: _plusCurrentPointChange);
     minusVoteButtonViewController = new VoteButtonViewController(
@@ -258,8 +258,8 @@ class BPVotePopupDialogViewModel extends ChangeNotifier {
   init() async {
     isLoaded = false;
     ballVoteResDto = await this
-        ._fBallValuationUseCaseInputPort
-        .getBallVoteState(fBallResDto.ballUuid);
+        ._fBallValuationUseCaseInputPort!
+        .getBallVoteState(fBallResDto!.ballUuid!);
     isLoaded = true;
     notifyListeners();
   }
@@ -267,12 +267,12 @@ class BPVotePopupDialogViewModel extends ChangeNotifier {
   bool isCanPlus() {
     if (plusVoteButtonViewController != null &&
         minusVoteButtonViewController != null) {
-      var useTicket = plusVoteButtonViewController.getCurrentPoint().abs() +
-          minusVoteButtonViewController.getCurrentPoint().abs();
+      var useTicket = plusVoteButtonViewController!.getCurrentPoint().abs() +
+          minusVoteButtonViewController!.getCurrentPoint().abs();
       if (useTicket <
-          _signInUserInfoUseCaseInputPort
-              .reqSignInUserInfoFromMemory()
-              .influenceTicket) {
+          _signInUserInfoUseCaseInputPort!
+              .reqSignInUserInfoFromMemory()!
+              .influenceTicket!) {
         return true;
       }
     }
@@ -288,20 +288,20 @@ class BPVotePopupDialogViewModel extends ChangeNotifier {
   }
 
   bool get hasEffectPoint {
-    return plusVoteButtonViewController.getCurrentPoint() +
-                minusVoteButtonViewController.getCurrentPoint() >
+    return plusVoteButtonViewController!.getCurrentPoint() +
+                minusVoteButtonViewController!.getCurrentPoint() >
             0
         ? true
         : false;
   }
 
   String get bPointStr {
-    return '${fBallResDto.ballPower} BP';
+    return '${fBallResDto!.ballPower} BP';
   }
 
   String usePointStr() {
     if (isLoaded) {
-      return '${ballVoteResDto.ballLike + ballVoteResDto.ballDislike} BP';
+      return '${ballVoteResDto!.ballLike! + ballVoteResDto!.ballDislike!} BP';
     } else {
       return "0 BP";
     }
@@ -313,10 +313,10 @@ class BPVotePopupDialogViewModel extends ChangeNotifier {
         barrierColor: Colors.black.withOpacity(0.7),
         builder: (context) {
           return VoteResultDialog(
-            initPoint: fBallResDto.ballPower,
-            likeVote: plusVoteButtonViewController.getCurrentPoint(),
-            disLikeVote: minusVoteButtonViewController.getCurrentPoint(),
-            ballUuid: fBallResDto.ballUuid,
+            initPoint: fBallResDto!.ballPower,
+            likeVote: plusVoteButtonViewController!.getCurrentPoint(),
+            disLikeVote: minusVoteButtonViewController!.getCurrentPoint(),
+            ballUuid: fBallResDto!.ballUuid,
             valuationMediator: valuationMediator,
           );
         },

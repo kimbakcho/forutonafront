@@ -6,12 +6,12 @@ import 'package:provider/provider.dart';
 import 'ListUpBallWidgetFactory.dart';
 
 class FullBallListUp extends StatelessWidget {
-  final BallListMediator ballListMediator;
-  final ScrollPhysics physics;
-  final FullBallListUpController fullBallListUpController;
+  final BallListMediator? ballListMediator;
+  final ScrollPhysics? physics;
+  final FullBallListUpController? fullBallListUpController;
 
   FullBallListUp(
-      {Key key,
+      {Key? key,
       this.ballListMediator,
       this.physics,
       this.fullBallListUpController})
@@ -27,15 +27,15 @@ class FullBallListUp extends StatelessWidget {
           return ListView.builder(
               shrinkWrap: true,
               physics: physics,
-              itemCount: ballListMediator.itemList.length,
+              itemCount: ballListMediator!.itemList!.length,
               padding: EdgeInsets.all(0),
               itemBuilder: (_, index) {
                 return Container(
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
-                  key: Key(ballListMediator.itemList[index].ballUuid),
+                  key: Key(ballListMediator!.itemList![index].ballUuid!),
                   child: ListUpBallWidgetFactory.getBallWidget(
                     index,
-                    ballListMediator,
+                    ballListMediator!,
                     BallStyle.Style1,
                     boxDecoration: BoxDecoration(
                         border: Border.all(color: Color(0xffE4E7E8)),
@@ -50,30 +50,30 @@ class FullBallListUp extends StatelessWidget {
 
 class FullBallListUpViewModel extends ChangeNotifier
     implements SearchCollectMediatorComponent {
-  final BallListMediator ballListMediator;
-  final FullBallListUpController fullBallListUpController;
+  final BallListMediator? ballListMediator;
+  final FullBallListUpController? fullBallListUpController;
 
   FullBallListUpViewModel(
       {this.ballListMediator, this.fullBallListUpController}) {
     if (fullBallListUpController != null) {
-      fullBallListUpController.fullBallListUpViewModel = this;
+      fullBallListUpController!.fullBallListUpViewModel = this;
     }
 
-    ballListMediator.registerComponent(this);
+    ballListMediator!.registerComponent(this);
   }
 
   onNextPage() async {
-    await ballListMediator.searchNext();
+    await ballListMediator!.searchNext();
   }
 
   @override
   void dispose() {
-    ballListMediator.unregisterComponent(this);
+    ballListMediator!.unregisterComponent(this);
     super.dispose();
   }
 
   onRefreshFirst() async {
-    await ballListMediator.searchFirst();
+    await ballListMediator!.searchFirst();
   }
 
   @override
@@ -86,13 +86,13 @@ class FullBallListUpViewModel extends ChangeNotifier
 }
 
 class FullBallListUpController {
-  FullBallListUpViewModel fullBallListUpViewModel;
+  FullBallListUpViewModel? fullBallListUpViewModel;
 
   onNextPage() async {
-    await fullBallListUpViewModel.onNextPage();
+    await fullBallListUpViewModel!.onNextPage();
   }
 
   onRefreshFirst() async {
-    await fullBallListUpViewModel.onRefreshFirst();
+    await fullBallListUpViewModel!.onRefreshFirst();
   }
 }

@@ -10,10 +10,10 @@ class SignButton extends StatelessWidget {
   final SnsSupportService snsSupportService;
 
   SignButton(
-      {@required this.signButtonOutputPort,
-      @required this.label,
-      @required this.snsSupportService,
-      @required this.imagePath});
+      {required this.signButtonOutputPort,
+      required this.label,
+      required this.snsSupportService,
+      required this.imagePath});
 
   @override
   Widget build(BuildContext context) {

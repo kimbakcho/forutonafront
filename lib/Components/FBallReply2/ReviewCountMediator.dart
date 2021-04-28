@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 
 abstract class ReviewCountMediatorComponent {
   onReviewCount(int reviewCount);
-
 }
 
 abstract class ReviewCountMediator {
@@ -17,17 +16,17 @@ abstract class ReviewCountMediator {
   int componentCount();
   Future<int> reqReviewCount(String ballUuid);
 
-  int reviewCount;
+  int? reviewCount;
 }
 
 class ReviewCountMediatorImpl implements ReviewCountMediator{
-  int reviewCount = 0;
+  int? reviewCount = 0;
 
   List<ReviewCountMediatorComponent> components = [];
 
   final FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort;
 
-  ReviewCountMediatorImpl({@required this.fBallReplyUseCaseInputPort});
+  ReviewCountMediatorImpl({required this.fBallReplyUseCaseInputPort});
 
   @override
   registerComponent(ReviewCountMediatorComponent reviewCountMediatorComponent) {
@@ -36,9 +35,9 @@ class ReviewCountMediatorImpl implements ReviewCountMediator{
 
   @override
   Future<int> reqReviewCount(String ballUuid) async {
-    int reviewCount = await fBallReplyUseCaseInputPort.getBallReviewCount(ballUuid);
+    int? reviewCount = await fBallReplyUseCaseInputPort.getBallReviewCount(ballUuid);
     this.reviewCount = reviewCount;
-    onAllReviewCount(reviewCount);
+    onAllReviewCount(reviewCount!);
     return reviewCount;
   }
 

@@ -7,16 +7,16 @@ import 'SimpleCollectBottomFactory.dart';
 import 'SimpleCollectionTopTitleWidget.dart';
 
 class SimpleCollectionWidget extends StatelessWidget {
-  final String searchText;
-  final SearchCollectMediator searchCollectMediator;
-  final IndexedWidgetBuilder indexedWidgetBuilder;
-  final SimpleCollectionTopNextPageListener simpleCollectionTopNextPageListener;
-  final String titleDescription;
+  final String? searchText;
+  final SearchCollectMediator<FUserInfoSimpleResDto> searchCollectMediator;
+  final IndexedWidgetBuilder? indexedWidgetBuilder;
+  final SimpleCollectionTopNextPageListener? simpleCollectionTopNextPageListener;
+  final String? titleDescription;
 
   const SimpleCollectionWidget(
-      {Key key,
+      {Key? key,
       this.searchText,
-      this.searchCollectMediator,
+      required this.searchCollectMediator,
       this.indexedWidgetBuilder,
       this.simpleCollectionTopNextPageListener,
       this.titleDescription})
@@ -47,7 +47,7 @@ class SimpleCollectionWidget extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: model.itemCount,
-                  itemBuilder: indexedWidgetBuilder,
+                  itemBuilder: indexedWidgetBuilder!,
                 ),
                 SimpleCollectBottomFactory(
                     moreCollectAction: model.moreCollectAction,
@@ -61,12 +61,12 @@ class SimpleCollectionWidget extends StatelessWidget {
 
 class SimpleCollectionWidgetViewModel extends ChangeNotifier
     implements SearchCollectMediatorComponent {
-  final SearchCollectMediator searchCollectMediator;
+  final SearchCollectMediator<FUserInfoSimpleResDto> searchCollectMediator;
 
-  final String searchText;
+  final String? searchText;
 
   SimpleCollectionWidgetViewModel(
-      {@required this.searchCollectMediator, @required this.searchText}) {
+      {required this.searchCollectMediator, required this.searchText}) {
     searchCollectMediator.registerComponent(this);
     searchCollectMediator.searchFirst();
   }
@@ -87,15 +87,15 @@ class SimpleCollectionWidgetViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  List<FUserInfoSimpleResDto> get items {
+  List<FUserInfoSimpleResDto>? get items {
     return searchCollectMediator.itemList;
   }
 
   int get itemCount {
-    return searchCollectMediator.itemList.length;
+    return searchCollectMediator.itemList!.length;
   }
 
-  bool get isLastPage {
+  bool? get isLastPage {
     return searchCollectMediator.isLastPage;
   }
 

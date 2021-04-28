@@ -7,20 +7,20 @@ import 'package:provider/provider.dart';
 import 'TailButton.dart';
 
 class CodeAppBar extends StatelessWidget {
-  final Function onTailButtonClick;
+  final Function? onTailButtonClick;
 
-  final String tailButtonLabel;
+  final String? tailButtonLabel;
 
-  final bool enableTailButton;
+  final bool? enableTailButton;
 
-  final bool visibleTailButton;
+  final bool? visibleTailButton;
 
-  final double progressValue;
+  final double? progressValue;
 
-  final String title;
+  final String? title;
 
   const CodeAppBar(
-      {Key key,
+      {Key? key,
       this.onTailButtonClick,
       this.tailButtonLabel,
       this.enableTailButton,
@@ -48,7 +48,7 @@ class CodeAppBar extends StatelessWidget {
               Container(
 
                 child: Text(
-                  title,
+                  title!,
                   style: GoogleFonts.notoSans(
                     fontSize: 16,
                     color: const Color(0xff000000),
@@ -58,14 +58,14 @@ class CodeAppBar extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              visibleTailButton
+              visibleTailButton!
                   ? Container(
                       margin: EdgeInsets.only(right: 16),
                       child: TailButton(
-                        enable: enableTailButton,
-                        label: tailButtonLabel,
+                        enable: enableTailButton!,
+                        label: tailButtonLabel!,
                         buttonClick: () {
-                          onTailButtonClick();
+                          onTailButtonClick!();
                         },
                       ),
                     )
@@ -74,7 +74,7 @@ class CodeAppBar extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            CommonLinearProgressIndicator(progressValue)
+            CommonLinearProgressIndicator(progressValue!)
           ],
         ));
   }

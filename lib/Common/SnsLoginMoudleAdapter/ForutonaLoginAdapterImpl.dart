@@ -16,12 +16,12 @@ class ForutonaLoginAdapterImpl implements SnsLoginModuleAdapter {
   ForutonaLoginAdapterImpl(this._fireBaseAuthAdapterForUseCase, this.userEmailId, this.password);
 
   @override
-  Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {
+  Future<SnsLoginModuleResDto?> getSnsModuleUserInfo() async {
     return null;
   }
 
   @override
-  SnsSupportService snsSupportService = SnsSupportService.Forutona;
+  SnsSupportService? snsSupportService = SnsSupportService.Forutona;
 
   @override
   Future<void> logout() async{
@@ -29,7 +29,7 @@ class ForutonaLoginAdapterImpl implements SnsLoginModuleAdapter {
   }
 
   @override
-  Future<void> login(FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto) async {
+  Future<void> login(FUserSnsCheckJoinResDto? fUserSnsCheckJoinResDto) async {
       await _fireBaseAuthAdapterForUseCase.signInWithEmailAndPassword(userEmailId, password);
   }
 }

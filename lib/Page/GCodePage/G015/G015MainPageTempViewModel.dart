@@ -36,9 +36,9 @@ class G015MainPageTempViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> getAlarmSetting(String key) async {
+  Future<bool?> getAlarmSetting(String key) async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    bool chatAlarmSetting = true;
+    bool? chatAlarmSetting = true;
     if(!sharedPreferences.containsKey(key)){
       sharedPreferences.setBool(key,true);
       chatAlarmSetting = true;

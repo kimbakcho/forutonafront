@@ -12,63 +12,63 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BallDisPlayUseCase {
-  FBallResDto fBallResDto;
-  BallDescription ballDescription;
-  GeolocatorAdapter geoLocatorAdapter;
+  FBallResDto? fBallResDto;
+  BallDescription? ballDescription;
+  GeolocatorAdapter? geoLocatorAdapter;
 
   BallDisPlayUseCase(
-      {this.fBallResDto, this.ballDescription, this.geoLocatorAdapter});
+      this.fBallResDto, this.ballDescription, this.geoLocatorAdapter);
 
   String remainTime() {
-    return TimeDisplayUtil.getCalcToStrFromNow(fBallResDto.activationTime);
+    return TimeDisplayUtil.getCalcToStrFromNow(fBallResDto!.activationTime!);
   }
 
   String ballUuid(){
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
-      return fBallResDto.ballUuid.toString();
+      return fBallResDto!.ballUuid.toString();
     }
   }
 
   String ballLikes() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
-      return fBallResDto.ballLikes.toString();
+      return fBallResDto!.ballLikes.toString();
     }
   }
 
   String ballPower() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
-      return fBallResDto.ballPower.toString();
+      return fBallResDto!.ballPower.toString();
     }
   }
 
   String ballDisLikes() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
-      return fBallResDto.ballDisLikes.toString();
+      return fBallResDto!.ballDisLikes.toString();
     }
   }
 
   String commentCount() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
-      return fBallResDto.commentCount.toString();
+      return fBallResDto!.commentCount.toString();
     }
   }
 
-  String profilePictureUrl() {
-    if (fBallResDto.ballDeleteFlag) {
+  String? profilePictureUrl() {
+    if (fBallResDto!.ballDeleteFlag) {
       return "";
     } else {
-      if(fBallResDto.uid.profilePictureUrl != null && fBallResDto.uid.profilePictureUrl.isNotEmpty){
-        return fBallResDto.uid.profilePictureUrl;
+      if(fBallResDto!.uid!.profilePictureUrl != null && fBallResDto!.uid!.profilePictureUrl!.isNotEmpty){
+        return fBallResDto!.uid!.profilePictureUrl;
       }else {
         return "";
       }
@@ -87,23 +87,23 @@ class BallDisPlayUseCase {
   }
 
   String ballName() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
-      return fBallResDto.ballName;
+      return fBallResDto!.ballName!;
     }
   }
 
   String placeAddress() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
-      return fBallResDto.placeAddress;
+      return fBallResDto!.placeAddress!;
     }
   }
 
   bool isAlive() {
-    if (fBallResDto.activationTime.isAfter(DateTime.now())) {
+    if (fBallResDto!.activationTime!.isAfter(DateTime.now())) {
       return true;
     } else {
       return false;
@@ -111,82 +111,82 @@ class BallDisPlayUseCase {
   }
 
   String ballHits() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return "-";
     } else {
-      return fBallResDto.ballHits.toString();
+      return fBallResDto!.ballHits.toString();
     }
   }
 
   String displayMakeTime() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return "-";
     } else {
-      return TimeDisplayUtil.getCalcToStrFromNow(fBallResDto.makeTime);
+      return TimeDisplayUtil.getCalcToStrFromNow(fBallResDto!.makeTime!);
     }
   }
 
-  String makerNickName({int maxLength = -1}) {
-    if (fBallResDto.ballDeleteFlag) {
+  String? makerNickName({int maxLength = -1}) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return "-";
     } else {
       if (maxLength != -1) {
-        if (fBallResDto.uid.nickName.length >= maxLength) {
-          String result = fBallResDto.uid.nickName.substring(0, maxLength - 3);
+        if (fBallResDto!.uid!.nickName!.length >= maxLength) {
+          String result = fBallResDto!.uid!.nickName!.substring(0, maxLength - 3);
           return result + "...";
         }
       }
-      return fBallResDto.uid.nickName;
+      return fBallResDto!.uid!.nickName;
     }
   }
 
   String makerFollower() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return "-";
     } else {
-      return fBallResDto.uid.followerCount.toString();
+      return fBallResDto!.uid!.followerCount.toString();
     }
   }
 
   String makerInfluencePower() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return "-";
     } else {
-      return fBallResDto.uid.cumulativeInfluence.toString();
+      return fBallResDto!.uid!.cumulativeInfluence.toString();
     }
   }
 
   bool isMainPicture() {
-    if (fBallResDto.ballDeleteFlag || ballDescription.desimages == null) {
+    if (fBallResDto!.ballDeleteFlag! || ballDescription!.desimages == null) {
       return false;
     } else {
-      return ballDescription.desimages.length > 0;
+      return ballDescription!.desimages.length > 0;
     }
   }
 
-  String mainPictureSrc() {
-    if (fBallResDto.ballDeleteFlag) {
+  String? mainPictureSrc() {
+    if (fBallResDto!.ballDeleteFlag!) {
       return null;
     } else {
-      return ballDescription.desimages[0].src;
+      return ballDescription!.desimages[0].src;
     }
   }
 
   int pictureCount() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return 0;
     } else {
-      return ballDescription.desimages.length;
+      return ballDescription!.desimages.length;
     }
   }
 
   List<BallImageItem> getDesImages() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return [];
     } else {
-      var list = ballDescription.desimages.map((e) {
+      var list = ballDescription!.desimages.map((e) {
         var imageItem =  BallImageItem(sl());
-        imageItem.addImage( imageProvider: NetworkImage(e.src));
+        imageItem.addImage( imageProvider: NetworkImage(e.src!));
         return imageItem;
       }).toList();
       return list;
@@ -194,19 +194,19 @@ class BallDisPlayUseCase {
   }
 
   String descriptionText() {
-    if (fBallResDto.ballDeleteFlag || ballDescription.text == null) {
+    if (fBallResDto!.ballDeleteFlag! || ballDescription!.text == null) {
       return "";
     } else {
-      return ballDescription.text;
+      return ballDescription!.text!;
     }
   }
 
   getYoutubeId() {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return "";
     } else {
-      if (ballDescription.youtubeVideoId != null) {
-        return ballDescription.youtubeVideoId;
+      if (ballDescription!.youtubeVideoId != null) {
+        return ballDescription!.youtubeVideoId;
       } else {
         return "";
       }
@@ -215,16 +215,16 @@ class BallDisPlayUseCase {
 
   getDistanceFromSearchPositionToText(Position ballSearchPosition,
       BallDisPlayUseCaseOutputPort outputPort) async {
-    if (fBallResDto.ballDeleteFlag) {
+    if (fBallResDto!.ballDeleteFlag!) {
       return "";
     } else {
       Position ballPosition = Position(
-          longitude: fBallResDto.longitude, latitude: fBallResDto.latitude);
-      var distance = await geoLocatorAdapter.distanceBetween(
-          ballPosition.latitude,
-          ballPosition.longitude,
-          ballSearchPosition.latitude,
-          ballSearchPosition.longitude);
+          longitude: fBallResDto!.longitude, latitude: fBallResDto!.latitude);
+      var distance = geoLocatorAdapter!.distanceBetween(
+          ballPosition.latitude!,
+          ballPosition.longitude!,
+          ballSearchPosition.latitude!,
+          ballSearchPosition.longitude!);
       outputPort.distanceFromSearchPositionToText(
           DistanceDisplayUtil.changeDisplayStr(distance));
     }

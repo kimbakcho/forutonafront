@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class RankingTagChip extends StatelessWidget {
   final String tagName;
 
-  RankingTagChip({Key key, @required this.tagName}) : super(key: key);
+  RankingTagChip({Key? key, required this.tagName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

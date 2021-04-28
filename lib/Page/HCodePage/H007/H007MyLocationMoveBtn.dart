@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class H007MyLocationMoveBtn extends StatelessWidget {
-  final Function onGoMyLocation;
+  final Function? onGoMyLocation;
 
   const H007MyLocationMoveBtn({
-    Key key,
+    Key? key,
     this.onGoMyLocation,
   }) : super(key: key);
 
@@ -16,7 +16,7 @@ class H007MyLocationMoveBtn extends StatelessWidget {
           color: Colors.white,
           child: InkWell(
             onTap: () {
-              this.onGoMyLocation();
+              this.onGoMyLocation!();
             },
             child: Container(
               width: 36,

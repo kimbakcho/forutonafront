@@ -59,7 +59,7 @@ class MapGeoSearchPage extends StatelessWidget {
                                               16, 0, 16, 0),
                                           child: Text(
                                               model.predictions[index]
-                                                  .description,
+                                                  .description!,
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.notoSans(
                                                 fontSize: 14,

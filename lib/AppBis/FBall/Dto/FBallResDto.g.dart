@@ -8,31 +8,31 @@ part of 'FBallResDto.dart';
 
 FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
   return FBallResDto()
-    ..latitude = (json['latitude'] as num)?.toDouble()
-    ..longitude = (json['longitude'] as num)?.toDouble()
-    ..ballUuid = json['ballUuid'] as String
-    ..ballName = json['ballName'] as String
+    ..latitude = (json['latitude'] as num?)?.toDouble()
+    ..longitude = (json['longitude'] as num?)?.toDouble()
+    ..ballUuid = json['ballUuid'] as String?
+    ..ballName = json['ballName'] as String?
     ..ballType = _$enumDecodeNullable(_$FBallTypeEnumMap, json['ballType'])
     ..ballState = _$enumDecodeNullable(_$FBallStateEnumMap, json['ballState'])
-    ..placeAddress = json['placeAddress'] as String
-    ..ballHits = json['ballHits'] as int
-    ..ballLikes = json['ballLikes'] as int
-    ..ballDisLikes = json['ballDisLikes'] as int
-    ..commentCount = json['commentCount'] as int
-    ..ballPower = json['ballPower'] as int
+    ..placeAddress = json['placeAddress'] as String?
+    ..ballHits = json['ballHits'] as int?
+    ..ballLikes = json['ballLikes'] as int?
+    ..ballDisLikes = json['ballDisLikes'] as int?
+    ..commentCount = json['commentCount'] as int?
+    ..ballPower = json['ballPower'] as int?
     ..activationTime = json['activationTime'] == null
         ? null
         : DateTime.parse(json['activationTime'] as String)
     ..makeTime = json['makeTime'] == null
         ? null
         : DateTime.parse(json['makeTime'] as String)
-    ..description = json['description'] as String
+    ..description = json['description'] as String?
     ..uid = json['uid'] == null
         ? null
         : FUserInfoSimpleResDto.fromJson(json['uid'] as Map<String, dynamic>)
-    ..contributor = json['contributor'] as int
+    ..contributor = json['contributor'] as int?
     ..ballDeleteFlag = json['ballDeleteFlag'] as bool
-    ..isEditContent = json['isEditContent'] as bool
+    ..isEditContent = json['isEditContent'] as bool?
     ..editContentTime = json['editContentTime'] == null
         ? null
         : DateTime.parse(json['editContentTime'] as String);
@@ -62,36 +62,41 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'editContentTime': instance.editContentTime?.toIso8601String(),
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$FBallTypeEnumMap = {

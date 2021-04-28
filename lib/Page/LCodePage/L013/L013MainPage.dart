@@ -97,11 +97,11 @@ class L013MainPage extends StatelessWidget {
 }
 
 class L013MainPageViewModel extends ChangeNotifier {
-  EmailCheckComponentController _emailCheckComponentController;
+  EmailCheckComponentController? _emailCheckComponentController;
 
   String _currentEmailId = "";
 
-  final PwChangeFromPhoneAuthReqDto _pwChangeFromPhoneAuthReqDto;
+  final PwChangeFromPhoneAuthReqDto? _pwChangeFromPhoneAuthReqDto;
 
   L013MainPageViewModel(this._pwChangeFromPhoneAuthReqDto) {
     _emailCheckComponentController =
@@ -116,9 +116,9 @@ class L013MainPageViewModel extends ChangeNotifier {
   }
 
   _nextPage(BuildContext context) async {
-    bool result = await _emailCheckComponentController.valid();
+    bool result = await _emailCheckComponentController!.valid();
     if (result) {
-      _pwChangeFromPhoneAuthReqDto.email = _emailCheckComponentController.emailValue;
+      _pwChangeFromPhoneAuthReqDto!.email = _emailCheckComponentController!.emailValue;
       Navigator.of(context).push(MaterialPageRoute(builder: (_) {
         return L014MainPage();
       }));

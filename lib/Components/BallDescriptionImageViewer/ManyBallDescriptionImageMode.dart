@@ -5,8 +5,8 @@ import 'BallDesciprtionImageViwer.dart';
 
 
 class ManyBallDescriptionImageMode extends BallDescriptionImageViewer {
-  ManyBallDescriptionImageMode({@required List<
-      FBallDesImages> desImages, @required BuildContext context})
+  ManyBallDescriptionImageMode({required List<
+      FBallDesImages> desImages, required BuildContext context})
       : super(desImages: desImages, context: context);
 
   @override
@@ -31,7 +31,7 @@ class ManyBallDescriptionImageMode extends BallDescriptionImageViewer {
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(
-                          desImages[0].src),
+                          desImages[0].src!),
                     ),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12.00),
@@ -55,7 +55,7 @@ class ManyBallDescriptionImageMode extends BallDescriptionImageViewer {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                desImages[1].src),
+                                desImages[1].src!),
                           ),
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(12.00),
@@ -75,7 +75,7 @@ class ManyBallDescriptionImageMode extends BallDescriptionImageViewer {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                desImages[2].src),
+                                desImages[2].src!),
                           ))),
                 ),
                 Expanded(
@@ -106,7 +106,7 @@ class ManyBallDescriptionImageMode extends BallDescriptionImageViewer {
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                    desImages[3].src)),
+                                    desImages[3].src!)),
                             borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(12.00),
                             ))))

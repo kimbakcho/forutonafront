@@ -4,11 +4,11 @@ part 'MUserInfoResDto.g.dart';
 
 @JsonSerializable()
 class MUserInfoResDto {
-  String uid;
-  String userUuid;
-  String userName;
-  String groupName;
-  String hasRole;
+  String? uid;
+  String? userUuid;
+  String? userName;
+  String? groupName;
+  String? hasRole;
 
   MUserInfoResDto();
 

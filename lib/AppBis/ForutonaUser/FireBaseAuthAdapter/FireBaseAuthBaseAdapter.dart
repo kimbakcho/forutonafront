@@ -8,7 +8,7 @@ abstract class FireBaseAuthBaseAdapter {
   Future<String> getFireBaseIdToken();
   Future<bool> isLogin();
   Future<String> userUid();
-  Future<String> userEmail();
+  Future<String?> userEmail();
   Future<String> signInWithEmailAndPassword(String email,String pw);
   Future<List<String>> fetchSignInMethodsForEmail(String email);
   Future<String> signInWithCustomToken(String token);
@@ -21,16 +21,16 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
   final noneToken = "";
 
   Future<String> getFireBaseIdToken() async {
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    var firebaseUser = FirebaseAuth.instance.currentUser;
     if (firebaseUser == null) {
       return noneToken;
     }
-    var idTokenResult = await firebaseUser.getIdToken(refresh: true);
-    return idTokenResult.token;
+    var idTokenResult = firebaseUser.getIdToken(true);
+    return idTokenResult;
   }
 
   Future<bool> isLogin() async {
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    var firebaseUser = FirebaseAuth.instance.currentUser;
     if (firebaseUser == null) {
       return false;
     } else {
@@ -40,18 +40,18 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
 
   Future<String> userUid() async {
     if (await isLogin()) {
-      var firebaseUser = await FirebaseAuth.instance.currentUser();
-      return firebaseUser.uid;
+      var firebaseUser = FirebaseAuth.instance.currentUser;
+      return firebaseUser!.uid;
     } else {
       throw new FireBaseAdapterException("no Login statue");
     }
   }
 
   @override
-  Future<String> userEmail() async {
+  Future<String?> userEmail() async {
     if (await isLogin()) {
-      var firebaseUser = await FirebaseAuth.instance.currentUser();
-      return firebaseUser.email;
+      var firebaseUser = FirebaseAuth.instance.currentUser;
+      return firebaseUser!.email;
     }else {
       throw new FireBaseAdapterException("no Login statue");
     }
@@ -59,19 +59,19 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
 
   @override
   Future<String> signInWithEmailAndPassword(String email, String pw) async {
-    AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pw);
-    return result.user.uid;
+    UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pw);
+    return result.user!.uid;
   }
 
   @override
   Future<List<String>> fetchSignInMethodsForEmail(String email) async {
-     return await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: email);
+     return await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
   }
 
   @override
   Future<String> signInWithCustomToken(String token) async {
-    var authResult = await FirebaseAuth.instance.signInWithCustomToken(token: token);
-    return authResult.user.uid;
+    var authResult = await FirebaseAuth.instance.signInWithCustomToken(token);
+    return authResult.user!.uid;
   }
 
   @override
@@ -86,8 +86,8 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
 
   @override
   Future<String> createUserWithEmailAndPassword(String email,String pw) async{
-    AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pw);
-    return result.user.uid;
+    UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pw);
+    return result.user!.uid;
   }
 
 }

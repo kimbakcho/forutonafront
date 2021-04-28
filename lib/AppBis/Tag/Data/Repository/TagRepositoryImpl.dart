@@ -16,7 +16,7 @@ class TagRepositoryImpl implements TagRepository {
   final FBallTagRemoteDataSource _fBallTagRemoteDataSource;
 
   TagRepositoryImpl(
-      {@required FBallTagRemoteDataSource fBallTagRemoteDataSource})
+      {required FBallTagRemoteDataSource fBallTagRemoteDataSource})
       : _fBallTagRemoteDataSource = fBallTagRemoteDataSource;
 
   @override
@@ -42,7 +42,7 @@ class TagRepositoryImpl implements TagRepository {
 
   @override
   Future<List<TagRankingResDto>> findByTagRankingFromTextOrderBySumBI(
-      {@required TagRankingFromTextReqDto tagRankingFromTextReqDto}) async {
+      {required TagRankingFromTextReqDto tagRankingFromTextReqDto}) async {
     return await _fBallTagRemoteDataSource.getTagRankingFromTextOrderBySumBI(
         tagRankingFromTextReqDto: tagRankingFromTextReqDto,
         noneTokenFDio: FDio.noneToken());

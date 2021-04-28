@@ -247,7 +247,7 @@ class G009MainPageViewModel extends ChangeNotifier {
     var reqSignInUserInfoFromMemory =
         _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
 
-    if (reqSignInUserInfoFromMemory.snsService != SnsSupportService.Forutona) {
+    if (reqSignInUserInfoFromMemory!.snsService != SnsSupportService.Forutona) {
       await this._logoutUseCaseInputPort.tryLogout();
     }
 

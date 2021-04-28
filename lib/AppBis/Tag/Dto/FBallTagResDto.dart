@@ -5,10 +5,10 @@ part 'FBallTagResDto.g.dart';
 
 @JsonSerializable()
 class FBallTagResDto {
-  int idx;
-  String tagItem;
-  String ballUuid;
-  int tagIndex;
+  int? idx;
+  String? tagItem;
+  String? ballUuid;
+  int? tagIndex;
 
 
   FBallTagResDto();

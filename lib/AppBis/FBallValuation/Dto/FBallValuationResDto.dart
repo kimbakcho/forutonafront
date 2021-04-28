@@ -7,9 +7,9 @@ import '../../FBall/Dto/FBallResDto.dart';
 part 'FBallValuationResDto.g.dart';
 @JsonSerializable(explicitToJson: true)
 class FBallValuationResDto {
-  String valueUuid;
-  FBallResDto ballUuid;
-  FUserInfoSimpleResDto uid;
+  String? valueUuid;
+  FBallResDto? ballUuid;
+  FUserInfoSimpleResDto? uid;
   int ballLike = 0;
   int ballDislike = 0;
   int point = 0;

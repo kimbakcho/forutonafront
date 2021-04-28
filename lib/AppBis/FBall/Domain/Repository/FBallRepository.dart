@@ -16,22 +16,22 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqD
 
 abstract class FBallRepository {
   Future<PageWrap<FBallResDto>> findByBallOrderByBI(
-      {@required FBallListUpFromBIReqDto listUpReqDto,
-      @required Pageable pageable});
+      {required FBallListUpFromBIReqDto listUpReqDto,
+      required Pageable pageable});
 
   Future<PageWrap<FBallResDto>> searchUserToMakerBalls(
-      {@required String makerUid, @required Pageable pageable});
+      {required String makerUid, required Pageable pageable});
 
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
-      {@required FBallListUpFromSearchTitleReqDto reqDto,
-      @required Pageable pageable});
+      {required FBallListUpFromSearchTitleReqDto reqDto,
+      required Pageable pageable});
 
   Future<PageWrap<FBallResDto>> listUpFromTagName(
-      {@required FBallListUpFromTagNameReqDto reqDto,
-      @required Pageable pageable});
+      {required FBallListUpFromTagNameReqDto reqDto,
+      required Pageable pageable});
 
   Future<PageWrap<FBallResDto>> ballListUpFromMapArea(
-      {@required BallFromMapAreaReqDto reqDto, @required Pageable pageable});
+      {required BallFromMapAreaReqDto reqDto, required Pageable pageable});
 
   Future<String> deleteBall(String ballUuid);
 
@@ -43,7 +43,7 @@ abstract class FBallRepository {
 
   Future<int> ballHit(String ballUuid);
 
-  Future<FBallImageUpload> ballImageUpload({@required List<Uint8List> images});
+  Future<FBallImageUpload> ballImageUpload({required List<Uint8List> images});
 
   Future<List<FBallResDto>> selectBalls(List<String> ballUuids);
 

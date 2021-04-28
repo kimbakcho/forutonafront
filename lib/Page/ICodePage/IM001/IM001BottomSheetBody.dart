@@ -22,21 +22,21 @@ import 'Component/BallTageEdit/TagEditDto.dart';
 import 'IM001Mode.dart';
 
 class IM001BottomSheetBody extends StatelessWidget {
-  final Function(String) onChangeAddress;
+  final Function(String)? onChangeAddress;
 
-  final Function(bool) onComplete;
+  final Function(bool)? onComplete;
 
-  final String initAddress;
-  final IM001BottomSheetBodyController im001bottomSheetBodyController;
+  final String? initAddress;
+  final IM001BottomSheetBodyController? im001bottomSheetBodyController;
 
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final FBallResDto preSetBallResDto;
+  final FBallResDto? preSetBallResDto;
 
-  final List<FBallTagResDto> preSetFBallTagResDtos;
+  final List<FBallTagResDto>? preSetFBallTagResDtos;
 
   const IM001BottomSheetBody(
-      {Key key,
+      {Key? key,
       this.initAddress,
       this.onChangeAddress,
       this.onComplete,
@@ -232,7 +232,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                       height: 42,
                       color: Color(0xffF6F6F6),
                       isBoxShadow: false,
-                      icon: model.youtubeUrlUploadComponentController.isShow()
+                      icon: model.youtubeUrlUploadComponentController!.isShow()
                           ? Icon(
                               ForutonaIcon.youtube_1,
                               size: 20,
@@ -255,7 +255,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                       height: 42,
                       color: Color(0xffF6F6F6),
                       isBoxShadow: false,
-                      icon: model.ballTagEditComponentController.isShow() ?  Icon(
+                      icon: model.ballTagEditComponentController!.isShow() ?  Icon(
                         ForutonaIcon.tag_im01,
                         color: Color(0xff3497FD),
                       ): Icon(
@@ -264,8 +264,6 @@ class IM001BottomSheetBody extends StatelessWidget {
                       ),
                       onTap: () {
                         model.ballTagEditComponentToggle();
-
-
                       },
                     )
                   ],
@@ -280,41 +278,41 @@ class IM001BottomSheetBody extends StatelessWidget {
 }
 
 class IM001BottomSheetBodyViewModel extends ChangeNotifier {
-  String _currentAddress;
+  String? _currentAddress;
 
-  final String initAddress;
+  final String? initAddress;
 
-  TextEditingController _addressTextController;
+  TextEditingController? _addressTextController;
 
-  TextEditingController _titleTextController;
+  TextEditingController? _titleTextController;
 
-  TextEditingController _contentTextController;
+  TextEditingController? _contentTextController;
 
-  final Function(String) onChangeAddress;
+  final Function(String)? onChangeAddress;
 
-  final IM001BottomSheetBodyController im001bottomSheetBodyController;
+  final IM001BottomSheetBodyController? im001bottomSheetBodyController;
 
-  YoutubeUrlUploadComponentController youtubeUrlUploadComponentController;
+  YoutubeUrlUploadComponentController? youtubeUrlUploadComponentController;
 
-  FocusNode titleFocus;
+  FocusNode? titleFocus;
 
-  FocusNode contentFocus;
+  FocusNode? contentFocus;
 
-  BallImageEditComponentController ballImageEditComponentController;
+  BallImageEditComponentController? ballImageEditComponentController;
 
-  BallTagEditComponentController ballTagEditComponentController;
+  BallTagEditComponentController? ballTagEditComponentController;
 
   final _picker = ImagePicker();
 
-  final Function(bool) onComplete;
+  final Function(bool)? onComplete;
 
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final FBallResDto preSetBallResDto;
+  final FBallResDto? preSetBallResDto;
 
-  final List<FBallTagResDto> preSetFBallTagResDtos;
+  final List<FBallTagResDto>? preSetFBallTagResDtos;
 
-  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
+  IssueBallDisPlayUseCase? _issueBallDisPlayUseCase;
 
   IM001BottomSheetBodyViewModel(
       this.onChangeAddress,
@@ -326,13 +324,13 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
       this.preSetFBallTagResDtos) {
     _titleTextController = TextEditingController();
 
-    _titleTextController.addListener(() {
+    _titleTextController!.addListener(() {
       _checkComplete();
     });
 
     _contentTextController = TextEditingController();
 
-    _contentTextController.addListener(() {
+    _contentTextController!.addListener(() {
       _checkComplete();
     });
 
@@ -344,59 +342,59 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
     ballTagEditComponentController = BallTagEditComponentController();
 
     titleFocus = FocusNode();
-    titleFocus.addListener(() {
+    titleFocus!.addListener(() {
       notifyListeners();
     });
 
     contentFocus = FocusNode();
-    contentFocus.addListener(() {
+    contentFocus!.addListener(() {
       notifyListeners();
     });
 
     if (im001bottomSheetBodyController != null) {
-      im001bottomSheetBodyController._im001bottomSheetBodyViewModel = this;
+      im001bottomSheetBodyController!._im001bottomSheetBodyViewModel = this;
     }
     _currentAddress = initAddress;
     _addressTextController = TextEditingController();
-    _addressTextController.text = _currentAddress;
-    _addressTextController.addListener(() {
-      _currentAddress = _addressTextController.text;
+    _addressTextController!.text = _currentAddress!;
+    _addressTextController!.addListener(() {
+      _currentAddress = _addressTextController!.text;
       if (onChangeAddress != null) {
-        onChangeAddress(_addressTextController.text);
+        onChangeAddress!(_addressTextController!.text);
       }
       _checkComplete();
     });
 
     if (im001mode == IM001Mode.modify) {
       _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-          fBallResDto: preSetBallResDto, geoLocatorAdapter: sl());
-      _titleTextController.text = _issueBallDisPlayUseCase.ballName();
-      _contentTextController.text = _issueBallDisPlayUseCase.descriptionText();
-      _addressTextController.text = _issueBallDisPlayUseCase.placeAddress();
+          fBallResDto: preSetBallResDto!, geoLocatorAdapter: sl());
+      _titleTextController!.text = _issueBallDisPlayUseCase!.ballName();
+      _contentTextController!.text = _issueBallDisPlayUseCase!.descriptionText();
+      _addressTextController!.text = _issueBallDisPlayUseCase!.placeAddress();
       _checkComplete();
     }
   }
 
   get isTitleFocus {
-    return titleFocus.hasFocus;
+    return titleFocus!.hasFocus;
   }
 
   get isContentFocus {
-    return contentFocus.hasFocus;
+    return contentFocus!.hasFocus;
   }
 
   _checkComplete() {
-    if (_titleTextController.text.isNotEmpty &&
-        _addressTextController.text.isNotEmpty &&
-        _contentTextController.text.isNotEmpty) {
-      this.onComplete(true);
+    if (_titleTextController!.text.isNotEmpty &&
+        _addressTextController!.text.isNotEmpty &&
+        _contentTextController!.text.isNotEmpty) {
+      this.onComplete!(true);
     } else {
-      this.onComplete(false);
+      this.onComplete!(false);
     }
   }
 
   int get imageEditComponentImageLength {
-    return ballImageEditComponentController.getImageItemCount();
+    return ballImageEditComponentController!.getImageItemCount();
   }
 
   _imageItemListChange(List<BallImageItem> ballList) {
@@ -404,7 +402,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
   }
 
   _onSelectBallImage(FileImage fileImage) async {
-    await ballImageEditComponentController.addImage(fileImage);
+    await ballImageEditComponentController!.addImage(fileImage);
     notifyListeners();
   }
 
@@ -417,53 +415,53 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
   }
 
   void youtubeBtnToggle() {
-    youtubeUrlUploadComponentController.toggle();
+    youtubeUrlUploadComponentController!.toggle();
     notifyListeners();
   }
 
   void ballTagEditComponentToggle() {
-    ballTagEditComponentController.toggle();
+    ballTagEditComponentController!.toggle();
     notifyListeners();
   }
 }
 
 class IM001BottomSheetBodyController {
-  IM001BottomSheetBodyViewModel _im001bottomSheetBodyViewModel;
+  IM001BottomSheetBodyViewModel? _im001bottomSheetBodyViewModel;
 
   changeDisplayAddress(String value) {
-    _im001bottomSheetBodyViewModel._addressTextController.text = value;
+    _im001bottomSheetBodyViewModel!._addressTextController!.text = value;
   }
 
   String getBallName() {
-    return _im001bottomSheetBodyViewModel._titleTextController.text;
+    return _im001bottomSheetBodyViewModel!._titleTextController!.text;
   }
 
   String getPlaceAddress() {
-    return _im001bottomSheetBodyViewModel._currentAddress;
+    return _im001bottomSheetBodyViewModel!._currentAddress!;
   }
 
   String getContent() {
-    return _im001bottomSheetBodyViewModel._contentTextController.text;
+    return _im001bottomSheetBodyViewModel!._contentTextController!.text;
   }
 
   String getYoutubeId() {
-    return _im001bottomSheetBodyViewModel.youtubeUrlUploadComponentController
+    return _im001bottomSheetBodyViewModel!.youtubeUrlUploadComponentController!
         .getYoutubeId();
   }
 
   List<BallImageItem> getBallImages() {
-    return _im001bottomSheetBodyViewModel.ballImageEditComponentController
+    return _im001bottomSheetBodyViewModel!.ballImageEditComponentController!
         .getBallImageItems();
   }
 
   Future<List<BallImageItem>> updateImageAndFillImageUrl() async {
-    await _im001bottomSheetBodyViewModel.ballImageEditComponentController
+    await _im001bottomSheetBodyViewModel!.ballImageEditComponentController!
         .updateImageAndFillImageUrl();
     return getBallImages();
   }
 
   List<TagEditItemDto> getTags() {
-    return _im001bottomSheetBodyViewModel.ballTagEditComponentController
+    return _im001bottomSheetBodyViewModel!.ballTagEditComponentController!
         .getTags();
   }
 }

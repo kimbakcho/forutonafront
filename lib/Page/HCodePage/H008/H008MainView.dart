@@ -6,12 +6,12 @@ import 'package:provider/provider.dart';
 import 'PlaceListFromSearchTextWidget.dart';
 
 class H008MainView extends StatelessWidget {
-  final String initSearchText;
-  final PlaceListFromSearchTextWidgetListener
+  final String? initSearchText;
+  final PlaceListFromSearchTextWidgetListener?
       placeListFromSearchTextWidgetListener;
 
   const H008MainView(
-      {Key key,
+      {Key? key,
       this.initSearchText,
       this.placeListFromSearchTextWidgetListener})
       : super(key: key);

@@ -12,6 +12,7 @@ import 'package:forutonafront/AppBis/Notification/Domain/NotificationUseCaseFact
 import 'package:forutonafront/AppBis/Notification/Value/NotificationServiceType.dart';
 import 'package:forutonafront/Common/FlutterLocalNotificationPluginAdapter/FlutterLocalNotificationsPluginAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/KeyHash/KeyHash.dart';
 import 'package:forutonafront/Page/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/Page/HCodePage/H002/BottomMakeComponent/BottomMakeComponent.dart';
 import 'package:forutonafront/Page/HomePage/HomeMainPage.dart';
@@ -22,9 +23,9 @@ import 'package:forutonafront/Page/LCodePage/L010/L010MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L011/L011MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:injectable/injectable.dart';
-import 'package:key_hash/key_hash.dart';
+import 'package:otp_autofill/otp_autofill.dart';
+
 import 'package:provider/provider.dart';
-import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 import 'package:uuid/uuid.dart';
 
 import 'BottomNavigation.dart';
@@ -68,24 +69,24 @@ class MainPageView extends StatelessWidget {
 
 class MainPageViewModel extends ChangeNotifier
     implements BottomNavigationListener {
-  final BuildContext context;
+  final BuildContext? context;
 
-  Key homepageWidgetKey;
+  Key? homepageWidgetKey;
 
   PageController _pageController = PageController();
 
-  MainPageViewModelController _mainPageViewModelController;
+  MainPageViewModelController? _mainPageViewModelController;
 
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       _geoLocationUtilForeGroundUseCaseInputPort;
 
   Key gCodeMainKey = UniqueKey();
 
   bool isCheckPositionPermission = true;
 
-  final UserPositionForegroundMonitoringUseCaseInputPort userPositionForegroundMonitoringUseCaseInputPort;
+  final UserPositionForegroundMonitoringUseCaseInputPort? userPositionForegroundMonitoringUseCaseInputPort;
 
   MainPageViewModel(
       this._signInUserInfoUseCaseInputPort,
@@ -97,24 +98,24 @@ class MainPageViewModel extends ChangeNotifier
     initSignKey();
 
     homepageWidgetKey = Key(Uuid().v4());
-    _signInUserInfoUseCaseInputPort.fUserInfoStream.listen(onLoginStateChange);
+    _signInUserInfoUseCaseInputPort!.fUserInfoStream!.listen(onLoginStateChange);
 
-    this._mainPageViewModelController._mainPageViewModel = this;
+    this._mainPageViewModelController!._mainPageViewModel = this;
 
     checkPositionPermission();
 
-    if (_signInUserInfoUseCaseInputPort.isLogin) {
+    if (_signInUserInfoUseCaseInputPort!.isLogin!) {
       var fUserInfoResDto =
-          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+          _signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
       Future.delayed(Duration.zero, () {
-        onLoginStateChange(fUserInfoResDto);
+        onLoginStateChange(fUserInfoResDto!);
       });
     }
 
-    userPositionForegroundMonitoringUseCaseInputPort
+    userPositionForegroundMonitoringUseCaseInputPort!
         .startUserPositionMonitoringAndUpdateToServer();
 
-    _signInUserInfoUseCaseInputPort.fUserInfoStream.listen((event) {
+    _signInUserInfoUseCaseInputPort!.fUserInfoStream!.listen((event) {
       gCodeMainKey = UniqueKey();
     });
     initStatueBar();
@@ -124,9 +125,9 @@ class MainPageViewModel extends ChangeNotifier
 
       selectNotificationSubject.listen((String payload) async {
         Map<String, dynamic> message = json.decoder.convert(payload);
-        NotificationServiceType notificationServiceType = EnumToString.fromString(NotificationServiceType.values, message["serviceKey"]);
+        NotificationServiceType notificationServiceType = EnumToString.fromString(NotificationServiceType.values, message["serviceKey"])!;
         NotificationUseCaseInputPort notificationUseCaseInputPort = NotificationUseCaseFactory.create(notificationServiceType);
-        notificationUseCaseInputPort.selectAction(context, message['payload']);
+        notificationUseCaseInputPort.selectAction(context!, message['payload']);
       });
 
   }
@@ -135,7 +136,7 @@ class MainPageViewModel extends ChangeNotifier
   checkPositionPermission() async {
     await Future.delayed(Duration(milliseconds: 500));
     var isCanUseGps =
-        await _geoLocationUtilForeGroundUseCaseInputPort.useGpsReq();
+        await _geoLocationUtilForeGroundUseCaseInputPort!.useGpsReq();
     if (!isCanUseGps) {
       SystemNavigator.pop();
     }
@@ -144,8 +145,8 @@ class MainPageViewModel extends ChangeNotifier
   }
 
   Future<void> onLoginStateChange(FUserInfoResDto fUserInfoResDto) async {
-    if (_signInUserInfoUseCaseInputPort.checkMaliciousPopup()) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    if (_signInUserInfoUseCaseInputPort!.checkMaliciousPopup()) {
+      Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
         return L010MainPage();
       }));
     }
@@ -173,11 +174,11 @@ class MainPageViewModel extends ChangeNotifier
   }
 
   get isNotLockMaliciousUser {
-    if (_signInUserInfoUseCaseInputPort.isLogin) {
+    if (_signInUserInfoUseCaseInputPort!.isLogin!) {
       var reqSignInUserInfoFromMemory =
-          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-      if (reqSignInUserInfoFromMemory.stopPeriod != null &&
-          reqSignInUserInfoFromMemory.stopPeriod.isAfter(DateTime.now())) {
+          _signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
+      if (reqSignInUserInfoFromMemory!.stopPeriod != null &&
+          reqSignInUserInfoFromMemory.stopPeriod!.isAfter(DateTime.now())) {
         return false;
       } else {
         return true;
@@ -189,7 +190,7 @@ class MainPageViewModel extends ChangeNotifier
 
   _actionMakeBall() async {
     var result = await showModalBottomSheet(
-        context: context,
+        context: context!,
         backgroundColor: Colors.transparent,
         builder: (_) {
           return BottomMakeComponent(
@@ -200,7 +201,7 @@ class MainPageViewModel extends ChangeNotifier
           );
         });
     if (result is FBallResDto) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
         return ID01MainPage(
             id01Mode: ID01Mode.publish,
             fBallResDto: result,
@@ -220,32 +221,33 @@ class MainPageViewModel extends ChangeNotifier
   }
 
   void initSignKey() async {
-    String yourKeyHash;
+    String? yourKeyHash;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      yourKeyHash = await KeyHash.getKeyHash;
+      yourKeyHash = await KeyHash.getKeyHash();
       print("yourKeyHash = $yourKeyHash");
     } on PlatformException {
       yourKeyHash = 'Failed to get platform version.';
     }
-    String signature = await SmsRetrieved.getAppSignature();
+
+    String? signature = await OTPInteractor.getAppSignature();
     print("sms KeyHash = $signature");
   }
 }
 
 @lazySingleton
 class MainPageViewModelController {
-  MainPageViewModel _mainPageViewModel;
+  MainPageViewModel? _mainPageViewModel;
 
   moveToMainPage(BottomNavigationNavType bottomNavigationNavType) {
-    _mainPageViewModel.onBottomNavClick(bottomNavigationNavType);
+    _mainPageViewModel!.onBottomNavClick(bottomNavigationNavType);
   }
 
   BottomNavigationNavType getMainPageCurrentPage() {
-    if (_mainPageViewModel == null || _mainPageViewModel._pageController.positions.isEmpty) {
+    if (_mainPageViewModel == null || _mainPageViewModel!._pageController.positions.isEmpty) {
       return BottomNavigationNavType.HOME;
     }
-    double current = _mainPageViewModel._pageController.page;
+    double current = _mainPageViewModel!._pageController.page!;
     if (current == 0) {
       return BottomNavigationNavType.HOME;
     } else if (current == 1) {

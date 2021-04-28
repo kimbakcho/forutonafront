@@ -5,8 +5,8 @@ part 'SearchHistoryDto.g.dart';
 
 @JsonSerializable()
 class SearchHistoryDto {
-  String searchText;
-  DateTime searchTime;
+  String? searchText;
+  DateTime? searchTime;
 
   SearchHistoryDto({this.searchText, this.searchTime});
 

@@ -20,9 +20,9 @@ abstract class ReviewUpdateMediator {
 class ReviewUpdateMediatorImpl extends ReviewUpdateMediator {
 
   List<ReviewUpdateMediatorComponent> components = [];
-  final FBallReplyUseCaseInputPort _fBallReplyUseCaseInputPort;
+  final FBallReplyUseCaseInputPort? _fBallReplyUseCaseInputPort;
   ReviewUpdateMediatorImpl(
-      {FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort})
+      {FBallReplyUseCaseInputPort? fBallReplyUseCaseInputPort})
       : _fBallReplyUseCaseInputPort = fBallReplyUseCaseInputPort;
   @override
   registerComponent(ReviewUpdateMediatorComponent reviewUpdateMediatorComponent) {
@@ -36,7 +36,7 @@ class ReviewUpdateMediatorImpl extends ReviewUpdateMediator {
 
   @override
   Future<FBallReplyResDto> updateReView(FBallReplyUpdateReqDto fBallReplyUpdateReqDto) async {
-    FBallReplyResDto fBallReplyResDto = await _fBallReplyUseCaseInputPort.updateFBallReply(fBallReplyUpdateReqDto);
+    FBallReplyResDto fBallReplyResDto = await _fBallReplyUseCaseInputPort!.updateFBallReply(fBallReplyUpdateReqDto);
     onAllUpdateSignal(fBallReplyResDto);
     return fBallReplyResDto;
   }

@@ -12,9 +12,9 @@ class TermsTextLink extends StatelessWidget {
   final bool gotoPageFlag;
 
   TermsTextLink(
-      {Key key,
-      @required this.label,
-      @required this.termsIdx, this.gotoPageFlag=true})
+      {Key? key,
+      required this.label,
+      required this.termsIdx, this.gotoPageFlag=true})
       : super(key: key);
 
   @override

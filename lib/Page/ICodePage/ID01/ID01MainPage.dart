@@ -37,22 +37,22 @@ import 'ID01MainBottomSheet/ID01MainScaffoldBottomSheet.dart';
 import 'ID01Mode.dart';
 
 class ID01MainPage extends StatelessWidget {
-  final String ballUuid;
+  final String? ballUuid;
 
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final ID01Mode id01Mode;
+  final ID01Mode? id01Mode;
 
-  final FBallResDto preViewResDto;
+  final FBallResDto? preViewResDto;
 
-  final List<BallImageItem> preViewBallImage;
+  final List<BallImageItem>? preViewBallImage;
 
-  final List<FBallTagResDto> preViewfBallTagResDtos;
+  final List<FBallTagResDto>? preViewfBallTagResDtos;
 
-  final Function onCreateBall;
+  final Function? onCreateBall;
 
   const ID01MainPage(
-      {Key key,
+      {Key? key,
       this.ballUuid,
       this.fBallResDto,
       this.id01Mode = ID01Mode.publish,
@@ -84,11 +84,11 @@ class ID01MainPage extends StatelessWidget {
       child: Consumer<ID01MainPageViewModel>(
         builder: (_, model, child) {
           return Scaffold(
-              key: Key(model.mainkey),
+              key: Key(model.mainkey!),
               bottomSheet: model.isShowBottomSheet
                   ? ID01MainScaffoldBottomSheet(
-                      fBallResDto: fBallResDto,
-                      valuationMediator: model.valuationMediator)
+                      fBallResDto: fBallResDto!,
+                      valuationMediator: model.valuationMediator!)
                   : Container(
                       height: 0,
                       width: 0,
@@ -122,7 +122,7 @@ class ID01MainPage extends StatelessWidget {
                                 key: model.mapContainerGlobalKey,
                                 child: GoogleMap(
                                   initialCameraPosition:
-                                      model._googleMapInitPosition,
+                                      model._googleMapInitPosition!,
                                   markers: model.mapMarkers,
                                   onMapCreated: model.onMapCreated,
                                 ),
@@ -218,58 +218,58 @@ class ID01MainPage extends StatelessWidget {
 }
 
 class ID01MainPageViewModel extends ChangeNotifier {
-  final String ballUuid;
+  final String? ballUuid;
 
-  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
+  final SelectBallUseCaseInputPort? _selectBallUseCaseInputPort;
 
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  final MaliciousBallUseCaseInputPort _maliciousBallUseCaseInputPort;
+  final MaliciousBallUseCaseInputPort? _maliciousBallUseCaseInputPort;
 
-  final ID01Mode id01Mode;
+  final ID01Mode? id01Mode;
 
-  final FBallResDto preViewResDto;
+  final FBallResDto? preViewResDto;
 
-  final Function onCreateBall;
+  final Function? onCreateBall;
 
-  final TagFromBallUuidUseCaseInputPort _tagFromBallUuidUseCaseInputPort;
+  final TagFromBallUuidUseCaseInputPort? _tagFromBallUuidUseCaseInputPort;
 
-  final DeleteBallUseCaseInputPort _deleteBallUseCaseInputPort;
+  final DeleteBallUseCaseInputPort? _deleteBallUseCaseInputPort;
 
-  ID01MainBottomSheetBodyController _id01mainBottomSheetBodyController;
+  ID01MainBottomSheetBodyController? _id01mainBottomSheetBodyController;
 
   bool isBallLoaded = false;
 
-  FBallResDto fBallResDto;
+  FBallResDto? fBallResDto;
 
-  CameraPosition _googleMapInitPosition;
+  CameraPosition? _googleMapInitPosition;
 
-  BuildContext _context;
+  BuildContext? _context;
 
-  Widget _bottomWidget;
+  Widget? _bottomWidget;
 
   Set<Marker> mapMarkers = new Set();
 
-  GeoLocationUtilForeGroundUseCaseInputPort
+  GeoLocationUtilForeGroundUseCaseInputPort?
       _geoLocationUtilForeGroundUseCaseInputPort;
 
-  GoogleMapController googleMapController;
+  GoogleMapController? googleMapController;
 
-  MapMakerDescriptorContainer _mapMakerDescriptorContainer;
+  MapMakerDescriptorContainer? _mapMakerDescriptorContainer;
 
-  SheetController sheetController;
+  SheetController? sheetController;
 
-  MapScreenPositionUseCaseInputPort _mapScreenPositionUseCaseInputPort;
+  MapScreenPositionUseCaseInputPort? _mapScreenPositionUseCaseInputPort;
 
-  GlobalKey mapContainerGlobalKey = GlobalKey();
+  GlobalKey? mapContainerGlobalKey = GlobalKey();
 
   bool _currentCollapsed = false;
 
   bool _currentExpanded = false;
 
-  ValuationMediator valuationMediator;
+  ValuationMediator? valuationMediator;
 
-  String mainkey;
+  String? mainkey;
 
   double currentStateProgress = 0.5;
 
@@ -309,7 +309,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
       if (fBallResDto == null) {
         notifyListeners();
         this.fBallResDto =
-            await this._selectBallUseCaseInputPort.selectBall(ballUuid);
+            await this._selectBallUseCaseInputPort!.selectBall(ballUuid!);
       }
     }
 
@@ -320,8 +320,8 @@ class ID01MainPageViewModel extends ChangeNotifier {
 
   syncUserInfo() async {
     syncLoadingFlag = true;
-    if (_signInUserInfoUseCaseInputPort.isLogin) {
-      await _signInUserInfoUseCaseInputPort
+    if (_signInUserInfoUseCaseInputPort!.isLogin!) {
+      await _signInUserInfoUseCaseInputPort!
           .saveSignInInfoInMemoryFromAPiServer();
       notifyListeners();
     }
@@ -330,30 +330,32 @@ class ID01MainPageViewModel extends ChangeNotifier {
 
   _init() async {
     _googleMapInitPosition = CameraPosition(
-        target: LatLng(this.fBallResDto.latitude, this.fBallResDto.longitude),
+        target:
+            LatLng(this.fBallResDto!.latitude!, this.fBallResDto!.longitude!),
         zoom: 14.4);
 
-    var position = await _geoLocationUtilForeGroundUseCaseInputPort
+    var position = await _geoLocationUtilForeGroundUseCaseInputPort!
         .getCurrentWithLastPosition();
 
     mapMarkers.add(Marker(
         zIndex: 1,
         markerId: MarkerId("User"),
-        position: LatLng(position.latitude, position.longitude),
-        icon: _mapMakerDescriptorContainer
+        position: LatLng(position.latitude!, position.longitude!),
+        icon: _mapMakerDescriptorContainer!
             .getBitmapDescriptor(MapMakerDescriptorType.UserAvatarIcon)));
 
     mapMarkers.add(Marker(
         zIndex: 2,
-        markerId: MarkerId(this.fBallResDto.ballUuid),
-        position: LatLng(this.fBallResDto.latitude, this.fBallResDto.longitude),
-        icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
+        markerId: MarkerId(this.fBallResDto!.ballUuid!),
+        position:
+            LatLng(this.fBallResDto!.latitude!, this.fBallResDto!.longitude!),
+        icon: _mapMakerDescriptorContainer!.getBitmapDescriptor(
             MapMakerDescriptorType.IssueBallIconSelectNormal)));
   }
 
   get isShowBottomSheet {
-    if (this.sheetController.state != null &&
-        this.sheetController.state.isCollapsed) {
+    if (this.sheetController!.state != null &&
+        this.sheetController!.state!.isCollapsed) {
       return false;
     } else {
       return true;
@@ -369,25 +371,25 @@ class ID01MainPageViewModel extends ChangeNotifier {
   }
 
   get topSnapPosition {
-    return MediaQuery.of(_context).size.height -
-        (MediaQuery.of(_context).padding.top + 58);
+    return MediaQuery.of(_context!).size.height -
+        (MediaQuery.of(_context!).padding.top + 58);
   }
 
   void onMapCreated(GoogleMapController controller) async {
     googleMapController = controller;
-    final RenderBox mapRenderBoxRed =
-        mapContainerGlobalKey.currentContext.findRenderObject();
+    final RenderBox? mapRenderBoxRed =
+        mapContainerGlobalKey!.currentContext!.findRenderObject() as RenderBox?;
 
     await Future.delayed(Duration(milliseconds: 500));
 
-    var latLng =
-        await _mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
-            mapRenderBoxRed,
+    var latLng = await _mapScreenPositionUseCaseInputPort!
+        .mapScreenOffsetToLatLng(
+            mapRenderBoxRed!,
             controller,
-            MediaQuery.of(_context).size.width / 2,
-            MediaQuery.of(_context).size.height * 0.7);
+            MediaQuery.of(_context!).size.width / 2,
+            MediaQuery.of(_context!).size.height * 0.7);
 
-    googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+    googleMapController!.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: latLng, zoom: 14)));
   }
 
@@ -415,7 +417,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
   }
 
   showPopup(BuildContext context) async {
-    if (!_signInUserInfoUseCaseInputPort.isLogin) {
+    if (!_signInUserInfoUseCaseInputPort!.isLogin!) {
       showMaterialModalBottomSheet(
           context: context,
           expand: false,
@@ -427,41 +429,41 @@ class ID01MainPageViewModel extends ChangeNotifier {
     }
 
     var reqSignInUserInfoFromMemory =
-        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+        _signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
 
-    if (fBallResDto.uid.uid == reqSignInUserInfoFromMemory.uid) {
+    if (fBallResDto!.uid!.uid == reqSignInUserInfoFromMemory!.uid) {
       showDialog(
           context: context,
-          child: MyBallPopup(
-            onDelete: onDeleteBall,
-            onModify: onModifyBall,
-          ));
+          builder: (context) => MyBallPopup(
+                onDelete: onDeleteBall,
+                onModify: onModifyBall,
+              ));
     } else {
       await showDialog(
           context: context,
-          child: OtherUserBallPopup(
-            onReportMalicious: onReportMalicious,
-          ));
+          builder: (context) => OtherUserBallPopup(
+                onReportMalicious: onReportMalicious,
+              ));
     }
   }
 
   onDeleteBall(BuildContext context) async {
     await showDialog(
         context: context,
-        child: BallDeletePopup(
-          actionDelete: onActionDelete,
-        ));
+        builder: (context) => BallDeletePopup(
+              actionDelete: onActionDelete,
+            ));
   }
 
   onActionDelete() async {
-    await _deleteBallUseCaseInputPort.deleteBall(fBallResDto.ballUuid);
-    Navigator.of(_context).pop();
-    Navigator.of(_context).pop();
+    await _deleteBallUseCaseInputPort!.deleteBall(fBallResDto!.ballUuid!);
+    Navigator.of(_context!).pop();
+    Navigator.of(_context!).pop();
   }
 
   onModifyBall(BuildContext context) async {
-    var tags = await _tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-        ballUuid: fBallResDto.ballUuid);
+    var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
+        ballUuid: fBallResDto!.ballUuid!);
 
     await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
@@ -471,30 +473,30 @@ class ID01MainPageViewModel extends ChangeNotifier {
       );
     }));
     this.fBallResDto =
-        await this._selectBallUseCaseInputPort.selectBall(ballUuid);
+        await this._selectBallUseCaseInputPort!.selectBall(ballUuid!);
     mainkey = Uuid().v4();
     notifyListeners();
   }
 
   onReportMalicious(BuildContext context, MaliciousType maliciousType) async {
     await this
-        ._maliciousBallUseCaseInputPort
-        .reportMaliciousReply(maliciousType, ballUuid);
+        ._maliciousBallUseCaseInputPort!
+        .reportMaliciousReply(maliciousType, ballUuid!);
   }
 
   void moveToMyLocation() async {
-    var position = await _geoLocationUtilForeGroundUseCaseInputPort
+    var position = await _geoLocationUtilForeGroundUseCaseInputPort!
         .getCurrentWithLastPosition();
-    googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+    googleMapController!.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
+            target: LatLng(position.latitude!, position.longitude!),
             zoom: 14.56)));
   }
 
   void moveToBallLocation(Position position) async {
-    googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+    googleMapController!.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
+            target: LatLng(position.latitude!, position.longitude!),
             zoom: 14.56)));
   }
 }

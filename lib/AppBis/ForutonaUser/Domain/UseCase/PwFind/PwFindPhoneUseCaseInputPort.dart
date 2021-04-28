@@ -14,7 +14,7 @@ class PwFindPhoneUseCase implements PwFindPhoneUseCaseInputPort {
 
   PhoneAuthRepository _phoneAuthRepository;
 
-  PwFindPhoneUseCase({@required PhoneAuthRepository phoneAuthRepository})
+  PwFindPhoneUseCase({required PhoneAuthRepository phoneAuthRepository})
       : _phoneAuthRepository = phoneAuthRepository;
 
   Future<PwChangeFromPhoneAuthResDto> phonePwChange(PwChangeFromPhoneAuthReqDto reqDto) async {

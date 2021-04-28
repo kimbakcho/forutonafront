@@ -17,14 +17,14 @@ class MainModel with ChangeNotifier {
   final MapMakerDescriptorContainer _mapMakerDescriptorContainer;
 
   MainModel(
-      {@required
+      {required
           FireBaseMessageController fireBaseMessageController,
-      @required
+      required
           FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      @required
+      required
           FlutterLocalNotificationsPluginAdapter
               flutterLocalNotificationsPluginAdapter,
-      @required
+      required
           MapMakerDescriptorContainer mapMakerDescriptorContainer})
       : _fireBaseMessageController = fireBaseMessageController,
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,

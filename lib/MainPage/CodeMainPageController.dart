@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart';
 import 'package:forutonafront/Components/TopNav/TopNavBtnMediator.dart';
 
-
-
-enum CodeState { H001CODE, H003CODE, X001CODE, X002CODE, I001CODE, G001CODE,G003CODE }
+enum CodeState {
+  H001CODE,
+  H003CODE,
+  X001CODE,
+  X002CODE,
+  I001CODE,
+  G001CODE,
+  G003CODE
+}
 
 abstract class CodeMainPageController {
-  PageController pageController;
-  CodeState currentState;
+  PageController? pageController;
+  CodeState? currentState;
 
   movePageFromTo({CodeState mainTo, CodeState topFrom, CodeState topTo});
 
@@ -18,7 +24,7 @@ abstract class CodeMainPageController {
 
   removeListener(CodeMainPageChangeListener codeMainPageChangeListener);
 
-  SwipeGestureRecognizerController swipeGestureRecognizerController;
+  SwipeGestureRecognizerController? swipeGestureRecognizerController;
 
   updateChangeListener();
 }
@@ -27,24 +33,23 @@ class CodeMainPageControllerImpl implements CodeMainPageController {
   List<CodeMainPageChangeListener> _codeMainPageChangeListener = [];
 
   @override
-  CodeState currentState;
+  CodeState? currentState;
 
   @override
-  PageController pageController = new PageController();
+  PageController? pageController = new PageController();
 
   @override
-  SwipeGestureRecognizerController swipeGestureRecognizerController;
+  SwipeGestureRecognizerController? swipeGestureRecognizerController;
 
   TopNavBtnMediator topNavBtnMediator;
 
   Map<CodeState, CodeMainPageLinkDto> mapCodeMainPageLink;
 
-  CodeMainPageControllerImpl({
-    @required this.swipeGestureRecognizerController,
-    @required this.topNavBtnMediator,
-    @required this.currentState,
-    @required this.mapCodeMainPageLink
-  });
+  CodeMainPageControllerImpl(
+      {required this.swipeGestureRecognizerController,
+      required this.topNavBtnMediator,
+      required this.currentState,
+      required this.mapCodeMainPageLink});
 
   addListener(CodeMainPageChangeListener codeMainPageChangeListener) {
     this._codeMainPageChangeListener.add(codeMainPageChangeListener);
@@ -58,12 +63,11 @@ class CodeMainPageControllerImpl implements CodeMainPageController {
   moveToPage(CodeState pageCode) {
     currentState = pageCode;
 
-    mapCodeMainPageLink[pageCode].gestureFlag
-        ?
-    swipeGestureRecognizerController.gestureOn()
-        : swipeGestureRecognizerController.gestureOff();
+    mapCodeMainPageLink[pageCode]!.gestureFlag!
+        ? swipeGestureRecognizerController!.gestureOn()
+        : swipeGestureRecognizerController!.gestureOff();
 
-    pageController.jumpToPage(mapCodeMainPageLink[currentState].pageNumber);
+    pageController!.jumpToPage(mapCodeMainPageLink[currentState]!.pageNumber!);
 
     updateChangeListener();
   }
@@ -74,19 +78,18 @@ class CodeMainPageControllerImpl implements CodeMainPageController {
     });
   }
 
-  movePageFromTo({CodeState mainTo, CodeState topFrom, CodeState topTo}) async {
-    await topNavBtnMediator.openNavList(navRouterType: topFrom);
-    moveToPage(mainTo);
-    topNavBtnMediator.closeNavList(navRouterType: topTo);
+  movePageFromTo({CodeState? mainTo, CodeState? topFrom, CodeState? topTo}) async {
+    await topNavBtnMediator.openNavList(navRouterType: topFrom!);
+    moveToPage(mainTo!);
+    topNavBtnMediator.closeNavList(navRouterType: topTo!);
   }
 }
 
 class CodeMainPageLinkDto {
-  bool gestureFlag;
-  int pageNumber;
+  bool? gestureFlag;
+  int? pageNumber;
 
   CodeMainPageLinkDto({this.gestureFlag, this.pageNumber});
-
 }
 
 abstract class CodeMainPageChangeListener {

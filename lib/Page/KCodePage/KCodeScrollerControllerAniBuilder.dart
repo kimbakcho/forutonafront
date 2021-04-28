@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class KCodeScrollerControllerAniBuilder extends StatefulWidget {
-  final double startPosition;
-  final double endPosition;
-  final KCodeScrollerController controller;
-  final Widget child;
+  final double? startPosition;
+  final double? endPosition;
+  final KCodeScrollerController? controller;
+  final Widget? child;
 
   const KCodeScrollerControllerAniBuilder(
-      {Key key, this.startPosition, this.endPosition, this.controller, this.child})
+      {Key? key, this.startPosition, this.endPosition, this.controller, this.child})
       : super(key: key);
 
   @override
@@ -17,36 +17,36 @@ class KCodeScrollerControllerAniBuilder extends StatefulWidget {
 
 class _KCodeScrollerControllerAniBuilderState extends State<KCodeScrollerControllerAniBuilder>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  final KCodeScrollerController scrollerController;
-  final Widget child;
+  AnimationController? _controller;
+  final KCodeScrollerController? scrollerController;
+  final Widget? child;
 
-  _KCodeScrollerControllerAniBuilderState({@required this.scrollerController,@required this.child});
+  _KCodeScrollerControllerAniBuilderState({required this.scrollerController,required this.child});
 
   @override
   void initState() {
     _controller =
         AnimationController( duration: Duration(milliseconds: 500),vsync: this);
-    scrollerController._kCodeScrollerControllerBtnState = this;
+    scrollerController!._kCodeScrollerControllerBtnState = this;
     super.initState();
   }
 
   Animation<double> getAnimation() {
     return Tween<double>(begin: widget.startPosition, end: widget.endPosition)
-        .animate(_controller);
+        .animate(_controller!);
   }
 
   void forward() {
-    _controller.forward();
+    _controller!.forward();
   }
 
   void reverse() {
-    _controller.reverse();
+    _controller!.reverse();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -58,34 +58,34 @@ class _KCodeScrollerControllerAniBuilderState extends State<KCodeScrollerControl
 }
 
 class KCodeScrollerControllerBtnAniComponent extends StatelessWidget {
-  final Animation<double> animation;
-  final KCodeScrollerController scrollerController;
-  final Widget aniChild;
+  final Animation<double>? animation;
+  final KCodeScrollerController? scrollerController;
+  final Widget? aniChild;
   const KCodeScrollerControllerBtnAniComponent(
-      {Key key, this.animation, this.scrollerController, this.aniChild})
+      {Key? key, this.animation, this.scrollerController, this.aniChild})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-        animation: animation,
+        animation: animation!,
         builder: (context, child) => Positioned(
-              child: aniChild,
+              child: aniChild!,
               right: 16,
-              bottom: animation.value,
+              bottom: animation!.value,
             ));
   }
 }
 
 class KCodeScrollerController {
-  _KCodeScrollerControllerAniBuilderState _kCodeScrollerControllerBtnState;
+  _KCodeScrollerControllerAniBuilderState? _kCodeScrollerControllerBtnState;
 
 
   void forward() {
-    _kCodeScrollerControllerBtnState.forward();
+    _kCodeScrollerControllerBtnState!.forward();
   }
 
   void reverse() {
-    _kCodeScrollerControllerBtnState.reverse();
+    _kCodeScrollerControllerBtnState!.reverse();
   }
 }

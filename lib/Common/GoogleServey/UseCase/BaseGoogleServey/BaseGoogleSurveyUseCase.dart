@@ -7,20 +7,20 @@ import 'package:injectable/injectable.dart';
 class BaseGoogleSurveyUseCase implements BaseGoogleSurveyInputPort{
 
   @override
-  DateTime lottery;
+  DateTime? lottery;
 
   @override
-  int maxDraw;
+  int? maxDraw;
 
   @override
-  String prize;
+  String? prize;
 
   @override
-  String surveyUrl;
+  String? surveyUrl;
 
   @override
   void reqOpenGoogleSurvey(BaseGoogleSurveyOutput baseGoogleSurveyOutput) {
-    baseGoogleSurveyOutput.openGoogleSurvey(surveyUrl);
+    baseGoogleSurveyOutput.openGoogleSurvey(surveyUrl!);
   }
 
 

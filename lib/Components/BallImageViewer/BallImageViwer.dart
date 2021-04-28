@@ -14,8 +14,8 @@ import 'BallImageViewerViewModel.dart';
 class BallImageViewer extends StatelessWidget {
   BallImageViewer(this.imageList, this.tag,{this.initIndex});
 
-  String tag;
-  int initIndex ;
+  String? tag;
+  int? initIndex ;
   List<BallImageItem> imageList;
 
   @override
@@ -31,7 +31,7 @@ class BallImageViewer extends StatelessWidget {
                       backgroundColor: Colors.black,
                       title: Row(
                         children: <Widget>[Text("이미지"), Spacer(),
-                          Text("${model.currentPage+1}"+'/ '+"${imageList.length}")],
+                          Text("${model.currentPage!+1}"+'/ '+"${imageList.length}")],
                       )),
                   body: PhotoViewGallery.builder(
                     scrollPhysics: const BouncingScrollPhysics(),
@@ -41,7 +41,7 @@ class BallImageViewer extends StatelessWidget {
                         imageProvider: imageList[index].imageProvider,
                         initialScale: PhotoViewComputedScale.contained * 1,
                         heroAttributes: tag != null
-                            ? PhotoViewHeroAttributes(tag: tag,)
+                            ? PhotoViewHeroAttributes(tag: tag!,)
                             : null,
                       );
                     },
@@ -57,7 +57,7 @@ class BallImageViewer extends StatelessWidget {
                           value: progress == null
                               ? null
                               : progress.cumulativeBytesLoaded /
-                                  progress.expectedTotalBytes,
+                                  progress.expectedTotalBytes!,
                         ),
                       ),
                     ),

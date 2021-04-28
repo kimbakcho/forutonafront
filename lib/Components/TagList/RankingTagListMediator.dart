@@ -9,14 +9,14 @@ import 'package:injectable/injectable.dart';
 abstract class RankingTagListMediator
     extends SearchCollectMediator<TagRankingResDto> {
 
-  TagRankingUseCaseInputPort tagRankingUseCaseInputPort;
+  TagRankingUseCaseInputPort? tagRankingUseCaseInputPort;
 
 }
 
 @Injectable(as: RankingTagListMediator)
 class RankingTagListMediatorImpl extends RankingTagListMediator {
 
-  TagRankingUseCaseInputPort tagRankingUseCaseInputPort;
+  TagRankingUseCaseInputPort? tagRankingUseCaseInputPort;
 
 
   @override
@@ -31,7 +31,7 @@ class RankingTagListMediatorImpl extends RankingTagListMediator {
   @override
   Future<PageWrap<TagRankingResDto>> searchUseCase(Pageable pageable) async {
     // currentSearchPosition = searchPosition;
-    var list = await tagRankingUseCaseInputPort.search();
+    var list = await tagRankingUseCaseInputPort!.search();
     return PageWrap<TagRankingResDto>(content: list,
         first: true,
         last: true,

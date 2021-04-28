@@ -7,18 +7,18 @@ class FBallReplyDisplayUtil {
   FBallReplyDisplayUtil(this.fBallReplyResDto);
 
   String get replyText {
-    if (fBallReplyResDto.deleteFlag) {
+    if (fBallReplyResDto.deleteFlag!) {
       return "삭제된 메시지 입니다";
     } else {
-      return fBallReplyResDto.replyText;
+      return fBallReplyResDto.replyText!;
     }
   }
 
   String get userProfilePictureUrl {
-    return fBallReplyResDto.userProfilePictureUrl;
+    return fBallReplyResDto.userProfilePictureUrl!;
   }
 
   String get userNickName {
-    return fBallReplyResDto.userNickName;
+    return fBallReplyResDto.userNickName!;
   }
 }

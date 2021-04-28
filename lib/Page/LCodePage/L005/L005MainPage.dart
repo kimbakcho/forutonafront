@@ -81,11 +81,11 @@ class L005MainPage extends StatelessWidget {
 
 class L005MainPageViewModel extends ChangeNotifier {
   bool enableTailButton = false;
-  final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
+  final FUserInfoJoinReqDto? _fUserInfoJoinReqDto;
 
-  final BuildContext context;
+  final BuildContext? context;
 
-  PhoneAuthComponentController _phoneAuthComponentController;
+  PhoneAuthComponentController? _phoneAuthComponentController;
 
   L005MainPageViewModel(this._fUserInfoJoinReqDto, this.context) {
     this._phoneAuthComponentController = PhoneAuthComponentController(
@@ -94,25 +94,25 @@ class L005MainPageViewModel extends ChangeNotifier {
   }
 
   testNextButton() {
-    _fUserInfoJoinReqDto.countryCode = "KR";
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    _fUserInfoJoinReqDto!.countryCode = "KR";
+    Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
       return L007MainPage();
     }));
   }
 
   onPhoneAuthCheckSuccess(PhoneAuthNumberResDto phoneAuthNumberResDto) {
-    _fUserInfoJoinReqDto.phoneAuthToken = phoneAuthNumberResDto.phoneAuthToken;
-    _fUserInfoJoinReqDto.internationalizedPhoneNumber =
-        phoneAuthNumberResDto.internationalizedDialCode +
+    _fUserInfoJoinReqDto!.phoneAuthToken = phoneAuthNumberResDto.phoneAuthToken;
+    _fUserInfoJoinReqDto!.internationalizedPhoneNumber =
+        phoneAuthNumberResDto.internationalizedDialCode! +
             " " +
-            phoneAuthNumberResDto.phoneNumber;
+            phoneAuthNumberResDto.phoneNumber!;
     CodeCountry codeCountry = CodeCountry();
     var selectedCountryItem = codeCountry.countryList().firstWhere((element) =>
         element.dialCode == phoneAuthNumberResDto.internationalizedDialCode);
 
-    _fUserInfoJoinReqDto.countryCode = selectedCountryItem.code;
+    _fUserInfoJoinReqDto!.countryCode = selectedCountryItem.code;
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
       return L007MainPage();
     }));
   }
@@ -127,6 +127,6 @@ class L005MainPageViewModel extends ChangeNotifier {
   }
 
   void checkPhoneAuth() {
-    _phoneAuthComponentController.checkAuthCheckNumber();
+    _phoneAuthComponentController!.checkAuthCheckNumber();
   }
 }

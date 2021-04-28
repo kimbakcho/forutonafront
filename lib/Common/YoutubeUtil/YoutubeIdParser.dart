@@ -1,5 +1,5 @@
 class YoutubeIdParser {
-  static String getIdFromUrl(String url) {
+  static String? getIdFromUrl(String url) {
     if (url == null) {
       throw ArgumentError('Url must not be null');
     }
@@ -17,7 +17,7 @@ class YoutubeIdParser {
       return null;
     }
 
-    String videoId;
+    String? videoId;
 
     // youtube.com/watch?v=xxxxxxxxxxx
     try {

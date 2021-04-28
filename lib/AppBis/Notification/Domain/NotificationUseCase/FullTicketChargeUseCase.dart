@@ -31,7 +31,7 @@ class FullTicketChargeUseCase implements NotificationUseCaseInputPort {
     }
     NotificationChannel notificationChannel = sl.get<NotificationChannel>(instanceName: "NotificationMyFluenceChannel");
 
-    NotificationDetails channel = notificationChannel.getChannel();
+    NotificationDetails channel = notificationChannel.getChannel()!;
     String payload = message['data']['payload'];
 
     var convert = json.decoder.convert(payload);

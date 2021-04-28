@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../Preference.dart';
 
 abstract class GeoPlaceAdapter {
-  Future<AutocompleteResponse> autocompleteGet(String input, {
+  Future<AutocompleteResponse?> autocompleteGet(String? input, {
     String sessionToken,
     int offset,
     LatLon origin,
@@ -16,7 +16,7 @@ abstract class GeoPlaceAdapter {
     bool strictbounds = false,
   });
 
-  Future<DetailsResponse> detailGet(String placeId, {
+  Future<DetailsResponse?> detailGet(String placeId, {
     String language,
     String region,
     String sessionToken,
@@ -27,25 +27,25 @@ abstract class GeoPlaceAdapter {
 }
 @Injectable(as: GeoPlaceAdapter)
 class GooglePlaceAdapter implements GeoPlaceAdapter {
-  GooglePlace googlePlace;
+  GooglePlace? googlePlace;
 
   GooglePlaceAdapter() {
     googlePlace = GooglePlace(Preference.kGoogleApiKey);
   }
 
   @override
-  Future<AutocompleteResponse> autocompleteGet(String input,
-      {String sessionToken,
-        int offset,
-        LatLon origin,
-        LatLon location,
-        int radius,
-        String language,
-        String types,
-        List<Component> components,
+  Future<AutocompleteResponse?> autocompleteGet(String? input,
+      {String? sessionToken,
+        int? offset,
+        LatLon? origin,
+        LatLon? location,
+        int? radius,
+        String? language,
+        String? types,
+        List<Component>? components,
         bool strictbounds = false}) async {
     Component kr = Component("country", "kr");
-    AutocompleteResponse response = await googlePlace.autocomplete.get(input,
+    AutocompleteResponse? response = await googlePlace!.autocomplete.get(input!,
         language: "ko",
         components: [kr],
         origin: origin,
@@ -59,9 +59,9 @@ class GooglePlaceAdapter implements GeoPlaceAdapter {
   }
 
   @override
-  Future<DetailsResponse> detailGet(String placeId,
-      {String language, String region, String sessionToken, String fields}) async {
-    var detailsResponse = await googlePlace.details.get(placeId,
+  Future<DetailsResponse?> detailGet(String placeId,
+      {String? language, String? region, String? sessionToken, String? fields}) async {
+    var detailsResponse = await googlePlace!.details.get(placeId,
         sessionToken: sessionToken,
         fields: fields,
         language: language,
@@ -80,7 +80,7 @@ class GooglePlaceAdapter implements GeoPlaceAdapter {
 
       }
       reverseList.forEach((element) {
-        result+=element.shortName + " ";
+        result+=element.shortName! + " ";
       });
       return result;
 

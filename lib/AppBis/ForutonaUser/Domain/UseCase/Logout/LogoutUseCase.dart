@@ -13,14 +13,14 @@ class LogoutUseCase implements LogoutUseCaseInputPort {
   final SnsLoginModuleAdapterFactory snsLoginModuleAdapterFactory;
 
   LogoutUseCase(
-      {@required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required this.snsLoginModuleAdapterFactory})
+      {required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
+      required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      required this.snsLoginModuleAdapterFactory})
       : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
 
   @override
-  Future<void> tryLogout({LogoutUseCaseOutputPort outputPort}) async {
+  Future<void> tryLogout({LogoutUseCaseOutputPort? outputPort}) async {
     await _fireBaseAuthAdapterForUseCase.logout();
 
     var reqSignInUserInfoFromMemory =
@@ -31,7 +31,7 @@ class LogoutUseCase implements LogoutUseCaseInputPort {
     }
 
     SnsLoginModuleAdapter snsLoginModuleAdapter = snsLoginModuleAdapterFactory
-        .getInstance(reqSignInUserInfoFromMemory.snsService);
+        .getInstance(reqSignInUserInfoFromMemory!.snsService!);
 
     snsLoginModuleAdapter.logout();
     _signInUserInfoUseCaseInputPort.clearUserInfo();

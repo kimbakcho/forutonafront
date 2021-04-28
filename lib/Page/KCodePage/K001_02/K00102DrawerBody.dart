@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 enum K00102DrawerItem { BallPower, Hit, MakeTime, Distance }
 
 class K00102DrawerBody extends StatelessWidget {
-  final K00102DrawerItem initSelectItem;
-  final K00102DrawerBodyListener k00102drawerBodyListener;
+  final K00102DrawerItem? initSelectItem;
+  final K00102DrawerBodyListener? k00102drawerBodyListener;
 
   const K00102DrawerBody(
-      {Key key, this.initSelectItem, this.k00102drawerBodyListener})
+      {Key? key, this.initSelectItem, this.k00102drawerBodyListener})
       : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class K00102DrawerBody extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         )),
                     onTap: () {
-                      k00102drawerBodyListener
+                      k00102drawerBodyListener!
                           .onBodySelectItem(K00102DrawerItem.BallPower);
                       Navigator.pop(context);
                     },
@@ -51,7 +51,7 @@ class K00102DrawerBody extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         )),
                     onTap: () {
-                      k00102drawerBodyListener
+                      k00102drawerBodyListener!
                           .onBodySelectItem(K00102DrawerItem.Hit);
                       Navigator.pop(context);
                     },
@@ -73,7 +73,7 @@ class K00102DrawerBody extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         )),
                     onTap: () {
-                      k00102drawerBodyListener
+                      k00102drawerBodyListener!
                           .onBodySelectItem(K00102DrawerItem.MakeTime);
                       Navigator.pop(context);
                     },
@@ -104,7 +104,7 @@ class K00102DrawerBody extends StatelessWidget {
                           ))
                     ]),
                     onTap: () {
-                      k00102drawerBodyListener
+                      k00102drawerBodyListener!
                           .onBodySelectItem(K00102DrawerItem.Distance);
                       Navigator.pop(context);
                     },

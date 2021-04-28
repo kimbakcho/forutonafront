@@ -10,8 +10,8 @@ FBallListUpFromTagNameReqDto _$FBallListUpFromTagNameReqDtoFromJson(
     Map<String, dynamic> json) {
   return FBallListUpFromTagNameReqDto(
     searchTag: json['searchTag'] as String,
-    latitude: (json['latitude'] as num)?.toDouble(),
-    longitude: (json['longitude'] as num)?.toDouble(),
+    latitude: (json['latitude'] as num).toDouble(),
+    longitude: (json['longitude'] as num).toDouble(),
   );
 }
 

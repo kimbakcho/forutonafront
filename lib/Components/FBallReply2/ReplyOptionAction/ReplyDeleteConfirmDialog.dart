@@ -7,13 +7,13 @@ import 'package:provider/provider.dart';
 import '../ReviewDeleteMediator.dart';
 
 class ReplyDeleteConfirmDialog extends StatelessWidget {
-  final FBallReplyResDto fBallReplyResDto;
-  final ReviewDeleteMediator _reviewDeleteMediator;
+  final FBallReplyResDto? fBallReplyResDto;
+  final ReviewDeleteMediator? _reviewDeleteMediator;
 
   const ReplyDeleteConfirmDialog(
-      {Key key,
+      {Key? key,
       this.fBallReplyResDto,
-      ReviewDeleteMediator reviewDeleteMediator})
+      ReviewDeleteMediator? reviewDeleteMediator})
       : _reviewDeleteMediator = reviewDeleteMediator,
         super(key: key);
 
@@ -130,21 +130,21 @@ class ReplyDeleteConfirmDialog extends StatelessWidget {
 }
 
 class ReplyDeleteConfirmDialogViewModel extends ChangeNotifier {
-  final FBallReplyResDto fBallReplyResDto;
-  final BuildContext context;
+  final FBallReplyResDto? fBallReplyResDto;
+  final BuildContext? context;
 
-  final ReviewDeleteMediator _reviewDeleteMediator;
+  final ReviewDeleteMediator? _reviewDeleteMediator;
 
   ReplyDeleteConfirmDialogViewModel(
       {this.fBallReplyResDto,
       this.context,
-      ReviewDeleteMediator reviewDeleteMediator})
+      ReviewDeleteMediator? reviewDeleteMediator})
       : _reviewDeleteMediator = reviewDeleteMediator;
 
   deleteReply() async {
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
 
-    showGeneralDialog(context: context,
+    showGeneralDialog(context: context!,
         pageBuilder: (context, animation, secondaryAnimation) {
           _deleteReplyInLoading(context);
           return CommonLoadingComponent();
@@ -152,8 +152,8 @@ class ReplyDeleteConfirmDialogViewModel extends ChangeNotifier {
   }
 
   void _deleteReplyInLoading(BuildContext context) async {
-    await _reviewDeleteMediator.deleteReview(fBallReplyResDto);
-    fBallReplyResDto.deleteFlag = true;
+    await _reviewDeleteMediator!.deleteReview(fBallReplyResDto);
+    fBallReplyResDto!.deleteFlag = true;
     Navigator.of(context).pop();
   }
 }

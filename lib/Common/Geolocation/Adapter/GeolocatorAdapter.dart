@@ -1,61 +1,62 @@
 import 'dart:async';
 
 import 'package:forutonafront/Common/Geolocation/Data/Value/Placemark.dart' as AdapterPlacemark;
-import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart' as FPosition;
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart' as Geolocator;
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart' as AdapterPosition;
+import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class GeolocatorAdapter {
   getCurrentPosition();
 
-  Future<double> distanceBetween(double latitude, double longitude, double latitude2,
+  double distanceBetween(double latitude, double longitude, double latitude2,
       double longitude2);
 
-  placemarkFromPosition(Position searchPosition, {String localeIdentifier});
+  placemarkFromPosition(AdapterPosition.Position searchPosition, {String? localeIdentifier});
 
-  Stream<Position> userPosition;
+  Stream<FPosition.Position>? userPosition;
 
   startStreamCurrentPosition();
 }
 @LazySingleton(as: GeolocatorAdapter)
 class GeolocatorAdapterImpl implements GeolocatorAdapter {
-  Geolocator.Geolocator _geolocator = Geolocator.Geolocator();
 
-  StreamController _fUserCurrentPositionStreamController;
+  late StreamController<FPosition.Position> _fUserCurrentPositionStreamController;
 
   GeolocatorAdapterImpl(){
-    _fUserCurrentPositionStreamController = StreamController<Position>.broadcast();
+    _fUserCurrentPositionStreamController = StreamController<FPosition.Position>.broadcast();
     userPosition = _fUserCurrentPositionStreamController.stream;
   }
 
   @override
   Future<AdapterPosition.Position> getCurrentPosition() async {
-    Geolocator.Position position = await _geolocator.getCurrentPosition()
+    Geolocator.Position position = await GeolocatorPlatform.instance.getCurrentPosition()
         .timeout(Duration(seconds: 20));
-    _fUserCurrentPositionStreamController.add(Position.fromMap(position.toJson()));
+
+    _fUserCurrentPositionStreamController.add(FPosition.Position.fromMap(position.toJson()));
     AdapterPosition.Position adapterPosition = AdapterPosition.Position.fromMap(
         position.toJson());
     return adapterPosition;
   }
 
   @override
-   Future<double> distanceBetween(double startLatitude, double startLongitude,
-      double endLatitude, double endLongitude) async {
-    return await _geolocator.distanceBetween(
+   double distanceBetween(double startLatitude, double startLongitude,
+      double endLatitude, double endLongitude)  {
+    return GeolocatorPlatform.instance.distanceBetween(
         startLatitude, startLongitude, endLatitude, endLongitude);
   }
 
   @override
   Future<List<AdapterPlacemark.Placemark>> placemarkFromPosition(
       AdapterPosition.Position searchPosition,
-      {String localeIdentifier}) async {
+      {String? localeIdentifier}) async {
     Geolocator.Position position = Geolocator.Position.fromMap(
         searchPosition.toJson());
-    List<Geolocator.Placemark> plcaemarks = await _geolocator
-        .placemarkFromPosition(position, localeIdentifier: localeIdentifier);
+    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude,localeIdentifier:localeIdentifier);
     List<AdapterPlacemark.Placemark> adatperPlaceMarkers = [];
-    plcaemarks.forEach((element) {
+    placemarks.forEach((element) {
       adatperPlaceMarkers.add(
           AdapterPlacemark.Placemark.fromMap(element.toJson()));
     });
@@ -69,8 +70,12 @@ class GeolocatorAdapterImpl implements GeolocatorAdapter {
         accuracy: Geolocator.LocationAccuracy.high,
         distanceFilter: _distanceFilter,
         forceAndroidLocationManager: true);
-    _geolocator.getPositionStream(locationOptions).listen((Geolocator.Position event) {
-      _fUserCurrentPositionStreamController.add(Position.fromMap(event.toJson()));
+    GeolocatorPlatform.instance.getPositionStream(
+      desiredAccuracy: Geolocator.LocationAccuracy.high,
+      distanceFilter: _distanceFilter,
+      forceAndroidLocationManager: true,
+      timeInterval: 60000).listen((Geolocator.Position event) {
+      _fUserCurrentPositionStreamController.add(FPosition.Position.fromMap(event.toJson()));
     });
 
   }
@@ -78,7 +83,7 @@ class GeolocatorAdapterImpl implements GeolocatorAdapter {
   int _distanceFilter = 5;
 
   @override
-  Stream<Position> userPosition;
+  Stream<FPosition.Position>? userPosition;
 
   dispose(){
     _fUserCurrentPositionStreamController.close();

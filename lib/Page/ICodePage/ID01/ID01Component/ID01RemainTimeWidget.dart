@@ -4,9 +4,9 @@ import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ID01RemainTimeWidget extends StatefulWidget {
-  final DateTime limitTime;
+  final DateTime? limitTime;
 
-  const ID01RemainTimeWidget({Key key, this.limitTime}) : super(key: key);
+  const ID01RemainTimeWidget({Key? key, this.limitTime}) : super(key: key);
 
   @override
   _ID01RemainTimeWidgetState createState() => _ID01RemainTimeWidgetState();
@@ -14,7 +14,7 @@ class ID01RemainTimeWidget extends StatefulWidget {
 
 class _ID01RemainTimeWidgetState extends State<ID01RemainTimeWidget>
     with SingleTickerProviderStateMixin {
-  Ticker _ticker;
+  Ticker? _ticker;
 
   _ID01RemainTimeWidgetState();
 
@@ -57,16 +57,16 @@ class _ID01RemainTimeWidgetState extends State<ID01RemainTimeWidget>
     _ticker = createTicker((Duration elapsed) {
       setState(() {});
     });
-    _ticker.start();
+    _ticker!.start();
   }
 
   @override
   void dispose() {
-    _ticker.dispose();
+    _ticker!.dispose();
     super.dispose();
   }
 
   String get remainTimeStr {
-    return TimeDisplayUtil.getCalcToStrFromNow(widget.limitTime);
+    return TimeDisplayUtil.getCalcToStrFromNow(widget.limitTime!);
   }
 }

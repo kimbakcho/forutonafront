@@ -24,12 +24,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class I001MainPage extends StatefulWidget {
-  final GeoViewSearchManagerInputPort geoViewSearchManagerInputPort;
-  final TopH_I_001NavExpendAniContentController
+  final GeoViewSearchManagerInputPort? geoViewSearchManagerInputPort;
+  final TopH_I_001NavExpendAniContentController?
       topH_I_001NavExpendAniContentController;
 
   const I001MainPage(
-      {Key key,
+      {Key? key,
       this.geoViewSearchManagerInputPort,
       this.topH_I_001NavExpendAniContentController})
       : super(key: key);
@@ -62,7 +62,7 @@ class _I001MainPageState extends State<I001MainPage>
             GoogleMap(
               key: model._googleMapKey,
               markers: model._ballMarker,
-              initialCameraPosition: model._googleMapCurrentPosition,
+              initialCameraPosition: model._googleMapCurrentPosition!,
               myLocationEnabled: true,
               compassEnabled: false,
               onCameraIdle: model._onCameraIdle,
@@ -109,31 +109,31 @@ class _I001MainPageState extends State<I001MainPage>
 
 class I001MainPageViewModel extends ChangeNotifier
     implements GeoViewSearchListener, SearchCollectMediatorComponent {
-  final BuildContext context;
+  final BuildContext? context;
 
-  final GeoViewSearchManagerInputPort geoViewSearchManagerInputPort;
+  final GeoViewSearchManagerInputPort? geoViewSearchManagerInputPort;
 
-  final MapScreenPositionUseCaseInputPort mapScreenPositionUseCaseInputPort;
+  final MapScreenPositionUseCaseInputPort? mapScreenPositionUseCaseInputPort;
 
-  final BallListMediator ballListMediator;
+  final BallListMediator? ballListMediator;
 
-  final MapBallMarkerFactory mapBallMarkerFactory;
+  final MapBallMarkerFactory? mapBallMarkerFactory;
 
   final Set<Marker> _ballMarker = Set<Marker>();
 
-  final FullBallHorizontalPageListController
+  final FullBallHorizontalPageListController?
       _fullBallHorizontalPageListController;
 
-  final FluttertoastAdapter fluttertoastAdapter;
+  final FluttertoastAdapter? fluttertoastAdapter;
 
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       geoLocationUtilForeGroundUseCaseInputPort;
 
-  final GeolocatorAdapter geolocatorAdapter;
+  final GeolocatorAdapter? geolocatorAdapter;
 
   Completer<GoogleMapController> _googleMapController = Completer();
 
-  CameraPosition _googleMapCurrentPosition;
+  CameraPosition? _googleMapCurrentPosition;
 
   GlobalKey _googleMapKey = GlobalKey();
 
@@ -145,7 +145,7 @@ class I001MainPageViewModel extends ChangeNotifier
 
   Queue<Position> searchQueue = Queue<Position>();
 
-  final TopH_I_001NavExpendAniContentController
+  final TopH_I_001NavExpendAniContentController?
       topH_I_001NavExpendAniContentController;
 
   I001MainPageViewModel(
@@ -168,18 +168,19 @@ class I001MainPageViewModel extends ChangeNotifier
 
     final GoogleMapController controller = await _googleMapController.future;
 
-    var position = await geoLocationUtilForeGroundUseCaseInputPort
+    var position = await geoLocationUtilForeGroundUseCaseInputPort!
         .getCurrentWithLastPosition();
 
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(position.latitude, position.longitude),zoom: _googleMapCurrentPosition.zoom)));
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(position.latitude!, position.longitude!),
+        zoom: _googleMapCurrentPosition!.zoom)));
 
     notifyListeners();
   }
 
   _onRefresh() {
-    var target = _googleMapCurrentPosition.target;
-    topH_I_001NavExpendAniContentController.loadPosition(
+    var target = _googleMapCurrentPosition!.target;
+    topH_I_001NavExpendAniContentController!.loadPosition(
         Position(latitude: target.latitude, longitude: target.longitude));
     notifyListeners();
   }
@@ -200,10 +201,10 @@ class I001MainPageViewModel extends ChangeNotifier
 
   Future searchLoadQueue() async {
     while (searchQueue.isNotEmpty) {
-      ballListMediator.fBallListUpUseCaseInputPort = FBallListUpFromMapArea(
+      ballListMediator!.fBallListUpUseCaseInputPort = FBallListUpFromMapArea(
           await getAreaPoint(searchQueue.removeLast()),
           fBallRepository: sl());
-      await ballListMediator.searchFirst();
+      await ballListMediator!.searchFirst();
       _ballMarker.clear();
       firstBallSelect();
       _showRefreshBtn = false;
@@ -214,13 +215,13 @@ class I001MainPageViewModel extends ChangeNotifier
   Future viewButtonControl() async {
     if (_idleCount > 0) {
       _showRefreshBtn = true;
-      var position = geoLocationUtilForeGroundUseCaseInputPort
+      var position = geoLocationUtilForeGroundUseCaseInputPort!
           .getCurrentWithLastPositionInMemory();
-      var distanceBetween = await geolocatorAdapter.distanceBetween(
-          position.latitude,
-          position.longitude,
-          _googleMapCurrentPosition.target.latitude,
-          _googleMapCurrentPosition.target.longitude);
+      var distanceBetween = geolocatorAdapter!.distanceBetween(
+          position!.latitude!,
+          position.longitude!,
+          _googleMapCurrentPosition!.target.latitude,
+          _googleMapCurrentPosition!.target.longitude);
       if (distanceBetween < 10) {
         _showMyLocationBtn = false;
       } else {
@@ -237,18 +238,18 @@ class I001MainPageViewModel extends ChangeNotifier
   onMapCreated(GoogleMapController controller) {
     _googleMapController.complete(controller);
 
-    geoViewSearchManagerInputPort.search(
-        geoViewSearchManagerInputPort.currentSearchPosition, 14.46);
+    geoViewSearchManagerInputPort!
+        .search(geoViewSearchManagerInputPort!.currentSearchPosition!, 14.46);
   }
 
   init() async {
-    ballListMediator.registerComponent(this);
+    ballListMediator!.registerComponent(this);
     _googleMapCurrentPosition = CameraPosition(
         target: LatLng(
-            geoViewSearchManagerInputPort.currentSearchPosition.latitude,
-            geoViewSearchManagerInputPort.currentSearchPosition.longitude),
+            geoViewSearchManagerInputPort!.currentSearchPosition!.latitude!,
+            geoViewSearchManagerInputPort!.currentSearchPosition!.longitude!),
         zoom: 14.4);
-    geoViewSearchManagerInputPort.subscribe(this);
+    geoViewSearchManagerInputPort!.subscribe(this);
   }
 
   @override
@@ -257,43 +258,37 @@ class I001MainPageViewModel extends ChangeNotifier
 
     final GoogleMapController controller = await _googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(loadPosition.latitude, loadPosition.longitude),
-        zoom: _googleMapCurrentPosition.zoom)));
+        target: LatLng(loadPosition.latitude!, loadPosition.longitude!),
+        zoom: _googleMapCurrentPosition!.zoom)));
   }
 
   void firstBallSelect() {
-    if (ballListMediator.itemList.length > 0) {
-      onSelectBall(ballListMediator.itemList[0]);
+    if (ballListMediator!.itemList!.length > 0) {
+      onSelectBall(ballListMediator!.itemList![0]);
     }
   }
 
   Future<BallFromMapAreaReqDto> getAreaPoint(Position centerPosition) async {
     final GoogleMapController controller = await _googleMapController.future;
 
-    final RenderBox mapRenderBoxRed =
-        _googleMapKey.currentContext.findRenderObject();
+    final RenderBox? mapRenderBoxRed =
+        _googleMapKey.currentContext!.findRenderObject() as RenderBox?;
 
-    LatLng southwestPoint =
-        await mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
-            mapRenderBoxRed,
-            controller,
-            16,
-            MediaQuery.of(context).size.height - 250);
+    LatLng southwestPoint = await mapScreenPositionUseCaseInputPort!
+        .mapScreenOffsetToLatLng(mapRenderBoxRed!, controller, 16,
+            MediaQuery.of(context!).size.height - 250);
 
-    LatLng northeastPoint =
-        await mapScreenPositionUseCaseInputPort.mapScreenOffsetToLatLng(
-            mapRenderBoxRed,
-            controller,
-            MediaQuery.of(context).size.width - 16,
-            108);
+    LatLng northeastPoint = await mapScreenPositionUseCaseInputPort!
+        .mapScreenOffsetToLatLng(mapRenderBoxRed, controller,
+            MediaQuery.of(context!).size.width - 16, 108);
 
     return BallFromMapAreaReqDto(
         southwestPoint.latitude,
         southwestPoint.longitude,
         northeastPoint.latitude,
         northeastPoint.longitude,
-        centerPosition.latitude,
-        centerPosition.longitude);
+        centerPosition.latitude!,
+        centerPosition.longitude!);
   }
 
   onSelectBall(FBallResDto fBallResDto) {
@@ -304,8 +299,8 @@ class I001MainPageViewModel extends ChangeNotifier
 
   @override
   void dispose() {
-    ballListMediator.unregisterComponent(this);
-    geoViewSearchManagerInputPort.unSubscribe(this);
+    ballListMediator!.unregisterComponent(this);
+    geoViewSearchManagerInputPort!.unSubscribe(this);
     super.dispose();
   }
 
@@ -314,27 +309,30 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   bool get _isLoading {
-    return ballListMediator.isLoading;
+    return ballListMediator!.isLoading;
   }
 
   Set<Marker> _makeMaker(FBallResDto selectBall) {
     Set<Marker> ballMarker = Set<Marker>();
-    ballListMediator.itemList.forEach((element) {
-      ballMarker.add(mapBallMarkerFactory.getBallMaker(
-          element.ballType,
-          element.ballUuid,
+    ballListMediator!.itemList!.forEach((element) {
+      var ball = mapBallMarkerFactory!.getBallMaker(
+          element.ballType!,
+          element.ballUuid!,
           Position(latitude: element.latitude, longitude: element.longitude),
           select: selectBall.ballUuid == element.ballUuid,
           ballMarkerSize: BallMarkerSize.Small, onTap: () {
-        _fullBallHorizontalPageListController.moveToBall(element);
-      }));
+        _fullBallHorizontalPageListController!.moveToBall(element);
+      });
+      if (ball != null) {
+        ballMarker.add(ball);
+      }
     });
     return ballMarker;
   }
 
   @override
   void onItemListEmpty() {
-    fluttertoastAdapter.showToast(msg: "여기에는 컨텐츠가 없습니다");
+    fluttertoastAdapter!.showToast(msg: "여기에는 컨텐츠가 없습니다");
   }
 
   @override

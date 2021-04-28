@@ -8,7 +8,7 @@ import 'BallDesciprtionImageViwer.dart';
 class ZeroBallDescriptionImageMode extends BallDescriptionImageViewer{
 
 
-  ZeroBallDescriptionImageMode({@required List<FBallDesImages> desImages,@required BuildContext context})
+  ZeroBallDescriptionImageMode({required List<FBallDesImages> desImages,required BuildContext context})
       : super(desImages:desImages,context:context);
 
   @override

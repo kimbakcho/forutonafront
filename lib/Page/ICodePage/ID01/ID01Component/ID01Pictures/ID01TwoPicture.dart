@@ -6,7 +6,7 @@ import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallI
 import 'ID01ImageContainer.dart';
 
 class ID01TwoPicture extends StatelessWidget {
-  final List<BallImageItem> fBallDesImages;
+  final List<BallImageItem>? fBallDesImages;
 
   ID01TwoPicture({this.fBallDesImages});
 
@@ -16,10 +16,10 @@ class ID01TwoPicture extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: ID01ImageContainer(fBallDesImages,0),
+            child: ID01ImageContainer(fBallDesImages!,0),
           ),
           Expanded(
-            child: ID01ImageContainer(fBallDesImages,1)
+            child: ID01ImageContainer(fBallDesImages!,1)
           )
         ]
       ),

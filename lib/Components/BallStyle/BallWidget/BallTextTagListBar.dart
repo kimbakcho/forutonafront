@@ -8,15 +8,15 @@ import 'package:provider/provider.dart';
 
 class BallTextTagListBar extends StatelessWidget {
 
-  final String ballUuid;
+  final String? ballUuid;
 
-  const BallTextTagListBar({Key key, this.ballUuid}) : super(key: key);
+  const BallTextTagListBar({Key? key, this.ballUuid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) =>
-          BallTextTagListBarViewModel(tagFromBallUuidUseCaseInputPort: sl(),ballUuid: ballUuid),
+          BallTextTagListBarViewModel(tagFromBallUuidUseCaseInputPort: sl(),ballUuid: ballUuid!),
       child: Consumer<BallTextTagListBarViewModel>(
         builder: (_, model, __) {
           return Container(
@@ -44,8 +44,8 @@ class BallTextTagListBar extends StatelessWidget {
 
 class BallTextTagListBarViewModel extends ChangeNotifier
     implements TagFromBallUuidUseCaseOutputPort {
-  final TagFromBallUuidUseCaseInputPort tagFromBallUuidUseCaseInputPort;
-  final String ballUuid;
+  final TagFromBallUuidUseCaseInputPort? tagFromBallUuidUseCaseInputPort;
+  final String? ballUuid;
   bool _isDispose = false;
   List<FBallTagResDto> tagDtos = [];
 
@@ -55,8 +55,8 @@ class BallTextTagListBarViewModel extends ChangeNotifier
   }
 
   Future<void> init() async {
-    this.tagFromBallUuidUseCaseInputPort.getTagFromBallUuid(
-        ballUuid: this.ballUuid, outputPort: this);
+    this.tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
+        ballUuid: this.ballUuid!, outputPort: this);
   }
 
   @override

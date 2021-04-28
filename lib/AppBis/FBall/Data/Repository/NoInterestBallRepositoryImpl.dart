@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 class NoInterestBallRepositoryImpl implements NoInterestBallRepository {
   final SharedPreferencesAdapter sharedPreferencesAdapter;
 
-  NoInterestBallRepositoryImpl({this.sharedPreferencesAdapter});
+  NoInterestBallRepositoryImpl({required this.sharedPreferencesAdapter});
 
   String _noInterestBallKey = "NoInterestBall";
   @override
@@ -48,6 +48,6 @@ class NoInterestBallRepositoryImpl implements NoInterestBallRepository {
     if(stringList != null){
       stringList.remove(ballUuid);
     }
-    await sharedPreferencesAdapter.setStringList(_noInterestBallKey, stringList);
+    await sharedPreferencesAdapter.setStringList(_noInterestBallKey, stringList!);
   }
 }

@@ -9,13 +9,13 @@ import 'H001EmptyMessagePanel.dart';
 
 class H001BodyFactory {
   static Widget getBodyWidget(
-      {BallListMediator ballListMediator,
-      RankingTagListMediator rankingTagListFromBIManager}) {
-    if (ballListMediator.currentState == SearchCollectMediatorState.HasItem) {
+      {BallListMediator? ballListMediator,
+      RankingTagListMediator? rankingTagListFromBIManager}) {
+    if (ballListMediator!.currentState == SearchCollectMediatorState.HasItem) {
       return H001BallsPanel(
           ballListMediator: ballListMediator,
           fullBallListUpController: FullBallListUpController(),
-          rankingTagListFromBIManager: rankingTagListFromBIManager);
+          rankingTagListFromBIManager: rankingTagListFromBIManager!);
     } else if (ballListMediator.currentState == SearchCollectMediatorState.Empty) {
       return H001EmptyMessagePanel();
     } else {

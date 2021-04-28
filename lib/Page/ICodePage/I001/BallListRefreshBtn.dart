@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BallListRefreshBtn extends StatelessWidget {
-  final Function onRefresh;
+  final Function? onRefresh;
 
-  const BallListRefreshBtn({Key key, this.onRefresh}) : super(key: key);
+  const BallListRefreshBtn({Key? key, this.onRefresh}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class BallListRefreshBtn extends StatelessWidget {
             child: InkWell(
                 onTap: () {
                   if (onRefresh != null) {
-                    onRefresh();
+                    onRefresh!();
                   }
                 },
                 child: Row(children: [

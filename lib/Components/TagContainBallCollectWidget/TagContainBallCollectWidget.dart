@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/ListUpBallWidgetFactory.dart';
 import 'package:forutonafront/Components/SimpleCollectionWidget/SimpleCollectionTopTitleWidget.dart';
@@ -11,11 +13,11 @@ import 'package:forutonafront/AppBis/Tag/Dto/TextMatchTagBallReqDto.dart';
 import 'package:provider/provider.dart';
 
 class TagContainBallCollectWidget extends StatelessWidget {
-  final String searchText;
-  final TagContainBallCollectListener tagContainBallCollectListener;
+  final String? searchText;
+  final TagContainBallCollectListener? tagContainBallCollectListener;
 
   const TagContainBallCollectWidget(
-      {Key key, this.searchText, this.tagContainBallCollectListener})
+      {Key? key, this.searchText, this.tagContainBallCollectListener})
       : super(key: key);
 
   @override
@@ -32,7 +34,7 @@ class TagContainBallCollectWidget extends StatelessWidget {
               margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SimpleCollectionWidget(
                 searchText: searchText,
-                searchCollectMediator: model.ballListMediator,
+                searchCollectMediator: model.ballListMediator as SearchCollectMediator<FUserInfoSimpleResDto>,
                 indexedWidgetBuilder: model.getIndexedWidgetBuilder(),
                 simpleCollectionTopNextPageListener: model,
                 titleDescription: "태그와 연관된 컨텐츠",
@@ -44,23 +46,23 @@ class TagContainBallCollectWidget extends StatelessWidget {
 class TagContainBallCollectWidgetViewModel extends ChangeNotifier
     implements SimpleCollectionTopNextPageListener {
   final BallListMediator ballListMediator;
-  final String searchText;
-  final TagContainBallCollectListener tagContainBallCollectListener;
+  final String? searchText;
+  final TagContainBallCollectListener? tagContainBallCollectListener;
   final GeoLocationUtilForeGroundUseCaseInputPort
       geoLocationUtilForeGroundUseCase;
 
   TagContainBallCollectWidgetViewModel(
-      {@required this.searchText,
-      @required this.ballListMediator,
-      @required this.tagContainBallCollectListener,
-      @required this.geoLocationUtilForeGroundUseCase}) {
+      {required this.searchText,
+      required this.ballListMediator,
+      required this.tagContainBallCollectListener,
+      required this.geoLocationUtilForeGroundUseCase}) {
     var searchPosition =
         geoLocationUtilForeGroundUseCase.getCurrentWithLastPositionInMemory();
     ballListMediator.fBallListUpUseCaseInputPort = TagNameItemListUpUseCase(
         tagRepository: sl(),
         reqDto: TextMatchTagBallReqDto(
             searchText: searchText,
-            mapCenterLongitude: searchPosition.longitude,
+            mapCenterLongitude: searchPosition!.longitude,
             mapCenterLatitude: searchPosition.latitude));
   }
 
@@ -78,7 +80,7 @@ class TagContainBallCollectWidgetViewModel extends ChangeNotifier
 
   @override
   void onNextPage(String searchText) {
-    tagContainBallCollectListener.onTagContainBallCollectNextPage(searchText);
+    tagContainBallCollectListener!.onTagContainBallCollectNextPage(searchText);
   }
 }
 

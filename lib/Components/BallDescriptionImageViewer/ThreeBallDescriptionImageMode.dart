@@ -6,7 +6,7 @@ import 'BallDesciprtionImageViwer.dart';
 
 
 class ThreeBallDescriptionImageMode extends BallDescriptionImageViewer{
-  ThreeBallDescriptionImageMode({@required List<FBallDesImages> desImages,@required BuildContext context})
+  ThreeBallDescriptionImageMode({required List<FBallDesImages> desImages,required BuildContext context})
       : super(desImages:desImages,context:context);
 
   @override
@@ -33,7 +33,7 @@ class ThreeBallDescriptionImageMode extends BallDescriptionImageViewer{
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                              desImages[0].src),
+                              desImages[0].src!),
                         ),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(12.00),
@@ -55,7 +55,7 @@ class ThreeBallDescriptionImageMode extends BallDescriptionImageViewer{
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                desImages[1].src),
+                                desImages[1].src!),
                           ),
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(12.00),
@@ -75,7 +75,7 @@ class ThreeBallDescriptionImageMode extends BallDescriptionImageViewer{
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                desImages[2].src),
+                                desImages[2].src!),
                           ),
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(12.00),

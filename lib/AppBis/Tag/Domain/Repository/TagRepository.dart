@@ -17,7 +17,7 @@ abstract class TagRepository {
   Future<List<FBallTagResDto>> tagFromBallUuid(String ballUuid);
 
   Future<List<TagRankingResDto>> findByTagRankingFromTextOrderBySumBI(
-      {@required TagRankingFromTextReqDto tagRankingFromTextReqDto});
+      {required TagRankingFromTextReqDto tagRankingFromTextReqDto});
 
   Future<PageWrap<FBallTagResDto>> findByTagItem(TextMatchTagBallReqDto reqDto,Pageable pageable);
 }

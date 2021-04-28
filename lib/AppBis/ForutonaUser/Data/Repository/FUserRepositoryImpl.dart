@@ -24,8 +24,8 @@ class FUserRepositoryImpl implements FUserRepository {
   final FUserRemoteDataSource _fUserRemoteDataSource;
 
   FUserRepositoryImpl(
-      {@required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
-        @required FUserRemoteDataSource fUserRemoteDataSource})
+      {required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
+        required FUserRemoteDataSource fUserRemoteDataSource})
       : _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter,
         _fUserRemoteDataSource = fUserRemoteDataSource;
 
@@ -92,7 +92,7 @@ class FUserRepositoryImpl implements FUserRepository {
   }
 
   @override
-  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,List<int> profileImage,List<int> backgroundImage) async {
+  Future<FUserInfoJoinResDto> joinUser(FUserInfoJoinReqDto reqDto,List<int>? profileImage,List<int>? backgroundImage) async {
     return await _fUserRemoteDataSource.joinUser(reqDto,profileImage,backgroundImage, FDio.noneToken());
   }
 

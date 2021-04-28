@@ -7,11 +7,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class G017MainPage extends StatelessWidget {
 
-  final String appBarTitle;
+  final String? appBarTitle;
 
-  final int idx;
+  final int? idx;
 
-  const G017MainPage({Key key, this.appBarTitle, this.idx}) : super(key: key);
+  const G017MainPage({Key? key, this.appBarTitle, this.idx}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,25 +56,25 @@ class G017MainPageViewModel extends ChangeNotifier {
 
   String _initUrl = "";
 
-  WebViewController _webViewController;
+  WebViewController? _webViewController;
 
-  NoticeUseCaseInputPort _noticeUseCaseInputPort;
+  NoticeUseCaseInputPort? _noticeUseCaseInputPort;
 
-  int idx;
+  int? idx;
 
 
   G017MainPageViewModel(this._noticeUseCaseInputPort,this.idx);
 
   init() async {
 
-    var noticeResDto = await this._noticeUseCaseInputPort.getNotice(idx);
+    var noticeResDto = await this._noticeUseCaseInputPort!.getNotice(idx!);
 
     String htmlUrl = new Uri.dataFromString(
         '<html><body>${noticeResDto.content}</body></html>',
         mimeType: 'text/html',
         parameters: {'charset': 'utf-8'}).toString();
 
-    _webViewController.loadUrl(htmlUrl);
+    _webViewController!.loadUrl(htmlUrl);
   }
 
 

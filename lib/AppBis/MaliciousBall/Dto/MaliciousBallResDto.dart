@@ -6,19 +6,19 @@ part 'MaliciousBallResDto.g.dart';
 
 @JsonSerializable()
 class MaliciousBallResDto {
-  int idx;
-  String ballUuid;
-  int totalNumberReports;
-  int crime;
-  int abuse;
-  int privacy;
-  int sexual;
-  int advertising;
-  int etc;
-  bool maliciousContentFlag;
-  bool falseReportFlag;
-  DateTime judgmentTime;
-  MUserInfoResDto judgmentUid;
+  int? idx;
+  String? ballUuid;
+  int? totalNumberReports;
+  int? crime;
+  int? abuse;
+  int? privacy;
+  int? sexual;
+  int? advertising;
+  int? etc;
+  bool? maliciousContentFlag;
+  bool? falseReportFlag;
+  DateTime? judgmentTime;
+  MUserInfoResDto? judgmentUid;
 
   static MaliciousBallResDto fromJson(Map<String, dynamic> json) => _$MaliciousBallResDtoFromJson(json);
 

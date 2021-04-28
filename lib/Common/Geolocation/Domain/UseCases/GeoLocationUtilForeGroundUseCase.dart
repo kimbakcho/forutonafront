@@ -28,18 +28,18 @@ class GeoLocationUtilForeGroundUseCase
 
   Mutex _geoRequestMutex = new Mutex();
 
-  Position currentWithLastPosition;
-  String currentWithLastAddress;
+  Position? currentWithLastPosition;
+  String? currentWithLastAddress;
 
   GeoLocationUtilForeGroundUseCase(
-      {@required this.basicUseCaseInputPort,
-      @required this.geolocatorAdapter,
-      @required this.sharedPreferencesAdapter,
-      @required this.locationAdapter});
+      {required this.basicUseCaseInputPort,
+      required this.geolocatorAdapter,
+      required this.sharedPreferencesAdapter,
+      required this.locationAdapter});
 
   @override
   String getCurrentWithLastAddressInMemory() {
-    return basicUseCaseInputPort.getCurrentWithLastAddressInMemory();
+    return basicUseCaseInputPort.getCurrentWithLastAddressInMemory()!;
   }
 
   @override
@@ -55,14 +55,14 @@ class GeoLocationUtilForeGroundUseCase
     } else {
       resultPosition = await geolocatorAdapter.getCurrentPosition();
       await sharedPreferencesAdapter.setDouble(
-          "currentlong", resultPosition.longitude);
+          "currentlong", resultPosition.longitude!);
       await sharedPreferencesAdapter.setDouble(
-          "currentlat", resultPosition.latitude);
+          "currentlat", resultPosition.latitude!);
     }
     currentWithLastPosition = resultPosition;
     try {
       currentWithLastAddress =
-          await getPositionAddress(currentWithLastPosition);
+          await getPositionAddress(currentWithLastPosition!);
     } catch (ex) {
       currentWithLastAddress = "";
     }
@@ -72,7 +72,7 @@ class GeoLocationUtilForeGroundUseCase
 
   @override
   Position getCurrentWithLastPositionInMemory() {
-    return basicUseCaseInputPort.getCurrentWithLastPositionInMemory();
+    return basicUseCaseInputPort.getCurrentWithLastPositionInMemory()!;
   }
 
   @override
@@ -92,14 +92,13 @@ class GeoLocationUtilForeGroundUseCase
 
   @override
   Future<String> reqBallDistanceDisplayText(
-      {@required
+      {required
           Position ballLatLng,
-      @required
-          GeoLocationUtilUseForeGroundCaseOutputPort
+          GeoLocationUtilUseForeGroundCaseOutputPort?
               geoLocationUtilUseCaseOp}) async {
     var position = await getLastKnowPonePosition();
-    var distance = await geolocatorAdapter.distanceBetween(ballLatLng.latitude,
-        ballLatLng.longitude, position.latitude, position.longitude);
+    var distance = geolocatorAdapter.distanceBetween(ballLatLng.latitude!,
+        ballLatLng.longitude!, position.latitude!, position.longitude!);
     var changeDisplayStr = DistanceDisplayUtil.changeDisplayStr(distance);
     if (geoLocationUtilUseCaseOp != null) {
       geoLocationUtilUseCaseOp.onBallDistanceDisplayText(

@@ -6,12 +6,12 @@ part 'FUserAccountUpdateReqDto.g.dart';
 
 @JsonSerializable()
 class FUserAccountUpdateReqDto {
-  String isoCode;
-  String nickName;
-  String selfIntroduction;
-  GenderType gender;
-  bool profileImageIsEmpty;
-  bool backGroundIsEmpty;
+  String? isoCode;
+  String? nickName;
+  String? selfIntroduction;
+  GenderType? gender;
+  bool? profileImageIsEmpty;
+  bool? backGroundIsEmpty;
 
   FUserAccountUpdateReqDto();
 

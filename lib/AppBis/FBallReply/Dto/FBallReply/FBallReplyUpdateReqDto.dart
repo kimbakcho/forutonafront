@@ -5,8 +5,8 @@ part 'FBallReplyUpdateReqDto.g.dart';
 
 @JsonSerializable()
 class FBallReplyUpdateReqDto {
-  String replyUuid;
-  String replyText;
+  String? replyUuid;
+  String? replyText;
 
   FBallReplyUpdateReqDto();
   factory FBallReplyUpdateReqDto.fromJson(Map<String, dynamic> json) =>

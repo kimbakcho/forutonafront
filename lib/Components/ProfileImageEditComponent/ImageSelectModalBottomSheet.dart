@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageSelectModalBottomSheet {
 
-  final Function(FileImage) onSelectImage;
+  final Function(FileImage?) onSelectImage;
 
   final Color color;
 
@@ -14,7 +14,7 @@ class ImageSelectModalBottomSheet {
 
   final _picker = ImagePicker();
 
-  ImageSelectModalBottomSheet({@required this.onSelectImage,this.color = Colors.transparent,this.isShowBasicImageSelect = true});
+  ImageSelectModalBottomSheet({required this.onSelectImage,this.color = Colors.transparent,this.isShowBasicImageSelect = true});
 
   show(BuildContext context,String label){
     showModalBottomSheet(
@@ -41,7 +41,7 @@ class ImageSelectModalBottomSheet {
                     isShowBasicImageSelect ? ListTile(
                       title: Text("기본 이미지"),
                       onTap: () {
-                        onSelectImage(null);
+                        onSelectImage!(null);
                       },
                     ): Container(),
                     ListTile(
@@ -50,7 +50,7 @@ class ImageSelectModalBottomSheet {
                         var pickedFile = await _picker.getImage(source: ImageSource.camera);
                         if(pickedFile != null){
                           var _image = File(pickedFile.path);
-                          onSelectImage(FileImage(_image));
+                          onSelectImage!(FileImage(_image));
                         }
                         Navigator.of(context).pop();
                       },
@@ -61,7 +61,7 @@ class ImageSelectModalBottomSheet {
                         var pickedFile = await _picker.getImage(source: ImageSource.gallery);
                         if(pickedFile != null){
                           var _image = File(pickedFile.path);
-                          onSelectImage(FileImage(_image));
+                          onSelectImage!(FileImage(_image));
                         }
                         Navigator.of(context).pop();
                       },

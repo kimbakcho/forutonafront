@@ -1,15 +1,15 @@
 class PageWrap<T> {
-  final List<T> content;
-  final PageableWarp pageable;
-  final int totalElements;
-  final int totalPages;
-  final bool last;
-  final int size;
-  final int number;
-  final SortWrap sort;
-  final int numberOfElements;
-  final bool first;
-  final bool empty;
+  List<T>? content;
+  final PageableWarp? pageable;
+  final int? totalElements;
+  final int? totalPages;
+  final bool? last;
+  final int? size;
+  final int? number;
+  final SortWrap? sort;
+  final int? numberOfElements;
+  final bool? first;
+  final bool? empty;
 
   PageWrap(
       {this.content,
@@ -50,14 +50,14 @@ class PageWrap<T> {
 
   Map<String, dynamic> toJson() => {
         "content":
-            content == null ? null : List<dynamic>.from(content.map((x) => x)),
-        "pageable": pageable == null ? null : pageable.toJson(),
+            content == null ? null : List<dynamic>.from(content!.map((x) => x)),
+        "pageable": pageable == null ? null : pageable!.toJson(),
         "totalElements": totalElements == null ? null : totalElements,
         "totalPages": totalPages == null ? null : totalPages,
         "last": last == null ? null : last,
         "size": size == null ? null : size,
         "number": number == null ? null : number,
-        "sort": sort == null ? null : sort.toJson(),
+        "sort": sort == null ? null : sort!.toJson(),
         "numberOfElements": numberOfElements == null ? null : numberOfElements,
         "first": first == null ? null : first,
         "empty": empty == null ? null : empty,
@@ -74,20 +74,20 @@ class PageableWarp {
     this.unpaged,
   });
 
-  final SortWrap sort;
-  final int offset;
-  final int pageNumber;
-  final int pageSize;
-  final bool paged;
-  final bool unpaged;
+  final SortWrap? sort;
+  final int? offset;
+  final int? pageNumber;
+  final int? pageSize;
+  final bool? paged;
+  final bool? unpaged;
 
   PageableWarp copyWith({
-    SortWrap sort,
-    int offset,
-    int pageNumber,
-    int pageSize,
-    bool paged,
-    bool unpaged,
+    SortWrap? sort,
+    int? offset,
+    int? pageNumber,
+    int? pageSize,
+    bool? paged,
+    bool? unpaged,
   }) =>
       PageableWarp(
         sort: sort ?? this.sort,
@@ -108,7 +108,7 @@ class PageableWarp {
       );
 
   Map<String, dynamic> toJson() => {
-        "sort": sort == null ? null : sort.toJson(),
+        "sort": sort == null ? null : sort!.toJson(),
         "offset": offset == null ? null : offset,
         "pageNumber": pageNumber == null ? null : pageNumber,
         "pageSize": pageSize == null ? null : pageSize,
@@ -124,14 +124,14 @@ class SortWrap {
     this.empty,
   });
 
-  final bool sorted;
-  final bool unsorted;
-  final bool empty;
+  final bool? sorted;
+  final bool? unsorted;
+  final bool? empty;
 
   SortWrap copyWith({
-    bool sorted,
-    bool unsorted,
-    bool empty,
+    bool? sorted,
+    bool? unsorted,
+    bool? empty,
   }) =>
       SortWrap(
         sorted: sorted ?? this.sorted,

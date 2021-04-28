@@ -13,7 +13,7 @@ class FBallResForMarker {
   // BallStyle3Widget ballStyle3Widget;
 
   FBallResForMarker(
-  {@required this.isSelectBall,@required this.onTopEvent,@required this.ballResDto}) {
+  {required this.isSelectBall,required this.onTopEvent,required this.ballResDto}) {
     // ballStyle3Widget = BallStyle3Widget.create(ballResDto: ballResDto);
   }
 }

@@ -15,19 +15,19 @@ abstract class FBallTagRemoteDataSource {
 
   Future<List<TagRankingResDto>>
       getRelationTagRankingFromTagNameOrderByBallPower(
-          {@required String searchTag, @required FDio noneTokenFDio});
+          {required String searchTag, required FDio noneTokenFDio});
 
   Future<List<FBallTagResDto>> tagFromBallUuid(
-      {@required String ballUuid, @required FDio noneTokenFDio});
+      {required String ballUuid, required FDio noneTokenFDio});
 
   Future<List<TagRankingResDto>> getTagRankingFromTextOrderBySumBI(
-      {@required TagRankingFromTextReqDto tagRankingFromTextReqDto,
-      @required FDio noneTokenFDio});
+      {required TagRankingFromTextReqDto tagRankingFromTextReqDto,
+      required FDio noneTokenFDio});
 
   Future<PageWrap<FBallTagResDto>> getTagItem(
-      {@required TextMatchTagBallReqDto textMatchTagBallReqDto,
-      @required Pageable pageable,
-      @required FDio noneTokenFDio});
+      {required TextMatchTagBallReqDto textMatchTagBallReqDto,
+      required Pageable pageable,
+      required FDio noneTokenFDio});
 }
 
 @LazySingleton(as: FBallTagRemoteDataSource)
@@ -47,7 +47,7 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
   @override
   Future<List<TagRankingResDto>>
       getRelationTagRankingFromTagNameOrderByBallPower(
-          {@required String searchTag, @required FDio noneTokenFDio}) async {
+          {required String searchTag, required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get(
         "/v1/FTag/RelationTagRankingFromTagNameOrderByBallPower",
         queryParameters: {"searchTag": searchTag});
@@ -57,7 +57,7 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
 
   @override
   Future<List<FBallTagResDto>> tagFromBallUuid(
-      {@required String ballUuid, @required FDio noneTokenFDio}) async {
+      {required String ballUuid, required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get("/v1/FTag/tagFromBallUuid",
         queryParameters: {"ballUuid": ballUuid});
     return List<FBallTagResDto>.from(
@@ -66,8 +66,8 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
 
   @override
   Future<List<TagRankingResDto>> getTagRankingFromTextOrderBySumBI(
-      {@required TagRankingFromTextReqDto tagRankingFromTextReqDto,
-      @required FDio noneTokenFDio}) async {
+      {required TagRankingFromTextReqDto tagRankingFromTextReqDto,
+      required FDio noneTokenFDio}) async {
     var response = await noneTokenFDio.get(
         "/v1/FTag/TagRankingFromTextOrderBySumBI",
         queryParameters: tagRankingFromTextReqDto.toJson());
@@ -77,9 +77,9 @@ class FBallTagRemoteDataSourceImpl implements FBallTagRemoteDataSource {
 
   @override
   Future<PageWrap<FBallTagResDto>> getTagItem(
-      {TextMatchTagBallReqDto textMatchTagBallReqDto,
-      Pageable pageable,
-      FDio noneTokenFDio}) async {
+      {required TextMatchTagBallReqDto textMatchTagBallReqDto,
+      required Pageable pageable,
+      required FDio noneTokenFDio}) async {
     var reqDto = textMatchTagBallReqDto.toJson();
     reqDto.addAll(pageable.toJson());
     var response = await noneTokenFDio.get(

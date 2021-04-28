@@ -6,7 +6,7 @@ import 'BallDesciprtionImageViwer.dart';
 
 
 class ForeBallDescriptionImageMode extends BallDescriptionImageViewer{
-  ForeBallDescriptionImageMode({@required List<FBallDesImages> desImages,@required BuildContext context})
+  ForeBallDescriptionImageMode({required List<FBallDesImages> desImages,required BuildContext context})
       : super(desImages:desImages,context:context);
 
   @override
@@ -31,7 +31,7 @@ class ForeBallDescriptionImageMode extends BallDescriptionImageViewer{
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(
-                          desImages[0].src),
+                          desImages[0].src!),
                     ),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12.00),
@@ -54,7 +54,7 @@ class ForeBallDescriptionImageMode extends BallDescriptionImageViewer{
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                desImages[1].src),
+                                desImages[1].src!),
                           ),
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(12.00),
@@ -74,7 +74,7 @@ class ForeBallDescriptionImageMode extends BallDescriptionImageViewer{
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                  desImages[2].src),
+                                  desImages[2].src!),
                             )))),
                 Expanded(
                     flex: 1,
@@ -90,7 +90,7 @@ class ForeBallDescriptionImageMode extends BallDescriptionImageViewer{
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                    desImages[3].src)),
+                                    desImages[3].src!)),
                             borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(12.00),
                             ))))

@@ -14,7 +14,7 @@ class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
 
   @override
   // ignore: missing_return
-  Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {
+  Future<SnsLoginModuleResDto?> getSnsModuleUserInfo() async {
     NaverLoginResult neverLoginResult;
     try {
       neverLoginResult = await FlutterNaverLogin.logIn();
@@ -41,7 +41,7 @@ class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
   }
 
   @override
-  SnsSupportService snsSupportService = SnsSupportService.Naver;
+  SnsSupportService? snsSupportService = SnsSupportService.Naver;
 
   @override
   Future<void> logout() async{
@@ -49,8 +49,8 @@ class NaverLoginAdapterImpl implements SnsLoginModuleAdapter {
   }
 
   @override
-  Future<void> login(FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto) async {
+  Future<void> login(FUserSnsCheckJoinResDto? fUserSnsCheckJoinResDto) async {
     await _fireBaseAuthAdapterForUseCase
-        .signInWithCustomToken(fUserSnsCheckJoinResDto.firebaseCustomToken);
+        .signInWithCustomToken(fUserSnsCheckJoinResDto!.firebaseCustomToken!);
   }
 }

@@ -11,46 +11,48 @@ import 'SignInUserInfoUseCaseOutputPort.dart';
 
 @LazySingleton(as: SignInUserInfoUseCaseInputPort)
 class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
-  FUserInfoResDto _fUserInfo;
-  FUserRepository _fUserRepository;
-  bool isLogin = false;
+  FUserInfoResDto? _fUserInfo;
+  FUserRepository? _fUserRepository;
+  bool? isLogin = false;
 
   @override
-  Stream<FUserInfoResDto> fUserInfoStream;
+  Stream<FUserInfoResDto>? fUserInfoStream;
 
-  StreamController _fUserInfoStreamController;
+  late StreamController<FUserInfoResDto> _fUserInfoStreamController;
 
-  SignInUserInfoUseCase({@required FUserRepository fUserRepository})
+  SignInUserInfoUseCase({required FUserRepository fUserRepository})
       : _fUserRepository = fUserRepository {
     _fUserInfoStreamController = StreamController<FUserInfoResDto>.broadcast();
-    fUserInfoStream = _fUserInfoStreamController.stream;
+    if(_fUserInfoStreamController != null){
+      fUserInfoStream = _fUserInfoStreamController.stream;
+    }
   }
 
 
 
   @override
-  FUserInfoResDto reqSignInUserInfoFromMemory(
-      {SignInUserInfoUseCaseOutputPort outputPort}) {
+  FUserInfoResDto? reqSignInUserInfoFromMemory(
+      {SignInUserInfoUseCaseOutputPort? outputPort}) {
     if (_fUserInfo == null) {
       throw Exception(
           "Don't Have UserInfo in Memory use to saveSignInInfoInMemoryFromAPiServer");
     }
     if (outputPort != null) {
-      outputPort.onSignInUserInfoFromMemory(_fUserInfo);
+      outputPort.onSignInUserInfoFromMemory(_fUserInfo!);
     }
     return _fUserInfo;
   }
 
   @override
-  Future<FUserInfoResDto> saveSignInInfoInMemoryFromAPiServer(
-      {SignInUserInfoUseCaseOutputPort outputPort}) async {
+  Future<FUserInfoResDto?> saveSignInInfoInMemoryFromAPiServer(
+      {SignInUserInfoUseCaseOutputPort? outputPort}) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setBool("isLogin", true);
-    _fUserInfo = await _fUserRepository.findByMe();
+    _fUserInfo = await _fUserRepository!.findByMe();
     isLogin = true;
-    _fUserInfoStreamController.add(_fUserInfo);
+    _fUserInfoStreamController.add(_fUserInfo!);
     if (outputPort != null) {
-      outputPort.onSignInUserInfoFromMemory(_fUserInfo);
+      outputPort.onSignInUserInfoFromMemory(_fUserInfo!);
     }
     return _fUserInfo;
   }
@@ -58,10 +60,9 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
   bool checkMaliciousPopup() {
     try{
       var fUserInfoResDto = reqSignInUserInfoFromMemory();
-      if (isLogin) {
-        if (fUserInfoResDto.maliciousCount > 0 &&
-            fUserInfoResDto.maliciousMessageCheck == false &&
-            fUserInfoResDto.stopPeriod == null) {
+      if (isLogin!) {
+        if (fUserInfoResDto!.maliciousCount > 0 &&
+            fUserInfoResDto.maliciousMessageCheck == false) {
           return true;
         } else {
           return false;
@@ -81,7 +82,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
     isLogin = false;
     var sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setBool("isLogin", false);
-    _fUserInfoStreamController.add(null);
+    // _fUserInfoStreamController.add(null);
   }
 
   void dispose() {
@@ -94,7 +95,7 @@ class SignInUserInfoUseCase implements SignInUserInfoUseCaseInputPort {
     if(!sharedPreferences.getKeys().contains("isLogin")){
       return false;
     }
-    bool result = sharedPreferences.getBool("isLogin");
+    bool result = sharedPreferences.getBool("isLogin")!;
     return result;
   }
 }

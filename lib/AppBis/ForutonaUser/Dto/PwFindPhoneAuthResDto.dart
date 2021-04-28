@@ -5,8 +5,8 @@ part 'PwFindPhoneAuthResDto.g.dart';
 
 @JsonSerializable()
 class PwFindPhoneAuthResDto extends PhoneAuthResDto {
-  bool error;
-  String cause;
+  bool? error;
+  String? cause;
 
   PwFindPhoneAuthResDto();
   factory PwFindPhoneAuthResDto.fromJson(Map<String, dynamic> json) => _$PwFindPhoneAuthResDtoFromJson(json);

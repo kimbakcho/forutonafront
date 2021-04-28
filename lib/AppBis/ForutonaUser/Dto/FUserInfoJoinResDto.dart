@@ -6,8 +6,8 @@ part 'FUserInfoJoinResDto.g.dart';
 @JsonSerializable()
 
 class FUserInfoJoinResDto {
-  String customToken;
-  bool joinComplete;
+  String? customToken;
+  bool? joinComplete;
 
   FUserInfoJoinResDto();
 

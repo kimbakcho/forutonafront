@@ -8,29 +8,29 @@ part of 'FUserInfoJoinReqDto.dart';
 
 FUserInfoJoinReqDto _$FUserInfoJoinReqDtoFromJson(Map<String, dynamic> json) {
   return FUserInfoJoinReqDto()
-    ..forutonaAgree = json['forutonaAgree'] as bool
-    ..forutonaManagementAgree = json['forutonaManagementAgree'] as bool
-    ..privateAgree = json['privateAgree'] as bool
-    ..positionAgree = json['positionAgree'] as bool
-    ..martketingAgree = json['martketingAgree'] as bool
-    ..ageLimitAgree = json['ageLimitAgree'] as bool
-    ..nickName = json['nickName'] as String
-    ..email = json['email'] as String
+    ..forutonaAgree = json['forutonaAgree'] as bool?
+    ..forutonaManagementAgree = json['forutonaManagementAgree'] as bool?
+    ..privateAgree = json['privateAgree'] as bool?
+    ..positionAgree = json['positionAgree'] as bool?
+    ..martketingAgree = json['martketingAgree'] as bool?
+    ..ageLimitAgree = json['ageLimitAgree'] as bool?
+    ..nickName = json['nickName'] as String?
+    ..email = json['email'] as String?
     ..snsSupportService = _$enumDecodeNullable(
         _$SnsSupportServiceEnumMap, json['snsSupportService'])
-    ..countryCode = json['countryCode'] as String
-    ..snsToken = json['snsToken'] as String
-    ..userIntroduce = json['userIntroduce'] as String
+    ..countryCode = json['countryCode'] as String?
+    ..snsToken = json['snsToken'] as String?
+    ..userIntroduce = json['userIntroduce'] as String?
     ..internationalizedPhoneNumber =
-        json['internationalizedPhoneNumber'] as String
-    ..phoneAuthToken = json['phoneAuthToken'] as String
-    ..password = json['password'] as String
-    ..emailUserUid = json['emailUserUid'] as String
+        json['internationalizedPhoneNumber'] as String?
+    ..phoneAuthToken = json['phoneAuthToken'] as String?
+    ..password = json['password'] as String?
+    ..emailUserUid = json['emailUserUid'] as String?
     ..ageDate = json['ageDate'] == null
         ? null
         : DateTime.parse(json['ageDate'] as String)
     ..gender = _$enumDecodeNullable(_$GenderTypeEnumMap, json['gender'])
-    ..profileImageUrl = json['profileImageUrl'] as String;
+    ..profileImageUrl = json['profileImageUrl'] as String?;
 }
 
 Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
@@ -58,36 +58,41 @@ Map<String, dynamic> _$FUserInfoJoinReqDtoToJson(
       'profileImageUrl': instance.profileImageUrl,
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$SnsSupportServiceEnumMap = {

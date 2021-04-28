@@ -15,7 +15,7 @@ abstract class BallDescriptionImageViewer {
 
   final BuildContext context;
   final List<FBallDesImages> desImages;
-  BallDescriptionImageViewer({@required this.desImages,@required this.context});
+  BallDescriptionImageViewer({required this.desImages,required this.context});
 
   Widget getImageViewerWidget();
 
@@ -30,7 +30,7 @@ abstract class BallDescriptionImageViewer {
   }
 
   factory BallDescriptionImageViewer.descriptionImages(
-      {@required List<FBallDesImages> desImages,@required BuildContext context}){
+      {required List<FBallDesImages> desImages,required BuildContext context}){
     BallDescriptionImageViewer ballDescriptionImageViewer;
     switch (desImages.length) {
       case 0 :

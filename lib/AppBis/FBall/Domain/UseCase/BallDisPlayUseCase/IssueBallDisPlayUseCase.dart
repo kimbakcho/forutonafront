@@ -7,12 +7,11 @@ import 'BallDisPlayUseCase.dart';
 
 class IssueBallDisPlayUseCase extends BallDisPlayUseCase {
   IssueBallDisPlayUseCase(
-      {FBallResDto fBallResDto,
-      GeolocatorAdapter
-          geoLocatorAdapter}) {
+      {required FBallResDto fBallResDto, GeolocatorAdapter?
+          geoLocatorAdapter}) : super(fBallResDto, null, geoLocatorAdapter) {
     this.fBallResDto = fBallResDto;
     this.geoLocatorAdapter = geoLocatorAdapter;
     this.ballDescription =
-        IssueBallDescription.fromJson(json.decode(fBallResDto.description));
+        IssueBallDescription.fromJson(json.decode(fBallResDto.description!));
   }
 }

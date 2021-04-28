@@ -9,7 +9,7 @@ class TagRankingFromBallInfluencePowerReqDto {
   double mapCenterLongitude;
 
   TagRankingFromBallInfluencePowerReqDto(
-      {@required this.mapCenterLatitude, @required this.mapCenterLongitude});
+      {required this.mapCenterLatitude, required this.mapCenterLongitude});
 
   factory TagRankingFromBallInfluencePowerReqDto.fromJson(
           Map<String, dynamic> json) =>

@@ -82,7 +82,7 @@ class L014MainPage extends StatelessWidget {
                                     child: PhoneAuthComponent(
                                       phoneAuthMode: PhoneAuthMode.PhonePwFind,
                                       email: model
-                                          ._pwChangeFromPhoneAuthReqDto.email,
+                                          ._pwChangeFromPhoneAuthReqDto!.email,
                                       phoneAuthComponentController:
                                           model._phoneAuthComponentController,
                                     ),
@@ -94,13 +94,13 @@ class L014MainPage extends StatelessWidget {
 }
 
 class L014MainPageViewModel extends ChangeNotifier {
-  PhoneAuthComponentController _phoneAuthComponentController;
+  PhoneAuthComponentController? _phoneAuthComponentController;
 
   bool _hasTryReqAuth = false;
 
-  BuildContext context;
+  BuildContext? context;
 
-  final PwChangeFromPhoneAuthReqDto _pwChangeFromPhoneAuthReqDto;
+  final PwChangeFromPhoneAuthReqDto? _pwChangeFromPhoneAuthReqDto;
 
   L014MainPageViewModel(this._pwChangeFromPhoneAuthReqDto, this.context) {
     _phoneAuthComponentController = PhoneAuthComponentController(
@@ -122,20 +122,20 @@ class L014MainPageViewModel extends ChangeNotifier {
 
   _onPhoneAuthCheckSuccess(
       PwFindPhoneAuthNumberResDto pwFindPhoneAuthNumberResDto) {
-    _pwChangeFromPhoneAuthReqDto.email = pwFindPhoneAuthNumberResDto.email;
-    _pwChangeFromPhoneAuthReqDto.emailPhoneAuthToken =
+    _pwChangeFromPhoneAuthReqDto!.email = pwFindPhoneAuthNumberResDto.email;
+    _pwChangeFromPhoneAuthReqDto!.emailPhoneAuthToken =
         pwFindPhoneAuthNumberResDto.emailPhoneAuthToken;
-    _pwChangeFromPhoneAuthReqDto.internationalizedPhoneNumber =
-        pwFindPhoneAuthNumberResDto.internationalizedDialCode +
+    _pwChangeFromPhoneAuthReqDto!.internationalizedPhoneNumber =
+        pwFindPhoneAuthNumberResDto.internationalizedDialCode! +
             " " +
-            pwFindPhoneAuthNumberResDto.phoneNumber;
+            pwFindPhoneAuthNumberResDto.phoneNumber!;
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+    Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
       return L015MainPage();
     }));
   }
 
   void _checkAuth() async {
-    _phoneAuthComponentController.checkAuthCheckNumber();
+    _phoneAuthComponentController!.checkAuthCheckNumber();
   }
 }

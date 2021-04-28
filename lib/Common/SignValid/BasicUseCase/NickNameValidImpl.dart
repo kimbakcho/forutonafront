@@ -8,11 +8,11 @@ class NickNameValidImpl implements SignValid {
 
 
   @override
-  bool hasValidTry = false;
+  bool? hasValidTry = false;
 
   FUserRepository _fUserRepository;
 
-  NickNameValidImpl({@required FUserRepository fUserRepository})
+  NickNameValidImpl({required FUserRepository fUserRepository})
       : _fUserRepository = fUserRepository;
 
   @override

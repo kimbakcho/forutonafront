@@ -4,12 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class EmailCheckComponent extends StatelessWidget {
-  final EmailCheckComponentController emailCheckComponentController;
+  final EmailCheckComponentController? emailCheckComponentController;
 
-  final SignValid emailValid;
+  final SignValid? emailValid;
 
   const EmailCheckComponent(
-      {Key key, this.emailCheckComponentController, this.emailValid})
+      {Key? key, this.emailCheckComponentController, this.emailValid})
       : super(key: key);
 
   @override
@@ -69,9 +69,9 @@ class EmailCheckComponent extends StatelessWidget {
 class EmailCheckComponentViewModel extends ChangeNotifier {
   TextEditingController _emailEditingController;
 
-  SignValid emailValid;
+  SignValid? emailValid;
 
-  final EmailCheckComponentController emailCheckComponentController;
+  final EmailCheckComponentController? emailCheckComponentController;
 
   String _errorText = "";
 
@@ -83,7 +83,7 @@ class EmailCheckComponentViewModel extends ChangeNotifier {
       {this.emailCheckComponentController, this.emailValid})
       : _emailEditingController = TextEditingController() {
     if (this.emailCheckComponentController != null) {
-      this.emailCheckComponentController._emailCheckComponentViewModel = this;
+      this.emailCheckComponentController!._emailCheckComponentViewModel = this;
     }
     _emailEditingController.addListener(() {
       onChangeEditText(_emailEditingController.text);
@@ -91,9 +91,8 @@ class EmailCheckComponentViewModel extends ChangeNotifier {
   }
 
   onChangeEditText(String value) {
-    if (emailCheckComponentController != null &&
-        emailCheckComponentController.onChangeEditText != null) {
-      emailCheckComponentController.onChangeEditText(value);
+    if (emailCheckComponentController != null) {
+      emailCheckComponentController!.onChangeEditText!(value);
     }
   }
 
@@ -102,9 +101,9 @@ class EmailCheckComponentViewModel extends ChangeNotifier {
     if (emailValid == null) {
       return false;
     }
-    await emailValid.valid(_emailEditingController.text);
-    _errorText = emailValid.errorText();
-    _hasError = emailValid.hasError();
+    await emailValid!.valid(_emailEditingController.text);
+    _errorText = emailValid!.errorText();
+    _hasError = emailValid!.hasError();
     return !_hasError;
   }
 
@@ -118,9 +117,9 @@ class EmailCheckComponentViewModel extends ChangeNotifier {
 }
 
 class EmailCheckComponentController {
-  EmailCheckComponentViewModel _emailCheckComponentViewModel;
+  EmailCheckComponentViewModel? _emailCheckComponentViewModel;
 
-  Function(String) onChangeEditText;
+  Function(String)? onChangeEditText;
 
   EmailCheckComponentController({this.onChangeEditText});
 
@@ -128,14 +127,14 @@ class EmailCheckComponentController {
     if (_emailCheckComponentViewModel == null) {
       return "";
     } else {
-      return _emailCheckComponentViewModel._emailEditingController.text;
+      return _emailCheckComponentViewModel!._emailEditingController.text;
     }
   }
 
   Future<bool> valid() async {
-    var result = await _emailCheckComponentViewModel._valid();
+    var result = await _emailCheckComponentViewModel!._valid();
 
-    _emailCheckComponentViewModel.notifyListeners();
+    _emailCheckComponentViewModel!.notifyListeners();
 
     return result;
   }

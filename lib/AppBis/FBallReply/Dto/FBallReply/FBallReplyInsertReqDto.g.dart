@@ -9,9 +9,9 @@ part of 'FBallReplyInsertReqDto.dart';
 FBallReplyInsertReqDto _$FBallReplyInsertReqDtoFromJson(
     Map<String, dynamic> json) {
   return FBallReplyInsertReqDto()
-    ..replyUuid = json['replyUuid'] as String
-    ..ballUuid = json['ballUuid'] as String
-    ..replyText = json['replyText'] as String;
+    ..replyUuid = json['replyUuid'] as String?
+    ..ballUuid = json['ballUuid'] as String?
+    ..replyText = json['replyText'] as String?;
 }
 
 Map<String, dynamic> _$FBallReplyInsertReqDtoToJson(

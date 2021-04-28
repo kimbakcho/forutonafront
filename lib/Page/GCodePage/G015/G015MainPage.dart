@@ -185,16 +185,16 @@ class G015MainPageViewModel extends ChangeNotifier {
 
   SwitchStyle1Controller alarmSponNewContentCon = SwitchStyle1Controller();
 
-  SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  UpdateAccountUserInfoUseCaseInputPort _updateAccountUserInfoUseCaseInputPort;
+  UpdateAccountUserInfoUseCaseInputPort? _updateAccountUserInfoUseCaseInputPort;
 
-  FUserInfoResDto _fUserInfoResDto;
+  FUserInfoResDto? _fUserInfoResDto;
 
   G015MainPageViewModel(this._signInUserInfoUseCaseInputPort,
       this._updateAccountUserInfoUseCaseInputPort) {
     this._fUserInfoResDto =
-        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+        _signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
   }
 
   _updateConfig() async {
@@ -211,30 +211,30 @@ class G015MainPageViewModel extends ChangeNotifier {
         alarmSponNewContentCon.isCheck;
 
     await this
-        ._updateAccountUserInfoUseCaseInputPort
+        ._updateAccountUserInfoUseCaseInputPort!
         .userAlarmConfigUpdate(userAlarmConfigUpdateReqDto);
 
-    await _signInUserInfoUseCaseInputPort.saveSignInInfoInMemoryFromAPiServer();
+    await _signInUserInfoUseCaseInputPort!.saveSignInInfoInMemoryFromAPiServer();
     notifyListeners();
   }
 
   get alarmChatMessage {
-    return _fUserInfoResDto.alarmChatMessage;
+    return _fUserInfoResDto!.alarmChatMessage;
   }
 
   get alarmContentReply {
-    return _fUserInfoResDto.alarmContentReply;
+    return _fUserInfoResDto!.alarmContentReply;
   }
 
   get alarmReplyAndReply {
-    return _fUserInfoResDto.alarmReplyAndReply;
+    return _fUserInfoResDto!.alarmReplyAndReply;
   }
 
   get alarmFollowNewContent {
-    return _fUserInfoResDto.alarmFollowNewContent;
+    return _fUserInfoResDto!.alarmFollowNewContent;
   }
 
   get alarmSponNewContent {
-    return _fUserInfoResDto.alarmSponNewContent;
+    return _fUserInfoResDto!.alarmSponNewContent;
   }
 }

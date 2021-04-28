@@ -5,10 +5,10 @@ part 'UserPolicyResDto.g.dart';
 
 @JsonSerializable()
 class UserPolicyResDto {
-  String policyName;
-  String policyContent;
-  String lang;
-  DateTime writeDateTime;
+  String? policyName;
+  String? policyContent;
+  String? lang;
+  DateTime? writeDateTime;
 
 
   UserPolicyResDto();

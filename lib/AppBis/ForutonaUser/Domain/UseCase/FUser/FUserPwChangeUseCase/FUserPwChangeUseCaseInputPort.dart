@@ -10,7 +10,7 @@ abstract class FUserPwChangeUseCaseInputPort {
 class FUserPwChangeUseCase implements FUserPwChangeUseCaseInputPort {
   final FUserRepository _fUserRepository;
 
-  FUserPwChangeUseCase({@required FUserRepository fUserRepository})
+  FUserPwChangeUseCase({required FUserRepository fUserRepository})
       : _fUserRepository = fUserRepository;
 
   @override

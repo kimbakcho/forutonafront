@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
-import 'package:forutonafront/Page/JCodePage/J001/J001View.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +11,11 @@ import 'ReviewCountMediator.dart';
 import 'ReviewInertMediator.dart';
 
 class BasicReviews extends StatelessWidget {
-  final String ballUuid;
-  final ReviewInertMediator reviewInertMediator;
-  final ReviewCountMediator reviewCountMediator;
+  final String? ballUuid;
+  final ReviewInertMediator? reviewInertMediator;
+  final ReviewCountMediator? reviewCountMediator;
   BasicReviews(
-      {Key key,
+      {Key? key,
       this.ballUuid,
       this.reviewInertMediator,
       this.reviewCountMediator})
@@ -84,27 +83,27 @@ class BasicReviews extends StatelessWidget {
 
 class ID001ReviewsViewModel extends ChangeNotifier
     implements ReviewCountMediatorComponent {
-  final String ballUuid;
-  final FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
+  final String? ballUuid;
+  final FireBaseAuthAdapterForUseCase? _fireBaseAuthAdapterForUseCase;
   final isLoaded = false;
-  final ReviewInertMediator _reviewInertMediator;
-  final ReviewCountMediator _reviewCountMediator;
+  final ReviewInertMediator? _reviewInertMediator;
+  final ReviewCountMediator? _reviewCountMediator;
 
   ID001ReviewsViewModel(
       {this.ballUuid,
-      FBallReplyUseCaseInputPort fBallReplyUseCaseInputPort,
-      FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase,
-      ReviewInertMediator reviewInertMediator,
-      ReviewCountMediator reviewCountMediator})
+      FBallReplyUseCaseInputPort? fBallReplyUseCaseInputPort,
+      FireBaseAuthAdapterForUseCase? fireBaseAuthAdapterForUseCase,
+      ReviewInertMediator? reviewInertMediator,
+      ReviewCountMediator? reviewCountMediator})
       :
         _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase,
         _reviewInertMediator = reviewInertMediator,
         _reviewCountMediator = reviewCountMediator {
-    reviewCountMediator.registerComponent(this);
+    reviewCountMediator!.registerComponent(this);
 
   }
   showRootReplyInputDialog(BuildContext context) async {
-    if (await _fireBaseAuthAdapterForUseCase.isLogin()) {
+    if (await _fireBaseAuthAdapterForUseCase!.isLogin()) {
       await showModalBottomSheet(
           context: context,
           isDismissible: true,
@@ -117,21 +116,21 @@ class ID001ReviewsViewModel extends ChangeNotifier
                 reviewInertMediator: _reviewInertMediator);
           });
     } else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-        return J001View();
-      }));
+      // Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      //   return J001View();
+      // }));
     }
   }
 
 
   @override
   void dispose() {
-    this._reviewCountMediator.unregisterComponent(this);
+    this._reviewCountMediator!.unregisterComponent(this);
     super.dispose();
   }
 
   get reviewCount {
-    return _reviewCountMediator.reviewCount;
+    return _reviewCountMediator!.reviewCount;
   }
 
   @override

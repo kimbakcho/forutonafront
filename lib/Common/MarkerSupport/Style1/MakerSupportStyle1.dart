@@ -23,7 +23,7 @@ class MakerSupportStyle1 {
   MakerSupportStyle1(this.ballList, this.completer);
 
   Future<void> generate(BuildContext context) {
-    WidgetsBinding.instance
+    WidgetsBinding.instance!
         .addPostFrameCallback((_) => afterFirstLayout(context));
     return completer.future;
   }
@@ -33,7 +33,7 @@ class MakerSupportStyle1 {
   }
 
   void addOverlay(BuildContext context) {
-    OverlayState overlayState = Overlay.of(context);
+    OverlayState overlayState = Overlay.of(context)!;
 
     OverlayEntry entry = OverlayEntry(
         builder: (context) {
@@ -60,11 +60,11 @@ class MakerSupportStyle1 {
 /// 2) After painted access the repaint boundary with global key and converts it to uInt8List
 /// 3) Returns set of Uint8List (bitmaps) through callback
 class _MarkerHelper extends StatefulWidget {
-  final List<FBallResForMarker> ballList;
+  final List<FBallResForMarker>? ballList;
 
-  final Completer completer;
+  final Completer? completer;
 
-  const _MarkerHelper({Key key, this.ballList, this.completer})
+  const _MarkerHelper({Key? key, this.ballList, this.completer})
       : super(key: key);
 
   @override
@@ -74,7 +74,7 @@ class _MarkerHelper extends StatefulWidget {
 }
 
 class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
-  List<GlobalKey> globalKeys = List<GlobalKey>();
+  List<GlobalKey> globalKeys = List.empty();
 
   @override
   void afterFirstLayout(BuildContext context) async {
@@ -82,26 +82,26 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
     Set<Marker> markers = new Set<Marker>();
     for(int i=0;i<bitMapFromWidget.length;i++){
       markers.add(Marker(
-        markerId: MarkerId(widget.ballList[i].ballResDto.ballUuid),
+        markerId: MarkerId(widget.ballList![i].ballResDto.ballUuid!),
         icon: BitmapDescriptor.fromBytes(bitMapFromWidget[i]),
-        anchor: widget.ballList[i].isSelectBall ? Offset(0.5,1) : Offset(0.5,0.5),
-        zIndex: widget.ballList[i].isSelectBall ? 2 : 1 ,
+        anchor: widget.ballList![i].isSelectBall ? Offset(0.5,1) : Offset(0.5,0.5),
+        zIndex: widget.ballList![i].isSelectBall ? 2 : 1 ,
         onTap: (){
-          widget.ballList[i].onTopEvent(widget.ballList[i]);
+          widget.ballList![i].onTopEvent(widget.ballList![i]);
         },
-        position: LatLng(widget.ballList[i].ballResDto.latitude,widget.ballList[i].ballResDto.longitude),
+        position: LatLng(widget.ballList![i].ballResDto.latitude!,widget.ballList![i].ballResDto.longitude!),
       ));
     }
-    widget.completer.complete(markers);
+    widget.completer!.complete(markers);
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetBalls = [];
 
-    for (var ball in widget.ballList) {
+    for (var ball in widget.ballList!) {
       widgetBalls.add(MarkerStyle1Util.ballWidgetSelect(
-          ball.ballResDto.ballType, ball.isSelectBall));
+          ball.ballResDto.ballType!, ball.isSelectBall));
     }
 
     return Transform.translate(
@@ -126,10 +126,10 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
   }
 
   Future<Uint8List> _getUint8List(GlobalKey markerKey) async {
-    RenderRepaintBoundary boundary =
-        markerKey.currentContext.findRenderObject();
+    RenderRepaintBoundary? boundary =
+        markerKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     var image = await boundary.toImage(pixelRatio: 1.0);
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    ByteData byteData = (await image.toByteData(format: ui.ImageByteFormat.png))!;
     return byteData.buffer.asUint8List();
   }
 }
@@ -139,7 +139,7 @@ mixin AfterLayoutMixin<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
+    WidgetsBinding.instance!
         .addPostFrameCallback((_) => afterFirstLayout(context));
   }
 

@@ -5,8 +5,8 @@ part 'Pageable.g.dart';
 @JsonSerializable()
 class Pageable{
 
-  int page = 0;
-  int size = 10;
+  int? page = 0;
+  int? size = 10;
   String sort;
 
   Pageable({this.page, this.size, this.sort = ""});

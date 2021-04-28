@@ -5,8 +5,8 @@ part 'SearchHistory.g.dart';
 
 @JsonSerializable()
 class SearchHistory {
-  String searchText;
-  DateTime searchTime;
+  String? searchText;
+  DateTime? searchTime;
   SearchHistory({this.searchText,this.searchTime});
 
   factory SearchHistory.fromJson(Map<String, dynamic> json) => _$SearchHistoryFromJson(json);

@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 
 class ProfileImageEditComponent extends StatelessWidget {
 
-  final ProfileImageEditComponentController profileImageEditComponentController;
+  final ProfileImageEditComponentController? profileImageEditComponentController;
 
-  final String initProfileImageUrl;
+  final String? initProfileImageUrl;
 
-  final String initBackGroundImageUrl;
+  final String? initBackGroundImageUrl;
 
   const ProfileImageEditComponent(
-      {Key key, this.profileImageEditComponentController, this.initProfileImageUrl, this.initBackGroundImageUrl})
+      {Key? key, this.profileImageEditComponentController, this.initProfileImageUrl, this.initBackGroundImageUrl})
       : super(key: key);
 
   @override
@@ -98,23 +98,23 @@ class ProfileImageEditComponent extends StatelessWidget {
 
 class ProfileImageEditComponentViewModel extends ChangeNotifier {
 
-  ProfileImageEditComponentController profileImageEditComponentController;
+  ProfileImageEditComponentController? profileImageEditComponentController;
 
-  FileImage _profileImageProvider;
+  FileImage? _profileImageProvider;
 
-  FileImage _backgroundImageProvider;
+  FileImage? _backgroundImageProvider;
 
-  NetworkImage _profileImageUrlProvider;
+  NetworkImage? _profileImageUrlProvider;
 
-  NetworkImage _backGroundImageUrlProvider;
+  NetworkImage? _backGroundImageUrlProvider;
 
-  ImageSelectModalBottomSheet _imageProfileSelectModalBottomSheet;
+  ImageSelectModalBottomSheet? _imageProfileSelectModalBottomSheet;
 
-  ImageSelectModalBottomSheet _imageBackGroundSelectModalBottomSheet;
+  ImageSelectModalBottomSheet? _imageBackGroundSelectModalBottomSheet;
 
-  String initProfileImageUrl;
+  String? initProfileImageUrl;
 
-  String initBackGroundImageUrl;
+  String? initBackGroundImageUrl;
 
   ProfileImageEditComponentViewModel(
       {this.profileImageEditComponentController, this.initProfileImageUrl, this.initBackGroundImageUrl}) {
@@ -122,31 +122,31 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
         ImageSelectModalBottomSheet(onSelectImage: onProfileSelectImage,color: Colors.white);
     _imageBackGroundSelectModalBottomSheet =
         ImageSelectModalBottomSheet(onSelectImage: onBackgroundSelectImage,color: Colors.white);
-    profileImageEditComponentController._profileImageEditComponentViewModel =
+    profileImageEditComponentController!._profileImageEditComponentViewModel =
     this;
     if (initProfileImageUrl != null) {
-      setProfileImageUrl(initProfileImageUrl);
+      setProfileImageUrl(initProfileImageUrl!);
     }
     if (initBackGroundImageUrl != null) {
-      setBackGroundImageUrlProvider(initBackGroundImageUrl);
+      setBackGroundImageUrlProvider(initBackGroundImageUrl!);
     }
   }
 
   showProfileSelectImageModalBottomSheet(BuildContext context) {
-    _imageProfileSelectModalBottomSheet.show(context, "프로필 이미지 변경");
+    _imageProfileSelectModalBottomSheet!.show(context, "프로필 이미지 변경");
   }
 
-  onProfileSelectImage(FileImage imageProvider) {
+  onProfileSelectImage(FileImage? imageProvider) {
     _profileImageUrlProvider = null;
     _profileImageProvider = imageProvider;
     notifyListeners();
   }
 
   showBackGroundImageModalBottomSheet(BuildContext context) {
-    _imageBackGroundSelectModalBottomSheet.show(context, "배경화면 이미지 변경");
+    _imageBackGroundSelectModalBottomSheet!.show(context, "배경화면 이미지 변경");
   }
 
-  onBackgroundSelectImage(FileImage imageProvider) {
+  onBackgroundSelectImage(FileImage? imageProvider) {
     _backGroundImageUrlProvider = null;
     _backgroundImageProvider = imageProvider;
     notifyListeners();
@@ -165,11 +165,11 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
   }
 
   Widget getProfileImageWidget() {
-    ImageProvider imageProvider;
+    ImageProvider? imageProvider;
     if (_profileImageUrlProvider != null) {
-      imageProvider = _profileImageUrlProvider;
+      imageProvider = _profileImageUrlProvider!;
     } else if (_profileImageProvider != null) {
-      imageProvider = _profileImageProvider;
+      imageProvider = _profileImageProvider!;
     }
     if (imageProvider != null) {
       return Container(
@@ -193,11 +193,11 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
   }
 
   Widget getBackGroundImageWidget(BuildContext context) {
-    ImageProvider imageProvider;
+    ImageProvider? imageProvider;
     if (_backGroundImageUrlProvider != null) {
-      imageProvider = _backGroundImageUrlProvider;
+      imageProvider = _backGroundImageUrlProvider!;
     } else if (_backgroundImageProvider != null) {
-      imageProvider = _backgroundImageProvider;
+      imageProvider = _backgroundImageProvider!;
     }
     return Container(
       constraints: BoxConstraints(
@@ -224,27 +224,27 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
 }
 
 class ProfileImageEditComponentController {
-  ProfileImageEditComponentViewModel _profileImageEditComponentViewModel;
+  ProfileImageEditComponentViewModel? _profileImageEditComponentViewModel;
 
   FileImage getProfileImageProvider() {
-    return _profileImageEditComponentViewModel._profileImageProvider;
+    return _profileImageEditComponentViewModel!._profileImageProvider!;
   }
 
   FileImage getBackgroundImageProvider() {
-    return _profileImageEditComponentViewModel._backgroundImageProvider;
+    return _profileImageEditComponentViewModel!._backgroundImageProvider!;
   }
 
   NetworkImage getProfileImageUrlProvider() {
-    return _profileImageEditComponentViewModel._profileImageUrlProvider;
+    return _profileImageEditComponentViewModel!._profileImageUrlProvider!;
   }
 
   NetworkImage getBackgroundImageUrlProvider() {
-    return _profileImageEditComponentViewModel._backGroundImageUrlProvider;
+    return _profileImageEditComponentViewModel!._backGroundImageUrlProvider!;
   }
 
 
   setProfileImageUrl(String url) {
-    _profileImageEditComponentViewModel.setProfileImageUrl(url);
+    _profileImageEditComponentViewModel!.setProfileImageUrl(url);
   }
 
 

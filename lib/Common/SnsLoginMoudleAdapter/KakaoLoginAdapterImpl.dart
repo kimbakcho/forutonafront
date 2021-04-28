@@ -24,16 +24,16 @@ class KakaoLoginAdapterImpl implements SnsLoginModuleAdapter {
       await AccessTokenStore.instance.toStore(token);
       User user = await UserApi.instance.me();
       return SnsLoginModuleResDto(user.id.toString(), token.accessToken,
-          userNickName: user.kakaoAccount.profile.nickname,
-          email: user.kakaoAccount.email,
-          userProfileImageUrl: user.kakaoAccount.profile.profileImageUrl.toString());
+          userNickName: user.kakaoAccount!.profile!.nickname,
+          email: user.kakaoAccount!.email,
+          userProfileImageUrl: user.kakaoAccount!.profile!.profileImageUrl.toString());
     } catch (ex) {
       throw ex;
     }
   }
 
   @override
-  SnsSupportService snsSupportService = SnsSupportService.Kakao;
+  SnsSupportService? snsSupportService = SnsSupportService.Kakao;
 
   @override
   Future<void> logout() async {
@@ -43,8 +43,8 @@ class KakaoLoginAdapterImpl implements SnsLoginModuleAdapter {
   }
 
   @override
-  Future<void> login(FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto) async {
+  Future<void> login(FUserSnsCheckJoinResDto? fUserSnsCheckJoinResDto) async {
     await _fireBaseAuthAdapterForUseCase
-        .signInWithCustomToken(fUserSnsCheckJoinResDto.firebaseCustomToken);
+        .signInWithCustomToken(fUserSnsCheckJoinResDto!.firebaseCustomToken!);
   }
 }

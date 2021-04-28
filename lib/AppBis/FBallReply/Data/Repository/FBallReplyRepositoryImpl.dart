@@ -18,8 +18,8 @@ class FBallReplyRepositoryImpl implements FBallReplyRepository {
   final FireBaseAuthBaseAdapter _fireBaseAuthBaseAdapter;
 
   FBallReplyRepositoryImpl(
-      {@required FBallReplyDataSource fBallReplyDataSource,
-      @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter})
+      {required FBallReplyDataSource fBallReplyDataSource,
+      required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter})
       : _fBallReplyDataSource = fBallReplyDataSource,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter;
 
@@ -45,7 +45,7 @@ class FBallReplyRepositoryImpl implements FBallReplyRepository {
   }
 
   @override
-  Future<int> getBallReviewCount(String ballUuid) async {
+  Future<int?> getBallReviewCount(String ballUuid) async {
     return await _fBallReplyDataSource.getBallReviewCount(ballUuid,FDio.noneToken());
   }
 }

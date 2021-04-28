@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
 import 'package:forutonafront/Common/SignValid/SignValid.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
@@ -6,13 +7,13 @@ import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAu
 class CurrentPwValidImpl implements SignValid {
   FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
   @override
-  bool hasValidTry = false;
+  bool? hasValidTry = false;
 
   bool _isTextError = false;
   String _errorText = "";
 
   CurrentPwValidImpl(
-      {@required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+      {required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
       : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
 
   @override
@@ -32,10 +33,10 @@ class CurrentPwValidImpl implements SignValid {
     _errorText = "";
     try {
       await _fireBaseAuthAdapterForUseCase.signInWithEmailAndPassword(
-          await _fireBaseAuthAdapterForUseCase.userEmail(), validText);
-    } catch (ex) {
+          (await _fireBaseAuthAdapterForUseCase.userEmail())!, validText);
+    } on PlatformException catch (ex) {
       _isTextError = true;
-      _errorText = FireBaseValidErrorUtil().getErrorText(ex);
+      _errorText = FireBaseValidErrorUtil().getErrorText(ex)!;
     }
   }
 

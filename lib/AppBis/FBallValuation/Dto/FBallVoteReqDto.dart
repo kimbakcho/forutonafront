@@ -8,10 +8,10 @@ part 'FBallVoteReqDto.g.dart';
 @JsonSerializable()
 class FBallVoteReqDto {
 
-  String ballUuid;
-  int likePoint;
-  int disLikePoint;
-  LikeActionType likeActionType;
+  String? ballUuid;
+  int? likePoint;
+  int? disLikePoint;
+  LikeActionType? likeActionType;
 
   FBallVoteReqDto();
 

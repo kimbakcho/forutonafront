@@ -8,20 +8,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class VoteResultDialog extends StatefulWidget {
-  final int initPoint;
+  final int? initPoint;
 
-  final int effectPoint;
+  final int? effectPoint;
 
-  final int likeVote;
+  final int? likeVote;
 
-  final int disLikeVote;
+  final int? disLikeVote;
 
-  final ValuationMediator valuationMediator;
+  final ValuationMediator? valuationMediator;
 
-  final String ballUuid;
+  final String? ballUuid;
 
   const VoteResultDialog(
-      {Key key,
+      {Key? key,
       this.initPoint,
       this.effectPoint,
       this.valuationMediator,
@@ -136,17 +136,17 @@ class _VoteResultDialogState extends State<VoteResultDialog> {
 }
 
 class VoteResultDialogViewModel extends ChangeNotifier {
-  final int initPoint;
+  final int? initPoint;
 
-  int nextPoint;
+  int? nextPoint;
 
-  final ValuationMediator valuationMediator;
+  final ValuationMediator? valuationMediator;
 
-  final int likeVote;
+  final int? likeVote;
 
-  final int disLikeVote;
+  final int? disLikeVote;
 
-  final String ballUuid;
+  final String? ballUuid;
 
   VoteResultDialogViewModel(this.initPoint, this.valuationMediator,
       this.likeVote, this.disLikeVote, this.ballUuid) {
@@ -161,7 +161,7 @@ class VoteResultDialogViewModel extends ChangeNotifier {
       fBallVoteReqDto.likeActionType  = LikeActionType.Vote;
       fBallVoteReqDto.disLikePoint = disLikeVote;
       fBallVoteReqDto.likePoint = likeVote;
-      FBallVoteResDto fBallVoteResDto = await valuationMediator.voteAction(fBallVoteReqDto);
+      FBallVoteResDto fBallVoteResDto = await valuationMediator!.voteAction(fBallVoteReqDto);
       nextPoint = fBallVoteResDto.ballPower;
       notifyListeners();
     });

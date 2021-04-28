@@ -25,14 +25,14 @@ class FBallRepositoryImpl implements FBallRepository {
   final FireBaseAuthAdapterForUseCase fireBaseAuthBaseAdapter;
 
   FBallRepositoryImpl(
-      {@required this.fBallRemoteDataSource,
-      @required  this.fireBaseAuthBaseAdapter});
+      {required this.fBallRemoteDataSource,
+      required  this.fireBaseAuthBaseAdapter});
 
 
   @override
   Future<PageWrap<FBallResDto>> findByBallOrderByBI(
-      {@required FBallListUpFromBIReqDto listUpReqDto,
-      @required Pageable pageable}) async {
+      {required FBallListUpFromBIReqDto listUpReqDto,
+      required Pageable pageable}) async {
     var result = await fBallRemoteDataSource.findByBallOrderByBI(
         listUpReqDto, pageable, FDio.noneToken());
     return result;
@@ -40,7 +40,7 @@ class FBallRepositoryImpl implements FBallRepository {
 
   @override
   Future<PageWrap<FBallResDto>> searchUserToMakerBalls(
-      {@required String makerUid, @required Pageable pageable}) async {
+      {required String makerUid, required Pageable pageable}) async {
     var result = await fBallRemoteDataSource.searchUserToMakerBalls(
         makerUid: makerUid,
         pageable: pageable,
@@ -50,8 +50,8 @@ class FBallRepositoryImpl implements FBallRepository {
 
   @override
   Future<PageWrap<FBallResDto>> listUpFromSearchTitle(
-      {@required FBallListUpFromSearchTitleReqDto reqDto,
-      @required Pageable pageable}) async {
+      {required FBallListUpFromSearchTitleReqDto reqDto,
+      required Pageable pageable}) async {
     var result = await fBallRemoteDataSource.listUpFromSearchTitle(
         reqDto: reqDto, pageable: pageable, noneTokenFDio: FDio.noneToken());
     return result;
@@ -59,8 +59,8 @@ class FBallRepositoryImpl implements FBallRepository {
 
   @override
   Future<PageWrap<FBallResDto>> listUpFromTagName(
-      {@required FBallListUpFromTagNameReqDto reqDto,
-      @required Pageable pageable}) async {
+      {required FBallListUpFromTagNameReqDto reqDto,
+      required Pageable pageable}) async {
     var result = await fBallRemoteDataSource.listUpFromTagName(
         reqDto: reqDto, pageable: pageable, noneTokenFDio: FDio.noneToken());
     return result;
@@ -68,8 +68,8 @@ class FBallRepositoryImpl implements FBallRepository {
 
   @override
   Future<PageWrap<FBallResDto>> ballListUpFromMapArea(
-      {@required BallFromMapAreaReqDto reqDto,
-      @required Pageable pageable}) async {
+      {required BallFromMapAreaReqDto reqDto,
+      required Pageable pageable}) async {
     var result = await fBallRemoteDataSource.listUpBallFromMapArea(
         reqDto: reqDto, pageable: pageable, noneTokenFDio: FDio.noneToken());
     return result;
@@ -113,7 +113,7 @@ class FBallRepositoryImpl implements FBallRepository {
 
   @override
   Future<FBallImageUpload> ballImageUpload(
-      {@required List<Uint8List> images}) async {
+      {required List<Uint8List> images}) async {
     FDio fDio = FDio.token(idToken: await fireBaseAuthBaseAdapter.getFireBaseIdToken());
     List<MultipartFile> imageFiles = [];
     for (var image in images) {

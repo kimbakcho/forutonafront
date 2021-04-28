@@ -13,7 +13,7 @@ class UserNickNameWithFullTextMatchIndexUseCase
   final FUserRepository fUserRepository;
 
   UserNickNameWithFullTextMatchIndexUseCase(
-      {@required this.searchText, @required this.fUserRepository});
+      {required this.searchText, required this.fUserRepository});
 
   @override
   Future<PageWrap<FUserInfoSimpleResDto>> search(Pageable pageable) async {

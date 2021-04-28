@@ -14,8 +14,8 @@ class UserProfileImageUploadUseCase
   final FUserRepository _fUserRepository;
 
   UserProfileImageUploadUseCase(
-      {@required FlutterImageCompressAdapter flutterImageCompressAdapter,
-      @required FUserRepository fUserRepository})
+      {required FlutterImageCompressAdapter flutterImageCompressAdapter,
+      required FUserRepository fUserRepository})
       : _flutterImageCompressAdapter = flutterImageCompressAdapter,
         _fUserRepository = fUserRepository;
 

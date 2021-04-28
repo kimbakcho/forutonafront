@@ -102,7 +102,7 @@ class L007MainPage extends StatelessWidget {
 }
 
 class L007MainPageViewModel extends ChangeNotifier {
-  EmailCheckComponentController _emailCheckComponentController;
+  EmailCheckComponentController? _emailCheckComponentController;
 
   String currentEmailValue = "";
 
@@ -110,9 +110,9 @@ class L007MainPageViewModel extends ChangeNotifier {
 
   String currentPwCheckValue = "";
 
-  PwInputAndCheckComponentController _pwInputAndCheckComponentController;
+  PwInputAndCheckComponentController? _pwInputAndCheckComponentController;
 
-  final FUserInfoJoinReqDto _fUserInfoJoinReqDto;
+  final FUserInfoJoinReqDto? _fUserInfoJoinReqDto;
 
   L007MainPageViewModel(this._fUserInfoJoinReqDto) {
     _emailCheckComponentController =
@@ -133,12 +133,12 @@ class L007MainPageViewModel extends ChangeNotifier {
   }
 
   onCheckWithNextPage(BuildContext context) async {
-    var emailCheck = await _emailCheckComponentController.valid();
-    var pwCheck = await _pwInputAndCheckComponentController.valid();
+    var emailCheck = await _emailCheckComponentController!.valid();
+    var pwCheck = await _pwInputAndCheckComponentController!.valid();
     if (emailCheck && pwCheck) {
-      _fUserInfoJoinReqDto.email = _emailCheckComponentController.emailValue;
-      _fUserInfoJoinReqDto.password =
-          _pwInputAndCheckComponentController.getPwValue();
+      _fUserInfoJoinReqDto!.email = _emailCheckComponentController!.emailValue;
+      _fUserInfoJoinReqDto!.password =
+          _pwInputAndCheckComponentController!.getPwValue();
       Navigator.of(context).push(MaterialPageRoute(builder: (_) {
         return L008MainPage();
       }));

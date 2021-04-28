@@ -13,10 +13,10 @@ class SearchHistoryRepositoryImpl
     extends SearchHistoryRepository {
   final SharedPreferencesAdapter sharedPreferencesAdapter;
   final int limitRow = 5 ;
-  final SearchHistoryDataSourceKey searchHistoryDataSourceKey;
+  final SearchHistoryDataSourceKey? searchHistoryDataSourceKey;
 
   SearchHistoryRepositoryImpl(
-      {@required this.sharedPreferencesAdapter,this.searchHistoryDataSourceKey});
+      {required this.sharedPreferencesAdapter,this.searchHistoryDataSourceKey});
 
   @override
   Future<void> delete(String search,String uid) async {
@@ -29,7 +29,7 @@ class SearchHistoryRepositoryImpl
 
   @override
   Future<List<SearchHistory>> findByAll(String uid) async {
-    String value = await this
+    String? value = await this
         .sharedPreferencesAdapter
         .getString(EnumToString.convertToString(searchHistoryDataSourceKey)+uid);
     if (value == null) {

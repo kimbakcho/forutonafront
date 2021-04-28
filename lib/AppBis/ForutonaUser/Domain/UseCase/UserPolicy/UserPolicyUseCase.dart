@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 class UserPolicyUseCase implements UserPolicyUseCaseInputPort {
   final UserPolicyRepository _userPolicyRepository;
 
-  UserPolicyUseCase({@required UserPolicyRepository userPolicyRepository})
+  UserPolicyUseCase({required UserPolicyRepository userPolicyRepository})
       : _userPolicyRepository = userPolicyRepository;
 
   @override

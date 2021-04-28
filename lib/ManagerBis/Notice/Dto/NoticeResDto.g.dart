@@ -8,10 +8,10 @@ part of 'NoticeResDto.dart';
 
 NoticeResDto _$NoticeResDtoFromJson(Map<String, dynamic> json) {
   return NoticeResDto()
-    ..idx = json['idx'] as int
-    ..title = json['title'] as String
-    ..content = json['content'] as String
-    ..openFlag = json['openFlag'] as String
+    ..idx = json['idx'] as int?
+    ..title = json['title'] as String?
+    ..content = json['content'] as String?
+    ..openFlag = json['openFlag'] as String?
     ..writerUid = json['writerUid'] == null
         ? null
         : MUserInfoResDto.fromJson(json['writerUid'] as Map<String, dynamic>)

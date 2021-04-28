@@ -14,12 +14,12 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class ID01MainScaffoldBottomSheet extends StatefulWidget {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final ValuationMediator valuationMediator;
+  final ValuationMediator? valuationMediator;
 
   ID01MainScaffoldBottomSheet(
-      {Key key, this.fBallResDto, this.valuationMediator})
+      {Key? key, this.fBallResDto, this.valuationMediator})
       : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class ID01MainScaffoldBottomSheet extends StatefulWidget {
 class _ID01MainScaffoldBottomSheetState
     extends State<ID01MainScaffoldBottomSheet>
     with SingleTickerProviderStateMixin {
-  Ticker _ticker;
+  Ticker? _ticker;
 
   @override
   void initState() {
@@ -38,12 +38,12 @@ class _ID01MainScaffoldBottomSheetState
     _ticker = createTicker((Duration elapsed) {
       setState(() {});
     });
-    _ticker.start();
+    _ticker!.start();
   }
 
   @override
   void dispose() {
-    _ticker.dispose();
+    _ticker!.dispose();
     super.dispose();
   }
 
@@ -51,7 +51,7 @@ class _ID01MainScaffoldBottomSheetState
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => ID01MainScaffoldBottomSheetViewModel(
-            widget.fBallResDto, sl(), widget.valuationMediator),
+            widget.fBallResDto!, sl(), widget.valuationMediator!),
         child: Consumer<ID01MainScaffoldBottomSheetViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -148,11 +148,11 @@ class _ID01MainScaffoldBottomSheetState
 
 class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
     implements ValuationMediatorComponent {
-  final FBallResDto fBallResDto;
+  final FBallResDto? fBallResDto;
 
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  final ValuationMediator valuationMediator;
+  final ValuationMediator? valuationMediator;
 
   ID01MainScaffoldBottomSheetViewModel(this.fBallResDto,
       this._signInUserInfoUseCaseInputPort, this.valuationMediator);
@@ -161,8 +161,8 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
 
   syncUserInfo() async {
     syncLoadingFlag = true;
-    if (_signInUserInfoUseCaseInputPort.isLogin) {
-      await _signInUserInfoUseCaseInputPort
+    if (_signInUserInfoUseCaseInputPort!.isLogin!) {
+      await _signInUserInfoUseCaseInputPort!
           .saveSignInInfoInMemoryFromAPiServer();
       notifyListeners();
     }
@@ -187,13 +187,13 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
   }
 
   modelNextTicketRemainTime() {
-    if (!_signInUserInfoUseCaseInputPort.isLogin) {
+    if (!_signInUserInfoUseCaseInputPort!.isLogin!) {
       return "";
     }
-    var nextGiveInfluenceTicketTime = _signInUserInfoUseCaseInputPort
-        .reqSignInUserInfoFromMemory()
+    var nextGiveInfluenceTicketTime = _signInUserInfoUseCaseInputPort!
+        .reqSignInUserInfoFromMemory()!
         .nextGiveInfluenceTicketTime;
-    var difference = nextGiveInfluenceTicketTime.difference(DateTime.now());
+    var difference = nextGiveInfluenceTicketTime!.difference(DateTime.now());
     if (difference.isNegative) {
       if (syncLoadingFlag == false) {
         syncUserInfo();
@@ -207,17 +207,17 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
   }
 
   int get userInfluenceTicketCount {
-    if (_signInUserInfoUseCaseInputPort.isLogin) {
-      return _signInUserInfoUseCaseInputPort
-          .reqSignInUserInfoFromMemory()
-          .influenceTicket;
+    if (_signInUserInfoUseCaseInputPort!.isLogin!) {
+      return _signInUserInfoUseCaseInputPort!
+          .reqSignInUserInfoFromMemory()!
+          .influenceTicket!;
     } else {
       return 0;
     }
   }
 
   @override
-  String ballUuid;
+  String? ballUuid;
 
   @override
   valuationReqNotification() {
@@ -225,7 +225,7 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
   }
 
   void voteAction(BuildContext context) async {
-    if (_signInUserInfoUseCaseInputPort.isLogin) {
+    if (_signInUserInfoUseCaseInputPort!.isLogin!) {
       if (userInfluenceTicketCount > 0) {
         showVotePopupDialog(context);
       } else {

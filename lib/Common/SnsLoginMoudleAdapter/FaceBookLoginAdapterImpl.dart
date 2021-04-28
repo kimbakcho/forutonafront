@@ -1,4 +1,4 @@
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserSnsCheckJoinResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/SnsSupportService.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/FireBaseAuthAdapter/FireBaseAuthAdapterForUseCase.dart';
@@ -15,35 +15,35 @@ class FaceBookLoginAdapterImpl implements SnsLoginModuleAdapter{
 
   @override
   // ignore: missing_return
-  Future<SnsLoginModuleResDto> getSnsModuleUserInfo() async {
-    final facebookLogin = FacebookLogin();
-    final result = await facebookLogin.logIn(['email']);
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        return SnsLoginModuleResDto(result.accessToken.userId, result.accessToken.token);
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        throw("cancelledByUser");
-        break;
-      case FacebookLoginStatus.error:
-        throw(result.errorMessage);
-        break;
-    }
+  Future<SnsLoginModuleResDto?> getSnsModuleUserInfo() async {
+    // final facebookLogin = FacebookLogin();
+    // final result = await facebookLogin.logIn(['email']);
+    // switch (result.status) {
+    //   case FacebookLoginStatus.loggedIn:
+    //     return SnsLoginModuleResDto(result.accessToken.userId, result.accessToken.token);
+    //     break;
+    //   case FacebookLoginStatus.cancelledByUser:
+    //     throw("cancelledByUser");
+    //     break;
+    //   case FacebookLoginStatus.error:
+    //     throw(result.errorMessage);
+    //     break;
+    // }
   }
 
   @override
-  SnsSupportService snsSupportService = SnsSupportService.FaceBook;
+  SnsSupportService? snsSupportService = SnsSupportService.FaceBook;
 
   @override
   Future<void> logout() async {
-    final facebookLogin = FacebookLogin();
-    await facebookLogin.logOut();
+    // final facebookLogin = FacebookLogin();
+    // await facebookLogin.logOut();
   }
 
   @override
-  Future<void> login(FUserSnsCheckJoinResDto fUserSnsCheckJoinResDto)  async {
+  Future<void> login(FUserSnsCheckJoinResDto? fUserSnsCheckJoinResDto)  async {
     await _fireBaseAuthAdapterForUseCase
-        .signInWithCustomToken(fUserSnsCheckJoinResDto.firebaseCustomToken);
+        .signInWithCustomToken(fUserSnsCheckJoinResDto!.firebaseCustomToken!);
   }
 
 }

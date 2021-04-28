@@ -13,9 +13,9 @@ import 'K001_03/K00103MainPage.dart';
 import 'KCodeTopTabBar.dart';
 
 class KCodeMainPage extends StatefulWidget {
-  final String searchText;
+  final String? searchText;
 
-  const KCodeMainPage({Key key, this.searchText}) : super(key: key);
+  const KCodeMainPage({Key? key, this.searchText}) : super(key: key);
 
   @override
   _KCodeMainPageState createState() => _KCodeMainPageState();
@@ -23,7 +23,7 @@ class KCodeMainPage extends StatefulWidget {
 
 class _KCodeMainPageState extends State<KCodeMainPage>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  TabController? _tabController;
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) =>
-            KCodeMainPageViewModel(tabController: _tabController,
+            KCodeMainPageViewModel(tabController: _tabController!,
                 scrollController: ScrollController()),
         child: Consumer<KCodeMainPageViewModel>(builder: (_, model, __) {
           return Scaffold(
@@ -65,7 +65,7 @@ class _KCodeMainPageState extends State<KCodeMainPage>
 
                               expandedHeight: 56,
                               bottom:
-                              KCodeTopTabBar(tabController: _tabController),
+                              KCodeTopTabBar(tabController: _tabController!),
                             ),
                           ),
                         ];
@@ -120,7 +120,7 @@ class KCodeMainPageViewModel extends ChangeNotifier
   final GlobalKey<NestedScrollViewState> kCodeNestedScrollViewKey = GlobalKey();
 
   KCodeMainPageViewModel(
-      {@required this.tabController, @required this.scrollController });
+      {required this.tabController, required this.scrollController });
 
 
 

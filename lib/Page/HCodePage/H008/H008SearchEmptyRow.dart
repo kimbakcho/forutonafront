@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class H008SearchEmptyRow extends StatelessWidget {
   const H008SearchEmptyRow({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

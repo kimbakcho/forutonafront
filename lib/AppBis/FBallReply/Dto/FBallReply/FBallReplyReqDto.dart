@@ -4,9 +4,9 @@ part 'FBallReplyReqDto.g.dart';
 
 @JsonSerializable()
 class FBallReplyReqDto {
-  String ballUuid;
-  int replyNumber;
-  bool reqOnlySubReply;
+  String? ballUuid;
+  int? replyNumber;
+  bool? reqOnlySubReply;
 
 
   FBallReplyReqDto();

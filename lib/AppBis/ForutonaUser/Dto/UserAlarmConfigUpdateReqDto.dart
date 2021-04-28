@@ -5,11 +5,11 @@ part 'UserAlarmConfigUpdateReqDto.g.dart';
 
 @JsonSerializable()
 class UserAlarmConfigUpdateReqDto {
-  bool alarmChatMessage;
-  bool alarmContentReply;
-  bool alarmReplyAndReply;
-  bool alarmFollowNewContent;
-  bool alarmSponNewContent;
+  bool? alarmChatMessage;
+  bool? alarmContentReply;
+  bool? alarmReplyAndReply;
+  bool? alarmFollowNewContent;
+  bool? alarmSponNewContent;
 
   UserAlarmConfigUpdateReqDto();
 

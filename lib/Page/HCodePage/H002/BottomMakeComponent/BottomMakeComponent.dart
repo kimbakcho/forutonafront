@@ -7,9 +7,9 @@ import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
 import 'package:provider/provider.dart';
 
 class BottomMakeComponent extends StatelessWidget {
-  final Function makeBallPop;
+  final Function? makeBallPop;
 
-  const BottomMakeComponent({Key key, this.makeBallPop}) : super(key: key);
+  const BottomMakeComponent({Key? key, this.makeBallPop}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class BottomMakeComponent extends StatelessWidget {
                           .push(MaterialPageRoute(builder: (_) {
                         return IM001MainPage();
                       }));
-                      makeBallPop();
+                      makeBallPop!();
                     },
                   ),
                   decoration: BoxDecoration(boxShadow: [
@@ -70,7 +70,7 @@ class BottomMakeComponent extends StatelessWidget {
                           msg: "준비중입니다",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
-                          timeInSecForIos: 1,
+                          timeInSecForIosWeb: 1,
                           backgroundColor: Color(0xff454F63),
                           textColor: Colors.white,
                           fontSize: 12.0);

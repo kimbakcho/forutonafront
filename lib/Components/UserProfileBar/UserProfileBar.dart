@@ -6,9 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class UserProfileBar extends StatelessWidget {
-  final FUserInfoSimpleResDto fUserInfoSimpleResDto;
+  final FUserInfoSimpleResDto? fUserInfoSimpleResDto;
 
-  const UserProfileBar({Key key, this.fUserInfoSimpleResDto}) : super(key: key);
+  const UserProfileBar({Key? key, this.fUserInfoSimpleResDto}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class UserProfileBar extends StatelessWidget {
     return Container(
         child: RichText(
             text: TextSpan(
-                text: "영향력 ${fUserInfoSimpleResDto.playerPower.toInt()} BP",
+                text: "영향력 ${fUserInfoSimpleResDto!.playerPower!.toInt()} BP",
                 style: GoogleFonts.notoSans(
                   fontSize: 13,
                   color: const Color(0xff5B5B5B),
@@ -54,7 +54,7 @@ class UserProfileBar extends StatelessWidget {
                 color: const Color(0xff5B5B5B),
               )),
           TextSpan(
-              text: "팔로워 ${fUserInfoSimpleResDto.followerCount.toInt()} 명",
+              text: "팔로워 ${fUserInfoSimpleResDto!.followerCount!.toInt()} 명",
               style: GoogleFonts.notoSans(
                 fontSize: 13,
                 color: const Color(0xff5B5B5B),
@@ -65,7 +65,7 @@ class UserProfileBar extends StatelessWidget {
   Container nickName() {
     return Container(
       alignment: Alignment.centerLeft,
-      child: Text(fUserInfoSimpleResDto.nickName,
+      child: Text(fUserInfoSimpleResDto!.nickName!,
           style: GoogleFonts.notoSans(
             fontSize: 14,
             color: const Color(0xff2f3035),
@@ -75,10 +75,10 @@ class UserProfileBar extends StatelessWidget {
   }
 
   Widget avatar() {
-    if(fUserInfoSimpleResDto.profilePictureUrl != null && fUserInfoSimpleResDto.profilePictureUrl.isNotEmpty){
+    if(fUserInfoSimpleResDto!.profilePictureUrl != null && fUserInfoSimpleResDto!.profilePictureUrl!.isNotEmpty){
       return CachedNetworkImage(
           fit: BoxFit.fitWidth,
-          imageUrl: fUserInfoSimpleResDto.profilePictureUrl,
+          imageUrl: fUserInfoSimpleResDto!.profilePictureUrl!,
           imageBuilder: (context, imageProvider) => Container(
             width: 45,
             height: 45,
@@ -108,7 +108,7 @@ class UserProfileBar extends StatelessWidget {
 }
 
 class UserProfileBarViewModel extends ChangeNotifier {
-  final FUserInfoSimpleResDto fUserInfoSimpleResDto;
+  final FUserInfoSimpleResDto? fUserInfoSimpleResDto;
 
-  UserProfileBarViewModel({@required this.fUserInfoSimpleResDto});
+  UserProfileBarViewModel({required this.fUserInfoSimpleResDto});
 }

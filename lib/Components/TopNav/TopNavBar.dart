@@ -8,13 +8,13 @@ import 'TopNavBtnMediator.dart';
 import 'TopNavExpendGroup/TopNavExpendGroup.dart';
 
 class TopNavBar extends StatelessWidget {
-  final TopNavBtnMediator topNavBtnMediator;
-  final CodeMainPageController codeMainPageController;
-  final Map<CodeState, Widget> codeStateExpendWidgetMap;
-  final List<NavBtn> navBtnList;
+  final TopNavBtnMediator? topNavBtnMediator;
+  final CodeMainPageController? codeMainPageController;
+  final Map<CodeState, Widget>? codeStateExpendWidgetMap;
+  final List<NavBtn>? navBtnList;
 
   const TopNavBar(
-      {Key key,
+      {Key? key,
       this.topNavBtnMediator,
       this.codeMainPageController,
       this.codeStateExpendWidgetMap,

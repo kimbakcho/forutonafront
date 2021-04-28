@@ -6,13 +6,13 @@ part 'FCMReplyDto.g.dart';
 
 @JsonSerializable()
 class FCMReplyDto {
-  String replyUserUid;
-  String nickName;
-  String replyText;
-  String userProfileImageUrl;
-  String ballUuid;
-  String replyTitleType;
-  FBallType fBallType;
+  String? replyUserUid;
+  String? nickName;
+  String? replyText;
+  String? userProfileImageUrl;
+  String? ballUuid;
+  String? replyTitleType;
+  FBallType? fBallType;
 
   FCMReplyDto();
 

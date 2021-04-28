@@ -25,12 +25,12 @@ abstract class TopH_I_001NavExpendAniContentInputPort {
 // ignore: must_be_immutable, camel_case_types
 class TopH_I_001NavExpendAniContent extends StatelessWidget
     implements TopH_I_001NavExpendAniContentInputPort {
-  TopH_I_001NavExpendAniContentViewModel _topH001NavExpendAniContentViewModel;
-  final CodeMainPageController codeMainPageController;
-  final GeoViewSearchManagerInputPort geoViewSearchManager;
-  final TopH_I_001NavExpendAniContentController topH_I_001NavExpendAniContentController;
+  TopH_I_001NavExpendAniContentViewModel? _topH001NavExpendAniContentViewModel;
+  final CodeMainPageController? codeMainPageController;
+  final GeoViewSearchManagerInputPort? geoViewSearchManager;
+  final TopH_I_001NavExpendAniContentController? topH_I_001NavExpendAniContentController;
 
-  TopH_I_001NavExpendAniContent({Key key, this.geoViewSearchManager, this.codeMainPageController, this.topH_I_001NavExpendAniContentController}) : super(key: key) {
+  TopH_I_001NavExpendAniContent({Key? key, this.geoViewSearchManager, this.codeMainPageController, this.topH_I_001NavExpendAniContentController}) : super(key: key) {
     _topH001NavExpendAniContentViewModel =
         TopH_I_001NavExpendAniContentViewModel(
           codeMainPageController: codeMainPageController,
@@ -82,12 +82,12 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
 
   @override
   collapsed() {
-    _topH001NavExpendAniContentViewModel.collapsed();
+    _topH001NavExpendAniContentViewModel!.collapsed();
   }
 
   @override
   expended() {
-    _topH001NavExpendAniContentViewModel.expended();
+    _topH001NavExpendAniContentViewModel!.expended();
   }
 }
 
@@ -99,50 +99,50 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
         TopH_I_001NavExpendAniContentInputPort,
         H007Listener,
         PlaceListFromSearchTextWidgetListener {
-  final GeoLocationUtilForeGroundUseCaseInputPort
+  final GeoLocationUtilForeGroundUseCaseInputPort?
       geoLocationUtilForeGroundUseCaseInputPort;
-  final LocationAdapter locationAdapter;
-  final FluttertoastAdapter fluttertoastAdapter;
-  final CodeMainPageController codeMainPageController;
-  final TopH_I_001NavExpendAniContentController topH_I_001NavExpendAniContentController;
+  final LocationAdapter? locationAdapter;
+  final FluttertoastAdapter? fluttertoastAdapter;
+  final CodeMainPageController? codeMainPageController;
+  final TopH_I_001NavExpendAniContentController? topH_I_001NavExpendAniContentController;
 
-  TopH001NavExpendAniContentViewModelExpendState currentState =
+  TopH001NavExpendAniContentViewModelExpendState? currentState =
       TopH001NavExpendAniContentViewModelExpendState.expended;
 
-  final GeoViewSearchManagerInputPort geoViewSearchManager;
+  final GeoViewSearchManagerInputPort? geoViewSearchManager;
 
-  final GlobalInitMutex globalInitMutex;
+  final GlobalInitMutex? globalInitMutex;
 
-  BuildContext context;
+  BuildContext? context;
 
-  Position currentSearchPosition;
+  Position? currentSearchPosition;
 
   String searchAddress = "로딩중 입니다.";
   
   bool isLoadPosition = false;
 
   TopH_I_001NavExpendAniContentViewModel({
-    @required this.geoLocationUtilForeGroundUseCaseInputPort,
-    @required this.locationAdapter,
-    @required this.fluttertoastAdapter,
-    @required this.geoViewSearchManager,
-    @required this.codeMainPageController,
-    @required this.topH_I_001NavExpendAniContentController,
-    @required this.globalInitMutex
+    required this.geoLocationUtilForeGroundUseCaseInputPort,
+    required this.locationAdapter,
+    required this.fluttertoastAdapter,
+    required this.geoViewSearchManager,
+    required this.codeMainPageController,
+    required this.topH_I_001NavExpendAniContentController,
+    required this.globalInitMutex
   }) {
-    topH_I_001NavExpendAniContentController._topH_I_001NavExpendAniContentViewModel = this;
+    topH_I_001NavExpendAniContentController!._topH_I_001NavExpendAniContentViewModel = this;
     init();
   }
 
   init() async {
     try {
       // await geoLocationUtilForeGroundUseCaseInputPort.useGpsReq(context);
-      fluttertoastAdapter.showToast(msg: "위치를 확인 중입니다.");
-      await loadPosition(await geoLocationUtilForeGroundUseCaseInputPort
+      fluttertoastAdapter!.showToast(msg: "위치를 확인 중입니다.");
+      await loadPosition(await geoLocationUtilForeGroundUseCaseInputPort!
           .getCurrentWithLastPosition());
     } on FlutterError catch (e) {
       this.searchAddress = e.message;
-      fluttertoastAdapter.showToast(msg: e.message);
+      fluttertoastAdapter!.showToast(msg: e.message);
     }
     notifyListeners();
   }
@@ -150,7 +150,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   loadPosition(Position loadPosition) async {
     isLoadPosition = false;
     try {
-      this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
+      this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort!
           .getPositionAddress(loadPosition);
     } on FlutterError catch (e) {
       this.searchAddress = e.message;
@@ -158,7 +158,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
 
     this.currentSearchPosition = loadPosition;
 
-    geoViewSearchManager.search(loadPosition,14.46);
+    geoViewSearchManager!.search(loadPosition,14.46);
     notifyListeners();
     isLoadPosition = true;
   }
@@ -203,21 +203,21 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
       return;
     }
     
-    var currentSearchPosition = geoViewSearchManager.currentSearchPosition;
+    var currentSearchPosition = geoViewSearchManager!.currentSearchPosition;
 
     try{
-      this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort
-          .getPositionAddress(currentSearchPosition);
+      this.searchAddress = await geoLocationUtilForeGroundUseCaseInputPort!
+          .getPositionAddress(currentSearchPosition!);
     }on FlutterError catch (ex) {
       this.searchAddress = ex.message;
     }
 
     var extendViewAction = TopH_I_ExtendViewAction.create(
-        codeMainPageController: codeMainPageController,
+        codeMainPageController: codeMainPageController!,
         searchAddress: searchAddress,
         h007listener: this,
         placeListFromSearchTextWidgetListener: this,
-        currentSearchPosition: currentSearchPosition);
+        currentSearchPosition: currentSearchPosition!);
 
     extendViewAction.action(context: context);
   }
@@ -231,7 +231,7 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
   //FROM H010
   @override
   onPlaceListTabPosition(Position position) {
-    Navigator.popUntil(context, (route) => route.settings.name == "/");
+    Navigator.popUntil(context!, (route) => route.settings.name == "/");
     loadPosition(position);
   }
 }
@@ -239,9 +239,9 @@ class TopH_I_001NavExpendAniContentViewModel extends ChangeNotifier
 // ignore: camel_case_types
 class TopH_I_001NavExpendAniContentController {
   // ignore: non_constant_identifier_names
-  TopH_I_001NavExpendAniContentViewModel _topH_I_001NavExpendAniContentViewModel;
+  TopH_I_001NavExpendAniContentViewModel? _topH_I_001NavExpendAniContentViewModel;
 
   void loadPosition(Position position) {
-    _topH_I_001NavExpendAniContentViewModel.loadPosition(position);
+    _topH_I_001NavExpendAniContentViewModel!.loadPosition(position);
   }
 }

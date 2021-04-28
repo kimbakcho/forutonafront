@@ -9,12 +9,12 @@ part of 'FUserSnsCheckJoinResDto.dart';
 FUserSnsCheckJoinResDto _$FUserSnsCheckJoinResDtoFromJson(
     Map<String, dynamic> json) {
   return FUserSnsCheckJoinResDto()
-    ..snsUid = json['snsUid'] as String
-    ..pictureUrl = json['pictureUrl'] as String
-    ..email = json['email'] as String
-    ..userSnsName = json['userSnsName'] as String
+    ..snsUid = json['snsUid'] as String?
+    ..pictureUrl = json['pictureUrl'] as String?
+    ..email = json['email'] as String?
+    ..userSnsName = json['userSnsName'] as String?
     ..join = json['join'] as bool
-    ..firebaseCustomToken = json['firebaseCustomToken'] as String;
+    ..firebaseCustomToken = json['firebaseCustomToken'] as String?;
 }
 
 Map<String, dynamic> _$FUserSnsCheckJoinResDtoToJson(

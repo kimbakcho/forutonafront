@@ -4,15 +4,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class SelfIntroduceEditComponent extends StatelessWidget {
-  final SelfIntroduceEditController selfIntroduceEditController;
-  final String initSelfIntroduce;
-  const SelfIntroduceEditComponent({Key key, this.selfIntroduceEditController,this.initSelfIntroduce})
+  final SelfIntroduceEditController? selfIntroduceEditController;
+  final String? initSelfIntroduce;
+
+  const SelfIntroduceEditComponent(
+      {Key? key, this.selfIntroduceEditController, this.initSelfIntroduce})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => SelfIntroduceEditComponentViewModel(selfIntroduceEditController: selfIntroduceEditController,initSelfIntroduce: initSelfIntroduce),
+        create: (_) => SelfIntroduceEditComponentViewModel(
+            selfIntroduceEditController: selfIntroduceEditController,
+            initSelfIntroduce: initSelfIntroduce),
         child: Consumer<SelfIntroduceEditComponentViewModel>(
             builder: (_, model, child) {
           return Container(
@@ -43,7 +47,9 @@ class SelfIntroduceEditComponent extends StatelessWidget {
                         fontWeight: FontWeight.w300,
                         height: 1.2142857142857142,
                       )),
-                  inputFormatters: [ModifiedLengthLimitingTextInputFormatter(100)],
+                  inputFormatters: [
+                    ModifiedLengthLimitingTextInputFormatter(100)
+                  ],
                   controller: model._selfIntroduceEditController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
@@ -55,40 +61,40 @@ class SelfIntroduceEditComponent extends StatelessWidget {
 }
 
 class SelfIntroduceEditComponentViewModel extends ChangeNotifier {
-  final SelfIntroduceEditController selfIntroduceEditController;
+  final SelfIntroduceEditController? selfIntroduceEditController;
 
-  String initSelfIntroduce;
+  String? initSelfIntroduce;
 
-  TextEditingController _selfIntroduceEditController;
+  TextEditingController? _selfIntroduceEditController;
 
-  SelfIntroduceEditComponentViewModel({this.selfIntroduceEditController,this.initSelfIntroduce}) {
+  SelfIntroduceEditComponentViewModel(
+      {this.selfIntroduceEditController, this.initSelfIntroduce}) {
     _selfIntroduceEditController = TextEditingController();
     if (this.selfIntroduceEditController != null) {
-      selfIntroduceEditController._selfIntroduceEditComponentViewModel = this;
+      selfIntroduceEditController!._selfIntroduceEditComponentViewModel = this;
     }
     if (this.selfIntroduceEditController != null &&
-        selfIntroduceEditController.onChangesSelfIntroduceText != null) {
-      _selfIntroduceEditController.addListener(() {
-        selfIntroduceEditController
-            .onChangesSelfIntroduceText(_selfIntroduceEditController.text);
+        selfIntroduceEditController!.onChangesSelfIntroduceText != null) {
+      _selfIntroduceEditController!.addListener(() {
+        selfIntroduceEditController!
+            .onChangesSelfIntroduceText!(_selfIntroduceEditController!.text);
       });
     }
-    if(initSelfIntroduce != null){
-      _selfIntroduceEditController.text =initSelfIntroduce;
+    if (initSelfIntroduce != null) {
+      _selfIntroduceEditController!.text = initSelfIntroduce!;
     }
   }
 }
 
 class SelfIntroduceEditController {
-  SelfIntroduceEditComponentViewModel _selfIntroduceEditComponentViewModel;
+  SelfIntroduceEditComponentViewModel? _selfIntroduceEditComponentViewModel;
 
-  final Function(String) onChangesSelfIntroduceText;
+  final Function(String)? onChangesSelfIntroduceText;
 
   SelfIntroduceEditController({this.onChangesSelfIntroduceText});
 
   get selfIntroduceText {
-    return _selfIntroduceEditComponentViewModel
-        ._selfIntroduceEditController.text;
+    return _selfIntroduceEditComponentViewModel!
+        ._selfIntroduceEditController!.text;
   }
-
 }

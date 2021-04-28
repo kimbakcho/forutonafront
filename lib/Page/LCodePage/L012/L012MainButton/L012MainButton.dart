@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 
 class L012MainButton extends StatelessWidget {
 
-  final Function onTap;
-  final String title;
-  final String description;
+  final Function? onTap;
+  final String? title;
+  final String? description;
 
-  const L012MainButton({Key key, this.onTap, this.title, this.description}) : super(key: key);
+  const L012MainButton({Key? key, this.onTap, this.title, this.description}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class L012MainButton extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(15.0)),
                 onTap: () {
-                  onTap();
+                  onTap!();
                 },
                 child: Container(
                   padding: EdgeInsets.fromLTRB(16, 16, 0, 22),
@@ -36,7 +36,7 @@ class L012MainButton extends StatelessWidget {
                           child: Container(
                               child: Column(
                                 children: [
-                                  Text(title,
+                                  Text(title!,
                                       style: GoogleFonts.notoSans(
                                         fontSize: 14,
                                         color: const Color(0xff000000),
@@ -46,7 +46,7 @@ class L012MainButton extends StatelessWidget {
                                     height: 14,
                                   ),
                                   Text(
-                                    description,
+                                    description!,
                                     style: GoogleFonts.notoSans(
                                       fontSize: 14,
                                       color: const Color(0xff5b5b5b),

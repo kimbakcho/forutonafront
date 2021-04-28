@@ -20,7 +20,7 @@ class FireBaseSignInValidUseCaseImpl implements FireBaseSignInValidUseCase {
   FireBaseAuthAdapterForUseCase _fireBaseAuthAdapterForUseCase;
 
   FireBaseSignInValidUseCaseImpl(
-      {@required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
+      {required FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase})
       : _fireBaseAuthAdapterForUseCase = fireBaseAuthAdapterForUseCase;
 
   @override
@@ -44,7 +44,7 @@ class FireBaseSignInValidUseCaseImpl implements FireBaseSignInValidUseCase {
       FireBaseValidErrorUtil fireBaseValidErrorUtil =
           new FireBaseValidErrorUtil();
       _signInError = true;
-      _signInErrorText = fireBaseValidErrorUtil.getErrorText(e);
+      _signInErrorText = fireBaseValidErrorUtil.getErrorText(e)!;
       return;
     }
   }

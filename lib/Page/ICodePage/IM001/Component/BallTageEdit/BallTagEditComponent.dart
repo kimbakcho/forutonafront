@@ -12,14 +12,14 @@ import 'package:provider/provider.dart';
 class BallTagEditComponent extends StatelessWidget {
   final EdgeInsets margin;
 
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final List<FBallTagResDto> preSetFBallTagResDtos;
+  final List<FBallTagResDto>? preSetFBallTagResDtos;
 
-  final BallTagEditComponentController ballTagEditComponentController;
+  final BallTagEditComponentController? ballTagEditComponentController;
 
   const BallTagEditComponent(
-      {Key key,
+      {Key? key,
       this.margin = EdgeInsets.zero,
       this.ballTagEditComponentController,
       this.im001mode,
@@ -103,17 +103,17 @@ class BallTagEditComponent extends StatelessWidget {
 }
 
 class BallTagEditComponentViewModel extends ChangeNotifier {
-  TextEditingController _tagTextEditingController;
+  TextEditingController? _tagTextEditingController;
 
-  final BallTagEditComponentController ballTagEditComponentController;
+  final BallTagEditComponentController? ballTagEditComponentController;
 
   final List<BallEditTagChip> ballEditTagChips = [];
 
-  final IM001Mode im001mode;
+  final IM001Mode? im001mode;
 
-  final List<FBallTagResDto> preSetFBallTagResDtos;
+  final List<FBallTagResDto>? preSetFBallTagResDtos;
 
-  FocusNode editFocus;
+  FocusNode? editFocus;
 
   bool isShow = false;
 
@@ -123,16 +123,16 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
 
 
     if (ballTagEditComponentController != null) {
-      ballTagEditComponentController._viewModel = this;
+      ballTagEditComponentController!._viewModel = this;
     }
     editFocus = FocusNode();
-    editFocus.addListener(() {
+    editFocus!.addListener(() {
       notifyListeners();
     });
     if (im001mode == IM001Mode.modify) {
-      if (preSetFBallTagResDtos != null && preSetFBallTagResDtos.length > 0) {
-        preSetFBallTagResDtos.forEach((element) {
-          addTag(element.tagItem);
+      if (preSetFBallTagResDtos != null && preSetFBallTagResDtos!.length > 0) {
+        preSetFBallTagResDtos!.forEach((element) {
+          addTag(element.tagItem!);
         });
         isShow = true;
       }
@@ -144,7 +144,7 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
     if(tagValue.isNotEmpty){
       print(tagValue.indexOf(","));
       if(tagValue.indexOf(",")>0){
-        _tagTextEditingController.clear();
+        _tagTextEditingController!.clear();
         var tagText = tagValue.replaceAll(",","");
         addTag(tagText);
       }
@@ -154,7 +154,7 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
 
 
   get isEditFocus {
-    return editFocus.hasFocus;
+    return editFocus!.hasFocus;
   }
 
   _toggle() {
@@ -171,7 +171,7 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
     bool hasTagFlag =false;
 
     ballEditTagChips.forEach((element) {
-      if(element.tagEditItemDto.text==value){
+      if(element.tagEditItemDto!.text==value){
         hasTagFlag = true;
       }
     });
@@ -183,7 +183,7 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
 
     ballEditTagChips.add(BallEditTagChip(
         tagEditItemDto: TagEditItemDto(value), onDeleteTap: _onDeleteTagChip));
-    _tagTextEditingController.clear();
+    _tagTextEditingController!.clear();
     notifyListeners();
   }
 
@@ -194,10 +194,10 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
 }
 
 class BallTagEditComponentController {
-  BallTagEditComponentViewModel _viewModel;
+  BallTagEditComponentViewModel? _viewModel;
 
   toggle() {
-    _viewModel._toggle();
+    _viewModel!._toggle();
 
   }
 
@@ -205,16 +205,16 @@ class BallTagEditComponentController {
     if(_viewModel == null){
       return false;
     }
-    return _viewModel.isShow;
+    return _viewModel!.isShow;
   }
 
   List<TagEditItemDto> getTags() {
     var list =
-        _viewModel.ballEditTagChips.map((e) => e.tagEditItemDto).toList();
+        _viewModel!.ballEditTagChips.map((e) => e.tagEditItemDto).toList();
     return list;
   }
 
   addTags(FBallTagResDto tagItems) {
-    _viewModel.addTag(tagItems.tagItem);
+    _viewModel!.addTag(tagItems.tagItem!);
   }
 }

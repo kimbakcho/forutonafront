@@ -10,10 +10,10 @@ class LoginButton extends StatelessWidget {
   final SnsSupportService snsSupportService;
 
   LoginButton(
-      {@required this.loginButtonOutputPort,
-      @required this.label,
-      @required this.snsSupportService,
-      @required this.imagePath});
+      {required this.loginButtonOutputPort,
+      required this.label,
+      required this.snsSupportService,
+      required this.imagePath});
 
   @override
   Widget build(BuildContext context) {

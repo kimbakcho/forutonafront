@@ -5,14 +5,14 @@ import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:provider/provider.dart';
 
 class OtherUserBallPopup extends StatelessWidget {
-  final Function(BuildContext context, MaliciousType replyMaliciousType)
+  final Function(BuildContext context, MaliciousType replyMaliciousType)?
       onReportMalicious;
 
-  final Function(BuildContext context) onShare;
+  final Function(BuildContext context)? onShare;
 
-  final Function(BuildContext context) onNotInterest;
+  final Function(BuildContext context)? onNotInterest;
 
-  final Function(BuildContext context) onFavourite;
+  final Function(BuildContext context)? onFavourite;
 
   final isShowShareBtn;
 
@@ -25,7 +25,7 @@ class OtherUserBallPopup extends StatelessWidget {
   final isShowCloseBtn;
 
   const OtherUserBallPopup(
-      {Key key,
+      {Key? key,
       this.onReportMalicious,
       this.onShare,
       this.onNotInterest,
@@ -55,14 +55,14 @@ class OtherUserBallPopup extends StatelessWidget {
                         ? _makeBar(
                             label: "공유 하기",
                             ontTap: () {
-                              onShare(context);
+                              onShare!(context);
                             })
                         : Container(),
                     isShowNotInterestBtn
                         ? _makeBar(
                             label: "관심 없음",
                             ontTap: () async {
-                              await onNotInterest(context);
+                              await onNotInterest!(context);
                               Navigator.of(context).pop();
                             })
                         : Container(),
@@ -70,7 +70,7 @@ class OtherUserBallPopup extends StatelessWidget {
                         ? _makeBar(
                             label: "즐겨찾기에 저장",
                             ontTap: () {
-                              onFavourite(context);
+                              onFavourite!(context);
                             })
                         : Container(),
                     isShowReportMalicious
@@ -100,7 +100,7 @@ class OtherUserBallPopup extends StatelessWidget {
     );
   }
 
-  Widget _makeBar({Function ontTap, String label}) {
+  Widget _makeBar({Function? ontTap, String? label}) {
     return Column(
       children: [
         Row(
@@ -112,12 +112,12 @@ class OtherUserBallPopup extends StatelessWidget {
               color: Colors.white,
               child: InkWell(
                 onTap: () {
-                  ontTap();
+                  ontTap!();
                 },
                 child: Container(
                   height: 50,
                   child: Center(
-                    child: Text(label),
+                    child: Text(label!),
                   ),
                 ),
               ),
@@ -154,14 +154,14 @@ class OtherUserBallPopup extends StatelessWidget {
 }
 
 class OtherUserBallPopupViewModel extends ChangeNotifier {
-  final Function(BuildContext context, MaliciousType replyMaliciousType)
+  final Function(BuildContext context, MaliciousType replyMaliciousType)?
       onReportMalicious;
 
   OtherUserBallPopupViewModel(this.onReportMalicious);
 
   reportMaliciousReply(
       BuildContext context, MaliciousType replyMaliciousType) async {
-    await onReportMalicious(context, replyMaliciousType);
+    await onReportMalicious!(context, replyMaliciousType);
     Navigator.of(context).pop();
     Navigator.of(context).pop();
     Navigator.of(context).pop();

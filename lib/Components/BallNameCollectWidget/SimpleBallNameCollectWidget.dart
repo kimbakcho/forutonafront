@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/SearchCollectMediator/SearchCollectMediator.dart';
 import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallListUp/ListUpBallWidgetFactory.dart';
 import 'package:forutonafront/Components/SimpleCollectionWidget/SimpleCollectionTopTitleWidget.dart';
@@ -14,7 +16,7 @@ class SimpleBallNameCollectWidget extends StatelessWidget {
   final SimpleBallNameCollectListener simpleBallNameCollectListener;
 
   const SimpleBallNameCollectWidget(
-      {Key key, this.searchText, this.simpleBallNameCollectListener})
+      {Key? key,required this.searchText,required this.simpleBallNameCollectListener})
       : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class SimpleBallNameCollectWidget extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SimpleCollectionWidget(
                 titleDescription: "제목과 연관된 컨텐츠",
-                searchCollectMediator: model.ballListMediator,
+                searchCollectMediator: model.ballListMediator as SearchCollectMediator<FUserInfoSimpleResDto>,
                 simpleCollectionTopNextPageListener: model,
                 searchText: searchText,
                 indexedWidgetBuilder: model.getIndexedWidgetBuilder(),
@@ -49,17 +51,17 @@ class SimpleBallNameCollectWidgetViewModel extends ChangeNotifier
   final SimpleBallNameCollectListener simpleBallNameCollectListener;
 
   SimpleBallNameCollectWidgetViewModel(
-      {@required this.ballListMediator,
-      @required this.searchText,
-      @required this.geoLocationUtilForeGroundUseCase,
-      @required this.simpleBallNameCollectListener}) {
+      {required this.ballListMediator,
+      required this.searchText,
+      required this.geoLocationUtilForeGroundUseCase,
+      required this.simpleBallNameCollectListener}) {
     var lastPosition =
         geoLocationUtilForeGroundUseCase.getCurrentWithLastPositionInMemory();
     ballListMediator.pageLimit = 5;
     ballListMediator.fBallListUpUseCaseInputPort = FBallListUpFromSearchTitle(
         FBallListUpFromSearchTitleReqDto(
           searchText: searchText,
-          latitude: lastPosition.latitude,
+          latitude: lastPosition!.latitude,
           longitude: lastPosition.longitude,
         ),
         fBallRepository: sl());

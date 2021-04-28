@@ -4,24 +4,24 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class FluttertoastAdapter {
-  Future<bool> showToast(
-      {@required String msg,
-      Toast toastLength,
+  Future<bool?> showToast(
+      {required String msg,
+      Toast? toastLength,
       int timeInSecForIos = 1,
       double fontSize = 16.0,
-      ToastGravity gravity,
-      Color backgroundColor,
-      Color textColor}) async {
+      ToastGravity? gravity,
+      Color? backgroundColor,
+      Color? textColor}) async {
     return await Fluttertoast.showToast(
         msg: msg,
         toastLength: toastLength,
-        timeInSecForIos: timeInSecForIos,
+        timeInSecForIosWeb: timeInSecForIos,
         fontSize: fontSize,
         gravity: gravity,
         backgroundColor: backgroundColor,
         textColor: textColor);
   }
-  Future<bool> cancel() async {
+  Future<bool?> cancel() async {
     return await Fluttertoast.cancel();
   }
 

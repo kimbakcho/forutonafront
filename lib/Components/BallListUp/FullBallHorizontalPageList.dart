@@ -9,13 +9,13 @@ import 'package:provider/provider.dart';
 import 'ListUpBallWidgetFactory.dart';
 
 class FullBallHorizontalPageList extends StatelessWidget {
-  final BallListMediator ballListMediator;
-  final Function(FBallResDto) onSelectBall;
-  final FullBallHorizontalPageListController
+  final BallListMediator? ballListMediator;
+  final Function(FBallResDto)? onSelectBall;
+  final FullBallHorizontalPageListController?
       fullBallHorizontalPageListController;
 
   const FullBallHorizontalPageList(
-      {Key key,
+      {Key? key,
       this.ballListMediator,
       this.onSelectBall,
       this.fullBallHorizontalPageListController})
@@ -42,12 +42,12 @@ class FullBallHorizontalPageList extends StatelessWidget {
                           onNextPage: model.onNextPage,
                           onRefreshFirst: model.onRefreshFirst)
                       .scrollController,
-                  itemCount: model.balls.length,
+                  itemCount: model.balls!.length,
                   itemBuilder: (_, index) {
                     return Container(
                       padding: EdgeInsets.only(left: 16, right: 16),
                       child: ListUpBallWidgetFactory.getBallWidget(
-                          index, ballListMediator, BallStyle.Style2,
+                          index, ballListMediator!, BallStyle.Style2,
                           boxDecoration: BoxDecoration(
                               border: Border.all(color: Color(0xffE4E7E8)),
                               borderRadius:
@@ -60,13 +60,13 @@ class FullBallHorizontalPageList extends StatelessWidget {
 
 class FullBallHorizontalPageListViewModel extends ChangeNotifier
     implements SearchCollectMediatorComponent {
-  final BallListMediator ballListMediator;
+  final BallListMediator? ballListMediator;
 
-  final PageController pageController;
+  final PageController? pageController;
 
-  final Function(FBallResDto) onSelectBall;
+  final Function(FBallResDto)? onSelectBall;
 
-  final FullBallHorizontalPageListController
+  final FullBallHorizontalPageListController?
       fullBallHorizontalPageListController;
 
   FullBallHorizontalPageListViewModel({
@@ -74,42 +74,42 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
     this.onSelectBall,
     this.fullBallHorizontalPageListController,
   }) : pageController = PageController() {
-    fullBallHorizontalPageListController._fullBallHorizontalPageListViewModel =
+    fullBallHorizontalPageListController!._fullBallHorizontalPageListViewModel =
         this;
-    ballListMediator.registerComponent(this);
+    ballListMediator!.registerComponent(this);
   }
 
   void pageChange(int index) {
-    if (onSelectBall != null && ballListMediator.itemList.length > 0) {
-      onSelectBall(ballListMediator.itemList[index]);
+    if (onSelectBall != null && ballListMediator!.itemList!.length > 0) {
+      onSelectBall!(ballListMediator!.itemList![index]);
     }
   }
 
-  List<FBallResDto> get balls {
-    return ballListMediator.itemList;
+  List<FBallResDto>? get balls {
+    return ballListMediator!.itemList;
   }
 
   onNextPage() {
-    ballListMediator.searchNext();
+    ballListMediator!.searchNext();
   }
 
   onRefreshFirst() async {
-    await ballListMediator.searchFirst();
-    if (ballListMediator.itemList.length > 0) {
-      onSelectBall(ballListMediator.itemList[0]);
+    await ballListMediator!.searchFirst();
+    if (ballListMediator!.itemList!.length > 0) {
+      onSelectBall!(ballListMediator!.itemList![0]);
     }
   }
 
   @override
   void dispose() {
-    ballListMediator.unregisterComponent(this);
+    ballListMediator!.unregisterComponent(this);
     super.dispose();
   }
 
   _moveToBall(FBallResDto fBallResDto) {
-    var indexWhere = ballListMediator.itemList
+    var indexWhere = ballListMediator!.itemList!
         .indexWhere((element) => element.ballUuid == fBallResDto.ballUuid);
-    pageController.jumpToPage(indexWhere);
+    pageController!.jumpToPage(indexWhere);
   }
 
   @override
@@ -122,11 +122,11 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
 }
 
 class FullBallHorizontalPageListController {
-  FullBallHorizontalPageListViewModel _fullBallHorizontalPageListViewModel;
+  FullBallHorizontalPageListViewModel? _fullBallHorizontalPageListViewModel;
 
   moveToBall(FBallResDto fBallResDto) {
     if (_fullBallHorizontalPageListViewModel != null) {
-      _fullBallHorizontalPageListViewModel._moveToBall(fBallResDto);
+      _fullBallHorizontalPageListViewModel!._moveToBall(fBallResDto);
     }
   }
 }

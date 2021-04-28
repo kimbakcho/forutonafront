@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -7,6 +8,7 @@ import 'package:injectable/injectable.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as Img;
+
 abstract class ImageUtilInputPort {
 
   Future<String> saveResizeMemoryImageToFile(List<int> imageByte,String imageFileName,Size size) async {
@@ -32,14 +34,14 @@ abstract class ImageUtilInputPort {
     var pic = pictureRecorder.endRecording();
     ui.Image img = await pic.toImage(image.width, image.height);
     var byteData = await img.toByteData(format: ui.ImageByteFormat.png);
-    return byteData.buffer.asUint8List();
+    return byteData!.buffer.asUint8List();
   }
 
   Canvas drawCanvas(ui.Image image,Canvas canvas,Size size);
 
   Future<ui.Image> loadResizeImage(List<int> srcImageByte,int width,int height) async {
     final Completer<ui.Image> completer = Completer();
-    ui.decodeImageFromList(loadResizePngImage(srcImageByte,width,height), (ui.Image img) {
+    ui.decodeImageFromList(Uint8List.fromList(loadResizePngImage(srcImageByte,width,height)), (ui.Image img) {
       return completer.complete(img);
     });
     return completer.future;
@@ -47,7 +49,7 @@ abstract class ImageUtilInputPort {
 
   List<int> loadResizePngImage(List<int> srcImageByte,int width,int height){
     var decodeImage = Img.decodeImage(srcImageByte);
-    var copyResize = Img.copyResize(decodeImage,height: width,width: height);
+    var copyResize = Img.copyResize(decodeImage!,height: width,width: height);
     return Img.encodePng(copyResize);
   }
 

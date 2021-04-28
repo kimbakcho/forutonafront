@@ -8,7 +8,6 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/PwFindPhoneAuthResDto.dart
 import 'package:forutonafront/Common/Country/CountryItem.dart';
 import 'package:forutonafront/Common/SignValid/PhonePwFindValidUseCase/PhoneFindValidUseCase.dart';
 import 'package:forutonafront/Components/PhoneAuthComponent/PhoneAuthComponent.dart';
-import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 enum PhoneAuthMode {
   SignIn,
@@ -52,8 +51,6 @@ class SignPhoneAuthModeUseCase implements PhoneAuthModeUseCase {
     phoneAuthComponentController.resPhoneAuth(phoneAuthResDto);
   }
 
-
-
 }
 
 
@@ -91,12 +88,12 @@ class PwFindAuthModeUseCase extends PhoneAuthModeUseCase {
     reqDto.internationalizedDialCode = countrySelectItem.dialCode;
     reqDto.email = email;
     phoneAuthComponentController.waitSmsRetrieved();
-    PwFindPhoneAuthResDto pwFindPhoneAuthResDto = await phoneFindValidUseCase.phoneEmailIdValidWithReqPhoneSmsAuth(reqDto);
+    PwFindPhoneAuthResDto? pwFindPhoneAuthResDto = await phoneFindValidUseCase.phoneEmailIdValidWithReqPhoneSmsAuth(reqDto);
     if(phoneFindValidUseCase.hasPhoneEmailError()){
       phoneAuthComponentController.setPhoneError(phoneFindValidUseCase.phoneEmailErrorText());
     }else {
       phoneAuthComponentController.phoneErrorClear();
-      phoneAuthComponentController.resPhoneAuth(pwFindPhoneAuthResDto);
+      phoneAuthComponentController.resPhoneAuth(pwFindPhoneAuthResDto!);
     }
   }
 

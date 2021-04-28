@@ -10,7 +10,7 @@ import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 
 class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCaseInputPort>{
 
-  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort;
+  final SelectBallUseCaseInputPort? _selectBallUseCaseInputPort;
 
   TagContainBallCollectMediator(this._selectBallUseCaseInputPort){
     pageLimit =5;
@@ -20,12 +20,12 @@ class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCas
   Future<PageWrap<FBallResDto>> searchUseCase(Pageable pageable) async {
 
     PageWrap<FBallTagResDto> response = await this
-        .fBallListUpUseCaseInputPort
+        .fBallListUpUseCaseInputPort!
         .search(pageable);
 
-    var ballUuidList = response.content.map((e) => e.ballUuid).toList();
+    var ballUuidList = response.content!.map((e) => e.ballUuid).toList().cast<String>();
 
-    var fBallResDtoList = await this._selectBallUseCaseInputPort.selectBalls(ballUuidList);
+    var fBallResDtoList = await this._selectBallUseCaseInputPort!.selectBalls(ballUuidList);
     PageWrap<FBallResDto> ballsResponse2 = PageWrap<FBallResDto>(
       content: fBallResDtoList,
       size: response.size,
@@ -53,9 +53,9 @@ class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCas
   }
 
   @override
-  Position searchPosition(){
+  Position? searchPosition(){
     if(fBallListUpUseCaseInputPort != null){
-      return fBallListUpUseCaseInputPort.searchPosition;
+      return fBallListUpUseCaseInputPort!.searchPosition!;
     }else {
       return null;
     }
@@ -63,7 +63,7 @@ class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCas
 
   @override
   hideBall(String ballUuid) {
-    this.itemList.removeWhere((element) => element.ballUuid == ballUuid);
+    this.itemList!.removeWhere((element) => element.ballUuid == ballUuid);
     onPageListUpdate();
   }
 

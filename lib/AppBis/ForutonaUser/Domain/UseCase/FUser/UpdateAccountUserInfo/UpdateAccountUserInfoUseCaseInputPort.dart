@@ -14,7 +14,7 @@ abstract class UpdateAccountUserInfoUseCaseInputPort {
 class UpdateAccountUserInfoUseCase implements UpdateAccountUserInfoUseCaseInputPort{
 
   final FUserRepository _fUserRepository;
-  UpdateAccountUserInfoUseCase({@required FUserRepository fUserRepository}):_fUserRepository=fUserRepository;
+  UpdateAccountUserInfoUseCase({required FUserRepository fUserRepository}):_fUserRepository=fUserRepository;
 
   @override
   Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,List<int> profileImage,List<int> backgroundImage) async {

@@ -10,16 +10,16 @@ class FBallListUpFromSearchTagName implements FBallListUpUseCaseInputPort {
   FBallListUpFromTagNameReqDto reqDto;
   final FBallRepository _fBallRepository;
 
-  FBallListUpFromSearchTagName(this.reqDto, {FBallRepository fBallRepository})
+  FBallListUpFromSearchTagName(this.reqDto, {required FBallRepository fBallRepository})
       : _fBallRepository = fBallRepository;
 
   @override
   Future<PageWrap<FBallResDto>> search(Pageable pageable,
-      {FBallListUpUseCaseOutputPort outputPort}) async {
+      {FBallListUpUseCaseOutputPort? outputPort}) async {
     searchPosition = Position(latitude: reqDto.latitude,longitude: reqDto.longitude);
     PageWrap<FBallResDto> pageWrap = await _fBallRepository.listUpFromTagName(
         reqDto: reqDto, pageable: pageable);
-    executeOutPort(outputPort, pageWrap);
+    executeOutPort(outputPort!, pageWrap);
     return pageWrap;
   }
   void executeOutPort(
@@ -30,5 +30,5 @@ class FBallListUpFromSearchTagName implements FBallListUpUseCaseInputPort {
   }
 
   @override
-  Position searchPosition;
+  Position? searchPosition;
 }

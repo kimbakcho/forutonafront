@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class SimpleCollectWidgetBottomBar extends StatelessWidget {
 
-  final Function moreCollectAction;
+  final Function? moreCollectAction;
 
-  const SimpleCollectWidgetBottomBar({Key key, this.moreCollectAction}) : super(key: key);
+  const SimpleCollectWidgetBottomBar({Key? key, this.moreCollectAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class SimpleCollectWidgetBottomBar extends StatelessWidget {
                 color: Colors.white,
                 child: InkWell(
                     onTap: () {
-                      moreCollectAction();
+                      moreCollectAction!();
                     },
                     child: Container(
                       padding: EdgeInsets.fromLTRB(0, 5, 0, 5),

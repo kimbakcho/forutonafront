@@ -10,8 +10,8 @@ class DetailPageViewer extends StatelessWidget {
   final DetailPageItemFactory detailPageItemFactory;
   final int initIndex;
 
-  DetailPageViewer({@required this.ballListMediator,
-    @required this.detailPageItemFactory,
+  DetailPageViewer({required this.ballListMediator,
+    required this.detailPageItemFactory,
     this.initIndex = 0});
 
 
@@ -32,8 +32,8 @@ class DetailPageViewer extends StatelessWidget {
                 controller: model.pageController,
                 itemBuilder: (_, index) {
                   return detailPageItemFactory.getDetailPageWidget(
-                      model.ballList[index].ballUuid,
-                      model.ballList[index].ballType);
+                      model.ballList[index].ballUuid!,
+                      model.ballList[index].ballType!);
                 },
               ));
         },
@@ -43,13 +43,13 @@ class DetailPageViewer extends StatelessWidget {
 }
 
 class DetailPageViewerViewModel extends ChangeNotifier {
-  final BallListMediator _ballListMediator;
+  final BallListMediator? _ballListMediator;
   final PageController _pageController;
   int initIndex;
   bool pageNotFirstAttach = true;
 
   DetailPageViewerViewModel(
-      {BallListMediator ballListMediator, this.initIndex = 0})
+      {BallListMediator? ballListMediator, this.initIndex = 0})
       : _ballListMediator = ballListMediator,
         _pageController = PageController(initialPage: initIndex) {
     _nextPagePreLoading(initIndex);
@@ -59,16 +59,16 @@ class DetailPageViewerViewModel extends ChangeNotifier {
     return _pageController;
   }
 
-  List<FBallResDto> get ballList => _ballListMediator.itemList;
+  List<FBallResDto> get ballList => _ballListMediator!.itemList!;
 
   void onPageChanged(int value) {
     _nextPagePreLoading(value);
   }
 
   void _nextPagePreLoading(int nowPageIndex) async {
-    if (nowPageIndex + 1 == _ballListMediator.itemList.length) {
-      if (!_ballListMediator.isLastPage) {
-        await _ballListMediator.searchNext();
+    if (nowPageIndex + 1 == _ballListMediator!.itemList!.length) {
+      if (!_ballListMediator!.isLastPage!) {
+        await _ballListMediator!.searchNext();
         notifyListeners();
       }
     }

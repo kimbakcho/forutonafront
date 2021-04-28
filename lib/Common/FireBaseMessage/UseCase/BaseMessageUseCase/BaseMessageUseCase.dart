@@ -19,7 +19,7 @@ class BaseMessageUseCase implements FCMMessageUseCaseInputPort {
   }
 
   void _notificationAction(Map<String, dynamic> message) {
-    NotificationServiceType notificationServiceType = EnumToString.fromString(NotificationServiceType.values, message["data"]["serviceKey"]);
+    NotificationServiceType notificationServiceType = EnumToString.fromString(NotificationServiceType.values, message["data"]["serviceKey"])!;
     NotificationUseCaseInputPort notificationUseCaseInputPort = NotificationUseCaseFactory.create(notificationServiceType);
     notificationUseCaseInputPort.resNotification(message);
   }

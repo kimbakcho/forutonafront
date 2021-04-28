@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,9 +13,11 @@ import 'package:provider/provider.dart';
 import 'MainPage/MainPageView.dart';
 //flutter pub run build_runner watch --use-polling-watcher --delete-conflicting-outputs
 
-void main() {
+Future<void> main() async {
   configureDependencies();
   // di.init();
+  await Firebase.initializeApp();
+
   runApp(
     MyApp(),
   );

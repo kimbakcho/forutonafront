@@ -5,7 +5,7 @@ import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 class IssueBallIconWidget extends StatelessWidget {
   final Size size;
   final double iconSize;
-  IssueBallIconWidget({@required this.size,@required this.iconSize});
+  IssueBallIconWidget({required this.size,required this.iconSize});
 
   @override
   Widget build(BuildContext context) {

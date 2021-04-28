@@ -6,14 +6,14 @@ part 'NoticeResDto.g.dart';
 
 @JsonSerializable()
 class NoticeResDto {
-  int idx;
-  String title;
-  String content;
-  String openFlag;
+  int? idx;
+  String? title;
+  String? content;
+  String? openFlag;
 
-  MUserInfoResDto writerUid;
+  MUserInfoResDto? writerUid;
 
-  DateTime modifyDate;
+  DateTime? modifyDate;
 
   static NoticeResDto fromJson(Map<String, dynamic> json) => _$NoticeResDtoFromJson(json);
   Map<String, dynamic> toJson() => _$NoticeResDtoToJson(this);

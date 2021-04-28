@@ -7,18 +7,18 @@ import 'SimpleCollectEmptyBar.dart';
 import 'SimpleCollectWidgetBottomBar.dart';
 
 class SimpleCollectBottomFactory extends StatelessWidget {
-  final SearchCollectMediator searchCollectMediator;
-  final Function moreCollectAction;
-  const SimpleCollectBottomFactory({Key key, this.searchCollectMediator, this.moreCollectAction})
+  final SearchCollectMediator? searchCollectMediator;
+  final Function? moreCollectAction;
+  const SimpleCollectBottomFactory({Key? key, this.searchCollectMediator, this.moreCollectAction})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (searchCollectMediator.currentState ==
+    if (searchCollectMediator!.currentState ==
         SearchCollectMediatorState.Empty) {
       return SimpleCollectEmptyBar();
     }
-    if(searchCollectMediator.isLastPage){
+    if(searchCollectMediator!.isLastPage!){
       return Container(
         height: 20,
         decoration: BoxDecoration(

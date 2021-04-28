@@ -11,7 +11,7 @@ abstract class SearchHistoryUseCaseInputPort {
 class SearchHistoryUseCase implements SearchHistoryUseCaseInputPort{
   final SearchHistoryRepository searchHistoryRepository;
 
-  SearchHistoryUseCase({@required this.searchHistoryRepository});
+  SearchHistoryUseCase({required this.searchHistoryRepository});
 
   @override
   Future<void> delete(String search,String uid) async {

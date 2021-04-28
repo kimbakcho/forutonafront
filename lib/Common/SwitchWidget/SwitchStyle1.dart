@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 
 class SwitchStyle1 extends StatefulWidget {
-  final bool initValue;
-  final ValueChanged<bool> onChanged;
-  final Color activeColor;
-  final Color inactiveColor = Colors.grey;
-  final SwitchStyle1Controller switchStyle1Controller;
+  final bool? initValue;
+  final ValueChanged<bool>? onChanged;
+  final Color? activeColor;
+  final Color? inactiveColor = Colors.grey;
+  final SwitchStyle1Controller? switchStyle1Controller;
 
   const SwitchStyle1({
-    Key key,
+    Key? key,
     this.initValue,
     this.onChanged,
     this.activeColor,
@@ -23,10 +23,10 @@ class SwitchStyle1 extends StatefulWidget {
 
 class _SwitchStyle1State extends State<SwitchStyle1>
     with SingleTickerProviderStateMixin {
-  Animation _circleAnimation;
-  AnimationController _animationController;
+  Animation? _circleAnimation;
+  AnimationController? _animationController;
 
-  bool value;
+  bool? value;
 
   @override
   void initState() {
@@ -34,41 +34,41 @@ class _SwitchStyle1State extends State<SwitchStyle1>
     _animationController =
         AnimationController(duration: Duration(milliseconds: 60),vsync: this);
     _circleAnimation = AlignmentTween(
-            begin: widget.initValue ? Alignment.centerRight : Alignment.centerLeft,
-            end: widget.initValue ? Alignment.centerLeft : Alignment.centerRight)
+            begin: widget.initValue! ? Alignment.centerRight : Alignment.centerLeft,
+            end: widget.initValue! ? Alignment.centerLeft : Alignment.centerRight)
         .animate(CurvedAnimation(
-            parent: _animationController, curve: Curves.linear));
-    widget.switchStyle1Controller._switchStyle1State =  this;
+            parent: _animationController!, curve: Curves.linear));
+    widget.switchStyle1Controller!._switchStyle1State =  this;
     value = widget.initValue;
   }
 
   moveSwitch(bool value){
     if(value){
-      _animationController.forward();
+      _animationController!.forward();
     }else {
-      _animationController.reverse();
+      _animationController!.reverse();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-        animation: _animationController,
+        animation: _animationController!,
         builder: (context, child) {
           return GestureDetector(
               onTap: () {
-                if (_animationController.isCompleted) {
-                  _animationController.reverse();
+                if (_animationController!.isCompleted) {
+                  _animationController!.reverse();
                 } else {
-                  _animationController.forward();
+                  _animationController!.forward();
                 }
-                value = !value;
-                widget.onChanged(value);
+                value = !value!;
+                widget.onChanged!(value!);
               },
               child: Container(
                 height: 25.00,
                 width: 56.00,
-                alignment: _circleAnimation.value,
+                alignment: _circleAnimation!.value,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
                   child: Container(
@@ -92,7 +92,7 @@ class _SwitchStyle1State extends State<SwitchStyle1>
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: _circleAnimation.value == Alignment.centerLeft
+                  color: _circleAnimation!.value == Alignment.centerLeft
                       ? widget.inactiveColor
                       : widget.activeColor,
                   boxShadow: [
@@ -111,25 +111,25 @@ class _SwitchStyle1State extends State<SwitchStyle1>
 
 class SwitchStyle1Controller {
 
-  _SwitchStyle1State _switchStyle1State;
+  _SwitchStyle1State? _switchStyle1State;
 
   SwitchStyle1Controller();
 
   check() {
     if(_switchStyle1State != null){
-      _switchStyle1State._animationController.forward();
+      _switchStyle1State!._animationController!.forward();
     }
 
   }
 
   unCheck(){
     if(_switchStyle1State != null){
-      _switchStyle1State._animationController.reverse();
+      _switchStyle1State!._animationController!.reverse();
     }
   }
 
-  bool get isCheck{
-    return _switchStyle1State.value;
+  bool? get isCheck{
+    return _switchStyle1State!.value;
   }
 
 }

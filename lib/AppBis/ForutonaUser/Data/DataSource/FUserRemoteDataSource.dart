@@ -34,7 +34,7 @@ abstract class FUserRemoteDataSource {
       SnsSupportService snsService, String accessToken, FDio noneTokenFDio);
 
   Future<FUserInfoJoinResDto> joinUser(
-      FUserInfoJoinReqDto reqDto,List<int> profileImage,List<int> backgroundImage, FDio noneTokenFDio);
+      FUserInfoJoinReqDto reqDto,List<int>? profileImage,List<int>? backgroundImage, FDio noneTokenFDio);
 
   Future<FUserInfoResDto> findByMe(FDio tokenFDio);
 
@@ -110,7 +110,7 @@ class FUserRemoteDataSourceImpl implements FUserRemoteDataSource {
 
   @override
   Future<FUserInfoJoinResDto> joinUser(
-      FUserInfoJoinReqDto reqDto,List<int> profileImage,List<int> backgroundImage, FDio noneTokenFDio) async {
+      FUserInfoJoinReqDto reqDto,List<int>? profileImage,List<int>? backgroundImage, FDio noneTokenFDio) async {
     var formData = FormData.fromMap(reqDto.toJson());
 
     if(profileImage != null){

@@ -49,7 +49,7 @@ class G016MainPageTemp extends StatelessWidget {
             child: FlatButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {
-                  model.goNoticePageInner(model.notice[index].idx);
+                  model.goNoticePageInner(model.notice[index].idx!);
                 },
                 child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -58,7 +58,7 @@ class G016MainPageTemp extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(model.notice[index].noticeName,
+                          Text(model.notice[index].noticeName!,
                               style: TextStyle(
                                 fontFamily: "Noto Sans CJK KR",
                                 fontWeight: FontWeight.w500,
@@ -67,7 +67,7 @@ class G016MainPageTemp extends StatelessWidget {
                               )),
                           Text(
                               DateFormat("yy.MM.dd").format(
-                                  model.notice[index].noticeWriteDateTime),
+                                  model.notice[index].noticeWriteDateTime!),
                               style: TextStyle(
                                 fontFamily: "Noto Sans CJK KR",
                                 fontWeight: FontWeight.w300,

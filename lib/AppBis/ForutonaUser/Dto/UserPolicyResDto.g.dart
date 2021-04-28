@@ -8,9 +8,9 @@ part of 'UserPolicyResDto.dart';
 
 UserPolicyResDto _$UserPolicyResDtoFromJson(Map<String, dynamic> json) {
   return UserPolicyResDto()
-    ..policyName = json['policyName'] as String
-    ..policyContent = json['policyContent'] as String
-    ..lang = json['lang'] as String
+    ..policyName = json['policyName'] as String?
+    ..policyContent = json['policyContent'] as String?
+    ..lang = json['lang'] as String?
     ..writeDateTime = json['writeDateTime'] == null
         ? null
         : DateTime.parse(json['writeDateTime'] as String);

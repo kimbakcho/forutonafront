@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 import 'GenderType.dart';
 
 class GenderSelectComponent extends StatelessWidget {
-  final GenderSelectComponentController genderSelectComponentController;
+  final GenderSelectComponentController? genderSelectComponentController;
 
-  final GenderType initGender;
+  final GenderType? initGender;
 
   const GenderSelectComponent(
-      {Key key, this.genderSelectComponentController, this.initGender})
+      {Key? key, this.genderSelectComponentController, this.initGender})
       : super(key: key);
 
   @override
@@ -146,19 +146,19 @@ class GenderSelectComponent extends StatelessWidget {
 }
 
 class GenderSelectComponentViewModel extends ChangeNotifier {
-  final GenderSelectComponentController genderSelectComponentController;
+  final GenderSelectComponentController? genderSelectComponentController;
 
-  GenderType initGender;
+  GenderType? initGender;
 
   GenderType _currentGenderType = GenderType.None;
 
   GenderSelectComponentViewModel(
       {this.genderSelectComponentController, this.initGender}) {
     if (this.genderSelectComponentController != null) {
-      genderSelectComponentController._genderSelectComponentViewModel = this;
+      genderSelectComponentController!._genderSelectComponentViewModel = this;
     }
     if (initGender != null) {
-      _currentGenderType = initGender;
+      _currentGenderType = initGender!;
     }
   }
 
@@ -173,9 +173,9 @@ class GenderSelectComponentViewModel extends ChangeNotifier {
 }
 
 class GenderSelectComponentController {
-  GenderSelectComponentViewModel _genderSelectComponentViewModel;
+  GenderSelectComponentViewModel? _genderSelectComponentViewModel;
 
   GenderType get currentGenderType {
-    return _genderSelectComponentViewModel._currentGenderType;
+    return _genderSelectComponentViewModel!._currentGenderType;
   }
 }

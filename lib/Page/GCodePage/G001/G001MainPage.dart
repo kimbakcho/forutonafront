@@ -36,12 +36,12 @@ class G001MainPage extends StatelessWidget {
 }
 
 class G001MainPageViewModel extends ChangeNotifier {
-  SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  UserProfileComponentViewModelController
+  UserProfileComponentViewModelController?
       _userProfileComponentViewModelController;
 
-  G001MainPageViewModelController _g001mainPageViewModelController;
+  G001MainPageViewModelController? _g001mainPageViewModelController;
 
   Key gCodeMainKey = new UniqueKey();
 
@@ -50,17 +50,17 @@ class G001MainPageViewModel extends ChangeNotifier {
     _userProfileComponentViewModelController =
         UserProfileComponentViewModelController();
     if (_g001mainPageViewModelController != null) {
-      _g001mainPageViewModelController._g001mainPageViewModel = this;
+      _g001mainPageViewModelController!._g001mainPageViewModel = this;
     }
 
 
   }
 
   String get userUid {
-    if (_signInUserInfoUseCaseInputPort.isLogin) {
+    if (_signInUserInfoUseCaseInputPort!.isLogin!) {
       var reqSignInUserInfoFromMemory =
-          this._signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
-      return reqSignInUserInfoFromMemory.uid;
+          this._signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
+      return reqSignInUserInfoFromMemory!.uid!;
     } else {
       return "";
     }
@@ -69,10 +69,10 @@ class G001MainPageViewModel extends ChangeNotifier {
 
 @lazySingleton
 class G001MainPageViewModelController {
-  G001MainPageViewModel _g001mainPageViewModel;
+  G001MainPageViewModel? _g001mainPageViewModel;
 
   reloadUserProfile() {
-    _g001mainPageViewModel._userProfileComponentViewModelController
+    _g001mainPageViewModel!._userProfileComponentViewModelController!
         .reloadUserInfo();
   }
 }

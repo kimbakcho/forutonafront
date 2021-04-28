@@ -1,3 +1,4 @@
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -13,21 +14,23 @@ import 'package:injectable/injectable.dart';
 //FirebaseMessage BackGround 에 등록되는 메소드는 는 반드시 Top Level 메소드 여야 한다.
 //메소드 이름을  onFirebaseBackgroundMessage 으로 시작하면 안된다
 //만약 이름을 위와 같이 하면 There was an exception when getting callback handle from Dart side 에러가 뜬다..
-Future<dynamic> firebaseBackgroundMessage(Map<String, dynamic> message) async {
-  FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
+Future<dynamic> firebaseBackgroundMessage(RemoteMessage message) async {
+  FireBaseAuthAdapterForUseCase? fireBaseAuthAdapterForUseCase;
   try {
     fireBaseAuthAdapterForUseCase = sl();
   } catch (ex) {
     print("backgroundService ServiceLocator init");
     configureDependencies();
-    fireBaseAuthAdapterForUseCase =
-        await loginUserInfoDataSaveForMemory(fireBaseAuthAdapterForUseCase);
+    if (fireBaseAuthAdapterForUseCase != null) {
+      fireBaseAuthAdapterForUseCase =
+          await loginUserInfoDataSaveForMemory(fireBaseAuthAdapterForUseCase);
+    }
   } finally {
-    if (await fireBaseAuthAdapterForUseCase.isLogin()) {
+    if (await fireBaseAuthAdapterForUseCase!.isLogin()) {
       FCMMessageUseCaseInputPort backGroundMessageUseCase =
           sl.get<FCMMessageUseCaseInputPort>(
               instanceName: "BackGroundMessageUseCase");
-      backGroundMessageUseCase.message(message);
+      backGroundMessageUseCase.message(message.data);
     }
   }
 }
@@ -44,17 +47,14 @@ Future<FireBaseAuthAdapterForUseCase> loginUserInfoDataSaveForMemory(
 }
 
 abstract class FireBaseMessageAdapter {
-  configure(
-      {MessageHandler onMessage,
-      MessageHandler onLaunch,
-      MessageHandler onResume});
+  configure();
 
-  Future<String> getCurrentToken();
+  Future<String?> getCurrentToken();
 }
 
 @LazySingleton(as: FireBaseMessageAdapter)
 class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
-  FirebaseMessaging _firebaseMessaging;
+  late FirebaseMessaging _firebaseMessaging;
 
   final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
 
@@ -63,25 +63,30 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
   final UpdateFCMTokenUseCaseInputPort _updateFCMTokenUseCaseInputPort;
 
   FireBaseMessageAdapterImpl(
-      {@required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-      @required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
-      @required UpdateFCMTokenUseCaseInputPort updateFCMTokenUseCaseInputPort})
+      {required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
+      required FireBaseAuthBaseAdapter fireBaseAuthBaseAdapter,
+      required UpdateFCMTokenUseCaseInputPort updateFCMTokenUseCaseInputPort})
       : _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort,
         _updateFCMTokenUseCaseInputPort = updateFCMTokenUseCaseInputPort,
         _fireBaseAuthBaseAdapter = fireBaseAuthBaseAdapter {
-    _firebaseMessaging = FirebaseMessaging();
+    _firebaseMessaging = FirebaseMessaging.instance;
     _firebaseMessaging.onTokenRefresh.listen(_onTokenRefresh);
   }
 
-  configure(
-      {MessageHandler onMessage,
-      MessageHandler onLaunch,
-      MessageHandler onResume}) {
-    _firebaseMessaging.configure(
-        onBackgroundMessage: firebaseBackgroundMessage,
-        onResume: onResume,
-        onLaunch: onLaunch,
-        onMessage: onMessage);
+  configure() {
+
+    FirebaseMessaging.onBackgroundMessage(firebaseBackgroundMessage);
+
+    var baseMessageUseCase = sl.get<FCMMessageUseCaseInputPort>(instanceName: "BaseMessageUseCase");
+    FirebaseMessaging.onMessage.listen((RemoteMessage message){
+      baseMessageUseCase.message(message.data);
+    });
+
+    var launchMessage = sl.get<FCMMessageUseCaseInputPort>(instanceName: "LaunchMessageUseCase");
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
+      launchMessage.message(message.data);
+    });
+
   }
 
   void _onTokenRefresh(String token) async {
@@ -94,7 +99,7 @@ class FireBaseMessageAdapterImpl implements FireBaseMessageAdapter {
   }
 
   @override
-  Future<String> getCurrentToken() async {
-    return await _firebaseMessaging.getToken();
+  Future<String?> getCurrentToken() async {
+    return await FirebaseMessaging.instance.getToken();
   }
 }

@@ -13,9 +13,8 @@ class FBallPlayerRepositoryImpl implements FBallPlayerRepository {
   final FBallPlayerRemoteDataSource _fBallPlayerRemoteDataSource;
 
   FBallPlayerRepositoryImpl(
-      {@required FBallPlayerRemoteDataSource fBallPlayerRemoteDataSource})
+      {required FBallPlayerRemoteDataSource fBallPlayerRemoteDataSource})
       : _fBallPlayerRemoteDataSource = fBallPlayerRemoteDataSource;
-
 
   @override
   Future<PageWrap<FBallPlayerResDto>> getUserPlayBallList(

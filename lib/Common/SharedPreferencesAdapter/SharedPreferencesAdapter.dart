@@ -4,10 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class SharedPreferencesAdapter {
   setDouble(String key, double longitude);
   setString(String key, String json);
-  Future<String> getString(String key);
+  Future<String?> getString(String key);
   setStringList(String key, List<String>  value);
-  Future<List<String>> getStringList(String key);
-  Future<double> getDouble(String key);
+  Future<List<String>?> getStringList(String key);
+  Future<double?> getDouble(String key);
 }
 
 @LazySingleton(as: SharedPreferencesAdapter)
@@ -18,7 +18,7 @@ class SharedPreferencesAdapterImpl implements SharedPreferencesAdapter {
     sharedPreferences.setStringList(key, value);
   }
 
-  Future<List<String>> getStringList(String key) async {
+  Future<List<String>?> getStringList(String key) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getStringList(key);
   }
@@ -29,7 +29,7 @@ class SharedPreferencesAdapterImpl implements SharedPreferencesAdapter {
   }
 
   @override
-  Future<double> getDouble(String key) async {
+  Future<double?> getDouble(String key) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getDouble(key);
   }
@@ -41,7 +41,7 @@ class SharedPreferencesAdapterImpl implements SharedPreferencesAdapter {
   }
 
   @override
-  Future<String> getString(String key) async {
+  Future<String?> getString(String key) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString(key);
   }

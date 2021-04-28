@@ -13,12 +13,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class SearchHistoryView extends StatelessWidget {
-  final SearchHistoryViewController searchHistoryViewController;
-  final InputSearchBarListener inputSearchBarListener;
-  final SearchHistoryDataSourceKey searchHistoryDataSourceKey;
+  final SearchHistoryViewController? searchHistoryViewController;
+  final InputSearchBarListener? inputSearchBarListener;
+  final SearchHistoryDataSourceKey? searchHistoryDataSourceKey;
 
   const SearchHistoryView(
-      {Key key,
+      {Key? key,
       this.searchHistoryViewController,
       this.inputSearchBarListener,
       this.searchHistoryDataSourceKey})
@@ -33,7 +33,7 @@ class SearchHistoryView extends StatelessWidget {
               searchHistoryRepository: SearchHistoryRepositoryImpl(
                   sharedPreferencesAdapter: sl(),
                   searchHistoryDataSourceKey: searchHistoryDataSourceKey)),
-      signInUserInfoUseCaseInputPort: sl()),
+          signInUserInfoUseCaseInputPort: sl()),
       child: Consumer<SearchHistoryViewModel>(
         builder: (_, model, __) {
           return model.histories.length > 0
@@ -47,8 +47,8 @@ class SearchHistoryView extends StatelessWidget {
                           color: Colors.white,
                           child: InkWell(
                               onTap: () {
-                                inputSearchBarListener.onSearch(
-                                    model.histories[index].searchText,
+                                inputSearchBarListener!.onSearch(
+                                    model.histories[index].searchText!,
                                     context: context);
                               },
                               child: Container(
@@ -58,7 +58,7 @@ class SearchHistoryView extends StatelessWidget {
                                         child: Container(
                                             child: Text(
                                                 model.histories[index]
-                                                    .searchText,
+                                                    .searchText!,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.notoSans(
                                                   fontSize: 14,
@@ -72,7 +72,7 @@ class SearchHistoryView extends StatelessWidget {
                                             left: 16, right: 16),
                                         child: Text(
                                             DateFormat("yy.MM.dd").format(model
-                                                .histories[index].searchTime),
+                                                .histories[index].searchTime!),
                                             style: GoogleFonts.notoSans(
                                               fontSize: 14,
                                               color: const Color(0xff3497fd),
@@ -82,14 +82,13 @@ class SearchHistoryView extends StatelessWidget {
                                     Container(
                                         width: 36,
                                         height: 36,
-
                                         child: Material(
                                             color: Colors.white,
                                             child: InkWell(
                                               onTap: () {
                                                 model.removeHistory(model
                                                     .histories[index]
-                                                    .searchText);
+                                                    .searchText!);
                                               },
                                               child: Icon(
                                                 ForutonaIcon.x_circle,
@@ -131,56 +130,58 @@ class SearchHistoryView extends StatelessWidget {
 }
 
 class SearchHistoryViewModel extends ChangeNotifier {
-  final SearchHistoryUseCaseInputPort searchHistoryUseCaseInputPort;
+  final SearchHistoryUseCaseInputPort? searchHistoryUseCaseInputPort;
 
-  final SearchHistoryViewController searchHistoryViewController;
+  final SearchHistoryViewController? searchHistoryViewController;
 
-  final SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? signInUserInfoUseCaseInputPort;
 
-  List<SearchHistoryDto> histories = [];
+  List<SearchHistoryDto> histories = List.empty();
 
   SearchHistoryViewModel(
-      {this.searchHistoryUseCaseInputPort, this.searchHistoryViewController,this.signInUserInfoUseCaseInputPort}) {
-    searchHistoryViewController.addressSearchHistoryViewModel = this;
+      {this.searchHistoryUseCaseInputPort,
+      this.searchHistoryViewController,
+      this.signInUserInfoUseCaseInputPort}) {
+    searchHistoryViewController!.addressSearchHistoryViewModel = this;
     init();
   }
 
   Future<void> init() async {
     String uid = "";
-    if(signInUserInfoUseCaseInputPort.isLogin){
-      uid = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    if (signInUserInfoUseCaseInputPort!.isLogin!) {
+      uid = signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory()!.uid!;
     }
-    histories = await searchHistoryUseCaseInputPort.findByAll(uid);
+    histories = await searchHistoryUseCaseInputPort!.findByAll(uid);
     notifyListeners();
   }
 
   Future<void> addHistory(String search) async {
     String uid = "";
-    if(signInUserInfoUseCaseInputPort.isLogin){
-      uid = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    if (signInUserInfoUseCaseInputPort!.isLogin!) {
+      uid = signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory()!.uid!;
     }
-    await searchHistoryUseCaseInputPort.save(search,uid);
-    histories = await searchHistoryUseCaseInputPort.findByAll(uid);
+    await searchHistoryUseCaseInputPort!.save(search, uid);
+    histories = await searchHistoryUseCaseInputPort!.findByAll(uid);
     notifyListeners();
   }
 
   Future<void> removeHistory(String search) async {
     String uid = "";
-    if(signInUserInfoUseCaseInputPort.isLogin){
-      uid = signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory().uid;
+    if (signInUserInfoUseCaseInputPort!.isLogin!) {
+      uid = signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory()!.uid!;
     }
-    await searchHistoryUseCaseInputPort.delete(search,uid);
-    histories = await searchHistoryUseCaseInputPort.findByAll(uid);
+    await searchHistoryUseCaseInputPort!.delete(search, uid);
+    histories = await searchHistoryUseCaseInputPort!.findByAll(uid);
     notifyListeners();
   }
 }
 
 class SearchHistoryViewController {
-  SearchHistoryViewModel addressSearchHistoryViewModel;
+  SearchHistoryViewModel? addressSearchHistoryViewModel;
 
   Future<void> addHistory(String text) async {
     if (addressSearchHistoryViewModel != null) {
-      await addressSearchHistoryViewModel.addHistory(text);
+      await addressSearchHistoryViewModel!.addHistory(text);
     }
   }
 }

@@ -16,10 +16,10 @@ import 'package:provider/provider.dart';
 import 'SiginButton/SignButtonOutputPort.dart';
 
 class SignSheet extends StatelessWidget {
-  final SignSheetOutputPort signSheetOutputPort;
+  final SignSheetOutputPort? signSheetOutputPort;
 
 
-  const SignSheet({Key key, this.signSheetOutputPort}) : super(key: key);
+  const SignSheet({Key? key, this.signSheetOutputPort}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class SignSheet extends StatelessWidget {
                           color: Colors.transparent,
                           child: InkWell(
                               onTap: () {
-                                signSheetOutputPort.moveToLoginPage();
+                                signSheetOutputPort!.moveToLoginPage();
                               },
                               child: Text(
                                 "로그인하기",

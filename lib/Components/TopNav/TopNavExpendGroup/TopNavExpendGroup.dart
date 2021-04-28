@@ -4,11 +4,11 @@ import 'package:forutonafront/MainPage/CodeMainPageController.dart';
 import 'package:provider/provider.dart';
 
 class TopNavExpendGroup extends StatelessWidget {
-  final TopNavBtnMediator topNavBtnMediator;
-  final Map<CodeState, Widget> codeStateExpendWidgetMap;
+  final TopNavBtnMediator? topNavBtnMediator;
+  final Map<CodeState, Widget>? codeStateExpendWidgetMap;
 
   TopNavExpendGroup(
-      {Key key,
+      {Key? key,
       this.topNavBtnMediator,
       this.codeStateExpendWidgetMap})
       : super(key: key);
@@ -27,14 +27,14 @@ class TopNavExpendGroup extends StatelessWidget {
 }
 
 class TopNavExpendGroupViewModel extends ChangeNotifier {
-  final TopNavBtnMediator topNavBtnMediator;
-  final Map<CodeState, Widget> codeStateExpendWidgetMap;
-  BuildContext context;
+  final TopNavBtnMediator? topNavBtnMediator;
+  final Map<CodeState, Widget>? codeStateExpendWidgetMap;
+  BuildContext? context;
 
   TopNavExpendGroupViewModel(
-      {@required this.topNavBtnMediator,
-      @required this.codeStateExpendWidgetMap}) {
-    topNavBtnMediator.topNavExpendGroupViewModel = this;
+      {required this.topNavBtnMediator,
+      required this.codeStateExpendWidgetMap}) {
+    topNavBtnMediator!.topNavExpendGroupViewModel = this;
   }
 
   changeExpendWidget() {
@@ -42,6 +42,6 @@ class TopNavExpendGroupViewModel extends ChangeNotifier {
   }
 
   Widget _getTopNavExpendComponent() {
-    return codeStateExpendWidgetMap[topNavBtnMediator.currentTopNavRouter];
+    return codeStateExpendWidgetMap![topNavBtnMediator!.currentTopNavRouter]!;
   }
 }

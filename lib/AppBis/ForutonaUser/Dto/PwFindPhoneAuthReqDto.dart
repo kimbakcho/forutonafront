@@ -6,8 +6,8 @@ part 'PwFindPhoneAuthReqDto.g.dart';
 
 @JsonSerializable()
 class PwFindPhoneAuthReqDto extends PhoneAuthReqDto{
-  String email;
-  String emailPhoneAuthToken;
+  String? email;
+  String? emailPhoneAuthToken;
 
   PwFindPhoneAuthReqDto();
 

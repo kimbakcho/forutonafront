@@ -9,11 +9,11 @@ import 'package:provider/provider.dart';
 import 'UserInfoCollectMediator.dart';
 
 class SimpleUserInfoCollectWidget extends StatelessWidget {
-  final String searchText;
-  final SimpleUserInfoCollectListener simpleUserInfoCollectListener;
+  final String? searchText;
+  final SimpleUserInfoCollectListener? simpleUserInfoCollectListener;
 
   const SimpleUserInfoCollectWidget(
-      {Key key, this.searchText, this.simpleUserInfoCollectListener})
+      {Key? key, this.searchText, this.simpleUserInfoCollectListener})
       : super(key: key);
 
   @override
@@ -21,8 +21,8 @@ class SimpleUserInfoCollectWidget extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => SimpleUserInfoCollectWidgetViewModel(
             userInfoCollectMediator: sl(),
-            searchText: searchText,
-            simpleUserInfoCollectListener: simpleUserInfoCollectListener),
+            searchText: searchText!,
+            simpleUserInfoCollectListener: simpleUserInfoCollectListener!),
         child: Consumer<SimpleUserInfoCollectWidgetViewModel>(
             builder: (_, model, __) {
           return Container(
@@ -43,11 +43,11 @@ class SimpleUserInfoCollectWidgetViewModel extends ChangeNotifier
     implements SimpleCollectionTopNextPageListener {
   final String searchText;
   final UserInfoCollectMediator userInfoCollectMediator;
-  final SimpleUserInfoCollectListener simpleUserInfoCollectListener;
+  final SimpleUserInfoCollectListener? simpleUserInfoCollectListener;
 
   SimpleUserInfoCollectWidgetViewModel(
-      {@required this.searchText,
-      @required this.userInfoCollectMediator,
+      {required this.searchText,
+      required this.userInfoCollectMediator,
       this.simpleUserInfoCollectListener}) {
     userInfoCollectMediator.userInfoListUpUseCaseInputPort =
         UserNickNameWithFullTextMatchIndexUseCase(
@@ -59,15 +59,15 @@ class SimpleUserInfoCollectWidgetViewModel extends ChangeNotifier
   IndexedWidgetBuilder getIndexedWidgetBuilder() {
     return (_, index) {
       return UserProfileBar(
-          key: Key(userInfoCollectMediator.itemList[index].uid),
-          fUserInfoSimpleResDto: userInfoCollectMediator.itemList[index]);
+          key: Key(userInfoCollectMediator.itemList![index].uid!),
+          fUserInfoSimpleResDto: userInfoCollectMediator.itemList![index]);
     };
   }
 
   @override
   void onNextPage(String searchText) {
     if (simpleUserInfoCollectListener != null) {
-      simpleUserInfoCollectListener.onSimpleUserInfoCollectNextPage(searchText);
+      simpleUserInfoCollectListener!.onSimpleUserInfoCollectNextPage(searchText);
     }
   }
 }

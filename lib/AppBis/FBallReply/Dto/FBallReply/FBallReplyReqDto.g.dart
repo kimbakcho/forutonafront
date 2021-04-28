@@ -8,9 +8,9 @@ part of 'FBallReplyReqDto.dart';
 
 FBallReplyReqDto _$FBallReplyReqDtoFromJson(Map<String, dynamic> json) {
   return FBallReplyReqDto()
-    ..ballUuid = json['ballUuid'] as String
-    ..replyNumber = json['replyNumber'] as int
-    ..reqOnlySubReply = json['reqOnlySubReply'] as bool;
+    ..ballUuid = json['ballUuid'] as String?
+    ..replyNumber = json['replyNumber'] as int?
+    ..reqOnlySubReply = json['reqOnlySubReply'] as bool?;
 }
 
 Map<String, dynamic> _$FBallReplyReqDtoToJson(FBallReplyReqDto instance) =>

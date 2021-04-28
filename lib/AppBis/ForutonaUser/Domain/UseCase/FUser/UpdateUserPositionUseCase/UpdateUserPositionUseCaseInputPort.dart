@@ -11,7 +11,7 @@ class UpdateUserPositionUseCase implements UpdateUserPositionUseCaseInputPort{
 
   final FUserRepository _fUserRepository;
 
-  UpdateUserPositionUseCase({@required FUserRepository fUserRepository})
+  UpdateUserPositionUseCase({required FUserRepository fUserRepository})
       : _fUserRepository = fUserRepository;
 
   @override

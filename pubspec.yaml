@@ -14,129 +14,131 @@ description: A new Flutter project.
 version: 1.0.13+21
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   # add dependency for Firebase Core
-  firebase_core: ^0.4.3+1
+  firebase_core: ^1.0.4
   # add dependency for Firebase Core
-  firebase_core_web: ^0.1.1+1
+  firebase_core_web: ^1.0.2
   #Url 웹페이지를 띄우기 위해서 사용
-  url_launcher: ^5.4.1
+  url_launcher: ^6.0.3
   # add dependency for Google Analytics for Firebase
-  firebase_analytics: ^5.0.2
+  firebase_analytics: ^8.0.1
   #NaverLogin을 위해서 사용
-  flutter_naver_login: ^1.2.0
+  flutter_naver_login: ^1.2.1 #has_null-safe
   #Firebase 인증을 위해서 사용
-  firebase_auth: ^0.15.5+3
+  firebase_auth: ^1.1.1
   #FaceBook인증을 위해서 사용
-  flutter_facebook_login: ^3.0.0
+#  flutter_facebook_login: ^3.0.0
+  flutter_login_facebook: ^1.0.1
   #추후 다국적 언어 지원에 사용
   flutter_localizations: # add this
     sdk: flutter
   #JSON 직렬화에 사용
-  json_annotation:
+  json_annotation: ^4.0.1
   #카메라에서 이미지를 찍고 해당 사진을 리턴 받기 위해서 사용
-  image_picker: ^0.6.5
+  image_picker: ^0.7.4
   #비동기 처리에 필요
-  async: ^2.3.0
+  async: ^2.5.0
   #GoogleMap
-  google_maps_flutter:
-    git:
-      url: git://github.com/kimbakcho/plugins.git
-      path: packages/google_maps_flutter/google_maps_flutter
-      ref: 9983ae9
+  google_maps_flutter: ^2.0.3
+#  google_maps_flutter:
+#    git:
+#      url: git://github.com/kimbakcho/plugins.git
+#      path: packages/google_maps_flutter/google_maps_flutter
+#      ref: 9983ae9
   #GPS 지도 정보를 사용하기 위해서 사용
-  geolocator: ^5.3.1
+  geolocator: ^7.0.3
   #태그 랭킹등에서 사용
-  flutter_swiper: ^1.1.6
+#  flutter_swiper: ^1.1.6
+  flutter_card_swipper: ^0.4.0
   #허가 관리
-  permission_handler: ^5.1.0+2
-  uuid: ^2.0.1
+  permission_handler: ^7.0.0
+  uuid: ^3.0.4
   #FCM에 사용
-  firebase_messaging: ^6.0.16
+  firebase_messaging: ^9.1.2
   #사진을 여러장 선택 할 필요가 있을때 사용
-  multi_image_picker:
+  multi_image_picker: ^4.8.00
   #Kakao 로그인 할때 사용
-  kakao_flutter_sdk: ^0.5.2
+  kakao_flutter_sdk: ^0.6.1
   #내부 Native Notication을 사용하기위한 사용
-  flutter_local_notifications: ^1.4.4+2
+  flutter_local_notifications: ^5.0.0+1
   #큐브의 에니메이션 효과등 복잡한 애니메이션을 Flare를 사용하여 처리기위해서 사용
-  flare_flutter: ^1.8.3
+  flare_flutter: ^3.0.0
   #KeyBarod 나타 날때  UI 변화를 주기 위해서 사용
-  flutter_keyboard_visibility: ^2.0.0
+  flutter_keyboard_visibility: ^5.0.1
   #Emun을 스트링으로 변환 시키기 위해 사용
-  enum_to_string: ^1.0.8
+  enum_to_string: ^2.0.1
   #backEnd 서버와 Http 통신하기 위해서 사용
-  dio: ^3.0.10
+  dio: ^4.0.0
+  http: ^0.13.1
+  http_parser: ^4.0.0
   #토스트 메세지를 띄울때 사용
-  fluttertoast: ^3.1.3
+  fluttertoast: ^8.0.6
   #유튜브 정보를 얻어 오는데 사용
-  youtube_explode_dart: ^1.0.0
+  youtube_explode_dart: ^1.9.1
   #코딩 패턴 사용
-  provider: ^4.1.3
+  provider: ^5.0.0
   #각종 이미지들을 확대 축소 가능하고 슬라이드로 보여주는데서 사용
-  photo_view: ^0.9.2
+  photo_view: ^0.11.1
   # 검색시 히스토리 저장 목적으로 사용
-  shared_preferences: ^0.5.6+3
+  shared_preferences: ^2.0.5
   #location 허가용
-  location: ^3.2.4
+  location: ^4.1.1
   #AutoComPlete 기능을 위해 사용
-  google_place: ^0.3.0
+  google_place: ^0.4.0
   #게시판등에서 html Viwer 목적으로 사용
-  webview_flutter: ^1.0.7
+  webview_flutter: ^2.0.4
   #Youtube 등 앱을 실행하기 위해서 사용
-  android_intent:
+  android_intent: ^2.0.0
   #googlefont 사용
-  google_fonts: ^1.0.0
+  google_fonts: ^2.0.0
   #youtube VideoID Paser
-  youtube_parser: ^1.1.0
+  #youtube_parser: ^1.1.0
   #이미지 압축을 위해서 사용
-  flutter_image_compress: ^0.6.8
+  flutter_image_compress: ^1.0.0
   #이미지 MetaData 를 추출 위해서 사용
-  image: ^2.1.12
+  image: ^3.0.2
   #이미지 캐쉬 및 로딩에 사용
-  cached_network_image: ^2.2.0+1
+  cached_network_image: ^3.0.0
   #Mutex GPS 요청 사항이 Mutex 하지 않을때 Native 에서 에러나서 사용함
-  mutex: ^1.0.3
+  mutex: ^3.0.0
   #test할때 사용
-  mockito: ^4.1.1
+  mockito: ^5.0.5
   #Native Background Plugin 목적으로 사용
-  background_fetch: ^0.7.0
+  background_fetch: ^1.0.0-nullsafety.2
   #statusBarColor 변경을 목적으로 사용
-  flutter_statusbarcolor: ^0.2.3
-  #인터넷 접속 가능 여부 판단 목적으로 사용
-  data_connection_checker: ^0.3.4
+#  flutter_statusbarcolor: ^0.2.3
   # add injectable to your dependencies
-  injectable: ^1.0.5
+  injectable: ^1.2.2
   #의존성 주입을 위해 사용
-  get_it: ^5.0.3
+  get_it: ^6.1.1
   #App의 로컬 파일 경로를 얻기 위해 사용
-  path_provider: ^1.6.11
-  #설치된 App 확인
-  flutter_package_manager: ^0.2.0
+  path_provider: ^2.0.1
   #Text된 컨텐츠 에서 select 가능 하고 link을 열기 위해 사용
-  selectable_autolink_text: ^1.3.3
+  selectable_autolink_text: ^2.0.0
   #좋아요 싫어요 % 표시
-  percent_indicator: ^2.1.5
+  percent_indicator: ^3.0.1
   #ModalDraower 에 사용
-  modal_bottom_sheet: ^1.0.0+1
+  modal_bottom_sheet: ^2.0.0
   #Svg 파일 로딩에 사용
-  flutter_svg: ^0.18.0
+  flutter_svg: ^0.22.0
   #Device Locale 언어 정보 취득
-  devicelocale: ^0.3.3
-  #sms retriever
-  sms_otp_auto_verify: ^1.2.2
+  devicelocale: ^0.4.1
+  #sms retriever  #Need migration
+  otp_autofill: ^1.0.0
   #bottom_Sheet_SnappingUI에사용
-  sliding_sheet: ^0.4.1
+  sliding_sheet: ^0.5.0
   #Sim 정보를 얻어와 국가 설정을 위해 사용
-  sim_info: ^0.1.3
-  #keyHash 얻기
-  key_hash: ^0.0.1
+  flutter_sim_country_code: ^0.1.0
   #package install 정보 획득 위해 사용
-  device_apps: ^1.3.0
+  package_info: ^2.0.0
+  device_apps: ^2.1.1
+  #geoCoding
+  geocoding: ^2.0.0
 
 
 module:
@@ -146,10 +148,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   # add the generator to your dev_dependencies
-  injectable_generator:
-  build_runner:
-  build_test:
-  json_serializable:
+  injectable_generator: ^1.2.2
+  build_runner: ^2.0.1
+  json_serializable: ^4.1.1
 
 
 # For information on the generic Dart part of this file, see the

@@ -12,28 +12,28 @@ import 'IssueBallReduceSizeWidget.dart';
 class IssueBallWidgetFactory {
   static Widget getIssueBallWidget(
       int index, BallListMediator searchCollectMediator, BallStyle ballStyle,
-      {BoxDecoration boxDecoration}) {
+      {BoxDecoration? boxDecoration}) {
     IssueBallDisPlayUseCase issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: searchCollectMediator.itemList[index],
+        fBallResDto: searchCollectMediator.itemList![index],
         geoLocatorAdapter: sl());
     if (ballStyle == BallStyle.Style1) {
       if (issueBallDisPlayUseCase.isMainPicture()) {
         return IssueBallHaveImageWidget(
-          key: Key(searchCollectMediator.itemList[index].ballUuid),
+          key: Key(searchCollectMediator.itemList![index].ballUuid!),
           index: index,
           ballListMediator: searchCollectMediator,
           boxDecoration: boxDecoration,
         );
       } else {
         return IssueBallNotHaveImageWidget(
-            key: Key(searchCollectMediator.itemList[index].ballUuid),
+            key: Key(searchCollectMediator.itemList![index].ballUuid!),
             index: index,
             ballListMediator: searchCollectMediator,
             boxDecoration: boxDecoration);
       }
     } else if (ballStyle == BallStyle.Style2) {
       return IssueBallReduceSizeWidget(
-        key: Key(searchCollectMediator.itemList[index].ballUuid),
+        key: Key(searchCollectMediator.itemList![index].ballUuid!),
         issueBallDisPlayUseCase: issueBallDisPlayUseCase,
         ballListMediator: searchCollectMediator,
         index: index,
@@ -41,7 +41,7 @@ class IssueBallWidgetFactory {
       );
     } else if (ballStyle == BallStyle.Style3) {
       return IssueBallNotHaveImageWidget(
-          key: Key(searchCollectMediator.itemList[index].ballUuid),
+          key: Key(searchCollectMediator.itemList![index].ballUuid!),
           index: index,
           ballListMediator: searchCollectMediator,
           boxDecoration: boxDecoration);

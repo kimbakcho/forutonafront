@@ -10,8 +10,8 @@ FBallListUpFromSearchTitleReqDto _$FBallListUpFromSearchTitleReqDtoFromJson(
     Map<String, dynamic> json) {
   return FBallListUpFromSearchTitleReqDto(
     searchText: json['searchText'] as String,
-    latitude: (json['latitude'] as num)?.toDouble(),
-    longitude: (json['longitude'] as num)?.toDouble(),
+    latitude: (json['latitude'] as num?)?.toDouble(),
+    longitude: (json['longitude'] as num?)?.toDouble(),
   );
 }
 

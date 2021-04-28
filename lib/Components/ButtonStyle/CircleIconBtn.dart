@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CircleIconBtn extends StatelessWidget {
-  final Function onTap;
+  final Function? onTap;
 
-  final Icon icon;
+  final Icon? icon;
 
   final double width;
 
@@ -16,7 +16,7 @@ class CircleIconBtn extends StatelessWidget {
   final bool isBoxShadow;
 
   const CircleIconBtn(
-      {Key key,
+      {Key? key,
       this.onTap,
       this.icon,
       this.width = 32,
@@ -45,7 +45,7 @@ class CircleIconBtn extends StatelessWidget {
           child: InkWell(
               customBorder: CircleBorder(),
               onTap: () {
-                onTap();
+                onTap!();
               },
               child: Container(
                   width: width,

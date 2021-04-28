@@ -13,7 +13,7 @@ class TagNameItemListUpUseCase implements TagItemListUpUseCaseInputPort {
   
   final TagRepository tagRepository;
   
-  TagNameItemListUpUseCase( {this.reqDto,this.tagRepository});
+  TagNameItemListUpUseCase( {required this.reqDto,required this.tagRepository});
 
   @override
   Future<PageWrap<FBallTagResDto>> search(Pageable pageable) async {
@@ -22,6 +22,6 @@ class TagNameItemListUpUseCase implements TagItemListUpUseCaseInputPort {
   }
 
   @override
-  Position searchPosition;
+  Position? searchPosition;
 
 }

@@ -10,7 +10,7 @@ class UpdateFCMTokenUseCase implements UpdateFCMTokenUseCaseInputPort{
 
   final FUserRepository _fUserRepository;
 
-  UpdateFCMTokenUseCase({@required FUserRepository fUserRepository})
+  UpdateFCMTokenUseCase({required FUserRepository fUserRepository})
       : _fUserRepository = fUserRepository;
 
   @override

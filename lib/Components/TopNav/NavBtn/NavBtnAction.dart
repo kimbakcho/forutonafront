@@ -11,7 +11,7 @@ class H001NavBtnAction implements NavBtnAction{
 
   final GeoViewSearchManagerInputPort geoViewSearchManager;
 
-  H001NavBtnAction({@required this.geoViewSearchManager});
+  H001NavBtnAction({required this.geoViewSearchManager});
 
   @override
   onCloseClick() {

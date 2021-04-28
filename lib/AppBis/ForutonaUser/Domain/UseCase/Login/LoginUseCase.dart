@@ -12,13 +12,13 @@ import 'package:forutonafront/MainPage/MainPageView.dart';
 class LoginUseCase implements LoginUseCaseInputPort {
   final SingUpUseCaseInputPort _singUpUseCaseInputPort;
   final SnsLoginModuleAdapter _snsLoginModuleAdapter;
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
   LoginUseCase({
-    @required SingUpUseCaseInputPort singUpUseCaseInputPort,
-    @required SnsLoginModuleAdapter snsLoginModuleAdapter,
-    @required SignInUserInfoUseCaseInputPort signInUserInfoUseCaseInputPort,
-  })  : _singUpUseCaseInputPort = singUpUseCaseInputPort,
+    required SingUpUseCaseInputPort singUpUseCaseInputPort,
+    required SnsLoginModuleAdapter snsLoginModuleAdapter,
+    SignInUserInfoUseCaseInputPort? signInUserInfoUseCaseInputPort,
+  })   : _singUpUseCaseInputPort = singUpUseCaseInputPort,
         _snsLoginModuleAdapter = snsLoginModuleAdapter,
         _signInUserInfoUseCaseInputPort = signInUserInfoUseCaseInputPort;
 
@@ -30,7 +30,8 @@ class LoginUseCase implements LoginUseCaseInputPort {
     } else {
       SnsLoginModuleResDto snsUserInfoResDto;
       try {
-        snsUserInfoResDto = await _snsLoginModuleAdapter.getSnsModuleUserInfo();
+        snsUserInfoResDto =
+            (await _snsLoginModuleAdapter.getSnsModuleUserInfo())!;
       } catch (ex) {
         throw ex;
       }
@@ -58,11 +59,16 @@ class LoginUseCase implements LoginUseCaseInputPort {
     return true;
   }
 
-  bool isNotJoin(FUserSnsCheckJoinResDto fUserSnsCheckJoin) =>
-      !fUserSnsCheckJoin.join;
+  bool isNotJoin(FUserSnsCheckJoinResDto fUserSnsCheckJoin) {
+    if (fUserSnsCheckJoin.join) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   @override
-  SnsSupportService getSnsSupportService() {
+  SnsSupportService? getSnsSupportService() {
     return _snsLoginModuleAdapter.snsSupportService;
   }
 }

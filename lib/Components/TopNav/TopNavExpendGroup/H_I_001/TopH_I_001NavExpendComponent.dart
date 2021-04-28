@@ -11,16 +11,16 @@ import 'TopH_I_001NavExpendDto.dart';
 
 // ignore: camel_case_types
 class TopH_I_001NavExpendComponent extends StatefulWidget {
-  final TopH_I_001NavExpendDto topH001NavExpendDto;
-  final TopNavBtnMediator topNavBtnMediator;
-  final CodeMainPageController codeMainPageController;
-  final TopH_I_001NavExpendAniContentController
+  final TopH_I_001NavExpendDto? topH001NavExpendDto;
+  final TopNavBtnMediator? topNavBtnMediator;
+  final CodeMainPageController? codeMainPageController;
+  final TopH_I_001NavExpendAniContentController?
       topH_I_001NavExpendAniContentController;
 
-  final GeoViewSearchManagerInputPort geoViewSearchManager;
+  final GeoViewSearchManagerInputPort? geoViewSearchManager;
 
   const TopH_I_001NavExpendComponent(
-      {Key key,
+      {Key? key,
       this.topH001NavExpendDto,
       this.topNavBtnMediator,
       this.codeMainPageController,
@@ -43,20 +43,20 @@ class _TopH_I_001NavExpendComponentState
     extends State<TopH_I_001NavExpendComponent>
     with SingleTickerProviderStateMixin
     implements TopNavExpendComponent, CodeMainPageChangeListener {
-  AnimationController _controller;
+  AnimationController? _controller;
 
   @override
-  CodeMainPageController codeMainPageController;
+  CodeMainPageController? codeMainPageController;
 
   @override
-  TopNavBtnMediator topNavBtnMediator;
+  TopNavBtnMediator? topNavBtnMediator;
 
-  final GeoViewSearchManagerInputPort geoViewSearchManager;
+  final GeoViewSearchManagerInputPort? geoViewSearchManager;
 
   // ignore: non_constant_identifier_names
-  TopH_I_001NavExpendAniContent _topH_I_001NavExpendAniContent;
+  TopH_I_001NavExpendAniContent? _topH_I_001NavExpendAniContent;
 
-  final TopH_I_001NavExpendAniContentController
+  final TopH_I_001NavExpendAniContentController?
       topH_I_001NavExpendAniContentController;
 
   _TopH_I_001NavExpendComponentState(
@@ -64,7 +64,7 @@ class _TopH_I_001NavExpendComponentState
       this.geoViewSearchManager,
       this.topH_I_001NavExpendAniContentController,
       this.codeMainPageController}) {
-    topNavBtnMediator.topNavExpendRegisterComponent(this);
+    topNavBtnMediator!.topNavExpendRegisterComponent(this);
     _topH_I_001NavExpendAniContent = TopH_I_001NavExpendAniContent(
       geoViewSearchManager: geoViewSearchManager,
       codeMainPageController: codeMainPageController,
@@ -76,37 +76,37 @@ class _TopH_I_001NavExpendComponentState
   @override
   void initState() {
     initAnimation();
-    codeMainPageController.addListener(this);
+    codeMainPageController!.addListener(this);
     super.initState();
   }
 
   initAnimation() {
     _controller = AnimationController(
-        duration: topNavBtnMediator.animationDuration,vsync: this );
-    _controller.forward();
-    _controller.addStatusListener(setListener);
+        duration: topNavBtnMediator!.animationDuration, vsync: this);
+    _controller!.forward();
+    _controller!.addStatusListener(setListener);
   }
 
   void setListener(status) {
     if (status == AnimationStatus.dismissed) {
-      _topH_I_001NavExpendAniContent.collapsed();
+      _topH_I_001NavExpendAniContent!.collapsed();
     } else if (status == AnimationStatus.forward) {
-      _topH_I_001NavExpendAniContent.expended();
+      _topH_I_001NavExpendAniContent!.expended();
     }
   }
 
   Animation<double> getAnimation(BuildContext context) {
     double smallSizeBtn = 80;
     return Tween<double>(
-            begin: smallSizeBtn, end: widget.topH001NavExpendDto.btnWidthSize)
-        .animate(_controller);
+            begin: smallSizeBtn, end: widget.topH001NavExpendDto!.btnWidthSize)
+        .animate(_controller!);
   }
 
   @override
   void dispose() {
-    codeMainPageController.removeListener(this);
-    topNavBtnMediator.topNavExpendUnRegisterComponent(this);
-    _controller.dispose();
+    codeMainPageController!.removeListener(this);
+    topNavBtnMediator!.topNavExpendUnRegisterComponent(this);
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -117,7 +117,7 @@ class _TopH_I_001NavExpendComponentState
       child: Row(
         children: <Widget>[
           Expanded(
-            child: _topH_I_001NavExpendAniContent,
+            child: _topH_I_001NavExpendAniContent!,
           ),
           SizedBox(
             width: 8,
@@ -128,18 +128,18 @@ class _TopH_I_001NavExpendComponentState
             decoration: BoxDecoration(
                 border: Border.all(
                     color: Color(0xff454F63),
-                    width: codeMainPageController.currentState ==
+                    width: codeMainPageController!.currentState ==
                             CodeState.I001CODE
                         ? 2
                         : 0),
-                color: codeMainPageController.currentState == CodeState.I001CODE
+                color: codeMainPageController!.currentState == CodeState.I001CODE
                     ? Color(0xffFFF170)
                     : Color(0xffF6F6F6),
                 shape: BoxShape.circle),
             child: IconButton(
               onPressed: () {
                 setState(() {
-                  codeMainPageController.moveToPage(CodeState.I001CODE);
+                  codeMainPageController!.moveToPage(CodeState.I001CODE);
                 });
               },
               padding: EdgeInsets.all(0),
@@ -151,18 +151,18 @@ class _TopH_I_001NavExpendComponentState
           )
         ],
       ),
-      btnHeightSize: widget.topH001NavExpendDto.btnHeightSize,
+      btnHeightSize: widget.topH001NavExpendDto!.btnHeightSize,
     );
   }
 
   @override
   closeExpandNav() {
-    _controller.reverse();
+    _controller!.reverse();
   }
 
   @override
   openExpandNav() {
-    _controller.forward();
+    _controller!.forward();
   }
 
   @override
@@ -178,24 +178,24 @@ class _TopH_I_001NavExpendComponentState
 
 // ignore: camel_case_types
 class TopH_I_001NavExpendAniComponent extends StatelessWidget {
-  final Animation<double> animation;
-  final double btnHeightSize;
-  final Widget child;
+  final Animation<double>? animation;
+  final double? btnHeightSize;
+  final Widget? child;
 
   const TopH_I_001NavExpendAniComponent(
-      {Key key, this.animation, this.btnHeightSize, this.child})
+      {Key? key, this.animation, this.btnHeightSize, this.child})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animation,
+      animation: animation!,
       builder: (context, child) => Positioned(
         right: 0,
         top: 0,
-        width: animation.value,
+        width: animation!.value,
         height: btnHeightSize,
-        child: child,
+        child: child!,
       ),
       child: child,
     );

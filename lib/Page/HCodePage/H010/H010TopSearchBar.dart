@@ -6,11 +6,11 @@ import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 import 'SearchHistoryView.dart';
 
 class H010TopSearchBar extends StatelessWidget {
-  final SearchHistoryViewController searchHistoryViewController;
+  final SearchHistoryViewController? searchHistoryViewController;
 
-  final InputSearchBarListener inputSearchBarListener;
+  final InputSearchBarListener? inputSearchBarListener;
 
-  const H010TopSearchBar({Key key, this.searchHistoryViewController, this.inputSearchBarListener}) : super(key: key);
+  const H010TopSearchBar({Key? key, this.searchHistoryViewController, this.inputSearchBarListener}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

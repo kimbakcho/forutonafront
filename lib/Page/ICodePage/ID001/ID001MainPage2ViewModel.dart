@@ -22,27 +22,27 @@ class ID001MainPage2ViewModel extends ChangeNotifier
         ReviewInertMediatorComponent,
         ReviewDeleteMediatorComponent,
         ReviewUpdateMediatorComponent {
-  final String ballUuid;
-  final SelectBallUseCaseInputPort selectBallUseCaseInputPort;
-  final FireBaseAuthAdapterForUseCase fireBaseAuthAdapterForUseCase;
+  final String? ballUuid;
+  final SelectBallUseCaseInputPort? selectBallUseCaseInputPort;
+  final FireBaseAuthAdapterForUseCase? fireBaseAuthAdapterForUseCase;
   bool _loadBallComplete = false;
-  IssueBallDisPlayUseCase _issueBallDisPlayUseCase;
-  FBallResDto _fBallResDto;
-   ReviewInertMediator reviewInertMediator;
-   ReviewCountMediator reviewCountMediator;
-   ReviewUpdateMediator reviewUpdateMediator;
-   ReviewDeleteMediator reviewDeleteMediator;
-  final ValuationMediator valuationMediator;
-  final GeolocatorAdapter geolocatorAdapter;
+  IssueBallDisPlayUseCase? _issueBallDisPlayUseCase;
+  FBallResDto? _fBallResDto;
+   ReviewInertMediator? reviewInertMediator;
+   ReviewCountMediator? reviewCountMediator;
+   ReviewUpdateMediator? reviewUpdateMediator;
+   ReviewDeleteMediator? reviewDeleteMediator;
+  final ValuationMediator? valuationMediator;
+  final GeolocatorAdapter? geolocatorAdapter;
   bool isDisPose = false;
   Key basicReViewsContentBarsKey = UniqueKey();
 
-  final ScrollController detailPageController;
+  final ScrollController? detailPageController;
 
-  final ID001Mode id001mode;
+  final ID001Mode? id001mode;
 
-  final FBallResDto preViewResDto;
-  final List<BallImageItem> preViewBallImage;
+  final FBallResDto? preViewResDto;
+  final List<BallImageItem>? preViewBallImage;
 
   ID001MainPage2ViewModel(
       {this.ballUuid,
@@ -70,9 +70,9 @@ class ID001MainPage2ViewModel extends ChangeNotifier
       fBallReplyUseCaseInputPort: sl()
     );
 
-    reviewInertMediator.registerComponent(this);
-    reviewDeleteMediator.registerComponent(this);
-    reviewUpdateMediator.registerComponent(this);
+    reviewInertMediator!.registerComponent(this);
+    reviewDeleteMediator!.registerComponent(this);
+    reviewUpdateMediator!.registerComponent(this);
 
 
   }
@@ -83,17 +83,17 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   }
 
   String getBallTitle() {
-    return _issueBallDisPlayUseCase.ballName();
+    return _issueBallDisPlayUseCase!.ballName();
   }
 
   _selectBall() async {
     if(id001mode == ID001Mode.publish){
-      _fBallResDto = await selectBallUseCaseInputPort.selectBall(ballUuid);
+      _fBallResDto = await selectBallUseCaseInputPort!.selectBall(ballUuid!);
     }else if (id001mode == ID001Mode.preview){
       _fBallResDto = preViewResDto;
     }
     _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: _fBallResDto, geoLocatorAdapter: geolocatorAdapter);
+        fBallResDto: _fBallResDto!, geoLocatorAdapter: geolocatorAdapter);
     _loadBallComplete = true;
     if (!isDisPose) {
       notifyListeners();
@@ -109,77 +109,77 @@ class ID001MainPage2ViewModel extends ChangeNotifier
   }
 
   getBallHits() {
-    return _issueBallDisPlayUseCase.ballHits();
+    return _issueBallDisPlayUseCase!.ballHits();
   }
 
   getMakeTime() {
-    return _issueBallDisPlayUseCase.displayMakeTime();
+    return _issueBallDisPlayUseCase!.displayMakeTime();
   }
 
   getBallPosition() {
     return Position(
-        latitude: _fBallResDto.latitude, longitude: _fBallResDto.longitude);
+        latitude: _fBallResDto!.latitude, longitude: _fBallResDto!.longitude);
   }
 
   getBallAddress() {
-    return _issueBallDisPlayUseCase.placeAddress();
+    return _issueBallDisPlayUseCase!.placeAddress();
   }
 
   getMakerNickName() {
-    return _issueBallDisPlayUseCase.makerNickName();
+    return _issueBallDisPlayUseCase!.makerNickName();
   }
 
   getMakerProfileUrl() {
-    return _issueBallDisPlayUseCase.profilePictureUrl();
+    return _issueBallDisPlayUseCase!.profilePictureUrl();
   }
 
   getMakerFollower() {
-    return _issueBallDisPlayUseCase.makerFollower();
+    return _issueBallDisPlayUseCase!.makerFollower();
   }
 
   getMakerInfluencePower() {
-    return _issueBallDisPlayUseCase.makerInfluencePower();
+    return _issueBallDisPlayUseCase!.makerInfluencePower();
   }
 
   getBallTextContent() {
-    return _issueBallDisPlayUseCase.descriptionText();
+    return _issueBallDisPlayUseCase!.descriptionText();
   }
 
   getBallMakeTime() {
-    return _issueBallDisPlayUseCase.displayMakeTime();
+    return _issueBallDisPlayUseCase!.displayMakeTime();
   }
 
   getBallDesImages() {
     if(id001mode == ID001Mode.publish){
-      return _issueBallDisPlayUseCase.getDesImages();
+      return _issueBallDisPlayUseCase!.getDesImages();
     }else {
       return preViewBallImage;
     }
   }
 
   getBallYoutubeId() {
-    return _issueBallDisPlayUseCase.getYoutubeId();
+    return _issueBallDisPlayUseCase!.getYoutubeId();
   }
 
   DateTime getBallActivationTime() {
-    return _fBallResDto.activationTime;
+    return _fBallResDto!.activationTime!;
   }
 
-  Future<FBallVoteResDto> _getBallLikeState() async {
-    if (await fireBaseAuthAdapterForUseCase.isLogin()) {
-      return await valuationMediator.getBallLikeState(ballUuid,
-          uid: await fireBaseAuthAdapterForUseCase.userUid());
+  Future<FBallVoteResDto?> _getBallLikeState() async {
+    if (await fireBaseAuthAdapterForUseCase!.isLogin()) {
+      return await valuationMediator!.getBallLikeState(ballUuid!,
+          uid: await fireBaseAuthAdapterForUseCase!.userUid());
     } else {
-      return await valuationMediator.getBallLikeState(ballUuid);
+      return await valuationMediator!.getBallLikeState(ballUuid!);
     }
   }
 
   @override
   void dispose() {
     this.isDisPose = true;
-    reviewInertMediator.unregisterComponent(this);
-    reviewDeleteMediator.unregisterComponent(this);
-    reviewUpdateMediator.unregisterComponent(this);
+    reviewInertMediator!.unregisterComponent(this);
+    reviewDeleteMediator!.unregisterComponent(this);
+    reviewUpdateMediator!.unregisterComponent(this);
     super.dispose();
   }
 

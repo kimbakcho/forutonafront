@@ -25,7 +25,7 @@ class L010MainPage extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.only(left: 16),
                           child: Text(
-                            '경고 레벨 : ${model._fUserInfoResDto.maliciousCount}',
+                            '경고 레벨 : ${model._fUserInfoResDto!.maliciousCount}',
                             style: GoogleFonts.notoSans(
                               fontSize: 20,
                               color: const Color(0xff000000),
@@ -73,7 +73,7 @@ class L010MainPage extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.only(left: 16, right: 16),
                           child: Text(
-                            '제한 사유 : ${model._fUserInfoResDto.maliciousCause != null ? model._fUserInfoResDto.maliciousCause : '-'}',
+                            '제한 사유 : ${model._fUserInfoResDto!.maliciousCause != null ? model._fUserInfoResDto!.maliciousCause : '-'}',
                             style: GoogleFonts.notoSans(
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
@@ -86,7 +86,7 @@ class L010MainPage extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.only(left: 16, right: 16),
                           child: Text(
-                            '해제 일시 : ${model._fUserInfoResDto.stopPeriod != null ? model._fUserInfoResDto.stopPeriod : '-'}',
+                            '해제 일시 : ${model._fUserInfoResDto!.stopPeriod != null ? model._fUserInfoResDto!.stopPeriod : '-'}',
                             style: GoogleFonts.notoSans(
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
@@ -128,19 +128,19 @@ class L010MainPage extends StatelessWidget {
 }
 
 class L010MainPageViewModel extends ChangeNotifier {
-  final SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort;
+  final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  FUserInfoResDto _fUserInfoResDto;
+  FUserInfoResDto? _fUserInfoResDto;
 
-  FUserUseCaseInputPort _fUserUseCaseInputPort;
+  FUserUseCaseInputPort? _fUserUseCaseInputPort;
 
   L010MainPageViewModel(this._signInUserInfoUseCaseInputPort,this._fUserUseCaseInputPort) {
     this._fUserInfoResDto =
-        this._signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+        this._signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
   }
 
   onMessageCheck(BuildContext context) async {
-    await _fUserUseCaseInputPort.updateMaliciousMessageCheck();
+    await _fUserUseCaseInputPort!.updateMaliciousMessageCheck();
     Navigator.of(context).pop();
   }
 }

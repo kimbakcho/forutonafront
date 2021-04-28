@@ -5,9 +5,9 @@ import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
 
 class TopSearchDisPlayBar extends StatelessWidget {
 
-  final String initText;
+  final String? initText;
 
-  const TopSearchDisPlayBar({Key key, this.initText}) : super(key: key);
+  const TopSearchDisPlayBar({Key? key, this.initText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

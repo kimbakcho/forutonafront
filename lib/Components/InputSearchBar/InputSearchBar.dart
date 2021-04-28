@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 
 
 class InputSearchBar extends StatelessWidget {
-  final InputSearchBarListener inputSearchBarListener;
-  final bool autoFocusFlag;
-  final String initText;
-  final bool readOnly;
-  final SearchHistoryViewController searchHistoryViewController;
+  final InputSearchBarListener? inputSearchBarListener;
+  final bool? autoFocusFlag;
+  final String? initText;
+  final bool? readOnly;
+  final SearchHistoryViewController? searchHistoryViewController;
 
   const InputSearchBar(
-      {Key key, this.inputSearchBarListener, this.autoFocusFlag, this.initText, this.readOnly, this.searchHistoryViewController})
+      {Key? key, this.inputSearchBarListener, this.autoFocusFlag, this.initText, this.readOnly, this.searchHistoryViewController})
       : super(key: key);
 
   @override
@@ -34,9 +34,9 @@ class InputSearchBar extends StatelessWidget {
               height: 36,
               child: TextField(
                 maxLines: 1,
-                readOnly: readOnly,
+                readOnly: readOnly!,
                 onChanged: model.onChangeText,
-                autofocus: autoFocusFlag,
+                autofocus: autoFocusFlag!,
                 controller: model.textEditingController,
                 keyboardType: TextInputType.streetAddress,
                 enableSuggestions: false,
@@ -56,7 +56,7 @@ class InputSearchBar extends StatelessWidget {
                         borderSide: BorderSide(color: Color(0xff3497FD)),
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: readOnly ? Color(
+                        borderSide: BorderSide(color: readOnly! ? Color(
                             0xffF6F6F6) : Color(0xff3497FD)),
                         borderRadius: BorderRadius.all(Radius.circular(15.0)))),
               ),
@@ -86,19 +86,19 @@ class InputSearchBar extends StatelessWidget {
 }
 
 class InputSearchBarViewModel extends ChangeNotifier {
-  final InputSearchBarListener inputSearchBarListener;
-  final TextEditingController textEditingController;
-  final FluttertoastAdapter fluttertoastAdapter;
-  final String initText;
-  final SearchHistoryViewController searchHistoryViewController;
-  final BuildContext context;
+  final InputSearchBarListener? inputSearchBarListener;
+  final TextEditingController? textEditingController;
+  final FluttertoastAdapter? fluttertoastAdapter;
+  final String? initText;
+  final SearchHistoryViewController? searchHistoryViewController;
+  final BuildContext? context;
 
 
   InputSearchBarViewModel(
       {this.fluttertoastAdapter, this.inputSearchBarListener, this.context, this.initText, this.searchHistoryViewController})
       : textEditingController = TextEditingController() {
-    textEditingController.text = initText;
-    onChangeText(textEditingController.text);
+    textEditingController!.text = initText!;
+    onChangeText(textEditingController!.text);
   }
 
   bool showClearButton = false;
@@ -118,18 +118,18 @@ class InputSearchBarViewModel extends ChangeNotifier {
     }
     if (searchText.length >= 2) {
       if (searchHistoryViewController != null) {
-        searchHistoryViewController.addHistory(searchText);
+        searchHistoryViewController!.addHistory(searchText);
       }
       if (inputSearchBarListener != null) {
-        inputSearchBarListener.onSearch(searchText, context:context);
+        inputSearchBarListener!.onSearch(searchText, context: context!);
       }
     } else {
-      fluttertoastAdapter.showToast(msg: '2글자 이상 입력하세요.');
+      fluttertoastAdapter!.showToast(msg: '2글자 이상 입력하세요.');
     }
   }
 
   void clearText() {
-    textEditingController.clear();
+    textEditingController!.clear();
   }
 }
 
