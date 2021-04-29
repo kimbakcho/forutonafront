@@ -67,7 +67,7 @@ class RankingTagListViewModel extends ChangeNotifier
   }
 
   List<TagRankingResDto>  get tagRankingResDtos {
-    return rankingTagListMediator!.itemList!;
+    return rankingTagListMediator!.itemList;
   }
 
 

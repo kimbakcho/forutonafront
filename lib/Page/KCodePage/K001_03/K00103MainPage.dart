@@ -124,7 +124,7 @@ class K00103MainPageViewModel extends KCodeSelectViewModel
         reqDto: TextMatchTagBallReqDto(
             searchText: searchText,
             mapCenterLongitude: searchPosition!.longitude,
-            mapCenterLatitude: searchPosition!.latitude));
+            mapCenterLatitude: searchPosition.latitude));
 
     ballListMediator!.sort = "ballPower,DESC";
   }

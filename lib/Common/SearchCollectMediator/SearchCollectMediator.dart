@@ -20,7 +20,7 @@ abstract class SearchCollectMediator<T> {
 
   PageWrap<T>? wrapItemList;
 
-  List<T> itemList = List.empty(growable: true);
+  List<T> itemList = [];
 
   String? sort;
 
@@ -45,12 +45,12 @@ abstract class SearchCollectMediator<T> {
   searchFirst() async {
     _pageCount = 0;
     wrapItemList = PageWrap<T>();
-    await _search(Pageable(page:_pageCount,size:pageLimit,sort: sort!));
+    await _search(Pageable(page:_pageCount,size:pageLimit,sort: sort));
   }
 
   searchNext() async{
     _pageCount++;
-    await _search(Pageable(page:_pageCount,size:pageLimit,sort: sort!));
+    await _search(Pageable(page:_pageCount,size:pageLimit,sort: sort));
   }
 
 
@@ -65,7 +65,7 @@ abstract class SearchCollectMediator<T> {
       throw Exception("don't have searchCaseInputPort for need set ListUpUseCaseInputPort");
     }
     if(isLastPage!){
-      if(_pageCount == 0 && itemList!.length == 0){
+      if(_pageCount == 0 && itemList.length == 0){
         currentState = SearchCollectMediatorState.Empty;
       }
       isLoading = false;
@@ -74,15 +74,15 @@ abstract class SearchCollectMediator<T> {
     }
     wrapItemList = await searchUseCase(pageable);
     if (wrapItemList!.first!) {
-      itemList!.clear();
+      itemList.clear();
     }
     if(wrapItemList!.content != null){
-      itemList!.addAll(wrapItemList!.content!);
+      itemList.addAll(wrapItemList!.content!);
     }
 
     _pageCount = pageable.page!;
 
-    if(_pageCount == 0 && itemList!.length == 0){
+    if(_pageCount == 0 && itemList.length == 0){
       currentState = SearchCollectMediatorState.Empty;
       onBallListEmpty();
     }else {

@@ -111,7 +111,7 @@ class ReviewTextActionRowViewModel extends ChangeNotifier {
       reviewTextActionRowController!._viewModel = this;
     }
     if(reviewTextActionRowController != null){
-      replyTextEditController!.text = reviewTextActionRowController!.initReplyText!;
+      replyTextEditController!.text = reviewTextActionRowController!.initReplyText ?? "";
     }
 
     replyTextEditController!.addListener(() {
@@ -123,7 +123,10 @@ class ReviewTextActionRowViewModel extends ChangeNotifier {
   changeReplyText(){
     notifyListeners();
     if(reviewTextActionRowController!= null){
-      reviewTextActionRowController!.changeText!(replyTextEditController!.text);
+      var changeText2 = reviewTextActionRowController!.changeText;
+      if(changeText2 != null){
+        changeText2(replyTextEditController!.text);
+      }
     }
   }
 

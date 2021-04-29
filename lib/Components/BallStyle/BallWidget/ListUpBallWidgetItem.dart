@@ -51,8 +51,8 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
 
   moveToDetailPage() async {
     var hits = await hitBallUseCaseInputPort!
-        .hit(ballListMediator!.itemList![index!].ballUuid!);
-    ballListMediator!.itemList![index!].ballHits = hits;
+        .hit(ballListMediator!.itemList[index!].ballUuid!);
+    ballListMediator!.itemList[index!].ballHits = hits;
     await Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
       return detailPage();
     }));
@@ -75,7 +75,7 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
       var reqSignInUserInfoFromMemory =
           signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
 
-      if (ballListMediator!.itemList![index!].uid!.uid ==
+      if (ballListMediator!.itemList[index!].uid!.uid ==
           reqSignInUserInfoFromMemory!.uid) {
         var result = await showDialog(
             context: context!,
@@ -139,9 +139,9 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
 
   onNotInterest(BuildContext context) async {
     await _noInterestBallUseCaseInputPort!
-        .save(ballListMediator!.itemList![index!].ballUuid!);
+        .save(ballListMediator!.itemList[index!].ballUuid!);
     await ballListMediator!
-        .hideBall(ballListMediator!.itemList![index!].ballUuid!);
+        .hideBall(ballListMediator!.itemList[index!].ballUuid!);
   }
 
   onDeleteBall(BuildContext context) async {
@@ -154,12 +154,12 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
 
   onReportMalicious(BuildContext context, MaliciousType maliciousType) async {
     await this._maliciousBallUseCaseInputPort!.reportMaliciousReply(
-        maliciousType, ballListMediator!.itemList![index!].ballUuid!);
+        maliciousType, ballListMediator!.itemList[index!].ballUuid!);
   }
 
   onActionDelete() async {
     await _deleteBallUseCaseInputPort!
-        .deleteBall(ballListMediator!.itemList![index!].ballUuid!);
+        .deleteBall(ballListMediator!.itemList[index!].ballUuid!);
     Navigator.of(context!).pop();
     onReFreshBall();
   }

@@ -136,7 +136,7 @@ class SearchHistoryViewModel extends ChangeNotifier {
 
   final SignInUserInfoUseCaseInputPort? signInUserInfoUseCaseInputPort;
 
-  List<SearchHistoryDto> histories = List.empty();
+  List<SearchHistoryDto> histories = [];
 
   SearchHistoryViewModel(
       {this.searchHistoryUseCaseInputPort,

@@ -40,9 +40,9 @@ abstract class TopNavBtnMediator {
 }
 
 class TopNavBtnMediatorImpl implements TopNavBtnMediator {
-  List<TopNavBtnComponent> topNavBtnComponents = List.empty();
+  List<TopNavBtnComponent> topNavBtnComponents = [];
 
-  List<TopNavExpendComponent> topNavExpendComponents = List.empty();
+  List<TopNavExpendComponent> topNavExpendComponents = List<TopNavExpendComponent>.empty(growable: true);
 
   Duration? animationDuration = Duration(milliseconds: 300);
 

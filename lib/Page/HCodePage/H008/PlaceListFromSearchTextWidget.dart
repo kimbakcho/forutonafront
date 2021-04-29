@@ -106,7 +106,7 @@ class PlaceListFromSearchTextWidgetViewModel extends ChangeNotifier {
   final PlaceListFromSearchTextWidgetListener?
       placeListFromSearchTextWidgetListener;
 
-  List<DetailsResponse> detailsResponse = List.empty();
+  List<DetailsResponse> detailsResponse = [];
 
   String _sessionToken = Uuid().v4();
 

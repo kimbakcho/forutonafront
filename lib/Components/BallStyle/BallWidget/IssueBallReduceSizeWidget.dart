@@ -148,21 +148,21 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
       : super(context, ballListMediator, index, sl(), sl(), sl(), sl(), sl());
 
   bool get isFinishBall {
-    return ballListMediator!.itemList![index!].activationTime!
+    return ballListMediator!.itemList[index!].activationTime!
         .isBefore(DateTime.now());
   }
 
   bool get isBallDelete {
-    return ballListMediator!.itemList![index!].ballDeleteFlag;
+    return ballListMediator!.itemList[index!].ballDeleteFlag;
   }
 
   @override
   onReFreshBall() async {
-    ballListMediator!.itemList![index!] = await _selectBallUseCaseInputPort!
-        .selectBall(ballListMediator!.itemList![index!].ballUuid!);
+    ballListMediator!.itemList[index!] = await _selectBallUseCaseInputPort!
+        .selectBall(ballListMediator!.itemList[index!].ballUuid!);
 
     issueBallDisPlayUseCase =
-        IssueBallDisPlayUseCase(fBallResDto: ballListMediator!.itemList![index!]);
+        IssueBallDisPlayUseCase(fBallResDto: ballListMediator!.itemList[index!]);
     ballWidgetKey = Uuid().v4();
     notifyListeners();
   }
@@ -170,19 +170,19 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
   @override
   Widget detailPage() {
     return ID01MainPage(
-      ballUuid: ballListMediator!.itemList![index!].ballUuid!,
-      fBallResDto: ballListMediator!.itemList![index!],
+      ballUuid: ballListMediator!.itemList[index!].ballUuid!,
+      fBallResDto: ballListMediator!.itemList[index!],
     );
   }
 
   @override
   Future<void> onModifyBall(BuildContext context) async {
     var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
-        ballUuid: ballListMediator!.itemList![index!].ballUuid!);
+        ballUuid: ballListMediator!.itemList[index!].ballUuid!);
     var result =
         await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
-        preSetBallResDto: ballListMediator!.itemList![index!],
+        preSetBallResDto: ballListMediator!.itemList[index!],
         im001mode: IM001Mode.modify,
         preSetFBallTagResDtos: tags,
       );

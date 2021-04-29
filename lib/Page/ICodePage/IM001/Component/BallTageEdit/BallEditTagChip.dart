@@ -29,7 +29,7 @@ class BallEditTagChip extends StatelessWidget {
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Text(tagEditItemDto!.text),
+                Text(tagEditItemDto.text),
                 SizedBox(width: 16,),
                 CircleIconBtn(
                   onTap: (){

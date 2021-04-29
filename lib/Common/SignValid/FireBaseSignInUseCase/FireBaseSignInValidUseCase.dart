@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
@@ -40,7 +41,7 @@ class FireBaseSignInValidUseCaseImpl implements FireBaseSignInValidUseCase {
     try {
       await _fireBaseAuthAdapterForUseCase
           .signInWithEmailAndPassword(email,pw);
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       FireBaseValidErrorUtil fireBaseValidErrorUtil =
           new FireBaseValidErrorUtil();
       _signInError = true;

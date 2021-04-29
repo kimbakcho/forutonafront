@@ -35,7 +35,7 @@ class BallImageEditItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     image: DecorationImage(
-                      image: ballImageItem!.imageProvider!,
+                      image: ballImageItem!.imageProvider,
                       fit: BoxFit.cover
                     )
                   ),

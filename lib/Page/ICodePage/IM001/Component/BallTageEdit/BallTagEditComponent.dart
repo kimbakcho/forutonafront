@@ -171,7 +171,7 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
     bool hasTagFlag =false;
 
     ballEditTagChips.forEach((element) {
-      if(element.tagEditItemDto!.text==value){
+      if(element.tagEditItemDto.text==value){
         hasTagFlag = true;
       }
     });

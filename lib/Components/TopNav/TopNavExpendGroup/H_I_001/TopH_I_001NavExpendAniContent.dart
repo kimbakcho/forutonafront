@@ -25,7 +25,7 @@ abstract class TopH_I_001NavExpendAniContentInputPort {
 // ignore: must_be_immutable, camel_case_types
 class TopH_I_001NavExpendAniContent extends StatelessWidget
     implements TopH_I_001NavExpendAniContentInputPort {
-  TopH_I_001NavExpendAniContentViewModel? _topH001NavExpendAniContentViewModel;
+  late TopH_I_001NavExpendAniContentViewModel _topH001NavExpendAniContentViewModel;
   final CodeMainPageController? codeMainPageController;
   final GeoViewSearchManagerInputPort? geoViewSearchManager;
   final TopH_I_001NavExpendAniContentController? topH_I_001NavExpendAniContentController;
@@ -82,12 +82,12 @@ class TopH_I_001NavExpendAniContent extends StatelessWidget
 
   @override
   collapsed() {
-    _topH001NavExpendAniContentViewModel!.collapsed();
+    _topH001NavExpendAniContentViewModel.collapsed();
   }
 
   @override
   expended() {
-    _topH001NavExpendAniContentViewModel!.expended();
+    _topH001NavExpendAniContentViewModel.expended();
   }
 }
 

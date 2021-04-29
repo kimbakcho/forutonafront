@@ -28,10 +28,10 @@ class LoginUseCase implements LoginUseCaseInputPort {
         SnsSupportService.Forutona) {
       await _snsLoginModuleAdapter.login(null);
     } else {
-      SnsLoginModuleResDto snsUserInfoResDto;
+      SnsLoginModuleResDto? snsUserInfoResDto;
       try {
         snsUserInfoResDto =
-            (await _snsLoginModuleAdapter.getSnsModuleUserInfo())!;
+            await _snsLoginModuleAdapter.getSnsModuleUserInfo();
       } catch (ex) {
         throw ex;
       }
@@ -39,17 +39,17 @@ class LoginUseCase implements LoginUseCaseInputPort {
       FUserSnsCheckJoinResDto fUserSnsCheckJoin =
           await _singUpUseCaseInputPort.snsUidJoinCheck(
               _snsLoginModuleAdapter.snsSupportService,
-              snsUserInfoResDto.accessToken);
+              snsUserInfoResDto?.accessToken);
 
       if (isNotJoin(fUserSnsCheckJoin)) {
         FUserSnSJoinReqDto _reqDto = FUserSnSJoinReqDto();
-        _reqDto.accessToken = snsUserInfoResDto.accessToken;
+        _reqDto.accessToken = snsUserInfoResDto?.accessToken;
         _reqDto.snsService = _snsLoginModuleAdapter.snsSupportService;
-        _reqDto.fUserUid = "${_reqDto.snsService}${snsUserInfoResDto.uid}";
-        _reqDto.snsUid = snsUserInfoResDto.uid;
-        _reqDto.userNickName = snsUserInfoResDto.userNickName;
-        _reqDto.email = snsUserInfoResDto.email;
-        _reqDto.userProfileImageUrl = snsUserInfoResDto.userProfileImageUrl;
+        _reqDto.fUserUid = "${_reqDto.snsService}${snsUserInfoResDto?.uid}";
+        _reqDto.snsUid = snsUserInfoResDto?.uid;
+        _reqDto.userNickName = snsUserInfoResDto?.userNickName;
+        _reqDto.email = snsUserInfoResDto?.email;
+        _reqDto.userProfileImageUrl = snsUserInfoResDto?.userProfileImageUrl;
         throw new NotJoinException("not Join", _reqDto);
       } else {
         await _snsLoginModuleAdapter.login(fUserSnsCheckJoin);

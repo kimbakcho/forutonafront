@@ -120,7 +120,7 @@ class G010MainPage extends StatelessWidget {
 class G010MainPageViewModel extends ChangeNotifier {
   final SignInUserInfoUseCaseInputPort? _signInUserInfoUseCaseInputPort;
 
-  ProfileImageEditComponentController? _profileImageEditComponentController;
+  late ProfileImageEditComponentController _profileImageEditComponentController;
 
   NickNameEditComponentController? _nickNameEditComponentController;
 
@@ -226,19 +226,20 @@ class G010MainPageViewModel extends ChangeNotifier {
     }
 
     List<int>? profileImage;
-    if (_profileImageEditComponentController!.getProfileImageProvider() !=
+    if (_profileImageEditComponentController.getProfileImageProvider() !=
         null) {
-      profileImage = await _profileImageEditComponentController!
-          .getProfileImageProvider()
-          .file
-          .readAsBytes();
-      profileImage =
-          await _flutterImageCompressAdapter!.compressImage(Uint8List.fromList(profileImage) , 70);
+      var fileImage =
+          _profileImageEditComponentController.getProfileImageProvider();
+
+      profileImage = await fileImage?.file.readAsBytes() as List<int>;
+
+      profileImage = await _flutterImageCompressAdapter!
+          .compressImage(Uint8List.fromList(profileImage), 70);
     }
 
-    if (_profileImageEditComponentController!.getProfileImageProvider() ==
+    if (_profileImageEditComponentController.getProfileImageProvider() ==
             null &&
-        _profileImageEditComponentController!.getProfileImageUrlProvider() ==
+        _profileImageEditComponentController.getProfileImageUrlProvider() ==
             null) {
       fUserAccountUpdateReqDto.profileImageIsEmpty = true;
     } else {
@@ -246,19 +247,21 @@ class G010MainPageViewModel extends ChangeNotifier {
     }
 
     List<int>? backGroundImage;
-    if (_profileImageEditComponentController!.getBackgroundImageProvider() !=
+    if (_profileImageEditComponentController.getBackgroundImageProvider() !=
         null) {
-      backGroundImage = await _profileImageEditComponentController!
-          .getBackgroundImageProvider()
-          .file
-          .readAsBytes();
+      var backgroundImageProvider =
+          _profileImageEditComponentController.getBackgroundImageProvider();
+
+      backGroundImage =
+          await backgroundImageProvider?.file.readAsBytes() as List<int>;
+
       backGroundImage = await _flutterImageCompressAdapter!
           .compressImage(Uint8List.fromList(backGroundImage), 70);
     }
 
-    if (_profileImageEditComponentController!.getBackgroundImageUrlProvider() ==
+    if (_profileImageEditComponentController.getBackgroundImageUrlProvider() ==
             null &&
-        _profileImageEditComponentController!.getBackgroundImageProvider() ==
+        _profileImageEditComponentController.getBackgroundImageProvider() ==
             null) {
       fUserAccountUpdateReqDto.backGroundIsEmpty = true;
     } else {

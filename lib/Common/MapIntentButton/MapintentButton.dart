@@ -26,7 +26,7 @@ class MapIntentButton extends StatelessWidget {
       child: FlatButton(
         onPressed: () async {
 
-          List<MapIntent> mapIntents = List.empty();
+          List<MapIntent> mapIntents = [];
           mapIntents.add(MapIntentKakaoImpl(
               dstPosition: _dstPosition,
               geoLocationUtilForeGroundUseCaseInputPort: sl()));

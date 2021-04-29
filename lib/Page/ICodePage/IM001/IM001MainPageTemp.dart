@@ -422,7 +422,7 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
         decoration: BoxDecoration(
           image: DecorationImage(
               image: MemoryImage(
-                imageItem.imageByte!,
+                imageItem.imageByte,
               ),
               fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(12.00),

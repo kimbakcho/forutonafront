@@ -35,7 +35,6 @@ class BasicReViewUpdate extends StatelessWidget {
           fBallReplyResDto: fBallReplyResDto),
       child: Consumer<BasicReViewUpdateViewModel>(builder: (_, model, __) {
         return Container(
-          padding: MediaQuery.of(context).viewInsets,
           child: ReviewTextActionRow(
             ballUuid: model.ballUuid,
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),

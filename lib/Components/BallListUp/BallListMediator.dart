@@ -47,7 +47,7 @@ class BallListMediatorImpl extends BallListMediator<FBallListUpUseCaseInputPort>
 
   @override
   hideBall(String ballUuid) {
-    this.itemList!.removeWhere((element) => element.ballUuid == ballUuid);
+    this.itemList.removeWhere((element) => element.ballUuid == ballUuid);
     onPageListUpdate();
   }
 

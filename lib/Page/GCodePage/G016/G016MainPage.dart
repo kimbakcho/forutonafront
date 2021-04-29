@@ -117,7 +117,7 @@ class G016MainPageViewModel extends ChangeNotifier {
   }
 
   List<NoticeResDto> get notices {
-    return _g016pageCollectMediator!.itemList!;
+    return _g016pageCollectMediator!.itemList;
   }
 
   onNextPage() {

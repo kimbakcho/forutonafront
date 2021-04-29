@@ -73,7 +73,7 @@ class MainPageViewModel extends ChangeNotifier
 
   Key? homepageWidgetKey;
 
-  PageController _pageController = PageController();
+  PageController _pageController = PageController(initialPage: 0);
 
   MainPageViewModelController? _mainPageViewModelController;
 
@@ -247,7 +247,10 @@ class MainPageViewModelController {
     if (_mainPageViewModel == null || _mainPageViewModel!._pageController.positions.isEmpty) {
       return BottomNavigationNavType.HOME;
     }
-    double current = _mainPageViewModel!._pageController.page!;
+    double current = 0;
+    if(_mainPageViewModel!._pageController.page != null) {
+      current = _mainPageViewModel!._pageController.page!;
+    }
     if (current == 0) {
       return BottomNavigationNavType.HOME;
     } else if (current == 1) {

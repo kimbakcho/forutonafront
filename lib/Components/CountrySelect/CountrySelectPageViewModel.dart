@@ -8,7 +8,7 @@ class CountrySelectPageViewModel extends ChangeNotifier{
   final BuildContext _context;
   String? initCountryCode;
   CodeCountry _codeCountry = new CodeCountry();
-  List<CountryItem> countryList = List.empty();
+  List<CountryItem> countryList = [];
   int selectCountryIndex = 0;
   ScrollController listViewScroller  = new ScrollController();
 

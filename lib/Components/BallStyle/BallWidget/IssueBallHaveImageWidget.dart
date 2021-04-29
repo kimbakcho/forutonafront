@@ -100,26 +100,26 @@ class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
       {required BuildContext context,required BallListMediator ballListMediator,required int index})
       : super(context, ballListMediator, index, sl(), sl(), sl(), sl(), sl()) {
     issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: ballListMediator.itemList![index], geoLocatorAdapter: sl());
+        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
   }
 
   @override
   onReFreshBall() async {
-    ballListMediator!.itemList![index!] = await _selectBallUseCaseInputPort!
-        .selectBall(ballListMediator!.itemList![index!].ballUuid!);
+    ballListMediator!.itemList[index!] = await _selectBallUseCaseInputPort!
+        .selectBall(ballListMediator!.itemList[index!].ballUuid!);
     issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: ballListMediator!.itemList![index!], geoLocatorAdapter: sl());
+        fBallResDto: ballListMediator!.itemList[index!], geoLocatorAdapter: sl());
     ballWidgetKey = Uuid().v4();
     notifyListeners();
   }
 
   onModifyBall(BuildContext context) async {
     var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
-        ballUuid: ballListMediator!.itemList![index!].ballUuid!);
+        ballUuid: ballListMediator!.itemList[index!].ballUuid!);
     var result =
         await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
-        preSetBallResDto: ballListMediator!.itemList![index!],
+        preSetBallResDto: ballListMediator!.itemList[index!],
         im001mode: IM001Mode.modify,
         preSetFBallTagResDtos: tags,
       );
@@ -130,8 +130,8 @@ class IssueBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   @override
   Widget detailPage() {
     return ID01MainPage(
-      ballUuid: ballListMediator!.itemList![index!].ballUuid!,
-      fBallResDto: ballListMediator!.itemList![index!],
+      ballUuid: ballListMediator!.itemList[index!].ballUuid!,
+      fBallResDto: ballListMediator!.itemList[index!],
     );
   }
 }

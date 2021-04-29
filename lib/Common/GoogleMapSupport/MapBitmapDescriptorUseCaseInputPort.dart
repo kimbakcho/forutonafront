@@ -31,14 +31,14 @@ class MapBitmapDescriptorUseCase
   Future<BitmapDescriptor> assertFileToBitmapDescriptor(
       String filepath, Size size) async {
     ByteData issueBallIconBytes = await rootBundle.load(filepath);
-    return BitmapDescriptor.fromBytes(Uint8List.fromList(imagePngResizeUtil!
+    return BitmapDescriptor.fromBytes(Uint8List.fromList(imagePngResizeUtil
         .loadResizePngImage(issueBallIconBytes.buffer.asUint8List(),
             size.width.toInt(), size.height.toInt())));
   }
 
   Future<BitmapDescriptor> urlPathToAvatarBitmapDescriptor(String url) async {
-    var iconByte = await fileDownLoaderUseCaseInputPort!.downloadToByte(url);
-    List<int> bytes = await imageBorderAvatarUtil!.exportReSizeImageToByte(
+    var iconByte = await fileDownLoaderUseCaseInputPort.downloadToByte(url);
+    List<int> bytes = await imageBorderAvatarUtil.exportReSizeImageToByte(
         iconByte!, Size(70, 70));
     return BitmapDescriptor.fromBytes(Uint8List.fromList(bytes));
   }

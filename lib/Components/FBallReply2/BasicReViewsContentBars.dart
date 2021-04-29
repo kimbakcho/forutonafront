@@ -90,7 +90,7 @@ class BasicReViewsContentBarsViewModel extends ChangeNotifier
 
   bool isLoaded = false;
   bool loadedLatPage = false;
-  List<FBallReplyResDto> replys = List.empty();
+  List<FBallReplyResDto> replys = [];
   ScrollController? scrollController;
 
   BasicReViewsContentBarsViewModel({

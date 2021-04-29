@@ -31,7 +31,7 @@ class NoInterestedBallDecorator implements FBallListUpUseCaseInputPort {
     var noInterRestBallList = await noInterestBallUseCaseInputPort!.findByAll();
     var result = await fBallListUpUseCaseInputPort!.search(pageable);
     noInterRestBallList.forEach((element) {
-      result.content!.removeWhere((ball) => ball!.ballUuid == element);
+      result.content!.removeWhere((ball) => ball.ballUuid == element);
     });
     if(outputPort != null){
       outputPort.searchResult(result);

@@ -14,8 +14,17 @@ import 'MainPage/MainPageView.dart';
 //flutter pub run build_runner watch --use-polling-watcher --delete-conflicting-outputs
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   // di.init();
+
+  // var firebaseOptions = FirebaseOptions(
+  //   appId: "1:82059326903:android:bad174a5072f2f56daa432",
+  //   apiKey: "AIzaSyDj5AJThWwAVV70QDj4s_zvQNVV_CMd0SE",
+  //   projectId: "forutona",
+  //   messagingSenderId: "82059326903"
+  // );
+
   await Firebase.initializeApp();
 
   runApp(

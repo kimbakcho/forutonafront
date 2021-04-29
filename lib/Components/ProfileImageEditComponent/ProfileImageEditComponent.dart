@@ -226,20 +226,20 @@ class ProfileImageEditComponentViewModel extends ChangeNotifier {
 class ProfileImageEditComponentController {
   ProfileImageEditComponentViewModel? _profileImageEditComponentViewModel;
 
-  FileImage getProfileImageProvider() {
-    return _profileImageEditComponentViewModel!._profileImageProvider!;
+  FileImage? getProfileImageProvider() {
+    return _profileImageEditComponentViewModel?._profileImageProvider;
   }
 
-  FileImage getBackgroundImageProvider() {
-    return _profileImageEditComponentViewModel!._backgroundImageProvider!;
+  FileImage? getBackgroundImageProvider() {
+    return _profileImageEditComponentViewModel?._backgroundImageProvider;
   }
 
-  NetworkImage getProfileImageUrlProvider() {
-    return _profileImageEditComponentViewModel!._profileImageUrlProvider!;
+  NetworkImage? getProfileImageUrlProvider() {
+    return _profileImageEditComponentViewModel?._profileImageUrlProvider;
   }
 
-  NetworkImage getBackgroundImageUrlProvider() {
-    return _profileImageEditComponentViewModel!._backGroundImageUrlProvider!;
+  NetworkImage? getBackgroundImageUrlProvider() {
+    return _profileImageEditComponentViewModel?._backGroundImageUrlProvider;
   }
 
 

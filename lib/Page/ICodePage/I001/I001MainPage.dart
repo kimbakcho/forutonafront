@@ -263,8 +263,8 @@ class I001MainPageViewModel extends ChangeNotifier
   }
 
   void firstBallSelect() {
-    if (ballListMediator!.itemList!.length > 0) {
-      onSelectBall(ballListMediator!.itemList![0]);
+    if (ballListMediator!.itemList.length > 0) {
+      onSelectBall(ballListMediator!.itemList[0]);
     }
   }
 
@@ -314,7 +314,7 @@ class I001MainPageViewModel extends ChangeNotifier
 
   Set<Marker> _makeMaker(FBallResDto selectBall) {
     Set<Marker> ballMarker = Set<Marker>();
-    ballListMediator!.itemList!.forEach((element) {
+    ballListMediator!.itemList.forEach((element) {
       var ball = mapBallMarkerFactory!.getBallMaker(
           element.ballType!,
           element.ballUuid!,

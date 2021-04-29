@@ -41,7 +41,7 @@ class FullBallHorizontalPageList extends StatelessWidget {
                           scrollController: model.pageController,
                           onNextPage: model.onNextPage,
                           onRefreshFirst: model.onRefreshFirst)
-                      .scrollController,
+                      .scrollController as PageController,
                   itemCount: model.balls!.length,
                   itemBuilder: (_, index) {
                     return Container(
@@ -62,7 +62,7 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
     implements SearchCollectMediatorComponent {
   final BallListMediator? ballListMediator;
 
-  final PageController? pageController;
+  final PageController pageController;
 
   final Function(FBallResDto)? onSelectBall;
 
@@ -80,8 +80,8 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
   }
 
   void pageChange(int index) {
-    if (onSelectBall != null && ballListMediator!.itemList!.length > 0) {
-      onSelectBall!(ballListMediator!.itemList![index]);
+    if (onSelectBall != null && ballListMediator!.itemList.length > 0) {
+      onSelectBall!(ballListMediator!.itemList[index]);
     }
   }
 
@@ -95,8 +95,8 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
 
   onRefreshFirst() async {
     await ballListMediator!.searchFirst();
-    if (ballListMediator!.itemList!.length > 0) {
-      onSelectBall!(ballListMediator!.itemList![0]);
+    if (ballListMediator!.itemList.length > 0) {
+      onSelectBall!(ballListMediator!.itemList[0]);
     }
   }
 
@@ -107,9 +107,9 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
   }
 
   _moveToBall(FBallResDto fBallResDto) {
-    var indexWhere = ballListMediator!.itemList!
+    var indexWhere = ballListMediator!.itemList
         .indexWhere((element) => element.ballUuid == fBallResDto.ballUuid);
-    pageController!.jumpToPage(indexWhere);
+    pageController.jumpToPage(indexWhere);
   }
 
   @override

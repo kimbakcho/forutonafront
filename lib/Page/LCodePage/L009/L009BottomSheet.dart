@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/Login/LoginUseCase.dart';
@@ -199,10 +200,10 @@ class L009BottomSheetViewModel extends ChangeNotifier {
     try{
       await loginUseCaseInputPort.tryLogin();
       Navigator.of(context).popUntil((route) => route.settings.name == '/');
-    } on PlatformException catch (ex) {
-        FireBaseValidErrorUtil fireBaseValidErrorUtil = FireBaseValidErrorUtil();
-       var errorText = fireBaseValidErrorUtil.getErrorText(ex);
-       _fluttertoastAdapter!.showToast(msg: errorText!);
+    } on FirebaseException catch (ex) {
+      FireBaseValidErrorUtil fireBaseValidErrorUtil = FireBaseValidErrorUtil();
+      var errorText = fireBaseValidErrorUtil.getErrorText(ex);
+      _fluttertoastAdapter!.showToast(msg: errorText!);
     }
   }
 

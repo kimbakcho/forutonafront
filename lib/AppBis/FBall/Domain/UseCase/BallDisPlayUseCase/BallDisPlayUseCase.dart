@@ -111,7 +111,7 @@ class BallDisPlayUseCase {
   }
 
   String ballHits() {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
       return fBallResDto!.ballHits.toString();
@@ -119,7 +119,7 @@ class BallDisPlayUseCase {
   }
 
   String displayMakeTime() {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
       return TimeDisplayUtil.getCalcToStrFromNow(fBallResDto!.makeTime!);
@@ -127,7 +127,7 @@ class BallDisPlayUseCase {
   }
 
   String? makerNickName({int maxLength = -1}) {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
       if (maxLength != -1) {
@@ -141,7 +141,7 @@ class BallDisPlayUseCase {
   }
 
   String makerFollower() {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
       return fBallResDto!.uid!.followerCount.toString();
@@ -149,7 +149,7 @@ class BallDisPlayUseCase {
   }
 
   String makerInfluencePower() {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "-";
     } else {
       return fBallResDto!.uid!.cumulativeInfluence.toString();
@@ -157,7 +157,7 @@ class BallDisPlayUseCase {
   }
 
   bool isMainPicture() {
-    if (fBallResDto!.ballDeleteFlag! || ballDescription!.desimages == null) {
+    if (fBallResDto!.ballDeleteFlag || ballDescription!.desimages == null) {
       return false;
     } else {
       return ballDescription!.desimages.length > 0;
@@ -165,7 +165,7 @@ class BallDisPlayUseCase {
   }
 
   String? mainPictureSrc() {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return null;
     } else {
       return ballDescription!.desimages[0].src;
@@ -173,7 +173,7 @@ class BallDisPlayUseCase {
   }
 
   int pictureCount() {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return 0;
     } else {
       return ballDescription!.desimages.length;
@@ -181,12 +181,16 @@ class BallDisPlayUseCase {
   }
 
   List<BallImageItem> getDesImages() {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return [];
     } else {
       var list = ballDescription!.desimages.map((e) {
-        var imageItem =  BallImageItem(sl());
-        imageItem.addImage( imageProvider: NetworkImage(e.src!));
+        var src = e.src;
+        late BallImageItem imageItem;
+        if(src != null){
+          imageItem =  BallImageItem(NetworkImage(src),sl());
+          imageItem.addImage();
+        }
         return imageItem;
       }).toList();
       return list;
@@ -194,7 +198,7 @@ class BallDisPlayUseCase {
   }
 
   String descriptionText() {
-    if (fBallResDto!.ballDeleteFlag! || ballDescription!.text == null) {
+    if (fBallResDto!.ballDeleteFlag || ballDescription!.text == null) {
       return "";
     } else {
       return ballDescription!.text!;
@@ -202,7 +206,7 @@ class BallDisPlayUseCase {
   }
 
   getYoutubeId() {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "";
     } else {
       if (ballDescription!.youtubeVideoId != null) {
@@ -215,7 +219,7 @@ class BallDisPlayUseCase {
 
   getDistanceFromSearchPositionToText(Position ballSearchPosition,
       BallDisPlayUseCaseOutputPort outputPort) async {
-    if (fBallResDto!.ballDeleteFlag!) {
+    if (fBallResDto!.ballDeleteFlag) {
       return "";
     } else {
       Position ballPosition = Position(

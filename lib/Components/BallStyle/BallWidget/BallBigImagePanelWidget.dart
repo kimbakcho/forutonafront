@@ -13,6 +13,7 @@ class BallBigImagePanelWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
+        ballDisPlayUseCase.mainPictureSrc() != null ?
         CachedNetworkImage(
           height: 215,
           imageUrl: ballDisPlayUseCase.mainPictureSrc()!,
@@ -24,12 +25,12 @@ class BallBigImagePanelWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-          ),
+          ) ,
           placeholder: (context, url) => Container(
             height: 215,
             child: Icon(Icons.image, color: Color(0xffE4E7E8), size: 40),
           ),
-        ),
+        ): Container(),
         ballDisPlayUseCase.pictureCount() > 1
             ? Positioned(
                 right: 8,

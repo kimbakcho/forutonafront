@@ -92,7 +92,7 @@ class SimpleCollectionWidgetViewModel extends ChangeNotifier
   }
 
   int get itemCount {
-    return searchCollectMediator.itemList!.length;
+    return searchCollectMediator.itemList.length;
   }
 
   bool? get isLastPage {

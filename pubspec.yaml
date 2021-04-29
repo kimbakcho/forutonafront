@@ -28,7 +28,10 @@ dependencies:
   # add dependency for Google Analytics for Firebase
   firebase_analytics: ^8.0.1
   #NaverLogin을 위해서 사용
-  flutter_naver_login: ^1.2.1 #has_null-safe
+  flutter_naver_login:
+    git:
+      url: git://github.com/yoonjaepark/flutter_naver_login.git
+      ref: f13dcd0
   #Firebase 인증을 위해서 사용
   firebase_auth: ^1.1.1
   #FaceBook인증을 위해서 사용
@@ -139,7 +142,7 @@ dependencies:
   device_apps: ^2.1.1
   #geoCoding
   geocoding: ^2.0.0
-
+  firebase_storage: ^8.0.5
 
 module:
   androidX: true

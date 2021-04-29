@@ -148,6 +148,7 @@ class K00102MainPageViewModel
   @override
   onBodySelectItem(K00102DrawerItem item) {
     _selectedK00102DrawerItem = item;
+    // ignore: missing_enum_constant_in_switch
     switch (_selectedK00102DrawerItem) {
       case K00102DrawerItem.BallPower:
         ballListMediator!.sort = "ballPower,DESC";
@@ -174,7 +175,7 @@ class K00102MainPageViewModel
         FBallListUpFromSearchTitleReqDto(
             searchText: searchText!,
             longitude: currentWithLastPositionInMemory!.longitude,
-            latitude: currentWithLastPositionInMemory!.latitude),
+            latitude: currentWithLastPositionInMemory.latitude),
         fBallRepository: sl());
     ballListMediator!.sort = "ballPower,DESC";
   }

@@ -27,12 +27,12 @@ class FullBallListUp extends StatelessWidget {
           return ListView.builder(
               shrinkWrap: true,
               physics: physics,
-              itemCount: ballListMediator!.itemList!.length,
+              itemCount: ballListMediator!.itemList.length,
               padding: EdgeInsets.all(0),
               itemBuilder: (_, index) {
                 return Container(
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
-                  key: Key(ballListMediator!.itemList![index].ballUuid!),
+                  key: Key(ballListMediator!.itemList[index].ballUuid!),
                   child: ListUpBallWidgetFactory.getBallWidget(
                     index,
                     ballListMediator!,

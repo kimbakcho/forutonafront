@@ -84,7 +84,7 @@ class MarkerHelper extends StatefulWidget {
 }
 
 class _MarkerHelperState extends State<MarkerHelper> with AfterLayoutMixin {
-  List<GlobalKey> globalKeys =  List.empty();
+  List<GlobalKey> globalKeys =  [];
   @override
   void dispose() {
 

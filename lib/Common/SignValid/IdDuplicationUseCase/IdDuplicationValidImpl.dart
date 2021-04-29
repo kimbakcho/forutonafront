@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
@@ -53,7 +54,7 @@ class IdDuplicationValidImpl implements SignValid {
         _errorText = _duplicationErrorLogin.errorMessage;
         return;
       }
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       FireBaseValidErrorUtil error = FireBaseValidErrorUtil();
       _isTextError = true;
       _errorText = error.getErrorText(e)!;

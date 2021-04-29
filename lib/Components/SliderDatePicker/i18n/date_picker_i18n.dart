@@ -129,16 +129,14 @@ class DatePickerI18n {
   static String getLocaleDone(DateTimePickerLocale locale) {
     _StringsI18n i18n = (datePickerI18n[locale] ??
         datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT])!;
-    return i18n.getDoneText() ??
-        datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!.getDoneText();
+    return i18n.getDoneText();
   }
 
   /// Get cancel button text
   static String getLocaleCancel(DateTimePickerLocale locale) {
     _StringsI18n i18n = (datePickerI18n[locale] ??
         datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT])!;
-    return i18n.getCancelText() ??
-        datePickerI18n[DATETIME_PICKER_LOCALE_DEFAULT]!.getCancelText();
+    return i18n.getCancelText();
   }
 
   /// Get locale month array

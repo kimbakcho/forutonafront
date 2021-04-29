@@ -46,7 +46,7 @@ class BasicReViewsInsert extends StatelessWidget {
         child: Consumer<ID001ReplyInsertViewModel>(builder: (_, model, __) {
           return ListView(
             shrinkWrap: true,
-            padding: MediaQuery.of(context).viewInsets,
+
             children: <Widget>[
               model.parentFBallReplyResDto != null
                   ? BasicReViewsContentBar(

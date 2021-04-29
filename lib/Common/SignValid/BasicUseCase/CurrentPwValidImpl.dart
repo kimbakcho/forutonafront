@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:forutonafront/Common/SignValid/FireBaseValidErrorUtil.dart';
@@ -34,7 +35,7 @@ class CurrentPwValidImpl implements SignValid {
     try {
       await _fireBaseAuthAdapterForUseCase.signInWithEmailAndPassword(
           (await _fireBaseAuthAdapterForUseCase.userEmail())!, validText);
-    } on PlatformException catch (ex) {
+    } on FirebaseException catch (ex) {
       _isTextError = true;
       _errorText = FireBaseValidErrorUtil().getErrorText(ex)!;
     }

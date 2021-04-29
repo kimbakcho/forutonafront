@@ -59,14 +59,14 @@ class DetailPageViewerViewModel extends ChangeNotifier {
     return _pageController;
   }
 
-  List<FBallResDto> get ballList => _ballListMediator!.itemList!;
+  List<FBallResDto> get ballList => _ballListMediator!.itemList;
 
   void onPageChanged(int value) {
     _nextPagePreLoading(value);
   }
 
   void _nextPagePreLoading(int nowPageIndex) async {
-    if (nowPageIndex + 1 == _ballListMediator!.itemList!.length) {
+    if (nowPageIndex + 1 == _ballListMediator!.itemList.length) {
       if (!_ballListMediator!.isLastPage!) {
         await _ballListMediator!.searchNext();
         notifyListeners();

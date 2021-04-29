@@ -22,7 +22,7 @@ class FBallListUpUserPlayBall implements FBallListUpUseCaseInputPort {
     searchPosition = null;
     PageWrap<FBallPlayerResDto> pageWrap =
         await _fBallPlayerRepository.getUserPlayBallList(playerUid, pageable);
-    var contentList = pageWrap.content!.map((e) => e!.ballUuid).toList().cast<FBallResDto>();
+    var contentList = pageWrap.content!.map((e) => e.ballUuid).toList().cast<FBallResDto>();
     PageWrap<FBallResDto> pageFBallResDto = PageWrap<FBallResDto>(
         pageable: pageWrap.pageable,
         size: pageWrap.size,

@@ -23,12 +23,12 @@ class ListUpBallListUpOrderByBI implements FBallListUpUseCaseInputPort {
         longitude: listUpReqDto?.mapCenterLongitude);
     PageWrap<FBallResDto> pageWrap = await _fBallRepository.findByBallOrderByBI(
         listUpReqDto: listUpReqDto!, pageable: pageable);
-    executeOutPort(outputPort!, pageWrap);
+    executeOutPort(outputPort, pageWrap);
     return pageWrap;
   }
 
   void executeOutPort(
-      FBallListUpUseCaseOutputPort outputPort, PageWrap<FBallResDto> pageWrap) {
+      FBallListUpUseCaseOutputPort? outputPort, PageWrap<FBallResDto> pageWrap) {
     if (outputPort != null) {
       outputPort.searchResult(pageWrap);
     }

@@ -124,8 +124,8 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
   }
 
   _addImage(ImageProvider imageProvider) async {
-    BallImageItem ballImageItem = BallImageItem(sl());
-    await ballImageItem.addImage(imageProvider: imageProvider);
+    BallImageItem ballImageItem = BallImageItem(imageProvider,sl());
+    await ballImageItem.addImage();
     images.add(ballImageItem);
     if (ballImageEditComponentController != null &&
         ballImageEditComponentController!.onChangeItemList != null) {

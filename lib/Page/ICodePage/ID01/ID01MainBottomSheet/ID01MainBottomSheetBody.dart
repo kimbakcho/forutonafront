@@ -56,9 +56,9 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ID01MainBottomSheetBodyViewModel(
-          widget.fBallResDto!, sl(), widget.id01Mode!, widget.preViewBallImage!,
+          widget.fBallResDto!, sl(), widget.id01Mode!, widget.preViewBallImage,
           id01mainBottomSheetBodyController:
-              widget.id01mainBottomSheetBodyController!),
+              widget.id01mainBottomSheetBodyController),
       child: Consumer<ID01MainBottomSheetBodyViewModel>(
           builder: (_, model, child) {
         return Container(
@@ -75,7 +75,7 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                           fBallResDto: model.fBallResDto!,
                           id01Mode: widget.id01Mode!,
                           preViewfBallTagResDtos:
-                              widget.preViewfBallTagResDtos!),
+                              widget.preViewfBallTagResDtos),
                       Divider(
                         color: Color(0xffE4E7E8),
                         height: 1,

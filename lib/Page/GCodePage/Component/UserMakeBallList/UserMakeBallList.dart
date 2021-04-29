@@ -21,16 +21,16 @@ class UserMakeBallList extends StatelessWidget {
           return Container(
             child: ListView.builder(
               controller: PageScrollController(
-                  scrollController: PageController(),
+                  scrollController: ScrollController(),
                   onNextPage: model.onNextPage,
                   onRefreshFirst: model.onRefreshFirst).scrollController,
                 shrinkWrap: true,
-                itemCount: model.ballListMediator.itemList!.length,
+                itemCount: model.ballListMediator.itemList.length,
                 padding: EdgeInsets.all(0),
                 itemBuilder: (_, index) {
                   return Container(
                     margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
-                    key: Key(model.ballListMediator.itemList![index].ballUuid!),
+                    key: Key(model.ballListMediator.itemList[index].ballUuid!),
                     child: ListUpBallWidgetFactory.getBallWidget(
                         index, model.ballListMediator, BallStyle.Style2,
                         boxDecoration: BoxDecoration(

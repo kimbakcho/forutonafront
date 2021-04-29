@@ -7,7 +7,7 @@ import 'BallListMediator.dart';
 class ListUpBallWidgetFactory {
   static Widget getBallWidget(
       int index, BallListMediator ballListMediator, BallStyle ballStyle,{BoxDecoration? boxDecoration}) {
-    if (ballListMediator.itemList![index].ballType == FBallType.IssueBall) {
+    if (ballListMediator.itemList[index].ballType == FBallType.IssueBall) {
       return IssueBallWidgetFactory.getIssueBallWidget(
           index, ballListMediator, ballStyle,boxDecoration: boxDecoration);
     } else {

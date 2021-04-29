@@ -20,13 +20,13 @@ class FBallListUpUserMakerBall implements FBallListUpUseCaseInputPort {
     searchPosition = null;
     PageWrap<FBallResDto> pageWrap = await _fBallRepository
         .searchUserToMakerBalls(makerUid: makerUid, pageable: pageable);
-    executeOutPort(outputPort!, pageWrap);
+    executeOutPort(outputPort, pageWrap);
     return pageWrap;
   }
 
   void executeOutPort(
-      FBallListUpUseCaseOutputPort outputPort, PageWrap<FBallResDto> pageWrap) {
-    outputPort.searchResult(pageWrap);
+      FBallListUpUseCaseOutputPort? outputPort, PageWrap<FBallResDto> pageWrap) {
+    outputPort?.searchResult(pageWrap);
   }
 
   @override

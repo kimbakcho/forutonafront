@@ -21,10 +21,9 @@ class LogoutUseCase implements LogoutUseCaseInputPort {
 
   @override
   Future<void> tryLogout({LogoutUseCaseOutputPort? outputPort}) async {
-    await _fireBaseAuthAdapterForUseCase.logout();
 
     var reqSignInUserInfoFromMemory =
-        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+    _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
 
     if (outputPort != null) {
       outputPort.onLogout();
@@ -35,5 +34,9 @@ class LogoutUseCase implements LogoutUseCaseInputPort {
 
     snsLoginModuleAdapter.logout();
     _signInUserInfoUseCaseInputPort.clearUserInfo();
+
+    await _fireBaseAuthAdapterForUseCase.logout();
+
+
   }
 }
