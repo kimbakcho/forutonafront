@@ -10,17 +10,16 @@ class DetailPageViewer extends StatelessWidget {
   final DetailPageItemFactory detailPageItemFactory;
   final int initIndex;
 
-  DetailPageViewer({required this.ballListMediator,
-    required this.detailPageItemFactory,
-    this.initIndex = 0});
-
+  DetailPageViewer(
+      {required this.ballListMediator,
+      required this.detailPageItemFactory,
+      this.initIndex = 0});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) =>
-          DetailPageViewerViewModel(
-              ballListMediator: ballListMediator, initIndex: initIndex),
+      create: (_) => DetailPageViewerViewModel(
+          ballListMediator: ballListMediator, initIndex: initIndex),
       child: Consumer<DetailPageViewerViewModel>(
         builder: (_, model, __) {
           return Container(
@@ -31,9 +30,11 @@ class DetailPageViewer extends StatelessWidget {
                 onPageChanged: model.onPageChanged,
                 controller: model.pageController,
                 itemBuilder: (_, index) {
-                  return detailPageItemFactory.getDetailPageWidget(
-                      model.ballList[index].ballUuid!,
-                      model.ballList[index].ballType!);
+                  var item = model.ballList[index];
+                  return item != null
+                      ? detailPageItemFactory.getDetailPageWidget(
+                          item.ballUuid!, item.ballType!)
+                      : Container();
                 },
               ));
         },
@@ -59,7 +60,7 @@ class DetailPageViewerViewModel extends ChangeNotifier {
     return _pageController;
   }
 
-  List<FBallResDto> get ballList => _ballListMediator!.itemList;
+  List<FBallResDto?> get ballList => _ballListMediator!.itemList;
 
   void onPageChanged(int value) {
     _nextPagePreLoading(value);

@@ -264,7 +264,10 @@ class I001MainPageViewModel extends ChangeNotifier
 
   void firstBallSelect() {
     if (ballListMediator!.itemList.length > 0) {
-      onSelectBall(ballListMediator!.itemList[0]);
+      var item = ballListMediator!.itemList[0];
+      if(item != null ){
+        onSelectBall(item);
+      }
     }
   }
 
@@ -315,16 +318,18 @@ class I001MainPageViewModel extends ChangeNotifier
   Set<Marker> _makeMaker(FBallResDto selectBall) {
     Set<Marker> ballMarker = Set<Marker>();
     ballListMediator!.itemList.forEach((element) {
-      var ball = mapBallMarkerFactory!.getBallMaker(
-          element.ballType!,
-          element.ballUuid!,
-          Position(latitude: element.latitude, longitude: element.longitude),
-          select: selectBall.ballUuid == element.ballUuid,
-          ballMarkerSize: BallMarkerSize.Small, onTap: () {
-        _fullBallHorizontalPageListController!.moveToBall(element);
-      });
-      if (ball != null) {
-        ballMarker.add(ball);
+      if(element != null ){
+        var ball = mapBallMarkerFactory!.getBallMaker(
+            element.ballType!,
+            element.ballUuid!,
+            Position(latitude: element.latitude, longitude: element.longitude),
+            select: selectBall.ballUuid == element.ballUuid,
+            ballMarkerSize: BallMarkerSize.Small, onTap: () {
+          _fullBallHorizontalPageListController!.moveToBall(element);
+        });
+        if (ball != null) {
+          ballMarker.add(ball);
+        }
       }
     });
     return ballMarker;

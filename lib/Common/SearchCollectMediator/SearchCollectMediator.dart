@@ -20,7 +20,7 @@ abstract class SearchCollectMediator<T> {
 
   PageWrap<T>? wrapItemList;
 
-  List<T> itemList = [];
+  List<T?> itemList = [];
 
   String? sort;
 

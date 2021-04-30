@@ -157,10 +157,11 @@ class BallDisPlayUseCase {
   }
 
   bool isMainPicture() {
-    if (fBallResDto!.ballDeleteFlag || ballDescription!.desimages == null) {
+    var images = ballDescription!.desimages;
+    if (fBallResDto!.ballDeleteFlag || images == null) {
       return false;
     } else {
-      return ballDescription!.desimages.length > 0;
+        return images.length > 0;
     }
   }
 
@@ -168,7 +169,14 @@ class BallDisPlayUseCase {
     if (fBallResDto!.ballDeleteFlag) {
       return null;
     } else {
-      return ballDescription!.desimages[0].src;
+      var images = ballDescription!.desimages;
+      if(images != null){
+        var item = images[0];
+        return item?.src;
+      }else {
+        return null;
+      }
+
     }
   }
 
@@ -176,24 +184,37 @@ class BallDisPlayUseCase {
     if (fBallResDto!.ballDeleteFlag) {
       return 0;
     } else {
-      return ballDescription!.desimages.length;
+      var images = ballDescription!.desimages;
+      if(images != null){
+        return images.length;
+      }else {
+        return 0;
+      }
+
     }
   }
 
-  List<BallImageItem> getDesImages() {
+  List<BallImageItem?> getDesImages() {
     if (fBallResDto!.ballDeleteFlag) {
       return [];
     } else {
-      var list = ballDescription!.desimages.map((e) {
-        var src = e.src;
-        late BallImageItem imageItem;
-        if(src != null){
-          imageItem =  BallImageItem(NetworkImage(src),sl());
-          imageItem.addImage();
-        }
-        return imageItem;
-      }).toList();
-      return list;
+      var images = ballDescription!.desimages;
+      if(images != null ) {
+        var list = images.map((e) {
+          var src = e?.src;
+          late BallImageItem imageItem;
+          if(src != null){
+            imageItem =  BallImageItem(NetworkImage(src),sl());
+            imageItem.addImage();
+            return imageItem;
+          }else {
+            return null;
+          }
+        }).toList();
+        return list;
+      }else {
+        return [];
+      }
     }
   }
 

@@ -87,7 +87,7 @@ class SimpleCollectionWidgetViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  List<FUserInfoSimpleResDto>? get items {
+  List<FUserInfoSimpleResDto?>? get items {
     return searchCollectMediator.itemList;
   }
 

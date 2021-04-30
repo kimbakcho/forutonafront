@@ -50,13 +50,15 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
   Future<void> onModifyBall(BuildContext context);
 
   moveToDetailPage() async {
-    var hits = await hitBallUseCaseInputPort!
-        .hit(ballListMediator!.itemList[index!].ballUuid!);
-    ballListMediator!.itemList[index!].ballHits = hits;
-    await Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
-      return detailPage();
-    }));
-    onReFreshBall();
+    var item = ballListMediator!.itemList[index!];
+    if (item != null) {
+      var hits = await hitBallUseCaseInputPort!.hit(item.ballUuid!);
+      item.ballHits = hits;
+      await Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
+        return detailPage();
+      }));
+      onReFreshBall();
+    }
   }
 
   onReFreshBall();
@@ -74,43 +76,44 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
     } else {
       var reqSignInUserInfoFromMemory =
           signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
-
-      if (ballListMediator!.itemList[index!].uid!.uid ==
-          reqSignInUserInfoFromMemory!.uid) {
-        var result = await showDialog(
-            context: context!,
-            builder: (context) => MyBallPopup(
-                  isShowCloseBtn: false,
-                  isShowShareBtn: true,
-                  onShare: onShare,
-                  onDelete: onDeleteBall,
-                  onModify: (context) async {
-                    await onModifyBall(context);
-                    onReFreshBall();
-                  },
-                ));
-        if (result is FBallResDto) {
-          Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
-            return ID01MainPage(
-                id01Mode: ID01Mode.publish,
-                fBallResDto: result,
-                ballUuid: result.ballUuid!);
-          }));
+      var item = ballListMediator!.itemList[index!];
+      if (item != null) {
+        if (item.uid!.uid == reqSignInUserInfoFromMemory!.uid) {
+          var result = await showDialog(
+              context: context!,
+              builder: (context) => MyBallPopup(
+                    isShowCloseBtn: false,
+                    isShowShareBtn: true,
+                    onShare: onShare,
+                    onDelete: onDeleteBall,
+                    onModify: (context) async {
+                      await onModifyBall(context);
+                      onReFreshBall();
+                    },
+                  ));
+          if (result is FBallResDto) {
+            Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
+              return ID01MainPage(
+                  id01Mode: ID01Mode.publish,
+                  fBallResDto: result,
+                  ballUuid: result.ballUuid!);
+            }));
+          }
+        } else {
+          await showDialog(
+              context: context!,
+              builder: (context) => OtherUserBallPopup(
+                    onReportMalicious: onReportMalicious,
+                    isShowFavourite: true,
+                    isShowNotInterestBtn: true,
+                    isShowShareBtn: true,
+                    isShowCloseBtn: false,
+                    isShowReportMalicious: true,
+                    onShare: onShare,
+                    onFavourite: onFavourite,
+                    onNotInterest: onNotInterest,
+                  ));
         }
-      } else {
-        await showDialog(
-            context: context!,
-            builder: (context) => OtherUserBallPopup(
-                  onReportMalicious: onReportMalicious,
-                  isShowFavourite: true,
-                  isShowNotInterestBtn: true,
-                  isShowShareBtn: true,
-                  isShowCloseBtn: false,
-                  isShowReportMalicious: true,
-                  onShare: onShare,
-                  onFavourite: onFavourite,
-                  onNotInterest: onNotInterest,
-                ));
       }
     }
   }
@@ -138,10 +141,13 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
   }
 
   onNotInterest(BuildContext context) async {
-    await _noInterestBallUseCaseInputPort!
-        .save(ballListMediator!.itemList[index!].ballUuid!);
-    await ballListMediator!
-        .hideBall(ballListMediator!.itemList[index!].ballUuid!);
+    var item = ballListMediator!.itemList[index!];
+    if(item != null){
+      await _noInterestBallUseCaseInputPort!
+          .save(item.ballUuid!);
+      await ballListMediator!
+          .hideBall(item.ballUuid!);
+    }
   }
 
   onDeleteBall(BuildContext context) async {
@@ -153,14 +159,21 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
   }
 
   onReportMalicious(BuildContext context, MaliciousType maliciousType) async {
-    await this._maliciousBallUseCaseInputPort!.reportMaliciousReply(
-        maliciousType, ballListMediator!.itemList[index!].ballUuid!);
+    var item = ballListMediator!.itemList[index!];
+    if(item != null) {
+      await this._maliciousBallUseCaseInputPort!.reportMaliciousReply(
+          maliciousType, item.ballUuid!);
+    }
+
   }
 
   onActionDelete() async {
-    await _deleteBallUseCaseInputPort!
-        .deleteBall(ballListMediator!.itemList[index!].ballUuid!);
-    Navigator.of(context!).pop();
-    onReFreshBall();
+    var item = ballListMediator!.itemList[index!];
+    if(item != null ){
+      await _deleteBallUseCaseInputPort!
+          .deleteBall(item.ballUuid!);
+      Navigator.of(context!).pop();
+      onReFreshBall();
+    }
   }
 }

@@ -9,8 +9,10 @@ part of 'IssueBallDescription.dart';
 IssueBallDescription _$IssueBallDescriptionFromJson(Map<String, dynamic> json) {
   return IssueBallDescription()
     ..text = json['text'] as String?
-    ..desimages = (json['desimages'] as List<dynamic>)
-        .map((e) => FBallDesImages.fromJson(e as Map<String, dynamic>))
+    ..desimages = (json['desimages'] as List<dynamic>?)
+        ?.map((e) => e == null
+            ? null
+            : FBallDesImages.fromJson(e as Map<String, dynamic>))
         .toList()
     ..youtubeVideoId = json['youtubeVideoId'] as String?;
 }

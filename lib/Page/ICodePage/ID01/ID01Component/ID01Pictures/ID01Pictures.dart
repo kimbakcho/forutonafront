@@ -11,7 +11,7 @@ import 'ID01ThreePicture.dart';
 import 'ID01TwoPicture.dart';
 
 class ID01Pictures extends StatelessWidget {
-  final List<BallImageItem>? desImages;
+  final List<BallImageItem?>? desImages;
 
   ID01Pictures({this.desImages});
 
@@ -22,7 +22,7 @@ class ID01Pictures extends StatelessWidget {
       children: <Widget>[
         Container(
           height: 240,
-          child: selectPictureWidget(desImages!),
+          child: selectPictureWidget(desImages),
         ),
         desImages!.length > 4
             ? Row(
@@ -71,21 +71,26 @@ class ID01Pictures extends StatelessWidget {
     )):Container();
   }
 
-  Widget selectPictureWidget(List<BallImageItem> desImages) {
-    if (desImages.length == 0) {
-      return Container();
-    } else if (desImages.length == 1) {
-      return ID01OnePicture(
-        fBallDesImages: desImages[0],
-      );
-    } else if (desImages.length == 2) {
-      return ID01TwoPicture(fBallDesImages: desImages);
-    } else if (desImages.length == 3) {
-      return ID01ThreePicture(fBallDesImages: desImages);
-    } else if (desImages.length >= 4) {
-      return ID01ForePicture(fBallDesImages: desImages);
-    } else {
+  Widget selectPictureWidget(List<BallImageItem?>? desImages) {
+    if(desImages != null){
+      if (desImages.length == 0) {
+        return Container();
+      } else if (desImages.length == 1) {
+        return ID01OnePicture(
+          fBallDesImages: desImages[0],
+        );
+      } else if (desImages.length == 2) {
+        return ID01TwoPicture(fBallDesImages: desImages);
+      } else if (desImages.length == 3) {
+        return ID01ThreePicture(fBallDesImages: desImages);
+      } else if (desImages.length >= 4) {
+        return ID01ForePicture(fBallDesImages: desImages);
+      } else {
+        return Container();
+      }
+    }else {
       return Container();
     }
+
   }
 }

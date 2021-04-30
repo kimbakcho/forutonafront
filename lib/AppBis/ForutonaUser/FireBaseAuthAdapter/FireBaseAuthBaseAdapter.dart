@@ -25,7 +25,7 @@ class FireBaseAuthBaseAdapterImpl implements FireBaseAuthBaseAdapter {
     if (firebaseUser == null) {
       return noneToken;
     }
-    var idTokenResult = firebaseUser.getIdToken(true);
+    var idTokenResult = firebaseUser.getIdToken();
     return idTokenResult;
   }
 

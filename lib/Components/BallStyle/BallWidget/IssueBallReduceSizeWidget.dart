@@ -73,7 +73,7 @@ class IssueBallReduceSizeWidget extends StatelessWidget {
                     child: Stack(
                       children: [
                         Container(
-                            padding: EdgeInsets.fromLTRB(14, 16, 14, 15),
+                            padding: EdgeInsets.fromLTRB(14, 16, 14, 14),
                             child: Column(children: [
                               ReduceSizeTopBar(
                                   issueBallDisPlayUseCase:
@@ -148,44 +148,56 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
       : super(context, ballListMediator, index, sl(), sl(), sl(), sl(), sl());
 
   bool get isFinishBall {
-    return ballListMediator!.itemList[index!].activationTime!
-        .isBefore(DateTime.now());
+    var item = ballListMediator!.itemList[index!];
+    return item != null ? item.activationTime!
+        .isBefore(DateTime.now()) : false;
   }
 
   bool get isBallDelete {
-    return ballListMediator!.itemList[index!].ballDeleteFlag;
+    var item = ballListMediator!.itemList[index!];
+
+    return item != null ? item.ballDeleteFlag : false;
   }
 
   @override
   onReFreshBall() async {
-    ballListMediator!.itemList[index!] = await _selectBallUseCaseInputPort!
-        .selectBall(ballListMediator!.itemList[index!].ballUuid!);
+    var item = ballListMediator!.itemList[index!];
+    if(item != null){
+      item = await _selectBallUseCaseInputPort!
+          .selectBall(item.ballUuid!);
 
-    issueBallDisPlayUseCase =
-        IssueBallDisPlayUseCase(fBallResDto: ballListMediator!.itemList[index!]);
-    ballWidgetKey = Uuid().v4();
+      issueBallDisPlayUseCase =
+          IssueBallDisPlayUseCase(fBallResDto: item);
+      ballWidgetKey = Uuid().v4();
+    }
     notifyListeners();
   }
 
   @override
   Widget detailPage() {
-    return ID01MainPage(
-      ballUuid: ballListMediator!.itemList[index!].ballUuid!,
-      fBallResDto: ballListMediator!.itemList[index!],
-    );
+    var item  = ballListMediator!.itemList[index!];
+
+    return item != null ? ID01MainPage(
+      ballUuid: item .ballUuid!,
+      fBallResDto: item ,
+    ): Container();
   }
 
   @override
   Future<void> onModifyBall(BuildContext context) async {
-    var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
-        ballUuid: ballListMediator!.itemList[index!].ballUuid!);
-    var result =
-        await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return IM001MainPage(
-        preSetBallResDto: ballListMediator!.itemList[index!],
-        im001mode: IM001Mode.modify,
-        preSetFBallTagResDtos: tags,
-      );
-    }));
+    var item = ballListMediator!.itemList[index!];
+    if(item != null){
+      var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
+          ballUuid: item.ballUuid!);
+      var result =
+      await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+        return IM001MainPage(
+          preSetBallResDto: item,
+          im001mode: IM001Mode.modify,
+          preSetFBallTagResDtos: tags,
+        );
+      }));
+    }
+
   }
 }

@@ -30,9 +30,10 @@ class FullBallListUp extends StatelessWidget {
               itemCount: ballListMediator!.itemList.length,
               padding: EdgeInsets.all(0),
               itemBuilder: (_, index) {
-                return Container(
+                var item = ballListMediator!.itemList[index];
+                return item != null ? Container(
                   margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
-                  key: Key(ballListMediator!.itemList[index].ballUuid!),
+                  key: Key(item.ballUuid!),
                   child: ListUpBallWidgetFactory.getBallWidget(
                     index,
                     ballListMediator!,
@@ -42,7 +43,7 @@ class FullBallListUp extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         ),
                   ),
-                );
+                ) : Container();
               });
         }));
   }
@@ -77,7 +78,9 @@ class FullBallListUpViewModel extends ChangeNotifier
   }
 
   @override
-  void onItemListEmpty() {}
+  void onItemListEmpty() {
+
+  }
 
   @override
   void onItemListUpUpdate() {

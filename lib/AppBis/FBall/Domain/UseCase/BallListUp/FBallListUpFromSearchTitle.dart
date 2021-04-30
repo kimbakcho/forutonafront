@@ -20,7 +20,9 @@ class FBallListUpFromSearchTitle implements FBallListUpUseCaseInputPort {
         Position(latitude: reqDto.latitude, longitude: reqDto.longitude);
     PageWrap<FBallResDto> pageWrap = await _fBallRepository
         .listUpFromSearchTitle(reqDto: reqDto, pageable: pageable);
-    executeOutPort(outputPort!, pageWrap);
+    if(outputPort != null){
+      executeOutPort(outputPort, pageWrap);
+    }
     return pageWrap;
   }
 

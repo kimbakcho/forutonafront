@@ -7,12 +7,18 @@ import 'BallListMediator.dart';
 class ListUpBallWidgetFactory {
   static Widget getBallWidget(
       int index, BallListMediator ballListMediator, BallStyle ballStyle,{BoxDecoration? boxDecoration}) {
-    if (ballListMediator.itemList[index].ballType == FBallType.IssueBall) {
-      return IssueBallWidgetFactory.getIssueBallWidget(
-          index, ballListMediator, ballStyle,boxDecoration: boxDecoration);
-    } else {
-      return Container(child: Text("지원하지 않는 볼 위젯"));
+    var item = ballListMediator.itemList[index];
+    if(item != null) {
+      if (item.ballType == FBallType.IssueBall) {
+        return IssueBallWidgetFactory.getIssueBallWidget(
+            index, ballListMediator, ballStyle,boxDecoration: boxDecoration);
+      } else {
+        return Container(child: Text("지원하지 않는 볼 위젯"));
+      }
+    }else {
+      return Container();
     }
+
   }
 }
 

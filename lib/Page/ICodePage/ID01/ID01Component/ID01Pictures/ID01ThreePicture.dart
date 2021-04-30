@@ -5,7 +5,7 @@ import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallI
 import 'ID01ImageContainer.dart';
 
 class ID01ThreePicture extends StatelessWidget {
-  final List<BallImageItem>? fBallDesImages;
+  final List<BallImageItem?>? fBallDesImages;
 
   ID01ThreePicture({this.fBallDesImages});
 

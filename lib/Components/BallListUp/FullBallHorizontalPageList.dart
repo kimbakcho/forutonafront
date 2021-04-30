@@ -81,11 +81,14 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
 
   void pageChange(int index) {
     if (onSelectBall != null && ballListMediator!.itemList.length > 0) {
-      onSelectBall!(ballListMediator!.itemList[index]);
+      var item = ballListMediator!.itemList[index];
+      if (item != null) {
+        onSelectBall!(item);
+      }
     }
   }
 
-  List<FBallResDto>? get balls {
+  List<FBallResDto?>? get balls {
     return ballListMediator!.itemList;
   }
 
@@ -96,7 +99,10 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
   onRefreshFirst() async {
     await ballListMediator!.searchFirst();
     if (ballListMediator!.itemList.length > 0) {
-      onSelectBall!(ballListMediator!.itemList[0]);
+      var item = ballListMediator!.itemList[0];
+      if (item != null) {
+        onSelectBall!(item);
+      }
     }
   }
 
@@ -107,8 +113,8 @@ class FullBallHorizontalPageListViewModel extends ChangeNotifier
   }
 
   _moveToBall(FBallResDto fBallResDto) {
-    var indexWhere = ballListMediator!.itemList
-        .indexWhere((element) => element.ballUuid == fBallResDto.ballUuid);
+    var indexWhere = ballListMediator!.itemList.indexWhere((element) =>
+        element != null ? element.ballUuid == fBallResDto.ballUuid : false);
     pageController.jumpToPage(indexWhere);
   }
 

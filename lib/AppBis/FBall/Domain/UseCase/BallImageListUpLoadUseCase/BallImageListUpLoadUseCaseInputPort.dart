@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class BallImageListUpLoadUseCaseInputPort {
-  Future<List<BallImageItem>> ballImageListUpLoadAndFillUrls(List<BallImageItem> refSrcList);
+  Future<List<BallImageItem?>> ballImageListUpLoadAndFillUrls(List<BallImageItem?> refSrcList);
 }
 @LazySingleton(as: BallImageListUpLoadUseCaseInputPort)
 class BallImageListUpLoadUseCase implements BallImageListUpLoadUseCaseInputPort {
@@ -19,18 +19,29 @@ class BallImageListUpLoadUseCase implements BallImageListUpLoadUseCaseInputPort 
       : _fBallRepository = fBallRepository;
 
   @override
-  Future<List<BallImageItem>> ballImageListUpLoadAndFillUrls(List<BallImageItem> refSrcList) async{
-    var list = refSrcList.map((e) => e.imageByte).toList();
+  Future<List<BallImageItem?>> ballImageListUpLoadAndFillUrls(List<BallImageItem?> refSrcList) async{
+    var list = refSrcList.map((e) {
+      if(e != null){
+        return e.imageByte;
+      }else {
+        return null;
+      }
+    }).toList();
 
     for (int i = 0; i < refSrcList.length; i++) {
       firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
           .ref()
           .child('/ballImage')
           .child('${Uuid().v4()}.jpg');
-      var putData = ref.putData(refSrcList[i].imageByte);
-      var taskSnapshot = await putData.whenComplete(() => null);
-
-      refSrcList[i].imageUrl = await taskSnapshot.ref.getDownloadURL();
+      var item = refSrcList[i];
+      if(item != null ){
+        var imageByte2 = item.imageByte;
+        if(imageByte2 != null){
+          var putData = ref.putData(imageByte2);
+          var taskSnapshot = await putData.whenComplete(() => null);
+          item.imageUrl = await taskSnapshot.ref.getDownloadURL();
+        }
+      }
     }
     return refSrcList;
   }

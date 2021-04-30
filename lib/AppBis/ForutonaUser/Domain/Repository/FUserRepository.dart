@@ -23,7 +23,7 @@ abstract class FUserRepository {
   Future<String> uploadUserProfileImage(List<int> imageByte);
 
   Future<FUserInfoResDto> updateAccountUserInfo(
-      FUserAccountUpdateReqDto reqDto,List<int> profileImage,List<int> backgroundImage);
+      FUserAccountUpdateReqDto reqDto,List<int>? profileImage,List<int>? backgroundImage);
 
   Future<void> pWChange(String pw);
 

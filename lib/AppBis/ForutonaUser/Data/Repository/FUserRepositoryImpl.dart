@@ -54,7 +54,7 @@ class FUserRepositoryImpl implements FUserRepository {
 
   @override
   Future<FUserInfoResDto> updateAccountUserInfo(
-      FUserAccountUpdateReqDto reqDto,List<int> profileImage,List<int> backgroundImage) async {
+      FUserAccountUpdateReqDto reqDto,List<int>? profileImage,List<int>? backgroundImage) async {
     var fDio = FDio(await _fireBaseAuthBaseAdapter.getFireBaseIdToken());
     var formData = FormData.fromMap(reqDto.toJson());
 

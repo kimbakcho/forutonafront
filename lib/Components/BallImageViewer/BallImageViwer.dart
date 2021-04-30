@@ -16,7 +16,7 @@ class BallImageViewer extends StatelessWidget {
 
   String? tag;
   int? initIndex ;
-  List<BallImageItem> imageList;
+  List<BallImageItem?> imageList;
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,9 @@ class BallImageViewer extends StatelessWidget {
                     scrollPhysics: const BouncingScrollPhysics(),
                     pageController: model.pageController,
                     builder: (BuildContext context, int index) {
+                      var item = imageList[index];
                       return PhotoViewGalleryPageOptions(
-                        imageProvider: imageList[index].imageProvider,
+                        imageProvider: item?.imageProvider,
                         initialScale: PhotoViewComputedScale.contained * 1,
                         heroAttributes: tag != null
                             ? PhotoViewHeroAttributes(tag: tag!,)

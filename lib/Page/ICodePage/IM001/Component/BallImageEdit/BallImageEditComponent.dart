@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart';
@@ -94,7 +96,7 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
   final IM001Mode? im001mode;
 
   final FBallResDto? preSetBallResDto;
-  List<BallImageItem> images = [];
+  List<BallImageItem?> images = [];
 
   final BallImageEditComponentController? ballImageEditComponentController;
 
@@ -118,6 +120,7 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
     images.remove(ballImageItem);
     if (ballImageEditComponentController != null &&
         ballImageEditComponentController!.onChangeItemList != null) {
+
       ballImageEditComponentController!.onChangeItemList!(images);
     }
     notifyListeners();
@@ -135,8 +138,14 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
   }
 
   Future<void> _updateImageAndFillImageUrl() async {
-    var hasByteImages =
-        images.where((element) => element.imageByte != null).toList();
+    List<BallImageItem?> hasByteImages =
+        images.where((element) {
+          if(element != null){
+            return element.imageProvider is FileImage;
+          }else {
+            return false;
+          }
+        } ).toList();
     if (hasByteImages.isNotEmpty) {
       await _ballImageListUpLoadUseCaseInputPort!
           .ballImageListUpLoadAndFillUrls(hasByteImages);
@@ -148,7 +157,10 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
     for (int i = 0; i < images.length; i++) {
       FBallDesImages fBallDesImage = FBallDesImages();
       fBallDesImage.index = i;
-      fBallDesImage.src = images[i].imageUrl;
+      var item = images[i];
+      if(item != null ){
+        fBallDesImage.src = item.imageUrl;
+      }
       ballImages.add(fBallDesImage);
     }
     return ballImages;
@@ -158,7 +170,7 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
 class BallImageEditComponentController {
   BallImageEditComponentViewModel? _ballImageEditComponentViewModel;
 
-  final Function(List<BallImageItem> ballList)? onChangeItemList;
+  final Function(List<BallImageItem?> ballList)? onChangeItemList;
 
   final FluttertoastAdapter _fluttertoastAdapter = sl();
 
@@ -188,7 +200,7 @@ class BallImageEditComponentController {
     await _ballImageEditComponentViewModel!._updateImageAndFillImageUrl();
   }
 
-  List<BallImageItem> getBallImageItems() {
+  List<BallImageItem?> getBallImageItems() {
     return _ballImageEditComponentViewModel!.images;
   }
 }

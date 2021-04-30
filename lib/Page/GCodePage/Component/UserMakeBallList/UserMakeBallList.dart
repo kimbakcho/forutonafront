@@ -28,9 +28,10 @@ class UserMakeBallList extends StatelessWidget {
                 itemCount: model.ballListMediator.itemList.length,
                 padding: EdgeInsets.all(0),
                 itemBuilder: (_, index) {
-                  return Container(
+                  var item = model.ballListMediator.itemList[index];
+                  return item != null ? Container(
                     margin: EdgeInsets.fromLTRB(16, 0, 16, 13),
-                    key: Key(model.ballListMediator.itemList[index].ballUuid!),
+                    key: Key(item.ballUuid!),
                     child: ListUpBallWidgetFactory.getBallWidget(
                         index, model.ballListMediator, BallStyle.Style2,
                         boxDecoration: BoxDecoration(
@@ -38,7 +39,7 @@ class UserMakeBallList extends StatelessWidget {
                             border: Border.all(color: Color(0xffE4E7E8)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(15.0)))),
-                  );
+                  ) : Container();
                 }),
           );
         },

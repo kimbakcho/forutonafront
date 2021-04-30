@@ -45,7 +45,7 @@ class ID01MainPage extends StatelessWidget {
 
   final FBallResDto? preViewResDto;
 
-  final List<BallImageItem>? preViewBallImage;
+  final List<BallImageItem?>? preViewBallImage;
 
   final List<FBallTagResDto>? preViewfBallTagResDtos;
 
@@ -432,7 +432,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
         _signInUserInfoUseCaseInputPort!.reqSignInUserInfoFromMemory();
 
     if (fBallResDto!.uid!.uid == reqSignInUserInfoFromMemory!.uid) {
-      showDialog(
+      await showDialog(
           context: context,
           builder: (context) => MyBallPopup(
                 onDelete: onDeleteBall,
@@ -457,6 +457,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
 
   onActionDelete() async {
     await _deleteBallUseCaseInputPort!.deleteBall(fBallResDto!.ballUuid!);
+    fBallResDto!.ballDeleteFlag = true;
     Navigator.of(_context!).pop();
     Navigator.of(_context!).pop();
   }

@@ -63,7 +63,13 @@ class TagContainBallCollectMediator extends BallListMediator<TagItemListUpUseCas
 
   @override
   hideBall(String ballUuid) {
-    this.itemList.removeWhere((element) => element.ballUuid == ballUuid);
+    this.itemList.removeWhere((element) {
+      if(element != null){
+        return element.ballUuid == ballUuid;
+      }else {
+        return false;
+      }
+    });
     onPageListUpdate();
   }
 

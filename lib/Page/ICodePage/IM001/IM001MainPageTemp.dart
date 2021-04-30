@@ -416,18 +416,19 @@ class _IM001MainPageTempState extends State<IM001MainPageTemp>
         ),
       );
     } else {
-      return Container(
+      var imageByte = imageItem.imageByte;
+      return imageByte != null ? Container(
         height: 62,
         width: 75,
         decoration: BoxDecoration(
           image: DecorationImage(
               image: MemoryImage(
-                imageItem.imageByte,
+                imageByte,
               ),
               fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(12.00),
         ),
-      );
+      ): Container();
     }
   }
 

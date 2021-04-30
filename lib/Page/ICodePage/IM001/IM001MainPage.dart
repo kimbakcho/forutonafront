@@ -486,9 +486,12 @@ class IM001MainPageViewModel extends ChangeNotifier
     issueBallDescription.desimages = [];
     for (int i = 0; i < imageItems.length; i++) {
       FBallDesImages fBallDesImages = new FBallDesImages();
-      fBallDesImages.src = imageItems[i].imageUrl;
+      var item = imageItems[i];
+      if(item != null){
+        fBallDesImages.src = item.imageUrl;
+      }
       fBallDesImages.index = i;
-      issueBallDescription.desimages.add(fBallDesImages);
+      issueBallDescription.desimages!.add(fBallDesImages);
     }
     issueBallDescription.youtubeVideoId =
         _im001bottomSheetBodyController!.getYoutubeId();
@@ -535,9 +538,12 @@ class IM001MainPageViewModel extends ChangeNotifier
     issueBallDescription.desimages = [];
     for (int i = 0; i < imageItems.length; i++) {
       FBallDesImages fBallDesImages = new FBallDesImages();
-      fBallDesImages.src = imageItems[i].imageUrl;
+      var item = imageItems[i];
+      if(item != null){
+        fBallDesImages.src = item.imageUrl;
+      }
       fBallDesImages.index = i;
-      issueBallDescription.desimages.add(fBallDesImages);
+      issueBallDescription.desimages!.add(fBallDesImages);
     }
     issueBallDescription.youtubeVideoId =
         _im001bottomSheetBodyController!.getYoutubeId();

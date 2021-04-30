@@ -11,7 +11,11 @@ class IssueBallDisPlayUseCase extends BallDisPlayUseCase {
           geoLocatorAdapter}) : super(fBallResDto, null, geoLocatorAdapter) {
     this.fBallResDto = fBallResDto;
     this.geoLocatorAdapter = geoLocatorAdapter;
-    this.ballDescription =
-        IssueBallDescription.fromJson(json.decode(fBallResDto.description!));
+    var description = fBallResDto.description;
+    if(description != null){
+      this.ballDescription =
+          IssueBallDescription.fromJson(json.decode(description));
+    }
+
   }
 }

@@ -13,40 +13,46 @@ class IssueBallWidgetFactory {
   static Widget getIssueBallWidget(
       int index, BallListMediator searchCollectMediator, BallStyle ballStyle,
       {BoxDecoration? boxDecoration}) {
-    IssueBallDisPlayUseCase issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: searchCollectMediator.itemList[index],
-        geoLocatorAdapter: sl());
-    if (ballStyle == BallStyle.Style1) {
-      if (issueBallDisPlayUseCase.isMainPicture()) {
-        return IssueBallHaveImageWidget(
-          key: Key(searchCollectMediator.itemList[index].ballUuid!),
-          index: index,
+    var item = searchCollectMediator.itemList[index];
+    if(item != null ){
+      IssueBallDisPlayUseCase issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+          fBallResDto: item,
+          geoLocatorAdapter: sl());
+      if (ballStyle == BallStyle.Style1) {
+        if (issueBallDisPlayUseCase.isMainPicture()) {
+          return IssueBallHaveImageWidget(
+            key: Key(item.ballUuid!),
+            index: index,
+            ballListMediator: searchCollectMediator,
+            boxDecoration: boxDecoration,
+          );
+        } else {
+          return IssueBallNotHaveImageWidget(
+              key: Key(item.ballUuid!),
+              index: index,
+              ballListMediator: searchCollectMediator,
+              boxDecoration: boxDecoration);
+        }
+      } else if (ballStyle == BallStyle.Style2) {
+        return IssueBallReduceSizeWidget(
+          key: Key(item.ballUuid!),
+          issueBallDisPlayUseCase: issueBallDisPlayUseCase,
           ballListMediator: searchCollectMediator,
+          index: index,
           boxDecoration: boxDecoration,
         );
-      } else {
+      } else if (ballStyle == BallStyle.Style3) {
         return IssueBallNotHaveImageWidget(
-            key: Key(searchCollectMediator.itemList[index].ballUuid!),
+            key: Key(item.ballUuid!),
             index: index,
             ballListMediator: searchCollectMediator,
             boxDecoration: boxDecoration);
+      } else {
+        return Container(child: Text("지원되지 않는 Style"));
       }
-    } else if (ballStyle == BallStyle.Style2) {
-      return IssueBallReduceSizeWidget(
-        key: Key(searchCollectMediator.itemList[index].ballUuid!),
-        issueBallDisPlayUseCase: issueBallDisPlayUseCase,
-        ballListMediator: searchCollectMediator,
-        index: index,
-        boxDecoration: boxDecoration,
-      );
-    } else if (ballStyle == BallStyle.Style3) {
-      return IssueBallNotHaveImageWidget(
-          key: Key(searchCollectMediator.itemList[index].ballUuid!),
-          index: index,
-          ballListMediator: searchCollectMediator,
-          boxDecoration: boxDecoration);
-    } else {
-      return Container(child: Text("지원되지 않는 Style"));
+    }else {
+      return Container();
     }
+
   }
 }

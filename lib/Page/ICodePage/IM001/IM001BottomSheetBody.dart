@@ -397,7 +397,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
     return ballImageEditComponentController!.getImageItemCount();
   }
 
-  _imageItemListChange(List<BallImageItem> ballList) {
+  _imageItemListChange(List<BallImageItem?> ballList) {
     notifyListeners();
   }
 
@@ -449,12 +449,12 @@ class IM001BottomSheetBodyController {
         .getYoutubeId();
   }
 
-  List<BallImageItem> getBallImages() {
+  List<BallImageItem?> getBallImages() {
     return _im001bottomSheetBodyViewModel!.ballImageEditComponentController!
         .getBallImageItems();
   }
 
-  Future<List<BallImageItem>> updateImageAndFillImageUrl() async {
+  Future<List<BallImageItem?>> updateImageAndFillImageUrl() async {
     await _im001bottomSheetBodyViewModel!.ballImageEditComponentController!
         .updateImageAndFillImageUrl();
     return getBallImages();

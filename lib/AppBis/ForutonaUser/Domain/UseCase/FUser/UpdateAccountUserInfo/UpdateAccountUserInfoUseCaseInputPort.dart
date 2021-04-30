@@ -6,7 +6,7 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/UserAlarmConfigUpdateReqDt
 import 'package:injectable/injectable.dart';
 
 abstract class UpdateAccountUserInfoUseCaseInputPort {
-  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,List<int> profileImage,List<int> backgroundImage);
+  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,List<int>? profileImage,List<int>? backgroundImage);
   Future<FUserInfoResDto>  userAlarmConfigUpdate(UserAlarmConfigUpdateReqDto userAlarmConfigUpdateReqDto);
 }
 
@@ -17,7 +17,7 @@ class UpdateAccountUserInfoUseCase implements UpdateAccountUserInfoUseCaseInputP
   UpdateAccountUserInfoUseCase({required FUserRepository fUserRepository}):_fUserRepository=fUserRepository;
 
   @override
-  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,List<int> profileImage,List<int> backgroundImage) async {
+  Future<FUserInfoResDto> updateAccountUserInfo(FUserAccountUpdateReqDto reqDto,List<int>? profileImage,List<int>? backgroundImage) async {
     FUserInfoResDto fUserInfoResDto = await _fUserRepository.updateAccountUserInfo(reqDto,profileImage,backgroundImage);
     return fUserInfoResDto;
   }

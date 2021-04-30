@@ -278,7 +278,7 @@ class G010MainPageViewModel extends ChangeNotifier {
         _selfIntroduceEditController!.selfIntroduceText;
 
     await _updateAccountUserInfoUseCaseInputPort!.updateAccountUserInfo(
-        fUserAccountUpdateReqDto, profileImage!, backGroundImage!);
+        fUserAccountUpdateReqDto, profileImage, backGroundImage);
 
     _loaded = true;
 

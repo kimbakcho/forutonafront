@@ -7,7 +7,7 @@ import 'package:forutonafront/Common/FlutterImageCompressAdapter/FlutterImageCom
 class BallImageItem {
   ImageProvider imageProvider;
   late String imageUrl;
-  late Uint8List imageByte;
+  late Uint8List? imageByte;
   String? mediaType;
   FlutterImageCompressAdapter? flutterImageCompressAdapter;
 
@@ -18,8 +18,11 @@ class BallImageItem {
     if (imageProvider is FileImage) {
       var imageProvider2 = imageProvider as FileImage;
       imageByte = await imageProvider2.file.readAsBytes();
-      imageByte = Uint8List.fromList(
-          await flutterImageCompressAdapter!.compressImage(imageByte, 70));
+      if(imageByte != null){
+        imageByte = Uint8List.fromList(
+            await flutterImageCompressAdapter!.compressImage(imageByte!, 70));
+      }
+
     } else if (imageProvider is NetworkImage) {
       var imageProvider2 = imageProvider as NetworkImage;
       imageUrl = imageProvider2.url;

@@ -27,7 +27,7 @@ class ID01MainBottomSheetBody extends StatefulWidget {
 
   final ID01Mode? id01Mode;
 
-  final List<BallImageItem>? preViewBallImage;
+  final List<BallImageItem?>? preViewBallImage;
 
   final List<FBallTagResDto>? preViewfBallTagResDtos;
 
@@ -131,7 +131,7 @@ class ID01MainBottomSheetBodyViewModel extends ChangeNotifier {
   IssueBallDisPlayUseCase? _issueBallDisPlayUseCase;
   final GeolocatorAdapter? geolocatorAdapter;
   final ID01Mode? id01Mode;
-  final List<BallImageItem>? preViewBallImage;
+  final List<BallImageItem?>? preViewBallImage;
 
   final ID01MainBottomSheetBodyController? id01mainBottomSheetBodyController;
 

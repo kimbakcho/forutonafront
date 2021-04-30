@@ -58,9 +58,11 @@ class SimpleUserInfoCollectWidgetViewModel extends ChangeNotifier
 
   IndexedWidgetBuilder getIndexedWidgetBuilder() {
     return (_, index) {
-      return UserProfileBar(
-          key: Key(userInfoCollectMediator.itemList[index].uid!),
-          fUserInfoSimpleResDto: userInfoCollectMediator.itemList[index]);
+      var item = userInfoCollectMediator.itemList[index];
+
+      return item != null ? UserProfileBar(
+          key: Key(item.uid!),
+          fUserInfoSimpleResDto: item): Container();
     };
   }
 

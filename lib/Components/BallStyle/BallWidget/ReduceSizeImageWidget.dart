@@ -14,10 +14,12 @@ class ReduceSizeImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mainPictureSrc = issueBallDisPlayUseCase.mainPictureSrc();
     return Stack(
       children: [
+        mainPictureSrc != null ?
         CachedNetworkImage(
-            imageUrl: issueBallDisPlayUseCase.mainPictureSrc()!,
+            imageUrl: mainPictureSrc,
             fit: BoxFit.cover,
             imageBuilder: (context, imageProvider) => Container(
                   decoration: BoxDecoration(
@@ -30,7 +32,7 @@ class ReduceSizeImageWidget extends StatelessWidget {
                 ),
             placeholder: (context, url) => Container(
                   child: Icon(Icons.image, color: Color(0xffE4E7E8), size: 40),
-                )),
+                )): Container(),
         issueBallDisPlayUseCase.pictureCount() > 1 ?
         Positioned(
           bottom: 0,

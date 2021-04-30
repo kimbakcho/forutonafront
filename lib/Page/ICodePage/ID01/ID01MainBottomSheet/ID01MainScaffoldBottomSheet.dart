@@ -159,6 +159,8 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
 
   bool syncLoadingFlag = false;
 
+  DateTime? nextGiveInfluenceTicketTime;
+
   syncUserInfo() async {
     syncLoadingFlag = true;
     if (_signInUserInfoUseCaseInputPort!.isLogin!) {
@@ -183,6 +185,7 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
                 topLeft: Radius.circular(15.0),
                 topRight: Radius.circular(15.0))),
         backgroundColor: Colors.white);
+    nextGiveInfluenceTicketTime = null;
     syncUserInfo();
   }
 
@@ -190,12 +193,12 @@ class ID01MainScaffoldBottomSheetViewModel extends ChangeNotifier
     if (!_signInUserInfoUseCaseInputPort!.isLogin!) {
       return "";
     }
-    var nextGiveInfluenceTicketTime = _signInUserInfoUseCaseInputPort!
+    this.nextGiveInfluenceTicketTime = _signInUserInfoUseCaseInputPort!
         .reqSignInUserInfoFromMemory()!
         .nextGiveInfluenceTicketTime;
     var difference = nextGiveInfluenceTicketTime!.difference(DateTime.now());
     if (difference.isNegative) {
-      if (syncLoadingFlag == false) {
+      if (syncLoadingFlag == false && nextGiveInfluenceTicketTime == null) {
         syncUserInfo();
       }
       return "";

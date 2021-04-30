@@ -111,39 +111,52 @@ class IssueBallNotHaveImageWidgetViewModel extends ListUpBallWidgetItem {
       sl(),
       sl(),
       sl()) {
-    issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: ballListMediator.itemList[index], geoLocatorAdapter: sl());
+    var item = ballListMediator.itemList[index];
+    if(item != null){
+      issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+          fBallResDto: item, geoLocatorAdapter: sl());
+    }
   }
 
   @override
   onReFreshBall() async {
-    ballListMediator!.itemList[index!] = await _selectBallUseCaseInputPort!
-        .selectBall(ballListMediator!.itemList[index!].ballUuid!);
-    issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
-        fBallResDto: ballListMediator!.itemList[index!], geoLocatorAdapter: sl());
-    ballWidgetKey = Uuid().v4();
+    var item = ballListMediator!.itemList[index!];
+    if(item != null){
+      item = await _selectBallUseCaseInputPort!
+          .selectBall(item.ballUuid!);
+      issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
+          fBallResDto: item, geoLocatorAdapter: sl());
+      ballWidgetKey = Uuid().v4();
+    }
     notifyListeners();
   }
 
   @override
   Widget detailPage() {
-    return ID01MainPage(
-      ballUuid: ballListMediator!.itemList[index!].ballUuid!,
-      fBallResDto: ballListMediator!.itemList[index!],
-    );
+
+    var item = ballListMediator!.itemList[index!];
+
+    return item != null ? ID01MainPage(
+      ballUuid: item.ballUuid!,
+      fBallResDto: item,
+    ) : Container();
   }
 
   @override
   Future<void> onModifyBall(BuildContext context) async {
-    var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
-        ballUuid: ballListMediator!.itemList[index!].ballUuid!);
-    var result =
-    await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return IM001MainPage(
-        preSetBallResDto: ballListMediator!.itemList[index!],
-        im001mode: IM001Mode.modify,
-        preSetFBallTagResDtos: tags,
-      );
-    }));
+    var item = ballListMediator!.itemList[index!];
+    if(item != null){
+      var tags = await _tagFromBallUuidUseCaseInputPort!.getTagFromBallUuid(
+          ballUuid: item.ballUuid!);
+      var result =
+      await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+        return IM001MainPage(
+          preSetBallResDto: item,
+          im001mode: IM001Mode.modify,
+          preSetFBallTagResDtos: tags,
+        );
+      }));
+    }
+
   }
 }

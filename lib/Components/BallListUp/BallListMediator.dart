@@ -7,49 +7,43 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 import 'package:injectable/injectable.dart';
 
-
-abstract class BallListMediator<T> extends SearchCollectMediator<FBallResDto>{
-
+abstract class BallListMediator<T> extends SearchCollectMediator<FBallResDto> {
   T? fBallListUpUseCaseInputPort;
 
   hideBall(String ballUuid);
 
   Position? searchPosition();
-
 }
 
-class BallListMediatorImpl extends BallListMediator<FBallListUpUseCaseInputPort> {
-
+class BallListMediatorImpl
+    extends BallListMediator<FBallListUpUseCaseInputPort> {
   @override
   Future<PageWrap<FBallResDto>> searchUseCase(Pageable pageable) async {
-    return await this
-        .fBallListUpUseCaseInputPort!
-        .search(pageable);
+    return await this.fBallListUpUseCaseInputPort!.search(pageable);
   }
 
   @override
-  bool isNullSearchUseCase(){
-    if(fBallListUpUseCaseInputPort == null) {
+  bool isNullSearchUseCase() {
+    if (fBallListUpUseCaseInputPort == null) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
 
   @override
-  Position? searchPosition(){
-    if(fBallListUpUseCaseInputPort != null){
+  Position? searchPosition() {
+    if (fBallListUpUseCaseInputPort != null) {
       return fBallListUpUseCaseInputPort!.searchPosition;
-    }else {
+    } else {
       return null;
     }
   }
 
   @override
   hideBall(String ballUuid) {
-    this.itemList.removeWhere((element) => element.ballUuid == ballUuid);
+    this.itemList.removeWhere(
+        (element) => element != null ? element.ballUuid == ballUuid : false);
     onPageListUpdate();
   }
-
-
 }

@@ -19,12 +19,12 @@ class FBallListUpFromMapArea implements FBallListUpUseCaseInputPort {
     searchPosition = Position(longitude: reqDto.centerPointLng,latitude: reqDto.centerPointLat);
     PageWrap<FBallResDto> pageWrap = await _fBallRepository
         .ballListUpFromMapArea(reqDto: reqDto, pageable: pageable);
-    executeOutPort(outputPort!, pageWrap);
+    executeOutPort(outputPort, pageWrap);
     return pageWrap;
   }
 
   void executeOutPort(
-      FBallListUpUseCaseOutputPort outputPort, PageWrap<FBallResDto> pageWrap) {
+      FBallListUpUseCaseOutputPort? outputPort, PageWrap<FBallResDto> pageWrap) {
     if (outputPort != null) {
       outputPort.searchResult(pageWrap);
     }
