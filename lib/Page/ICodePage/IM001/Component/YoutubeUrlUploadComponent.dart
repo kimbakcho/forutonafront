@@ -8,14 +8,14 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../IM001Mode.dart';
+import '../../../MakeCommonPage/MakePageMode.dart';
 
 class YoutubeUrlUploadComponent extends StatelessWidget {
   final YoutubeUrlUploadComponentController? youtubeUrlUploadComponentController;
 
   final EdgeInsets margin;
 
-  final IM001Mode? im001mode;
+  final MakePageMode? im001mode;
 
   final FBallResDto? preSetBallResDto;
 
@@ -92,7 +92,7 @@ class YoutubeUrlUploadComponent extends StatelessWidget {
 class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
   final YoutubeUrlUploadComponentController? youtubeUrlUploadComponentController;
 
-  final IM001Mode? im001mode;
+  final MakePageMode? im001mode;
 
   final FBallResDto? preSetBallResDto;
 
@@ -109,7 +109,7 @@ class YoutubeUrlUploadComponentViewModel extends ChangeNotifier {
     if (this.youtubeUrlUploadComponentController != null) {
       this.youtubeUrlUploadComponentController!._viewModel = this;
     }
-    if (im001mode == IM001Mode.modify) {
+    if (im001mode == MakePageMode.modify) {
       _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
           fBallResDto: preSetBallResDto!, geoLocatorAdapter: sl());
       if (_issueBallDisPlayUseCase!.getYoutubeId() != "") {

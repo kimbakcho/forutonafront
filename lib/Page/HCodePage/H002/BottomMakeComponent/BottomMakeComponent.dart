@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/HCodePage/H002/BottomMakeComponent/BallMakeButton.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MakePageMode.dart';
+import 'package:forutonafront/Page/QMCodePage/QM01/QM01MainPage.dart';
 import 'package:provider/provider.dart';
 
 class BottomMakeComponent extends StatelessWidget {
@@ -66,14 +68,9 @@ class BottomMakeComponent extends StatelessWidget {
                         "assets/BallMakeImage/questBallMakeImage.png"),
                     mainColor: Color(0xff4f72ff),
                     onTap: () {
-                      Fluttertoast.showToast(
-                          msg: "준비중입니다",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Color(0xff454F63),
-                          textColor: Colors.white,
-                          fontSize: 12.0);
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                        return QM01MainPage(makePageMode: MakePageMode.create);
+                      },));
                     },
                   ),
                   decoration: BoxDecoration(boxShadow: [

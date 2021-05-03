@@ -9,7 +9,7 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/Bal
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
-import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MakePageMode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -193,7 +193,7 @@ class IssueBallReduceSizeWidgetViewModel extends ListUpBallWidgetItem {
       await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
         return IM001MainPage(
           preSetBallResDto: item,
-          im001mode: IM001Mode.modify,
+          makePageMode: MakePageMode.modify,
           preSetFBallTagResDtos: tags,
         );
       }));

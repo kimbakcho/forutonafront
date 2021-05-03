@@ -1,0 +1,3 @@
+enum MakeCommonMainPageEnterMode{
+  Insert,Update
+}

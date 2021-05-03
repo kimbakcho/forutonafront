@@ -5,14 +5,14 @@ import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/ModifiedLengthLimitingTextInputFormatter/ModifiedLengthLimitingTextInputFormatter.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallTageEdit/BallEditTagChip.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallTageEdit/TagEditDto.dart';
-import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MakePageMode.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class BallTagEditComponent extends StatelessWidget {
   final EdgeInsets margin;
 
-  final IM001Mode? im001mode;
+  final MakePageMode? im001mode;
 
   final List<FBallTagResDto>? preSetFBallTagResDtos;
 
@@ -109,7 +109,7 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
 
   final List<BallEditTagChip> ballEditTagChips = [];
 
-  final IM001Mode? im001mode;
+  final MakePageMode? im001mode;
 
   final List<FBallTagResDto>? preSetFBallTagResDtos;
 
@@ -129,7 +129,7 @@ class BallTagEditComponentViewModel extends ChangeNotifier {
     editFocus!.addListener(() {
       notifyListeners();
     });
-    if (im001mode == IM001Mode.modify) {
+    if (im001mode == MakePageMode.modify) {
       if (preSetFBallTagResDtos != null && preSetFBallTagResDtos!.length > 0) {
         preSetFBallTagResDtos!.forEach((element) {
           addTag(element.tagItem!);

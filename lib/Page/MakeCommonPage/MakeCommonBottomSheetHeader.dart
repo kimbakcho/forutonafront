@@ -1,57 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'IM001Mode.dart';
+import 'MakePageMode.dart';
 
-class IM001BottomSheetHeader extends StatelessWidget {
-  final String? displayAddress;
+class MakeCommonBottomSheetHeader extends StatelessWidget {
+  final String displayAddress;
   final Function? onNextBtnTap;
-  final IM001Mode? im001mode;
+  final MakePageMode makePageMode;
+  final String? preSetAddress;
 
-  final FBallResDto? preSetBallResDto;
+  final MakeCommonBottomSheetHeaderController
+      makeCommonBottomSheetHeaderController;
 
-  final IM001BottomSheetHeaderController? im001bottomSheetHeaderController;
+  final Widget openHeaderWidget;
 
-  const IM001BottomSheetHeader(
+  MakeCommonBottomSheetHeader(
       {Key? key,
-      this.displayAddress,
-      this.im001bottomSheetHeaderController,
+      required this.displayAddress,
+      required this.makeCommonBottomSheetHeaderController,
       this.onNextBtnTap,
-      this.im001mode,
-      this.preSetBallResDto})
+      required this.makePageMode,
+        required this.openHeaderWidget,
+      this.preSetAddress})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => IM001BottomSheetHeaderViewModel(
-          displayAddress, im001mode, preSetBallResDto,
-          im001bottomSheetHeaderController: im001bottomSheetHeaderController),
-      child: Consumer<IM001BottomSheetHeaderViewModel>(
+      create: (_) => MakeCommonBottomSheetHeaderViewModel(
+          displayAddress: displayAddress,
+          makePageMode: makePageMode,
+          makeBottomSheetHeaderController:
+              makeCommonBottomSheetHeaderController,
+          preSetAddress: preSetAddress),
+      child: Consumer<MakeCommonBottomSheetHeaderViewModel>(
         builder: (_, model, child) {
           return Container(
             padding: EdgeInsets.only(left: 16, right: 16),
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15.0),
                     topRight: Radius.circular(15.0)),
-               boxShadow: [
-                 BoxShadow(
-                   color: Colors.black,
-                   offset: Offset(0,3),
-                   blurRadius: 6
-                 )
-               ]
             ),
-            height: model._currentMode == IM001BottomSheetHeaderMode.hide
+            height: model._currentMode == MakeCommonBottomSheetHeaderMode.hide
                 ? 114
-                : 40,
+                : 50,
             child: Column(
               children: [
-                Container(
+                model._currentMode == MakeCommonBottomSheetHeaderMode.hide ? Container(
                   height: 35,
                   child: Center(
                     child: Container(
@@ -62,8 +63,8 @@ class IM001BottomSheetHeader extends StatelessWidget {
                           color: Color(0xffE4E7E8)),
                     ),
                   ),
-                ),
-                model._currentMode == IM001BottomSheetHeaderMode.hide
+                ): openHeaderWidget,
+                model._currentMode == MakeCommonBottomSheetHeaderMode.hide
                     ? Row(
                         children: [
                           Expanded(
@@ -106,7 +107,10 @@ class IM001BottomSheetHeader extends StatelessWidget {
                                       BorderRadius.all(Radius.circular(30.0))),
                               color: Color(0xffE4E7E8),
                               onPressed: () {
-                                onNextBtnTap!();
+                                var nextTapFunc = onNextBtnTap;
+                                if(nextTapFunc != null){
+                                  nextTapFunc();
+                                }
                               },
                               child: Text("다음"))
                         ],
@@ -121,40 +125,42 @@ class IM001BottomSheetHeader extends StatelessWidget {
   }
 }
 
-enum IM001BottomSheetHeaderMode { show, hide }
+enum MakeCommonBottomSheetHeaderMode { show, hide }
 
-class IM001BottomSheetHeaderViewModel extends ChangeNotifier {
-  final IM001Mode? im001mode;
+class MakeCommonBottomSheetHeaderViewModel extends ChangeNotifier {
+  final MakePageMode makePageMode;
 
-  final FBallResDto? preSetBallResDto;
+  final String? preSetAddress;
 
-  IM001BottomSheetHeaderController? im001bottomSheetHeaderController;
+  MakeCommonBottomSheetHeaderController makeBottomSheetHeaderController;
 
-  IM001BottomSheetHeaderMode? _currentMode;
+  MakeCommonBottomSheetHeaderMode? _currentMode;
 
   String? displayAddress;
 
-  IM001BottomSheetHeaderViewModel(
-      this.displayAddress, this.im001mode, this.preSetBallResDto,
-      {this.im001bottomSheetHeaderController}) {
-    if (im001bottomSheetHeaderController != null) {
-      im001bottomSheetHeaderController!._iM001BottomSheetHeaderViewModel = this;
+  MakeCommonBottomSheetHeaderViewModel(
+      {required this.displayAddress,
+      required this.makePageMode,
+      required this.makeBottomSheetHeaderController,
+      this.preSetAddress}) {
+
+    makeBottomSheetHeaderController.bottomSheetHeaderViewModel = this;
+
+    if (makePageMode == MakePageMode.modify) {
+      this.displayAddress = preSetAddress;
     }
-    if(im001mode == IM001Mode.modify){
-      this.displayAddress = preSetBallResDto!.placeAddress;
-    }
-    _currentMode = IM001BottomSheetHeaderMode.hide;
+    _currentMode = MakeCommonBottomSheetHeaderMode.hide;
   }
 
-  changeHeaderMode(IM001BottomSheetHeaderMode mode) {
+  changeHeaderMode(MakeCommonBottomSheetHeaderMode mode) {
     _currentMode = mode;
     notifyListeners();
   }
 
   changeDisplayAddress(String value) {
-    if(value.isEmpty){
+    if (value.isEmpty) {
       displayAddress = "주소정보 없음";
-    }else {
+    } else {
       displayAddress = value;
     }
 
@@ -162,14 +168,14 @@ class IM001BottomSheetHeaderViewModel extends ChangeNotifier {
   }
 }
 
-class IM001BottomSheetHeaderController {
-  IM001BottomSheetHeaderViewModel? _iM001BottomSheetHeaderViewModel;
+class MakeCommonBottomSheetHeaderController {
+  MakeCommonBottomSheetHeaderViewModel? bottomSheetHeaderViewModel;
 
-  changeHeaderMode(IM001BottomSheetHeaderMode mode) {
-    _iM001BottomSheetHeaderViewModel!.changeHeaderMode(mode);
+  changeHeaderMode(MakeCommonBottomSheetHeaderMode mode) {
+    bottomSheetHeaderViewModel!.changeHeaderMode(mode);
   }
 
   changeDisplayAddress(String value) {
-    _iM001BottomSheetHeaderViewModel!.changeDisplayAddress(value);
+    bottomSheetHeaderViewModel!.changeDisplayAddress(value);
   }
 }

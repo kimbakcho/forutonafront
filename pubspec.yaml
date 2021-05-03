@@ -143,6 +143,10 @@ dependencies:
   #geoCoding
   geocoding: ^2.0.0
   firebase_storage: ^8.0.5
+  #dot 진행 상황 UI
+  dots_indicator: ^2.0.0
+  #slider
+  sliding_up_panel: ^2.0.0+1
 
 module:
   androidX: true

@@ -22,7 +22,7 @@ import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ValuationMediator/ValuationMediator.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/IM001MainPage.dart';
-import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MakePageMode.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -469,7 +469,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
     await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return IM001MainPage(
         preSetBallResDto: fBallResDto,
-        im001mode: IM001Mode.modify,
+        makePageMode: MakePageMode.modify,
         preSetFBallTagResDtos: tags,
       );
     }));

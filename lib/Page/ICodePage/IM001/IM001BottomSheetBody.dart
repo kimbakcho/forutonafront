@@ -10,6 +10,7 @@ import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Components/ProfileImageEditComponent/ImageSelectModalBottomSheet.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/YoutubeUrlUploadComponent.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MakeCommonBottomSheetHeader.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,7 +20,7 @@ import 'Component/BallImageEdit/BallImageEditComponent.dart';
 import 'Component/BallImageEdit/BallImageItem.dart';
 import 'Component/BallTageEdit/BallTagEditComponent.dart';
 import 'Component/BallTageEdit/TagEditDto.dart';
-import 'IM001Mode.dart';
+import '../../MakeCommonPage/MakePageMode.dart';
 
 class IM001BottomSheetBody extends StatelessWidget {
   final Function(String)? onChangeAddress;
@@ -27,21 +28,22 @@ class IM001BottomSheetBody extends StatelessWidget {
   final Function(bool)? onComplete;
 
   final String? initAddress;
-  final IM001BottomSheetBodyController? im001bottomSheetBodyController;
 
-  final IM001Mode? im001mode;
+  final IM001BottomSheetBodyController im001bottomSheetBodyController;
+
+  final MakePageMode? makePageMode;
 
   final FBallResDto? preSetBallResDto;
 
   final List<FBallTagResDto>? preSetFBallTagResDtos;
 
-  const IM001BottomSheetBody(
+  IM001BottomSheetBody(
       {Key? key,
       this.initAddress,
       this.onChangeAddress,
       this.onComplete,
-      this.im001bottomSheetBodyController,
-      this.im001mode,
+      required this.im001bottomSheetBodyController,
+      this.makePageMode,
       this.preSetBallResDto,
       this.preSetFBallTagResDtos})
       : super(key: key);
@@ -54,7 +56,7 @@ class IM001BottomSheetBody extends StatelessWidget {
           initAddress,
           onComplete,
           im001bottomSheetBodyController,
-          im001mode,
+          makePageMode,
           preSetBallResDto,
           preSetFBallTagResDtos),
       child: Consumer<IM001BottomSheetBodyViewModel>(
@@ -63,127 +65,127 @@ class IM001BottomSheetBody extends StatelessWidget {
             children: [
               Expanded(
                   child: SingleChildScrollView(
-                child: Container(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10),
-                    Container(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Text("이슈볼 장소",
-                          style: GoogleFonts.notoSans(
-                            fontSize: 14,
-                            color: const Color(0xff000000),
-                            letterSpacing: -0.28,
-                            fontWeight: FontWeight.w700,
-                            height: 1.2142857142857142,
-                          )),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 16, right: 16),
-                      child: TextField(
-                        controller: model._addressTextController,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 16),
-                      child: Text(
-                        "제목",
-                        style: GoogleFonts.notoSans(
-                          fontSize: 14,
-                          color: model.isTitleFocus
-                              ? Color(0xff3497FD)
-                              : Colors.black,
-                          letterSpacing: -0.28,
-                          fontWeight: FontWeight.w700,
-                          height: 1.2142857142857142,
-                        ),
-                      ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                        child: TextField(
-                            focusNode: model.titleFocus,
-                            controller: model._titleTextController,
-                            maxLength: 50,
-                            inputFormatters: [
-                              ModifiedLengthLimitingTextInputFormatter(50)
-                            ],
-                            decoration: InputDecoration(
-                                hintText: "제목을 지어주세요!",
-                                hintStyle: GoogleFonts.notoSans(
+                    child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 10),
+                            Container(
+                              padding: EdgeInsets.only(left: 16),
+                              child: Text("이슈볼 장소",
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 14,
+                                    color: const Color(0xff000000),
+                                    letterSpacing: -0.28,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.2142857142857142,
+                                  )),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 16, right: 16),
+                              child: TextField(
+                                controller: model._addressTextController,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 16),
+                              child: Text(
+                                "제목",
+                                style: GoogleFonts.notoSans(
                                   fontSize: 14,
-                                  color: const Color(0xffb1b1b1),
+                                  color: model.isTitleFocus
+                                      ? Color(0xff3497FD)
+                                      : Colors.black,
                                   letterSpacing: -0.28,
-                                  fontWeight: FontWeight.w300,
+                                  fontWeight: FontWeight.w700,
                                   height: 1.2142857142857142,
-                                )))),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 16),
-                      child: Text(
-                        "내용",
-                        style: GoogleFonts.notoSans(
-                          fontSize: 14,
-                          color: model.isContentFocus
-                              ? Color(0xff3497FD)
-                              : Colors.black,
-                          letterSpacing: -0.28,
-                          fontWeight: FontWeight.w700,
-                          height: 1.2142857142857142,
-                        ),
-                      ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                        child: TextField(
-                            focusNode: model.contentFocus,
-                            controller: model._contentTextController,
-                            maxLength: 2500,
-                            inputFormatters: [
-                              ModifiedLengthLimitingTextInputFormatter(2500)
-                            ],
-                            maxLines: null,
-                            decoration: InputDecoration(
-                                hintText: "어떤 이슈인가요?",
-                                hintStyle: GoogleFonts.notoSans(
+                                ),
+                              ),
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(left: 16, right: 16),
+                                child: TextField(
+                                    focusNode: model.titleFocus,
+                                    controller: model._titleTextController,
+                                    maxLength: 50,
+                                    inputFormatters: [
+                                      ModifiedLengthLimitingTextInputFormatter(50)
+                                    ],
+                                    decoration: InputDecoration(
+                                        hintText: "제목을 지어주세요!",
+                                        hintStyle: GoogleFonts.notoSans(
+                                          fontSize: 14,
+                                          color: const Color(0xffb1b1b1),
+                                          letterSpacing: -0.28,
+                                          fontWeight: FontWeight.w300,
+                                          height: 1.2142857142857142,
+                                        )))),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 16),
+                              child: Text(
+                                "내용",
+                                style: GoogleFonts.notoSans(
                                   fontSize: 14,
-                                  color: const Color(0xffb1b1b1),
+                                  color: model.isContentFocus
+                                      ? Color(0xff3497FD)
+                                      : Colors.black,
                                   letterSpacing: -0.28,
-                                  fontWeight: FontWeight.w300,
+                                  fontWeight: FontWeight.w700,
                                   height: 1.2142857142857142,
-                                )))),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    BallImageEditComponent(
-                        margin: EdgeInsets.only(top: 32),
-                        ballImageEditComponentController:
-                            model.ballImageEditComponentController,
-                        im001mode: im001mode,
-                        preSetBallResDto: preSetBallResDto),
-                    YoutubeUrlUploadComponent(
-                      margin: EdgeInsets.only(top: 32, right: 16, left: 16),
-                      youtubeUrlUploadComponentController:
-                          model.youtubeUrlUploadComponentController,
-                      im001mode: im001mode,
-                      preSetBallResDto: preSetBallResDto,
-                    ),
-                    BallTagEditComponent(
-                      im001mode: im001mode,
-                      preSetFBallTagResDtos: preSetFBallTagResDtos,
-                      ballTagEditComponentController:
-                          model.ballTagEditComponentController,
-                      margin: EdgeInsets.only(left: 16, right: 16, top: 32),
-                    )
-                  ],
-                )),
-              )),
+                                ),
+                              ),
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(left: 16, right: 16),
+                                child: TextField(
+                                    focusNode: model.contentFocus,
+                                    controller: model._contentTextController,
+                                    maxLength: 2500,
+                                    inputFormatters: [
+                                      ModifiedLengthLimitingTextInputFormatter(2500)
+                                    ],
+                                    maxLines: null,
+                                    decoration: InputDecoration(
+                                        hintText: "어떤 이슈인가요?",
+                                        hintStyle: GoogleFonts.notoSans(
+                                          fontSize: 14,
+                                          color: const Color(0xffb1b1b1),
+                                          letterSpacing: -0.28,
+                                          fontWeight: FontWeight.w300,
+                                          height: 1.2142857142857142,
+                                        )))),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            BallImageEditComponent(
+                                margin: EdgeInsets.only(top: 32),
+                                ballImageEditComponentController:
+                                model.ballImageEditComponentController,
+                                im001mode: makePageMode,
+                                preSetBallResDto: preSetBallResDto),
+                            YoutubeUrlUploadComponent(
+                              margin: EdgeInsets.only(top: 32, right: 16, left: 16),
+                              youtubeUrlUploadComponentController:
+                              model.youtubeUrlUploadComponentController,
+                              im001mode: makePageMode,
+                              preSetBallResDto: preSetBallResDto,
+                            ),
+                            BallTagEditComponent(
+                              im001mode: makePageMode,
+                              preSetFBallTagResDtos: preSetFBallTagResDtos,
+                              ballTagEditComponentController:
+                              model.ballTagEditComponentController,
+                              margin: EdgeInsets.only(left: 16, right: 16, top: 32),
+                            )
+                          ],
+                        )),
+                  )),
               Container(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 decoration: BoxDecoration(
@@ -234,15 +236,15 @@ class IM001BottomSheetBody extends StatelessWidget {
                       isBoxShadow: false,
                       icon: model.youtubeUrlUploadComponentController!.isShow()
                           ? Icon(
-                              ForutonaIcon.youtube_1,
-                              size: 20,
-                              color: Colors.red,
-                            )
+                        ForutonaIcon.youtube_1,
+                        size: 20,
+                        color: Colors.red,
+                      )
                           : Icon(
-                              ForutonaIcon.youtube1,
-                              size: 20,
-                              color: Color(0xff3A3E3F),
-                            ),
+                        ForutonaIcon.youtube1,
+                        size: 20,
+                        color: Color(0xff3A3E3F),
+                      ),
                       onTap: () {
                         model.youtubeBtnToggle();
                       },
@@ -270,7 +272,11 @@ class IM001BottomSheetBody extends StatelessWidget {
                 ),
               )
             ],
-          );
+          )
+
+
+
+          ;
         },
       ),
     );
@@ -306,7 +312,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   final Function(bool)? onComplete;
 
-  final IM001Mode? im001mode;
+  final MakePageMode? im001mode;
 
   final FBallResDto? preSetBallResDto;
 
@@ -365,7 +371,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
       _checkComplete();
     });
 
-    if (im001mode == IM001Mode.modify) {
+    if (im001mode == MakePageMode.modify) {
       _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
           fBallResDto: preSetBallResDto!, geoLocatorAdapter: sl());
       _titleTextController!.text = _issueBallDisPlayUseCase!.ballName();
@@ -423,13 +429,17 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
     ballTagEditComponentController!.toggle();
     notifyListeners();
   }
+  void changeDisplayAddress(String value) {
+    _addressTextController!.text = value;
+    notifyListeners();
+  }
 }
 
 class IM001BottomSheetBodyController {
   IM001BottomSheetBodyViewModel? _im001bottomSheetBodyViewModel;
 
   changeDisplayAddress(String value) {
-    _im001bottomSheetBodyViewModel!._addressTextController!.text = value;
+    _im001bottomSheetBodyViewModel!.changeDisplayAddress(value);
   }
 
   String getBallName() {
@@ -464,4 +474,5 @@ class IM001BottomSheetBodyController {
     return _im001bottomSheetBodyViewModel!.ballTagEditComponentController!
         .getTags();
   }
+
 }

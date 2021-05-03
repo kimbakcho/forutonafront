@@ -92,4 +92,6 @@ class BallMakeButton extends StatelessWidget {
   }
 }
 
-class BallMakeButtonViewModel extends ChangeNotifier {}
+class BallMakeButtonViewModel extends ChangeNotifier {
+
+}

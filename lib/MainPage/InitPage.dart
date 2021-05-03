@@ -45,7 +45,7 @@ class InitPageViewModel extends ChangeNotifier {
     }
     var hasPermission = await locationAdapter.hasPermission();
     var positionServiceEnabled =  await locationAdapter.serviceEnabled();
-    if (hasPermission != PermissionStatus.granted) {
+    if (hasPermission != PermissionStatus.whileInUse) {
       await Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) {
         return Z004CodeMainPage();

@@ -1,0 +1,3 @@
+enum MakePageMode {
+  create,modify
+}

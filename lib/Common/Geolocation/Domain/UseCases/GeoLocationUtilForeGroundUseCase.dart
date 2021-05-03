@@ -10,6 +10,8 @@ import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtil
 import 'package:forutonafront/Common/SharedPreferencesAdapter/SharedPreferencesAdapter.dart';
 import 'package:forutonafront/Page/ZCodePage/Z004/Z004CodeMainPage.dart';
 import 'package:forutonafront/Page/ZCodePage/Z005/Z005CodeMainPage.dart';
+import 'package:geolocator/geolocator.dart' as tGeoLocation;
+
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
@@ -49,7 +51,7 @@ class GeoLocationUtilForeGroundUseCase
     _hasPermisstion = await locationAdapter.hasPermission();
     bool positionServiceEnabled = await locationAdapter.serviceEnabled();
     Position resultPosition;
-    if (_hasPermisstion != PermissionStatus.granted ||
+    if (_hasPermisstion != PermissionStatus.whileInUse ||
         !positionServiceEnabled) {
       resultPosition = await getLastKnowPonePosition();
     } else {
@@ -122,6 +124,7 @@ class GeoLocationUtilForeGroundUseCase
         return false;
       } else if (_permissionGranted == PermissionStatus.deniedForever) {
         _geoRequestMutex.release();
+        // await tGeoLocation.Geolocator.openAppSettings();
         return false;
       }
     }

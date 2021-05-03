@@ -6,7 +6,7 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallImageListUpLoadUse
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
-import 'package:forutonafront/Page/ICodePage/IM001/IM001Mode.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MakePageMode.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ import 'BallImageItem.dart';
 class BallImageEditComponent extends StatelessWidget {
   final BallImageEditComponentController? ballImageEditComponentController;
   final EdgeInsets margin;
-  final IM001Mode? im001mode;
+  final MakePageMode? im001mode;
 
   final FBallResDto? preSetBallResDto;
 
@@ -93,7 +93,7 @@ class BallImageEditComponent extends StatelessWidget {
 
 class BallImageEditComponentViewModel extends ChangeNotifier {
 
-  final IM001Mode? im001mode;
+  final MakePageMode? im001mode;
 
   final FBallResDto? preSetBallResDto;
   List<BallImageItem?> images = [];
@@ -110,7 +110,7 @@ class BallImageEditComponentViewModel extends ChangeNotifier {
     if (ballImageEditComponentController != null) {
       ballImageEditComponentController!._ballImageEditComponentViewModel = this;
     }
-    if(im001mode==IM001Mode.modify){
+    if(im001mode==MakePageMode.modify){
       _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(fBallResDto: preSetBallResDto!,geoLocatorAdapter: sl());
       images = _issueBallDisPlayUseCase!.getDesImages();
     }

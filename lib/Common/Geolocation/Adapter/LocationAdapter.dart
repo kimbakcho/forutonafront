@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart' as Location;
 import 'package:forutonafront/Common/Geolocation/Data/Value/PermissionStatus.dart' as Adapter;
@@ -24,24 +25,27 @@ class LocationAdapterImpl implements LocationAdapter {
 
   @override
   Future<Adapter.PermissionStatus>  hasPermission() async {
-    return changeAdapterPermissionStatusStatue(await location!.hasPermission());
+    LocationPermission permission = await Geolocator.checkPermission();
+    return changeAdapterPermissionStatusStatue(permission);
   }
 
   @override
   Future<Adapter.PermissionStatus> requestPermission()async {
     //Release 모드에서 Location Lib 의 requestPermissions API에 문제가 있는것으로 확인
-    var permissionStatus = await location!.requestPermission();
+    var permissionStatus = await Geolocator.requestPermission();
     return changeAdapterPermissionStatusStatue(permissionStatus);
   }
 
-  Adapter.PermissionStatus changeAdapterPermissionStatusStatue(Location.PermissionStatus status) {
-    if(status == Location.PermissionStatus.granted){
-      return  Adapter.PermissionStatus.granted;
-    } else if(status == Location.PermissionStatus.denied){
+  Adapter.PermissionStatus changeAdapterPermissionStatusStatue(LocationPermission status) {
+    if(status == LocationPermission.whileInUse){
+      return  Adapter.PermissionStatus.whileInUse;
+    } else if(status == LocationPermission.denied){
       return  Adapter.PermissionStatus.denied;
-    }else if(status == Location.PermissionStatus.deniedForever){
+    }else if(status == LocationPermission.deniedForever){
       return  Adapter.PermissionStatus.deniedForever;
-    }else {
+    }else if(status == LocationPermission.always){
+      return  Adapter.PermissionStatus.always;
+    } else {
       throw Exception("don't Support PermissionStatus Type ");
     }
   }
