@@ -20,6 +20,7 @@ import 'package:forutonafront/Common/SearchHistory/Domain/Repository/SearchHisto
 
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Components/InputSearchBar/InputSearchBar.dart';
+import 'package:forutonafront/Components/MapPositionSelector/MapPositionSelector.dart';
 import 'package:forutonafront/Page/HCodePage/H008/H008MainView.dart';
 import 'package:forutonafront/Page/HCodePage/H008/PlaceListFromSearchTextWidget.dart';
 import 'package:forutonafront/Page/HCodePage/H010/H010MainView.dart';
@@ -43,6 +44,7 @@ class MakeCommonMainPage extends StatelessWidget {
   final Position? preSetPosition;
   final String? preSetAddress;
   final MakeCommonMainPageController? makeCommonMainPageController;
+  final String ballName;
 
   MakeCommonMainPage(
       {Key? key,
@@ -53,7 +55,7 @@ class MakeCommonMainPage extends StatelessWidget {
       this.makeCommonMainPageController,
       this.preSetPosition,
       this.preSetAddress,
-      this.onChangeDisplayAddress})
+      this.onChangeDisplayAddress,required this.ballName})
       : super(key: key);
 
   @override
@@ -72,9 +74,10 @@ class MakeCommonMainPage extends StatelessWidget {
           return Scaffold(
 
               body: SlidingUpPanel(
+                padding: MediaQuery.of(context).viewInsets.bottom > 100 ? EdgeInsets.only(top: MediaQuery.of(context).padding.top) : EdgeInsets.zero,
 
             panel: Container(
-              margin: EdgeInsets.only(top: 50),
+              margin:  EdgeInsets.only(top: 50),
               padding: EdgeInsets.only(bottom: max(MediaQuery.of(context).viewInsets.bottom-26,0)),
               child: makeBottomBodySheet,
             ),
@@ -83,102 +86,11 @@ class MakeCommonMainPage extends StatelessWidget {
                 topLeft: Radius.circular(15.0),
                 topRight: Radius.circular(15.0)),
             maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top-3,
-            body: Container(
-              padding: MediaQuery.of(context).padding,
-              child: Column(
-                children: [
-                  Container(
-                      color: Colors.white,
-                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: Row(children: [
-                        SizedBox(width: 16),
-                        Material(
-                          color: Color(0xffF6F6F6),
-                          shape: CircleBorder(),
-                          child: InkWell(
-                            customBorder: CircleBorder(),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Container(
-                              width: 36,
-                              height: 36,
-                              child: Icon(Icons.close),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                            child: Material(
-                          color: Color(0xffF6F6F6),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0))),
-                          child: InkWell(
-                            customBorder: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0))),
-                            onTap: () {
-                              model.gotoAddressSearchPage();
-                            },
-                            child: Container(
-                              height: 36,
-                              padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "주소 검색",
-                                style: GoogleFonts.notoSans(
-                                    color: Color(0xffB1B1B1)),
-                              ),
-                            ),
-                          ),
-                        )),
-                        SizedBox(width: 16),
-                      ])),
-                  Expanded(
-                      child: Container(
-                    child: Stack(
-                      children: [
-                        GoogleMap(
-                          initialCameraPosition: model.initCameraPosition,
-                          onCameraMove: model.onCameraMove,
-                          onMapCreated: model.onCreateMap,
-                          onCameraIdle: model.onCameraIdle,
-                          zoomControlsEnabled: false,
-                        ),
-                        Center(
-                            child: IgnorePointer(
-                                child: Container(
-                                    height: 60,
-                                    width: 43,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image:
-                                                AssetImage(ballIconPath)))))),
-                        makePageMode == MakePageMode.create
-                            ? Positioned(
-                                right: 16,
-                                top: 16,
-                                child: CircleIconBtn(
-                                  color: Colors.white,
-                                  width: 36,
-                                  height: 36,
-                                  onTap: () {
-                                    model.moveToMyPosition();
-                                  },
-                                  icon: Icon(
-                                    Icons.my_location,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              )
-                            : Container(width: 0, height: 0)
-                      ],
-                    ),
-                    margin: EdgeInsets.only(bottom: 71),
-                  )),
-                ],
-              ),
+            body: MapPositionSelector(
+              iconPath: ballIconPath,
+              initCameraPosition: model.initCameraPosition,
+              controller: model.mapPositionSelectorController,
+              onMoveMap: model.onMoveMap,
             ),
             onPanelOpened: () {
               model.makeCommonBottomSheetHeaderController
@@ -191,6 +103,7 @@ class MakeCommonMainPage extends StatelessWidget {
             backdropColor: Colors.black,
             backdropEnabled: true,
             header: MakeCommonBottomSheetHeader(
+              ballName: ballName,
               onNextBtnTap: () {
                 model.panelController.open();
               },
@@ -206,16 +119,11 @@ class MakeCommonMainPage extends StatelessWidget {
   }
 }
 
-class MakeCommonMainPageViewModel extends ChangeNotifier
-    implements InputSearchBarListener, PlaceListFromSearchTextWidgetListener {
+class MakeCommonMainPageViewModel extends ChangeNotifier {
   late CameraPosition initCameraPosition;
 
   final GeoLocationUtilForeGroundUseCaseInputPort
       _geoLocationUtilForeGroundUseCase = sl();
-
-  late CameraPosition currentPosition;
-
-  Completer<GoogleMapController> _googleMapController = Completer();
 
   final BuildContext context;
 
@@ -247,6 +155,8 @@ class MakeCommonMainPageViewModel extends ChangeNotifier
 
   late Widget bottomSheet;
 
+  MapPositionSelectorController mapPositionSelectorController = MapPositionSelectorController();
+
 
   MakeCommonMainPageViewModel(this.context, this._mapBallMarkerFactory,
       {required this.makePageMode,
@@ -267,29 +177,22 @@ class MakeCommonMainPageViewModel extends ChangeNotifier
           zoom: 14.56,
           target: LatLng(currentWithLastPositionInMemory!.latitude!,
               currentWithLastPositionInMemory.longitude!));
-      currentPosition = initCameraPosition;
     } else {
       initCameraPosition = new CameraPosition(
           zoom: 14.56,
           target:
               LatLng(preSetPosition!.latitude!, preSetPosition!.longitude!));
-      currentPosition = initCameraPosition;
     }
   }
 
-  void onCreateMap(GoogleMapController controller) async {
-    _googleMapController.complete(controller);
-    Position position;
-    if (makePageMode == MakePageMode.create) {
-      position = await moveToMyPosition();
-    } else {
-      position = Position(
-          latitude: preSetPosition!.latitude,
-          longitude: preSetPosition!.longitude);
-    }
+  onMoveMap(CameraPosition position) async {
 
+    Position newPosition = Position(
+      longitude: position.target.longitude,
+      latitude:  position.target.latitude
+    ) ;
     String address =
-        await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
+        await _geoLocationUtilForeGroundUseCase.getPositionAddress(newPosition);
     print(address);
     if (onChangeDisplayAddress != null) {
       onChangeDisplayAddress!(address);
@@ -302,65 +205,19 @@ class MakeCommonMainPageViewModel extends ChangeNotifier
     notifyListeners();
   }
 
-  void onCameraIdle() async {
-    var position2 = Position(
-        latitude: currentPosition.target.latitude,
-        longitude: currentPosition.target.longitude);
-    String address =
-        await _geoLocationUtilForeGroundUseCase.getPositionAddress(position2);
-    if (onChangeDisplayAddress != null) {
-      onChangeDisplayAddress!(address);
-    }
-    makeCommonBottomSheetHeaderController.changeDisplayAddress(address);
-    notifyListeners();
-  }
-
-  moveToMyPosition() async {
-    var position =
-        await _geoLocationUtilForeGroundUseCase.getCurrentWithLastPosition();
-    GoogleMapController mapController = await _googleMapController.future;
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(position.latitude!, position.longitude!), zoom: 14.5)));
-    return position;
-  }
-
-  void onCameraMove(CameraPosition position) async {
-    currentPosition = position;
-  }
-
-  void gotoAddressSearchPage() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return H010MainView(
-          inputSearchBarListener: this,
-          searchHistoryDataSourceKey:
-              SearchHistoryDataSourceKey.AddressSearchHistoryDataSource);
-    }));
-  }
-
-  //지도 찾기
-  @override
-  Future<void> onSearch(String search, {BuildContext? context}) async {
-    Navigator.of(this.context).pop();
-    Navigator.of(this.context).push(MaterialPageRoute(builder: (_) {
-      return H008MainView(
-          initSearchText: search, placeListFromSearchTextWidgetListener: this);
-    }));
-  }
-
-  @override
-  onPlaceListTabPosition(Position position) async {
-    Navigator.of(context).pop();
-    GoogleMapController mapController = await _googleMapController.future;
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(position.latitude!, position.longitude!), zoom: 14.5)));
-
-    headBarAddress =
-        await _geoLocationUtilForeGroundUseCase.getPositionAddress(position);
-  }
-
   get isBottomOpened {
     return panelController.isPanelOpen;
   }
+
+  Position getCurrentPosition(){
+    var currentPosition = mapPositionSelectorController.getCurrentPosition();
+    Position newPosition = Position(
+      latitude: currentPosition.target.latitude,
+      longitude:  currentPosition.target.longitude
+    );
+    return newPosition;
+  }
+
 }
 
 class MakeCommonMainPageController {
@@ -368,11 +225,7 @@ class MakeCommonMainPageController {
 
   Position? getCurrentPosition() {
     if (_viewModel != null) {
-      var currentPosition = _viewModel!.currentPosition;
-
-      return Position(
-          latitude: currentPosition.target.latitude,
-          longitude: currentPosition.target.longitude);
+      return _viewModel!.getCurrentPosition();
     } else {
       return null;
     }

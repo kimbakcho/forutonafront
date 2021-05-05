@@ -17,7 +17,7 @@ import 'package:forutonafront/AppBis/Tag/Dto/TagInsertReqDto.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
-import 'package:forutonafront/Page/ICodePage/IM001/IM001BottomSheetBody.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MackCommonBottomSheetBody.dart';
 import 'package:forutonafront/Page/MakeCommonPage/MakeCommonBottomSheetHeader.dart';
 import 'package:forutonafront/Page/MakeCommonPage/MakeCommonMainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
@@ -48,7 +48,7 @@ class IM001MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => IM001MainPageViewModel(
-        buildContext: context,
+          buildContext: context,
           makePageMode: makePageMode,
           preSetBallResDto: preSetBallResDto,
           preSetFBallTagResDtos: preSetFBallTagResDtos),
@@ -64,12 +64,17 @@ class IM001MainPage extends StatelessWidget {
           }
           return MakeCommonMainPage(
               makePageMode: makePageMode,
-              makeBottomBodySheet: IM001BottomSheetBody(
+              ballName: "이슈볼",
+              makeBottomBodySheet: MackCommonBottomSheetBody(
+                ballName: "이슈볼",
+                ballContentDescription: "어떤 이슈인가요?",
                 initAddress: "로딩중",
                 onComplete: model.onComplete,
-                im001bottomSheetBodyController: model._im001bottomSheetBodyController,
+                makeCommonBottomSheetBodyController:
+                    model._im001bottomSheetBodyController,
                 onChangeAddress: (value) {
-                  model._im001bottomSheetBodyController.changeDisplayAddress(value);
+                  model._im001bottomSheetBodyController
+                      .changeDisplayAddress(value);
                 },
                 makePageMode: makePageMode,
                 preSetBallResDto: preSetBallResDto,
@@ -86,7 +91,8 @@ class IM001MainPage extends StatelessWidget {
               makeOpenBottomHeaderSheet: MakeCommonHeaderSheet(
                 onCreateBall: model._onCreateBall,
                 onModifyBall: model._onModifyBall,
-                makeCommonHeaderSheetController: model.makeCommonHeaderSheetController,
+                makeCommonHeaderSheetController:
+                    model.makeCommonHeaderSheetController,
               ));
         },
       ),
@@ -101,18 +107,17 @@ class IM001MainPageViewModel extends ChangeNotifier {
   FBallResDto? preSetBallResDto;
   List<FBallTagResDto>? preSetFBallTagResDtos;
 
-  IM001BottomSheetBodyController _im001bottomSheetBodyController =
-      IM001BottomSheetBodyController();
+  MakeCommonBottomSheetBodyController _im001bottomSheetBodyController =
+      MakeCommonBottomSheetBodyController();
   final InsertBallUseCaseInputPort insertBallUseCaseInputPort = sl();
 
   final UpdateBallUseCaseInputPort updateBallUseCaseInputPort = sl();
 
   final MakeCommonMainPageController makeCommonMainPageController =
-  MakeCommonMainPageController();
+      MakeCommonMainPageController();
 
-  final MakeCommonHeaderSheetController makeCommonHeaderSheetController = MakeCommonHeaderSheetController(
-    pageLength: 1
-  );
+  final MakeCommonHeaderSheetController makeCommonHeaderSheetController =
+      MakeCommonHeaderSheetController(pageLength: 1);
 
   IM001MainPageViewModel({
     required this.buildContext,
@@ -123,7 +128,8 @@ class IM001MainPageViewModel extends ChangeNotifier {
 
   onComplete(bool value) {
     this.isCanComplete = value;
-    makeCommonHeaderSheetController.setIsCanComplete(value,makeCommonMainPageController.isBottomOpened,0);
+    makeCommonHeaderSheetController.setIsCanComplete(
+        value, makeCommonMainPageController.isBottomOpened, 0);
   }
 
   _onCreateBall(BuildContext context) async {
@@ -178,7 +184,6 @@ class IM001MainPageViewModel extends ChangeNotifier {
     Navigator.of(context).pop();
     Navigator.of(context).pop();
     Navigator.of(context).pop(fBallResDto);
-
 
     notifyListeners();
   }

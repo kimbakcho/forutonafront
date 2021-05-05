@@ -45,7 +45,9 @@ class CircleIconBtn extends StatelessWidget {
           child: InkWell(
               customBorder: CircleBorder(),
               onTap: () {
-                onTap!();
+                if(onTap!=null){
+                  onTap!();
+                }
               },
               child: Container(
                   width: width,

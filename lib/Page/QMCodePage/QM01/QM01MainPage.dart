@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
-import 'package:forutonafront/Page/ICodePage/IM001/IM001BottomSheetBody.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MackCommonBottomSheetBody.dart';
 import 'package:forutonafront/Page/MakeCommonPage/MakeCommonHeaderSheet.dart';
 import 'package:forutonafront/Page/MakeCommonPage/MakeCommonMainPage.dart';
 import 'package:forutonafront/Page/MakeCommonPage/MakePageMode.dart';
 import 'package:provider/provider.dart';
+
+import 'QM01002Sheet/QM01002Sheet.dart';
 
 class QM01MainPage extends StatelessWidget {
   final MakePageMode makePageMode;
@@ -36,18 +38,22 @@ class QM01MainPage extends StatelessWidget {
           }
           return MakeCommonMainPage(
             makePageMode: makePageMode,
+            ballName: "퀘스트볼",
             ballIconPath: "assets/MarkesImages/questballmaker.png",
             makeBottomBodySheet: PageView(
               physics: NeverScrollableScrollPhysics(),
               controller: model.pageController,
               onPageChanged: (value) {
+                FocusScope.of(context).unfocus();
                 model.makeCommonHeaderSheetController.setCurrentPage(
                     value, model.makeCommonMainPageController.isBottomOpened);
               },
               children: [
-                IM001BottomSheetBody(
-                  im001bottomSheetBodyController:
-                      model.im001bottomSheetBodyController,
+                MackCommonBottomSheetBody(
+                  ballName: "퀘스트볼",
+                  ballContentDescription: "어떤 퀘스트 인가요?",
+                  makeCommonBottomSheetBodyController:
+                      model.makeCommonBottomSheetBodyController,
                   makePageMode: makePageMode,
                   preSetBallResDto: preSetBallResDto,
                   preSetFBallTagResDtos: preSetFBallTagResDtos,
@@ -57,15 +63,13 @@ class QM01MainPage extends StatelessWidget {
                   onChangeAddress: (value) {},
                   initAddress: "로딩중",
                 ),
-                Container(
-                  child: Text("Quest"),
-                )
+                QM01002Sheet()
               ],
             ),
             preSetAddress: preSetAddress,
             preSetPosition: preSetPosition,
             onChangeDisplayAddress: (address) {
-              model.im001bottomSheetBodyController
+              model.makeCommonBottomSheetBodyController
                   .changeDisplayAddress(address);
             },
             makeCommonMainPageController: model.makeCommonMainPageController,
@@ -73,6 +77,7 @@ class QM01MainPage extends StatelessWidget {
               onModifyBall: (context) {},
               onCreateBall: (context) {},
               onNextPage: (value) {
+
                 model.pageController.jumpToPage(value);
                 model.makeCommonHeaderSheetController.setCurrentPage(
                     value, model.makeCommonMainPageController.isBottomOpened);
@@ -88,8 +93,8 @@ class QM01MainPage extends StatelessWidget {
 }
 
 class QM01MainPageViewModel extends ChangeNotifier {
-  IM001BottomSheetBodyController im001bottomSheetBodyController =
-      IM001BottomSheetBodyController();
+  MakeCommonBottomSheetBodyController makeCommonBottomSheetBodyController =
+      MakeCommonBottomSheetBodyController();
   MakeCommonMainPageController makeCommonMainPageController =
       MakeCommonMainPageController();
 

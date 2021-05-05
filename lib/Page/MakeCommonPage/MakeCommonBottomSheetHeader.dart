@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'MakePageMode.dart';
 
 class MakeCommonBottomSheetHeader extends StatelessWidget {
+  final String ballName;
   final String displayAddress;
   final Function? onNextBtnTap;
   final MakePageMode makePageMode;
@@ -21,6 +22,7 @@ class MakeCommonBottomSheetHeader extends StatelessWidget {
       {Key? key,
       required this.displayAddress,
       required this.makeCommonBottomSheetHeaderController,
+        required this.ballName,
       this.onNextBtnTap,
       required this.makePageMode,
         required this.openHeaderWidget,
@@ -74,7 +76,7 @@ class MakeCommonBottomSheetHeader extends StatelessWidget {
                               children: [
                                 Container(
                                     child: Text(
-                                  '이슈볼 장소',
+                                  '$ballName 장소',
                                   style: GoogleFonts.notoSans(
                                     fontSize: 14,
                                     color: const Color(0xff000000),

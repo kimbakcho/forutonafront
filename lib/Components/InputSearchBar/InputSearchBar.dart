@@ -134,5 +134,5 @@ class InputSearchBarViewModel extends ChangeNotifier {
 }
 
 abstract class InputSearchBarListener {
-  Future<void> onSearch(String search, {BuildContext context});
+  Future<void>? onSearch(String search, {required BuildContext context});
 }

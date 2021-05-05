@@ -16,20 +16,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'Component/BallImageEdit/BallImageEditComponent.dart';
-import 'Component/BallImageEdit/BallImageItem.dart';
-import 'Component/BallTageEdit/BallTagEditComponent.dart';
-import 'Component/BallTageEdit/TagEditDto.dart';
-import '../../MakeCommonPage/MakePageMode.dart';
+import '../ICodePage/IM001/Component/BallImageEdit/BallImageEditComponent.dart';
+import '../ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
+import '../ICodePage/IM001/Component/BallTageEdit/BallTagEditComponent.dart';
+import '../ICodePage/IM001/Component/BallTageEdit/TagEditDto.dart';
+import 'MakePageMode.dart';
 
-class IM001BottomSheetBody extends StatelessWidget {
+
+class MackCommonBottomSheetBody extends StatefulWidget {
   final Function(String)? onChangeAddress;
 
   final Function(bool)? onComplete;
 
+  final String ballName;
+
+  final String ballContentDescription;
+
   final String? initAddress;
 
-  final IM001BottomSheetBodyController im001bottomSheetBodyController;
+  final MakeCommonBottomSheetBodyController makeCommonBottomSheetBodyController;
 
   final MakePageMode? makePageMode;
 
@@ -37,29 +42,34 @@ class IM001BottomSheetBody extends StatelessWidget {
 
   final List<FBallTagResDto>? preSetFBallTagResDtos;
 
-  IM001BottomSheetBody(
+  MackCommonBottomSheetBody(
       {Key? key,
-      this.initAddress,
-      this.onChangeAddress,
-      this.onComplete,
-      required this.im001bottomSheetBodyController,
-      this.makePageMode,
-      this.preSetBallResDto,
-      this.preSetFBallTagResDtos})
+        this.initAddress,
+        this.onChangeAddress,
+        this.onComplete,
+        required this.makeCommonBottomSheetBodyController,
+        this.makePageMode,
+        this.preSetBallResDto,
+        this.preSetFBallTagResDtos, required this.ballName,required this.ballContentDescription})
       : super(key: key);
 
   @override
+  _MackCommonBottomSheetBodyState createState() => _MackCommonBottomSheetBodyState();
+}
+
+class _MackCommonBottomSheetBodyState extends State<MackCommonBottomSheetBody> with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => IM001BottomSheetBodyViewModel(
-          onChangeAddress,
-          initAddress,
-          onComplete,
-          im001bottomSheetBodyController,
-          makePageMode,
-          preSetBallResDto,
-          preSetFBallTagResDtos),
-      child: Consumer<IM001BottomSheetBodyViewModel>(
+      create: (_) => MakeCommonBottomSheetBodyViewModel(
+          widget.onChangeAddress,
+          widget.initAddress,
+          widget.onComplete,
+          widget.makeCommonBottomSheetBodyController,
+          widget.makePageMode,
+          widget.preSetBallResDto,
+          widget.preSetFBallTagResDtos),
+      child: Consumer<MakeCommonBottomSheetBodyViewModel>(
         builder: (_, model, child) {
           return Column(
             children: [
@@ -72,7 +82,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                             SizedBox(height: 10),
                             Container(
                               padding: EdgeInsets.only(left: 16),
-                              child: Text("이슈볼 장소",
+                              child: Text("${widget.ballName} 장소",
                                   style: GoogleFonts.notoSans(
                                     fontSize: 14,
                                     color: const Color(0xff000000),
@@ -108,6 +118,8 @@ class IM001BottomSheetBody extends StatelessWidget {
                             Container(
                                 margin: EdgeInsets.only(left: 16, right: 16),
                                 child: TextField(
+                                    autofocus: false,
+                                    autocorrect: false,
                                     focusNode: model.titleFocus,
                                     controller: model._titleTextController,
                                     maxLength: 50,
@@ -144,6 +156,8 @@ class IM001BottomSheetBody extends StatelessWidget {
                             Container(
                                 margin: EdgeInsets.only(left: 16, right: 16),
                                 child: TextField(
+                                    autofocus: false,
+                                    autocorrect: false,
                                     focusNode: model.contentFocus,
                                     controller: model._contentTextController,
                                     maxLength: 2500,
@@ -152,7 +166,7 @@ class IM001BottomSheetBody extends StatelessWidget {
                                     ],
                                     maxLines: null,
                                     decoration: InputDecoration(
-                                        hintText: "어떤 이슈인가요?",
+                                        hintText: widget.ballContentDescription,
                                         hintStyle: GoogleFonts.notoSans(
                                           fontSize: 14,
                                           color: const Color(0xffb1b1b1),
@@ -167,18 +181,18 @@ class IM001BottomSheetBody extends StatelessWidget {
                                 margin: EdgeInsets.only(top: 32),
                                 ballImageEditComponentController:
                                 model.ballImageEditComponentController,
-                                im001mode: makePageMode,
-                                preSetBallResDto: preSetBallResDto),
+                                im001mode: widget.makePageMode,
+                                preSetBallResDto: widget.preSetBallResDto),
                             YoutubeUrlUploadComponent(
                               margin: EdgeInsets.only(top: 32, right: 16, left: 16),
                               youtubeUrlUploadComponentController:
                               model.youtubeUrlUploadComponentController,
-                              im001mode: makePageMode,
-                              preSetBallResDto: preSetBallResDto,
+                              im001mode: widget.makePageMode,
+                              preSetBallResDto: widget.preSetBallResDto,
                             ),
                             BallTagEditComponent(
-                              im001mode: makePageMode,
-                              preSetFBallTagResDtos: preSetFBallTagResDtos,
+                              im001mode: widget.makePageMode,
+                              preSetFBallTagResDtos: widget.preSetFBallTagResDtos,
                               ballTagEditComponentController:
                               model.ballTagEditComponentController,
                               margin: EdgeInsets.only(left: 16, right: 16, top: 32),
@@ -187,9 +201,11 @@ class IM001BottomSheetBody extends StatelessWidget {
                         )),
                   )),
               Container(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
+                height: 60,
+                margin: EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xffE4E7E8), width: 2)),
+                    border: Border(
+                        top: BorderSide(color: Color(0xffE4E7E8), width: 1))),
                 child: Row(
                   children: [
                     SizedBox(
@@ -273,17 +289,18 @@ class IM001BottomSheetBody extends StatelessWidget {
               )
             ],
           )
-
-
-
           ;
         },
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
+
 }
 
-class IM001BottomSheetBodyViewModel extends ChangeNotifier {
+class MakeCommonBottomSheetBodyViewModel extends ChangeNotifier {
   String? _currentAddress;
 
   final String? initAddress;
@@ -296,7 +313,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   final Function(String)? onChangeAddress;
 
-  final IM001BottomSheetBodyController? im001bottomSheetBodyController;
+  final MakeCommonBottomSheetBodyController? im001bottomSheetBodyController;
 
   YoutubeUrlUploadComponentController? youtubeUrlUploadComponentController;
 
@@ -320,7 +337,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
 
   IssueBallDisPlayUseCase? _issueBallDisPlayUseCase;
 
-  IM001BottomSheetBodyViewModel(
+  MakeCommonBottomSheetBodyViewModel(
       this.onChangeAddress,
       this.initAddress,
       this.onComplete,
@@ -358,7 +375,7 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
     });
 
     if (im001bottomSheetBodyController != null) {
-      im001bottomSheetBodyController!._im001bottomSheetBodyViewModel = this;
+      im001bottomSheetBodyController!._makeCommonBottomSheetBodyViewModel = this;
     }
     _currentAddress = initAddress;
     _addressTextController = TextEditingController();
@@ -435,43 +452,43 @@ class IM001BottomSheetBodyViewModel extends ChangeNotifier {
   }
 }
 
-class IM001BottomSheetBodyController {
-  IM001BottomSheetBodyViewModel? _im001bottomSheetBodyViewModel;
+class MakeCommonBottomSheetBodyController {
+  MakeCommonBottomSheetBodyViewModel? _makeCommonBottomSheetBodyViewModel;
 
   changeDisplayAddress(String value) {
-    _im001bottomSheetBodyViewModel!.changeDisplayAddress(value);
+    _makeCommonBottomSheetBodyViewModel!.changeDisplayAddress(value);
   }
 
   String getBallName() {
-    return _im001bottomSheetBodyViewModel!._titleTextController!.text;
+    return _makeCommonBottomSheetBodyViewModel!._titleTextController!.text;
   }
 
   String getPlaceAddress() {
-    return _im001bottomSheetBodyViewModel!._currentAddress!;
+    return _makeCommonBottomSheetBodyViewModel!._currentAddress!;
   }
 
   String getContent() {
-    return _im001bottomSheetBodyViewModel!._contentTextController!.text;
+    return _makeCommonBottomSheetBodyViewModel!._contentTextController!.text;
   }
 
   String getYoutubeId() {
-    return _im001bottomSheetBodyViewModel!.youtubeUrlUploadComponentController!
+    return _makeCommonBottomSheetBodyViewModel!.youtubeUrlUploadComponentController!
         .getYoutubeId();
   }
 
   List<BallImageItem?> getBallImages() {
-    return _im001bottomSheetBodyViewModel!.ballImageEditComponentController!
+    return _makeCommonBottomSheetBodyViewModel!.ballImageEditComponentController!
         .getBallImageItems();
   }
 
   Future<List<BallImageItem?>> updateImageAndFillImageUrl() async {
-    await _im001bottomSheetBodyViewModel!.ballImageEditComponentController!
+    await _makeCommonBottomSheetBodyViewModel!.ballImageEditComponentController!
         .updateImageAndFillImageUrl();
     return getBallImages();
   }
 
   List<TagEditItemDto> getTags() {
-    return _im001bottomSheetBodyViewModel!.ballTagEditComponentController!
+    return _makeCommonBottomSheetBodyViewModel!.ballTagEditComponentController!
         .getTags();
   }
 
