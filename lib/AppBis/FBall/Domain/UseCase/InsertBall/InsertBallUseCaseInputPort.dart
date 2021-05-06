@@ -24,5 +24,5 @@ class InsertBallUseCase implements InsertBallUseCaseInputPort{
     }
     return saveFBall;
   }
-
 }
+

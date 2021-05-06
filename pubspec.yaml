@@ -147,6 +147,8 @@ dependencies:
   dots_indicator: ^2.0.0
   #slider
   sliding_up_panel: ^2.0.0+1
+  #시간 설정에 사용
+  duration_picker: "^1.0.0"
 
 module:
   androidX: true

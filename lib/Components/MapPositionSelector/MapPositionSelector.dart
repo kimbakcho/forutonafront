@@ -96,6 +96,8 @@ class MapPositionSelector extends StatelessWidget {
                   child: Stack(
                     children: [
                       GoogleMap(
+                        // myLocationEnabled: true,
+                        // myLocationButtonEnabled: true,
                         initialCameraPosition: model.initCameraPosition,
                         onCameraMove: model.onCameraMove,
                         onMapCreated: model.onCreateMap,
@@ -105,12 +107,12 @@ class MapPositionSelector extends StatelessWidget {
                       Center(
                           child: IgnorePointer(
                               child: Container(
-                                margin: EdgeInsets.only(bottom: 60),
-                                  height: 60,
-                                  width: 43,
+                                margin: EdgeInsets.only(bottom: 40,left: 14),
+                                  height: 40,
+                                  width: 28,
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        fit: BoxFit.fitHeight,
+                                        fit: BoxFit.fill,
                                           image: AssetImage(iconPath)))))),
                       Positioned(
                         right: 16,

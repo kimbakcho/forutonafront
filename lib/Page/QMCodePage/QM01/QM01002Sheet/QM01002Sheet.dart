@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
+import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,19 +16,26 @@ import 'PhotoCertificationWithCheckInWidget.dart';
 import 'QTimeLimitWidget.dart';
 import 'QuestSelectMode.dart';
 import 'QuestSuccessSelect.dart';
-import 'SettingCheckInWidget.dart';
+import 'PositionSelectorWidget.dart';
 
 class QM01002Sheet extends StatefulWidget {
+  final Function(bool) onComplete;
+
+  final QM01002SheetController controller;
+
+  const QM01002Sheet({Key? key, required this.onComplete,required this.controller}) : super(key: key);
+
   @override
   _QM01002SheetState createState() => _QM01002SheetState();
 }
 
 class _QM01002SheetState extends State<QM01002Sheet>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => QM01002SheetViewModel(),
+      create: (_) => QM01002SheetViewModel(onCanComplete: widget.onComplete,controller: widget.controller),
       child: Consumer<QM01002SheetViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -61,7 +72,13 @@ class _QM01002SheetState extends State<QM01002Sheet>
                           margin: EdgeInsets.only(top: 34, left: 16, right: 16),
                           child:
                               model.getPhotoCertificationDescriptionWidget()),
-                      model.timeLimitFlag ? QTimeLimitWidget() : Container()
+                      model.timeLimitFlag ? QTimeLimitWidget(
+                        controller: model._qTimeLimitWidgetController,
+                      ) : Container(),
+                      Container(
+                        margin: EdgeInsets.only(top: 34, left: 16, right: 16),
+                        child: model.getStartPositionSelectWidget(),
+                      )
                     ],
                   ),
                 ),
@@ -96,7 +113,7 @@ class _QM01002SheetState extends State<QM01002Sheet>
                     CircleIconBtn(
                       height: 42,
                       width: 42,
-                      onTap: (){
+                      onTap: () {
                         Fluttertoast.showToast(msg: "준비중 입니다.");
                       },
                       isBoxShadow: false,
@@ -118,6 +135,9 @@ class _QM01002SheetState extends State<QM01002Sheet>
                       width: 42,
                       isBoxShadow: false,
                       color: Color(0xffF6F6F6),
+                      onTap: () {
+                        Fluttertoast.showToast(msg: "준비중 입니다.");
+                      },
                       icon: model.phoneFlag
                           ? Icon(
                               ForutonaIcon.phone2,
@@ -135,7 +155,10 @@ class _QM01002SheetState extends State<QM01002Sheet>
                       width: 42,
                       isBoxShadow: false,
                       color: Color(0xffF6F6F6),
-                      icon: model.startFlag
+                      onTap: () {
+                        model.toggleStartFlag();
+                      },
+                      icon: model.startPositionFlag
                           ? Icon(
                               ForutonaIcon.startflag,
                               size: 15,
@@ -151,6 +174,9 @@ class _QM01002SheetState extends State<QM01002Sheet>
                       height: 42,
                       width: 42,
                       isBoxShadow: false,
+                      onTap: () {
+                        Fluttertoast.showToast(msg: "준비중 입니다.");
+                      },
                       color: Color(0xffF6F6F6),
                       icon: model.lockFlag
                           ? Icon(
@@ -173,9 +199,14 @@ class _QM01002SheetState extends State<QM01002Sheet>
 
   @override
   bool get wantKeepAlive => true;
+
+
 }
 
 class QM01002SheetViewModel extends ChangeNotifier {
+
+  QM01002SheetController controller;
+
   QuestSelectMode currentSelectMode = QuestSelectMode.None;
 
   bool timeLimitFlag = false;
@@ -184,9 +215,66 @@ class QM01002SheetViewModel extends ChangeNotifier {
 
   bool phoneFlag = false;
 
-  bool startFlag = false;
+  bool startPositionFlag = false;
 
   bool lockFlag = false;
+
+  Function(bool) onCanComplete;
+
+  PhotoCertificationDescriptionController _photoCertificationDescriptionController = PhotoCertificationDescriptionController();
+
+  PositionSelectorWidgetController _checkInController =  PositionSelectorWidgetController();
+
+  PositionSelectorWidgetController _startPositionController = PositionSelectorWidgetController();
+
+  QTimeLimitWidgetController _qTimeLimitWidgetController = QTimeLimitWidgetController();
+
+  late Timer timer;
+
+  QM01002SheetViewModel({required this.onCanComplete,required this.controller}){
+    this.controller._viewModel = this;
+    timer = Timer.periodic(Duration(seconds: 1), (time){
+      timer = time;
+      changeCanComplete();
+    });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  changeCanComplete() {
+    if (currentSelectMode != QuestSelectMode.None) {
+      if(currentSelectMode == QuestSelectMode.PhotoCertification){
+        if(_photoCertificationDescriptionController.getText().isNotEmpty){
+          if(startPositionFlag){
+            if(_startPositionController.getSelectPosition() != null){
+              onCanComplete(true);
+              return;
+            }
+          }else {
+            onCanComplete(true);
+            return ;
+          }
+        }
+      }else if(currentSelectMode == QuestSelectMode.CheckInWithPhotoCertification){
+        if(_photoCertificationDescriptionController.getText().isNotEmpty && _checkInController.getSelectPosition() != null){
+          if(startPositionFlag){
+            if(_startPositionController.getSelectPosition() != null){
+              onCanComplete(true);
+              return ;
+            }
+          }else {
+            onCanComplete(true);
+            return ;
+          }
+        }
+      }
+    }
+    onCanComplete(false);
+  }
 
   setCurrentSelectMode(QuestSelectMode? mode) {
     if (mode != null) {
@@ -227,7 +315,9 @@ class QM01002SheetViewModel extends ChangeNotifier {
 
   Widget getPhotoCertificationDescriptionWidget() {
     if (currentSelectMode != QuestSelectMode.None) {
-      return PhotoCertificationDescription();
+      return PhotoCertificationDescription(
+        controller: _photoCertificationDescriptionController,
+      );
     } else {
       return Container();
     }
@@ -235,10 +325,35 @@ class QM01002SheetViewModel extends ChangeNotifier {
 
   Widget getSettingCheckInWidget() {
     if (currentSelectMode == QuestSelectMode.CheckInWithPhotoCertification) {
-      return SettingCheckInWidget();
+      return PositionSelectorWidget(
+        mapIconPath: "assets/MarkesImages/checkinflag.png",
+        label: "체크인 위치",
+        hint: '[!] 지정된 위치 반경 20m 내에서 체크인이 가능합니다.',
+        hint2: "여기를 눌러 체크인 위치를 지정해주세요",
+        controller: _checkInController,
+      );
     } else {
       return Container();
     }
+  }
+
+  Widget getStartPositionSelectWidget() {
+    if (startPositionFlag) {
+      return PositionSelectorWidget(
+        mapIconPath: "assets/MarkesImages/startflag.png",
+        label: "시작 위치",
+        hint: '',
+        hint2: "여기를 눌러 시작 위치를 지정해주세요",
+        controller: _startPositionController,
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  toggleStartFlag() {
+    startPositionFlag = !startPositionFlag;
+    notifyListeners();
   }
 
   Future<QuestSelectMode?> showSelectDialog(BuildContext context) async {
@@ -275,5 +390,45 @@ class QM01002SheetViewModel extends ChangeNotifier {
           );
         });
     return questSelectMode;
+  }
+}
+
+class QM01002SheetController {
+  QM01002SheetViewModel? _viewModel;
+
+  QuestSelectMode getSuccessSelectMode() {
+      return _viewModel!.currentSelectMode;
+  }
+
+  Position? getSelectCheckInPosition() {
+    return _viewModel!._checkInController.getSelectPosition();
+  }
+
+  String? getSelectCheckInAddress(){
+    return _viewModel!._checkInController.getSelectAddress();
+  }
+
+  String getPhotoCertificationDescription(){
+    return _viewModel!._photoCertificationDescriptionController.getText();
+  }
+
+  Duration? getLimitTime(){
+    return _viewModel!._qTimeLimitWidgetController.getSelectDuration();
+  }
+
+  Position? getSelectStartPosition() {
+    return _viewModel!._startPositionController.getSelectPosition();
+  }
+
+  String? getSelectStartPositionAddress(){
+    return _viewModel!._checkInController.getSelectAddress();
+  }
+
+  bool getTimeLimitFlag(){
+    return _viewModel!.timeLimitFlag;
+  }
+
+  bool getStartPositionFlag(){
+    return _viewModel!.startPositionFlag;
   }
 }

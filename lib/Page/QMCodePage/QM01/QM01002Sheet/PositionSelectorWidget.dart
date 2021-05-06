@@ -7,25 +7,40 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-class SettingCheckInWidget extends StatelessWidget {
+class PositionSelectorWidget extends StatelessWidget {
+  final PositionSelectorWidgetController? controller;
 
-  final SettingCheckInWidgetController? controller;
+  final String mapIconPath;
 
+  final String label;
 
-  SettingCheckInWidget({this.controller});
+  final String hint;
+
+  final String hint2;
+
+  PositionSelectorWidget(
+      {this.controller,
+      required this.mapIconPath,
+      required this.label,
+      required this.hint,
+      required this.hint2});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SettingCheckInWidgetViewModel(),
-      child: Consumer<SettingCheckInWidgetViewModel>(
+      create: (_) => PositionSelectorWidgetViewModel(
+          mapIconPath: mapIconPath,
+          controller: controller,
+          label: label,
+          hint2: hint2),
+      child: Consumer<PositionSelectorWidgetViewModel>(
         builder: (_, model, child) {
           return Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "체크인 위치",
+                  label,
                   style: GoogleFonts.notoSans(
                     fontSize: 14,
                     color: const Color(0xff000000),
@@ -50,7 +65,7 @@ class SettingCheckInWidget extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  '[!] 지정된 위치 반경 20m 내에서 체크인이 가능합니다.',
+                  hint,
                   style: GoogleFonts.notoSans(
                     fontSize: 12,
                     color: const Color(0xff7a7a7a),
@@ -68,33 +83,42 @@ class SettingCheckInWidget extends StatelessWidget {
   }
 }
 
-class SettingCheckInWidgetViewModel extends ChangeNotifier {
-
-  SettingCheckInWidgetController? controller;
+class PositionSelectorWidgetViewModel extends ChangeNotifier {
+  PositionSelectorWidgetController? controller;
   Position? selectPosition;
   String? selectAddress;
+  String mapIconPath;
 
+  final String label;
 
-  SettingCheckInWidgetViewModel({this.controller}){
-    if(controller != null){
+  final String hint2;
+
+  PositionSelectorWidgetViewModel(
+      {this.controller,
+      required this.mapIconPath,
+      required this.label,
+      required this.hint2}) {
+    if (controller != null) {
       controller!._viewModel = this;
     }
   }
 
   showMapPositionSelector(BuildContext context) async {
-    var qm01MainPageViewModel = Provider.of<QM01MainPageViewModel>(context,listen: false);
+    var qm01MainPageViewModel =
+        Provider.of<QM01MainPageViewModel>(context, listen: false);
 
     var currentPosition =
         qm01MainPageViewModel.makeCommonMainPageController.getCurrentPosition();
 
     var initPosition = CameraPosition(
-        target: LatLng(currentPosition!.latitude!, currentPosition.longitude!),zoom: 14.4);
+        target: LatLng(currentPosition!.latitude!, currentPosition.longitude!),
+        zoom: 14.4);
 
     await showDialog(
         context: context,
         builder: (context) {
           return MapPositionSelectorWithBottom(
-            iconPath: "assets/MarkesImages/checkinflag.png",
+            iconPath: mapIconPath,
             initCameraPosition: initPosition,
             onSelectPosition: (position, address) {
               selectPosition = position;
@@ -102,21 +126,21 @@ class SettingCheckInWidgetViewModel extends ChangeNotifier {
               Navigator.of(context).pop();
             },
             bottomBtnText: "지정",
-            bottomTitle: "체크인 장소",
+            bottomTitle: label,
           );
         });
     notifyListeners();
   }
-  
-  Widget getSelectedAddressWidget(){
-    if(selectAddress == null){
+
+  Widget getSelectedAddressWidget() {
+    if (selectAddress == null) {
       return Container(
         alignment: Alignment.center,
         height: 46,
         constraints: BoxConstraints(
             maxWidth: double.infinity, minWidth: double.infinity),
         child: Text(
-          "여기를 눌러 시작 위치를 지정해주세요",
+          hint2,
           style: GoogleFonts.notoSans(
             fontSize: 14,
             color: const Color(0xff2f3035),
@@ -126,7 +150,7 @@ class SettingCheckInWidgetViewModel extends ChangeNotifier {
           ),
         ),
       );
-    }else {
+    } else {
       return Container(
         height: 46,
         constraints: BoxConstraints(
@@ -134,12 +158,16 @@ class SettingCheckInWidgetViewModel extends ChangeNotifier {
         child: Row(
           children: [
             Container(
-              child: Icon(ForutonaIcon.checkin2,color: Colors.black,),
+              child: Icon(
+                ForutonaIcon.checkin2,
+                color: Colors.black,
+              ),
             ),
             SizedBox(
               width: 8,
             ),
-            Expanded(child: Text(
+            Expanded(
+                child: Text(
               selectAddress!,
               style: GoogleFonts.notoSans(
                 fontSize: 14,
@@ -155,17 +183,22 @@ class SettingCheckInWidgetViewModel extends ChangeNotifier {
       );
     }
   }
-  
-
 }
 
-class SettingCheckInWidgetController {
-  SettingCheckInWidgetViewModel? _viewModel;
+class PositionSelectorWidgetController {
+  PositionSelectorWidgetViewModel? _viewModel;
 
-  Position? getSelectPosition(){
-    if(_viewModel != null){
+  Position? getSelectPosition() {
+    if (_viewModel != null) {
       return _viewModel!.selectPosition;
-    }else {
+    } else {
+      return null;
+    }
+  }
+  String? getSelectAddress(){
+    if (_viewModel != null) {
+      return _viewModel!.selectAddress;
+    } else {
       return null;
     }
   }

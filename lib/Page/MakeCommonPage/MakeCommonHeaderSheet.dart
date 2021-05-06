@@ -21,10 +21,10 @@ class MakeCommonHeaderSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) =>
-          IM001HeaderSheetViewModel(
+          MakeCommonHeaderSheetViewModel(
               makeCommonHeaderSheetController: makeCommonHeaderSheetController
           ),
-      child: Consumer<IM001HeaderSheetViewModel>(
+      child: Consumer<MakeCommonHeaderSheetViewModel>(
         builder: (_, model, child) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,12 +88,12 @@ class MakeCommonHeaderSheet extends StatelessWidget {
   }
 }
 
-class IM001HeaderSheetViewModel extends ChangeNotifier {
+class MakeCommonHeaderSheetViewModel extends ChangeNotifier {
   MakePageMode makePageMode = MakePageMode.create;
 
   MakeCommonHeaderSheetController makeCommonHeaderSheetController;
 
-  IM001HeaderSheetViewModel({required this.makeCommonHeaderSheetController}) {
+  MakeCommonHeaderSheetViewModel({required this.makeCommonHeaderSheetController}) {
     this.makeCommonHeaderSheetController._viewModel = this;
   }
 
@@ -141,7 +141,7 @@ class IM001HeaderSheetViewModel extends ChangeNotifier {
 
 class MakeCommonHeaderSheetController {
 
-  IM001HeaderSheetViewModel? _viewModel;
+  MakeCommonHeaderSheetViewModel? _viewModel;
 
   List<bool> isCanCompletes = [];
 
