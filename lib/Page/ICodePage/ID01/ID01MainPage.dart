@@ -34,14 +34,14 @@ import 'package:uuid/uuid.dart';
 import 'ID01MainBottomSheet/ID01MainBottomSheetHeader.dart';
 import 'ID01MainBottomSheet/ID01MainBottomSheetBody.dart';
 import 'ID01MainBottomSheet/ID01MainScaffoldBottomSheet.dart';
-import 'ID01Mode.dart';
+import '../../../Components/DetailPage/DBallMode.dart';
 
 class ID01MainPage extends StatelessWidget {
   final String? ballUuid;
 
   final FBallResDto? fBallResDto;
 
-  final ID01Mode? id01Mode;
+  final DBallMode? id01Mode;
 
   final FBallResDto? preViewResDto;
 
@@ -55,7 +55,7 @@ class ID01MainPage extends StatelessWidget {
       {Key? key,
       this.ballUuid,
       this.fBallResDto,
-      this.id01Mode = ID01Mode.publish,
+      this.id01Mode = DBallMode.publish,
       this.preViewResDto,
       this.preViewBallImage,
       this.onCreateBall,
@@ -226,7 +226,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
 
   final MaliciousBallUseCaseInputPort? _maliciousBallUseCaseInputPort;
 
-  final ID01Mode? id01Mode;
+  final DBallMode? id01Mode;
 
   final FBallResDto? preViewResDto;
 
@@ -302,7 +302,7 @@ class ID01MainPageViewModel extends ChangeNotifier {
     isBallLoaded = false;
     await syncUserInfo();
 
-    if (id01Mode == ID01Mode.preview) {
+    if (id01Mode == DBallMode.preview) {
       this.fBallResDto = preViewResDto;
       notifyListeners();
     } else {

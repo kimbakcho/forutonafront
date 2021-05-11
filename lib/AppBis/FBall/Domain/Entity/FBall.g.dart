@@ -34,7 +34,8 @@ FBall _$FBallFromJson(Map<String, dynamic> json) {
         : FUserInfoSimple.fromJson(json['uid'] as Map<String, dynamic>)
     ..userLevel = (json['userLevel'] as num?)?.toDouble()
     ..contributor = json['contributor'] as int?
-    ..ballDeleteFlag = json['ballDeleteFlag'] as bool?;
+    ..ballDeleteFlag = json['ballDeleteFlag'] as bool?
+    ..replyCount = json['replyCount'] as int?;
 }
 
 Map<String, dynamic> _$FBallToJson(FBall instance) => <String, dynamic>{
@@ -59,6 +60,7 @@ Map<String, dynamic> _$FBallToJson(FBall instance) => <String, dynamic>{
       'userLevel': instance.userLevel,
       'contributor': instance.contributor,
       'ballDeleteFlag': instance.ballDeleteFlag,
+      'replyCount': instance.replyCount,
     };
 
 K _$enumDecode<K, V>(

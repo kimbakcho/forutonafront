@@ -28,6 +28,7 @@ class FBallResDto {
   bool ballDeleteFlag = false;
   bool? isEditContent;
   DateTime? editContentTime;
+  int? replyCount;
 
   FBallResDto();
 

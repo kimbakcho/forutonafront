@@ -27,7 +27,8 @@ QuestBallDescription _$QuestBallDescriptionFromJson(Map<String, dynamic> json) {
     ..startPositionLong = (json['startPositionLong'] as num?)?.toDouble()
     ..startPositionAddress = json['startPositionAddress'] as String?
     ..timeLimitFlag = json['timeLimitFlag'] as bool?
-    ..startPositionFlag = json['startPositionFlag'] as bool?;
+    ..startPositionFlag = json['startPositionFlag'] as bool?
+    ..isOpenCheckInPosition = json['isOpenCheckInPosition'] as bool?;
 }
 
 Map<String, dynamic> _$QuestBallDescriptionToJson(
@@ -47,6 +48,7 @@ Map<String, dynamic> _$QuestBallDescriptionToJson(
       'startPositionAddress': instance.startPositionAddress,
       'timeLimitFlag': instance.timeLimitFlag,
       'startPositionFlag': instance.startPositionFlag,
+      'isOpenCheckInPosition': instance.isOpenCheckInPosition,
     };
 
 K _$enumDecode<K, V>(

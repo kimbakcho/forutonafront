@@ -16,7 +16,7 @@ import 'package:forutonafront/Components/BallOption/OtherUserBallPopup/OtherUser
 
 import 'package:forutonafront/Components/DetailPageViewer/DetailPageViewer.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
+import 'package:forutonafront/Components/DetailPage/DBallMode.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -94,7 +94,7 @@ abstract class ListUpBallWidgetItem extends ChangeNotifier {
           if (result is FBallResDto) {
             Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
               return ID01MainPage(
-                  id01Mode: ID01Mode.publish,
+                  id01Mode: DBallMode.publish,
                   fBallResDto: result,
                   ballUuid: result.ballUuid!);
             }));

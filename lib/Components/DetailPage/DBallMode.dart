@@ -1,3 +1,3 @@
-enum ID01Mode {
+enum DBallMode {
   publish,preview
 }

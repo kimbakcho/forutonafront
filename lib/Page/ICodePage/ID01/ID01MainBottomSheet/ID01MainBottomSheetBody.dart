@@ -3,12 +3,11 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/Iss
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
+import 'package:forutonafront/Components/DetailPage/DBallTitle/DBallTitle.dart';
+import 'package:forutonafront/Components/DetailPage/DBallTitle/DBallLimitTag.dart';
 import 'package:forutonafront/Components/FBallReply3/FBallReply3.dart';
 import 'package:forutonafront/Components/UserProfileBar/UserProfileBar.dart';
-import 'package:forutonafront/Page/ICodePage/ID001/ID001Mode.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/BallPowerDisplay/BallPowerState.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01BallTitle/ID01BallTitle.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01BallTitle/ID01LimitTag.dart';
+
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01Pictures/ID01Pictures.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01RemainTimeWidget.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01TextContent.dart';
@@ -18,14 +17,14 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
 import 'package:provider/provider.dart';
 
-import '../ID01Mode.dart';
+import '../../../../Components/DetailPage/DBallMode.dart';
 
 class ID01MainBottomSheetBody extends StatefulWidget {
   final FBallResDto? fBallResDto;
 
   final double? topPosition;
 
-  final ID01Mode? id01Mode;
+  final DBallMode? id01Mode;
 
   final List<BallImageItem?>? preViewBallImage;
 
@@ -71,9 +70,9 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                       ID01RemainTimeWidget(
                         limitTime: model.fBallResDto!.activationTime!,
                       ),
-                      ID01BallTitle(
+                      DBallTitle(
                           fBallResDto: model.fBallResDto!,
-                          id01Mode: widget.id01Mode!,
+                          dBallMode: widget.id01Mode!,
                           preViewfBallTagResDtos:
                               widget.preViewfBallTagResDtos),
                       Divider(
@@ -92,7 +91,7 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                       ),
                       Container(
                         margin: EdgeInsets.all(16),
-                        child: ID01LimitTag(
+                        child: DLimitTag(
                           ballUuid: model.fBallResDto!.ballUuid!,
                           limitCount: 10,
                           id01Mode: model.id01Mode!,
@@ -130,7 +129,7 @@ class ID01MainBottomSheetBodyViewModel extends ChangeNotifier {
   final FBallResDto? fBallResDto;
   IssueBallDisPlayUseCase? _issueBallDisPlayUseCase;
   final GeolocatorAdapter? geolocatorAdapter;
-  final ID01Mode? id01Mode;
+  final DBallMode? id01Mode;
   final List<BallImageItem?>? preViewBallImage;
 
   final ID01MainBottomSheetBodyController? id01mainBottomSheetBodyController;
@@ -160,7 +159,7 @@ class ID01MainBottomSheetBodyViewModel extends ChangeNotifier {
   }
 
   getBallDesImages() {
-    if (id01Mode == ID01Mode.preview) {
+    if (id01Mode == DBallMode.preview) {
       return preViewBallImage;
     } else {
       return _issueBallDisPlayUseCase!.getDesImages();

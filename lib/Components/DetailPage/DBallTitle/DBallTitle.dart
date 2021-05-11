@@ -4,32 +4,34 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/BallPowerDisplay/SmallBallPowerDisplay.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01BallTitle/ID01LimitTag.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../../ID01Mode.dart';
 
-class ID01BallTitle extends StatelessWidget {
+import '../DBallMode.dart';
+import 'DBallLimitTag.dart';
+
+class DBallTitle extends StatelessWidget {
   final FBallResDto? fBallResDto;
 
-  final ID01Mode? id01Mode;
+  final DBallMode? dBallMode;
 
   final List<FBallTagResDto>? preViewfBallTagResDtos;
 
-  const ID01BallTitle({Key? key, this.fBallResDto, this.id01Mode, this.preViewfBallTagResDtos}) : super(key: key);
+  const DBallTitle({Key? key, this.fBallResDto, this.dBallMode, this.preViewfBallTagResDtos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ID01BallTitleViewModel(fBallResDto),
-      child: Consumer<ID01BallTitleViewModel>(
+      create: (_) => DBallTitleViewModel(fBallResDto),
+      child: Consumer<DBallTitleViewModel>(
         builder: (_, model, child) {
           return Container(
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: Column(
               children: [
-                ID01LimitTag(ballUuid: model.fBallResDto!.ballUuid,id01Mode: id01Mode,preViewfBallTagResDtos: preViewfBallTagResDtos),
+                DLimitTag(ballUuid: model.fBallResDto!.ballUuid,id01Mode: dBallMode,preViewfBallTagResDtos: preViewfBallTagResDtos),
                 Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Expanded(
                       child: Container(
@@ -75,13 +77,13 @@ class ID01BallTitle extends StatelessWidget {
   }
 }
 
-class ID01BallTitleViewModel extends ChangeNotifier {
+class DBallTitleViewModel extends ChangeNotifier {
   final FBallResDto? fBallResDto;
 
-  ID01BallTitleViewModel(this.fBallResDto);
+  DBallTitleViewModel(this.fBallResDto);
 
   String get ballInfo{
-    return '조회수 ${fBallResDto!.ballHits} • ${TimeDisplayUtil.getCalcToStrFromNow(fBallResDto!.makeTime!)}$isEditText';
+    return '조회수 ${fBallResDto!.ballHits} • 댓글수 ${fBallResDto!.replyCount} • ${TimeDisplayUtil.getCalcToStrFromNow(fBallResDto!.makeTime!)}$isEditText';
   }
 
   String get isEditText {

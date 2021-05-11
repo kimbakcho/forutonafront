@@ -35,7 +35,8 @@ FBallResDto _$FBallResDtoFromJson(Map<String, dynamic> json) {
     ..isEditContent = json['isEditContent'] as bool?
     ..editContentTime = json['editContentTime'] == null
         ? null
-        : DateTime.parse(json['editContentTime'] as String);
+        : DateTime.parse(json['editContentTime'] as String)
+    ..replyCount = json['replyCount'] as int?;
 }
 
 Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
@@ -60,6 +61,7 @@ Map<String, dynamic> _$FBallResDtoToJson(FBallResDto instance) =>
       'ballDeleteFlag': instance.ballDeleteFlag,
       'isEditContent': instance.isEditContent,
       'editContentTime': instance.editContentTime?.toIso8601String(),
+      'replyCount': instance.replyCount,
     };
 
 K _$enumDecode<K, V>(

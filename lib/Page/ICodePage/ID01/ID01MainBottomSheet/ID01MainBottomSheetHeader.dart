@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/MapIntentButton/MapintentButton.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01AddressWidget.dart';
+import 'package:forutonafront/Components/DetailPage/DBallAddressWidget.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01RemainTimeProgress.dart';
 
 import 'package:provider/provider.dart';
@@ -56,7 +56,7 @@ class _ID01MainBottomSheetHeaderState extends State<ID01MainBottomSheetHeader> {
                             children: [
                               Expanded(child: Container(
                                 margin: EdgeInsets.only(left: 16,right: 16),
-                                child: ID01AddressWidget(fBallResDto: model.fBallResDto,onTabAddress: (Position position){
+                                child: DBallAddressWidget(fBallResDto: model.fBallResDto,onTabAddress: (Position position){
                                   widget.onTapAddress!(position);
                                 },)
                                 ,

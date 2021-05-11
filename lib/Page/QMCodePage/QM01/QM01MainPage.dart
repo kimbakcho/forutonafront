@@ -187,6 +187,8 @@ class QM01MainPageViewModel extends ChangeNotifier {
 
       questBallDescription.checkInPositionLong =
           qm01002sheetController.getSelectCheckInPosition()!.longitude;
+
+      questBallDescription.isOpenCheckInPosition = qm01002sheetController.isOpenCheckInPosition();
     }
     if (qm01002sheetController.getTimeLimitFlag()) {
       questBallDescription.limitTimeSec =
@@ -209,6 +211,7 @@ class QM01MainPageViewModel extends ChangeNotifier {
       questBallDescription.startPositionAddress =
           qm01002sheetController.getSelectStartPositionAddress();
     }
+
 
     fBallInsertReqDto.description = json.encode(questBallDescription);
 

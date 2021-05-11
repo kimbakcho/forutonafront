@@ -16,7 +16,8 @@ abstract class MapMakerDescriptorContainer {
 }
 
 enum MapMakerDescriptorType {
-  IssueBallIconUnSelectNormal,IssueBallIconSelectNormal,UserAvatarIcon,IssueBallIconUnSelectSmall,IssueBallIconSelectSmall
+  IssueBallIconUnSelectNormal,IssueBallIconSelectNormal,UserAvatarIcon,IssueBallIconUnSelectSmall,IssueBallIconSelectSmall,
+  QuestBallIconSelectNormal
 }
 
 @LazySingleton(as: MapMakerDescriptorContainer)
@@ -65,7 +66,9 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
         "assets/MarkesImages/issueselectballmaker.png", Size(140,107));
     container!.putIfAbsent(MapMakerDescriptorType.IssueBallIconSelectSmall, () => issueBallIconSelectSmall);
 
-
+    var questBallIconSelectNormal = await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
+        "assets/MarkesImages/questballmaker.png", Size(140,107));
+    container!.putIfAbsent(MapMakerDescriptorType.QuestBallIconSelectNormal, () => questBallIconSelectNormal);
 
     BitmapDescriptor userAvatarIcon =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(

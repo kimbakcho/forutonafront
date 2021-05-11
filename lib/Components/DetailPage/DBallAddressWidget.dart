@@ -7,20 +7,20 @@ import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class ID01AddressWidget extends StatelessWidget {
+class DBallAddressWidget extends StatelessWidget {
   final FBallResDto? fBallResDto;
 
   final EdgeInsets padding;
 
   final Function(Position)? onTabAddress;
 
-  const ID01AddressWidget({Key? key, this.fBallResDto, this.padding = const EdgeInsets.fromLTRB(8, 0, 62, 0), this.onTabAddress}) : super(key: key);
+  const DBallAddressWidget({Key? key, this.fBallResDto, this.padding = const EdgeInsets.fromLTRB(8, 0, 62, 0), this.onTabAddress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ID01AddressWidgetViewModel(fBallResDto, sl()),
-      child: Consumer<ID01AddressWidgetViewModel>(
+      create: (_) => DBallAddressWidgetViewModel(fBallResDto, sl()),
+      child: Consumer<DBallAddressWidgetViewModel>(
         builder: (_, model, child) {
           return Container(
             height: 37,
@@ -75,7 +75,6 @@ class ID01AddressWidget extends StatelessWidget {
             ,
             padding: padding,
             decoration: BoxDecoration(
-                color: Color(0xffF5F5F5),
                 borderRadius: BorderRadius.all(Radius.circular(20))),
           );
         },
@@ -84,7 +83,7 @@ class ID01AddressWidget extends StatelessWidget {
   }
 }
 
-class ID01AddressWidgetViewModel extends ChangeNotifier {
+class DBallAddressWidgetViewModel extends ChangeNotifier {
   final FBallResDto? fBallResDto;
 
   final GeoLocationUtilForeGroundUseCaseInputPort?
@@ -94,7 +93,7 @@ class ID01AddressWidgetViewModel extends ChangeNotifier {
 
   String? displayDistanceWithUser;
 
-  ID01AddressWidgetViewModel(
+  DBallAddressWidgetViewModel(
       this.fBallResDto, this._geoLocationUtilForeGroundUseCaseInputPort) {
     this.init();
   }

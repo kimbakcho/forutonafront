@@ -17,7 +17,7 @@ import 'package:forutonafront/Page/GCodePage/GCodeMainPage.dart';
 import 'package:forutonafront/Page/HCodePage/H002/BottomMakeComponent/BottomMakeComponent.dart';
 import 'package:forutonafront/Page/HomePage/HomeMainPage.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Mode.dart';
+import 'package:forutonafront/Components/DetailPage/DBallMode.dart';
 import 'package:forutonafront/Page/KTCodePage/KT001/KT001Page.dart';
 import 'package:forutonafront/Page/LCodePage/L010/L010MainPage.dart';
 import 'package:forutonafront/Page/LCodePage/L011/L011MainPage.dart';
@@ -203,7 +203,7 @@ class MainPageViewModel extends ChangeNotifier
     if (result is FBallResDto) {
       Navigator.of(context!).push(MaterialPageRoute(builder: (_) {
         return ID01MainPage(
-            id01Mode: ID01Mode.publish,
+            id01Mode: DBallMode.publish,
             fBallResDto: result,
             ballUuid: result.ballUuid);
       }));

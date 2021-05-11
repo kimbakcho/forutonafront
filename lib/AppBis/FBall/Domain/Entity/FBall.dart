@@ -30,6 +30,7 @@ class FBall {
   double? userLevel;
   int? contributor;
   bool? ballDeleteFlag;
+  int? replyCount;
 
   FBall();
 

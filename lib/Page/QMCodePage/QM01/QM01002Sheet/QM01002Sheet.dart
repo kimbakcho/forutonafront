@@ -10,6 +10,7 @@ import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'CheckInPositionOpenWidget.dart';
 import 'PhotoCertificationDescription.dart';
 import 'PhotoCertificationWidget.dart';
 import 'PhotoCertificationWithCheckInWidget.dart';
@@ -229,6 +230,8 @@ class QM01002SheetViewModel extends ChangeNotifier {
 
   QTimeLimitWidgetController _qTimeLimitWidgetController = QTimeLimitWidgetController();
 
+  CheckInPositionOpenWidgetController _checkInPositionOpenWidgetController = CheckInPositionOpenWidgetController();
+
   late Timer timer;
 
   QM01002SheetViewModel({required this.onCanComplete,required this.controller}){
@@ -325,13 +328,25 @@ class QM01002SheetViewModel extends ChangeNotifier {
 
   Widget getSettingCheckInWidget() {
     if (currentSelectMode == QuestSelectMode.CheckInWithPhotoCertification) {
-      return PositionSelectorWidget(
-        mapIconPath: "assets/MarkesImages/checkinflag.png",
-        label: "체크인 위치",
-        hint: '[!] 지정된 위치 반경 20m 내에서 체크인이 가능합니다.',
-        hint2: "여기를 눌러 체크인 위치를 지정해주세요",
-        controller: _checkInController,
-      );
+      return Column(
+        children: [
+          PositionSelectorWidget(
+            mapIconPath: "assets/MarkesImages/checkinflag.png",
+            label: "체크인 위치",
+            hint: '[!] 지정된 위치 반경 20m 내에서 체크인이 가능합니다.',
+            hint2: "여기를 눌러 체크인 위치를 지정해주세요",
+            controller: _checkInController,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          CheckInPositionOpenWidget(
+            controller: _checkInPositionOpenWidgetController,
+          )
+        ],
+      )
+
+        ;
     } else {
       return Container();
     }
@@ -430,5 +445,9 @@ class QM01002SheetController {
 
   bool getStartPositionFlag(){
     return _viewModel!.startPositionFlag;
+  }
+
+  bool isOpenCheckInPosition(){
+    return _viewModel!._checkInPositionOpenWidgetController.getState();
   }
 }
