@@ -31,7 +31,7 @@ class DBallTitle extends StatelessWidget {
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: Column(
               children: [
-                DLimitTag(ballUuid: model.fBallResDto!.ballUuid,id01Mode: dBallMode,preViewfBallTagResDtos: preViewfBallTagResDtos),
+                DLimitTag(ballUuid: model.fBallResDto!.ballUuid,mode: dBallMode,preViewfBallTagResDtos: preViewfBallTagResDtos),
                 Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Expanded(
                       child: Container(

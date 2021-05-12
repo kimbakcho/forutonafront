@@ -3,12 +3,12 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 
-import 'ID01ImageContainer.dart';
+import 'DBallImageContainer.dart';
 
-class ID01TwoPicture extends StatelessWidget {
+class DBallTwoPicture extends StatelessWidget {
   final List<BallImageItem?>? fBallDesImages;
 
-  ID01TwoPicture({this.fBallDesImages});
+  DBallTwoPicture({this.fBallDesImages});
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +16,9 @@ class ID01TwoPicture extends StatelessWidget {
         ? Container(
             child: Row(children: [
               Expanded(
-                child: ID01ImageContainer(fBallDesImages, 0),
+                child: DBallImageContainer(fBallDesImages, 0),
               ),
-              Expanded(child: ID01ImageContainer(fBallDesImages, 1))
+              Expanded(child: DBallImageContainer(fBallDesImages, 1))
             ]),
           )
         : Container();

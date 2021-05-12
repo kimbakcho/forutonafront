@@ -14,7 +14,7 @@ class DLimitTag extends StatelessWidget {
 
   final String? ballUuid;
 
-  final DBallMode? id01Mode;
+  final DBallMode? mode;
 
   final List<FBallTagResDto>? preViewfBallTagResDtos;
 
@@ -22,7 +22,7 @@ class DLimitTag extends StatelessWidget {
       {Key? key,
       this.limitCount = 3,
       this.ballUuid,
-      this.id01Mode,
+      this.mode,
       this.preViewfBallTagResDtos})
       : super(key: key);
 
@@ -30,7 +30,7 @@ class DLimitTag extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => DLimitTagViewModel(
-          ballUuid, limitCount, sl(), id01Mode, preViewfBallTagResDtos),
+          ballUuid, limitCount, sl(), mode, preViewfBallTagResDtos),
       child: Consumer<DLimitTagViewModel>(
         builder: (_, model, child) {
           return Container(

@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:selectable_autolink_text/selectable_autolink_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ID01TextContent extends StatelessWidget {
+class DBallTextContent extends StatelessWidget {
   final String content;
   final String? makeTime;
 
-  ID01TextContent({required this.content, this.makeTime});
+  DBallTextContent({required this.content, this.makeTime});
 
   @override
   Widget build(BuildContext context) {

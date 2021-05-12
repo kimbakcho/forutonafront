@@ -8,16 +8,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as Youtube;
 
-class ID01YoutubeWidget extends StatefulWidget {
+class DBallYoutubeWidget extends StatefulWidget {
   final String? youtubeVideoId;
 
-  ID01YoutubeWidget({this.youtubeVideoId});
+  DBallYoutubeWidget({this.youtubeVideoId});
 
   @override
-  _ID01YoutubeWidgetState createState() => _ID01YoutubeWidgetState();
+  _DBallYoutubeWidgetState createState() => _DBallYoutubeWidgetState();
 }
 
-class _ID01YoutubeWidgetState extends State<ID01YoutubeWidget>
+class _DBallYoutubeWidgetState extends State<DBallYoutubeWidget>
     with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);

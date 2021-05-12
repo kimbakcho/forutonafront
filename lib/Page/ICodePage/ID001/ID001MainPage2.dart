@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/Components/DetailPage/DBallPictures/DBallPictures.dart';
 import 'package:forutonafront/Components/FBallReply2/BasicReViewsContentBars.dart';
 import 'package:forutonafront/Components/FBallReply2/BasicReviews.dart';
 import 'package:forutonafront/Components/FBallReply3/FBallReply3.dart';
@@ -9,7 +10,8 @@ import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001ActionBo
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001MakerInfo.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001Map.dart';
 import 'package:forutonafront/Page/ICodePage/ID001/ID001WidgetPart/ID001ReviewsPageBtn.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01Pictures/ID01Pictures.dart';
+
+
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,9 +20,9 @@ import 'package:provider/provider.dart';
 import 'ID001Mode.dart';
 import 'ID001WidgetPart/ID001AppBar.dart';
 import 'ID001WidgetPart/ID001TagList.dart';
-import '../ID01/ID01Component/ID01TextContent.dart';
+import '../../../Components/DetailPage/DBallTextContent.dart';
 import 'ID001WidgetPart/ID001Title.dart';
-import '../ID01/ID01Component/ID01YoutubeWidget.dart';
+import '../../../Components/DetailPage/DBallYoutubeWidget.dart';
 
 class ID001MainPage2 extends StatefulWidget {
   final String? _ballUuid;
@@ -111,14 +113,14 @@ class _ID001MainPage2State extends State<ID001MainPage2> {
                               userInfluencePower:
                                   model.getMakerInfluencePower(),
                             ),
-                            ID01TextContent(
+                            DBallTextContent(
                               content: model.getBallTextContent(),
                               makeTime: model.getBallMakeTime(),
                             ),
-                            ID01Pictures(
+                            DBallPictures(
                               desImages: model.getBallDesImages(),
                             ),
-                            ID01YoutubeWidget(
+                            DBallYoutubeWidget(
                               youtubeVideoId: model.getBallYoutubeId(),
                             ),
                             BasicReviews(

@@ -5,15 +5,15 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'ID01ForePicture.dart';
-import 'ID01OnePicture.dart';
-import 'ID01ThreePicture.dart';
-import 'ID01TwoPicture.dart';
+import 'DBallForePicture.dart';
+import 'DBallOnePicture.dart';
+import 'DBallThreePicture.dart';
+import 'DBallTwoPicture.dart';
 
-class ID01Pictures extends StatelessWidget {
+class DBallPictures extends StatelessWidget {
   final List<BallImageItem?>? desImages;
 
-  ID01Pictures({this.desImages});
+  DBallPictures({this.desImages});
 
   @override
   Widget build(BuildContext context) {
@@ -76,15 +76,15 @@ class ID01Pictures extends StatelessWidget {
       if (desImages.length == 0) {
         return Container();
       } else if (desImages.length == 1) {
-        return ID01OnePicture(
+        return DBallOnePicture(
           fBallDesImages: desImages[0],
         );
       } else if (desImages.length == 2) {
-        return ID01TwoPicture(fBallDesImages: desImages);
+        return DBallTwoPicture(fBallDesImages: desImages);
       } else if (desImages.length == 3) {
-        return ID01ThreePicture(fBallDesImages: desImages);
+        return DBallThreePicture(fBallDesImages: desImages);
       } else if (desImages.length >= 4) {
-        return ID01ForePicture(fBallDesImages: desImages);
+        return DBallForePicture(fBallDesImages: desImages);
       } else {
         return Container();
       }

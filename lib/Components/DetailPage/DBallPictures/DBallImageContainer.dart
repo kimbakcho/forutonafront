@@ -4,11 +4,11 @@ import 'package:forutonafront/Components/BallImageViewer/BallImageViwer.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 
-class ID01ImageContainer extends StatelessWidget {
+class DBallImageContainer extends StatelessWidget {
   final List<BallImageItem?>? fBallDesImages;
   final int index;
 
-  ID01ImageContainer(this.fBallDesImages, this.index);
+  DBallImageContainer(this.fBallDesImages, this.index);
 
   @override
   Widget build(BuildContext context) {

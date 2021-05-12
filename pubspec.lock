@@ -586,9 +586,11 @@ packages:
   google_maps_flutter:
     dependency: "direct main"
     description:
-      name: google_maps_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "packages/google_maps_flutter/google_maps_flutter"
+      ref: a984be1
+      resolved-ref: a984be1e3d5389899101372c2c90e7ee6d74ef5c
+      url: "git://github.com/kimbakcho/plugins.git"
+    source: git
     version: "2.0.3"
   google_maps_flutter_platform_interface:
     dependency: transitive

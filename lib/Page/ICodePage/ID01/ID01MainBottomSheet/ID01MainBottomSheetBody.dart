@@ -3,15 +3,16 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/Iss
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/Geolocation/Adapter/GeolocatorAdapter.dart';
+import 'package:forutonafront/Components/DetailPage/DBallPictures/DBallPictures.dart';
 import 'package:forutonafront/Components/DetailPage/DBallTitle/DBallTitle.dart';
 import 'package:forutonafront/Components/DetailPage/DBallTitle/DBallLimitTag.dart';
 import 'package:forutonafront/Components/FBallReply3/FBallReply3.dart';
 import 'package:forutonafront/Components/UserProfileBar/UserProfileBar.dart';
 
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01Pictures/ID01Pictures.dart';
+
 import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01RemainTimeWidget.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01TextContent.dart';
-import 'package:forutonafront/Page/ICodePage/ID01/ID01Component/ID01YoutubeWidget.dart';
+import 'package:forutonafront/Components/DetailPage/DBallTextContent.dart';
+import 'package:forutonafront/Components/DetailPage/DBallYoutubeWidget.dart';
 import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallImageItem.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 
@@ -86,7 +87,7 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                         color: Color(0xffE4E7E8),
                         height: 1,
                       ),
-                      ID01TextContent(
+                      DBallTextContent(
                         content: model.getBallTextContent(),
                       ),
                       Container(
@@ -94,13 +95,13 @@ class _ID01MainBottomSheetBodyState extends State<ID01MainBottomSheetBody> {
                         child: DLimitTag(
                           ballUuid: model.fBallResDto!.ballUuid!,
                           limitCount: 10,
-                          id01Mode: model.id01Mode!,
+                          mode: model.id01Mode!,
                         ),
                       ),
-                      ID01Pictures(
+                      DBallPictures(
                         desImages: model.getBallDesImages(),
                       ),
-                      ID01YoutubeWidget(
+                      DBallYoutubeWidget(
                         youtubeVideoId: model.getBallYoutubeId(),
                       ),
                       // ID01BallPowerState(
