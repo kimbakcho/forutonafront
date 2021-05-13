@@ -116,18 +116,15 @@ class QD01MainPageViewModel extends ChangeNotifier {
 
   SelectBallUseCaseInputPort _selectBallUseCaseInputPort = sl();
 
-  SignInUserInfoUseCaseInputPort _signInUserInfoUseCaseInputPort = sl();
+
 
   QD01MainPageViewModel({this.fBallResDto, required this.ballUuid}) {
     _loadBall();
   }
 
 
-  bool syncLoadingFlag = false;
-
   _loadBall() async {
     isBallLoaded = false;
-    await syncUserInfo();
 
     if (fBallResDto == null) {
       notifyListeners();
@@ -143,15 +140,7 @@ class QD01MainPageViewModel extends ChangeNotifier {
 
 
 
-  syncUserInfo() async {
-    syncLoadingFlag = true;
-    if (_signInUserInfoUseCaseInputPort.isLogin!) {
-      await _signInUserInfoUseCaseInputPort
-          .saveSignInInfoInMemoryFromAPiServer();
-      notifyListeners();
-    }
-    syncLoadingFlag = false;
-  }
+
 
   Position get _ballPosition {
     if (fBallResDto != null) {

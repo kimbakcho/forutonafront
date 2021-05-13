@@ -13,6 +13,8 @@ class DBallLikeButton extends StatelessWidget {
 
   final IconData icon;
 
+  final double iconSize;
+
   final Color color;
 
   final DBallLikeButtonController? controller;
@@ -21,6 +23,7 @@ class DBallLikeButton extends StatelessWidget {
       {required this.initCount,
       required this.initMyCount,
       this.controller,
+      this.iconSize = 20,
       this.onTab,
       required this.icon,
       this.color = Colors.black});
@@ -28,7 +31,8 @@ class DBallLikeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => DBallLikeButtonViewModel(count: initCount, myCount: initMyCount,controller: controller),
+        create: (_) => DBallLikeButtonViewModel(
+            count: initCount, myCount: initMyCount, controller: controller),
         child: Consumer<DBallLikeButtonViewModel>(builder: (_, model, child) {
           return Container(
               width: 50,
@@ -45,7 +49,7 @@ class DBallLikeButton extends StatelessWidget {
                     children: [
                       Positioned(
                         child: Icon(icon,
-                            size: 20,
+                            size: iconSize,
                             color: model.myCount > 0 ? color : Colors.black),
                         left: 0,
                         bottom: 0,
@@ -57,11 +61,11 @@ class DBallLikeButton extends StatelessWidget {
                             child: Text(model.getCountText(),
                                 style: GoogleFonts.notoSans(
                                   fontSize: 8,
-                                  color: model.myCount > 0 ? color : Colors.black,
+                                  color:
+                                      model.myCount > 0 ? color : Colors.black,
                                   fontWeight: FontWeight.w700,
                                 )),
-                          )
-                          )
+                          ))
                     ],
                   )));
         }));
@@ -95,11 +99,12 @@ class DBallLikeButtonViewModel extends ChangeNotifier {
     return countStr;
   }
 
-  setMyCount(int myCount){
+  setMyCount(int myCount) {
     this.myCount = myCount;
     notifyListeners();
   }
-  setCount(int count){
+
+  setCount(int count) {
     this.count = count;
     notifyListeners();
   }
@@ -108,14 +113,14 @@ class DBallLikeButtonViewModel extends ChangeNotifier {
 class DBallLikeButtonController {
   DBallLikeButtonViewModel? _viewModel;
 
-  setMyCount(int myCount){
-    if(_viewModel != null){
+  setMyCount(int myCount) {
+    if (_viewModel != null) {
       this._viewModel!.setMyCount(myCount);
     }
   }
 
-  setCount(int count){
-    if(_viewModel != null){
+  setCount(int count) {
+    if (_viewModel != null) {
       this._viewModel!.setCount(count);
     }
   }

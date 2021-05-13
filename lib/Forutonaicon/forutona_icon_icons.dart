@@ -145,6 +145,7 @@ class ForutonaIcon {
   static const IconData playflag2 = IconData(0xe877, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData startflag2 = IconData(0xe878, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData lock2 = IconData(0xe879, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dislike = IconData(0xe87a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData user_circle = IconData(0xebaf, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData male = IconData(0xebb0, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData youtube_1 = IconData(0xf167, fontFamily: _kFontFam, fontPackage: _kFontPkg);
