@@ -23,6 +23,7 @@ class QuestBallDescription extends BallDescription {
   bool? timeLimitFlag;
   bool? startPositionFlag;
   bool? isOpenCheckInPosition;
+  String? qualifyingForQuestText;
 
 
   QuestBallDescription();

@@ -146,6 +146,15 @@ class ForutonaIcon {
   static const IconData startflag2 = IconData(0xe878, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData lock2 = IconData(0xe879, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData dislike = IconData(0xe87a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData coin_1 = IconData(0xe87b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData credit_card1 = IconData(0xe87c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData credit_card2 = IconData(0xe87d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData lock1_1 = IconData(0xe87e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData lock2_1 = IconData(0xe87f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData mappin1 = IconData(0xe880, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData trophy1 = IconData(0xe881, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData trophy2 = IconData(0xe882, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData zap_1 = IconData(0xe883, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData user_circle = IconData(0xebaf, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData male = IconData(0xebb0, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData youtube_1 = IconData(0xf167, fontFamily: _kFontFam, fontPackage: _kFontPkg);

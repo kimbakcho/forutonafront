@@ -3,10 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class QualifyingForQuestTextWidget extends StatelessWidget {
+
+  final Function(String)? onChange;
+
+  final QualifyingForQuestTextWidgetController? controller;
+
+  QualifyingForQuestTextWidget({this.onChange,this.controller});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => QualifyingForQuestTextWidgetViewModel(),
+      create: (_) => QualifyingForQuestTextWidgetViewModel(controller: this.controller),
       child: Consumer<QualifyingForQuestTextWidgetViewModel>(
         builder: (_, model, child) {
           return Container(
@@ -22,6 +29,14 @@ class QualifyingForQuestTextWidget extends StatelessWidget {
                       height: 1.2142857142857142,
                     )),
                 TextField(
+                  controller: model._textEditingController,
+                  onChanged: (value){
+                    if(onChange != null){
+                      onChange!(value);
+                    }
+                  },
+                  maxLength: 500,
+                  maxLines: null,
                   decoration: InputDecoration(
                       hintText: "참가자격을 알려주세요!",
                       hintStyle: GoogleFonts.notoSans(
@@ -41,4 +56,30 @@ class QualifyingForQuestTextWidget extends StatelessWidget {
   }
 }
 
-class QualifyingForQuestTextWidgetViewModel extends ChangeNotifier {}
+class QualifyingForQuestTextWidgetViewModel extends ChangeNotifier {
+
+  final QualifyingForQuestTextWidgetController? controller;
+
+  TextEditingController _textEditingController = new TextEditingController();
+
+  QualifyingForQuestTextWidgetViewModel({this.controller}){
+    if(controller != null){
+      controller!._viewModel = this;
+    }
+  }
+
+  String getText(){
+    return _textEditingController.text;
+  }
+
+}
+
+
+class QualifyingForQuestTextWidgetController {
+  QualifyingForQuestTextWidgetViewModel? _viewModel;
+
+  String getText(){
+    return _viewModel!.getText();
+  }
+
+}

@@ -17,9 +17,9 @@ import 'package:forutonafront/Preference.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
 
+import 'QD01MissionAndRewardTabView/QD01MissionAndRewardTabView.dart';
 import 'QD01TopBar.dart';
-import 'QDMissionAndAwardTabView.dart';
-import 'QDParticipantTabView.dart';
+import 'QDParticipantsTabView/QDParticipantsTabView.dart';
 import 'QuestBottomNavBar.dart';
 
 class QD01MainPage extends StatelessWidget {
@@ -97,8 +97,10 @@ class QD01MainPage extends StatelessWidget {
                                     QDInfoTabView(
                                       fBallResDto: model.fBallResDto!,
                                     ),
-                                    QDMissionAndAward(),
-                                    QDParticipantTabView()
+                                    QD01MissionAndRewardTabView(fBallResDto: fBallResDto!),
+                                    QDParticipantsTabView(
+                                      fBallResDto: model.fBallResDto!,
+                                    )
                                   ],
                                 ))
                               ]))))
@@ -117,7 +119,6 @@ class QD01MainPageViewModel extends ChangeNotifier {
   SelectBallUseCaseInputPort _selectBallUseCaseInputPort = sl();
 
 
-
   QD01MainPageViewModel({this.fBallResDto, required this.ballUuid}) {
     _loadBall();
   }
@@ -132,14 +133,9 @@ class QD01MainPageViewModel extends ChangeNotifier {
           await this._selectBallUseCaseInputPort.selectBall(ballUuid);
     }
     // _signInUserInfoUseCaseInputPort.isLogin
-
-
     isBallLoaded = true;
     notifyListeners();
   }
-
-
-
 
 
   Position get _ballPosition {

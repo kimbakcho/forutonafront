@@ -11,9 +11,9 @@ import 'package:forutonafront/Page/ICodePage/IM001/Component/BallImageEdit/BallI
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class BallDisPlayUseCase {
+class BallDisPlayUseCase<T extends BallDescription> {
   FBallResDto? fBallResDto;
-  BallDescription? ballDescription;
+  T? ballDescription;
   GeolocatorAdapter? geoLocatorAdapter;
 
   BallDisPlayUseCase(

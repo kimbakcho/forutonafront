@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallAction/QuestBall/QuestBallActionUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/QuestBallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallState.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
@@ -23,6 +24,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
+import 'ActionSheet/ParticipateSheet/ParticipateSheet.dart';
 import 'ActionSheet/RecruitParticipantsSheet/RecruitParticipantsSheet.dart';
 import 'QuestBottomActionButton.dart';
 
@@ -64,100 +66,108 @@ class _QuestBottomNavBarState extends State<QuestBottomNavBar>
         builder: (context, model, child) {
           return Container(
             height: 50,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             color: Colors.white,
             child: model.isLoaded
                 ? Row(
-                    children: [
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Stack(
-                        fit: StackFit.loose,
+              children: [
+                SizedBox(
+                  width: 16,
+                ),
+                Stack(
+                  fit: StackFit.loose,
+                  children: [
+                    Center(
+                      child: Row(
                         children: [
-                          Center(
-                            child: Row(
-                              children: [
-                                DBallLikeButton(
-                                  icon: ForutonaIcon.like,
-                                  color: Color(0xff007EFF),
-                                  controller: model.likeButtonController,
-                                  initCount: model.fBallResDto.ballLikes!,
-                                  initMyCount: model.likeInitMyCount,
-                                  onTab: () {
-                                    model.likeVote();
-                                  },
-                                ),
-                                DBallLikeButton(
-                                  icon: ForutonaIcon.dislike,
-                                  iconSize: 16,
-                                  color: Color(0xffFF4F9A),
-                                  controller: model.disLikeButtonController,
-                                  initCount: model.fBallResDto.ballDisLikes!,
-                                  initMyCount: model.disLikeInitMyCount,
-                                  onTab: () {
-                                    model.dislikeVote();
-                                  },
-                                )
-                              ],
-                            ),
+                          DBallLikeButton(
+                            icon: ForutonaIcon.like,
+                            color: Color(0xff007EFF),
+                            controller: model.likeButtonController,
+                            initCount: model.fBallResDto.ballLikes!,
+                            initMyCount: model.likeInitMyCount,
+                            onTab: () {
+                              model.likeVote();
+                            },
                           ),
-                          model.isShowTicketReceiveTime
-                              ? Center(
-                                  child: Container(
-                                    width: 105,
-                                    height: 35,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.7),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12))),
-                                    child: Text(model.nextTicketTime,
-                                        style: GoogleFonts.notoSans(
-                                          fontSize: 18,
-                                          color: const Color(0xffffffff),
-                                          fontWeight: FontWeight.w500,
-                                        )),
-                                  ),
-                                )
-                              : Container(),
+                          DBallLikeButton(
+                            icon: ForutonaIcon.dislike,
+                            iconSize: 16,
+                            color: Color(0xffFF4F9A),
+                            controller: model.disLikeButtonController,
+                            initCount: model.fBallResDto.ballDisLikes!,
+                            initMyCount: model.disLikeInitMyCount,
+                            onTab: () {
+                              model.dislikeVote();
+                            },
+                          )
                         ],
                       ),
-                      TextButton(
-                          style: ButtonStyle(
-                              alignment: Alignment.centerLeft,
-                              padding:
-                                  MaterialStateProperty.all(EdgeInsets.zero)),
-                          onPressed: () {
-                            Fluttertoast.showToast(msg: "준비중 입니다.");
-                          },
-                          child: Icon(
-                            ForutonaIcon.gift,
-                            color: Colors.black,
-                          )),
-                      Spacer(),
-                      Container(
-                        child: Icon(Icons.access_time_sharp,
-                            color: Color(0xff5C5D5F), size: 15),
-                      ),
-                      SizedBox(width: 8,),
-                      Container(
-                        child: Text(model.getBallRemainTime,
+                    ),
+                    model.isShowTicketReceiveTime
+                        ? Center(
+                      child: Container(
+                        width: 105,
+                        height: 35,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.7),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(12))),
+                        child: Text(model.nextTicketTime,
                             style: GoogleFonts.notoSans(
-                              fontSize: 14,
-                              color: const Color(0xff5c5d5f),
-                              letterSpacing: -0.28,
-                              fontWeight: FontWeight.w700,
-                              height: 1.2142857142857142,
+                              fontSize: 18,
+                              color: const Color(0xffffffff),
+                              fontWeight: FontWeight.w500,
                             )),
                       ),
-                      SizedBox(width: 16,),
-                      model.getActionBtn(context),
-                      SizedBox(width: 16,)
-                    ],
-                  )
+                    )
+                        : Container(),
+                  ],
+                ),
+                TextButton(
+                    style: ButtonStyle(
+                        alignment: Alignment.centerLeft,
+                        padding:
+                        MaterialStateProperty.all(EdgeInsets.zero)),
+                    onPressed: () {
+                      Fluttertoast.showToast(msg: "준비중 입니다.");
+                    },
+                    child: Icon(
+                      ForutonaIcon.gift,
+                      color: Colors.black,
+                    )),
+                Spacer(),
+                Container(
+                  child: Icon(Icons.access_time_sharp,
+                      color: Color(0xff5C5D5F), size: 15),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Container(
+                  child: Text(model.getBallRemainTime,
+                      style: GoogleFonts.notoSans(
+                        fontSize: 14,
+                        color: const Color(0xff5c5d5f),
+                        letterSpacing: -0.28,
+                        fontWeight: FontWeight.w700,
+                        height: 1.2142857142857142,
+                      )),
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                model.getActionBtn(context),
+                SizedBox(
+                  width: 16,
+                )
+              ],
+            )
                 : Container(),
-
           );
         },
       ),
@@ -181,7 +191,7 @@ class QuestBottomNavBarViewModel extends ChangeNotifier {
   late QuestBallDisPlayUseCase questBallDisPlayUseCase;
 
   DBallLikeButtonController disLikeButtonController =
-      DBallLikeButtonController();
+  DBallLikeButtonController();
 
   late QuestEnterUserMode questEnterUserMode;
 
@@ -189,16 +199,12 @@ class QuestBottomNavBarViewModel extends ChangeNotifier {
 
   int canUseTickCount = 0;
 
+  bool hasParticipate = false;
+
+  QuestBallActionUseCaseInputPort _questBallActionUseCaseInputPort = sl();
+
   QuestBottomNavBarViewModel({required this.fBallResDto}) {
     questBallDisPlayUseCase = QuestBallDisPlayUseCase(fBallResDto: fBallResDto);
-    if (!_signInUserInfoUseCaseInputPort.isLogin!) {
-      questEnterUserMode = QuestEnterUserMode.NoneLogin;
-    } else if (fBallResDto.uid!.uid ==
-        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory()!.uid) {
-      questEnterUserMode = QuestEnterUserMode.Maker;
-    } else {
-      questEnterUserMode = QuestEnterUserMode.Participant;
-    }
     _load();
   }
 
@@ -236,7 +242,7 @@ class QuestBottomNavBarViewModel extends ChangeNotifier {
       fBallVoteReqDto.disLikePoint = 0;
       fBallVoteReqDto.likeActionType = LikeActionType.Vote;
       fBallVoteResDto =
-          await _fBallValuationUseCaseInputPort.ballVote(fBallVoteReqDto);
+      await _fBallValuationUseCaseInputPort.ballVote(fBallVoteReqDto);
       await syncUserInfo();
     } else {}
     notifyListeners();
@@ -255,7 +261,7 @@ class QuestBottomNavBarViewModel extends ChangeNotifier {
       fBallVoteReqDto.disLikePoint = 1;
       fBallVoteReqDto.likeActionType = LikeActionType.Vote;
       fBallVoteResDto =
-          await _fBallValuationUseCaseInputPort.ballVote(fBallVoteReqDto);
+      await _fBallValuationUseCaseInputPort.ballVote(fBallVoteReqDto);
       notifyListeners();
       await syncUserInfo();
     } else {}
@@ -265,13 +271,20 @@ class QuestBottomNavBarViewModel extends ChangeNotifier {
   void _load() async {
     isLoaded = false;
     notifyListeners();
+    questEnterUserMode = await _questBallActionUseCaseInputPort.getQuestEnterUserMode(fBallResDto);
     if (questEnterUserMode != QuestEnterUserMode.NoneLogin) {
       fBallVoteResDto = await _fBallValuationUseCaseInputPort
           .getBallVoteState(fBallResDto.ballUuid!);
       await syncUserInfo();
       var fUserInfoResDto =
-          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
       canUseTickCount = fUserInfoResDto!.influenceTicket!;
+      var questBallParticipantResDto = await _questBallActionUseCaseInputPort.getParticipate(fBallResDto.ballUuid!);
+      if(questBallParticipantResDto.ballUuid != null){
+        this.hasParticipate = true;
+      }else {
+        this.hasParticipate = false;
+      }
     }
     isLoaded = true;
     notifyListeners();
@@ -281,7 +294,7 @@ class QuestBottomNavBarViewModel extends ChangeNotifier {
     if (questEnterUserMode != QuestEnterUserMode.NoneLogin) {
       if (canUseTickCount <= 0) {
         var fUserInfoResDto =
-            _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+        _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
         if (fUserInfoResDto!.nextGiveInfluenceTicketTime!
             .isAfter(DateTime.now())) {
           return true;
@@ -294,11 +307,13 @@ class QuestBottomNavBarViewModel extends ChangeNotifier {
   String get nextTicketTime {
     if (isShowTicketReceiveTime) {
       var fUserInfoResDto =
-          _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
+      _signInUserInfoUseCaseInputPort.reqSignInUserInfoFromMemory();
       var difference = fUserInfoResDto!.nextGiveInfluenceTicketTime!
           .difference(DateTime.now());
       String timeStr =
-          "${difference.inMinutes.remainder(60).toString().padLeft(2, "0")}:${(difference.inSeconds.remainder(60).toString().padLeft(2, "0"))}";
+          "${difference.inMinutes.remainder(60).toString().padLeft(
+          2, "0")}:${(difference.inSeconds.remainder(60).toString().padLeft(
+          2, "0"))}";
       return timeStr;
     } else {
       return "";
@@ -315,51 +330,84 @@ class QuestBottomNavBarViewModel extends ChangeNotifier {
     syncLoadingFlag = false;
   }
 
-  Widget getActionBtn(BuildContext context){
-    if(this.questEnterUserMode == QuestEnterUserMode.NoneLogin){
+  Widget getActionBtn(BuildContext context) {
+    if (this.questEnterUserMode == QuestEnterUserMode.NoneLogin) {
       return QuestBottomActionButton(
         color: Color(0xff007EFF),
         text: "참가하기",
         backGroundColor: Color(0xffE5F2FF),
+        onTap: () {
+
+
+        },
       );
-    }else if(questEnterUserMode == QuestEnterUserMode.Maker){
-      if(fBallResDto.ballState == FBallState.Wait){
+    } else if (questEnterUserMode == QuestEnterUserMode.Maker) {
+      if (fBallResDto.ballState == FBallState.Wait) {
         return QuestBottomActionButton(
           color: Color(0xffFF4F9A),
           text: "참가자 모집",
           backGroundColor: Color(0xffFFF1FD),
-          onTap: (){
-            showMaterialModalBottomSheet(context: context, builder: (context) {
-              return RecruitParticipantsSheet();
-            },
-
-
+          onTap: () {
+            showMaterialModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return RecruitParticipantsSheet(
+                    fBallResDto: fBallResDto,
+                  );
+                },
                 enableDrag: true,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))
-            );
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0)));
           },
         );
-      }else if(fBallResDto.ballState == FBallState.Play){
+      } else if (fBallResDto.ballState == FBallState.Play) {
         return QuestBottomActionButton(
           color: Color(0xffFF4F9A),
           text: "매니저 모드",
           backGroundColor: Color(0xffFFF1FD),
         );
-      }else if(fBallResDto.ballState == FBallState.Finish){
+      } else if (fBallResDto.ballState == FBallState.Finish) {
         return QuestBottomActionButton(
           color: Color(0xffFF4F9A),
           text: "퀘스트 결과",
           backGroundColor: Color(0xffFFF1FD),
         );
       }
-    }else if(questEnterUserMode == QuestEnterUserMode.Participant){
-      if(fBallResDto.ballState == FBallState.Play){
-        return QuestBottomActionButton(
-          color: Color(0xff007EFF),
-          text: "참가하기",
-          backGroundColor: Color(0xffE5F2FF),
-        );
-      }else if(fBallResDto.ballState == FBallState.Finish){
+    } else if (questEnterUserMode == QuestEnterUserMode.Participant) {
+      if (fBallResDto.ballState == FBallState.Play) {
+        if (hasParticipate) {
+          return QuestBottomActionButton(
+            color: Color(0xff007EFF),
+            text: "플레이 모드",
+            backGroundColor: Color(0xffE5F2FF),
+            onTap: () async {
+              notifyListeners();
+            },
+          );
+        } else {
+          return QuestBottomActionButton(
+            color: Color(0xff007EFF),
+            text: "참가하기",
+            backGroundColor: Color(0xffE5F2FF),
+            onTap: () async {
+              showMaterialModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return ParticipateSheet(
+                      fBallResDto: fBallResDto,
+                      onParticipate: (value) {
+                        this.hasParticipate = value;
+                        notifyListeners();
+                      },
+                    );
+                  },
+                  enableDrag: true,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0)));
+            },
+          );
+        }
+      } else if (fBallResDto.ballState == FBallState.Finish) {
         return QuestBottomActionButton(
           color: Color(0xff007EFF),
           text: "퀘스트 결과",

@@ -5,6 +5,8 @@ import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'UserInfoAvatar.dart';
+
 class UserProfileBar extends StatelessWidget {
   final FUserInfoSimpleResDto? fUserInfoSimpleResDto;
 
@@ -23,7 +25,9 @@ class UserProfileBar extends StatelessWidget {
                     color: Colors.white,
                       padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                       child: Row(children: [
-                        avatar(),
+                        UserInfoAvatar(
+                          fUserInfoSimpleResDto: model.fUserInfoSimpleResDto!,
+                        ),
                         SizedBox(
                           width: 8,
                         ),
@@ -72,38 +76,6 @@ class UserProfileBar extends StatelessWidget {
             fontWeight: FontWeight.w500,
           )),
     );
-  }
-
-  Widget avatar() {
-    if(fUserInfoSimpleResDto!.profilePictureUrl != null && fUserInfoSimpleResDto!.profilePictureUrl!.isNotEmpty){
-      return CachedNetworkImage(
-          fit: BoxFit.fitWidth,
-          imageUrl: fUserInfoSimpleResDto!.profilePictureUrl!,
-          imageBuilder: (context, imageProvider) => Container(
-            width: 45,
-            height: 45,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          placeholder: (context, url) => Container(
-            child: Icon(Icons.image, color: Color(0xffE4E7E8), size: 40),
-          )
-      );
-    }else {
-      return  Container(
-        width: 34,
-        height: 34,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-        ),
-        child: SvgPicture.asset("assets/IconImage/user-circle.svg"),
-      );
-    }
   }
 }
 

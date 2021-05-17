@@ -6,7 +6,7 @@ import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
 import 'BallDisPlayUseCase.dart';
 
-class QuestBallDisPlayUseCase extends BallDisPlayUseCase {
+class QuestBallDisPlayUseCase extends BallDisPlayUseCase<QuestBallDescription> {
   QuestBallDisPlayUseCase(
       {required FBallResDto fBallResDto, GeolocatorAdapter?
           geoLocatorAdapter}) : super(fBallResDto, null, geoLocatorAdapter) {
@@ -17,6 +17,5 @@ class QuestBallDisPlayUseCase extends BallDisPlayUseCase {
       this.ballDescription =
           QuestBallDescription.fromJson(json.decode(description));
     }
-
   }
 }

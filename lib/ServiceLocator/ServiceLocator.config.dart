@@ -10,32 +10,38 @@ import 'package:injectable/injectable.dart' as _i2;
 import '../AppBis/FBall/Data/DataStore/BallSearchHistoryLocalDataSource.dart'
     as _i4;
 import '../AppBis/FBall/Data/DataStore/FBallRemoteDataSource.dart' as _i11;
+import '../AppBis/FBall/Data/Repository/BallAction/QuestBall/QuestBallActionRepositoryImpl.dart'
+    as _i121;
 import '../AppBis/FBall/Data/Repository/BallSearchBarHistoryRepositoryImpl.dart'
     as _i74;
-import '../AppBis/FBall/Data/Repository/FBallRepositoryImpl.dart' as _i124;
+import '../AppBis/FBall/Data/Repository/FBallRepositoryImpl.dart' as _i127;
 import '../AppBis/FBall/Data/Repository/NoInterestBallRepositoryImpl.dart'
     as _i89;
+import '../AppBis/FBall/Domain/Repository/BallAction/QuestBall/QuestBallActionRepository.dart'
+    as _i120;
 import '../AppBis/FBall/Domain/Repository/BallSearchBarHistoryRepository.dart'
     as _i73;
-import '../AppBis/FBall/Domain/Repository/FBallRepository.dart' as _i123;
+import '../AppBis/FBall/Domain/Repository/FBallRepository.dart' as _i126;
 import '../AppBis/FBall/Domain/Repository/NoInterestBallRepository.dart'
     as _i88;
+import '../AppBis/FBall/Domain/UseCase/BallAction/QuestBall/QuestBallActionUseCaseInputPort.dart'
+    as _i122;
 import '../AppBis/FBall/Domain/UseCase/BallImageListUpLoadUseCase/BallImageListUpLoadUseCaseInputPort.dart'
-    as _i136;
+    as _i139;
 import '../AppBis/FBall/Domain/UseCase/DeleteBall/DeleteBallUseCaseInputPort.dart'
-    as _i138;
+    as _i141;
 import '../AppBis/FBall/Domain/UseCase/FBallSearchBarHistory/FBallSearchBarHistoryUseCaseInputPort.dart'
     as _i80;
 import '../AppBis/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart'
-    as _i128;
+    as _i131;
 import '../AppBis/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart'
-    as _i129;
+    as _i132;
 import '../AppBis/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart'
     as _i107;
 import '../AppBis/FBall/Domain/UseCase/selectBall/SelectBallUseCaseInputPort.dart'
-    as _i132;
-import '../AppBis/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart'
     as _i135;
+import '../AppBis/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart'
+    as _i138;
 import '../AppBis/FBallPlayer/Data/DataSource/FBallPlayerRemoteDataSource.dart'
     as _i8;
 import '../AppBis/FBallPlayer/Data/Repository/FBallPlayerRepositoryImpl.dart'
@@ -54,13 +60,13 @@ import '../AppBis/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCase.dart'
 import '../AppBis/FBallReply/Domain/UseCase/FBallReply/FBallReplyUseCaseInputPort.dart'
     as _i78;
 import '../AppBis/FBallValuation/Data/Repository/FBallValuationRepositoryImpl.dart'
-    as _i126;
+    as _i129;
 import '../AppBis/FBallValuation/Domain/Repositroy/FBallValuationRepository.dart'
-    as _i125;
+    as _i128;
 import '../AppBis/FBallValuation/Domain/UseCase/BallLikeUseCase/BallLikeUseCaseInputPort.dart'
-    as _i137;
+    as _i140;
 import '../AppBis/FBallValuation/Domain/UseCase/FBallValuationUseCase/FBallValuationUseCaseInputPort.dart'
-    as _i127;
+    as _i130;
 import '../AppBis/ForutonaUser/Data/DataSource/FUserRemoteDataSource.dart'
     as _i20;
 import '../AppBis/ForutonaUser/Data/DataSource/PersonaSettingNoticeRemoteDataSource.dart'
@@ -101,17 +107,17 @@ import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UpdateUserPositionUseCase/Up
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserInfoUseCaseInputPort.dart'
     as _i100;
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCase.dart'
-    as _i122;
+    as _i125;
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserPositionForegroundMonitoringUseCase/UserPositionForegroundMonitoringUseCaseInputPort.dart'
-    as _i121;
+    as _i124;
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCase.dart'
     as _i102;
 import '../AppBis/ForutonaUser/Domain/UseCase/FUser/UserProfileImageUploadUseCase/UserProfileImageUploadUseCaseInputPort.dart'
     as _i101;
 import '../AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCase.dart'
-    as _i131;
+    as _i134;
 import '../AppBis/ForutonaUser/Domain/UseCase/Logout/LogoutUseCaseInputPort.dart'
-    as _i130;
+    as _i133;
 import '../AppBis/ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCase.dart'
     as _i49;
 import '../AppBis/ForutonaUser/Domain/UseCase/PersonaSettingNotice/PersonaSettingNoticeUseCaseInputPort.dart'
@@ -125,9 +131,9 @@ import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindEmailUseCaseInputPort
 import '../AppBis/ForutonaUser/Domain/UseCase/PwFind/PwFindPhoneUseCaseInputPort.dart'
     as _i57;
 import '../AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCase.dart'
-    as _i134;
+    as _i137;
 import '../AppBis/ForutonaUser/Domain/UseCase/SignUp/SingUpUseCaseInputPort.dart'
-    as _i133;
+    as _i136;
 import '../AppBis/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCase.dart'
     as _i71;
 import '../AppBis/ForutonaUser/Domain/UseCase/UserPolicy/UserPolicyUseCaseInputPort.dart'
@@ -152,15 +158,15 @@ import '../AppBis/MaliciousReply/Domain/UseCase/MaliciousReplyUseCaseInputPort.d
     as _i35;
 import '../AppBis/Notification/Domain/Channel/NotificationChannel.dart' as _i42;
 import '../AppBis/Notification/Domain/Channel/NotificationMyFluenceChannel.dart'
-    as _i43;
-import '../AppBis/Notification/Domain/Channel/NotificationRadarChannel.dart'
     as _i44;
+import '../AppBis/Notification/Domain/Channel/NotificationRadarChannel.dart'
+    as _i43;
 import '../AppBis/Notification/Domain/NotificationUseCase/FullTicketChargeUseCase.dart'
     as _i111;
 import '../AppBis/Notification/Domain/NotificationUseCase/NearBallCreateUseCase.dart'
-    as _i109;
-import '../AppBis/Notification/Domain/NotificationUseCase/NotificationFBallReplyUseCase.dart'
     as _i110;
+import '../AppBis/Notification/Domain/NotificationUseCase/NotificationFBallReplyUseCase.dart'
+    as _i109;
 import '../AppBis/Notification/Domain/NotificationUseCase/NotificationUseCaseInputPort.dart'
     as _i108;
 import '../AppBis/Tag/Data/DataSource/FBallTagRemoteDataSource.dart' as _i13;
@@ -183,11 +189,11 @@ import '../Common/FireBaseMessage/Presentation/FireBaseMessageController.dart'
 import '../Common/FireBaseMessage/UseCase/BackGroundMessageUseCase/BackGroundMessageUseCase.dart'
     as _i18;
 import '../Common/FireBaseMessage/UseCase/BaseMessageUseCase/BaseMessageUseCase.dart'
-    as _i15;
+    as _i17;
 import '../Common/FireBaseMessage/UseCase/FCMMessageUseCaseInputPort.dart'
     as _i14;
 import '../Common/FireBaseMessage/UseCase/LaunchMessageUseCase/LaunchMessageUseCase.dart'
-    as _i17;
+    as _i15;
 import '../Common/FireBaseMessage/UseCase/ResumeMessageUseCase/ResumeMessageUseCase.dart'
     as _i16;
 import '../Common/FlutterImageCompressAdapter/FlutterImageCompressAdapter.dart'
@@ -225,7 +231,7 @@ import '../Common/SignValid/FireBaseSignInUseCase/FireBaseSignInValidUseCase.dar
     as _i113;
 import '../Common/SignValid/PhonePwFindValidUseCase/PhoneFindValidUseCase.dart'
     as _i54;
-import '../Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart' as _i120;
+import '../Common/SnsLoginMoudleAdapter/SnsLoginModuleAdapter.dart' as _i123;
 import '../Common/SwipeGestureRecognizer/SwipeGestureRecognizer.dart' as _i60;
 import '../Components/DetailPageViewer/DetailPageItemFactory.dart' as _i7;
 import '../Components/PhoneAuthComponent/PhoneAuthMode/PhoneAuthModeFactory.dart'
@@ -274,14 +280,14 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i13.FBallTagRemoteDataSource>(
       () => _i13.FBallTagRemoteDataSourceImpl());
   gh.lazySingleton<_i14.FCMMessageUseCaseInputPort>(
-      () => _i15.BaseMessageUseCase(),
-      instanceName: 'BaseMessageUseCase');
+      () => _i15.LaunchMessageUseCase(),
+      instanceName: 'LaunchMessageUseCase');
   gh.lazySingleton<_i14.FCMMessageUseCaseInputPort>(
       () => _i16.ResumeMessageUseCase(),
       instanceName: 'ResumeMessageUseCase');
   gh.lazySingleton<_i14.FCMMessageUseCaseInputPort>(
-      () => _i17.LaunchMessageUseCase(),
-      instanceName: 'LaunchMessageUseCase');
+      () => _i17.BaseMessageUseCase(),
+      instanceName: 'BaseMessageUseCase');
   gh.lazySingleton<_i14.FCMMessageUseCaseInputPort>(
       () => _i18.BackGroundMessageUseCase(),
       instanceName: 'BackGroundMessageUseCase');
@@ -304,10 +310,10 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i29.GlobalInitMutex>(() => _i29.GlobalInitMutex());
   gh.lazySingleton<_i30.ImageUtilInputPort>(() => _i30.ImageAvatarUtil(),
       instanceName: 'ImageAvatarUtil');
-  gh.lazySingleton<_i30.ImageUtilInputPort>(() => _i30.ImageBorderAvatarUtil(),
-      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<_i30.ImageUtilInputPort>(() => _i30.ImagePngResizeUtil(),
       instanceName: 'ImagePngResizeUtil');
+  gh.lazySingleton<_i30.ImageUtilInputPort>(() => _i30.ImageBorderAvatarUtil(),
+      instanceName: 'ImageBorderAvatarUtil');
   gh.lazySingleton<_i31.LocationAdapter>(() => _i31.LocationAdapterImpl());
   gh.lazySingleton<_i32.MainPageViewModelController>(
       () => _i32.MainPageViewModelController());
@@ -329,11 +335,11 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i41.NoticeUseCaseInputPort>(
       () => _i41.NoticeUseCase(get<_i39.NoticeRepository>()));
   gh.lazySingleton<_i42.NotificationChannel>(
-      () => _i43.NotificationMyFluenceChannel(),
-      instanceName: 'NotificationMyFluenceChannel');
-  gh.lazySingleton<_i42.NotificationChannel>(
-      () => _i44.NotificationRadarChannel(),
+      () => _i43.NotificationRadarChannel(),
       instanceName: 'NotificationRadarChannel');
+  gh.lazySingleton<_i42.NotificationChannel>(
+      () => _i44.NotificationMyFluenceChannel(),
+      instanceName: 'NotificationMyFluenceChannel');
   gh.lazySingleton<_i45.PersonaSettingNoticeRemoteDataSource>(
       () => _i45.PersonaSettingNoticeRemoteDataSourceImpl());
   gh.lazySingleton<_i46.PersonaSettingNoticeRepository>(() =>
@@ -473,15 +479,15 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
           signInUserInfoUseCaseInputPort:
               get<_i93.SignInUserInfoUseCaseInputPort>()));
   gh.lazySingleton<_i108.NotificationUseCaseInputPort>(
-      () => _i109.NearBallCreateUseCase(
-          get<_i24.FlutterLocalNotificationsPluginAdapter>(),
-          get<_i93.SignInUserInfoUseCaseInputPort>()),
-      instanceName: 'NearBallCreateUseCase');
-  gh.lazySingleton<_i108.NotificationUseCaseInputPort>(
-      () => _i110.NotificationFBallReplyUseCase(
+      () => _i109.NotificationFBallReplyUseCase(
           get<_i24.FlutterLocalNotificationsPluginAdapter>(),
           get<_i93.SignInUserInfoUseCaseInputPort>()),
       instanceName: 'NotificationFBallReplyUseCase');
+  gh.lazySingleton<_i108.NotificationUseCaseInputPort>(
+      () => _i110.NearBallCreateUseCase(
+          get<_i24.FlutterLocalNotificationsPluginAdapter>(),
+          get<_i93.SignInUserInfoUseCaseInputPort>()),
+      instanceName: 'NearBallCreateUseCase');
   gh.lazySingleton<_i108.NotificationUseCaseInputPort>(
       () => _i111.FullTicketChargeUseCase(
           get<_i24.FlutterLocalNotificationsPluginAdapter>(),
@@ -510,11 +516,19 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       _i119.PwFindEmailUseCase(
           fireBaseAuthAdapterForUseCase:
               get<_i112.FireBaseAuthAdapterForUseCase>()));
-  gh.lazySingleton<_i120.SnsLoginModuleAdapterFactory>(() =>
-      _i120.SnsLoginModuleAdapterFactory(
+  gh.factory<_i120.QuestBallActionRepository>(() =>
+      _i121.QuestBallActionRepositoryImpl(
+          fireBaseAuthBaseAdapter: get<_i112.FireBaseAuthAdapterForUseCase>()));
+  gh.lazySingleton<_i122.QuestBallActionUseCaseInputPort>(() =>
+      _i122.QuestBallActionUseCase(
+          questBallActionRepository: get<_i120.QuestBallActionRepository>(),
+          signInUserInfoUseCaseInputPort:
+              get<_i93.SignInUserInfoUseCaseInputPort>()));
+  gh.lazySingleton<_i123.SnsLoginModuleAdapterFactory>(() =>
+      _i123.SnsLoginModuleAdapterFactory(
           get<_i112.FireBaseAuthAdapterForUseCase>()));
-  gh.lazySingleton<_i121.UserPositionForegroundMonitoringUseCaseInputPort>(() =>
-      _i122.UserPositionForegroundMonitoringUseCase(
+  gh.lazySingleton<_i124.UserPositionForegroundMonitoringUseCaseInputPort>(() =>
+      _i125.UserPositionForegroundMonitoringUseCase(
           geoLocationUtilBasicUseCaseInputPort:
               get<_i84.GeoLocationUtilBasicUseCaseInputPort>(),
           fUserRepository: get<_i81.FUserRepository>(),
@@ -522,39 +536,39 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
               get<_i112.FireBaseAuthAdapterForUseCase>(),
           updateUserPositionUseCaseInputPort:
               get<_i99.UpdateUserPositionUseCaseInputPort>()));
-  gh.lazySingleton<_i123.FBallRepository>(() => _i124.FBallRepositoryImpl(
+  gh.lazySingleton<_i126.FBallRepository>(() => _i127.FBallRepositoryImpl(
       fBallRemoteDataSource: get<_i11.FBallRemoteDataSource>(),
       fireBaseAuthBaseAdapter: get<_i112.FireBaseAuthAdapterForUseCase>()));
-  gh.lazySingleton<_i125.FBallValuationRepository>(() =>
-      _i126.FBallValuationRepositoryImpl(
+  gh.lazySingleton<_i128.FBallValuationRepository>(() =>
+      _i129.FBallValuationRepositoryImpl(
           fireBaseAuthBaseAdapter: get<_i112.FireBaseAuthAdapterForUseCase>()));
-  gh.lazySingleton<_i127.FBallValuationUseCaseInputPort>(() =>
-      _i127.FBallValuationUseCase(
-          fBallValuationRepository: get<_i125.FBallValuationRepository>()));
-  gh.lazySingleton<_i128.HitBallUseCaseInputPort>(() =>
-      _i128.HitBallUseCase(fBallRepository: get<_i123.FBallRepository>()));
-  gh.lazySingleton<_i129.InsertBallUseCaseInputPort>(() =>
-      _i129.InsertBallUseCase(fBallRepository: get<_i123.FBallRepository>()));
-  gh.lazySingleton<_i130.LogoutUseCaseInputPort>(() => _i131.LogoutUseCase(
+  gh.lazySingleton<_i130.FBallValuationUseCaseInputPort>(() =>
+      _i130.FBallValuationUseCase(
+          fBallValuationRepository: get<_i128.FBallValuationRepository>()));
+  gh.lazySingleton<_i131.HitBallUseCaseInputPort>(() =>
+      _i131.HitBallUseCase(fBallRepository: get<_i126.FBallRepository>()));
+  gh.lazySingleton<_i132.InsertBallUseCaseInputPort>(() =>
+      _i132.InsertBallUseCase(fBallRepository: get<_i126.FBallRepository>()));
+  gh.lazySingleton<_i133.LogoutUseCaseInputPort>(() => _i134.LogoutUseCase(
       fireBaseAuthAdapterForUseCase: get<_i112.FireBaseAuthAdapterForUseCase>(),
       signInUserInfoUseCaseInputPort:
           get<_i93.SignInUserInfoUseCaseInputPort>(),
-      snsLoginModuleAdapterFactory: get<_i120.SnsLoginModuleAdapterFactory>()));
-  gh.lazySingleton<_i132.SelectBallUseCaseInputPort>(() =>
-      _i132.SelectBallUseCase(fBallRepository: get<_i123.FBallRepository>()));
-  gh.lazySingleton<_i133.SingUpUseCaseInputPort>(() => _i134.SingUpUseCase(
+      snsLoginModuleAdapterFactory: get<_i123.SnsLoginModuleAdapterFactory>()));
+  gh.lazySingleton<_i135.SelectBallUseCaseInputPort>(() =>
+      _i135.SelectBallUseCase(fBallRepository: get<_i126.FBallRepository>()));
+  gh.lazySingleton<_i136.SingUpUseCaseInputPort>(() => _i137.SingUpUseCase(
       fUserRepository: get<_i81.FUserRepository>(),
       fireBaseAuthAdapterForUseCase: get<_i112.FireBaseAuthAdapterForUseCase>(),
-      snsLoginModuleAdapterFactory: get<_i120.SnsLoginModuleAdapterFactory>(),
+      snsLoginModuleAdapterFactory: get<_i123.SnsLoginModuleAdapterFactory>(),
       fUserInfoJoinReqDto: get<_i19.FUserInfoJoinReqDto>()));
-  gh.lazySingleton<_i135.UpdateBallUseCaseInputPort>(() =>
-      _i135.UpdateBallUseCase(fBallRepository: get<_i123.FBallRepository>()));
-  gh.lazySingleton<_i136.BallImageListUpLoadUseCaseInputPort>(() =>
-      _i136.BallImageListUpLoadUseCase(
-          fBallRepository: get<_i123.FBallRepository>()));
-  gh.lazySingleton<_i137.BallLikeUseCaseInputPort>(() => _i137.BallLikeUseCase(
-      fBallValuationRepository: get<_i125.FBallValuationRepository>()));
-  gh.lazySingleton<_i138.DeleteBallUseCaseInputPort>(() =>
-      _i138.DeleteBallUseCase(fBallRepository: get<_i123.FBallRepository>()));
+  gh.lazySingleton<_i138.UpdateBallUseCaseInputPort>(() =>
+      _i138.UpdateBallUseCase(fBallRepository: get<_i126.FBallRepository>()));
+  gh.lazySingleton<_i139.BallImageListUpLoadUseCaseInputPort>(() =>
+      _i139.BallImageListUpLoadUseCase(
+          fBallRepository: get<_i126.FBallRepository>()));
+  gh.lazySingleton<_i140.BallLikeUseCaseInputPort>(() => _i140.BallLikeUseCase(
+      fBallValuationRepository: get<_i128.FBallValuationRepository>()));
+  gh.lazySingleton<_i141.DeleteBallUseCaseInputPort>(() =>
+      _i141.DeleteBallUseCase(fBallRepository: get<_i126.FBallRepository>()));
   return get;
 }

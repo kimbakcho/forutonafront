@@ -12,7 +12,7 @@ class RecruitParticipantsAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => RecruitParticipantsAppBarViewModel(),
+      create: (_) => RecruitParticipantsAppBarViewModel(controller:  controller),
       child: Consumer<RecruitParticipantsAppBarViewModel>(
         builder: (_, model, child) {
           return Container(
