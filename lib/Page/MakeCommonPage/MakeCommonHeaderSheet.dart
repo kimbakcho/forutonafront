@@ -11,9 +11,11 @@ class MakeCommonHeaderSheet extends StatelessWidget {
   final Function(BuildContext) onModifyBall;
   final Function(int)? onNextPage;
   final MakeCommonHeaderSheetController makeCommonHeaderSheetController;
+  final MakePageMode makePageMode;
 
   MakeCommonHeaderSheet({required this.onCreateBall,
     required this.onModifyBall,
+    required this.makePageMode,
     this.onNextPage,
     required this.makeCommonHeaderSheetController});
 
@@ -22,7 +24,8 @@ class MakeCommonHeaderSheet extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) =>
           MakeCommonHeaderSheetViewModel(
-              makeCommonHeaderSheetController: makeCommonHeaderSheetController
+              makeCommonHeaderSheetController: makeCommonHeaderSheetController,
+            makePageMode: makePageMode
           ),
       child: Consumer<MakeCommonHeaderSheetViewModel>(
         builder: (_, model, child) {
@@ -89,11 +92,11 @@ class MakeCommonHeaderSheet extends StatelessWidget {
 }
 
 class MakeCommonHeaderSheetViewModel extends ChangeNotifier {
-  MakePageMode makePageMode = MakePageMode.create;
+  MakePageMode makePageMode;
 
   MakeCommonHeaderSheetController makeCommonHeaderSheetController;
 
-  MakeCommonHeaderSheetViewModel({required this.makeCommonHeaderSheetController}) {
+  MakeCommonHeaderSheetViewModel({required this.makeCommonHeaderSheetController,required this.makePageMode}) {
     this.makeCommonHeaderSheetController._viewModel = this;
   }
 
@@ -104,7 +107,7 @@ class MakeCommonHeaderSheetViewModel extends ChangeNotifier {
   }
 
   setMakePageMode(MakePageMode makePageMode, bool isOpenBottom) {
-    this.makePageMode = makePageMode;
+
     if (isOpenBottom) {
       notifyListeners();
     }
@@ -140,6 +143,7 @@ class MakeCommonHeaderSheetViewModel extends ChangeNotifier {
 }
 
 class MakeCommonHeaderSheetController {
+  MakePageMode makePageMode;
 
   MakeCommonHeaderSheetViewModel? _viewModel;
 
@@ -149,8 +153,12 @@ class MakeCommonHeaderSheetController {
 
   final int pageLength;
 
-  MakeCommonHeaderSheetController({required this.pageLength}) {
-    isCanCompletes = List.filled(this.pageLength, false);
+  MakeCommonHeaderSheetController({required this.pageLength,required this.makePageMode}) {
+    if(makePageMode == MakePageMode.create){
+      isCanCompletes = List.filled(this.pageLength, false);
+    }else {
+      isCanCompletes = List.filled(this.pageLength, true);
+    }
   }
 
   setIsCanComplete(bool value, bool isOpenBottom, int page) {

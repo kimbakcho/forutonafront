@@ -89,6 +89,7 @@ class IM001MainPage extends StatelessWidget {
                     .changeDisplayAddress(address);
               },
               makeOpenBottomHeaderSheet: MakeCommonHeaderSheet(
+                makePageMode: makePageMode,
                 onCreateBall: model._onCreateBall,
                 onModifyBall: model._onModifyBall,
                 makeCommonHeaderSheetController:
@@ -116,15 +117,16 @@ class IM001MainPageViewModel extends ChangeNotifier {
   final MakeCommonMainPageController makeCommonMainPageController =
       MakeCommonMainPageController();
 
-  final MakeCommonHeaderSheetController makeCommonHeaderSheetController =
-      MakeCommonHeaderSheetController(pageLength: 1);
+  late MakeCommonHeaderSheetController makeCommonHeaderSheetController;
 
   IM001MainPageViewModel({
     required this.buildContext,
     required this.makePageMode,
     this.preSetBallResDto,
     this.preSetFBallTagResDtos,
-  });
+  }){
+    makeCommonHeaderSheetController = MakeCommonHeaderSheetController(pageLength: 1,makePageMode: makePageMode);
+  }
 
   onComplete(bool value) {
     this.isCanComplete = value;

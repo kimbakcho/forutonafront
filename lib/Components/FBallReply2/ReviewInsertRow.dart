@@ -32,9 +32,8 @@ class ReviewTextActionRow extends StatelessWidget {
               color: Colors.white,
               padding: padding,
               child: Row(children: <Widget>[
-
                 UserProfileImageWidget(
-                  imageUrl: userProfileImageUrl!,
+                  imageUrl: userProfileImageUrl,
                   height: 24.0,
                   width: 24.0,
                 ),

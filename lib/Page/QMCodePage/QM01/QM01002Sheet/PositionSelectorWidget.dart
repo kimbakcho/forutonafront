@@ -10,6 +10,10 @@ import 'package:provider/provider.dart';
 class PositionSelectorWidget extends StatelessWidget {
   final PositionSelectorWidgetController? controller;
 
+  Position? selectPosition;
+
+  String? selectAddress;
+
   final String mapIconPath;
 
   final String label;
@@ -23,7 +27,9 @@ class PositionSelectorWidget extends StatelessWidget {
       required this.mapIconPath,
       required this.label,
       required this.hint,
-      required this.hint2});
+      required this.hint2,
+      this.selectPosition,
+      this.selectAddress});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +38,8 @@ class PositionSelectorWidget extends StatelessWidget {
           mapIconPath: mapIconPath,
           controller: controller,
           label: label,
-          hint2: hint2),
+          hint2: hint2,
+          selectAddress: selectAddress,selectPosition: selectPosition),
       child: Consumer<PositionSelectorWidgetViewModel>(
         builder: (_, model, child) {
           return Container(
@@ -97,7 +104,7 @@ class PositionSelectorWidgetViewModel extends ChangeNotifier {
       {this.controller,
       required this.mapIconPath,
       required this.label,
-      required this.hint2}) {
+      required this.hint2,this.selectAddress,this.selectPosition}) {
     if (controller != null) {
       controller!._viewModel = this;
     }
@@ -195,6 +202,18 @@ class PositionSelectorWidgetController {
       return null;
     }
   }
+  void setSelectPosition(Position position) {
+    if (_viewModel != null) {
+      _viewModel!.selectPosition = position;
+    }
+  }
+
+  void setSelectAddress(String address){
+    if (_viewModel != null) {
+      _viewModel!.selectAddress = address;
+    }
+  }
+
   String? getSelectAddress(){
     if (_viewModel != null) {
       return _viewModel!.selectAddress;

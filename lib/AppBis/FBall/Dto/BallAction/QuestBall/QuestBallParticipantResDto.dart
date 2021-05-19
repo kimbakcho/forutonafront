@@ -31,6 +31,8 @@ class QuestBallParticipantResDto {
 
   QuestBallParticipateState? currentState;
 
+  DateTime? acceptTime;
+
   QuestBallParticipantResDto();
 
   factory QuestBallParticipantResDto.fromJson(Map<String, dynamic> json) => _$QuestBallParticipantResDtoFromJson(json);

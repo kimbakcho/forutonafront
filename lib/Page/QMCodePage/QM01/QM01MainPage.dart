@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/QuestBallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/InsertBall/InsertBallUseCaseInputPort.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/UpdateBall/UpdateBallUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/FBallType.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/Value/QuestBallDescription.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallDesImagesDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallInsertReqDto/FBallInsertReqDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallUpdateReqDto/FBallUpdateReqDto.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/AppBis/Tag/Dto/TagInsertReqDto.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
@@ -36,7 +39,11 @@ class QM01MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => QM01MainPageViewModel(),
+      create: (_) => QM01MainPageViewModel(
+        makePageMode: makePageMode,
+        preSetBallResDto: preSetBallResDto,
+        preSetFBallTagResDtos: preSetFBallTagResDtos
+      ),
       child: Consumer<QM01MainPageViewModel>(
         builder: (_, model, child) {
           String? preSetAddress;
@@ -77,6 +84,8 @@ class QM01MainPage extends StatelessWidget {
                   initAddress: "로딩중",
                 ),
                 QM01002Sheet(
+                  makePageMode: model.makePageMode,
+                  preSetBallResDto: model.preSetBallResDto,
                   controller: model.qm01002sheetController,
                   onComplete: (value) {
                     model.makeCommonHeaderSheetController.setIsCanComplete(
@@ -94,7 +103,10 @@ class QM01MainPage extends StatelessWidget {
             },
             makeCommonMainPageController: model.makeCommonMainPageController,
             makeOpenBottomHeaderSheet: MakeCommonHeaderSheet(
-              onModifyBall: (context) {},
+              makePageMode: makePageMode,
+              onModifyBall: (context) {
+                model.onModifyBall(context);
+              },
               onCreateBall: (context) {
                 model.onCreateBall(context);
               },
@@ -114,20 +126,31 @@ class QM01MainPage extends StatelessWidget {
 }
 
 class QM01MainPageViewModel extends ChangeNotifier {
+
+  final MakePageMode makePageMode;
+  final FBallResDto? preSetBallResDto;
+
   MakeCommonBottomSheetBodyController makeCommonBottomSheetBodyController =
   MakeCommonBottomSheetBodyController();
 
   MakeCommonMainPageController makeCommonMainPageController =
   MakeCommonMainPageController();
 
-  MakeCommonHeaderSheetController makeCommonHeaderSheetController =
-  MakeCommonHeaderSheetController(pageLength: 2);
+  late MakeCommonHeaderSheetController makeCommonHeaderSheetController;
 
   PageController pageController = PageController();
 
   QM01002SheetController qm01002sheetController = QM01002SheetController();
 
   InsertBallUseCaseInputPort _insertBallUseCaseInputPort = sl();
+
+  UpdateBallUseCaseInputPort _updateBallUseCaseInputPort = sl();
+
+  final List<FBallTagResDto>? preSetFBallTagResDtos;
+
+  QM01MainPageViewModel({required this.makePageMode,this.preSetBallResDto,this.preSetFBallTagResDtos}){
+    makeCommonHeaderSheetController = MakeCommonHeaderSheetController(pageLength: 2,makePageMode: makePageMode);
+  }
 
   onCreateBall(BuildContext context) async {
     showDialog(
@@ -153,12 +176,55 @@ class QM01MainPageViewModel extends ChangeNotifier {
           item.tagItem = e.text;
           return item;
         }).toList();
+
+    var questBallDescription = await makeQuestBallDescription();
+
+    fBallInsertReqDto.description = json.encode(questBallDescription);
+
+    await _insertBallUseCaseInputPort.insertBall(fBallInsertReqDto);
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
+  void onModifyBall(BuildContext context) async {
+
+
+    FBallUpdateReqDto fBallUpdateReqDto =  FBallUpdateReqDto();
+
+    fBallUpdateReqDto.ballUuid = preSetBallResDto!.ballUuid!;
+
+    fBallUpdateReqDto.longitude =
+        makeCommonMainPageController.getCurrentPosition()!.longitude;
+    fBallUpdateReqDto.latitude =
+        makeCommonMainPageController.getCurrentPosition()!.latitude;
+    fBallUpdateReqDto.ballName =
+        makeCommonBottomSheetBodyController.getBallName();
+    fBallUpdateReqDto.placeAddress =
+        makeCommonBottomSheetBodyController.getPlaceAddress();
+    fBallUpdateReqDto.tags =
+        makeCommonBottomSheetBodyController.getTags().map((e) {
+          TagInsertReqDto item = TagInsertReqDto();
+          item.ballUuid = fBallUpdateReqDto.ballUuid;
+          item.tagItem = e.text;
+          return item;
+        }).toList();
+
+    var questBallDescription = await makeQuestBallDescription();
+
+    fBallUpdateReqDto.description = json.encode(questBallDescription);
+
+    await _updateBallUseCaseInputPort.updateBall(fBallUpdateReqDto);
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
+  Future<QuestBallDescription> makeQuestBallDescription() async {
     var questBallDescription = QuestBallDescription();
     questBallDescription.text =
         makeCommonBottomSheetBodyController.getContent();
 
     var imageItems =
-    await makeCommonBottomSheetBodyController.updateImageAndFillImageUrl();
+        await makeCommonBottomSheetBodyController.updateImageAndFillImageUrl();
 
     questBallDescription.desimages = [];
     for (int i = 0; i < imageItems.length; i++) {
@@ -189,6 +255,8 @@ class QM01MainPageViewModel extends ChangeNotifier {
           qm01002sheetController.getSelectCheckInPosition()!.longitude;
 
       questBallDescription.isOpenCheckInPosition = qm01002sheetController.isOpenCheckInPosition();
+
+      questBallDescription.checkInPositionDescription = qm01002sheetController.getCheckInDescription();
     }
     if (qm01002sheetController.getTimeLimitFlag()) {
       questBallDescription.limitTimeSec =
@@ -211,12 +279,7 @@ class QM01MainPageViewModel extends ChangeNotifier {
       questBallDescription.startPositionAddress =
           qm01002sheetController.getSelectStartPositionAddress();
     }
+    return questBallDescription;
 
-
-    fBallInsertReqDto.description = json.encode(questBallDescription);
-
-    await _insertBallUseCaseInputPort.insertBall(fBallInsertReqDto);
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
   }
 }

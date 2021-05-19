@@ -13,7 +13,7 @@ class QuestActionDialog extends StatelessWidget {
 
   final Size size;
 
-  final Function? onAgree;
+  final Function? onRightTap;
 
   QuestActionDialog(
       {required this.title,
@@ -21,7 +21,7 @@ class QuestActionDialog extends StatelessWidget {
       required this.activeColor,
       required this.activeText,
       required this.size,
-      this.onAgree});
+      this.onRightTap});
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +84,8 @@ class QuestActionDialog extends StatelessWidget {
                                           color: Color(0xffE4E7E8), width: 1))),
                               child: TextButton(
                                   onPressed: () {
-                                    if(onAgree != null){
-                                      onAgree!();
+                                    if(onRightTap != null){
+                                      onRightTap!();
                                     }
                                   },
                                   child: Text(activeText,
@@ -106,7 +106,7 @@ class QuestActionDialog extends StatelessWidget {
                                   child: Text("닫기",
                                       style: GoogleFonts.notoSans(
                                         fontSize: 13,
-                                        color: const Color(0xffff4f9a),
+                                        color: const Color(0xff3A3E3F),
                                         fontWeight: FontWeight.w700,
                                         height: 1.5384615384615385,
                                       )),

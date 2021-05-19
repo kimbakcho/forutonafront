@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/Common/ModifiedLengthLimitingTextInputFormatter/ModifiedLengthLimitingTextInputFormatter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kakao_flutter_sdk/all.dart';
 import 'package:provider/provider.dart';
 
-class PhotoCertificationDescription extends StatelessWidget {
 
-  final PhotoCertificationDescriptionController? controller;
+class CheckInDescriptionWidget extends StatelessWidget {
+
+  final CheckInDescriptionWidgetController? controller;
 
   final String? preSetText;
 
-  PhotoCertificationDescription({this.controller,this.preSetText});
+  CheckInDescriptionWidget({this.controller,this.preSetText});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => PhotoCertificationDescriptionViewModel(
+      create: (_) => CheckInDescriptionWidgetViewModel(
         controller: controller,
         preSetText: preSetText
-
       ),
-      child: Consumer<PhotoCertificationDescriptionViewModel>(
+      child: Consumer<CheckInDescriptionWidgetViewModel>(
         builder: (_, model, child) {
           return Container(
             child: Column(
@@ -28,7 +27,7 @@ class PhotoCertificationDescription extends StatelessWidget {
               children: [
                 Container(
                   child: Text(
-                    "인증샷 설명",
+                    "체크인 위치 힌트",
                     style: GoogleFonts.notoSans(
                       fontSize: 14,
                       color: const Color(0xff000000),
@@ -51,7 +50,7 @@ class PhotoCertificationDescription extends StatelessWidget {
                   minLines: 1,
                   maxLines: 2,
                   decoration: InputDecoration(
-                      hintText: "퀘스트 완료 인증을 위한 사진을 설명해 주세요.",
+                      hintText: "체크인 위치 힌트를 설명해 주세요.",
                       hintStyle: GoogleFonts.notoSans(
                         fontSize: 14,
                         color: const Color(0xffb1b1b1),
@@ -69,32 +68,26 @@ class PhotoCertificationDescription extends StatelessWidget {
   }
 }
 
-class PhotoCertificationDescriptionViewModel extends ChangeNotifier {
+class CheckInDescriptionWidgetViewModel extends ChangeNotifier {
+  CheckInDescriptionWidgetController? controller;
 
   TextEditingController textController = TextEditingController();
 
-  PhotoCertificationDescriptionController? controller;
+  String? preSetText;
 
-  final String? preSetText;
-
-  PhotoCertificationDescriptionViewModel({this.controller,this.preSetText}){
-    if(controller != null){
-      controller!._viewModel = this;
+  CheckInDescriptionWidgetViewModel({this.controller, this.preSetText}){
+    if(this.controller!=null){
+      this.controller!._viewModel = this;
     }
     if(preSetText != null){
       textController.text = preSetText!;
     }
-  }
 
-  String getText() {
-    return textController.text;
   }
-
 }
 
-class PhotoCertificationDescriptionController {
-
-  PhotoCertificationDescriptionViewModel? _viewModel;
+class CheckInDescriptionWidgetController {
+  CheckInDescriptionWidgetViewModel? _viewModel;
 
   String getText(){
     if(_viewModel!=null){
@@ -103,13 +96,5 @@ class PhotoCertificationDescriptionController {
       return "";
     }
   }
-
-  setText(String str){
-    if(_viewModel!=null){
-      _viewModel!.textController.text = str;
-    }
-
-  }
-
 
 }

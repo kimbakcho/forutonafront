@@ -6,12 +6,14 @@ import 'package:provider/provider.dart';
 class QTimeLimitWidget extends StatelessWidget {
   final QTimeLimitWidgetController? controller;
 
-  QTimeLimitWidget({this.controller});
+  final int? initTimeSec;
+
+  QTimeLimitWidget({this.controller,this.initTimeSec});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => QTimeLimitWidgetViewModel(controller: controller),
+      create: (_) => QTimeLimitWidgetViewModel(controller: controller,initTimeSec: initTimeSec),
       child: Consumer<QTimeLimitWidgetViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -125,6 +127,8 @@ enum LimitTimeBtnSelectMode { MIN30, MIN60, MIN120, Custom }
 class QTimeLimitWidgetViewModel extends ChangeNotifier {
   final QTimeLimitWidgetController? controller;
 
+  final int? initTimeSec;
+
   LimitTimeBtnSelectMode currentMode = LimitTimeBtnSelectMode.MIN30;
 
   Duration durationTime = Duration(minutes: 30);
@@ -133,9 +137,25 @@ class QTimeLimitWidgetViewModel extends ChangeNotifier {
 
   bool isCustomSelected = false;
 
-  QTimeLimitWidgetViewModel({this.controller}) {
+  QTimeLimitWidgetViewModel({this.controller,this.initTimeSec}) {
     if (this.controller != null) {
       controller!.viewModel = this;
+    }
+    if(initTimeSec != null){
+      durationTime = Duration(seconds: initTimeSec!);
+      if(Duration(minutes: 30).inSeconds == initTimeSec){
+        currentMode = LimitTimeBtnSelectMode.MIN30;
+        isCustomSelected = false;
+      }else if(Duration(minutes: 60).inSeconds == initTimeSec){
+        currentMode = LimitTimeBtnSelectMode.MIN60;
+        isCustomSelected = false;
+      }else if(Duration(minutes: 120).inSeconds == initTimeSec){
+        currentMode = LimitTimeBtnSelectMode.MIN120;
+        isCustomSelected = false;
+      }else {
+        currentMode = LimitTimeBtnSelectMode.Custom;
+        isCustomSelected = true;
+      }
     }
     var durationTemp = durationTime.toString();
     durationTimeStr = durationTemp.substring(0, durationTemp.lastIndexOf(":"));

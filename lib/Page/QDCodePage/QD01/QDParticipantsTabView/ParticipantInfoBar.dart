@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/Value/QuestBallParticipateState.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestBallParticipantResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Dto/FUserInfoSimpleResDto.dart';
 import 'package:forutonafront/Common/TimeUitl/TimeDisplayUtil.dart';
@@ -12,17 +13,19 @@ class ParticipantInfoBar extends StatelessWidget {
 
   final Function()? onAcceptParticipation;
 
-  final Function()? onDeleteParticipation;
+  final Function()? onDeniedParticipation;
 
   ParticipantInfoBar(
       {required this.questBallParticipantResDto,
       this.onAcceptParticipation,
-      this.onDeleteParticipation});
+      this.onDeniedParticipation});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ParticipantInfoBarViewModel(),
+      create: (_) => ParticipantInfoBarViewModel(
+        questBallParticipantResDto: questBallParticipantResDto
+      ),
       child: Consumer<ParticipantInfoBarViewModel>(
         builder: (_, model, child) {
           return Container(
@@ -48,8 +51,9 @@ class ParticipantInfoBar extends StatelessWidget {
                       ),
                       textAlign: TextAlign.left,
                     ),
+
                     Text(
-                      '참가시간 : ${TimeDisplayUtil.getCalcToStrFromNow(questBallParticipantResDto.participationTime!)}',
+                      model.getTimeText(),
                       style: GoogleFonts.notoSans(
                         fontSize: 12,
                         color: const Color(0xff3a3e3f),
@@ -92,13 +96,13 @@ class ParticipantInfoBar extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                onDeleteParticipation != null
+                onDeniedParticipation != null
                     ? Container(
                         height: 21,
                         child: TextButton(
                           onPressed: () {
-                            if (onDeleteParticipation != null) {
-                              onDeleteParticipation!();
+                            if (onDeniedParticipation != null) {
+                              onDeniedParticipation!();
                             }
                           },
                           style: ButtonStyle(
@@ -126,4 +130,19 @@ class ParticipantInfoBar extends StatelessWidget {
   }
 }
 
-class ParticipantInfoBarViewModel extends ChangeNotifier {}
+class ParticipantInfoBarViewModel extends ChangeNotifier {
+
+  final QuestBallParticipantResDto questBallParticipantResDto;
+
+
+  ParticipantInfoBarViewModel({required this.questBallParticipantResDto});
+
+  String getTimeText(){
+    if(this.questBallParticipantResDto.currentState == QuestBallParticipateState.Wait){
+      return '신청시간 : ${TimeDisplayUtil.getCalcToStrFromNow(questBallParticipantResDto.participationTime!)}';
+    }else {
+      return '참가시간 : ${TimeDisplayUtil.getCalcToStrFromNow(questBallParticipantResDto.acceptTime!)}';
+    }
+  }
+
+}

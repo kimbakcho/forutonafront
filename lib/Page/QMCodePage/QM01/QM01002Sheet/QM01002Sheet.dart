@@ -3,13 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/QuestBallDisPlayUseCase.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Common/FluttertoastAdapter/FluttertoastAdapter.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Components/ButtonStyle/CircleIconBtn.dart';
 import 'package:forutonafront/Forutonaicon/forutona_icon_icons.dart';
+import 'package:forutonafront/Page/MakeCommonPage/MakePageMode.dart';
+import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'CheckInDescriptionWidget.dart';
 import 'CheckInPositionOpenWidget.dart';
 import 'PhotoCertificationDescription.dart';
 import 'PhotoCertificationWidget.dart';
@@ -20,11 +25,21 @@ import 'QuestSuccessSelect.dart';
 import 'PositionSelectorWidget.dart';
 
 class QM01002Sheet extends StatefulWidget {
+  final MakePageMode makePageMode;
+
+  final FBallResDto? preSetBallResDto;
+
   final Function(bool) onComplete;
 
   final QM01002SheetController controller;
 
-  const QM01002Sheet({Key? key, required this.onComplete,required this.controller}) : super(key: key);
+  const QM01002Sheet(
+      {Key? key,
+      required this.makePageMode,
+      this.preSetBallResDto,
+      required this.onComplete,
+      required this.controller})
+      : super(key: key);
 
   @override
   _QM01002SheetState createState() => _QM01002SheetState();
@@ -32,11 +47,14 @@ class QM01002Sheet extends StatefulWidget {
 
 class _QM01002SheetState extends State<QM01002Sheet>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => QM01002SheetViewModel(onCanComplete: widget.onComplete,controller: widget.controller),
+      create: (_) => QM01002SheetViewModel(
+          onCanComplete: widget.onComplete,
+          controller: widget.controller,
+          makePageMode: widget.makePageMode,
+          preSetBallResDto: widget.preSetBallResDto),
       child: Consumer<QM01002SheetViewModel>(
         builder: (_, model, child) {
           return Column(
@@ -66,16 +84,24 @@ class _QM01002SheetState extends State<QM01002Sheet>
                         child: model.getSelectorWidget(context),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 34, left: 16, right: 16),
-                        child: model.getSettingCheckInWidget(),
-                      ),
-                      Container(
                           margin: EdgeInsets.only(top: 34, left: 16, right: 16),
                           child:
-                              model.getPhotoCertificationDescriptionWidget()),
-                      model.timeLimitFlag ? QTimeLimitWidget(
-                        controller: model._qTimeLimitWidgetController,
-                      ) : Container(),
+                          model.getPhotoCertificationDescriptionWidget()),
+                      Container(
+                        margin: EdgeInsets.only(top: 16, left: 16, right: 16),
+                        child: model.getSettingCheckInWidget(),
+                      ),
+
+                      model.timeLimitFlag
+                          ? QTimeLimitWidget(
+                              initTimeSec:
+                                  model.makePageMode == MakePageMode.modify
+                                      ? model.questBallDisPlayUseCase!
+                                          .ballDescription!.limitTimeSec!
+                                      : null,
+                              controller: model._qTimeLimitWidgetController,
+                            )
+                          : Container(),
                       Container(
                         margin: EdgeInsets.only(top: 34, left: 16, right: 16),
                         child: model.getStartPositionSelectWidget(),
@@ -200,12 +226,9 @@ class _QM01002SheetState extends State<QM01002Sheet>
 
   @override
   bool get wantKeepAlive => true;
-
-
 }
 
 class QM01002SheetViewModel extends ChangeNotifier {
-
   QM01002SheetController controller;
 
   QuestSelectMode currentSelectMode = QuestSelectMode.None;
@@ -222,24 +245,55 @@ class QM01002SheetViewModel extends ChangeNotifier {
 
   Function(bool) onCanComplete;
 
-  PhotoCertificationDescriptionController _photoCertificationDescriptionController = PhotoCertificationDescriptionController();
+  PhotoCertificationDescriptionController
+      _photoCertificationDescriptionController =
+      PhotoCertificationDescriptionController();
 
-  PositionSelectorWidgetController _checkInController =  PositionSelectorWidgetController();
+  PositionSelectorWidgetController _checkInController =
+      PositionSelectorWidgetController();
 
-  PositionSelectorWidgetController _startPositionController = PositionSelectorWidgetController();
+  PositionSelectorWidgetController _startPositionController =
+      PositionSelectorWidgetController();
 
-  QTimeLimitWidgetController _qTimeLimitWidgetController = QTimeLimitWidgetController();
+  QTimeLimitWidgetController _qTimeLimitWidgetController =
+      QTimeLimitWidgetController();
 
-  CheckInPositionOpenWidgetController _checkInPositionOpenWidgetController = CheckInPositionOpenWidgetController();
+  CheckInPositionOpenWidgetController _checkInPositionOpenWidgetController =
+      CheckInPositionOpenWidgetController();
+
+  CheckInDescriptionWidgetController _checkInDescriptionWidgetController = CheckInDescriptionWidgetController();
 
   late Timer timer;
 
-  QM01002SheetViewModel({required this.onCanComplete,required this.controller}){
+  final MakePageMode makePageMode;
+
+  final FBallResDto? preSetBallResDto;
+
+  QuestBallDisPlayUseCase? questBallDisPlayUseCase;
+
+  QM01002SheetViewModel(
+      {required this.onCanComplete,
+      required this.controller,
+      required this.makePageMode,
+      this.preSetBallResDto}) {
     this.controller._viewModel = this;
-    timer = Timer.periodic(Duration(seconds: 1), (time){
+    timer = Timer.periodic(Duration(seconds: 1), (time) {
       timer = time;
       changeCanComplete();
     });
+    if (makePageMode == MakePageMode.modify) {
+      questBallDisPlayUseCase = QuestBallDisPlayUseCase(
+          fBallResDto: preSetBallResDto!, geoLocatorAdapter: sl());
+
+      this.currentSelectMode =
+          questBallDisPlayUseCase!.ballDescription!.successSelectMode!;
+
+      this.timeLimitFlag =
+          questBallDisPlayUseCase!.ballDescription!.timeLimitFlag!;
+
+      this.startPositionFlag =
+          questBallDisPlayUseCase!.ballDescription!.startPositionFlag!;
+    }
   }
 
   @override
@@ -250,28 +304,30 @@ class QM01002SheetViewModel extends ChangeNotifier {
 
   changeCanComplete() {
     if (currentSelectMode != QuestSelectMode.None) {
-      if(currentSelectMode == QuestSelectMode.PhotoCertification){
-        if(_photoCertificationDescriptionController.getText().isNotEmpty){
-          if(startPositionFlag){
-            if(_startPositionController.getSelectPosition() != null){
+      if (currentSelectMode == QuestSelectMode.PhotoCertification) {
+        if (_photoCertificationDescriptionController.getText().isNotEmpty) {
+          if (startPositionFlag) {
+            if (_startPositionController.getSelectPosition() != null) {
               onCanComplete(true);
               return;
             }
-          }else {
+          } else {
             onCanComplete(true);
-            return ;
+            return;
           }
         }
-      }else if(currentSelectMode == QuestSelectMode.CheckInWithPhotoCertification){
-        if(_photoCertificationDescriptionController.getText().isNotEmpty && _checkInController.getSelectPosition() != null){
-          if(startPositionFlag){
-            if(_startPositionController.getSelectPosition() != null){
+      } else if (currentSelectMode ==
+          QuestSelectMode.CheckInWithPhotoCertification) {
+        if (_photoCertificationDescriptionController.getText().isNotEmpty &&
+            _checkInController.getSelectPosition() != null) {
+          if (startPositionFlag) {
+            if (_startPositionController.getSelectPosition() != null) {
               onCanComplete(true);
-              return ;
+              return;
             }
-          }else {
+          } else {
             onCanComplete(true);
-            return ;
+            return;
           }
         }
       }
@@ -320,10 +376,18 @@ class QM01002SheetViewModel extends ChangeNotifier {
     if (currentSelectMode != QuestSelectMode.None) {
       return PhotoCertificationDescription(
         controller: _photoCertificationDescriptionController,
+        preSetText: makePageMode == MakePageMode.modify
+            ? questBallDisPlayUseCase!
+                .ballDescription!.photoCertificationDescription
+            : null,
       );
     } else {
       return Container();
     }
+  }
+
+  setPhotoCertificationDescription(String text) {
+    _photoCertificationDescriptionController.setText(text);
   }
 
   Widget getSettingCheckInWidget() {
@@ -331,36 +395,75 @@ class QM01002SheetViewModel extends ChangeNotifier {
       return Column(
         children: [
           PositionSelectorWidget(
-            mapIconPath: "assets/MarkesImages/checkinflag.png",
-            label: "체크인 위치",
-            hint: '[!] 지정된 위치 반경 20m 내에서 체크인이 가능합니다.',
-            hint2: "여기를 눌러 체크인 위치를 지정해주세요",
-            controller: _checkInController,
-          ),
+              mapIconPath: "assets/MarkesImages/checkinflag.png",
+              label: "체크인 위치",
+              hint: '[!] 지정된 위치 반경 20m 내에서 체크인이 가능합니다.',
+              hint2: "여기를 눌러 체크인 위치를 지정해주세요",
+              controller: _checkInController,
+              selectAddress: makePageMode == MakePageMode.modify
+                  ? questBallDisPlayUseCase!.ballDescription!.checkInAddress
+                  : null,
+              selectPosition: makePageMode == MakePageMode.modify
+                  ? Position(
+                      latitude: questBallDisPlayUseCase!
+                          .ballDescription!.checkInPositionLat,
+                      longitude: questBallDisPlayUseCase!
+                          .ballDescription!.checkInPositionLong)
+                  : null),
           SizedBox(
             height: 20,
           ),
           CheckInPositionOpenWidget(
+            initState: makePageMode == MakePageMode.modify
+                ? questBallDisPlayUseCase!
+                    .ballDescription!.isOpenCheckInPosition
+                : null,
             controller: _checkInPositionOpenWidgetController,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          CheckInDescriptionWidget(
+            controller: _checkInDescriptionWidgetController,
+            preSetText: makePageMode == MakePageMode.modify
+                ? questBallDisPlayUseCase!
+                .ballDescription!.checkInPositionDescription
+                : null,
           )
-        ],
-      )
 
-        ;
+        ],
+      );
     } else {
       return Container();
     }
   }
 
+  setCheckInPosition(Position position) {
+    _checkInController.setSelectPosition(position);
+  }
+
+  setCheckInAddress(String address) {
+    _checkInController.setSelectAddress(address);
+  }
+
   Widget getStartPositionSelectWidget() {
     if (startPositionFlag) {
       return PositionSelectorWidget(
-        mapIconPath: "assets/MarkesImages/startflag.png",
-        label: "시작 위치",
-        hint: '',
-        hint2: "여기를 눌러 시작 위치를 지정해주세요",
-        controller: _startPositionController,
-      );
+          mapIconPath: "assets/MarkesImages/startflag.png",
+          label: "시작 위치",
+          hint: '',
+          hint2: "여기를 눌러 시작 위치를 지정해주세요",
+          controller: _startPositionController,
+          selectAddress: makePageMode == MakePageMode.modify
+              ? questBallDisPlayUseCase!.ballDescription!.startPositionAddress
+              : null,
+          selectPosition: makePageMode == MakePageMode.modify
+              ? Position(
+                  latitude: questBallDisPlayUseCase!
+                      .ballDescription!.startPositionLat,
+                  longitude: questBallDisPlayUseCase!
+                      .ballDescription!.startPositionLong)
+              : null);
     } else {
       return Container();
     }
@@ -411,23 +514,39 @@ class QM01002SheetViewModel extends ChangeNotifier {
 class QM01002SheetController {
   QM01002SheetViewModel? _viewModel;
 
+  void setCurrentSelectMode(QuestSelectMode mode) {
+    _viewModel!.setCurrentSelectMode(mode);
+  }
+
+  void setPhotoCertificationDescription(String text) {
+    _viewModel!.setPhotoCertificationDescription(text);
+  }
+
+  setCheckInPosition(Position position) {
+    _viewModel!.setCheckInPosition(position);
+  }
+
+  setCheckInAddress(String address) {
+    _viewModel!.setCheckInAddress(address);
+  }
+
   QuestSelectMode getSuccessSelectMode() {
-      return _viewModel!.currentSelectMode;
+    return _viewModel!.currentSelectMode;
   }
 
   Position? getSelectCheckInPosition() {
     return _viewModel!._checkInController.getSelectPosition();
   }
 
-  String? getSelectCheckInAddress(){
+  String? getSelectCheckInAddress() {
     return _viewModel!._checkInController.getSelectAddress();
   }
 
-  String getPhotoCertificationDescription(){
+  String getPhotoCertificationDescription() {
     return _viewModel!._photoCertificationDescriptionController.getText();
   }
 
-  Duration? getLimitTime(){
+  Duration? getLimitTime() {
     return _viewModel!._qTimeLimitWidgetController.getSelectDuration();
   }
 
@@ -435,19 +554,23 @@ class QM01002SheetController {
     return _viewModel!._startPositionController.getSelectPosition();
   }
 
-  String? getSelectStartPositionAddress(){
+  String? getSelectStartPositionAddress() {
     return _viewModel!._checkInController.getSelectAddress();
   }
 
-  bool getTimeLimitFlag(){
+  bool getTimeLimitFlag() {
     return _viewModel!.timeLimitFlag;
   }
 
-  bool getStartPositionFlag(){
+  bool getStartPositionFlag() {
     return _viewModel!.startPositionFlag;
   }
 
-  bool isOpenCheckInPosition(){
+  bool isOpenCheckInPosition() {
     return _viewModel!._checkInPositionOpenWidgetController.getState();
+  }
+
+  String getCheckInDescription(){
+    return _viewModel!._checkInDescriptionWidgetController.getText();
   }
 }

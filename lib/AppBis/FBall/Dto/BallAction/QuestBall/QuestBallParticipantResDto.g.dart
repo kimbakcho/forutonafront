@@ -26,7 +26,10 @@ QuestBallParticipantResDto _$QuestBallParticipantResDtoFromJson(
     ..likePoint = json['likePoint'] as int?
     ..dislikePoint = json['dislikePoint'] as int?
     ..currentState = _$enumDecodeNullable(
-        _$QuestBallParticipateStateEnumMap, json['currentState']);
+        _$QuestBallParticipateStateEnumMap, json['currentState'])
+    ..acceptTime = json['acceptTime'] == null
+        ? null
+        : DateTime.parse(json['acceptTime'] as String);
 }
 
 Map<String, dynamic> _$QuestBallParticipantResDtoToJson(
@@ -44,6 +47,7 @@ Map<String, dynamic> _$QuestBallParticipantResDtoToJson(
       'likePoint': instance.likePoint,
       'dislikePoint': instance.dislikePoint,
       'currentState': _$QuestBallParticipateStateEnumMap[instance.currentState],
+      'acceptTime': instance.acceptTime?.toIso8601String(),
     };
 
 K _$enumDecode<K, V>(

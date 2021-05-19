@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/BallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/IssueBallDisPlayUseCase.dart';
+import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallDisPlayUseCase/QuestBallDisPlayUseCase.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/DeleteBall/DeleteBallUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/HitBall/HitBallUseCaseInputPort.dart';
 import 'package:forutonafront/AppBis/FBall/Domain/UseCase/NoInterestBallUseCase/NoInterestBallUseCaseInputPort.dart';
@@ -12,6 +13,7 @@ import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Page/QDCodePage/QD01/QD01MainPage.dart';
 import 'package:forutonafront/ServiceLocator/ServiceLocator.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import 'ListUpBallWidgetItem.dart';
 
@@ -55,7 +57,7 @@ class QuestBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   late BallDisPlayUseCase questBallDisPlayUseCase;
   SelectBallUseCaseInputPort? selectBallUseCaseInputPort;
   TagFromBallUuidUseCaseInputPort? tagFromBallUuidUseCaseInputPort;
-
+  final SelectBallUseCaseInputPort _selectBallUseCaseInputPort = sl();
   BuildContext context;
 
   QuestBallHaveImageWidgetViewModel({
@@ -75,7 +77,7 @@ class QuestBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
       sl()) {
     var item = ballListMediator.itemList[index];
     if (item != null) {
-      questBallDisPlayUseCase = IssueBallDisPlayUseCase(
+      questBallDisPlayUseCase = QuestBallDisPlayUseCase(
           fBallResDto: item, geoLocatorAdapter: sl());
     }
   }
@@ -95,8 +97,15 @@ class QuestBallHaveImageWidgetViewModel extends ListUpBallWidgetItem {
   }
 
   @override
-  onReFreshBall() {
-    // TODO: implement onReFreshBall
-    throw UnimplementedError();
+  onReFreshBall() async{
+    var item = ballListMediator!.itemList[index!];
+    if(item != null){
+      item = await _selectBallUseCaseInputPort
+          .selectBall(item.ballUuid!);
+      questBallDisPlayUseCase = QuestBallDisPlayUseCase(
+          fBallResDto: item, geoLocatorAdapter: sl());
+      ballWidgetKey = Uuid().v4();
+    }
+    notifyListeners();
   }
 }

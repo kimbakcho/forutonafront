@@ -10,6 +10,7 @@ import 'package:forutonafront/AppBis/Tag/Domain/UseCase/TagFromBallUuid/TagFromB
 import 'package:forutonafront/AppBis/Tag/Dto/FBallTagResDto.dart';
 import 'package:forutonafront/Common/Geolocation/Data/Value/Position.dart';
 import 'package:forutonafront/Common/Geolocation/Domain/UseCases/GeoLocationUtilForeGroundUseCaseInputPort.dart';
+import 'package:forutonafront/Common/GoogleMapSupport/MapBallMarkerFactory.dart';
 import 'package:forutonafront/Common/GoogleMapSupport/MapMakerDescriptorContainer.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Common/MapScreenPosition/MapScreenPositionUseCaseInputPort.dart';
@@ -257,6 +258,8 @@ class ID01MainPageViewModel extends ChangeNotifier {
 
   MapMakerDescriptorContainer? _mapMakerDescriptorContainer;
 
+  MapBallMarkerFactory _mapBallMarkerFactory = sl();
+
   SheetController? sheetController;
 
   MapScreenPositionUseCaseInputPort? _mapScreenPositionUseCaseInputPort;
@@ -344,13 +347,15 @@ class ID01MainPageViewModel extends ChangeNotifier {
         icon: _mapMakerDescriptorContainer!
             .getBitmapDescriptor(MapMakerDescriptorType.UserAvatarIcon)));
 
-    mapMarkers.add(Marker(
-        zIndex: 2,
-        markerId: MarkerId(this.fBallResDto!.ballUuid!),
-        position:
-            LatLng(this.fBallResDto!.latitude!, this.fBallResDto!.longitude!),
-        icon: _mapMakerDescriptorContainer!.getBitmapDescriptor(
-            MapMakerDescriptorType.IssueBallIconSelectNormal)));
+    var ballMaker = _mapBallMarkerFactory.getBallMaker(
+        this.fBallResDto!.ballType!, this.fBallResDto!.ballUuid!, Position(
+      latitude: this.fBallResDto!.latitude,
+      longitude: this.fBallResDto!.longitude
+    ));
+
+    mapMarkers.add(ballMaker!.copyWith(
+        zIndexParam: 2
+    ));
   }
 
   get isShowBottomSheet {

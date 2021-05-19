@@ -24,6 +24,7 @@ class QuestBallDescription extends BallDescription {
   bool? startPositionFlag;
   bool? isOpenCheckInPosition;
   String? qualifyingForQuestText;
+  String? checkInPositionDescription;
 
 
   QuestBallDescription();

@@ -65,6 +65,26 @@ class MapBallMarkerFactory {
               anchor: Offset(0.5, 1));
         }
       }
+    }else if(fBallType == FBallType.QuestBall){
+      if(select){
+        return Marker(
+            markerId: MarkerId("QuestBall" + ballUuid),
+            icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
+                MapMakerDescriptorType.QuestBallIconSelectNormal),
+            onTap: () => onTap!(),
+            zIndex: 1,
+            position: LatLng(position.latitude!, position.longitude!),
+            anchor: Offset(0.5, 1));
+      }else {
+        return Marker(
+            markerId: MarkerId("QuestBall" + ballUuid),
+            icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
+                MapMakerDescriptorType.QuestBallIconUnSelectNormal),
+            onTap: () => onTap!(),
+            zIndex: 1,
+            position: LatLng(position.latitude!, position.longitude!),
+            anchor: Offset(0.5, 0.5));
+      }
     } else {
       return throw Exception("not support Ball");
     }

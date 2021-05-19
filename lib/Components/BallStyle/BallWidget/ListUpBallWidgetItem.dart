@@ -13,8 +13,6 @@ import 'package:forutonafront/Components/BallListUp/BallListMediator.dart';
 import 'package:forutonafront/Components/BallOption/BallDeletePopup/BallDeletePopup.dart';
 import 'package:forutonafront/Components/BallOption/MyBallPopup/MyBallPopup.dart';
 import 'package:forutonafront/Components/BallOption/OtherUserBallPopup/OtherUserBallPopup.dart';
-
-import 'package:forutonafront/Components/DetailPageViewer/DetailPageViewer.dart';
 import 'package:forutonafront/Page/ICodePage/ID01/ID01MainPage.dart';
 import 'package:forutonafront/Components/DetailPage/DBallMode.dart';
 import 'package:forutonafront/Page/LCodePage/L001/L001BottomSheet/BottomSheet/L001BottomSheet.dart';

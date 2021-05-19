@@ -18,7 +18,7 @@ class QDInfoTabView extends StatelessWidget {
   final FBallResDto fBallResDto;
 
 
-  QDInfoTabView({required this.fBallResDto});
+  QDInfoTabView({required this.fBallResDto, Key? key}):super(key: key);
 
   @override
   Widget build(BuildContext context) {

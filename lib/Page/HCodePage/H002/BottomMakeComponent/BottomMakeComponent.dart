@@ -67,10 +67,11 @@ class BottomMakeComponent extends StatelessWidget {
                     leftImage: AssetImage(
                         "assets/BallMakeImage/questBallMakeImage.png"),
                     mainColor: Color(0xff4f72ff),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    onTap: () async {
+                      await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                         return QM01MainPage(makePageMode: MakePageMode.create);
                       },));
+                      makeBallPop!();
                     },
                   ),
                   decoration: BoxDecoration(boxShadow: [

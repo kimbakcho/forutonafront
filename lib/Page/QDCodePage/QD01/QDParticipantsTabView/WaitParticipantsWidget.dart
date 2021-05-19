@@ -3,6 +3,7 @@ import 'package:forutonafront/AppBis/FBall/Domain/UseCase/BallAction/QuestBall/Q
 import 'package:forutonafront/AppBis/FBall/Domain/Value/QuestBallParticipateState.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestBallParticipantResDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestParticipateAcceptReqDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestParticipateDeniedReqDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/Common/Loding/CommonLoadingComponent.dart';
 import 'package:forutonafront/Page/QDCodePage/QD01/QuestActionDialog.dart';
@@ -14,9 +15,15 @@ import 'package:provider/provider.dart';
 import 'ParticipantInfoBar.dart';
 
 class WaitParticipantsWidget extends StatelessWidget {
+
   final FBallResDto fBallResDto;
 
-  WaitParticipantsWidget({required this.fBallResDto});
+  final Function? onParticipantAccept;
+
+  final Function? onParticipantDenied;
+
+  WaitParticipantsWidget(
+      {required this.fBallResDto, this.onParticipantAccept, this.onParticipantDenied});
 
   @override
   Widget build(BuildContext context) {
@@ -28,61 +35,82 @@ class WaitParticipantsWidget extends StatelessWidget {
             margin: EdgeInsets.only(top: 16),
             child: model.isLoaded
                 ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 16),
-                        child: Text(
-                          '참가대기중(${model.waitParticipates.length})',
-                          style: GoogleFonts.notoSans(
-                            fontSize: 14,
-                            color: const Color(0xff000000),
-                            letterSpacing: -0.28,
-                            fontWeight: FontWeight.w700,
-                            height: 1.2142857142857142,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      ListView.builder(
-                        itemCount: model.waitParticipates.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.all(16),
-                            child: model.questEnterUserMode ==
-                                    QuestEnterUserMode.Maker
-                                ? ParticipantInfoBar(
-                                    questBallParticipantResDto:
-                                        model.waitParticipates[index],
-                                    onAcceptParticipation: () {
-                                      showDialog(context: context, builder: (context) {
-                                        return QuestActionDialog(
-                                          title: "퀘스트 참가 승인",
-                                          content: "해당 유저의 참가를 승인합니다.",
-                                          activeColor: Color(0xff00B2AC),
-                                          activeText: "승인",
-                                          size: Size(332,163),
-                                          onAgree: (){
-                                            model.participantAccept(context, model.waitParticipates[index]);
-
-                                          },
-                                        );
-                                      },);
-                                    },
-                                    onDeleteParticipation: () {},
-                                  )
-                                : ParticipantInfoBar(
-                                    questBallParticipantResDto:
-                                        model.waitParticipates[index]),
-                          );
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 16),
+                  child: Text(
+                    '참가대기중(${model.waitParticipates.length})',
+                    style: GoogleFonts.notoSans(
+                      fontSize: 14,
+                      color: const Color(0xff000000),
+                      letterSpacing: -0.28,
+                      fontWeight: FontWeight.w700,
+                      height: 1.2142857142857142,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                ListView.builder(
+                  itemCount: model.waitParticipates.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.all(16),
+                      child: model.questEnterUserMode ==
+                          QuestEnterUserMode.Maker
+                          ? ParticipantInfoBar(
+                        questBallParticipantResDto:
+                        model.waitParticipates[index],
+                        onAcceptParticipation: () {
+                          showDialog(context: context, builder: (context) {
+                            return QuestActionDialog(
+                              title: "퀘스트 참가 승인",
+                              content: "해당 유저의 참가를 승인합니다.",
+                              activeColor: Color(0xff00B2AC),
+                              activeText: "승인",
+                              size: Size(332, 163),
+                              onRightTap: () async {
+                                await model.participantAccept(
+                                    context, model.waitParticipates[index]);
+                                if (onParticipantAccept != null) {
+                                  onParticipantAccept!();
+                                }
+                              },
+                            );
+                          },);
                         },
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        primary: false,
-                        padding: EdgeInsets.zero,
+                        onDeniedParticipation: () {
+                          showDialog(context: context, builder: (context)
+                          {
+                            return QuestActionDialog(
+                              title: "퀘스트 참가 거부",
+                              content: "해당 유저의 참가를 거부합니다.",
+                              activeColor: Color(0xffFF4F9A),
+                              activeText: "거부",
+                              size: Size(332, 163),
+                              onRightTap: () async {
+                                await model.participantDenied(
+                                    context, model.waitParticipates[index]);
+                                if (onParticipantDenied != null) {
+                                  onParticipantDenied!();
+                                }
+                              },
+                            );
+                          });
+                        },
                       )
-                    ],
-                  )
+                          : ParticipantInfoBar(
+                          questBallParticipantResDto:
+                          model.waitParticipates[index]),
+                    );
+                  },
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  primary: false,
+                  padding: EdgeInsets.zero,
+                )
+              ],
+            )
                 : Container(),
           );
         },
@@ -116,8 +144,8 @@ class WaitParticipantsWidgetViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  participantAccept(BuildContext context,QuestBallParticipantResDto resDto) async {
-
+  participantAccept(BuildContext context,
+      QuestBallParticipantResDto resDto) async {
     showDialog(context: context, builder: (context) {
       return CommonLoadingComponent();
     });
@@ -129,6 +157,24 @@ class WaitParticipantsWidgetViewModel extends ChangeNotifier {
         .getParticipates(fBallResDto.ballUuid!, QuestBallParticipateState.Wait);
     notifyListeners();
     Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
+
+  participantDenied(BuildContext context,
+      QuestBallParticipantResDto resDto) async {
+    showDialog(context: context, builder: (context) {
+      return CommonLoadingComponent();
+    });
+    QuestParticipateDeniedReqDto reqDto = QuestParticipateDeniedReqDto();
+    reqDto.ballUuid = fBallResDto.ballUuid;
+    reqDto.uid = resDto.uid!.uid!;
+    await _questBallActionUseCaseInputPort.participateDenied(reqDto);
+    this.waitParticipates = await _questBallActionUseCaseInputPort
+        .getParticipates(fBallResDto.ballUuid!, QuestBallParticipateState.Wait);
+    notifyListeners();
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
 
 }

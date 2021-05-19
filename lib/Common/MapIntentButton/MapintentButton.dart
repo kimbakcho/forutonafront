@@ -22,7 +22,10 @@ class MapIntentButton extends StatelessWidget {
       width: 37,
       height: 37,
       decoration:
-          BoxDecoration(color: Color(0xff007EFF), shape: BoxShape.circle),
+          BoxDecoration(
+            border: Border.all(color: Color(0xff007EFF),width: 2),
+              color: Colors.white, shape: BoxShape.circle
+          ),
       child: FlatButton(
         onPressed: () async {
 
@@ -45,11 +48,11 @@ class MapIntentButton extends StatelessWidget {
             }
           }
         },
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.only(left: 5),
         child: Icon(
           ForutonaIcon.get_directions,
-          color: Colors.white,
-          size: 18,
+          color: Color(0xff007EFF),
+          size: 15,
         ),
         shape: CircleBorder(),
       ),

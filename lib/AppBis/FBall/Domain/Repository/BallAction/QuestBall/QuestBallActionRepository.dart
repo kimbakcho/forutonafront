@@ -5,6 +5,7 @@ import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/ParticipantR
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/ParticipantResDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestBallParticipantResDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestParticipateAcceptReqDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestParticipateDeniedReqDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/RecruitParticipantReqDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 
@@ -18,4 +19,9 @@ abstract class QuestBallActionRepository {
   Future<List<QuestBallParticipantResDto>> getParticipates(String ballUuid, QuestBallParticipateState state);
 
   Future<void> participateAccept(QuestParticipateAcceptReqDto reqDto);
+
+  Future<void> participateDenied(QuestParticipateDeniedReqDto reqDto);
+
+  Future<int> countByBallUuidAndCurrentState(String ballUuid, QuestBallParticipateState questBallParticipateState);
+
 }

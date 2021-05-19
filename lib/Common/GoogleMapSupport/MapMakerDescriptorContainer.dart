@@ -17,7 +17,7 @@ abstract class MapMakerDescriptorContainer {
 
 enum MapMakerDescriptorType {
   IssueBallIconUnSelectNormal,IssueBallIconSelectNormal,UserAvatarIcon,IssueBallIconUnSelectSmall,IssueBallIconSelectSmall,
-  QuestBallIconSelectNormal
+  QuestBallIconSelectNormal,QuestBallIconUnSelectNormal,QStartFlag,QCheckInFlag
 }
 
 @LazySingleton(as: MapMakerDescriptorContainer)
@@ -70,6 +70,10 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
         "assets/MarkesImages/questballmaker.png", Size(140,107));
     container!.putIfAbsent(MapMakerDescriptorType.QuestBallIconSelectNormal, () => questBallIconSelectNormal);
 
+    var questBallIconUnSelectNormal = await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
+        "assets/MarkesImages/quetballIcon2.png", Size(140,107));
+    container!.putIfAbsent(MapMakerDescriptorType.QuestBallIconUnSelectNormal, () => questBallIconSelectNormal);
+
     BitmapDescriptor userAvatarIcon =
     await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
         "assets/MainImage/empty_user.png", Size(70, 70));
@@ -78,6 +82,17 @@ class MapMakerDescriptorContainerImpl implements MapMakerDescriptorContainer {
     _signInUserInfoUseCaseInputPort.fUserInfoStream!.listen((event) async {
       await mapPutUserAvatarIcon();
     });
+
+    var startFlag = await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
+        "assets/MarkesImages/startflag.png", Size(140,107));
+
+    var qCheckInFlag = await _mapBitmapDescriptorUseCaseInputPort.assertFileToBitmapDescriptor(
+        "assets/MarkesImages/checkinflag.png", Size(140,107));
+
+    container!.putIfAbsent(MapMakerDescriptorType.QCheckInFlag, () => qCheckInFlag);
+
+    container!.putIfAbsent(MapMakerDescriptorType.QStartFlag, () => startFlag);
+
   }
 
   Future mapPutUserAvatarIcon() async {

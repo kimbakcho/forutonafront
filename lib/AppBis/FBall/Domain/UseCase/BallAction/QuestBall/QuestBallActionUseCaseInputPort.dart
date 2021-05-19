@@ -5,6 +5,7 @@ import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/ParticipantR
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/ParticipantResDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestBallParticipantResDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestParticipateAcceptReqDto.dart';
+import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/QuestParticipateDeniedReqDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/BallAction/QuestBall/RecruitParticipantReqDto.dart';
 import 'package:forutonafront/AppBis/FBall/Dto/FBallResDto.dart';
 import 'package:forutonafront/AppBis/ForutonaUser/Domain/UseCase/FUser/SigInInUserInfoUseCase/SignInUserInfoUseCaseInputPort.dart';
@@ -18,6 +19,8 @@ abstract class QuestBallActionUseCaseInputPort {
   Future<List<QuestBallParticipantResDto>> getParticipates(String ballUuid,QuestBallParticipateState questBallParticipateState);
   Future<QuestEnterUserMode> getQuestEnterUserMode(FBallResDto fBallResDto);
   Future<void> participateAccept(QuestParticipateAcceptReqDto reqDto);
+  Future<void> participateDenied(QuestParticipateDeniedReqDto reqDto);
+  Future<int> getStateParticipatesCount(String ballUuid,QuestBallParticipateState questBallParticipateState);
 }
 
 @LazySingleton(as: QuestBallActionUseCaseInputPort)
@@ -64,5 +67,17 @@ class QuestBallActionUseCase implements QuestBallActionUseCaseInputPort{
     }
     return questEnterUserMode;
   }
+
+  @override
+  Future<void> participateDenied(QuestParticipateDeniedReqDto reqDto) async {
+    await questBallActionRepository.participateDenied(reqDto);
+
+  }
+
+  @override
+  Future<int> getStateParticipatesCount(String ballUuid, QuestBallParticipateState questBallParticipateState) async {
+    return await questBallActionRepository.countByBallUuidAndCurrentState(ballUuid,questBallParticipateState);
+  }
+
 
 }

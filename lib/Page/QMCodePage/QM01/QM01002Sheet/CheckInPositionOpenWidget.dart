@@ -7,8 +7,9 @@ class CheckInPositionOpenWidget extends StatelessWidget {
 
   final CheckInPositionOpenWidgetController? controller;
 
+  final bool? initState;
 
-  CheckInPositionOpenWidget({this.controller});
+  CheckInPositionOpenWidget({this.controller,this.initState});
 
   @override
   Widget build(BuildContext context) {
@@ -69,14 +70,19 @@ class CheckInPositionOpenWidgetViewModel extends ChangeNotifier {
 
   final CheckInPositionOpenWidgetController? controller;
 
+  final bool? initState;
 
-  CheckInPositionOpenWidgetViewModel({this.controller}){
+  bool state = true;
+
+  CheckInPositionOpenWidgetViewModel({this.controller,this.initState}){
     if(this.controller != null){
       this.controller!._viewModel = this;
     }
+    if(initState != null){
+      state = initState!;
+    }
   }
 
-  bool state = true;
 
   toggle() {
     state = !state;
@@ -94,9 +100,12 @@ class CheckInPositionOpenWidgetController {
     }else {
       return false;
     }
-
   }
 
-
+  void setState(bool state){
+    if(_viewModel != null){
+      _viewModel!.state = state;
+    }
+  }
 
 }

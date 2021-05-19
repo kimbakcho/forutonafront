@@ -76,12 +76,14 @@ class DBallMapStyle1ViewModel extends ChangeNotifier {
       markers.add(Marker(
           position: LatLng(fBallResDto.latitude!, fBallResDto.longitude!),
           markerId: MarkerId(fBallResDto.ballUuid!),
+          anchor: Offset(0.5,1),
           icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
               MapMakerDescriptorType.IssueBallIconSelectNormal)));
     } else if (fBallResDto.ballType == FBallType.QuestBall) {
       markers.add(Marker(
           position: LatLng(fBallResDto.latitude!, fBallResDto.longitude!),
           markerId: MarkerId(fBallResDto.ballUuid!),
+          anchor: Offset(0.5,1),
           icon: _mapMakerDescriptorContainer.getBitmapDescriptor(
               MapMakerDescriptorType.QuestBallIconSelectNormal)));
     }

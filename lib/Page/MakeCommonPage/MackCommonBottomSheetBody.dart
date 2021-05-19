@@ -329,7 +329,7 @@ class MakeCommonBottomSheetBodyViewModel extends ChangeNotifier {
 
   final Function(bool)? onComplete;
 
-  final MakePageMode? im001mode;
+  final MakePageMode? makePageMode;
 
   final FBallResDto? preSetBallResDto;
 
@@ -342,7 +342,7 @@ class MakeCommonBottomSheetBodyViewModel extends ChangeNotifier {
       this.initAddress,
       this.onComplete,
       this.im001bottomSheetBodyController,
-      this.im001mode,
+      this.makePageMode,
       this.preSetBallResDto,
       this.preSetFBallTagResDtos) {
     _titleTextController = TextEditingController();
@@ -388,7 +388,7 @@ class MakeCommonBottomSheetBodyViewModel extends ChangeNotifier {
       _checkComplete();
     });
 
-    if (im001mode == MakePageMode.modify) {
+    if (makePageMode == MakePageMode.modify) {
       _issueBallDisPlayUseCase = IssueBallDisPlayUseCase(
           fBallResDto: preSetBallResDto!, geoLocatorAdapter: sl());
       _titleTextController!.text = _issueBallDisPlayUseCase!.ballName();
